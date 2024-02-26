@@ -1,0 +1,194 @@
+$schema: "https://json-schema.org/draft/2020-12/schema"
+title: Fedify model schema
+
+$defs:
+  property:
+    description: >-
+      The schema of a property.  It is used to generate property accessors of
+      a class.
+    anyOf:
+    - allOf:
+      - $ref: "#/$defs/property-base"
+      - $ref: "#/$defs/property-typing"
+      - type: object
+        properties:
+          functional:
+            description: &functional-description >-
+              Marks the property that it can have only one value.  Turning on
+              this flag will generate only singular property accessors,
+              so pluralName and singularAccessor should not be specified.
+            const: false
+          pluralName:
+            description: >-
+              The plural form of the property name.  It is used as the name of
+              the generated property accessors.
+            type: string
+          singularAccessor:
+            description: >-
+              Whether to generate singular property accessors.  Regardless of
+              this flag, plural property accessors are generated
+              (unless functional is turned on).
+        required:
+        - pluralName
+    - allOf:
+      - $ref: "#/$defs/property-base"
+      - $ref: "#/$defs/property-typing"
+      - type: object
+        properties:
+          functional:
+            description: *functional-description
+            const: true
+        required:
+        - functional
+
+  property-base:
+    type: object
+    properties:
+      singularName:
+        description: >-
+          The singular form of the property name.  It is used as the name of the
+          generated property accessors.
+        type: string
+      uri:
+        description: The qualified URI of the property.
+        type: string
+        format: uri
+      subpropertyOf:
+        description: >-
+          The qualified URI of the superproperty of the property (if any).
+          It means that the property is a specialization of the referenced
+          property.
+        type: string
+        format: uri
+      description:
+        description: >-
+          The description of the property.  It is used as the doc comment of
+          the generated property accessors.
+        type: string
+    required:
+    - singularName
+    - uri
+    - description
+
+  property-typing:
+    anyOf:
+    - type: object
+      properties:
+        untyped:
+          description: >-
+            Whether the property value has @type field.  If true, the range must
+            have only one element.
+          const: false
+        range:
+          description: >-
+            The qualified URIs of all possible types of the property values.
+          type: array
+          items:
+            $ref: "#/$defs/typeUri"
+          minItems: 1
+          uniqueItems: true
+      required:
+      - range
+    - type: object
+      properties:
+        untyped:
+          description: >-
+            Whether the property value has @type field.  If true, the range must
+            have only one element.
+          const: true
+        range:
+          description: >-
+            The qualified URIs of all possible types of the property values.
+          type: array
+          items:
+            $ref: "#/$defs/typeUri"
+          minItems: 1
+          maxItems: 1
+      required:
+      - untyped
+      - range
+
+  typeUri:
+    description: >-
+      The qualified URI of a type.  It is used as the range of a property.
+    anyOf:
+    - type: string
+      format: uri
+    - enum:
+      - fedify:langTag
+
+  ldContext:
+    anyOf:
+    - type: string
+      format: uri
+    - $ref: "#/$defs/ldEmbeddedContext"
+    - type: array
+      items:
+        anyOf:
+        - type: string
+          format: uri
+        - $ref: "#/$defs/ldEmbeddedContext"
+      uniqueItems: true
+
+  ldEmbeddedContext:
+    type: object
+    patternProperties:
+      "^.+$":
+        $ref: "#/$defs/ldTermDefinition"
+
+  ldTermDefinition:
+    anyOf:
+    - type: string
+      format: uri
+    - type: object
+      patternProperties:
+        "^.+$":
+          anyOf:
+          - type: string
+            format: uri
+          - const: "@id"
+
+description: The schema of a type.  It is used to generate a class.
+type: object
+properties:
+  name:
+    description: The type name.  It is used as the name of the generated class.
+    type: string
+  uri:
+    description: The qualified URI of the type.
+    type: string
+    format: uri
+  extends:
+    description: The qualified URIs of the base type of the type (if any).
+    type: string
+    format: uri
+  entity:
+    description: >-
+      Marks the type an entity type rather than a value type.  Turning on this
+      flag will make property accessors for the type asynchronous, so that they
+      can load the values of the properties from the remote server.
+      
+      The extended subtypes must have the consistent value of this flag.
+    type: boolean
+  description:
+    description: >-
+      The description of the type.  It is used as the doc comment of
+      the generated class.
+    type: string
+  properties:
+    description: The possible properties of the type.
+    type: array
+    items:
+      $ref: "#/$defs/property"
+    uniqueItems: true
+  defaultContext:
+    description:  >-
+      The default JSON-LD context of the type.  It is used as the default
+      context of the generated toJsonLd() method.
+    $ref: "#/$defs/ldContext"
+required:
+- name
+- uri
+- entity
+- description
+- properties

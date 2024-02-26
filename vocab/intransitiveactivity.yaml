@@ -1,0 +1,11 @@
+$schema: ../codegen/schema.yaml
+name: IntransitiveActivity
+uri: "https://www.w3.org/ns/activitystreams#IntransitiveActivity"
+extends: "https://www.w3.org/ns/activitystreams#Activity"
+entity: true
+description: |
+  Instances of `IntransitiveActivity` are a subtype of {@link Activity}
+  representing intransitive actions.  The `object` property is therefore
+  inappropriate for these activities.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

@@ -1,0 +1,20 @@
+$schema: ../codegen/schema.yaml
+name: OrderedCollectionPage
+uri: "https://www.w3.org/ns/activitystreams#OrderedCollectionPage"
+extends: "https://www.w3.org/ns/activitystreams#CollectionPage"
+entity: true
+description: |
+  Used to represent ordered subsets of items from an `OrderedCollection`.
+  Refer to the Activity Streams 2.0 Core for a complete description of
+  the `OrderedCollectionPage` object.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+
+properties:
+- singularName: startIndex
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#startIndex"
+  description: |
+    A non-negative integer value identifying the relative position within
+    the logical view of a strictly ordered collection.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"

@@ -1,0 +1,5 @@
+{
+  "https://example.com/prop/test": {
+    "@value": "foo"
+  }
+}

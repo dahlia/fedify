@@ -1,0 +1,44 @@
+{
+  "lock": false,
+  "tasks": {
+    "fedify-codegen": "cat ../../vocab/mod.ts > /dev/null || (deno run --allow-read --allow-write --check ../../codegen/main.ts ../../vocab/ ../runtime/ > ../../vocab/mod.ts && deno fmt ../../vocab/mod.ts && deno cache ../../vocab/mod.ts && deno check ../../vocab/mod.ts)",
+    "check": "deno task fedify-codegen && deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
+    "cli": "deno task fedify-codegen && echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
+    "manifest": "deno task fedify-codegen && deno task cli manifest $(pwd)",
+    "start": "deno task fedify-codegen && deno run -A --watch=static/,routes/ --unstable-temporal dev.ts",
+    "build": "deno task fedify-codegen && deno run -A dev.ts build",
+    "preview": "deno task fedify-codegen && deno run -A main.ts",
+    "update": "deno run -A -r https://fresh.deno.dev/update ."
+  },
+  "lint": {
+    "rules": {
+      "tags": [
+        "fresh",
+        "recommended"
+      ]
+    }
+  },
+  "exclude": [
+    "**/_fresh/*"
+  ],
+  "imports": {
+    "$fresh/": "https://deno.land/x/fresh@1.6.5/",
+    "preact": "https://esm.sh/preact@10.19.2",
+    "preact/": "https://esm.sh/preact@10.19.2/",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
+    "$std/": "https://deno.land/std@0.217.0/",
+    "fedify/": "../../",
+    "uuidv7": "npm:uuidv7@0.6.3",
+    "markdown-it": "npm:markdown-it@14.0.0",
+    "scrypt": "https://deno.land/x/scrypt@v4.3.1/mod.ts"
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "preact"
+  },
+  "unstable": [
+    "kv",
+    "temporal"
+  ]
+}

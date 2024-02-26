@@ -1,0 +1,38 @@
+$schema: ../codegen/schema.yaml
+name: CollectionPage
+uri: "https://www.w3.org/ns/activitystreams#CollectionPage"
+extends: "https://www.w3.org/ns/activitystreams#Collection"
+entity: true
+description: |
+  Used to represent distinct subsets of items from a `Collection`.
+  Refer to the Activity Streams 2.0 Core for a complete description of
+  the `CollectionPage` object.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+
+properties:
+- singularName: partOf
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#partOf"
+  description: |
+    Identifies the {@link Collection} to which a {@link CollectionPage} objects
+    items belong.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Link"
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
+- singularName: next
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#next"
+  description: In a paged {@link Collection}, indicates the next page of items.
+  range:
+  - "https://www.w3.org/ns/activitystreams#CollectionPage"
+  - "https://www.w3.org/ns/activitystreams#Link"
+
+- singularName: prev
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#prev"
+  description: |
+    In a paged {@link Collection}, identifies the previous page of items.
+  range:
+  - "https://www.w3.org/ns/activitystreams#CollectionPage"
+  - "https://www.w3.org/ns/activitystreams#Link"

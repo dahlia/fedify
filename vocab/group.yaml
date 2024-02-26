@@ -1,0 +1,140 @@
+$schema: ../codegen/schema.yaml
+name: Group
+uri: "https://www.w3.org/ns/activitystreams#Group"
+extends: "https://www.w3.org/ns/activitystreams#Object"
+entity: true
+description: Represents a formal or informal collective of Actors.
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/v1"
+
+properties:
+- pluralName: preferredUsernames
+  singularName: preferredUsername
+  singularAccessor: true
+  uri: "https://www.w3.org/ns/activitystreams#preferredUsername"
+  description: |
+    A short username which may be used to refer to the actor,
+    with no uniqueness guarantees.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#string"
+  - "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+
+- pluralName: publicKeys
+  singularName: publicKey
+  singularAccessor: true
+  uri: "https://w3id.org/security#publicKey"
+  description: A public part of the key pair owned by this actor.
+  untyped: true
+  range:
+  - "https://w3id.org/security#Key"
+
+- singularName: manuallyApprovesFollowers
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers"
+  description: |
+    When `true`, conveys that for this actor, follow requests are not usually
+    automatically approved, but instead are examined by a person who may accept
+    or reject the request, at some time in the future.  Setting of `false`
+    conveys no information and may be ignored.  This information is typically
+    used to affect display of accounts, such as showing an account as private or
+    locked.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#boolean"
+
+- singularName: inbox
+  functional: true
+  uri: "http://www.w3.org/ns/ldp#inbox"
+  description: |
+    The inbox stream contains all activities received by the actor.  The server
+    SHOULD filter content according to the requester's permission.  In general,
+    the owner of an inbox is likely to be able to access all of their inbox
+    contents.  Depending on access control, some other content may be public,
+    whereas other content may require authentication for non-owner users,
+    if they can access the inbox at all.
+
+    The server MUST perform de-duplication of activities returned by the inbox.
+    Duplication can occur if an activity is addressed both to an actor's
+    followers, and a specific actor who also follows the recipient actor,
+    and the server has failed to de-duplicate the recipients list.
+    Such deduplication MUST be performed by comparing the `id` of the activities
+    and dropping any activities already seen. 
+  range:
+  - "https://www.w3.org/ns/activitystreams#OrderedCollection"
+
+- singularName: outbox
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#outbox"
+  description: |
+    The outbox stream contains activities the user has published,
+    subject to the ability of the requestor to retrieve the activity
+    (that is, the contents of the outbox are filtered by the permissions of
+    the person reading it).  If a user submits a request without
+    [Authorization](https://www.w3.org/TR/activitypub/#authorization)
+    the server should respond with all of the
+    [Public](https://www.w3.org/TR/activitypub/#public-addressing) posts.
+    This could potentially be all relevant objects published by the user,
+    though the number of available items is left to the discretion of those
+    implementing and deploying the server.
+  range:
+  - "https://www.w3.org/ns/activitystreams#OrderedCollection"
+
+- singularName: following
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#following"
+  description: |
+    This is a list of everybody that the actor has followed, added as a
+    [side effect](https://www.w3.org/TR/activitypub/#follow-activity-outbox).
+    The `following` collection MUST be either an {@link OrderedCollection}
+    or a {@link Collection} and MAY be filtered on privileges of
+    an authenticated user or as appropriate when no authentication is given.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
+- singularName: followers
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#followers"
+  description: |
+    This is a list of everyone who has sent a {@link Follow} activity
+    for the actor, added as a
+    [side effect](https://www.w3.org/TR/activitypub/#follow-activity-outbox).
+    This is where one would find a list of all the actors that are following
+    the actor.  The `followers` collection MUST be either
+    an {@link OrderedCollection} or a {@link Collection} and MAY be filtered on
+    privileges of an authenticated user or as appropriate when no authentication
+    is given.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
+- singularName: linked
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#liked"
+  description: |
+    This is a list of every object from all of the actor's {@link Like}
+    activities, added as a
+    [side effect](https://www.w3.org/TR/activitypub/#like-activity-outbox).
+    The `liked` collection MUST be either an {@link OrderedCollection} or
+    a {@link Collection} and MAY be filtered on privileges of an authenticated
+    user or as appropriate when no authentication is given.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
+- pluralName: streams
+  singularName: stream
+  singularAccessor: false
+  uri: "https://www.w3.org/ns/activitystreams#streams"
+  description: |
+    A list of supplementary Collections which may be of interest.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
+- singularName: endpoints
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#endpoints"
+  description: |
+    A JSON object which maps additional (typically server/domain-wide) endpoints
+    which may be useful either for this actor or someone referencing this actor.
+    This mapping may be nested inside the actor document as the value or may be
+    a link to a JSON-LD document with these properties.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Endpoints"

@@ -1,0 +1,10 @@
+{
+  "tasks": {
+    "codegen": "deno run --allow-read --allow-write --check codegen/main.ts vocab/ ../runtime/ > vocab/mod.ts && deno fmt vocab/mod.ts && deno cache vocab/mod.ts && deno check vocab/mod.ts",
+    "test-without-codegen": "deno test --check --allow-read --allow-write --unstable-temporal",
+    "test": "deno task codegen && deno task test-without-codegen"
+  },
+  "unstable": [
+    "temporal"
+  ]
+}

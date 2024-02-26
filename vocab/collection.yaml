@@ -1,0 +1,63 @@
+$schema: ../codegen/schema.yaml
+name: Collection
+uri: "https://www.w3.org/ns/activitystreams#Collection"
+extends: "https://www.w3.org/ns/activitystreams#Object"
+entity: true
+description: |
+  A `Collection` is a subtype of {@link Object} that represents ordered or
+  unordered sets of {@link Object} or {@link Link} instances.
+
+  Refer to the Activity Streams 2.0 Core specification for a complete
+  description of the Collection type.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+
+properties:
+- singularName: totalItems
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#totalItems"
+  description: |
+    A non-negative integer specifying the total number of objects contained by
+    the logical view of the collection. This number might not reflect the actual
+    number of items serialized within the {@link Collection} object instance.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
+
+- singularName: current
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#current"
+  description: |
+    In a paged {@link Collection}, indicates the page that contains
+    the most recently updated member items.
+  range:
+  - "https://www.w3.org/ns/activitystreams#CollectionPage"
+  - "https://www.w3.org/ns/activitystreams#Link"
+
+- singularName: first
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#first"
+  description: |
+    In a paged {@link Collection}, indicates the furthest preceding page of
+    items in the collection.
+  range:
+  - "https://www.w3.org/ns/activitystreams#CollectionPage"
+  - "https://www.w3.org/ns/activitystreams#Link"
+
+- singularName: last
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#last"
+  description: |
+    In a paged {@link Collection}, indicates the furthest proceeding page of
+    the collection.
+  range:
+  - "https://www.w3.org/ns/activitystreams#CollectionPage"
+  - "https://www.w3.org/ns/activitystreams#Link"
+
+- pluralName: items
+  singularName: item
+  uri: "https://www.w3.org/ns/activitystreams#items"
+  description: |
+    Identifies the items contained in a collection.  The items might be ordered
+    or unordered.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"
+  - "https://www.w3.org/ns/activitystreams#Link"

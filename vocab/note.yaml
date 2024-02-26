@@ -1,0 +1,10 @@
+$schema: ../codegen/schema.yaml
+name: Note
+uri: "https://www.w3.org/ns/activitystreams#Note"
+extends: "https://www.w3.org/ns/activitystreams#Object"
+entity: true
+description: |
+  Represents a short written work typically less than a single paragraph in
+  length.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

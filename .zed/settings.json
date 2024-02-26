@@ -1,0 +1,17 @@
+{
+  "deno": {
+    "enable": true
+  },
+  "ensure_final_newline_on_save": true,
+  "format_on_save": "on",
+  "formatter": {
+    "external": {
+      "command": "deno",
+      "arguments": [
+        "fmt",
+        "-"
+      ]
+    }
+  },
+  "preferred_line_length": 80
+}

@@ -1,0 +1,8 @@
+$schema: ../codegen/schema.yaml
+name: Document
+uri: "https://www.w3.org/ns/activitystreams#Document"
+extends: "https://www.w3.org/ns/activitystreams#Object"
+entity: true
+description: Represents a document of any kind.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

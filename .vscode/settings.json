@@ -1,0 +1,45 @@
+{
+  "deno.enable": true,
+  "deno.unstable": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "yaml.completion": true,
+  "yaml.format.enable": false,
+  "yaml.hover": true,
+  "yaml.schemas": {
+    "codegen/schema.yaml": "/vocab/*.yaml",
+    "https://json-schema.org/draft/2020-12/schema": "/codegen/schema.yaml"
+  },
+  "yaml.validate": true,
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnSave": true
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno",
+    "editor.formatOnSave": true
+  },
+  "cSpell.words": [
+    "bccs",
+    "btos",
+    "codegen",
+    "Deno",
+    "docloader",
+    "fedify",
+    "fediverse",
+    "jsonld",
+    "langstr",
+    "Lemmy",
+    "phensley",
+    "Pixelfed",
+    "rels",
+    "subproperty",
+    "superproperty",
+    "webfinger"
+  ]
+}

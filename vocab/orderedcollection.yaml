@@ -1,0 +1,11 @@
+$schema: ../codegen/schema.yaml
+name: OrderedCollection
+uri: "https://www.w3.org/ns/activitystreams#OrderedCollection"
+extends: "https://www.w3.org/ns/activitystreams#Collection"
+entity: true
+description: |
+  A subtype of {@link Collection} in which members of the logical collection
+  are assumed to always be strictly ordered.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+
+properties: []

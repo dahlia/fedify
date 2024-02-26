@@ -1,0 +1,9 @@
+$schema: ../codegen/schema.yaml
+name: Like
+uri: "https://www.w3.org/ns/activitystreams#Like"
+extends: "https://www.w3.org/ns/activitystreams#Activity"
+entity: true
+description: |
+  Indicates that the `actor` likes, recommends or endorses the `object`.
+  The `target` and `origin` typically have no defined meaning.
+properties: []

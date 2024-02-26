@@ -1,0 +1,9 @@
+$schema: ../codegen/schema.yaml
+name: Create
+uri: "https://www.w3.org/ns/activitystreams#Create"
+extends: "https://www.w3.org/ns/activitystreams#Activity"
+entity: true
+description: |
+  Indicates that the `actor` has created the `object`.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []
