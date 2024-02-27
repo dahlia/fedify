@@ -1,13 +1,20 @@
-import { OrderedCollection, OrderedCollectionPage } from "../vocab/mod.ts";
+import { accepts } from "https://deno.land/std@0.217.0/http/mod.ts";
 import {
   ActorDispatcher,
+  InboxListener,
   OutboxCounter,
   OutboxCursor,
   OutboxDispatcher,
 } from "./callback.ts";
 import { Context } from "./context.ts";
-import { Router } from "./router.ts";
-import { accepts } from "https://deno.land/std@0.217.0/http/mod.ts";
+import { verify } from "../httpsig/mod.ts";
+import { DocumentLoader } from "../runtime/docloader.ts";
+import { isActor } from "../vocab/actor.ts";
+import {
+  Activity,
+  OrderedCollection,
+  OrderedCollectionPage,
+} from "../vocab/mod.ts";
 
 function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);
@@ -21,8 +28,8 @@ function acceptsJsonLd(request: Request): boolean {
 
 export interface ActorHandlerParameters<TContextData> {
   handle: string;
-  router: Router;
-  contextData: TContextData;
+  context: Context<TContextData>;
+  documentLoader: DocumentLoader;
   actorDispatcher?: ActorDispatcher<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
@@ -32,13 +39,13 @@ export async function handleActor<TContextData>(
   request: Request,
   {
     handle,
-    router,
-    contextData,
+    context,
+    documentLoader,
     actorDispatcher,
     onNotFound,
     onNotAcceptable,
   }: ActorHandlerParameters<TContextData>,
-) {
+): Promise<Response> {
   if (actorDispatcher == null) {
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
@@ -47,13 +54,12 @@ export async function handleActor<TContextData>(
     const response = onNotAcceptable(request);
     return response instanceof Promise ? await response : response;
   }
-  const context = new Context(router, request, contextData);
   const actor = await actorDispatcher(context, handle);
   if (actor == null) {
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
   }
-  const jsonLd = await actor.toJsonLd();
+  const jsonLd = await actor.toJsonLd({ documentLoader });
   return new Response(JSON.stringify(jsonLd), {
     headers: {
       "Content-Type":
@@ -65,8 +71,8 @@ export async function handleActor<TContextData>(
 
 export interface OutboxHandlerParameters<TContextData> {
   handle: string;
-  router: Router;
-  contextData: TContextData;
+  context: Context<TContextData>;
+  documentLoader: DocumentLoader;
   outboxDispatcher?: OutboxDispatcher<TContextData>;
   outboxCounter?: OutboxCounter<TContextData>;
   outboxFirstCursor?: OutboxCursor<TContextData>;
@@ -79,8 +85,8 @@ export async function handleOutbox<TContextData>(
   request: Request,
   {
     handle,
-    router,
-    contextData,
+    context,
+    documentLoader,
     outboxCounter,
     outboxFirstCursor,
     outboxLastCursor,
@@ -88,7 +94,7 @@ export async function handleOutbox<TContextData>(
     onNotFound,
     onNotAcceptable,
   }: OutboxHandlerParameters<TContextData>,
-) {
+): Promise<Response> {
   if (outboxDispatcher == null) {
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
@@ -99,7 +105,6 @@ export async function handleOutbox<TContextData>(
   }
   const url = new URL(request.url);
   const cursor = url.searchParams.get("cursor");
-  const context = new Context(router, request, contextData);
   let collection: OrderedCollection | OrderedCollectionPage;
   if (cursor == null) {
     const firstCursorPromise = outboxFirstCursor?.(context, handle);
@@ -167,7 +172,7 @@ export async function handleOutbox<TContextData>(
       items,
     });
   }
-  const jsonLd = await collection.toJsonLd();
+  const jsonLd = await collection.toJsonLd({ documentLoader });
   return new Response(JSON.stringify(jsonLd), {
     headers: {
       "Content-Type":
@@ -175,4 +180,120 @@ export async function handleOutbox<TContextData>(
       Vary: "Accept",
     },
   });
+}
+
+export interface InboxHandlerParameters<TContextData> {
+  handle: string;
+  context: Context<TContextData>;
+  actorDispatcher?: ActorDispatcher<TContextData>;
+  inboxListeners: Map<
+    new (...args: unknown[]) => Activity,
+    InboxListener<TContextData, Activity>
+  >;
+  inboxErrorHandler?: (error: Error) => void | Promise<void>;
+  documentLoader: DocumentLoader;
+  onNotFound(request: Request): Response | Promise<Response>;
+}
+
+export async function handleInbox<TContextData>(
+  request: Request,
+  {
+    handle,
+    context,
+    actorDispatcher,
+    inboxListeners,
+    inboxErrorHandler,
+    documentLoader,
+    onNotFound,
+  }: InboxHandlerParameters<TContextData>,
+): Promise<Response> {
+  if (actorDispatcher == null) {
+    const response = onNotFound(request);
+    return response instanceof Promise ? await response : response;
+  } else {
+    const promise = actorDispatcher(context, handle);
+    const actor = promise instanceof Promise ? await promise : promise;
+    if (actor == null) {
+      const response = onNotFound(request);
+      return response instanceof Promise ? await response : response;
+    }
+  }
+  const keyId = await verify(request, documentLoader);
+  if (keyId == null) {
+    const response = new Response("Failed to verify the reuqest signature.", {
+      status: 401,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+    return response;
+  }
+  let json: unknown;
+  try {
+    json = await request.json();
+  } catch (e) {
+    const promise = inboxErrorHandler?.(e);
+    if (promise instanceof Promise) await promise;
+    return new Response("Invalid JSON.", {
+      status: 400,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  }
+  let activity: Activity;
+  try {
+    activity = await Activity.fromJsonLd(json, { documentLoader });
+  } catch (e) {
+    const promise = inboxErrorHandler?.(e);
+    if (promise instanceof Promise) await promise;
+    return new Response("Invalid activity.", {
+      status: 400,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  }
+  if (activity.actorId == null) {
+    const response = new Response("Missing actor.", {
+      status: 400,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+    return response;
+  }
+  if (!await doesActorOwnKey(activity, keyId)) {
+    const response = new Response("The signer and the actor do not match.", {
+      status: 401,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+    return response;
+  }
+  // deno-lint-ignore no-explicit-any
+  let cls: new (...args: any[]) => Activity = activity
+    // deno-lint-ignore no-explicit-any
+    .constructor as unknown as new (...args: any[]) => Activity;
+  while (true) {
+    if (inboxListeners.has(cls)) break;
+    if (cls === Activity) {
+      return new Response("", {
+        status: 202,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+    }
+    cls = Object.getPrototypeOf(cls);
+  }
+  const listener = inboxListeners.get(cls)!;
+  const promise = listener(context, activity);
+  if (promise instanceof Promise) await promise;
+  return new Response("", {
+    status: 202,
+    headers: { "Content-Type": "text/plain; charset=utf-8" },
+  });
+}
+
+async function doesActorOwnKey(
+  activity: Activity,
+  keyId: URL,
+): Promise<boolean> {
+  if (activity.actorId?.href === keyId.href.replace(/#.*$/, "")) return true;
+  const actor = await activity.getActor();
+  if (actor == null || !isActor(actor)) return false;
+  for (const publicKeyId of actor.publicKeyIds) {
+    if (publicKeyId.href === keyId.href) return true;
+  }
+  return false;
 }

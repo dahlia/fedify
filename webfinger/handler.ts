@@ -1,12 +1,10 @@
 import { Context } from "../federation/context.ts";
-import { Router } from "../federation/router.ts";
 import { ActorDispatcher } from "../federation/callback.ts";
 import { Link as LinkObject } from "../vocab/mod.ts";
 import { Link, ResourceDescriptor } from "./jrd.ts";
 
 export interface WebFingerHandlerParameters<TContextData> {
-  router: Router;
-  contextData: TContextData;
+  context: Context<TContextData>;
   actorDispatcher?: ActorDispatcher<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
 }
@@ -14,8 +12,7 @@ export interface WebFingerHandlerParameters<TContextData> {
 export async function handleWebFinger<TContextData>(
   request: Request,
   {
-    router,
-    contextData,
+    context,
     actorDispatcher,
     onNotFound,
   }: WebFingerHandlerParameters<TContextData>,
@@ -24,18 +21,16 @@ export async function handleWebFinger<TContextData>(
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
   }
-  const url = new URL(request.url);
-  const resource = url.searchParams.get("resource");
+  const resource = context.url.searchParams.get("resource");
   if (resource == null) {
     return new Response("Missing resource parameter.", { status: 400 });
   }
   const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
-  if (match == null || match[2] != url.host) {
+  if (match == null || match[2] != context.url.host) {
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
   }
   const handle = match[1];
-  const context = new Context(router, request, contextData);
   const actor = await actorDispatcher(context, handle);
   if (actor == null) {
     const response = onNotFound(request);

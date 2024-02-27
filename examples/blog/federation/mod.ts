@@ -1,17 +1,27 @@
 import { Federation } from "fedify/federation/middleware.ts";
+import { fetchDocumentLoader, kvCache } from "fedify/runtime/docloader.ts";
 import {
   Activity,
   Create,
   CryptographicKey,
+  Follow,
   Note,
   Person,
+  Undo,
 } from "fedify/vocab/mod.ts";
 import { getBlog } from "../models/blog.ts";
+import { openKv } from "../models/kv.ts";
 import { countPosts, getPosts } from "../models/post.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
-export const federation = new Federation<Deno.Kv>();
+export const federation = new Federation<Deno.Kv>({
+  treatHttps: true,
+  documentLoader: kvCache({
+    loader: fetchDocumentLoader,
+    kv: await openKv(),
+  }),
+});
 
 // Registers the actor dispatcher, which is responsible for creating a
 // `Actor` object (`Person` in this case) for a given actor URI.
@@ -28,7 +38,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     preferredUsername: handle,
     url: new URL("/", ctx.request.url),
     outbox: ctx.getOutboxUri(handle),
-    inbox: new URL(`${ctx.getActorUri(handle)}/inbox`), // FIXME
+    inbox: ctx.getInboxUri(handle),
     publicKey: new CryptographicKey({
       id: new URL(`${ctx.getActorUri(handle)}#main-key`),
       owner: ctx.getActorUri(handle),
@@ -87,3 +97,12 @@ federation.setOutboxDispatcher(
     // Treat the empty string as the first cursor:
     return "";
   });
+
+federation.setInboxListeners("/users/{handle}/inbox")
+  .on(Follow, async (ctx, follow) => {
+    console.log({ follow });
+  })
+  .on(Undo, async (ctx, undo) => {
+    console.log({ undo });
+  })
+  .onError((e) => console.error(e));

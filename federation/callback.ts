@@ -35,3 +35,11 @@ export type OutboxCursor<TContextData> = (
   context: Context<TContextData>,
   handle: string,
 ) => string | null | Promise<string | null>;
+
+/**
+ * A callback that listens for activities in an inbox.
+ */
+export type InboxListener<TContextData, TActivity extends Activity> = (
+  context: Context<TContextData>,
+  activity: TActivity,
+) => void | Promise<void>;
