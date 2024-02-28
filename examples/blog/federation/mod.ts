@@ -1,6 +1,8 @@
 import { Federation } from "fedify/federation/middleware.ts";
 import { fetchDocumentLoader, kvCache } from "fedify/runtime/docloader.ts";
+import { isActor } from "fedify/vocab/actor.ts";
 import {
+  Accept,
   Activity,
   Create,
   CryptographicKey,
@@ -100,7 +102,22 @@ federation.setOutboxDispatcher(
 
 federation.setInboxListeners("/users/{handle}/inbox")
   .on(Follow, async (ctx, follow) => {
-    console.log({ follow });
+    const blog = await getBlog();
+    if (blog == null) return;
+    const actorUri = ctx.getActorUri(blog.handle);
+    if (follow.objectId?.href != actorUri.href) {
+      return;
+    }
+    const recipient = await follow.getActor(ctx);
+    if (!isActor(recipient)) return;
+    await ctx.sendActivity(
+      { keyId: new URL(`${actorUri}#main-key`), privateKey: blog.privateKey },
+      recipient,
+      new Accept({
+        actor: actorUri,
+        object: follow,
+      }),
+    );
   })
   .on(Undo, async (ctx, undo) => {
     console.log({ undo });

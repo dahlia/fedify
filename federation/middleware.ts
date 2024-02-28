@@ -182,6 +182,7 @@ export class Federation<TContextData> {
     }
     const context = new Context(
       this.#router,
+      this.#documentLoader,
       request,
       contextData,
       this.#treatHttps,

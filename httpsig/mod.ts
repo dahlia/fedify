@@ -6,8 +6,62 @@ import {
 import { DocumentLoader } from "../runtime/docloader.ts";
 import { CryptographicKey, Object as ASObject } from "../vocab/mod.ts";
 import { isActor } from "../vocab/actor.ts";
+import { validateCryptoKey } from "./key.ts";
 
-const supportedHashAlgorithms = {
+/**
+ * Signs a request using the given private key.
+ * @param request The request to sign.
+ * @param privateKey The private key to use for signing.
+ * @param keyId The key ID to use for the signature.  It will be used by the
+ *              verifier.
+ * @returns The signed request.
+ */
+export async function sign(
+  request: Request,
+  privateKey: CryptoKey,
+  keyId: URL,
+): Promise<Request> {
+  validateCryptoKey(privateKey, "private");
+  const url = new URL(request.url);
+  const body: ArrayBuffer | null =
+    request.method !== "GET" && request.method !== "HEAD"
+      ? await request.arrayBuffer()
+      : null;
+  const headers = new Headers(request.headers);
+  if (!headers.has("Host")) {
+    headers.set("Host", url.host);
+  }
+  if (!headers.has("Digest") && body != null) {
+    const digest = await crypto.subtle.digest("SHA-256", body);
+    headers.set("Digest", `sha-256=${encodeBase64(digest)}`);
+  }
+  if (!headers.has("Date")) {
+    headers.set("Date", new Date().toUTCString());
+  }
+  const serialized: [string, string][] = [
+    ["(request-target)", `${request.method.toLowerCase()} ${url.pathname}`],
+    ...headers,
+  ];
+  const headerNames: string[] = serialized.map(([name]) => name);
+  const message = serialized
+    .map(([name, value]) => `${name}: ${value.trim()}`).join("\n");
+  // TODO: support other than RSASSA-PKCS1-v1_5:
+  const signature = await crypto.subtle.sign(
+    "RSASSA-PKCS1-v1_5",
+    privateKey,
+    new TextEncoder().encode(message),
+  );
+  const sigHeader = `keyId="${keyId.href}",headers="${
+    headerNames.join(" ")
+  }",signature="${encodeBase64(signature)}"`;
+  headers.set("Signature", sigHeader);
+  return new Request(request, {
+    headers,
+    body,
+  });
+}
+
+const supportedHashAlgorithms: Record<string, string> = {
   "sha": "SHA-1",
   "sha-256": "SHA-256",
   "sha-512": "SHA-512",
@@ -59,6 +113,7 @@ export async function verify(
     }
     if (!matched) return null;
   }
+  // TODO: check Date header
   const sigValues = Object.fromEntries(
     sigHeader.split(",").map((pair) =>
       pair.match(/^\s*([A-Za-z]+)="([^"]*)"\s*$/)

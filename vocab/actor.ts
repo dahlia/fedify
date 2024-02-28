@@ -19,7 +19,7 @@ export type Actor = Application | Group | Organization | Person | Service;
  * @param object The object to check.
  * @returns `true` if the given object is an {@link Actor}.
  */
-export function isActor(object: Object | Link): object is Actor {
+export function isActor(object: unknown): object is Actor {
   return (
     object instanceof Application ||
     object instanceof Group ||
