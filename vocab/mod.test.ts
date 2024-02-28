@@ -148,6 +148,33 @@ Deno.test("Activity.getObjects()", async () => {
   assertEquals(objects[1].name, "Second object");
 });
 
+Deno.test("Activity.clone()", async () => {
+  const activity = new Activity({
+    actor: new Person({
+      name: "John Doe",
+    }),
+    object: new Object({
+      name: "Test",
+    }),
+    name: "Test",
+    summary: "Test",
+  });
+  const clone = activity.clone({
+    object: new Object({
+      name: "Modified",
+    }),
+    summary: "Modified",
+  });
+  assertEquals((await activity.getActor())?.name, "John Doe");
+  assertEquals((await clone.getActor())?.name, "John Doe");
+  assertEquals((await activity.getObject())?.name, "Test");
+  assertEquals((await clone.getObject())?.name, "Modified");
+  assertEquals(activity.name, "Test");
+  assertEquals(clone.name, "Test");
+  assertEquals(activity.summary, "Test");
+  assertEquals(clone.summary, "Modified");
+});
+
 Deno.test("Deno.inspect(Object)", () => {
   const obj = new Object({
     id: new URL("https://example.com/"),

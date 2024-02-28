@@ -12,11 +12,11 @@ function generateParameterType(
   if (property.functional || property.singularAccessor) {
     if (scalar) {
       code.push(`{
-        ${property.singularName}?: ${getTypeNames(range, types)} | null 
+        ${property.singularName}?: ${getTypeNames(range, types)} | null
       }`);
     } else {
       code.push(`{
-        ${property.singularName}?: ${getTypeNames(range, types)} | URL | null 
+        ${property.singularName}?: ${getTypeNames(range, types)} | URL | null
       }`);
     }
   }
@@ -60,7 +60,13 @@ export async function* generateConstructor(
   types: Record<string, TypeSchema>,
 ): AsyncIterable<string> {
   const type = types[typeUri];
-  yield `constructor(values: `;
+  yield `
+  /**
+   * Constructs a new instance of ${type.name} with the given values.
+   * @param values The values to initialize the instance with.
+   */
+  constructor(values:
+  `;
   for await (const code of generateParametersType(typeUri, types)) yield code;
   yield ") {\n";
   if (type.extends == null) {
@@ -69,12 +75,12 @@ export async function* generateConstructor(
     yield "super(values);";
   }
   for (const property of type.properties) {
+    const fieldName = await getFieldName(property.uri);
     if (property.functional || property.singularAccessor) {
       yield `
         if ("${property.singularName}" in values && \
             values.${property.singularName} != null) {
-          this.${await getFieldName(property.uri)} =
-            [values.${property.singularName}];
+          this.${fieldName} = [values.${property.singularName}];
         }
       `;
     }
@@ -82,11 +88,59 @@ export async function* generateConstructor(
       yield `
         if ("${property.pluralName}" in values && \
             values.${property.pluralName} != null) {
-          this.${await getFieldName(property.uri)} =
-            values.${property.pluralName};
+          this.${fieldName} = values.${property.pluralName};
         }
       `;
     }
   }
   yield "}\n";
+}
+
+export async function* generateCloner(
+  typeUri: string,
+  types: Record<string, TypeSchema>,
+): AsyncIterable<string> {
+  const type = types[typeUri];
+  yield `
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @returns The cloned instance.
+   */
+  clone(values:
+  `;
+  for await (const code of generateParametersType(typeUri, types)) yield code;
+  yield ` = {}): ${type.name} {\n`;
+  if (type.extends == null) {
+    yield `
+    // @ts-ignore
+    const clone: ${type.name} = new this.constructor(values);
+    `;
+  } else {
+    yield `const clone = super.clone(values) as unknown as ${type.name};`;
+  }
+  for (const property of type.properties) {
+    const fieldName = await getFieldName(property.uri);
+    yield `clone.${fieldName} = this.${fieldName};`;
+    if (property.functional || property.singularAccessor) {
+      yield `
+        if ("${property.singularName}" in values && \
+            values.${property.singularName} != null) {
+          clone.${fieldName} = [values.${property.singularName}];
+        }
+      `;
+    }
+    if (!property.functional) {
+      yield `
+        if ("${property.pluralName}" in values && \
+            values.${property.pluralName} != null) {
+          clone.${fieldName} = values.${property.pluralName};
+        }
+      `;
+    }
+  }
+  yield `
+    return clone;
+  }
+  `;
 }

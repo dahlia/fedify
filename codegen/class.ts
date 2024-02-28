@@ -1,5 +1,5 @@
 import { generateDecoder, generateEncoder } from "./codec.ts";
-import { generateConstructor } from "./constructor.ts";
+import { generateCloner, generateConstructor } from "./constructor.ts";
 import { generateFields } from "./field.ts";
 import { generateInspector } from "./inspector.ts";
 import { generateProperties } from "./property.ts";
@@ -50,6 +50,7 @@ async function* generateClass(
   }
   for await (const code of generateFields(typeUri, types)) yield code;
   for await (const code of generateConstructor(typeUri, types)) yield code;
+  for await (const code of generateCloner(typeUri, types)) yield code;
   for await (const code of generateProperties(typeUri, types)) yield code;
   for await (const code of generateEncoder(typeUri, types)) yield code;
   for await (const code of generateDecoder(typeUri, types)) yield code;
