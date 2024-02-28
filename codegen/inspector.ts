@@ -18,7 +18,7 @@ export async function* generateInspector(
         [Symbol.for("Deno.customInspect")]: (
           inspect: typeof Deno.inspect,
           options: Deno.InspectOptions,
-        ) => "URL " + inspect(this.id!.href),
+        ) => "URL " + inspect(this.id!.href, options),
       };
     }
     `;
@@ -37,7 +37,7 @@ export async function* generateInspector(
             [Symbol.for("Deno.customInspect")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ) => "URL " + inspect(v.href)
+            ) => "URL " + inspect(v.href, options)
           }
         : v);
       `;

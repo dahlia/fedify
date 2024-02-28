@@ -26,6 +26,7 @@ export async function* generateEncoder(
       ...options,
       documentLoader: options.documentLoader ?? fetchDocumentLoader,
     };
+    // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   `;
   if (type.extends == null) {
@@ -90,6 +91,7 @@ export async function* generateDecoder(
       documentLoader: options.documentLoader ?? fetchDocumentLoader,
     };
     const expanded = await jsonld.expand(json, options);
+    // deno-lint-ignore no-explicit-any
     const values = expanded[0] as (Record<string, any[]> & { "@id"?: string });
   `;
   const subtypes = getSubtypes(typeUri, types, true);

@@ -30,7 +30,7 @@ export function extractInboxes(
 ): Set<URL> {
   const inboxes = new Set<URL>();
   for (const recipient of recipients) {
-    let inbox = preferSharedInbox
+    const inbox = preferSharedInbox
       ? recipient.endpoints?.sharedInbox ?? recipient.inboxId
       : recipient.inboxId;
     if (inbox != null) inboxes.add(inbox);

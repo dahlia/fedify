@@ -68,6 +68,7 @@ export async function* generateClasses(
   runtimePath: string,
 ): AsyncIterable<string> {
   runtimePath = runtimePath.replace(/\/+$/, "");
+  yield "// deno-lint-ignore-file ban-unused-ignore\n";
   yield 'import jsonld from "npm:jsonld@8.3.2";';
   yield `import { LanguageTag, parseLanguageTag }
     from "npm:@phensley/language-tag@1.8.0";\n`;

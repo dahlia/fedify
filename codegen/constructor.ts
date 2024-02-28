@@ -123,7 +123,7 @@ export async function* generateCloner(
   yield ` = {}): ${type.name} {\n`;
   if (type.extends == null) {
     yield `
-    // @ts-ignore
+    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
     const clone: ${type.name} = new this.constructor({ id: values.id });
     `;
   } else {
