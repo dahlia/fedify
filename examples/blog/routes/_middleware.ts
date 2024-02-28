@@ -1,10 +1,9 @@
 import { FreshContext } from "$fresh/server.ts";
 import { federation } from "../federation/mod.ts";
-import { openKv } from "fedify/examples/blog/models/kv.ts";
 
 export async function handler(request: Request, context: FreshContext) {
   return await federation.handle(request, {
-    contextData: await openKv(),
+    contextData: undefined,
     onNotFound: context.next.bind(context),
     async onNotAcceptable(_request: Request) {
       const response = await context.next();

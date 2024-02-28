@@ -1,4 +1,4 @@
-import { Context } from "../federation/context.ts";
+import { RequestContext } from "../federation/context.ts";
 import {
   ActorDispatcher,
   ActorKeyPairDispatcher,
@@ -8,7 +8,7 @@ import { Link as LinkObject } from "../vocab/mod.ts";
 import { Link, ResourceDescriptor } from "./jrd.ts";
 
 export interface WebFingerHandlerParameters<TContextData> {
-  context: Context<TContextData>;
+  context: RequestContext<TContextData>;
   actorDispatcher?: ActorDispatcher<TContextData>;
   actorKeyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;

@@ -7,7 +7,7 @@ import {
   OutboxCursor,
   OutboxDispatcher,
 } from "./callback.ts";
-import { Context } from "./context.ts";
+import { RequestContext } from "./context.ts";
 import { verify } from "../httpsig/mod.ts";
 import { DocumentLoader } from "../runtime/docloader.ts";
 import { isActor } from "../vocab/actor.ts";
@@ -29,7 +29,7 @@ function acceptsJsonLd(request: Request): boolean {
 }
 
 export function getActorKey<TContextData>(
-  context: Context<TContextData>,
+  context: RequestContext<TContextData>,
   handle: string,
   keyPair?: CryptoKeyPair | null,
 ): CryptographicKey | null {
@@ -43,7 +43,7 @@ export function getActorKey<TContextData>(
 
 export interface ActorHandlerParameters<TContextData> {
   handle: string;
-  context: Context<TContextData>;
+  context: RequestContext<TContextData>;
   documentLoader: DocumentLoader;
   actorDispatcher?: ActorDispatcher<TContextData>;
   actorKeyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
@@ -94,7 +94,7 @@ export async function handleActor<TContextData>(
 
 export interface OutboxHandlerParameters<TContextData> {
   handle: string;
-  context: Context<TContextData>;
+  context: RequestContext<TContextData>;
   documentLoader: DocumentLoader;
   outboxDispatcher?: OutboxDispatcher<TContextData>;
   outboxCounter?: OutboxCounter<TContextData>;
@@ -207,7 +207,7 @@ export async function handleOutbox<TContextData>(
 
 export interface InboxHandlerParameters<TContextData> {
   handle: string;
-  context: Context<TContextData>;
+  context: RequestContext<TContextData>;
   actorDispatcher?: ActorDispatcher<TContextData>;
   actorKeyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
   inboxListeners: Map<

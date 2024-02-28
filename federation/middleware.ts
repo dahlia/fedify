@@ -1,8 +1,10 @@
+import { validateCryptoKey } from "../httpsig/key.ts";
 import {
   DocumentLoader,
   fetchDocumentLoader,
   kvCache,
 } from "../runtime/docloader.ts";
+import { Actor } from "../vocab/actor.ts";
 import { Activity } from "../vocab/mod.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import {
@@ -13,11 +15,11 @@ import {
   OutboxCursor,
   OutboxDispatcher,
 } from "./callback.ts";
-import { ContextImpl } from "./context.ts";
+import { Context, RequestContext } from "./context.ts";
 import { handleActor, handleInbox, handleOutbox } from "./handler.ts";
 import { OutboxMessage } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
-import { sendActivity } from "./send.ts";
+import { extractInboxes, sendActivity } from "./send.ts";
 
 /**
  * Parameters for initializing a {@link Federation} instance.
@@ -85,6 +87,107 @@ export class Federation<TContextData> {
     if (!successful) {
       throw new Error("Failed to send activity");
     }
+  }
+
+  /**
+   * Create a new context.
+   * @param baseUrl The base URL of the server.  The `pathname` remains root,
+   *                and the `search` and `hash` are stripped.
+   * @param contextData The context data to pass to the context.
+   * @returns The new context.
+   */
+  createContext(baseUrl: URL, contextData: TContextData): Context<TContextData>;
+
+  /**
+   * Create a new context for a request.
+   * @param request The request object.
+   * @param contextData The context data to pass to the context.
+   * @returns The new request context.
+   */
+  createContext(
+    request: Request,
+    contextData: TContextData,
+  ): RequestContext<TContextData>;
+
+  createContext(
+    urlOrRequest: Request | URL,
+    contextData: TContextData,
+  ): Context<TContextData> {
+    const request = urlOrRequest instanceof Request ? urlOrRequest : null;
+    const url = urlOrRequest instanceof URL
+      ? new URL(urlOrRequest)
+      : new URL(urlOrRequest.url);
+    if (request == null) {
+      url.pathname = "/";
+      url.hash = "";
+      url.search = "";
+    }
+    if (this.#treatHttps) url.protocol = "https:";
+    const context = {
+      data: contextData,
+      documentLoader: this.#documentLoader,
+      getActorUri: (handle: string): URL => {
+        const path = this.#router.build("actor", { handle });
+        if (path == null) {
+          throw new RouterError("No actor dispatcher registered.");
+        }
+        return new URL(path, url);
+      },
+      getOutboxUri: (handle: string): URL => {
+        const path = this.#router.build("outbox", { handle });
+        if (path == null) {
+          throw new RouterError("No outbox dispatcher registered.");
+        }
+        return new URL(path, url);
+      },
+      getInboxUri: (handle: string): URL => {
+        const path = this.#router.build("inbox", { handle });
+        if (path == null) {
+          throw new RouterError("No inbox path registered.");
+        }
+        return new URL(path, url);
+      },
+      sendActivity: async (
+        sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+        recipients: Actor | Actor[],
+        activity: Activity,
+        options: { preferSharedInbox?: boolean } = {},
+      ): Promise<void> => {
+        let senderPair: { keyId: URL; privateKey: CryptoKey };
+        if ("handle" in sender) {
+          if (this.#actorCallbacks?.keyPairDispatcher == null) {
+            throw new Error("No actor key pair dispatcher registered.");
+          }
+          let keyPair = this.#actorCallbacks?.keyPairDispatcher(
+            contextData,
+            sender.handle,
+          );
+          if (keyPair instanceof Promise) keyPair = await keyPair;
+          if (keyPair == null) {
+            throw new Error(`No key pair found for actor ${sender.handle}`);
+          }
+          senderPair = {
+            keyId: new URL(`${context.getActorUri(sender.handle)}#main-key`),
+            privateKey: keyPair.privateKey,
+          };
+        } else {
+          senderPair = sender;
+        }
+        return await this.sendActivity(
+          senderPair,
+          recipients,
+          activity,
+          options,
+        );
+      },
+    };
+    if (request == null) return context;
+    const reqCtx: RequestContext<TContextData> = {
+      ...context,
+      request,
+      url,
+    };
+    return reqCtx;
   }
 
   /**
@@ -197,6 +300,41 @@ export class Federation<TContextData> {
   }
 
   /**
+   * Sends an activity to recipients' inboxes.
+   * @param sender The sender's key pair.
+   * @param recipients The recipients of the activity.
+   * @param activity The activity to send.
+   * @param options Options for sending the activity.
+   */
+  async sendActivity(
+    { keyId, privateKey }: { keyId: URL; privateKey: CryptoKey },
+    recipients: Actor | Actor[],
+    activity: Activity,
+    { preferSharedInbox }: { preferSharedInbox?: boolean } = {},
+  ): Promise<void> {
+    if (activity.id == null) {
+      activity = activity.clone({
+        id: new URL(`urn:uuid:${crypto.randomUUID()}`),
+      });
+    }
+    validateCryptoKey(privateKey, "private");
+    const inboxes = extractInboxes({
+      recipients: Array.isArray(recipients) ? recipients : [recipients],
+      preferSharedInbox,
+    });
+    for (const inbox of inboxes) {
+      const message: OutboxMessage = {
+        type: "outbox",
+        keyId: keyId.href,
+        privateKey: await crypto.subtle.exportKey("jwk", privateKey),
+        activity: await activity.toJsonLd({ expand: true }),
+        inbox: inbox.href,
+      };
+      this.#kv.enqueue(message);
+    }
+  }
+
+  /**
    * Handles a request related to federation.
    * @param request The request object.
    * @param parameters The parameters for handling the request.
@@ -216,15 +354,7 @@ export class Federation<TContextData> {
       const response = onNotFound(request);
       return response instanceof Promise ? await response : response;
     }
-    const context = new ContextImpl(
-      this.#kv,
-      this.#router,
-      request,
-      contextData,
-      this.#documentLoader,
-      this.#actorCallbacks?.keyPairDispatcher,
-      this.#treatHttps,
-    );
+    const context = this.createContext(request, contextData);
     switch (route.name) {
       case "webfinger":
         return await handleWebFinger(request, {

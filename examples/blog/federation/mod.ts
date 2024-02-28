@@ -15,7 +15,7 @@ import { countPosts, getPosts } from "../models/post.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
-export const federation = new Federation<Deno.Kv>({
+export const federation = new Federation<void>({
   kv: await openKv(),
   treatHttps: true,
 });
