@@ -1,6 +1,6 @@
 import { DocumentLoader } from "../runtime/docloader.ts";
 import { Actor } from "../vocab/actor.ts";
-import { Activity } from "../vocab/mod.ts";
+import { Activity, CryptographicKey } from "../vocab/mod.ts";
 
 /**
  * A context.
@@ -36,6 +36,13 @@ export interface Context<TContextData> {
    * @returns The actor's inbox URI.
    */
   getInboxUri(handle: string): URL;
+
+  /**
+   * Gets a public {@link CryptographicKey} for an actor, if any exists.
+   * @param handle The actor's handle.
+   * @returns The actor's public key, or `null` if the actor has no key.
+   */
+  getActorKey(handle: string): Promise<CryptographicKey | null>;
 
   /**
    * Sends an activity to recipients' inboxes.

@@ -5,7 +5,7 @@ import {
   kvCache,
 } from "../runtime/docloader.ts";
 import { Actor } from "../vocab/actor.ts";
-import { Activity } from "../vocab/mod.ts";
+import { Activity, CryptographicKey } from "../vocab/mod.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import {
   ActorDispatcher,
@@ -146,6 +146,19 @@ export class Federation<TContextData> {
           throw new RouterError("No inbox path registered.");
         }
         return new URL(path, url);
+      },
+      getActorKey: async (handle: string): Promise<CryptographicKey | null> => {
+        let keyPair = this.#actorCallbacks?.keyPairDispatcher?.(
+          contextData,
+          handle,
+        );
+        if (keyPair instanceof Promise) keyPair = await keyPair;
+        if (keyPair == null) return null;
+        return new CryptographicKey({
+          id: new URL(`${context.getActorUri(handle)}#main-key`),
+          owner: context.getActorUri(handle),
+          publicKey: keyPair.publicKey,
+        });
       },
       sendActivity: async (
         sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
@@ -368,7 +381,6 @@ export class Federation<TContextData> {
           context,
           documentLoader: this.#documentLoader,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
-          actorKeyPairDispatcher: this.#actorCallbacks?.keyPairDispatcher,
           onNotFound,
           onNotAcceptable,
         });
@@ -390,7 +402,6 @@ export class Federation<TContextData> {
           context,
           documentLoader: this.#documentLoader,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
-          actorKeyPairDispatcher: this.#actorCallbacks?.keyPairDispatcher,
           inboxListeners: this.#inboxListeners,
           inboxErrorHandler: this.#inboxErrorHandler,
           onNotFound,

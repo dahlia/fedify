@@ -1,7 +1,6 @@
 import { accepts } from "https://deno.land/std@0.217.0/http/mod.ts";
 import {
   ActorDispatcher,
-  ActorKeyPairDispatcher,
   InboxListener,
   OutboxCounter,
   OutboxCursor,
@@ -16,7 +15,6 @@ import {
   OrderedCollection,
   OrderedCollectionPage,
 } from "../vocab/mod.ts";
-import { CryptographicKey } from "../vocab/mod.ts";
 
 function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);
@@ -28,25 +26,11 @@ function acceptsJsonLd(request: Request): boolean {
     types.includes("application/json");
 }
 
-export function getActorKey<TContextData>(
-  context: RequestContext<TContextData>,
-  handle: string,
-  keyPair?: CryptoKeyPair | null,
-): CryptographicKey | null {
-  if (keyPair == null) return null;
-  return new CryptographicKey({
-    id: new URL(`${context.getActorUri(handle)}#main-key`),
-    owner: context.getActorUri(handle),
-    publicKey: keyPair.publicKey,
-  });
-}
-
 export interface ActorHandlerParameters<TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
   documentLoader: DocumentLoader;
   actorDispatcher?: ActorDispatcher<TContextData>;
-  actorKeyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
@@ -58,7 +42,6 @@ export async function handleActor<TContextData>(
     context,
     documentLoader,
     actorDispatcher,
-    actorKeyPairDispatcher,
     onNotFound,
     onNotAcceptable,
   }: ActorHandlerParameters<TContextData>,
@@ -71,12 +54,7 @@ export async function handleActor<TContextData>(
     const response = onNotAcceptable(request);
     return response instanceof Promise ? await response : response;
   }
-  const keyPair = actorKeyPairDispatcher?.(context.data, handle);
-  const key = getActorKey(
-    context,
-    handle,
-    keyPair instanceof Promise ? await keyPair : keyPair,
-  );
+  const key = await context.getActorKey(handle);
   const actor = await actorDispatcher(context, handle, key);
   if (actor == null) {
     const response = onNotFound(request);
@@ -209,7 +187,6 @@ export interface InboxHandlerParameters<TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
   actorDispatcher?: ActorDispatcher<TContextData>;
-  actorKeyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
   inboxListeners: Map<
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
@@ -225,7 +202,6 @@ export async function handleInbox<TContextData>(
     handle,
     context,
     actorDispatcher,
-    actorKeyPairDispatcher,
     inboxListeners,
     inboxErrorHandler,
     documentLoader,
@@ -236,12 +212,7 @@ export async function handleInbox<TContextData>(
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
   } else {
-    const keyPair = actorKeyPairDispatcher?.(context.data, handle);
-    const key = getActorKey(
-      context,
-      handle,
-      keyPair instanceof Promise ? await keyPair : keyPair,
-    );
+    const key = await context.getActorKey(handle);
     const promise = actorDispatcher(context, handle, key);
     const actor = promise instanceof Promise ? await promise : promise;
     if (actor == null) {
