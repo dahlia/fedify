@@ -1,4 +1,5 @@
 import { Actor } from "../vocab/actor.ts";
+import { CryptographicKey } from "../vocab/mod.ts";
 import { Activity } from "../vocab/mod.ts";
 import { Page } from "./collection.ts";
 import { Context } from "./context.ts";
@@ -9,7 +10,16 @@ import { Context } from "./context.ts";
 export type ActorDispatcher<TContextData> = (
   context: Context<TContextData>,
   handle: string,
+  key: CryptographicKey | null,
 ) => Actor | null | Promise<Actor | null>;
+
+/**
+ * A callback that dispatches a key pair for an actor.
+ */
+export type ActorKeyPairDispatcher<TContextData> = (
+  contextData: TContextData,
+  handle: string,
+) => CryptoKeyPair | null | Promise<CryptoKeyPair | null>;
 
 /**
  * A callback that dispatches an outbox.

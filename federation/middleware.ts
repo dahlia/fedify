@@ -7,12 +7,13 @@ import { Activity } from "../vocab/mod.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import {
   ActorDispatcher,
+  ActorKeyPairDispatcher,
   InboxListener,
   OutboxCounter,
   OutboxCursor,
   OutboxDispatcher,
 } from "./callback.ts";
-import { Context } from "./context.ts";
+import { ContextImpl } from "./context.ts";
 import { handleActor, handleInbox, handleOutbox } from "./handler.ts";
 import { OutboxMessage } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
@@ -37,13 +38,8 @@ export interface FederationParameters {
 export class Federation<TContextData> {
   #kv: Deno.Kv;
   #router: Router;
-  #actorDispatcher?: ActorDispatcher<TContextData>;
-  #outboxCallbacks?: {
-    dispatcher: OutboxDispatcher<TContextData>;
-    counter?: OutboxCounter<TContextData>;
-    firstCursor?: OutboxCursor<TContextData>;
-    lastCursor?: OutboxCursor<TContextData>;
-  };
+  #actorCallbacks?: ActorCallbacks<TContextData>;
+  #outboxCallbacks?: OutboxCallbacks<TContextData>;
   #inboxListeners: Map<
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
@@ -103,7 +99,7 @@ export class Federation<TContextData> {
   setActorDispatcher(
     path: string,
     dispatcher: ActorDispatcher<TContextData>,
-  ): void {
+  ): ActorCallbackSetters<TContextData> {
     if (this.#router.has("actor")) {
       throw new RouterError("Actor dispatcher already set.");
     }
@@ -113,7 +109,17 @@ export class Federation<TContextData> {
         "Path for actor dispatcher must have one variable: {handle}",
       );
     }
-    this.#actorDispatcher = dispatcher;
+    const callbacks: ActorCallbacks<TContextData> = { dispatcher };
+    this.#actorCallbacks = callbacks;
+    const setters: ActorCallbackSetters<TContextData> = {
+      setKeyPairDispatcher: (
+        dispatcher: ActorKeyPairDispatcher<TContextData>,
+      ) => {
+        callbacks.keyPairDispatcher = dispatcher;
+        return setters;
+      },
+    };
+    return setters;
   }
 
   /**
@@ -138,12 +144,7 @@ export class Federation<TContextData> {
         "Path for outbox dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: {
-      dispatcher: OutboxDispatcher<TContextData>;
-      counter?: OutboxCounter<TContextData>;
-      firstCursor?: OutboxCursor<TContextData>;
-      lastCursor?: OutboxCursor<TContextData>;
-    } = { dispatcher };
+    const callbacks: OutboxCallbacks<TContextData> = { dispatcher };
     this.#outboxCallbacks = callbacks;
     const setters: OutboxCallbackSetters<TContextData> = {
       setCounter(counter: OutboxCounter<TContextData>) {
@@ -215,18 +216,20 @@ export class Federation<TContextData> {
       const response = onNotFound(request);
       return response instanceof Promise ? await response : response;
     }
-    const context = new Context(
+    const context = new ContextImpl(
       this.#kv,
       this.#router,
       request,
       contextData,
+      this.#documentLoader,
+      this.#actorCallbacks?.keyPairDispatcher,
       this.#treatHttps,
     );
     switch (route.name) {
       case "webfinger":
         return await handleWebFinger(request, {
           context,
-          actorDispatcher: this.#actorDispatcher,
+          actorDispatcher: this.#actorCallbacks?.dispatcher,
           onNotFound,
         });
       case "actor":
@@ -234,7 +237,8 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           documentLoader: this.#documentLoader,
-          actorDispatcher: this.#actorDispatcher,
+          actorDispatcher: this.#actorCallbacks?.dispatcher,
+          actorKeyPairDispatcher: this.#actorCallbacks?.keyPairDispatcher,
           onNotFound,
           onNotAcceptable,
         });
@@ -255,7 +259,8 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           documentLoader: this.#documentLoader,
-          actorDispatcher: this.#actorDispatcher,
+          actorDispatcher: this.#actorCallbacks?.dispatcher,
+          actorKeyPairDispatcher: this.#actorCallbacks?.keyPairDispatcher,
           inboxListeners: this.#inboxListeners,
           inboxErrorHandler: this.#inboxErrorHandler,
           onNotFound,
@@ -274,6 +279,45 @@ export interface FederationHandlerParameters<TContextData> {
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
 
+interface ActorCallbacks<TContextData> {
+  dispatcher?: ActorDispatcher<TContextData>;
+  keyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
+}
+
+/**
+ * Additional settings for the actor dispatcher.
+ *
+ * ``` typescript
+ * const federation = new Federation<void>({ ... });
+ * federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+ *   ...
+ * })
+ *   .setKeyPairDispatcher(async (ctxData, handle) => {
+ *     ...
+ *   });
+ * ```
+ */
+export interface ActorCallbackSetters<TContextData> {
+  /**
+   * Sets the key pair dispatcher for actors.
+   * @param dispatcher A callback that returns the key pair for an actor.
+   * @returns The setters object so that settings can be chained.
+   */
+  setKeyPairDispatcher(
+    dispatcher: ActorKeyPairDispatcher<TContextData>,
+  ): ActorCallbackSetters<TContextData>;
+}
+
+interface OutboxCallbacks<TContextData> {
+  dispatcher: OutboxDispatcher<TContextData>;
+  counter?: OutboxCounter<TContextData>;
+  firstCursor?: OutboxCursor<TContextData>;
+  lastCursor?: OutboxCursor<TContextData>;
+}
+
+/**
+ * Additional settings for the outbox dispatcher.
+ */
 export interface OutboxCallbackSetters<TContextData> {
   setCounter(
     counter: OutboxCounter<TContextData>,
@@ -288,6 +332,9 @@ export interface OutboxCallbackSetters<TContextData> {
   ): OutboxCallbackSetters<TContextData>;
 }
 
+/**
+ * Registry for inbox listeners for different activity types.
+ */
 export interface InboxListenerSetter<TContextData> {
   on<TActivity extends Activity>(
     // deno-lint-ignore no-explicit-any

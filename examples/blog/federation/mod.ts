@@ -4,7 +4,6 @@ import {
   Accept,
   Activity,
   Create,
-  CryptographicKey,
   Follow,
   Note,
   Person,
@@ -25,7 +24,7 @@ export const federation = new Federation<Deno.Kv>({
 // `Actor` object (`Person` in this case) for a given actor URI.
 // The actor dispatch is not only used for the actor URI, but also for
 // the WebFinger resource:
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
   const blog = await getBlog();
   if (blog == null) return null;
   else if (blog.handle !== handle) return null;
@@ -37,13 +36,18 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     url: new URL("/", ctx.request.url),
     outbox: ctx.getOutboxUri(handle),
     inbox: ctx.getInboxUri(handle),
-    publicKey: new CryptographicKey({
-      id: new URL(`${ctx.getActorUri(handle)}#main-key`),
-      owner: ctx.getActorUri(handle),
-      publicKey: blog.publicKey,
-    }),
+    publicKey: key,
   });
-});
+})
+  .setKeyPairDispatcher(async (_ctxData, handle) => {
+    const blog = await getBlog();
+    if (blog == null) return null;
+    else if (blog.handle !== handle) return null;
+    return {
+      publicKey: blog.publicKey,
+      privateKey: blog.privateKey,
+    };
+  });
 
 // Registers the outbox dispatcher, which is responsible for listing
 // activities in the outbox:
@@ -107,7 +111,7 @@ federation.setInboxListeners("/users/{handle}/inbox")
     const recipient = await follow.getActor(ctx);
     if (!isActor(recipient)) return;
     await ctx.sendActivity(
-      { keyId: new URL(`${actorUri}#main-key`), privateKey: blog.privateKey },
+      { handle: blog.handle },
       recipient,
       new Accept({
         actor: actorUri,
@@ -115,7 +119,7 @@ federation.setInboxListeners("/users/{handle}/inbox")
       }),
     );
   })
-  .on(Undo, async (ctx, undo) => {
+  .on(Undo, (_ctx, undo) => {
     console.log({ undo });
   })
   .onError((e) => console.error(e));

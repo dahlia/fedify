@@ -1,11 +1,16 @@
 import { Context } from "../federation/context.ts";
-import { ActorDispatcher } from "../federation/callback.ts";
+import {
+  ActorDispatcher,
+  ActorKeyPairDispatcher,
+} from "../federation/callback.ts";
+import { getActorKey } from "../federation/handler.ts";
 import { Link as LinkObject } from "../vocab/mod.ts";
 import { Link, ResourceDescriptor } from "./jrd.ts";
 
 export interface WebFingerHandlerParameters<TContextData> {
   context: Context<TContextData>;
   actorDispatcher?: ActorDispatcher<TContextData>;
+  actorKeyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
 }
 
@@ -14,6 +19,7 @@ export async function handleWebFinger<TContextData>(
   {
     context,
     actorDispatcher,
+    actorKeyPairDispatcher,
     onNotFound,
   }: WebFingerHandlerParameters<TContextData>,
 ): Promise<Response> {
@@ -31,7 +37,13 @@ export async function handleWebFinger<TContextData>(
     return response instanceof Promise ? await response : response;
   }
   const handle = match[1];
-  const actor = await actorDispatcher(context, handle);
+  const keyPair = actorKeyPairDispatcher?.(context.data, handle);
+  const key = getActorKey(
+    context,
+    handle,
+    keyPair instanceof Promise ? await keyPair : keyPair,
+  );
+  const actor = await actorDispatcher(context, handle, key);
   if (actor == null) {
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
