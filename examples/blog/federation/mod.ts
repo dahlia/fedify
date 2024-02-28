@@ -1,5 +1,4 @@
 import { Federation } from "fedify/federation/middleware.ts";
-import { fetchDocumentLoader, kvCache } from "fedify/runtime/docloader.ts";
 import { isActor } from "fedify/vocab/actor.ts";
 import {
   Accept,
@@ -18,11 +17,8 @@ import { countPosts, getPosts } from "../models/post.ts";
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
 export const federation = new Federation<Deno.Kv>({
+  kv: await openKv(),
   treatHttps: true,
-  documentLoader: kvCache({
-    loader: fetchDocumentLoader,
-    kv: await openKv(),
-  }),
 });
 
 // Registers the actor dispatcher, which is responsible for creating a

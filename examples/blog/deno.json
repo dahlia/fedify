@@ -5,7 +5,7 @@
     "check": "deno task fedify-codegen && deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
     "cli": "deno task fedify-codegen && echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
     "manifest": "deno task fedify-codegen && deno task cli manifest $(pwd)",
-    "start": "deno task fedify-codegen && deno run -A --watch=static/,routes/ --unstable-temporal dev.ts",
+    "start": "deno task fedify-codegen && deno run -A --watch=static/,routes/ --unstable-temporal --unstable-kv dev.ts",
     "build": "deno task fedify-codegen && deno run -A dev.ts build",
     "preview": "deno task fedify-codegen && deno run -A main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update ."

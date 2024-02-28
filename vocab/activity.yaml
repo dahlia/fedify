@@ -9,7 +9,9 @@ description: |
   The {@link Activity} type itself serves as an abstract base type for all types
   of activities.  It is important to note that the {@link Activity} type itself
   does not carry any specific semantics about the kind of action being taken.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/v1"
 
 properties:
 - pluralName: actors

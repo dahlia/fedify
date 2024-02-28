@@ -1,5 +1,8 @@
-import { DocumentLoader, fetchDocumentLoader } from "../runtime/docloader.ts";
-import { Actor } from "../vocab/actor.ts";
+import {
+  DocumentLoader,
+  fetchDocumentLoader,
+  kvCache,
+} from "../runtime/docloader.ts";
 import { Activity } from "../vocab/mod.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import {
@@ -11,12 +14,15 @@ import {
 } from "./callback.ts";
 import { Context } from "./context.ts";
 import { handleActor, handleInbox, handleOutbox } from "./handler.ts";
+import { OutboxMessage } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
+import { sendActivity } from "./send.ts";
 
 /**
  * Parameters for initializing a {@link Federation} instance.
  */
 export interface FederationParameters {
+  kv: Deno.Kv;
   documentLoader?: DocumentLoader;
   treatHttps?: boolean;
 }
@@ -29,6 +35,7 @@ export interface FederationParameters {
  * web framework's router; see {@link Federation.handle}.
  */
 export class Federation<TContextData> {
+  #kv: Deno.Kv;
   #router: Router;
   #actorDispatcher?: ActorDispatcher<TContextData>;
   #outboxCallbacks?: {
@@ -47,13 +54,41 @@ export class Federation<TContextData> {
 
   /**
    * Create a new {@link Federation} instance.
+   * @param parameters Parameters for initializing the instance.
    */
-  constructor({ documentLoader, treatHttps }: FederationParameters = {}) {
+  constructor({ kv, documentLoader, treatHttps }: FederationParameters) {
+    this.#kv = kv;
     this.#router = new Router();
     this.#router.add("/.well-known/webfinger", "webfinger");
     this.#inboxListeners = new Map();
-    this.#documentLoader = documentLoader ?? fetchDocumentLoader;
+    this.#documentLoader = documentLoader ?? kvCache({
+      loader: fetchDocumentLoader,
+      kv: kv,
+    });
     this.#treatHttps = treatHttps ?? false;
+
+    kv.listenQueue(this.#listenQueue.bind(this));
+  }
+
+  async #listenQueue(message: OutboxMessage): Promise<void> {
+    const successful = await sendActivity({
+      keyId: new URL(message.keyId),
+      privateKey: await crypto.subtle.importKey(
+        "jwk",
+        message.privateKey,
+        { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+        true,
+        ["sign"],
+      ),
+      activity: await Activity.fromJsonLd(message.activity, {
+        documentLoader: this.#documentLoader,
+      }),
+      inbox: new URL(message.inbox),
+      documentLoader: this.#documentLoader,
+    });
+    if (!successful) {
+      throw new Error("Failed to send activity");
+    }
   }
 
   /**
@@ -181,8 +216,8 @@ export class Federation<TContextData> {
       return response instanceof Promise ? await response : response;
     }
     const context = new Context(
+      this.#kv,
       this.#router,
-      this.#documentLoader,
       request,
       contextData,
       this.#treatHttps,

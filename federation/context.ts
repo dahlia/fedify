@@ -1,7 +1,7 @@
 import { validateCryptoKey } from "../httpsig/key.ts";
-import { DocumentLoader } from "../runtime/docloader.ts";
 import { Actor } from "../vocab/actor.ts";
 import { Activity } from "../vocab/mod.ts";
+import { OutboxMessage } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
 import { extractInboxes, sendActivity } from "./send.ts";
 
@@ -9,12 +9,8 @@ import { extractInboxes, sendActivity } from "./send.ts";
  * A context for a request.
  */
 export class Context<TContextData> {
+  #kv: Deno.Kv;
   #router: Router;
-
-  /**
-   * The document loader used for loading remote JSON-LD documents.
-   */
-  readonly documentLoader: DocumentLoader;
 
   /**
    * The request object.
@@ -33,21 +29,21 @@ export class Context<TContextData> {
 
   /**
    * Create a new context.
+   * @param kv The Deno KV object.
    * @param router The router used for the request.
-   * @param documentLoader: The document loader used for JSON-LD context retrieval.
    * @param request The request object.
    * @param data The user-defined data associated with the context.
    * @param treatHttps Whether to treat the request as HTTPS even if it's not.
    */
   constructor(
+    kv: Deno.Kv,
     router: Router,
-    documentLoader: DocumentLoader,
     request: Request,
     data: TContextData,
     treatHttps = false,
   ) {
+    this.#kv = kv;
     this.#router = router;
-    this.documentLoader = documentLoader;
     this.request = request;
     this.data = data;
     this.url = new URL(request.url);
@@ -106,6 +102,7 @@ export class Context<TContextData> {
     activity: Activity,
     { preferSharedInbox }: { preferSharedInbox?: boolean } = {},
   ): Promise<void> {
+    // TODO: Give an id to the activity if it doesn't have one.
     const { keyId, privateKey } = sender;
     validateCryptoKey(privateKey, "private");
     const inboxes = extractInboxes({
@@ -113,13 +110,14 @@ export class Context<TContextData> {
       preferSharedInbox,
     });
     for (const inbox of inboxes) {
-      const successful = await sendActivity({
-        keyId,
-        privateKey,
-        activity,
-        inbox,
-        documentLoader: this.documentLoader,
-      });
+      const message: OutboxMessage = {
+        type: "outbox",
+        keyId: keyId.href,
+        privateKey: await crypto.subtle.exportKey("jwk", privateKey),
+        activity: await activity.toJsonLd({ expand: true }),
+        inbox: inbox.href,
+      };
+      this.#kv.enqueue(message);
     }
   }
 }
