@@ -186,6 +186,8 @@ export async function handleOutbox<TContextData>(
 export interface InboxHandlerParameters<TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
+  kv: Deno.Kv;
+  kvPrefix: Deno.KvKey;
   actorDispatcher?: ActorDispatcher<TContextData>;
   inboxListeners: Map<
     new (...args: unknown[]) => Activity,
@@ -201,6 +203,8 @@ export async function handleInbox<TContextData>(
   {
     handle,
     context,
+    kv,
+    kvPrefix,
     actorDispatcher,
     inboxListeners,
     inboxErrorHandler,
@@ -250,6 +254,19 @@ export async function handleInbox<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
+  const cacheKey = activity.id == null ? null : [...kvPrefix, activity.id.href];
+  if (cacheKey != null) {
+    const cached = await kv.get(cacheKey);
+    if (cached != null && cached.value === true) {
+      return new Response(
+        `Activity <${activity.id}> has already been processed.`,
+        {
+          status: 202,
+          headers: { "Content-Type": "text/plain; charset=utf-8" },
+        },
+      );
+    }
+  }
   if (activity.actorId == null) {
     const response = new Response("Missing actor.", {
       status: 400,
@@ -281,6 +298,9 @@ export async function handleInbox<TContextData>(
   const listener = inboxListeners.get(cls)!;
   const promise = listener(context, activity);
   if (promise instanceof Promise) await promise;
+  if (cacheKey != null) {
+    await kv.set(cacheKey, true, { expireIn: 1000 * 60 * 60 * 24 });
+  }
   return new Response("", {
     status: 202,
     headers: { "Content-Type": "text/plain; charset=utf-8" },

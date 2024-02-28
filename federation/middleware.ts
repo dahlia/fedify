@@ -26,8 +26,25 @@ import { extractInboxes, sendActivity } from "./send.ts";
  */
 export interface FederationParameters {
   kv: Deno.Kv;
+  kvPrefixes?: Partial<FederationKvPrefixes>;
   documentLoader?: DocumentLoader;
   treatHttps?: boolean;
+}
+
+/**
+ * Prefixes for namespacing keys in the Deno KV store.
+ */
+export interface FederationKvPrefixes {
+  /**
+   * The key prefix used for storing whether activities have already been
+   * processed or not.
+   */
+  activityIdempotence: Deno.KvKey;
+
+  /**
+   * The key prefix used for storing remote JSON-LD documents.
+   */
+  remoteDocument: Deno.KvKey;
 }
 
 /**
@@ -39,6 +56,7 @@ export interface FederationParameters {
  */
 export class Federation<TContextData> {
   #kv: Deno.Kv;
+  #kvPrefixes: FederationKvPrefixes;
   #router: Router;
   #actorCallbacks?: ActorCallbacks<TContextData>;
   #outboxCallbacks?: OutboxCallbacks<TContextData>;
@@ -54,14 +72,24 @@ export class Federation<TContextData> {
    * Create a new {@link Federation} instance.
    * @param parameters Parameters for initializing the instance.
    */
-  constructor({ kv, documentLoader, treatHttps }: FederationParameters) {
+  constructor(
+    { kv, kvPrefixes, documentLoader, treatHttps }: FederationParameters,
+  ) {
     this.#kv = kv;
+    this.#kvPrefixes = {
+      ...({
+        activityIdempotence: ["_fedify", "activityIdempotence"],
+        remoteDocument: ["_fedify", "remoteDocument"],
+      } satisfies FederationKvPrefixes),
+      ...(kvPrefixes ?? {}),
+    };
     this.#router = new Router();
     this.#router.add("/.well-known/webfinger", "webfinger");
     this.#inboxListeners = new Map();
     this.#documentLoader = documentLoader ?? kvCache({
       loader: fetchDocumentLoader,
       kv: kv,
+      prefix: this.#kvPrefixes.remoteDocument,
     });
     this.#treatHttps = treatHttps ?? false;
 
@@ -400,6 +428,8 @@ export class Federation<TContextData> {
         return await handleInbox(request, {
           handle: route.values.handle,
           context,
+          kv: this.#kv,
+          kvPrefix: this.#kvPrefixes.activityIdempotence,
           documentLoader: this.#documentLoader,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
           inboxListeners: this.#inboxListeners,
