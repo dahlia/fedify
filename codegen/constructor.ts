@@ -11,48 +11,51 @@ function generateParameterType(
   const code: string[] = [];
   if (property.functional || property.singularAccessor) {
     if (scalar) {
-      code.push(`{
-        ${property.singularName}?: ${getTypeNames(range, types)} | null
-      }`);
+      code.push(
+        `${property.singularName}?: ${getTypeNames(range, types)} | null;`,
+      );
     } else {
-      code.push(`{
-        ${property.singularName}?: ${getTypeNames(range, types)} | URL | null
-      }`);
+      code.push(
+        `${property.singularName}?: ${
+          getTypeNames(range, types)
+        } | URL | null;`,
+      );
     }
   }
   if (!property.functional) {
     if (scalar) {
-      code.push(`{
-        ${property.singularName}?: undefined;
-        ${property.pluralName}?: ${getTypeNames(range, types, true)}[]
-      }`);
+      code.push(
+        `${property.pluralName}?: ${getTypeNames(range, types, true)}[];`,
+      );
     } else {
-      code.push(`{
-        ${property.singularName}?: undefined;
-        ${property.pluralName}?: (${getTypeNames(range, types)} | URL)[]
-      }`);
+      code.push(
+        `${property.pluralName}?: (${getTypeNames(range, types)} | URL)[];`,
+      );
     }
   }
-  return code.join(" | ");
+  return code.join("\n");
 }
 
 async function* generateParametersType(
   typeUri: string,
   types: Record<string, TypeSchema>,
+  parentheses = true,
 ): AsyncIterable<string> {
   const type = types[typeUri];
+  if (parentheses) yield "{\n";
   if (type.extends == null) {
-    yield `{ id?: URL | null }`;
+    yield `id?: URL | null;\n`;
   } else {
-    for await (const code of generateParametersType(type.extends, types)) {
+    for await (
+      const code of generateParametersType(type.extends, types, false)
+    ) {
       yield code;
     }
   }
   for (const property of type.properties) {
-    yield " & (";
     yield generateParameterType(property, types);
-    yield ")";
   }
+  if (parentheses) yield "}\n";
 }
 
 export async function* generateConstructor(
@@ -88,6 +91,13 @@ export async function* generateConstructor(
       yield `
         if ("${property.pluralName}" in values && \
             values.${property.pluralName} != null) {
+          if ("${property.singularName}" in values &&
+              values.${property.singularName} != null) {
+            throw new TypeError(
+              "Cannot initialize both ${property.singularName} and " +
+                "${property.pluralName} at the same time.",
+            );
+          }
           this.${fieldName} = values.${property.pluralName};
         }
       `;
@@ -114,7 +124,7 @@ export async function* generateCloner(
   if (type.extends == null) {
     yield `
     // @ts-ignore
-    const clone: ${type.name} = new this.constructor(values);
+    const clone: ${type.name} = new this.constructor({ id: values.id });
     `;
   } else {
     yield `const clone = super.clone(values) as unknown as ${type.name};`;
@@ -134,6 +144,13 @@ export async function* generateCloner(
       yield `
         if ("${property.pluralName}" in values && \
             values.${property.pluralName} != null) {
+          if ("${property.singularName}" in values &&
+              values.${property.singularName} != null) {
+            throw new TypeError(
+              "Cannot update both ${property.singularName} and " +
+                "${property.pluralName} at the same time.",
+            );
+          }
           clone.${fieldName} = values.${property.pluralName};
         }
       `;

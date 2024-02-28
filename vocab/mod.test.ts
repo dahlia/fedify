@@ -2,6 +2,7 @@ import {
   assertEquals,
   assertInstanceOf,
   assertNotEquals,
+  assertThrows,
 } from "https://deno.land/std@0.217.0/assert/mod.ts";
 import { toArray } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
 import { LanguageString } from "../runtime/langstr.ts";
@@ -15,6 +16,25 @@ import {
   Object,
   Person,
 } from "./mod.ts";
+
+Deno.test("new Object()", () => {
+  const obj = new Object({
+    name: "Test",
+    contents: [
+      new LanguageString("Hello", "en"),
+      new LanguageString("你好", "zh"),
+    ],
+  });
+  assertEquals(obj.name, "Test");
+  assertEquals(obj.contents[0], new LanguageString("Hello", "en"));
+  assertEquals(obj.contents[1], new LanguageString("你好", "zh"));
+
+  assertThrows(
+    () => new Object({ name: "singular", names: ["plural"] }),
+    TypeError,
+    "Cannot initialize both name and names at the same time.",
+  );
+});
 
 Deno.test("Object.fromJsonLd()", async () => {
   const obj = await Object.fromJsonLd({
@@ -173,6 +193,12 @@ Deno.test("Activity.clone()", async () => {
   assertEquals(clone.name, "Test");
   assertEquals(activity.summary, "Test");
   assertEquals(clone.summary, "Modified");
+
+  assertThrows(
+    () => activity.clone({ summary: "singular", summaries: ["plural"] }),
+    TypeError,
+    "Cannot update both summary and summaries at the same time.",
+  );
 });
 
 Deno.test("Deno.inspect(Object)", () => {
