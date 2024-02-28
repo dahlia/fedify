@@ -102,7 +102,11 @@ export class Context<TContextData> {
     activity: Activity,
     { preferSharedInbox }: { preferSharedInbox?: boolean } = {},
   ): Promise<void> {
-    // TODO: Give an id to the activity if it doesn't have one.
+    if (activity.id == null) {
+      activity = activity.clone({
+        id: new URL(`urn:uuid:${crypto.randomUUID()}`),
+      });
+    }
     const { keyId, privateKey } = sender;
     validateCryptoKey(privateKey, "private");
     const inboxes = extractInboxes({
