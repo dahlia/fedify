@@ -29,6 +29,7 @@ export interface FederationParameters {
   kvPrefixes?: Partial<FederationKvPrefixes>;
   documentLoader?: DocumentLoader;
   treatHttps?: boolean;
+  backoffSchedule?: Temporal.Duration[];
 }
 
 /**
@@ -67,13 +68,20 @@ export class Federation<TContextData> {
   #inboxErrorHandler?: (error: Error) => void | Promise<void>;
   #documentLoader: DocumentLoader;
   #treatHttps: boolean;
+  #backoffSchedule: number[];
 
   /**
    * Create a new {@link Federation} instance.
    * @param parameters Parameters for initializing the instance.
    */
   constructor(
-    { kv, kvPrefixes, documentLoader, treatHttps }: FederationParameters,
+    {
+      kv,
+      kvPrefixes,
+      documentLoader,
+      treatHttps,
+      backoffSchedule,
+    }: FederationParameters,
   ) {
     this.#kv = kv;
     this.#kvPrefixes = {
@@ -92,6 +100,27 @@ export class Federation<TContextData> {
       prefix: this.#kvPrefixes.remoteDocument,
     });
     this.#treatHttps = treatHttps ?? false;
+    if (backoffSchedule != null) {
+      // TODO: Deno KV Queue's backoff schedule is too limited for our needs.
+      //       We should manually implement our own backoff retrial mechanism.
+      //       Fortuneately, Deno KV Queue's delay option allows up to 30 days.
+      //       We can use that to implement our own backoff schedule.
+      if (backoffSchedule.length > 5) {
+        throw new Error("Backoff schedule must have at most 5 entries.");
+      }
+      const hour = Temporal.Duration.from({ hours: 1 });
+      if (backoffSchedule.some((d) => Temporal.Duration.compare(d, hour) > 0)) {
+        throw new Error("Backoff schedule must not exceed 1 hour.");
+      }
+    }
+    this.#backoffSchedule =
+      backoffSchedule?.map((d) => d.total("millisecond")) ?? [
+        3_000,
+        15_000,
+        60_000,
+        15 * 60_000,
+        60 * 60_000,
+      ];
 
     kv.listenQueue(this.#listenQueue.bind(this));
   }
@@ -371,7 +400,7 @@ export class Federation<TContextData> {
         activity: await activity.toJsonLd({ expand: true }),
         inbox: inbox.href,
       };
-      this.#kv.enqueue(message);
+      this.#kv.enqueue(message, { backoffSchedule: this.#backoffSchedule });
     }
   }
 
