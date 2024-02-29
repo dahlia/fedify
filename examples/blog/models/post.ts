@@ -18,10 +18,9 @@ export async function addPost(post: Omit<Post, "uuid"> | Post): Promise<Post> {
     uuid = post.uuid;
   }
   const newPost = { uuid, ...post, published: post.published.toString() };
-  const one = new Deno.KvU64(1n);
   await kv.atomic()
     .set(["post", uuid], newPost)
-    .sum(["count"], one.value)
+    .sum(["count"], 1n)
     .commit();
   return { uuid, ...post };
 }

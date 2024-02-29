@@ -12,6 +12,9 @@ import {
 import { getBlog } from "../models/blog.ts";
 import { openKv } from "../models/kv.ts";
 import { countPosts, getPosts } from "../models/post.ts";
+import { addFollower } from "fedify/examples/blog/models/follower.ts";
+import { Link } from "fedify/vocab/mod.ts";
+import { removeFollower } from "fedify/examples/blog/models/follower.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
@@ -104,12 +107,29 @@ federation.setInboxListeners("/users/{handle}/inbox")
   .on(Follow, async (ctx, follow) => {
     const blog = await getBlog();
     if (blog == null) return;
+    if (follow.id == null) return;
     const actorUri = ctx.getActorUri(blog.handle);
     if (follow.objectId?.href != actorUri.href) {
       return;
     }
     const recipient = await follow.getActor(ctx);
-    if (!isActor(recipient)) return;
+    if (
+      !isActor(recipient) || recipient.id == null ||
+      recipient.preferredUsername == null
+    ) return;
+    const handle =
+      `@${recipient.preferredUsername.toString()}@${recipient.id.host}`;
+    await addFollower({
+      activityId: follow.id.href,
+      id: recipient.id.href,
+      name: recipient.name?.toString() ?? "",
+      url: recipient.url == null
+        ? recipient.id.href
+        : recipient.url instanceof Link
+        ? (recipient.url.href ?? recipient.id).href
+        : recipient.url.href,
+      handle,
+    });
     await ctx.sendActivity(
       { handle: blog.handle },
       recipient,
@@ -119,7 +139,13 @@ federation.setInboxListeners("/users/{handle}/inbox")
       }),
     );
   })
-  .on(Undo, (_ctx, undo) => {
-    console.log({ undo });
+  .on(Undo, async (ctx, undo) => {
+    const object = await undo.getObject(ctx);
+    if (object instanceof Follow) {
+      if (object.id == null) return;
+      await removeFollower(object.id.href);
+    } else {
+      console.debug(undo);
+    }
   })
   .onError((e) => console.error(e));

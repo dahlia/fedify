@@ -8,6 +8,7 @@ export interface PostListProps extends PostFormProps {
   blog: Blog;
   posts: PostModel[];
   total: bigint;
+  followers: bigint;
   nextCursor: string | null;
   domain: string;
 }
@@ -17,6 +18,7 @@ export default function PostList(
     blog,
     posts,
     total,
+    followers,
     nextCursor,
     domain,
     error,
@@ -32,7 +34,11 @@ export default function PostList(
         <hgroup>
           <h1>{blog.title}</h1>
           <p>
-            <strong>@{blog.handle}@{domain}</strong> &middot; {blog.description}
+            <strong>@{blog.handle}@{domain}</strong> &middot;{" "}
+            <a href="/followers">
+              {followers === 1n ? "1 follower" : `${followers} followers`}
+            </a>{" "}
+            &middot; {blog.description}
           </p>
         </hgroup>
       </header>

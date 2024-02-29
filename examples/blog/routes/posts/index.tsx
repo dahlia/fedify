@@ -1,5 +1,6 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { Blog, getBlog, verifyPassword } from "../../models/blog.ts";
+import { countFollowers } from "../../models/follower.ts";
 import { addPost, countPosts, getPosts, Post } from "../../models/post.ts";
 import { PostFormProps } from "../../components/PostForm.tsx";
 import PostList from "../../components/PostList.tsx";
@@ -8,6 +9,7 @@ interface PostsData extends PostFormProps {
   blog: Blog;
   posts: Post[];
   total: bigint;
+  followers: bigint;
   nextCursor: string | null;
 }
 
@@ -21,7 +23,8 @@ export const handler: Handlers<PostsData> = {
       cursor ?? undefined,
     );
     const total = await countPosts();
-    return await ctx.render({ blog, posts, total, nextCursor });
+    const followers = await countFollowers();
+    return await ctx.render({ blog, posts, total, followers, nextCursor });
   },
 
   async POST(req, ctx) {
@@ -53,10 +56,12 @@ export const handler: Handlers<PostsData> = {
     if (error.title || error.content || error.password) {
       const { posts, nextCursor } = await getPosts();
       const total = await countPosts();
+      const followers = await countFollowers();
       return await ctx.render({
         blog,
         posts,
         total,
+        followers,
         nextCursor,
         error,
         defaultValues: { title, content },
@@ -66,19 +71,22 @@ export const handler: Handlers<PostsData> = {
 
     const { posts, nextCursor } = await getPosts();
     const total = await countPosts();
-    return await ctx.render({ blog, total, posts, nextCursor }, {
+    const followers = await countFollowers();
+    return await ctx.render({ blog, total, posts, followers, nextCursor }, {
       status: 201,
     });
   },
 };
 
 export default function Posts(props: PageProps<PostsData>) {
-  const { blog, posts, total, nextCursor, error, defaultValues } = props.data;
+  const { blog, posts, total, followers, nextCursor, error, defaultValues } =
+    props.data;
   return (
     <PostList
       blog={blog}
       posts={posts}
       total={total}
+      followers={followers}
       nextCursor={nextCursor}
       domain={props.url.host}
       error={error}

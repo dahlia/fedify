@@ -2,6 +2,7 @@ import { Handlers, PageProps } from "$fresh/server.ts";
 import PostList from "../components/PostList.tsx";
 import Setup from "../components/Setup.tsx";
 import { getBlog, setBlog } from "../models/blog.ts";
+import { countFollowers } from "../models/follower.ts";
 import { countPosts, getPosts } from "../models/post.ts";
 
 export interface HomeData {
@@ -74,6 +75,7 @@ export default async function Home(_req: Request, props: PageProps<HomeData>) {
   const blog = await getBlog();
   const { posts, nextCursor } = await getPosts();
   const total = await countPosts();
+  const followers = await countFollowers();
   return blog == null
     ? (
       <Setup
@@ -87,6 +89,7 @@ export default async function Home(_req: Request, props: PageProps<HomeData>) {
         blog={blog}
         posts={posts}
         total={total}
+        followers={followers}
         nextCursor={nextCursor}
         domain={props.url.host}
       />
