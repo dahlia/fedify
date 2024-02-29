@@ -84,6 +84,8 @@ export async function verify(
   documentLoader: DocumentLoader,
 ): Promise<URL | null> {
   request = request.clone();
+  const dateHeader = request.headers.get("Date");
+  if (dateHeader == null) return null;
   const sigHeader = request.headers.get("Signature");
   if (sigHeader == null) return null;
   const digestHeader = request.headers.get("Digest");
@@ -113,7 +115,17 @@ export async function verify(
     }
     if (!matched) return null;
   }
-  // TODO: check Date header
+  const date: Temporal.Instant = new Date(dateHeader).toTemporalInstant();
+  const now = Temporal.Now.instant();
+  if (Temporal.Instant.compare(date, now.add({ seconds: 30 })) > 0) {
+    // Too far in the future
+    return null;
+  } else if (
+    Temporal.Instant.compare(date, now.subtract({ seconds: 30 })) < 0
+  ) {
+    // Too far in the past
+    return null;
+  }
   const sigValues = Object.fromEntries(
     sigHeader.split(",").map((pair) =>
       pair.match(/^\s*([A-Za-z]+)="([^"]*)"\s*$/)
