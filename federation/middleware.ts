@@ -126,7 +126,7 @@ export class Federation<TContextData> {
   }
 
   async #listenQueue(message: OutboxMessage): Promise<void> {
-    const successful = await sendActivity({
+    await sendActivity({
       keyId: new URL(message.keyId),
       privateKey: await crypto.subtle.importKey(
         "jwk",
@@ -141,9 +141,6 @@ export class Federation<TContextData> {
       inbox: new URL(message.inbox),
       documentLoader: this.#documentLoader,
     });
-    if (!successful) {
-      throw new Error("Failed to send activity");
-    }
   }
 
   /**

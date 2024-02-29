@@ -36,6 +36,7 @@ properties:
 
 - pluralName: audiences
   singularName: audience
+  singularAccessor: true
   uri: "https://www.w3.org/ns/activitystreams#audience"
   description: |
     Identifies one or more entities that represent the total population of
@@ -228,6 +229,7 @@ properties:
 
 - pluralName: tos
   singularName: to
+  singularAccessor: true
   uri: "https://www.w3.org/ns/activitystreams#to"
   description: |
     Identifies an entity considered to be part of the public primary audience
@@ -238,6 +240,7 @@ properties:
 
 - pluralName: btos
   singularName: bto
+  singularAccessor: true
   uri: "https://www.w3.org/ns/activitystreams#bto"
   description: |
     Identifies an Object that is part of the private primary audience of
@@ -248,6 +251,7 @@ properties:
 
 - pluralName: ccs
   singularName: cc
+  singularAccessor: true
   uri: "https://www.w3.org/ns/activitystreams#cc"
   description: |
     Identifies an Object that is part of the public secondary audience of
@@ -258,6 +262,7 @@ properties:
 
 - pluralName: bccs
   singularName: bcc
+  singularAccessor: true
   uri: "https://www.w3.org/ns/activitystreams#bcc"
   description: |
     Identifies one or more Objects that are part of the private secondary

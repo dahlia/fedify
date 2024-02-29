@@ -1,5 +1,8 @@
+import { RequestContext } from "fedify/federation/context.ts";
+import { Note } from "fedify/vocab/mod.ts";
 import markdownIt from "markdown-it";
 import { uuidv7 } from "uuidv7";
+import { Blog } from "./blog.ts";
 import { openKv } from "./kv.ts";
 
 export interface Post {
@@ -64,4 +67,21 @@ export async function countPosts(): Promise<bigint> {
 export function getContentHtml(post: Post): string {
   const md = markdownIt();
   return md.render(post.content);
+}
+
+export function toNote(
+  context: RequestContext<void>,
+  blog: Blog,
+  post: Post,
+): Note {
+  const url = new URL(`/posts/${post.uuid}`, context.request.url);
+  return new Note({
+    id: url,
+    attributedTo: context.getActorUri(blog.handle),
+    to: new URL("https://www.w3.org/ns/activitystreams#Public"),
+    summary: post.title,
+    content: post.content,
+    published: post.published,
+    url,
+  });
 }

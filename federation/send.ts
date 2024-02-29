@@ -73,7 +73,7 @@ export interface SendActivityParameters {
  *
  * @param parameters The parameters for sending the activity.
  *                   See also {@link SendActivityParameters}.
- * @returns Whether the activity was successfully sent.
+ * @throws {Error} If the activity fails to send.
  */
 export async function sendActivity(
   {
@@ -83,7 +83,7 @@ export async function sendActivity(
     inbox,
     documentLoader,
   }: SendActivityParameters,
-): Promise<boolean> {
+): Promise<void> {
   if (activity.actorId == null) {
     throw new TypeError(
       "The activity to send must have at least one actor property.",
@@ -99,5 +99,11 @@ export async function sendActivity(
   });
   request = await sign(request, privateKey, keyId);
   const response = await fetch(request);
-  return response.ok;
+  if (!response.ok) {
+    throw new Error(
+      `Failed to send activity to ${inbox} ` +
+        `(${response.status} ${response.statusText}):\n` +
+        await response.text(),
+    );
+  }
 }

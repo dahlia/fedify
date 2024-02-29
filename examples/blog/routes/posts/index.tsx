@@ -1,9 +1,18 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { Blog, getBlog, verifyPassword } from "../../models/blog.ts";
-import { countFollowers } from "../../models/follower.ts";
-import { addPost, countPosts, getPosts, Post } from "../../models/post.ts";
+import { getFollowersAsActors } from "fedify/examples/blog/models/follower.ts";
+import { Create, Note } from "fedify/vocab/mod.ts";
 import { PostFormProps } from "../../components/PostForm.tsx";
 import PostList from "../../components/PostList.tsx";
+import { federation } from "../../federation/mod.ts";
+import { Blog, getBlog, verifyPassword } from "../../models/blog.ts";
+import { countFollowers } from "../../models/follower.ts";
+import {
+  addPost,
+  countPosts,
+  getPosts,
+  Post,
+  toNote,
+} from "../../models/post.ts";
 
 interface PostsData extends PostFormProps {
   blog: Blog;
@@ -67,7 +76,22 @@ export const handler: Handlers<PostsData> = {
         defaultValues: { title, content },
       });
     }
-    await addPost({ title, content, published: Temporal.Now.instant() });
+    const post = await addPost({
+      title,
+      content,
+      published: Temporal.Now.instant(),
+    });
+    const fedCtx = await federation.createContext(req);
+    await fedCtx.sendActivity(
+      { handle: blog.handle },
+      await getFollowersAsActors(),
+      new Create({
+        id: new URL(`/posts/${post.uuid}#activity`, req.url),
+        actor: fedCtx.getActorUri(blog.handle),
+        to: new URL("https://www.w3.org/ns/activitystreams#Public"),
+        object: toNote(fedCtx, blog, post),
+      }),
+    );
 
     const { posts, nextCursor } = await getPosts();
     const total = await countPosts();

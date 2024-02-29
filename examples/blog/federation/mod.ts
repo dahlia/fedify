@@ -1,20 +1,18 @@
 import { Federation } from "fedify/federation/middleware.ts";
-import { isActor } from "fedify/vocab/actor.ts";
+import { getActorTypeName, isActor } from "fedify/vocab/actor.ts";
 import {
   Accept,
   Activity,
   Create,
   Follow,
-  Note,
+  Link,
   Person,
   Undo,
 } from "fedify/vocab/mod.ts";
 import { getBlog } from "../models/blog.ts";
+import { addFollower, removeFollower } from "../models/follower.ts";
 import { openKv } from "../models/kv.ts";
-import { countPosts, getPosts } from "../models/post.ts";
-import { addFollower } from "fedify/examples/blog/models/follower.ts";
-import { Link } from "fedify/vocab/mod.ts";
-import { removeFollower } from "fedify/examples/blog/models/follower.ts";
+import { countPosts, getPosts, toNote } from "../models/post.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
@@ -69,13 +67,10 @@ federation.setOutboxDispatcher(
     );
     for await (const post of posts) {
       const activity = new Create({
+        id: new URL(`/posts/${post.uuid}#activity`, ctx.request.url),
         actor: ctx.getActorUri(handle),
-        object: new Note({
-          attributedTo: ctx.getActorUri(handle),
-          content: post.content,
-          published: post.published,
-          url: new URL(`/posts/${post.uuid}`, ctx.request.url),
-        }),
+        to: new URL("https://www.w3.org/ns/activitystreams#Public"),
+        object: toNote(ctx, blog, post),
       });
       activities.push(activity);
     }
@@ -115,7 +110,8 @@ federation.setInboxListeners("/users/{handle}/inbox")
     const recipient = await follow.getActor(ctx);
     if (
       !isActor(recipient) || recipient.id == null ||
-      recipient.preferredUsername == null
+      recipient.preferredUsername == null ||
+      recipient.inboxId == null
     ) return;
     const handle =
       `@${recipient.preferredUsername.toString()}@${recipient.id.host}`;
@@ -129,6 +125,9 @@ federation.setInboxListeners("/users/{handle}/inbox")
         ? (recipient.url.href ?? recipient.id).href
         : recipient.url.href,
       handle,
+      inbox: recipient.inboxId.href,
+      sharedInbox: recipient.endpoints?.sharedInbox?.href,
+      typeName: getActorTypeName(recipient),
     });
     await ctx.sendActivity(
       { handle: blog.handle },
