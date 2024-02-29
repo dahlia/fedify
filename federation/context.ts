@@ -38,6 +38,13 @@ export interface Context<TContextData> {
   getInboxUri(handle: string): URL;
 
   /**
+   * Builds the URI of an actor's followers collection with the given handle.
+   * @param handle The actor's handle.
+   * @returns The actor's followers collection URI.
+   */
+  getFollowersUri(handle: string): URL;
+
+  /**
    * Gets a public {@link CryptographicKey} for an actor, if any exists.
    * @param handle The actor's handle.
    * @returns The actor's public key, or `null` if the actor has no key.

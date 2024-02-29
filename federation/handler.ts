@@ -1,6 +1,9 @@
 import { accepts } from "https://deno.land/std@0.217.0/http/mod.ts";
 import {
   ActorDispatcher,
+  CollectionCounter,
+  CollectionCursor,
+  CollectionDispatcher,
   InboxListener,
   OutboxCounter,
   OutboxCursor,
@@ -12,6 +15,8 @@ import { DocumentLoader } from "../runtime/docloader.ts";
 import { isActor } from "../vocab/actor.ts";
 import {
   Activity,
+  Link,
+  Object,
   OrderedCollection,
   OrderedCollectionPage,
 } from "../vocab/mod.ts";
@@ -70,33 +75,36 @@ export async function handleActor<TContextData>(
   });
 }
 
-export interface OutboxHandlerParameters<TContextData> {
+export interface CollectionHandlerParameters<TItem, TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
   documentLoader: DocumentLoader;
-  outboxDispatcher?: OutboxDispatcher<TContextData>;
-  outboxCounter?: OutboxCounter<TContextData>;
-  outboxFirstCursor?: OutboxCursor<TContextData>;
-  outboxLastCursor?: OutboxCursor<TContextData>;
+  collectionDispatcher?: CollectionDispatcher<TItem, TContextData>;
+  collectionCounter?: CollectionCounter<TContextData>;
+  collectionFirstCursor?: CollectionCursor<TContextData>;
+  collectionLastCursor?: CollectionCursor<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
 
-export async function handleOutbox<TContextData>(
+export async function handleCollection<
+  TItem extends URL | Object | Link,
+  TContextData,
+>(
   request: Request,
   {
     handle,
     context,
     documentLoader,
-    outboxCounter,
-    outboxFirstCursor,
-    outboxLastCursor,
-    outboxDispatcher,
+    collectionDispatcher,
+    collectionCounter,
+    collectionFirstCursor,
+    collectionLastCursor,
     onNotFound,
     onNotAcceptable,
-  }: OutboxHandlerParameters<TContextData>,
+  }: CollectionHandlerParameters<TItem, TContextData>,
 ): Promise<Response> {
-  if (outboxDispatcher == null) {
+  if (collectionDispatcher == null) {
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
   }
@@ -108,16 +116,16 @@ export async function handleOutbox<TContextData>(
   const cursor = url.searchParams.get("cursor");
   let collection: OrderedCollection | OrderedCollectionPage;
   if (cursor == null) {
-    const firstCursorPromise = outboxFirstCursor?.(context, handle);
+    const firstCursorPromise = collectionFirstCursor?.(context, handle);
     const firstCursor = firstCursorPromise instanceof Promise
       ? await firstCursorPromise
       : firstCursorPromise;
-    const totalItemsPromise = outboxCounter?.(context, handle);
+    const totalItemsPromise = collectionCounter?.(context, handle);
     const totalItems = totalItemsPromise instanceof Promise
       ? await totalItemsPromise
       : totalItemsPromise;
     if (firstCursor == null) {
-      const pagePromise = outboxDispatcher(context, handle, null);
+      const pagePromise = collectionDispatcher(context, handle, null);
       const page = pagePromise instanceof Promise
         ? await pagePromise
         : pagePromise;
@@ -131,26 +139,25 @@ export async function handleOutbox<TContextData>(
         items,
       });
     } else {
-      const lastCursorPromise = outboxLastCursor?.(context, handle);
+      const lastCursorPromise = collectionLastCursor?.(context, handle);
       const lastCursor = lastCursorPromise instanceof Promise
         ? await lastCursorPromise
         : lastCursorPromise;
+      const first = new URL(context.url);
+      first.searchParams.set("cursor", firstCursor);
+      let last = null;
+      if (lastCursor != null) {
+        last = new URL(context.url);
+        last.searchParams.set("cursor", lastCursor);
+      }
       collection = new OrderedCollection({
         totalItems: Number(totalItems),
-        first: new URL(
-          `${context.getOutboxUri(handle).href}?cursor=${
-            encodeURIComponent(firstCursor)
-          }`,
-        ),
-        last: lastCursor == null ? null : new URL(
-          `${context.getOutboxUri(handle).href}?cursor=${
-            encodeURIComponent(lastCursor)
-          }`,
-        ),
+        first,
+        last,
       });
     }
   } else {
-    const pagePromise = outboxDispatcher(context, handle, cursor);
+    const pagePromise = collectionDispatcher(context, handle, cursor);
     const page = pagePromise instanceof Promise
       ? await pagePromise
       : pagePromise;
@@ -159,19 +166,17 @@ export async function handleOutbox<TContextData>(
       return response instanceof Promise ? await response : response;
     }
     const { items, prevCursor, nextCursor } = page;
-    collection = new OrderedCollectionPage({
-      prev: prevCursor == null ? null : new URL(
-        `${context.getOutboxUri(handle).href}?cursor=${
-          encodeURIComponent(prevCursor)
-        }`,
-      ),
-      next: nextCursor == null ? null : new URL(
-        `${context.getOutboxUri(handle).href}?cursor=${
-          encodeURIComponent(nextCursor)
-        }`,
-      ),
-      items,
-    });
+    let prev = null;
+    if (prevCursor != null) {
+      prev = new URL(context.url);
+      prev.searchParams.set("cursor", prevCursor);
+    }
+    let next = null;
+    if (nextCursor != null) {
+      next = new URL(context.url);
+      next.searchParams.set("cursor", nextCursor);
+    }
+    collection = new OrderedCollectionPage({ prev, next, items });
   }
   const jsonLd = await collection.toJsonLd({ documentLoader });
   return new Response(JSON.stringify(jsonLd), {
@@ -293,7 +298,7 @@ export async function handleInbox<TContextData>(
         headers: { "Content-Type": "text/plain; charset=utf-8" },
       });
     }
-    cls = Object.getPrototypeOf(cls);
+    cls = globalThis.Object.getPrototypeOf(cls);
   }
   const listener = inboxListeners.get(cls)!;
   const promise = listener(context, activity);

@@ -22,26 +22,26 @@ export type ActorKeyPairDispatcher<TContextData> = (
 ) => CryptoKeyPair | null | Promise<CryptoKeyPair | null>;
 
 /**
- * A callback that dispatches an outbox.
+ * A callback that dispatches a collection.
  */
-export type OutboxDispatcher<TContextData> = (
+export type CollectionDispatcher<TItem, TContextData> = (
   context: RequestContext<TContextData>,
   handle: string,
   cursor: string | null,
-) => Page<Activity> | null | Promise<Page<Activity> | null>;
+) => Page<TItem> | null | Promise<Page<TItem> | null>;
 
 /**
- * A callback that counts the number of activities in an outbox.
+ * A callback that counts the number of items in a collection.
  */
-export type OutboxCounter<TContextData> = (
+export type CollectionCounter<TContextData> = (
   context: RequestContext<TContextData>,
   handle: string,
 ) => number | bigint | null | Promise<number | bigint | null>;
 
 /**
- * A callback that returns a cursor for an outbox.
+ * A callback that returns a cursor for a collection.
  */
-export type OutboxCursor<TContextData> = (
+export type CollectionCursor<TContextData> = (
   context: RequestContext<TContextData>,
   handle: string,
 ) => string | null | Promise<string | null>;

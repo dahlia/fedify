@@ -10,7 +10,12 @@ import {
   Undo,
 } from "fedify/vocab/mod.ts";
 import { getBlog } from "../models/blog.ts";
-import { addFollower, removeFollower } from "../models/follower.ts";
+import {
+  addFollower,
+  countFollowers,
+  getFollowers,
+  removeFollower,
+} from "../models/follower.ts";
 import { openKv } from "../models/kv.ts";
 import { countPosts, getPosts, toNote } from "../models/post.ts";
 
@@ -37,6 +42,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
     url: new URL("/", ctx.request.url),
     outbox: ctx.getOutboxUri(handle),
     inbox: ctx.getInboxUri(handle),
+    followers: ctx.getFollowersUri(handle),
     publicKey: key,
   });
 })
@@ -148,3 +154,36 @@ federation.setInboxListeners("/users/{handle}/inbox")
     }
   })
   .onError((e) => console.error(e));
+
+federation
+  .setFollowersDispatcher(
+    "/users/{handle}/followers",
+    async (_ctx, handle, cursor) => {
+      const blog = await getBlog();
+      if (blog == null) return null;
+      else if (blog.handle !== handle) return null;
+      if (cursor == null) return null;
+      const { followers, nextCursor } = await getFollowers(
+        undefined,
+        // Treat the empty string as the first cursor:
+        cursor === "" ? undefined : cursor,
+      );
+      return {
+        items: followers.map((f) => new URL(f.id)),
+        nextCursor,
+      };
+    },
+  )
+  .setCounter(async (_ctx, handle) => {
+    const blog = await getBlog();
+    if (blog == null) return null;
+    else if (blog.handle !== handle) return null;
+    return await countFollowers();
+  })
+  .setFirstCursor(async (_ctx, handle) => {
+    const blog = await getBlog();
+    if (blog == null) return null;
+    else if (blog.handle !== handle) return null;
+    // Treat the empty string as the first cursor:
+    return "";
+  });

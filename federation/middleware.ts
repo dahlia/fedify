@@ -10,13 +10,13 @@ import { handleWebFinger } from "../webfinger/handler.ts";
 import {
   ActorDispatcher,
   ActorKeyPairDispatcher,
+  CollectionCounter,
+  CollectionCursor,
+  CollectionDispatcher,
   InboxListener,
-  OutboxCounter,
-  OutboxCursor,
-  OutboxDispatcher,
 } from "./callback.ts";
 import { Context, RequestContext } from "./context.ts";
-import { handleActor, handleInbox, handleOutbox } from "./handler.ts";
+import { handleActor, handleCollection, handleInbox } from "./handler.ts";
 import { OutboxMessage } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
 import { extractInboxes, sendActivity } from "./send.ts";
@@ -60,7 +60,8 @@ export class Federation<TContextData> {
   #kvPrefixes: FederationKvPrefixes;
   #router: Router;
   #actorCallbacks?: ActorCallbacks<TContextData>;
-  #outboxCallbacks?: OutboxCallbacks<TContextData>;
+  #outboxCallbacks?: CollectionCallbacks<Activity, TContextData>;
+  #followersCallbacks?: CollectionCallbacks<Actor | URL, TContextData>;
   #inboxListeners: Map<
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
@@ -201,6 +202,13 @@ export class Federation<TContextData> {
         }
         return new URL(path, url);
       },
+      getFollowersUri: (handle: string): URL => {
+        const path = this.#router.build("followers", { handle });
+        if (path == null) {
+          throw new RouterError("No followers collection path registered.");
+        }
+        return new URL(path, url);
+      },
       getActorKey: async (handle: string): Promise<CryptographicKey | null> => {
         let keyPair = this.#actorCallbacks?.keyPairDispatcher?.(
           contextData,
@@ -303,8 +311,8 @@ export class Federation<TContextData> {
    */
   setOutboxDispatcher(
     path: string,
-    dispatcher: OutboxDispatcher<TContextData>,
-  ): OutboxCallbackSetters<TContextData> {
+    dispatcher: CollectionDispatcher<Activity, TContextData>,
+  ): CollectionCallbackSetters<TContextData> {
     if (this.#router.has("outbox")) {
       throw new RouterError("Outbox dispatcher already set.");
     }
@@ -314,18 +322,63 @@ export class Federation<TContextData> {
         "Path for outbox dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: OutboxCallbacks<TContextData> = { dispatcher };
+    const callbacks: CollectionCallbacks<Activity, TContextData> = {
+      dispatcher,
+    };
     this.#outboxCallbacks = callbacks;
-    const setters: OutboxCallbackSetters<TContextData> = {
-      setCounter(counter: OutboxCounter<TContextData>) {
+    const setters: CollectionCallbackSetters<TContextData> = {
+      setCounter(counter: CollectionCounter<TContextData>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: OutboxCursor<TContextData>) {
+      setFirstCursor(cursor: CollectionCursor<TContextData>) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: OutboxCursor<TContextData>) {
+      setLastCursor(cursor: CollectionCursor<TContextData>) {
+        callbacks.lastCursor = cursor;
+        return setters;
+      },
+    };
+    return setters;
+  }
+
+  /**
+   * Registers an followers collection dispatcher.
+   * @param path The URI path pattern for the followers collection.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher An outbox collection callback to register.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   */
+  setFollowersDispatcher(
+    path: string,
+    dispatcher: CollectionDispatcher<Actor | URL, TContextData>,
+  ): CollectionCallbackSetters<TContextData> {
+    if (this.#router.has("followers")) {
+      throw new RouterError("Followers collection dispatcher already set.");
+    }
+    const variables = this.#router.add(path, "followers");
+    if (variables.size !== 1 || !variables.has("handle")) {
+      throw new RouterError(
+        "Path for followers collection dispatcher must have one variable: {handle}",
+      );
+    }
+    const callbacks: CollectionCallbacks<Actor | URL, TContextData> = {
+      dispatcher,
+    };
+    this.#followersCallbacks = callbacks;
+    const setters: CollectionCallbackSetters<TContextData> = {
+      setCounter(counter: CollectionCounter<TContextData>) {
+        callbacks.counter = counter;
+        return setters;
+      },
+      setFirstCursor(cursor: CollectionCursor<TContextData>) {
+        callbacks.firstCursor = cursor;
+        return setters;
+      },
+      setLastCursor(cursor: CollectionCursor<TContextData>) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -439,14 +492,14 @@ export class Federation<TContextData> {
           onNotAcceptable,
         });
       case "outbox":
-        return await handleOutbox(request, {
+        return await handleCollection(request, {
           handle: route.values.handle,
           context,
           documentLoader: this.#documentLoader,
-          outboxDispatcher: this.#outboxCallbacks?.dispatcher,
-          outboxCounter: this.#outboxCallbacks?.counter,
-          outboxFirstCursor: this.#outboxCallbacks?.firstCursor,
-          outboxLastCursor: this.#outboxCallbacks?.lastCursor,
+          collectionDispatcher: this.#outboxCallbacks?.dispatcher,
+          collectionCounter: this.#outboxCallbacks?.counter,
+          collectionFirstCursor: this.#outboxCallbacks?.firstCursor,
+          collectionLastCursor: this.#outboxCallbacks?.lastCursor,
           onNotFound,
           onNotAcceptable,
         });
@@ -461,6 +514,18 @@ export class Federation<TContextData> {
           inboxListeners: this.#inboxListeners,
           inboxErrorHandler: this.#inboxErrorHandler,
           onNotFound,
+        });
+      case "followers":
+        return await handleCollection(request, {
+          handle: route.values.handle,
+          context,
+          documentLoader: this.#documentLoader,
+          collectionDispatcher: this.#followersCallbacks?.dispatcher,
+          collectionCounter: this.#followersCallbacks?.counter,
+          collectionFirstCursor: this.#followersCallbacks?.firstCursor,
+          collectionLastCursor: this.#followersCallbacks?.lastCursor,
+          onNotFound,
+          onNotAcceptable,
         });
       default: {
         const response = onNotFound(request);
@@ -505,28 +570,28 @@ export interface ActorCallbackSetters<TContextData> {
   ): ActorCallbackSetters<TContextData>;
 }
 
-interface OutboxCallbacks<TContextData> {
-  dispatcher: OutboxDispatcher<TContextData>;
-  counter?: OutboxCounter<TContextData>;
-  firstCursor?: OutboxCursor<TContextData>;
-  lastCursor?: OutboxCursor<TContextData>;
+interface CollectionCallbacks<TItem, TContextData> {
+  dispatcher: CollectionDispatcher<TItem, TContextData>;
+  counter?: CollectionCounter<TContextData>;
+  firstCursor?: CollectionCursor<TContextData>;
+  lastCursor?: CollectionCursor<TContextData>;
 }
 
 /**
- * Additional settings for the outbox dispatcher.
+ * Additional settings for a collection dispatcher.
  */
-export interface OutboxCallbackSetters<TContextData> {
+export interface CollectionCallbackSetters<TContextData> {
   setCounter(
-    counter: OutboxCounter<TContextData>,
-  ): OutboxCallbackSetters<TContextData>;
+    counter: CollectionCounter<TContextData>,
+  ): CollectionCallbackSetters<TContextData>;
 
   setFirstCursor(
-    cursor: OutboxCursor<TContextData>,
-  ): OutboxCallbackSetters<TContextData>;
+    cursor: CollectionCursor<TContextData>,
+  ): CollectionCallbackSetters<TContextData>;
 
   setLastCursor(
-    cursor: OutboxCursor<TContextData>,
-  ): OutboxCallbackSetters<TContextData>;
+    cursor: CollectionCursor<TContextData>,
+  ): CollectionCallbackSetters<TContextData>;
 }
 
 /**
