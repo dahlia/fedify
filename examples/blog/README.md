@@ -50,3 +50,42 @@ fediverse handle:
 
 [ngrok]: https://ngrok.com/
 [1]: https://ngrok.com/docs/getting-started/
+
+
+Where to start reading
+----------------------
+
+In general, this project is a typical Fresh web app, except that it delegates
+federation-related tasks to the Fedify library.  So, if you are not familiar
+with Fresh at all, you may want to start with the [Fresh documentation][2].
+
+The most of the federation-related code is in the *federation/mod.ts* file.
+This file registers many callbacks to the Fedify library, which are called when
+the server receives a federation-related request.
+
+There are few code that interacts with the Fedify library from the Fresh app.
+For example, *routes/posts/index.ts* file contains logic to publish a new post,
+and there is few lines that enqueue a `Create` activity to the outbox:
+
+~~~~ typescript
+// Gets a federation context for enqueueing an activity:
+const fedCtx = await federation.createContext(req);
+// Enqueues a `Create` activity to the outbox:
+await fedCtx.sendActivity(
+  { handle: blog.handle },
+  await getFollowersAsActors(),
+  new Create({
+    // (omitted for brevity)
+  }),
+);
+~~~~
+
+Lastly, you'll probably wonder how the `federation` object is integrated with
+the Fresh app.  The answer is in the *routes/_middleware.ts* file.  This file
+contains a Fresh middleware that intercepts federation-related requests and
+passes them to the `federation` object.
+
+We did the best to keep the federation-related logic elaborated in comments,
+so we hope you can understand the code by reading the comments too.
+
+[2]: https://fresh.deno.dev/docs
