@@ -42,6 +42,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
     url: new URL("/", ctx.request.url),
     outbox: ctx.getOutboxUri(handle),
     inbox: ctx.getInboxUri(handle),
+    following: ctx.getFollowingUri(handle),
     followers: ctx.getFollowersUri(handle),
     publicKey: key,
   });
@@ -154,6 +155,18 @@ federation.setInboxListeners("/users/{handle}/inbox")
     }
   })
   .onError((e) => console.error(e));
+
+// Since the blog does not follow anyone, the following dispatcher is
+// implemented to return just an empty list:
+federation.setFollowingDispatcher(
+  "/users/{handle}/following",
+  async (_ctx, handle, _cursor) => {
+    const blog = await getBlog();
+    if (blog == null) return null;
+    else if (blog.handle !== handle) return null;
+    return { items: [] };
+  },
+);
 
 federation
   .setFollowersDispatcher(

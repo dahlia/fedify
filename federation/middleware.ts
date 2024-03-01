@@ -61,6 +61,7 @@ export class Federation<TContextData> {
   #router: Router;
   #actorCallbacks?: ActorCallbacks<TContextData>;
   #outboxCallbacks?: CollectionCallbacks<Activity, TContextData>;
+  #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData>;
   #followersCallbacks?: CollectionCallbacks<Actor | URL, TContextData>;
   #inboxListeners: Map<
     new (...args: unknown[]) => Activity,
@@ -199,6 +200,13 @@ export class Federation<TContextData> {
         const path = this.#router.build("inbox", { handle });
         if (path == null) {
           throw new RouterError("No inbox path registered.");
+        }
+        return new URL(path, url);
+      },
+      getFollowingUri: (handle: string): URL => {
+        const path = this.#router.build("following", { handle });
+        if (path == null) {
+          throw new RouterError("No following collection path registered.");
         }
         return new URL(path, url);
       },
@@ -344,12 +352,55 @@ export class Federation<TContextData> {
   }
 
   /**
-   * Registers an followers collection dispatcher.
+   * Registers a following collection dispatcher.
+   * @param path The URI path pattern for the following collection.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A following collection callback to register.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   */
+  setFollowingDispatcher(
+    path: string,
+    dispatcher: CollectionDispatcher<Actor | URL, TContextData>,
+  ): CollectionCallbackSetters<TContextData> {
+    if (this.#router.has("following")) {
+      throw new RouterError("Following collection dispatcher already set.");
+    }
+    const variables = this.#router.add(path, "following");
+    if (variables.size !== 1 || !variables.has("handle")) {
+      throw new RouterError(
+        "Path for following collection dispatcher must have one variable: {handle}",
+      );
+    }
+    const callbacks: CollectionCallbacks<Actor | URL, TContextData> = {
+      dispatcher,
+    };
+    this.#followingCallbacks = callbacks;
+    const setters: CollectionCallbackSetters<TContextData> = {
+      setCounter(counter: CollectionCounter<TContextData>) {
+        callbacks.counter = counter;
+        return setters;
+      },
+      setFirstCursor(cursor: CollectionCursor<TContextData>) {
+        callbacks.firstCursor = cursor;
+        return setters;
+      },
+      setLastCursor(cursor: CollectionCursor<TContextData>) {
+        callbacks.lastCursor = cursor;
+        return setters;
+      },
+    };
+    return setters;
+  }
+
+  /**
+   * Registers a followers collection dispatcher.
    * @param path The URI path pattern for the followers collection.  The syntax
    *             is based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
    *             must have one variable: `{handle}`.
-   * @param dispatcher An outbox collection callback to register.
+   * @param dispatcher A followers collection callback to register.
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setFollowersDispatcher(
@@ -515,6 +566,18 @@ export class Federation<TContextData> {
           inboxListeners: this.#inboxListeners,
           inboxErrorHandler: this.#inboxErrorHandler,
           onNotFound,
+        });
+      case "following":
+        return await handleCollection(request, {
+          handle: route.values.handle,
+          context,
+          documentLoader: this.#documentLoader,
+          collectionDispatcher: this.#followingCallbacks?.dispatcher,
+          collectionCounter: this.#followingCallbacks?.counter,
+          collectionFirstCursor: this.#followingCallbacks?.firstCursor,
+          collectionLastCursor: this.#followingCallbacks?.lastCursor,
+          onNotFound,
+          onNotAcceptable,
         });
       case "followers":
         return await handleCollection(request, {
