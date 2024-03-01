@@ -1,10 +1,12 @@
 import { RequestContext } from "../federation/context.ts";
 import { ActorDispatcher } from "../federation/callback.ts";
+import { Router } from "../federation/router.ts";
 import { Link as LinkObject } from "../vocab/mod.ts";
 import { Link, ResourceDescriptor } from "./jrd.ts";
 
 export interface WebFingerHandlerParameters<TContextData> {
   context: RequestContext<TContextData>;
+  router: Router;
   actorDispatcher?: ActorDispatcher<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
 }
@@ -13,6 +15,7 @@ export async function handleWebFinger<TContextData>(
   request: Request,
   {
     context,
+    router,
     actorDispatcher,
     onNotFound,
   }: WebFingerHandlerParameters<TContextData>,
@@ -25,12 +28,30 @@ export async function handleWebFinger<TContextData>(
   if (resource == null) {
     return new Response("Missing resource parameter.", { status: 400 });
   }
-  const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
-  if (match == null || match[2] != context.url.host) {
-    const response = onNotFound(request);
-    return response instanceof Promise ? await response : response;
+  let resourceUrl: URL;
+  try {
+    resourceUrl = new URL(resource);
+  } catch (e) {
+    if (e instanceof TypeError) {
+      return new Response("Invalid resource URL.", { status: 400 });
+    }
+    throw new e();
   }
-  const handle = match[1];
+  let handle: string | null = null;
+  if (resourceUrl.origin === context.url.origin) {
+    const route = router.route(resourceUrl.pathname);
+    if (route != null && route.name === "actor") {
+      handle = route.values.handle;
+    }
+  }
+  if (handle == null) {
+    const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
+    if (match == null || match[2] != context.url.host) {
+      const response = onNotFound(request);
+      return response instanceof Promise ? await response : response;
+    }
+    handle = match[1];
+  }
   const key = await context.getActorKey(handle);
   const actor = await actorDispatcher(context, handle, key);
   if (actor == null) {
@@ -60,7 +81,7 @@ export async function handleWebFinger<TContextData>(
     }
   }
   const jrd: ResourceDescriptor = {
-    subject: resource,
+    subject: `acct:${handle}@${context.url.host}`,
     aliases: [context.getActorUri(handle).href],
     links,
   };

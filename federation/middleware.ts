@@ -479,6 +479,7 @@ export class Federation<TContextData> {
       case "webfinger":
         return await handleWebFinger(request, {
           context,
+          router: this.#router,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
           onNotFound,
         });
