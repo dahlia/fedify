@@ -81,18 +81,29 @@ export async function* generateDecoder(
    * Converts a JSON-LD structure to an object of this type.
    * @param json The JSON-LD structure to convert.
    * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
    */
   static async fromJsonLd(
     json: unknown,
     options: { documentLoader?: DocumentLoader } = {}
   ): Promise<${type.name}> {
+    if (typeof json === "undefined") {
+      throw new TypeError("Invalid JSON-LD: undefined.");
+    }
+    else if (json === null) throw new TypeError("Invalid JSON-LD: null.");
     options = {
       ...options,
       documentLoader: options.documentLoader ?? fetchDocumentLoader,
     };
-    const expanded = await jsonld.expand(json, options);
     // deno-lint-ignore no-explicit-any
-    const values = expanded[0] as (Record<string, any[]> & { "@id"?: string });
+    let values: Record<string, any[]> & { "@id"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, options);
+      // deno-lint-ignore no-explicit-any
+      values = expanded[0] as (Record<string, any[]> & { "@id"?: string });
+    }
   `;
   const subtypes = getSubtypes(typeUri, types, true);
   if (subtypes.length > 0) {

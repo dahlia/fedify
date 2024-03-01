@@ -91,7 +91,7 @@ export const handler: Handlers<PostsData> = {
         id: new URL(`/posts/${post.uuid}#activity`, req.url),
         actor: fedCtx.getActorUri(blog.handle),
         to: new URL("https://www.w3.org/ns/activitystreams#Public"),
-        object: toNote(fedCtx, blog, post),
+        object: toNote(fedCtx, blog, post, []),
       }),
     );
 

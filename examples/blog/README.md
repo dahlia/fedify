@@ -11,6 +11,16 @@ of the following technologies:
  -  [Fresh] for web framework
  -  Fedify for federation
 
+It provides the following features:
+
+ -  Publish a new post
+ -  View a post and its comments
+ -  View a list of posts
+ -  Federate with other servers in the fediverse
+     -  Fediverse users can follow/unfollow your blog
+     -  Followers can see your posts in their timelines
+     -  Followers can reply to your posts
+
 [Deno]: https://deno.com/
 [Deno KV]: https://deno.com/kv
 [Fresh]: https://fresh.deno.dev/

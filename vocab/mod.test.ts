@@ -2,6 +2,7 @@ import {
   assertEquals,
   assertInstanceOf,
   assertNotEquals,
+  assertRejects,
   assertThrows,
 } from "https://deno.land/std@0.217.0/assert/mod.ts";
 import { toArray } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
@@ -75,6 +76,20 @@ Deno.test("Object.fromJsonLd()", async () => {
   const note = await create.getObject();
   assertInstanceOf(note, Note);
   assertEquals(note.content, "Content");
+
+  const empty = await Object.fromJsonLd({});
+  assertInstanceOf(empty, Object);
+
+  await assertRejects(
+    () => Object.fromJsonLd(null),
+    TypeError,
+    "Invalid JSON-LD: null.",
+  );
+  await assertRejects(
+    () => Object.fromJsonLd(undefined),
+    TypeError,
+    "Invalid JSON-LD: undefined.",
+  );
 });
 
 Deno.test("Object.toJsonLd()", async () => {

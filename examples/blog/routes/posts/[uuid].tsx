@@ -1,15 +1,21 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
 import { accepts } from "$std/http/mod.ts";
+import Comment from "../../components/Comment.tsx";
 import Post from "../../components/Post.tsx";
 import { federation } from "../../federation/mod.ts";
 import { Blog, getBlog } from "../../models/blog.ts";
+import {
+  type Comment as CommentModel,
+  getComments,
+} from "../../models/comment.ts";
 import { getPost, type Post as PostModel, toNote } from "../../models/post.ts";
 
 export interface PostPageData {
   domain: string;
   blog: Blog;
   post: PostModel;
+  comments: CommentModel[];
 }
 
 export const handler: Handler<PostPageData> = async (req, ctx) => {
@@ -17,16 +23,21 @@ export const handler: Handler<PostPageData> = async (req, ctx) => {
   if (blog == null) return await ctx.renderNotFound();
   const post = await getPost(ctx.params.uuid);
   if (post == null) return await ctx.renderNotFound();
+  const comments = await getComments(post.uuid);
   const accept = accepts(
     req,
+    "application/activity+json",
     "application/ld+json",
     "application/json",
     "text/html",
     "application/xhtml+xml",
   );
-  if (accept == "application/ld+json" || accept == "application/json") {
+  if (
+    accept === "application/activity+json" ||
+    accept === "application/ld+json" || accept === "application/json"
+  ) {
     const fedCtx = federation.createContext(req);
-    const note = toNote(fedCtx, blog, post);
+    const note = toNote(fedCtx, blog, post, comments);
     const jsonLd = await note.toJsonLd(fedCtx);
     return new Response(JSON.stringify(jsonLd), {
       headers: {
@@ -35,12 +46,12 @@ export const handler: Handler<PostPageData> = async (req, ctx) => {
       },
     });
   }
-  const data: PostPageData = { blog, post, domain: ctx.url.host };
+  const data: PostPageData = { blog, post, domain: ctx.url.host, comments };
   return ctx.render(data);
 };
 
 export default function PostPage(
-  { data: { domain, blog, post } }: PageProps<PostPageData>,
+  { data: { domain, blog, post, comments } }: PageProps<PostPageData>,
 ) {
   return (
     <>
@@ -58,6 +69,12 @@ export default function PostPage(
         </hgroup>
       </header>
       <Post post={post} />
+      {comments.map((comment) => (
+        <Comment
+          key={comment.id}
+          comment={comment}
+        />
+      ))}
     </>
   );
 }

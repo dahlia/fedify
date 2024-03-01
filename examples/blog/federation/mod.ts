@@ -7,10 +7,12 @@ import {
   Endpoints,
   Follow,
   Link,
+  Note,
   Person,
   Undo,
 } from "fedify/vocab/mod.ts";
 import { getBlog } from "../models/blog.ts";
+import { Comment, getComments } from "../models/comment.ts";
 import {
   addFollower,
   countFollowers,
@@ -19,11 +21,17 @@ import {
 } from "../models/follower.ts";
 import { openKv } from "../models/kv.ts";
 import { countPosts, getPosts, toNote } from "../models/post.ts";
+import { addComment } from "fedify/examples/blog/models/comment.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
 export const federation = new Federation<void>({
+  // The following Deno KV storage is used for several purposes, such as
+  // cache and outbox queue:
   kv: await openKv(),
+
+  // The following option is useful for local development, as Fresh's dev
+  // server does not support HTTPS:
   treatHttps: true,
 });
 
@@ -84,11 +92,12 @@ federation.setOutboxDispatcher(
       cursor === "" ? undefined : cursor,
     );
     for await (const post of posts) {
+      const comments = await getComments(post.uuid);
       const activity = new Create({
         id: new URL(`/posts/${post.uuid}#activity`, ctx.request.url),
         actor: ctx.getActorUri(handle),
         to: new URL("https://www.w3.org/ns/activitystreams#Public"),
-        object: toNote(ctx, blog, post),
+        object: toNote(ctx, blog, post, comments),
       });
       activities.push(activity);
     }
@@ -141,11 +150,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
       activityId: follow.id.href,
       id: recipient.id.href,
       name: recipient.name?.toString() ?? "",
-      url: recipient.url == null
-        ? recipient.id.href
-        : recipient.url instanceof Link
-        ? (recipient.url.href ?? recipient.id).href
-        : recipient.url.href,
+      url: getHref(recipient.url) ?? recipient.id.href,
       handle,
       inbox: recipient.inboxId.href,
       sharedInbox: recipient.endpoints?.sharedInbox?.href,
@@ -159,6 +164,41 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
       recipient,
       new Accept({ actor: actorUri, object: follow }),
     );
+  })
+  // The `Create` activity is handled by adding a comment to the post:
+  .on(Create, async (ctx, create) => {
+    const object = await create.getObject(ctx);
+    if (object instanceof Note) {
+      if (object.id == null || object.content == null) return;
+      const author = await object.getAttributedTo();
+      if (
+        !isActor(author) || author.id == null ||
+        author.preferredUsername == null
+      ) return;
+      const comment: Omit<Comment, "postUuid"> = {
+        id: object.id.href,
+        content: object.content.toString(),
+        url: getHref(object.url) ?? object.id.href,
+        author: {
+          id: author.id.href,
+          name: author.name?.toString() ?? author.preferredUsername.toString(),
+          handle: `@${author.preferredUsername.toString()}@${author.id.host}`,
+          url: getHref(author.url) ?? author.id.href,
+        },
+        published: create.published ?? Temporal.Now.instant(),
+      };
+      // Filters only `Note` objects that are in reply to posts in this blog:
+      const urlPattern = new URLPattern("/posts/:uuid", ctx.url.href);
+      for (const replyTargetId of object.replyTargetIds) {
+        const match = urlPattern.exec(replyTargetId);
+        if (match == null) continue;
+        const postUuid = match.pathname.groups.uuid;
+        if (postUuid == null) continue;
+        await addComment({ ...comment, postUuid });
+      }
+    } else {
+      console.debug(object);
+    }
   })
   // The `Undo` activity purposes to undo the previous activity.  In this
   // project, we use the `Undo` activity to represent someone unfollowing
@@ -186,6 +226,8 @@ federation.setFollowingDispatcher(
   },
 );
 
+// Registers the followers collection dispatcher, which is responsible for
+// listing the followers of the blog:
 federation
   .setFollowersDispatcher(
     "/users/{handle}/followers",
@@ -205,12 +247,16 @@ federation
       };
     },
   )
+  // Registers the followers counter, which is responsible for counting
+  // the total number of followers:
   .setCounter(async (_ctx, handle) => {
     const blog = await getBlog();
     if (blog == null) return null;
     else if (blog.handle !== handle) return null;
     return await countFollowers();
   })
+  // Registers the first cursor.  The cursor value here is arbitrary, but
+  // it must be parsable by the followers collection dispatcher:
   .setFirstCursor(async (_ctx, handle) => {
     const blog = await getBlog();
     if (blog == null) return null;
@@ -218,3 +264,10 @@ federation
     // Treat the empty string as the first cursor:
     return "";
   });
+
+function getHref(link: Link | URL | string | null): string | null {
+  if (link == null) return null;
+  if (link instanceof Link) return link.href?.href ?? null;
+  if (link instanceof URL) return link.href;
+  return link;
+}

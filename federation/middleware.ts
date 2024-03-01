@@ -30,10 +30,32 @@ import { extractInboxes, sendActivity } from "./send.ts";
  * Parameters for initializing a {@link Federation} instance.
  */
 export interface FederationParameters {
+  /**
+   * The Deno KV store used for caching, outbox queues, and inbox idempotence.
+   */
   kv: Deno.Kv;
+
+  /**
+   * Prefixes for namespacing keys in the Deno KV store.  By default, all keys
+   * are prefixed with `["_fedify"]`.
+   */
   kvPrefixes?: Partial<FederationKvPrefixes>;
+
+  /**
+   * A custom JSON-LD document loader.  By default, this uses the built-in
+   * cache-backed loader that fetches remote documents over HTTP(S).
+   */
   documentLoader?: DocumentLoader;
+
+  /**
+   * Whether to treat HTTP requests as HTTPS.  This is useful for testing and
+   * local development.  However, it must be disabled in production.
+   * Turned off by default.
+   */
   treatHttps?: boolean;
+
+  // TODO: The following option should be removed, and exponential backoff
+  // should be used instead:
   backoffSchedule?: Temporal.Duration[];
 }
 

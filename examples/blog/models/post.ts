@@ -1,8 +1,9 @@
 import { RequestContext } from "fedify/federation/context.ts";
-import { Note } from "fedify/vocab/mod.ts";
+import { Collection, CollectionPage, Note } from "fedify/vocab/mod.ts";
 import markdownIt from "markdown-it";
 import { uuidv7 } from "uuidv7";
 import { Blog } from "./blog.ts";
+import { Comment } from "./comment.ts";
 import { openKv } from "./kv.ts";
 
 export interface Post {
@@ -69,19 +70,26 @@ export function getContentHtml(post: Post): string {
   return md.render(post.content);
 }
 
+// Represents a post as an ActivityStreams `Note`:
 export function toNote(
   context: RequestContext<void>,
   blog: Blog,
   post: Post,
+  comments: Comment[],
 ): Note {
-  const url = new URL(`/posts/${post.uuid}`, context.request.url);
+  const url = new URL(`/posts/${post.uuid}`, context.url);
   return new Note({
     id: url,
     attributedTo: context.getActorUri(blog.handle),
     to: new URL("https://www.w3.org/ns/activitystreams#Public"),
     summary: post.title,
-    content: post.content,
+    content: getContentHtml(post),
     published: post.published,
     url,
+    replies: new Collection({
+      first: new CollectionPage({
+        items: comments.map((c) => new URL(c.id)),
+      }),
+    }),
   });
 }

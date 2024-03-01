@@ -31,7 +31,6 @@ properties:
     The attributed entities might not be Actors.  For instance,
     an object might be attributed to the completion of another activity.
   range:
-  - "https://www.w3.org/ns/activitystreams#Link"
   - "https://www.w3.org/ns/activitystreams#Object"
 
 - pluralName: audiences
@@ -43,7 +42,6 @@ properties:
     entities for which the object can considered to be relevant.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - pluralName: contents
   singularName: content
@@ -236,7 +234,6 @@ properties:
     of an Object.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - pluralName: btos
   singularName: bto
@@ -247,7 +244,6 @@ properties:
     this Object.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - pluralName: ccs
   singularName: cc
@@ -258,7 +254,6 @@ properties:
     this Object.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - pluralName: bccs
   singularName: bcc
@@ -269,7 +264,6 @@ properties:
     audience of this Object.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - singularName: mediaType
   functional: true

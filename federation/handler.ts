@@ -24,7 +24,8 @@ function acceptsJsonLd(request: Request): boolean {
   if (types[0] === "text/html" || types[0] === "application/xhtml+xml") {
     return false;
   }
-  return types.includes("application/ld+json") ||
+  return types.includes("application/activity+json") ||
+    types.includes("application/ld+json") ||
     types.includes("application/json");
 }
 
