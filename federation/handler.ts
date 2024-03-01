@@ -211,7 +211,7 @@ export async function handleCollection<
 }
 
 export interface InboxHandlerParameters<TContextData> {
-  handle: string;
+  handle: string | null;
   context: RequestContext<TContextData>;
   kv: Deno.Kv;
   kvPrefix: Deno.KvKey;
@@ -242,7 +242,7 @@ export async function handleInbox<TContextData>(
   if (actorDispatcher == null) {
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
-  } else {
+  } else if (handle != null) {
     const key = await context.getActorKey(handle);
     const promise = actorDispatcher(context, handle, key);
     const actor = promise instanceof Promise ? await promise : promise;

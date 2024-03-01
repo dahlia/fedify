@@ -31,6 +31,12 @@ export interface Context<TContextData> {
   getOutboxUri(handle: string): URL;
 
   /**
+   * Builds the URI of the shared inbox.
+   * @returns The shared inbox URI.
+   */
+  getInboxUri(): URL;
+
+  /**
    * Builds the URI of an actor's inbox with the given handle.
    * @param handle The actor's handle.
    * @returns The actor's inbox URI.

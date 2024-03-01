@@ -201,7 +201,14 @@ export class Federation<TContextData> {
         }
         return new URL(path, url);
       },
-      getInboxUri: (handle: string): URL => {
+      getInboxUri: (handle?: string): URL => {
+        if (handle == null) {
+          const path = this.#router.build("sharedInbox", {});
+          if (path == null) {
+            throw new RouterError("No shared inbox path registered.");
+          }
+          return new URL(path, url);
+        }
         const path = this.#router.build("inbox", { handle });
         if (path == null) {
           throw new RouterError("No inbox path registered.");
@@ -449,21 +456,37 @@ export class Federation<TContextData> {
 
   /**
    * Assigns the URL patth for the inbox and starts setting inbox listeners.
-   * @param path The URI path pattern for the inbox.  The syntax is based on
-   *             URI Template ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
-   *             The path must have one variable: `{handle}`.
+   * @param inboxPath The URI path pattern for the inbox.  The syntax is based
+   *                  on URI Template
+   *                  ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
+   *                  The path must have one variable: `{handle}`.
+   * @param sharedInboxPath An optional URI path pattern for the shared inbox.
+   *                        The syntax is based on URI Template
+   *                        ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
+   *                        The path must have no variables.
    * @returns An object to register inbox listeners.
    * @throws {RouteError} Thrown if the path pattern is invalid.
    */
-  setInboxListeners(path: string): InboxListenerSetter<TContextData> {
+  setInboxListeners(
+    inboxPath: string,
+    sharedInboxPath?: string,
+  ): InboxListenerSetter<TContextData> {
     if (this.#router.has("inbox")) {
       throw new RouterError("Inbox already set.");
     }
-    const variables = this.#router.add(path, "inbox");
+    const variables = this.#router.add(inboxPath, "inbox");
     if (variables.size !== 1 || !variables.has("handle")) {
       throw new RouterError(
         "Path for inbox must have one variable: {handle}",
       );
+    }
+    if (sharedInboxPath != null) {
+      const siVars = this.#router.add(sharedInboxPath, "sharedInbox");
+      if (siVars.size !== 0) {
+        throw new RouterError(
+          "Path for shared inbox must have no variables.",
+        );
+      }
     }
     const listeners = this.#inboxListeners;
     const setter: InboxListenerSetter<TContextData> = {
@@ -571,8 +594,9 @@ export class Federation<TContextData> {
           onNotAcceptable,
         });
       case "inbox":
+      case "sharedInbox":
         return await handleInbox(request, {
-          handle: route.values.handle,
+          handle: route.values.handle ?? null,
           context,
           kv: this.#kv,
           kvPrefix: this.#kvPrefixes.activityIdempotence,

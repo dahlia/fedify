@@ -4,6 +4,7 @@ import {
   Accept,
   Activity,
   Create,
+  Endpoints,
   Follow,
   Link,
   Person,
@@ -40,10 +41,20 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
     summary: blog.description,
     preferredUsername: handle,
     url: new URL("/", ctx.request.url),
+    // A `Context<TContextData>` object has several purposes, and one of
+    // them is to provide a way to generate URIs for the dispatchers and
+    // the collections:
     outbox: ctx.getOutboxUri(handle),
     inbox: ctx.getInboxUri(handle),
+    endpoints: new Endpoints({
+      sharedInbox: ctx.getInboxUri(),
+    }),
     following: ctx.getFollowingUri(handle),
     followers: ctx.getFollowersUri(handle),
+    // The `key` parameter is the public key of the actor, which is used
+    // for the HTTP Signatures.  Note that the `key` object is not a
+    // `CryptoKey` instance, but a `CryptographicKey` instance which is
+    // used for ActivityPub:
     publicKey: key,
   });
 })
@@ -105,7 +116,11 @@ federation.setOutboxDispatcher(
     return "";
   });
 
-federation.setInboxListeners("/users/{handle}/inbox")
+// Registers the inbox listeners, which are responsible for handling
+// incoming activities in the inbox:
+federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
+  // The `Follow` activity is handled by adding the follower to the
+  // follower list:
   .on(Follow, async (ctx, follow) => {
     const blog = await getBlog();
     if (blog == null) return;
@@ -136,20 +151,23 @@ federation.setInboxListeners("/users/{handle}/inbox")
       sharedInbox: recipient.endpoints?.sharedInbox?.href,
       typeName: getActorTypeName(recipient),
     });
+    // Note that if a server receives a `Follow` activity, it should reply
+    // with either an `Accept` or a `Reject` activity.  In this case, the
+    // server automatically accepts the follow request:
     await ctx.sendActivity(
       { handle: blog.handle },
       recipient,
-      new Accept({
-        actor: actorUri,
-        object: follow,
-      }),
+      new Accept({ actor: actorUri, object: follow }),
     );
   })
+  // The `Undo` activity purposes to undo the previous activity.  In this
+  // project, we use the `Undo` activity to represent someone unfollowing
+  // the blog:
   .on(Undo, async (ctx, undo) => {
-    const object = await undo.getObject(ctx);
-    if (object instanceof Follow) {
-      if (object.id == null) return;
-      await removeFollower(object.id.href);
+    const activity = await undo.getObject(ctx); // An `Activity` to undo
+    if (activity instanceof Follow) {
+      if (activity.id == null) return;
+      await removeFollower(activity.id.href);
     } else {
       console.debug(undo);
     }
