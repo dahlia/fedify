@@ -115,7 +115,7 @@ export async function verify(
     }
     if (!matched) return null;
   }
-  const date: Temporal.Instant = new Date(dateHeader).toTemporalInstant();
+  const date = Temporal.Instant.from(new Date(dateHeader).toISOString());
   const now = Temporal.Now.instant();
   if (Temporal.Instant.compare(date, now.add({ seconds: 30 })) > 0) {
     // Too far in the future

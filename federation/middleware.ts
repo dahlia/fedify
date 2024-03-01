@@ -16,7 +16,12 @@ import {
   InboxListener,
 } from "./callback.ts";
 import { Context, RequestContext } from "./context.ts";
-import { handleActor, handleCollection, handleInbox } from "./handler.ts";
+import {
+  CollectionCallbacks,
+  handleActor,
+  handleCollection,
+  handleInbox,
+} from "./handler.ts";
 import { OutboxMessage } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
 import { extractInboxes, sendActivity } from "./send.ts";
@@ -280,7 +285,8 @@ export class Federation<TContextData> {
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
    *             must have one variable: `{handle}`.
    * @param dispatcher An actor dispatcher callback to register.
-   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   * @returns An object with methods to set other actor dispatcher callbacks.
+   * @throws {RouterError} Thrown if the path pattern is invalid.
    */
   setActorDispatcher(
     path: string,
@@ -358,7 +364,9 @@ export class Federation<TContextData> {
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
    *             must have one variable: `{handle}`.
    * @param dispatcher A following collection callback to register.
-   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   * @returns An object with methods to set other following collection
+   *          callbacks.
+   * @throws {RouterError} Thrown if the path pattern is invalid.
    */
   setFollowingDispatcher(
     path: string,
@@ -401,6 +409,8 @@ export class Federation<TContextData> {
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
    *             must have one variable: `{handle}`.
    * @param dispatcher A followers collection callback to register.
+   * @returns An object with methods to set other followers collection
+   *          callbacks.
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setFollowersDispatcher(
@@ -437,6 +447,14 @@ export class Federation<TContextData> {
     return setters;
   }
 
+  /**
+   * Assigns the URL patth for the inbox and starts setting inbox listeners.
+   * @param path The URI path pattern for the inbox.  The syntax is based on
+   *             URI Template ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
+   *             The path must have one variable: `{handle}`.
+   * @returns An object to register inbox listeners.
+   * @throws {RouteError} Thrown if the path pattern is invalid.
+   */
   setInboxListeners(path: string): InboxListenerSetter<TContextData> {
     if (this.#router.has("inbox")) {
       throw new RouterError("Inbox already set.");
@@ -548,10 +566,7 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           documentLoader: this.#documentLoader,
-          collectionDispatcher: this.#outboxCallbacks?.dispatcher,
-          collectionCounter: this.#outboxCallbacks?.counter,
-          collectionFirstCursor: this.#outboxCallbacks?.firstCursor,
-          collectionLastCursor: this.#outboxCallbacks?.lastCursor,
+          collectionCallbacks: this.#outboxCallbacks,
           onNotFound,
           onNotAcceptable,
         });
@@ -572,10 +587,7 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           documentLoader: this.#documentLoader,
-          collectionDispatcher: this.#followingCallbacks?.dispatcher,
-          collectionCounter: this.#followingCallbacks?.counter,
-          collectionFirstCursor: this.#followingCallbacks?.firstCursor,
-          collectionLastCursor: this.#followingCallbacks?.lastCursor,
+          collectionCallbacks: this.#followingCallbacks,
           onNotFound,
           onNotAcceptable,
         });
@@ -584,10 +596,7 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           documentLoader: this.#documentLoader,
-          collectionDispatcher: this.#followersCallbacks?.dispatcher,
-          collectionCounter: this.#followersCallbacks?.counter,
-          collectionFirstCursor: this.#followersCallbacks?.firstCursor,
-          collectionLastCursor: this.#followersCallbacks?.lastCursor,
+          collectionCallbacks: this.#followersCallbacks,
           onNotFound,
           onNotAcceptable,
         });
@@ -632,13 +641,6 @@ export interface ActorCallbackSetters<TContextData> {
   setKeyPairDispatcher(
     dispatcher: ActorKeyPairDispatcher<TContextData>,
   ): ActorCallbackSetters<TContextData>;
-}
-
-interface CollectionCallbacks<TItem, TContextData> {
-  dispatcher: CollectionDispatcher<TItem, TContextData>;
-  counter?: CollectionCounter<TContextData>;
-  firstCursor?: CollectionCursor<TContextData>;
-  lastCursor?: CollectionCursor<TContextData>;
 }
 
 /**

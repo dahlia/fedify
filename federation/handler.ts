@@ -5,9 +5,6 @@ import {
   CollectionCursor,
   CollectionDispatcher,
   InboxListener,
-  OutboxCounter,
-  OutboxCursor,
-  OutboxDispatcher,
 } from "./callback.ts";
 import { RequestContext } from "./context.ts";
 import { verify } from "../httpsig/mod.ts";
@@ -75,14 +72,36 @@ export async function handleActor<TContextData>(
   });
 }
 
+/**
+ * Callbacks for handling a collection.
+ */
+export interface CollectionCallbacks<TItem, TContextData> {
+  /**
+   * A callback that dispatches a collection.
+   */
+  dispatcher: CollectionDispatcher<TItem, TContextData>;
+
+  /**
+   * A callback that counts the number of items in a collection.
+   */
+  counter?: CollectionCounter<TContextData>;
+
+  /**
+   * A callback that returns the first cursor for a collection.
+   */
+  firstCursor?: CollectionCursor<TContextData>;
+
+  /**
+   * A callback that returns the last cursor for a collection.
+   */
+  lastCursor?: CollectionCursor<TContextData>;
+}
+
 export interface CollectionHandlerParameters<TItem, TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
   documentLoader: DocumentLoader;
-  collectionDispatcher?: CollectionDispatcher<TItem, TContextData>;
-  collectionCounter?: CollectionCounter<TContextData>;
-  collectionFirstCursor?: CollectionCursor<TContextData>;
-  collectionLastCursor?: CollectionCursor<TContextData>;
+  collectionCallbacks?: CollectionCallbacks<TItem, TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
@@ -96,15 +115,12 @@ export async function handleCollection<
     handle,
     context,
     documentLoader,
-    collectionDispatcher,
-    collectionCounter,
-    collectionFirstCursor,
-    collectionLastCursor,
+    collectionCallbacks,
     onNotFound,
     onNotAcceptable,
   }: CollectionHandlerParameters<TItem, TContextData>,
 ): Promise<Response> {
-  if (collectionDispatcher == null) {
+  if (collectionCallbacks == null) {
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
   }
@@ -116,16 +132,19 @@ export async function handleCollection<
   const cursor = url.searchParams.get("cursor");
   let collection: OrderedCollection | OrderedCollectionPage;
   if (cursor == null) {
-    const firstCursorPromise = collectionFirstCursor?.(context, handle);
+    const firstCursorPromise = collectionCallbacks.firstCursor?.(
+      context,
+      handle,
+    );
     const firstCursor = firstCursorPromise instanceof Promise
       ? await firstCursorPromise
       : firstCursorPromise;
-    const totalItemsPromise = collectionCounter?.(context, handle);
+    const totalItemsPromise = collectionCallbacks.counter?.(context, handle);
     const totalItems = totalItemsPromise instanceof Promise
       ? await totalItemsPromise
       : totalItemsPromise;
     if (firstCursor == null) {
-      const pagePromise = collectionDispatcher(context, handle, null);
+      const pagePromise = collectionCallbacks.dispatcher(context, handle, null);
       const page = pagePromise instanceof Promise
         ? await pagePromise
         : pagePromise;
@@ -139,7 +158,10 @@ export async function handleCollection<
         items,
       });
     } else {
-      const lastCursorPromise = collectionLastCursor?.(context, handle);
+      const lastCursorPromise = collectionCallbacks.lastCursor?.(
+        context,
+        handle,
+      );
       const lastCursor = lastCursorPromise instanceof Promise
         ? await lastCursorPromise
         : lastCursorPromise;
@@ -157,7 +179,7 @@ export async function handleCollection<
       });
     }
   } else {
-    const pagePromise = collectionDispatcher(context, handle, cursor);
+    const pagePromise = collectionCallbacks.dispatcher(context, handle, cursor);
     const page = pagePromise instanceof Promise
       ? await pagePromise
       : pagePromise;
