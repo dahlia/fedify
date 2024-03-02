@@ -81,3 +81,21 @@ jobs:
     - if: github.ref_type == 'tag'
       run: '[[ "$(jq .version deno.json)" = "$GITHUB_REF_NAME" ]]'
     - run: deno task publish
+
+  publish-examples-blog:
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - run: deno task codegen
+    - uses: denoland/deployctl@v1
+      with:
+        project: fedify-blog
+        entrypoint: ./examples/blog/main.ts
+        root: .
