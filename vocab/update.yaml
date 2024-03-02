@@ -1,0 +1,13 @@
+$schema: ../codegen/schema.yaml
+name: Update
+uri: "https://www.w3.org/ns/activitystreams#Update"
+extends: "https://www.w3.org/ns/activitystreams#Activity"
+entity: true
+description: |
+  Indicates that the `actor` has updated the `object`.  Note, however,
+  that this vocabulary does not define a mechanism for describing the actual
+  set of modifications made to `object`.
+
+  The `target` and `origin` typically have no defined meaning.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

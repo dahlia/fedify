@@ -1,0 +1,11 @@
+$schema: ../codegen/schema.yaml
+name: Announce
+uri: "https://www.w3.org/ns/activitystreams#Announce"
+extends: "https://www.w3.org/ns/activitystreams#Activity"
+entity: true
+description: |
+  Indicates that the `actor` is calling the `target`'s attention the `object`.
+
+  The `origin` typically has no defined meaning.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

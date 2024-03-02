@@ -16,6 +16,7 @@ import {
   Note,
   Object,
   Person,
+  Place,
 } from "./mod.ts";
 
 Deno.test("new Object()", () => {
@@ -315,4 +316,33 @@ Deno.test("Key.publicKey", async () => {
   });
   assertNotEquals(loadedKey.publicKey, null);
   assertEquals(await crypto.subtle.exportKey("jwk", loadedKey.publicKey!), jwk);
+});
+
+Deno.test("Place.fromJsonLd()", async () => {
+  const place = await Place.fromJsonLd({
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "Place",
+    name: "Fresno Area",
+    latitude: 36.75,
+    longitude: 119.7667,
+    radius: 15,
+    units: "miles",
+  }, { documentLoader: mockDocumentLoader });
+  assertInstanceOf(place, Place);
+  assertEquals(place.name, "Fresno Area");
+  assertEquals(place.latitude, 36.75);
+  assertEquals(place.longitude, 119.7667);
+  assertEquals(place.radius, 15);
+  assertEquals(place.units, "miles");
+
+  const jsonLd = await place.toJsonLd({ documentLoader: mockDocumentLoader });
+  assertEquals(jsonLd, {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "Place",
+    name: "Fresno Area",
+    latitude: 36.75,
+    longitude: 119.7667,
+    radius: 15,
+    units: "miles",
+  });
 });

@@ -1,7 +1,7 @@
 import { Actor } from "../vocab/actor.ts";
 import { CryptographicKey } from "../vocab/mod.ts";
 import { Activity } from "../vocab/mod.ts";
-import { Page } from "./collection.ts";
+import { PageItems } from "./collection.ts";
 import { RequestContext } from "./context.ts";
 
 /**
@@ -28,7 +28,7 @@ export type CollectionDispatcher<TItem, TContextData> = (
   context: RequestContext<TContextData>,
   handle: string,
   cursor: string | null,
-) => Page<TItem> | null | Promise<Page<TItem> | null>;
+) => PageItems<TItem> | null | Promise<PageItems<TItem> | null>;
 
 /**
  * A callback that counts the number of items in a collection.

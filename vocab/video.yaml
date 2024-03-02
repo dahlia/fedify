@@ -1,0 +1,8 @@
+$schema: ../codegen/schema.yaml
+name: Video
+uri: "https://www.w3.org/ns/activitystreams#Video"
+extends: "https://www.w3.org/ns/activitystreams#Document"
+entity: true
+description: Represents a video document of any kind.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

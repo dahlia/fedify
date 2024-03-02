@@ -1,0 +1,8 @@
+$schema: ../codegen/schema.yaml
+name: Event
+uri: "https://www.w3.org/ns/activitystreams#Event"
+extends: "https://www.w3.org/ns/activitystreams#Object"
+entity: true
+description: Represents any kind of event.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

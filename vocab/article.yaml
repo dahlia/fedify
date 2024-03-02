@@ -1,0 +1,8 @@
+$schema: ../codegen/schema.yaml
+name: Article
+uri: "https://www.w3.org/ns/activitystreams#Article"
+extends: "https://www.w3.org/ns/activitystreams#Object"
+entity: true
+description: Represents any kind of multi-paragraph written work.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

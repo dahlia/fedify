@@ -1,0 +1,8 @@
+$schema: ../codegen/schema.yaml
+name: Mention
+uri: "https://www.w3.org/ns/activitystreams#Mention"
+extends: "https://www.w3.org/ns/activitystreams#Link"
+entity: false
+description:  A specialized {@link Link} that represents an @mention.
+defaultContext: "https://www.w3.org/ns/activitystreams"
+properties: []

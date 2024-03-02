@@ -65,6 +65,26 @@ const scalarTypes: Record<string, ScalarType> = {
       return `${v}["@value"]`;
     },
   },
+  "http://www.w3.org/2001/XMLSchema#float": {
+    name: "number",
+    typeGuard(v) {
+      return `typeof ${v} === "number" && !Number.isNaN(${v})`;
+    },
+    encoder(v) {
+      return `{
+        "@type": "http://www.w3.org/2001/XMLSchema#float",
+        "@value": ${v},
+      }`;
+    },
+    dataCheck(v) {
+      return `typeof ${v} === "object" && "@type" in ${v}
+        && ${v}["@type"] === "http://www.w3.org/2001/XMLSchema#float"
+        && "@value" in ${v} && typeof ${v}["@value"] === "number"`;
+    },
+    decoder(v) {
+      return `${v}["@value"]`;
+    },
+  },
   "http://www.w3.org/2001/XMLSchema#string": {
     name: "string",
     typeGuard(v) {
@@ -190,6 +210,25 @@ const scalarTypes: Record<string, ScalarType> = {
       return `await importSPKI<CryptoKey>(${v}["@value"], "RS256", {
         extractable: true
       })`;
+    },
+  },
+  "fedify:units": {
+    name: '"cm" | "feet" | "inches" | "km" | "m" | "miles"',
+    typeGuard(v) {
+      return `${v} == "cm" || ${v} == "feet" || ${v} == "inches" ` +
+        `|| ${v} == "km" || ${v} == "m" || ${v} == "miles"`;
+    },
+    encoder(v) {
+      return `{ "@value": ${v} }`;
+    },
+    dataCheck(v) {
+      return `typeof ${v} === "object" && "@value" in ${v}
+      && (${v}["@value"] == "cm" || ${v}["@value"] == "feet" ` +
+        `|| ${v}["@value"] == "inches" || ${v}["@value"] == "km" ` +
+        `|| ${v}["@value"] == "m" || ${v}["@value"] == "miles")`;
+    },
+    decoder(v) {
+      return `${v}["@value"]`;
     },
   },
 };

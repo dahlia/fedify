@@ -21,7 +21,7 @@ import {
   removeFollower,
 } from "../models/follower.ts";
 import { openKv } from "../models/kv.ts";
-import { countPosts, getPosts, toNote } from "../models/post.ts";
+import { countPosts, getPosts, toArticle } from "../models/post.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
@@ -97,7 +97,7 @@ federation.setOutboxDispatcher(
         id: new URL(`/posts/${post.uuid}#activity`, ctx.request.url),
         actor: ctx.getActorUri(handle),
         to: new URL("https://www.w3.org/ns/activitystreams#Public"),
-        object: toNote(ctx, blog, post, comments),
+        object: toArticle(ctx, blog, post, comments),
       });
       activities.push(activity);
     }

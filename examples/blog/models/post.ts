@@ -1,5 +1,5 @@
 import { RequestContext } from "fedify/federation";
-import { Collection, CollectionPage, Note } from "fedify/vocab";
+import { Article, Collection, CollectionPage } from "fedify/vocab";
 import markdownIt from "markdown-it";
 import { uuidv7 } from "uuidv7";
 import { Blog } from "./blog.ts";
@@ -70,15 +70,15 @@ export function getContentHtml(post: Post): string {
   return md.render(post.content);
 }
 
-// Represents a post as an ActivityStreams `Note`:
-export function toNote(
+// Represents a post as an ActivityStreams `Article`:
+export function toArticle(
   context: RequestContext<void>,
   blog: Blog,
   post: Post,
   comments: Comment[],
-): Note {
+): Article {
   const url = new URL(`/posts/${post.uuid}`, context.url);
-  return new Note({
+  return new Article({
     id: url,
     attributedTo: context.getActorUri(blog.handle),
     to: new URL("https://www.w3.org/ns/activitystreams#Public"),

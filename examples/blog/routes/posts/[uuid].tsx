@@ -9,7 +9,11 @@ import {
   type Comment as CommentModel,
   getComments,
 } from "../../models/comment.ts";
-import { getPost, type Post as PostModel, toNote } from "../../models/post.ts";
+import {
+  getPost,
+  type Post as PostModel,
+  toArticle,
+} from "../../models/post.ts";
 
 export interface PostPageData {
   domain: string;
@@ -37,7 +41,7 @@ export const handler: Handler<PostPageData> = async (req, ctx) => {
     accept === "application/ld+json" || accept === "application/json"
   ) {
     const fedCtx = federation.createContext(req);
-    const note = toNote(fedCtx, blog, post, comments);
+    const note = toArticle(fedCtx, blog, post, comments);
     const jsonLd = await note.toJsonLd(fedCtx);
     return new Response(JSON.stringify(jsonLd), {
       headers: {

@@ -1,8 +1,8 @@
 $schema: ../codegen/schema.yaml
-name: Create
-uri: "https://www.w3.org/ns/activitystreams#Create"
+name: Dislike
+uri: "https://www.w3.org/ns/activitystreams#Dislike"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true
-description: Indicates that the `actor` has created the `object`.
+description: Indicates that the `actor` dislikes the `object`.
 defaultContext: "https://www.w3.org/ns/activitystreams"
 properties: []
