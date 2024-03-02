@@ -1,5 +1,5 @@
-import { RequestContext } from "fedify/federation/context.ts";
-import { Collection, CollectionPage, Note } from "fedify/vocab/mod.ts";
+import { RequestContext } from "fedify/federation";
+import { Collection, CollectionPage, Note } from "fedify/vocab";
 import markdownIt from "markdown-it";
 import { uuidv7 } from "uuidv7";
 import { Blog } from "./blog.ts";

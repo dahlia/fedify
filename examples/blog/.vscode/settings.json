@@ -32,9 +32,11 @@
     "docloader",
     "fedify",
     "fediverse",
+    "httpsig",
     "preact",
     "unfollow",
     "unfollowing",
-    "uuidv7"
+    "uuidv7",
+    "webfinger"
   ]
 }

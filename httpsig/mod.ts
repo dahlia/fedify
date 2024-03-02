@@ -1,8 +1,11 @@
-import { equals } from "https://deno.land/std@0.217.0/bytes/mod.ts";
-import {
-  decodeBase64,
-  encodeBase64,
-} from "https://deno.land/std@0.217.0/encoding/base64.ts";
+/**
+ * The implementation of the [HTTP
+ * Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12).
+ *
+ * @module
+ */
+import { equals } from "jsr:@std/bytes@^0.218.2";
+import { decodeBase64, encodeBase64 } from "jsr:@std/encoding@^0.218.2/base64";
 import { DocumentLoader } from "../runtime/docloader.ts";
 import { CryptographicKey, Object as ASObject } from "../vocab/mod.ts";
 import { isActor } from "../vocab/actor.ts";

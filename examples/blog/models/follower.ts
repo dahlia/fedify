@@ -1,9 +1,9 @@
 import {
   Actor,
   ActorTypeName,
+  Endpoints,
   getActorClassByTypeName,
-} from "fedify/vocab/actor.ts";
-import { Endpoints } from "fedify/vocab/mod.ts";
+} from "fedify/vocab";
 import { openKv } from "./kv.ts";
 
 export interface Follower {

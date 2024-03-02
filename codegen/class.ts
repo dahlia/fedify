@@ -72,8 +72,7 @@ export async function* generateClasses(
   yield 'import jsonld from "npm:jsonld@8.3.2";';
   yield `import { LanguageTag, parseLanguageTag }
     from "npm:@phensley/language-tag@1.8.0";\n`;
-  yield `import { exportSPKI, importSPKI }
-    from "https://deno.land/x/jose@v5.2.2/index.ts";\n`;
+  yield `import { exportSPKI, importSPKI } from "npm:jose@5.2.2";\n`;
   yield `import { DocumentLoader, fetchDocumentLoader }
     from "${runtimePath}/docloader.ts";\n`;
   yield `import { LanguageString } from "${runtimePath}/langstr.ts";\n`;

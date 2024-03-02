@@ -1,8 +1,4 @@
-import {
-  dirname,
-  fromFileUrl,
-  join,
-} from "https://deno.land/std@0.208.0/path/mod.ts";
+import { dirname, fromFileUrl, join } from "jsr:@std/path@^0.218.2";
 import { RemoteDocument } from "../runtime/docloader.ts";
 
 /**

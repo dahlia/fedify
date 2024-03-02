@@ -18,7 +18,7 @@ export async function* generateInspector(
         [Symbol.for("Deno.customInspect")]: (
           inspect: typeof Deno.inspect,
           options: Deno.InspectOptions,
-        ) => "URL " + inspect(this.id!.href, options),
+        ): string => "URL " + inspect(this.id!.href, options),
       };
     }
     `;
@@ -37,7 +37,7 @@ export async function* generateInspector(
             [Symbol.for("Deno.customInspect")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ) => "URL " + inspect(v.href, options)
+            ): string => "URL " + inspect(v.href, options)
           }
         : v);
       `;
@@ -66,7 +66,7 @@ export async function* generateInspector(
   [Symbol.for("Deno.customInspect")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
-  ) {
+  ): string {
     const proxy = this._getCustomInspectProxy();
     return ${JSON.stringify(type.name + " ")} + inspect(proxy, options);
   }

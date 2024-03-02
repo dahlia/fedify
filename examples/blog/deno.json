@@ -1,7 +1,7 @@
 {
   "lock": false,
   "tasks": {
-    "fedify-codegen": "cat ../../vocab/mod.ts > /dev/null || (deno run --allow-read --allow-write --check ../../codegen/main.ts ../../vocab/ ../runtime/ > ../../vocab/mod.ts && deno fmt ../../vocab/mod.ts && deno cache ../../vocab/mod.ts && deno check ../../vocab/mod.ts)",
+    "fedify-codegen": "cat ../../vocab/vocab.ts > /dev/null || (deno run --allow-read --allow-write --check ../../codegen/main.ts ../../vocab/ ../runtime/ > ../../vocab/vocab.ts && deno fmt ../../vocab/vocab.ts && deno cache ../../vocab/vocab.ts && deno check ../../vocab/vocab.ts)",
     "check": "deno task fedify-codegen && deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
     "cli": "deno task fedify-codegen && echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
     "manifest": "deno task fedify-codegen && deno task cli manifest $(pwd)",
@@ -28,7 +28,12 @@
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.1",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.0",
     "$std/": "https://deno.land/std@0.217.0/",
-    "fedify/": "../../",
+    "fedify": "../../mod.ts",
+    "fedify/federation": "../../federation/mod.ts",
+    "fedify/httpsig": "../../httpsig/mod.ts",
+    "fedify/runtime": "../../runtime/mod.ts",
+    "fedify/vocab": "../../vocab/mod.ts",
+    "fedify/webfinger": "../../webfinger/mod.ts",
     "uuidv7": "npm:uuidv7@0.6.3",
     "markdown-it": "npm:markdown-it@14.0.0",
     "scrypt": "https://deno.land/x/scrypt@v4.3.1/mod.ts"

@@ -1,4 +1,4 @@
-import { encodeBase58 } from "https://deno.land/std@0.207.0/encoding/base58.ts";
+import { encodeBase58 } from "jsr:@std/encoding@^0.218.2/base58";
 import { PropertySchema, TypeSchema } from "./schema.ts";
 import { areAllScalarTypes, getTypeNames } from "./type.ts";
 

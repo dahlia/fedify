@@ -1,4 +1,4 @@
-import { toPascalCase } from "https://deno.land/std@0.217.0/text/mod.ts";
+import { toPascalCase } from "jsr:@std/text@^0.218.2";
 import { getFieldName } from "./field.ts";
 import { PropertySchema, TypeSchema } from "./schema.ts";
 import { areAllScalarTypes, getTypeNames } from "./type.ts";

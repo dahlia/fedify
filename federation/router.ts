@@ -62,7 +62,7 @@ export class Router {
    * @param values The values to expand the path with.
    * @returns The URL/path, if the name exists.  Otherwise, `null`.
    */
-  build(name: string, values: Record<string, string>) {
+  build(name: string, values: Record<string, string>): string | null {
     if (name in this.#templates) {
       return this.#templates[name].expand(values);
     }

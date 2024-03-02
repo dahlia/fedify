@@ -25,7 +25,7 @@ export class LanguageString extends String {
   [Symbol.for("Deno.customInspect")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
-  ) {
+  ): string {
     return `<${this.language.compact()}> ${inspect(this.toString(), options)}`;
   }
 }

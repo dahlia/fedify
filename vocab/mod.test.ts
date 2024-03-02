@@ -4,7 +4,7 @@ import {
   assertNotEquals,
   assertRejects,
   assertThrows,
-} from "https://deno.land/std@0.217.0/assert/mod.ts";
+} from "jsr:@std/assert@^0.218.2";
 import { toArray } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
 import { LanguageString } from "../runtime/langstr.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";

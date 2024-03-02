@@ -1,18 +1,19 @@
-import { Federation } from "fedify/federation/middleware.ts";
-import { getActorTypeName, isActor } from "fedify/vocab/actor.ts";
+import { Federation } from "fedify/federation";
 import {
   Accept,
   Activity,
   Create,
   Endpoints,
   Follow,
+  getActorTypeName,
+  isActor,
   Link,
   Note,
   Person,
   Undo,
-} from "fedify/vocab/mod.ts";
+} from "fedify/vocab";
 import { getBlog } from "../models/blog.ts";
-import { Comment, getComments } from "../models/comment.ts";
+import { addComment, Comment, getComments } from "../models/comment.ts";
 import {
   addFollower,
   countFollowers,
@@ -21,7 +22,6 @@ import {
 } from "../models/follower.ts";
 import { openKv } from "../models/kv.ts";
 import { countPosts, getPosts, toNote } from "../models/post.ts";
-import { addComment } from "fedify/examples/blog/models/comment.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:

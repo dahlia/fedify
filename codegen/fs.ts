@@ -1,4 +1,4 @@
-import { join } from "https://deno.land/std@0.208.0/path/mod.ts";
+import { join } from "jsr:@std/path@^0.218.2";
 
 /**
  * Recursively read a directory, yielding the paths of all files.  File paths

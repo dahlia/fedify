@@ -1,4 +1,4 @@
-import { accepts } from "https://deno.land/std@0.217.0/http/mod.ts";
+import { accepts } from "jsr:@std/http@^0.218.2";
 import {
   ActorDispatcher,
   CollectionCounter,

@@ -1,6 +1,6 @@
-import { join } from "https://deno.land/std@0.217.0/path/join.ts";
-import * as url from "https://deno.land/std@0.217.0/url/mod.ts";
-import { parse } from "https://deno.land/std@0.217.0/yaml/mod.ts";
+import { join } from "jsr:@std/path@^0.218.2";
+import * as url from "jsr:@std/url@^0.218.2";
+import { parse } from "jsr:@std/yaml@^0.218.2";
 import { Schema as JsonSchema } from "https://deno.land/x/jema@v1.1.9/schema.js";
 import { readDirRecursive } from "./fs.ts";
 

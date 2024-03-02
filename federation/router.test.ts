@@ -1,7 +1,4 @@
-import {
-  assertEquals,
-  assertThrows,
-} from "https://deno.land/std@0.217.0/assert/mod.ts";
+import { assertEquals, assertThrows } from "jsr:@std/assert@^0.218.2";
 import { Router, RouterError } from "./router.ts";
 
 function setUp(): Router {

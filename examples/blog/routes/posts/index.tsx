@@ -1,11 +1,10 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { getFollowersAsActors } from "fedify/examples/blog/models/follower.ts";
-import { Create, Note } from "fedify/vocab/mod.ts";
+import { Create } from "fedify/vocab";
 import { PostFormProps } from "../../components/PostForm.tsx";
 import PostList from "../../components/PostList.tsx";
 import { federation } from "../../federation/mod.ts";
 import { Blog, getBlog, verifyPassword } from "../../models/blog.ts";
-import { countFollowers } from "../../models/follower.ts";
+import { countFollowers, getFollowersAsActors } from "../../models/follower.ts";
 import {
   addPost,
   countPosts,
