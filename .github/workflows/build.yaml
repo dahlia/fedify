@@ -49,4 +49,31 @@ jobs:
     - run: deno task check
     - run: deno task check
       working-directory: ${{ github.workspace }}/examples/blog/
-    - run: deno publish --dry-run
+    - run: deno task publish --dry-run
+
+  publish:
+    if: github.event_name == 'push'
+    needs: [test, lint]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - if: github.ref_type == 'branch'
+      run: |
+        jq \
+          --arg build "$GITHUB_RUN_NUMBER" \
+          --arg commit "${GITHUB_SHA::8}" \
+          '.version = .version + "-dev." + $build + "+" + $commit' \
+          deno.json > deno.json.tmp
+        mv deno.json.tmp deno.json
+        # Don't know why, but the .gitignore list is not overriden by include list
+        # in deno.json:
+        rm vocab/.gitignore
+    - if: github.ref_type == 'tag'
+      run: '[[ "$(jq .version deno.json)" = "$GITHUB_REF_NAME" ]]'
+    - run: deno task publish

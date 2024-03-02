@@ -1,5 +1,6 @@
 .cov/
 .cov.lcov
+.DS_Store
 .test-report.xml
 deno.lock
 docs/*.css
