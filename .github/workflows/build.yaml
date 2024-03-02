@@ -1,0 +1,52 @@
+name: build
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+      issues: read
+      checks: write
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v4
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - run: deno task test --coverage=.cov --junit-path=.test-report.xml
+    - uses: EnricoMi/publish-unit-test-result-action@v2
+      if: runner.os == 'Linux' && always()
+      with:
+        check_name: "Test Results (Linux)"
+        files: .test-report.xml
+    - uses: EnricoMi/publish-unit-test-result-action/macos@v2
+      if: runner.os == 'macOS' && always()
+      with:
+        check_name: "Test Results (macOS)"
+        files: .test-report.xml
+    - uses: EnricoMi/publish-unit-test-result-action/windows@v2
+      if: runner.os == 'Windows' && always()
+      with:
+        check_name: "Test Results (Windows)"
+        files: .test-report.xml
+    - run: deno coverage --lcov .cov > .cov.lcov
+
+  lint:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - run: deno task check
+    - run: deno task check
+      working-directory: ${{ github.workspace }}/examples/blog/
+    - run: deno publish --dry-run

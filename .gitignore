@@ -1,1 +1,8 @@
+.cov/
+.cov.lcov
+.test-report.xml
 deno.lock
+docs/*.css
+docs/*.html
+docs/*.js
+docs/~/

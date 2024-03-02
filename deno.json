@@ -17,7 +17,7 @@
   "tasks": {
     "check": "deno task codegen && deno fmt --check && deno lint && deno check */*.ts",
     "codegen": "deno run --allow-read --allow-write --check codegen/main.ts vocab/ ../runtime/ > vocab/vocab.ts && deno fmt vocab/vocab.ts && deno cache vocab/vocab.ts && deno check vocab/vocab.ts",
-    "test-without-codegen": "deno test --check --allow-read --allow-write --unstable-temporal",
+    "test-without-codegen": "deno test --check --doc --allow-read --allow-write --unstable-temporal",
     "test": "deno task codegen && deno task test-without-codegen"
   },
   "unstable": [
