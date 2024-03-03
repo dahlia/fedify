@@ -35,6 +35,10 @@ jobs:
         check_name: "Test Results (Windows)"
         files: .test-report.xml
     - run: deno coverage --lcov .cov > .cov.lcov
+    - uses: codecov/codecov-action@v4
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: .cov.lcov
 
   lint:
     runs-on: ubuntu-latest
