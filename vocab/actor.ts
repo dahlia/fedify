@@ -1,4 +1,4 @@
-import { Application, Group, Organization, Person, Service } from "./mod.ts";
+import { Application, Group, Organization, Person, Service } from "./vocab.ts";
 
 /**
  * Actor types are {@link Object} types that are capable of performing

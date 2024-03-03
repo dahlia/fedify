@@ -29,7 +29,7 @@ export class FetchError extends Error {
    * @param message Error message.
    */
   constructor(url: URL | string, message?: string) {
-    super(`${url}: ${message}`);
+    super(message == null ? url.toString() : `${url}: ${message}`);
     this.name = "FetchError";
     this.url = typeof url === "string" ? new URL(url) : url;
   }

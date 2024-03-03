@@ -1,0 +1,6592 @@
+export const snapshot = {};
+
+snapshot[`Deno.inspect(CryptographicKey) [auto] 1`] = `
+'CryptographicKey {
+  id: URL "https://example.com/",
+  owner: Application {},
+  publicKey: CryptoKey {
+    type: "public",
+    extractable: true,
+    algorithm: {
+      name: "RSASSA-PKCS1-v1_5",
+      modulusLength: 4096,
+      publicExponent: Uint8Array(3) [ 1, 0, 1 ],
+      hash: { name: "SHA-256" }
+    },
+    usages: [ "verify" ]
+  }
+}'
+`;
+
+snapshot[`Deno.inspect(CryptographicKey) [auto] 2`] = `
+'CryptographicKey {
+  owner: URL "https://example.com/",
+  publicKey: CryptoKey {
+    type: "public",
+    extractable: true,
+    algorithm: {
+      name: "RSASSA-PKCS1-v1_5",
+      modulusLength: 4096,
+      publicExponent: Uint8Array(3) [ 1, 0, 1 ],
+      hash: { name: "SHA-256" }
+    },
+    usages: [ "verify" ]
+  }
+}'
+`;
+
+snapshot[`Deno.inspect(CryptographicKey) [auto] 3`] = `
+'CryptographicKey {
+  owner: Application {},
+  publicKey: CryptoKey {
+    type: "public",
+    extractable: true,
+    algorithm: {
+      name: "RSASSA-PKCS1-v1_5",
+      modulusLength: 4096,
+      publicExponent: Uint8Array(3) [ 1, 0, 1 ],
+      hash: { name: "SHA-256" }
+    },
+    usages: [ "verify" ]
+  }
+}'
+`;
+
+snapshot[`Deno.inspect(Accept) [auto] 1`] = `
+'Accept {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Accept) [auto] 2`] = `
+'Accept {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Accept) [auto] 3`] = `
+'Accept {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Activity) [auto] 1`] = `
+'Activity {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Activity) [auto] 2`] = `
+'Activity {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Activity) [auto] 3`] = `
+'Activity {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Add) [auto] 1`] = `
+'Add {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Add) [auto] 2`] = `
+'Add {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Add) [auto] 3`] = `
+'Add {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Announce) [auto] 1`] = `
+'Announce {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Announce) [auto] 2`] = `
+'Announce {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Announce) [auto] 3`] = `
+'Announce {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Application) [auto] 1`] = `
+'Application {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: CryptographicKey {},
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Application) [auto] 2`] = `
+'Application {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: URL "https://example.com/",
+  manuallyApprovesFollowers: true,
+  inbox: URL "https://example.com/",
+  outbox: URL "https://example.com/",
+  following: URL "https://example.com/",
+  followers: URL "https://example.com/",
+  linked: URL "https://example.com/",
+  streams: [ URL "https://example.com/" ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Application) [auto] 3`] = `
+'Application {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", "hello" ],
+  publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {}, Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Article) [auto] 1`] = `
+'Article {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Article) [auto] 2`] = `
+'Article {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Article) [auto] 3`] = `
+'Article {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Audio) [auto] 1`] = `
+'Audio {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Audio) [auto] 2`] = `
+'Audio {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Audio) [auto] 3`] = `
+'Audio {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Block) [auto] 1`] = `
+'Block {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Block) [auto] 2`] = `
+'Block {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Block) [auto] 3`] = `
+'Block {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Collection) [auto] 1`] = `
+'Collection {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: CollectionPage {},
+  first: CollectionPage {},
+  last: CollectionPage {},
+  items: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Collection) [auto] 2`] = `
+'Collection {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: URL "https://example.com/",
+  first: URL "https://example.com/",
+  last: URL "https://example.com/",
+  items: [ URL "https://example.com/" ]
+}'
+`;
+
+snapshot[`Deno.inspect(Collection) [auto] 3`] = `
+'Collection {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: CollectionPage {},
+  first: CollectionPage {},
+  last: CollectionPage {},
+  items: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(CollectionPage) [auto] 1`] = `
+'CollectionPage {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: CollectionPage {},
+  first: CollectionPage {},
+  last: CollectionPage {},
+  items: [ Object {}, Link {} ],
+  partOf: Link {},
+  next: CollectionPage {},
+  prev: CollectionPage {}
+}'
+`;
+
+snapshot[`Deno.inspect(CollectionPage) [auto] 2`] = `
+'CollectionPage {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: URL "https://example.com/",
+  first: URL "https://example.com/",
+  last: URL "https://example.com/",
+  items: [ URL "https://example.com/" ],
+  partOf: URL "https://example.com/",
+  next: URL "https://example.com/",
+  prev: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(CollectionPage) [auto] 3`] = `
+'CollectionPage {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: CollectionPage {},
+  first: CollectionPage {},
+  last: CollectionPage {},
+  items: [ Object {}, Object {} ],
+  partOf: Link {},
+  next: CollectionPage {},
+  prev: CollectionPage {}
+}'
+`;
+
+snapshot[`Deno.inspect(Create) [auto] 1`] = `
+'Create {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Create) [auto] 2`] = `
+'Create {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Create) [auto] 3`] = `
+'Create {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Delete) [auto] 1`] = `
+'Delete {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Delete) [auto] 2`] = `
+'Delete {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Delete) [auto] 3`] = `
+'Delete {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
+'Dislike {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Dislike) [auto] 2`] = `
+'Dislike {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Dislike) [auto] 3`] = `
+'Dislike {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Document) [auto] 1`] = `
+'Document {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Document) [auto] 2`] = `
+'Document {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Document) [auto] 3`] = `
+'Document {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Endpoints) [auto] 1`] = `
+'Endpoints {
+  id: URL "https://example.com/",
+  proxyUrl: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  oauthAuthorizationEndpoint: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  oauthTokenEndpoint: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  provideClientKey: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  signClientKey: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  sharedInbox: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  }
+}'
+`;
+
+snapshot[`Deno.inspect(Endpoints) [auto] 2`] = `
+'Endpoints {
+  proxyUrl: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  oauthAuthorizationEndpoint: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  oauthTokenEndpoint: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  provideClientKey: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  signClientKey: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  sharedInbox: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  }
+}'
+`;
+
+snapshot[`Deno.inspect(Endpoints) [auto] 3`] = `
+'Endpoints {
+  proxyUrl: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  oauthAuthorizationEndpoint: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  oauthTokenEndpoint: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  provideClientKey: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  signClientKey: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  sharedInbox: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  }
+}'
+`;
+
+snapshot[`Deno.inspect(Event) [auto] 1`] = `
+'Event {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Event) [auto] 2`] = `
+'Event {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Event) [auto] 3`] = `
+'Event {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Flag) [auto] 1`] = `
+'Flag {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Flag) [auto] 2`] = `
+'Flag {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Flag) [auto] 3`] = `
+'Flag {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Follow) [auto] 1`] = `
+'Follow {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Follow) [auto] 2`] = `
+'Follow {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Follow) [auto] 3`] = `
+'Follow {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Group) [auto] 1`] = `
+'Group {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: CryptographicKey {},
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Group) [auto] 2`] = `
+'Group {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: URL "https://example.com/",
+  manuallyApprovesFollowers: true,
+  inbox: URL "https://example.com/",
+  outbox: URL "https://example.com/",
+  following: URL "https://example.com/",
+  followers: URL "https://example.com/",
+  linked: URL "https://example.com/",
+  streams: [ URL "https://example.com/" ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Group) [auto] 3`] = `
+'Group {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", "hello" ],
+  publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {}, Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
+'Ignore {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Ignore) [auto] 2`] = `
+'Ignore {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Ignore) [auto] 3`] = `
+'Ignore {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Image) [auto] 1`] = `
+'Image {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Image) [auto] 2`] = `
+'Image {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Image) [auto] 3`] = `
+'Image {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
+'IntransitiveActivity {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(IntransitiveActivity) [auto] 2`] = `
+'IntransitiveActivity {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(IntransitiveActivity) [auto] 3`] = `
+'IntransitiveActivity {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Like) [auto] 1`] = `
+'Like {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Like) [auto] 2`] = `
+'Like {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Like) [auto] 3`] = `
+'Like {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Link) [auto] 1`] = `
+'Link {
+  id: URL "https://example.com/",
+  href: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  rel: "hello",
+  mediaType: "hello",
+  names: [ "hello", <en> "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ Link {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Link) [auto] 2`] = `
+'Link {
+  href: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  rel: "hello",
+  mediaType: "hello",
+  names: [ "hello", <en> "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ URL "https://example.com/" ]
+}'
+`;
+
+snapshot[`Deno.inspect(Link) [auto] 3`] = `
+'Link {
+  href: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  rels: [ "hello", "hello" ],
+  mediaType: "hello",
+  names: [ "hello", "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ Link {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Mention) [auto] 1`] = `
+'Mention {
+  id: URL "https://example.com/",
+  href: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  rel: "hello",
+  mediaType: "hello",
+  names: [ "hello", <en> "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ Link {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Mention) [auto] 2`] = `
+'Mention {
+  href: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  rel: "hello",
+  mediaType: "hello",
+  names: [ "hello", <en> "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ URL "https://example.com/" ]
+}'
+`;
+
+snapshot[`Deno.inspect(Mention) [auto] 3`] = `
+'Mention {
+  href: URL {
+    href: "https://example.com/",
+    origin: "https://example.com",
+    protocol: "https:",
+    username: "",
+    password: "",
+    host: "example.com",
+    hostname: "example.com",
+    port: "",
+    pathname: "/",
+    hash: "",
+    search: ""
+  },
+  rels: [ "hello", "hello" ],
+  mediaType: "hello",
+  names: [ "hello", "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ Link {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Note) [auto] 1`] = `
+'Note {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Note) [auto] 2`] = `
+'Note {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Note) [auto] 3`] = `
+'Note {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Object) [auto] 1`] = `
+'Object {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Object) [auto] 2`] = `
+'Object {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Object) [auto] 3`] = `
+'Object {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(OrderedCollection) [auto] 1`] = `
+'OrderedCollection {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: CollectionPage {},
+  first: CollectionPage {},
+  last: CollectionPage {},
+  items: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(OrderedCollection) [auto] 2`] = `
+'OrderedCollection {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: URL "https://example.com/",
+  first: URL "https://example.com/",
+  last: URL "https://example.com/",
+  items: [ URL "https://example.com/" ]
+}'
+`;
+
+snapshot[`Deno.inspect(OrderedCollection) [auto] 3`] = `
+'OrderedCollection {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: CollectionPage {},
+  first: CollectionPage {},
+  last: CollectionPage {},
+  items: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 1`] = `
+'OrderedCollectionPage {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: CollectionPage {},
+  first: CollectionPage {},
+  last: CollectionPage {},
+  items: [ Object {}, Link {} ],
+  partOf: Link {},
+  next: CollectionPage {},
+  prev: CollectionPage {},
+  startIndex: 123
+}'
+`;
+
+snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 2`] = `
+'OrderedCollectionPage {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: URL "https://example.com/",
+  first: URL "https://example.com/",
+  last: URL "https://example.com/",
+  items: [ URL "https://example.com/" ],
+  partOf: URL "https://example.com/",
+  next: URL "https://example.com/",
+  prev: URL "https://example.com/",
+  startIndex: 123
+}'
+`;
+
+snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 3`] = `
+'OrderedCollectionPage {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  totalItems: 123,
+  current: CollectionPage {},
+  first: CollectionPage {},
+  last: CollectionPage {},
+  items: [ Object {}, Object {} ],
+  partOf: Link {},
+  next: CollectionPage {},
+  prev: CollectionPage {},
+  startIndex: 123
+}'
+`;
+
+snapshot[`Deno.inspect(Organization) [auto] 1`] = `
+'Organization {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: CryptographicKey {},
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Organization) [auto] 2`] = `
+'Organization {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: URL "https://example.com/",
+  manuallyApprovesFollowers: true,
+  inbox: URL "https://example.com/",
+  outbox: URL "https://example.com/",
+  following: URL "https://example.com/",
+  followers: URL "https://example.com/",
+  linked: URL "https://example.com/",
+  streams: [ URL "https://example.com/" ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Organization) [auto] 3`] = `
+'Organization {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", "hello" ],
+  publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {}, Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Page) [auto] 1`] = `
+'Page {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Page) [auto] 2`] = `
+'Page {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Page) [auto] 3`] = `
+'Page {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Person) [auto] 1`] = `
+'Person {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: CryptographicKey {},
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Person) [auto] 2`] = `
+'Person {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: URL "https://example.com/",
+  manuallyApprovesFollowers: true,
+  inbox: URL "https://example.com/",
+  outbox: URL "https://example.com/",
+  following: URL "https://example.com/",
+  followers: URL "https://example.com/",
+  linked: URL "https://example.com/",
+  streams: [ URL "https://example.com/" ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Person) [auto] 3`] = `
+'Person {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", "hello" ],
+  publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {}, Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Place) [auto] 1`] = `
+'Place {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  accuracy: 12.34,
+  altitude: 12.34,
+  latitude: 12.34,
+  longitude: 12.34,
+  radius: 12.34,
+  units: "m"
+}'
+`;
+
+snapshot[`Deno.inspect(Place) [auto] 2`] = `
+'Place {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  accuracy: 12.34,
+  altitude: 12.34,
+  latitude: 12.34,
+  longitude: 12.34,
+  radius: 12.34,
+  units: "m"
+}'
+`;
+
+snapshot[`Deno.inspect(Place) [auto] 3`] = `
+'Place {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  accuracy: 12.34,
+  altitude: 12.34,
+  latitude: 12.34,
+  longitude: 12.34,
+  radius: 12.34,
+  units: "m"
+}'
+`;
+
+snapshot[`Deno.inspect(Profile) [auto] 1`] = `
+'Profile {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  describes: Object {}
+}'
+`;
+
+snapshot[`Deno.inspect(Profile) [auto] 2`] = `
+'Profile {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  describes: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Profile) [auto] 3`] = `
+'Profile {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  describes: Object {}
+}'
+`;
+
+snapshot[`Deno.inspect(Reject) [auto] 1`] = `
+'Reject {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Reject) [auto] 2`] = `
+'Reject {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Reject) [auto] 3`] = `
+'Reject {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Relationship) [auto] 1`] = `
+'Relationship {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  subject: Object {},
+  object: Object {},
+  relationship: Object {}
+}'
+`;
+
+snapshot[`Deno.inspect(Relationship) [auto] 2`] = `
+'Relationship {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  subject: URL "https://example.com/",
+  object: URL "https://example.com/",
+  relationship: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Relationship) [auto] 3`] = `
+'Relationship {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  subject: Object {},
+  objects: [ Object {}, Object {} ],
+  relationships: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Remove) [auto] 1`] = `
+'Remove {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Remove) [auto] 2`] = `
+'Remove {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Remove) [auto] 3`] = `
+'Remove {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Service) [auto] 1`] = `
+'Service {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: CryptographicKey {},
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Service) [auto] 2`] = `
+'Service {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", <en> "hello" ],
+  publicKey: URL "https://example.com/",
+  manuallyApprovesFollowers: true,
+  inbox: URL "https://example.com/",
+  outbox: URL "https://example.com/",
+  following: URL "https://example.com/",
+  followers: URL "https://example.com/",
+  linked: URL "https://example.com/",
+  streams: [ URL "https://example.com/" ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Service) [auto] 3`] = `
+'Service {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  preferredUsernames: [ "hello", "hello" ],
+  publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
+  manuallyApprovesFollowers: true,
+  inbox: OrderedCollection {},
+  outbox: OrderedCollection {},
+  following: Collection {},
+  followers: Collection {},
+  linked: Collection {},
+  streams: [ Collection {}, Collection {} ],
+  endpoints: Endpoints {}
+}'
+`;
+
+snapshot[`Deno.inspect(Undo) [auto] 1`] = `
+'Undo {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Undo) [auto] 2`] = `
+'Undo {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Undo) [auto] 3`] = `
+'Undo {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Update) [auto] 1`] = `
+'Update {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Link {} ],
+  objects: [ Object {}, Link {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Update) [auto] 2`] = `
+'Update {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H,
+  actor: URL "https://example.com/",
+  object: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Update) [auto] 3`] = `
+'Update {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H,
+  actors: [ Object {}, Object {} ],
+  objects: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Video) [auto] 1`] = `
+'Video {
+  id: URL "https://example.com/",
+  attachments: [ Object {}, Link {} ],
+  attributedTo: Object {},
+  audience: Object {},
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ Object {}, Link {} ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Link {} ],
+  icons: [ Image {}, Link {} ],
+  images: [ Image {}, Link {} ],
+  replyTargets: [ Object {}, Link {} ],
+  locations: [ Object {}, Link {} ],
+  previews: [ Link {}, Object {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ Object {}, Link {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: Object {},
+  bto: Object {},
+  cc: Object {},
+  bcc: Object {},
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Video) [auto] 2`] = `
+'Video {
+  attachments: [ URL "https://example.com/" ],
+  attributedTo: URL "https://example.com/",
+  audience: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  contexts: [ URL "https://example.com/" ],
+  names: [ "hello", <en> "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ URL "https://example.com/" ],
+  icons: [ URL "https://example.com/" ],
+  images: [ URL "https://example.com/" ],
+  replyTarget: URL "https://example.com/",
+  location: URL "https://example.com/",
+  preview: URL "https://example.com/",
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: URL "https://example.com/",
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", <en> "hello" ],
+  tags: [ URL "https://example.com/" ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    Link {}
+  ],
+  to: URL "https://example.com/",
+  bto: URL "https://example.com/",
+  cc: URL "https://example.com/",
+  bcc: URL "https://example.com/",
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;
+
+snapshot[`Deno.inspect(Video) [auto] 3`] = `
+'Video {
+  attachments: [ Object {}, Object {} ],
+  attributedTos: [ Object {}, Object {} ],
+  audiences: [ Object {}, Object {} ],
+  contents: [ "hello", "hello" ],
+  contexts: [ Object {}, Object {} ],
+  names: [ "hello", "hello" ],
+  endTime: 2024-03-03T08:30:06.796196096Z,
+  generators: [ Object {}, Object {} ],
+  icons: [ Image {}, Image {} ],
+  images: [ Image {}, Image {} ],
+  replyTargets: [ Object {}, Object {} ],
+  locations: [ Object {}, Object {} ],
+  previews: [ Link {}, Link {} ],
+  published: 2024-03-03T08:30:06.796196096Z,
+  replies: Collection {},
+  startTime: 2024-03-03T08:30:06.796196096Z,
+  summaries: [ "hello", "hello" ],
+  tags: [ Object {}, Object {} ],
+  updated: 2024-03-03T08:30:06.796196096Z,
+  urls: [
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    },
+    URL {
+      href: "https://example.com/",
+      origin: "https://example.com",
+      protocol: "https:",
+      username: "",
+      password: "",
+      host: "example.com",
+      hostname: "example.com",
+      port: "",
+      pathname: "/",
+      hash: "",
+      search: ""
+    }
+  ],
+  tos: [ Object {}, Object {} ],
+  btos: [ Object {}, Object {} ],
+  ccs: [ Object {}, Object {} ],
+  bccs: [ Object {}, Object {} ],
+  mediaType: "hello",
+  duration: PT1H
+}'
+`;

@@ -9,7 +9,7 @@ import { RemoteDocument } from "../runtime/docloader.ts";
  * the file `testing/fixtures/http/example.com/foo/bar` (no suffix) and return
  * its content as the response.
  */
-export async function mockDocumentLoader(
+export function mockDocumentLoader(
   resource: string,
 ): Promise<RemoteDocument> {
   const url = new URL(resource);
@@ -21,10 +21,10 @@ export async function mockDocumentLoader(
     ...path,
   );
 
-  const content = await Deno.readTextFile(filePath);
-  return {
+  const content = Deno.readTextFileSync(filePath);
+  return Promise.resolve({
     contextUrl: null,
     document: JSON.parse(content),
     documentUrl: resource,
-  };
+  });
 }

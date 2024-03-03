@@ -49,7 +49,9 @@ export async function* generateEncoder(
     if (!areAllScalarTypes(property.range, types)) {
       yield 'v instanceof URL ? { "@id": v.href } : ';
     }
-    for (const code of getEncoders(property.range, types, "v")) yield code;
+    for (const code of getEncoders(property.range, types, "v", "options")) {
+      yield code;
+    }
     yield `
       );
     }
@@ -100,9 +102,13 @@ export async function* generateDecoder(
     if (globalThis.Object.keys(json).length == 0) {
       values = {};
     } else {
-      const expanded = await jsonld.expand(json, options);
-      // deno-lint-ignore no-explicit-any
-      values = expanded[0] as (Record<string, any[]> & { "@id"?: string });
+      const expanded = await jsonld.expand(json, {
+        ...options,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { "@id"?: string });
     }
   `;
   const subtypes = getSubtypes(typeUri, types, true);
@@ -154,12 +160,16 @@ export async function* generateDecoder(
       `;
     }
     if (property.range.length == 1) {
-      yield `${variable}.push(${getDecoder(property.range[0], types, "v")})`;
+      yield `${variable}.push(${
+        getDecoder(property.range[0], types, "v", "options")
+      })`;
     } else {
       yield `
       const decoded =
       `;
-      for (const code of getDecoders(property.range, types, "v")) yield code;
+      for (const code of getDecoders(property.range, types, "v", "options")) {
+        yield code;
+      }
       yield `
       ;
       if (typeof decoded === "undefined") continue;

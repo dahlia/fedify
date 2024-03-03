@@ -2,6 +2,7 @@
 .cov.lcov
 .DS_Store
 .test-report.xml
+coverage/
 deno.lock
 docs/*.css
 docs/*.html

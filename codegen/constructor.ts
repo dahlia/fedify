@@ -91,6 +91,9 @@ export async function* generateConstructor(
       yield `
         if ("${property.pluralName}" in values && \
             values.${property.pluralName} != null) {
+      `;
+      if (property.singularAccessor) {
+        yield `
           if ("${property.singularName}" in values &&
               values.${property.singularName} != null) {
             throw new TypeError(
@@ -98,6 +101,9 @@ export async function* generateConstructor(
                 "${property.pluralName} at the same time.",
             );
           }
+        `;
+      }
+      yield `
           this.${fieldName} = values.${property.pluralName};
         }
       `;
@@ -144,6 +150,9 @@ export async function* generateCloner(
       yield `
         if ("${property.pluralName}" in values && \
             values.${property.pluralName} != null) {
+      `;
+      if (property.singularAccessor) {
+        yield `
           if ("${property.singularName}" in values &&
               values.${property.singularName} != null) {
             throw new TypeError(
@@ -151,6 +160,9 @@ export async function* generateCloner(
                 "${property.pluralName} at the same time.",
             );
           }
+        `;
+      }
+      yield `
           clone.${fieldName} = values.${property.pluralName};
         }
       `;

@@ -6,4 +6,5 @@ entity: true
 description: |
   Indicates that the `actor` likes, recommends or endorses the `object`.
   The `target` and `origin` typically have no defined meaning.
+defaultContext: "https://www.w3.org/ns/activitystreams"
 properties: []

@@ -1,5 +1,8 @@
 import { assertEquals } from "jsr:@std/assert@^0.218.2";
-import { sortTopologically } from "./class.ts";
+import { dirname, join } from "jsr:@std/path@^0.218.2";
+import { assertSnapshot } from "jsr:@std/testing@^0.218.2/snapshot";
+import { generateClasses, sortTopologically } from "./class.ts";
+import { loadSchemaFiles } from "./schema.ts";
 
 Deno.test("sortTopologically()", () => {
   const sorted = sortTopologically({
@@ -58,4 +61,15 @@ Deno.test("sortTopologically()", () => {
       "https://example.com/baz",
     ],
   );
+});
+
+Deno.test("generateClasses()", async (t) => {
+  const schemaDir = join(dirname(import.meta.dirname!), "vocab");
+  const runtimePath = "../runtime/";
+  const types = await loadSchemaFiles(schemaDir);
+  let entireCode = "";
+  for await (const code of generateClasses(types, runtimePath)) {
+    entireCode += code;
+  }
+  await assertSnapshot(t, entireCode);
 });
