@@ -6,6 +6,7 @@
  */
 import { equals } from "jsr:@std/bytes@^0.218.2";
 import { decodeBase64, encodeBase64 } from "jsr:@std/encoding@^0.218.2/base64";
+import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
 import { DocumentLoader } from "../runtime/docloader.ts";
 import { CryptographicKey, Object as ASObject } from "../vocab/mod.ts";
 import { isActor } from "../vocab/actor.ts";

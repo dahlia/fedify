@@ -1,3 +1,4 @@
+import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
 import { assertEquals, assertThrows } from "jsr:@std/assert@^0.218.2";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { FetchError, kvCache } from "./docloader.ts";

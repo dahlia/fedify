@@ -1,3 +1,4 @@
+import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
 import { RequestContext } from "fedify/federation";
 import { Article, Collection, CollectionPage } from "fedify/vocab";
 import markdownIt from "markdown-it";

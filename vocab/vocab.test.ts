@@ -8,6 +8,7 @@ import {
 } from "jsr:@std/assert@^0.218.2";
 import { assertSnapshot } from "jsr:@std/testing@^0.218.2/snapshot";
 import { toPascalCase } from "jsr:@std/text@^0.218.2";
+import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
 import { toArray } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
 import {
   loadSchemaFiles,

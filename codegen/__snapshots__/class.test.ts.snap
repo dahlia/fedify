@@ -2,7 +2,9 @@ export const snapshot = {};
 
 snapshot[`generateClasses() 1`] = `
 "// deno-lint-ignore-file ban-unused-ignore
-import jsonld from \\"npm:jsonld@8.3.2\\";import { LanguageTag, parseLanguageTag }
+import { Temporal } from \\"npm:@js-temporal/polyfill@^0.4.4\\";
+import jsonld from \\"npm:jsonld@8.3.2\\";
+import { LanguageTag, parseLanguageTag }
     from \\"npm:@phensley/language-tag@1.8.0\\";
 import { exportSPKI, importSPKI } from \\"npm:jose@5.2.2\\";
 import { DocumentLoader, fetchDocumentLoader }

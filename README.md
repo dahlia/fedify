@@ -39,9 +39,7 @@ in the *examples/* directory.
 [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
 
 
-Prerequisites
--------------
+Prerequisite
+------------
 
- -  [Deno] 1.41.0 or later with the following flags:
-     -  `--unstable-temporal`
-     -  `--unstable-kv`
+[Deno] 1.41.0 or later with `--unstable-kv` flag

@@ -1,3 +1,5 @@
+import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+
 /**
  * A remote JSON-LD document and its context fetched by
  * a {@link DocumentLoader}.

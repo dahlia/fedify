@@ -1,3 +1,4 @@
+import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
 import { validateCryptoKey } from "../httpsig/key.ts";
 import {
   DocumentLoader,

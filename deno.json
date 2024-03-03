@@ -19,14 +19,13 @@
   "tasks": {
     "check": "deno task codegen && deno fmt --check && deno lint && deno check */*.ts",
     "codegen": "deno run --allow-read --allow-write --check codegen/main.ts vocab/ ../runtime/ > vocab/vocab.ts && deno fmt vocab/vocab.ts && deno cache vocab/vocab.ts && deno check vocab/vocab.ts",
-    "test-without-codegen": "deno test --check --doc --allow-read --allow-write --unstable-temporal --unstable-kv --trace-leaks",
+    "test-without-codegen": "deno test --check --doc --allow-read --allow-write --unstable-kv --trace-leaks",
     "test": "deno task codegen && deno task test-without-codegen",
     "coverage": "rm -rf coverage/ && deno task test --coverage && deno coverage --html coverage",
     "publish": "deno task codegen && deno publish"
   },
   "unstable": [
-    "kv",
-    "temporal"
+    "kv"
   ],
   "lock": false
 }
