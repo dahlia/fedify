@@ -21,7 +21,10 @@ export default async function FollowerList(req: Request) {
             <a href="/">{blog.title}</a>
           </h1>
           <p>
-            <strong>@{blog.handle}@{domain}</strong> &middot;{" "}
+            <strong style="user-select: all; cursor: text;">
+              @{blog.handle}@{domain}
+            </strong>{" "}
+            &middot;{" "}
             {totalFollowers === 1n
               ? "1 follower"
               : `${totalFollowers} followers`} &middot; {blog.description}

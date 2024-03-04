@@ -34,7 +34,10 @@ export default function PostList(
         <hgroup>
           <h1>{blog.title}</h1>
           <p>
-            <strong>@{blog.handle}@{domain}</strong> &middot;{" "}
+            <strong style="user-select: all; cursor: text;">
+              @{blog.handle}@{domain}
+            </strong>{" "}
+            &middot;{" "}
             <a href="/followers">
               {followers === 1n ? "1 follower" : `${followers} followers`}
             </a>{" "}
