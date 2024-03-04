@@ -111,7 +111,8 @@ owner?: Application | Group | Organization | Person | Service | URL | null;publi
     }
     
       /**
-       * Similar to {@link getOwner()},
+       * Similar to
+       * {@link CryptographicKey.getOwner},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get ownerId(): URL | null {
@@ -990,7 +991,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     
       /**
-       * Similar to {@link getAttachments()},
+       * Similar to
+       * {@link Object.getAttachments},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get attachmentIds(): URL[] {
@@ -1053,7 +1055,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     
       /**
-       * Similar to {@link getAttributedTo()},
+       * Similar to
+       * {@link Object.getAttributedTo},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get attributedToId(): URL | null {
@@ -1090,7 +1093,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       }
       
       /**
-       * Similar to {@link getAttributedTos()},
+       * Similar to
+       * {@link Object.getAttributedTos},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get attributedToIds(): URL[] {
@@ -1153,7 +1157,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     
       /**
-       * Similar to {@link getAudience()},
+       * Similar to
+       * {@link Object.getAudience},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get audienceId(): URL | null {
@@ -1189,7 +1194,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       }
       
       /**
-       * Similar to {@link getAudiences()},
+       * Similar to
+       * {@link Object.getAudiences},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get audienceIds(): URL[] {
@@ -1280,7 +1286,8 @@ get contents(): (string | LanguageString)[] {
     }
     
       /**
-       * Similar to {@link getContexts()},
+       * Similar to
+       * {@link Object.getContexts},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get contextIds(): URL[] {
@@ -1383,7 +1390,8 @@ get endTime(): (Temporal.Instant | null) {
     }
     
       /**
-       * Similar to {@link getGenerators()},
+       * Similar to
+       * {@link Object.getGenerators},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get generatorIds(): URL[] {
@@ -1450,7 +1458,8 @@ get endTime(): (Temporal.Instant | null) {
     }
     
       /**
-       * Similar to {@link getIcons()},
+       * Similar to
+       * {@link Object.getIcons},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get iconIds(): URL[] {
@@ -1519,7 +1528,8 @@ get endTime(): (Temporal.Instant | null) {
     }
     
       /**
-       * Similar to {@link getImages()},
+       * Similar to
+       * {@link Object.getImages},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get imageIds(): URL[] {
@@ -1588,7 +1598,8 @@ get endTime(): (Temporal.Instant | null) {
     }
     
       /**
-       * Similar to {@link getReplyTarget()},
+       * Similar to
+       * {@link Object.getReplyTarget},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get replyTargetId(): URL | null {
@@ -1624,7 +1635,8 @@ get endTime(): (Temporal.Instant | null) {
       }
       
       /**
-       * Similar to {@link getReplyTargets()},
+       * Similar to
+       * {@link Object.getReplyTargets},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get replyTargetIds(): URL[] {
@@ -1692,7 +1704,8 @@ get endTime(): (Temporal.Instant | null) {
     }
     
       /**
-       * Similar to {@link getLocation()},
+       * Similar to
+       * {@link Object.getLocation},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get locationId(): URL | null {
@@ -1728,7 +1741,8 @@ get endTime(): (Temporal.Instant | null) {
       }
       
       /**
-       * Similar to {@link getLocations()},
+       * Similar to
+       * {@link Object.getLocations},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get locationIds(): URL[] {
@@ -1796,7 +1810,8 @@ get endTime(): (Temporal.Instant | null) {
     }
     
       /**
-       * Similar to {@link getPreview()},
+       * Similar to
+       * {@link Object.getPreview},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get previewId(): URL | null {
@@ -1831,7 +1846,8 @@ get endTime(): (Temporal.Instant | null) {
       }
       
       /**
-       * Similar to {@link getPreviews()},
+       * Similar to
+       * {@link Object.getPreviews},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get previewIds(): URL[] {
@@ -1899,7 +1915,8 @@ get published(): (Temporal.Instant | null) {
     }
     
       /**
-       * Similar to {@link getReplies()},
+       * Similar to
+       * {@link Object.getReplies},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get repliesId(): URL | null {
@@ -1992,7 +2009,8 @@ get summaries(): (string | LanguageString)[] {
     }
     
       /**
-       * Similar to {@link getTags()},
+       * Similar to
+       * {@link Object.getTags},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get tagIds(): URL[] {
@@ -2078,7 +2096,8 @@ get urls(): (URL | Link)[] {
     }
     
       /**
-       * Similar to {@link getTo()},
+       * Similar to
+       * {@link Object.getTo},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get toId(): URL | null {
@@ -2114,7 +2133,8 @@ get urls(): (URL | Link)[] {
       }
       
       /**
-       * Similar to {@link getTos()},
+       * Similar to
+       * {@link Object.getTos},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get toIds(): URL[] {
@@ -2176,7 +2196,8 @@ get urls(): (URL | Link)[] {
     }
     
       /**
-       * Similar to {@link getBto()},
+       * Similar to
+       * {@link Object.getBto},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get btoId(): URL | null {
@@ -2212,7 +2233,8 @@ get urls(): (URL | Link)[] {
       }
       
       /**
-       * Similar to {@link getBtos()},
+       * Similar to
+       * {@link Object.getBtos},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get btoIds(): URL[] {
@@ -2274,7 +2296,8 @@ get urls(): (URL | Link)[] {
     }
     
       /**
-       * Similar to {@link getCc()},
+       * Similar to
+       * {@link Object.getCc},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get ccId(): URL | null {
@@ -2310,7 +2333,8 @@ get urls(): (URL | Link)[] {
       }
       
       /**
-       * Similar to {@link getCcs()},
+       * Similar to
+       * {@link Object.getCcs},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get ccIds(): URL[] {
@@ -2372,7 +2396,8 @@ get urls(): (URL | Link)[] {
     }
     
       /**
-       * Similar to {@link getBcc()},
+       * Similar to
+       * {@link Object.getBcc},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get bccId(): URL | null {
@@ -2408,7 +2433,8 @@ get urls(): (URL | Link)[] {
       }
       
       /**
-       * Similar to {@link getBccs()},
+       * Similar to
+       * {@link Object.getBccs},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get bccIds(): URL[] {
@@ -3911,7 +3937,8 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
     }
     
       /**
-       * Similar to {@link getActor()},
+       * Similar to
+       * {@link Activity.getActor},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get actorId(): URL | null {
@@ -3948,7 +3975,8 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
       }
       
       /**
-       * Similar to {@link getActors()},
+       * Similar to
+       * {@link Activity.getActors},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get actorIds(): URL[] {
@@ -4017,7 +4045,8 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
     }
     
       /**
-       * Similar to {@link getObject()},
+       * Similar to
+       * {@link Activity.getObject},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get objectId(): URL | null {
@@ -4054,7 +4083,8 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
       }
       
       /**
-       * Similar to {@link getObjects()},
+       * Similar to
+       * {@link Activity.getObjects},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get objectIds(): URL[] {
@@ -5098,7 +5128,8 @@ get preferredUsernames(): (string | LanguageString)[] {
     }
     
       /**
-       * Similar to {@link getPublicKey()},
+       * Similar to
+       * {@link Application.getPublicKey},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get publicKeyId(): URL | null {
@@ -5132,7 +5163,8 @@ get preferredUsernames(): (string | LanguageString)[] {
       }
       
       /**
-       * Similar to {@link getPublicKeys()},
+       * Similar to
+       * {@link Application.getPublicKeys},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get publicKeyIds(): URL[] {
@@ -5205,7 +5237,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getInbox()},
+       * Similar to
+       * {@link Application.getInbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get inboxId(): URL | null {
@@ -5275,7 +5308,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getOutbox()},
+       * Similar to
+       * {@link Application.getOutbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get outboxId(): URL | null {
@@ -5342,7 +5376,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowing()},
+       * Similar to
+       * {@link Application.getFollowing},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followingId(): URL | null {
@@ -5404,7 +5439,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowers()},
+       * Similar to
+       * {@link Application.getFollowers},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followersId(): URL | null {
@@ -5469,7 +5505,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getLinked()},
+       * Similar to
+       * {@link Application.getLinked},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get linkedId(): URL | null {
@@ -5532,7 +5569,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getStreams()},
+       * Similar to
+       * {@link Application.getStreams},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get streamIds(): URL[] {
@@ -7014,7 +7052,8 @@ get totalItems(): (number | null) {
     }
     
       /**
-       * Similar to {@link getCurrent()},
+       * Similar to
+       * {@link Collection.getCurrent},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get currentId(): URL | null {
@@ -7079,7 +7118,8 @@ get totalItems(): (number | null) {
     }
     
       /**
-       * Similar to {@link getFirst()},
+       * Similar to
+       * {@link Collection.getFirst},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get firstId(): URL | null {
@@ -7144,7 +7184,8 @@ get totalItems(): (number | null) {
     }
     
       /**
-       * Similar to {@link getLast()},
+       * Similar to
+       * {@link Collection.getLast},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get lastId(): URL | null {
@@ -7209,7 +7250,8 @@ get totalItems(): (number | null) {
     }
     
       /**
-       * Similar to {@link getItems()},
+       * Similar to
+       * {@link Collection.getItems},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get itemIds(): URL[] {
@@ -7678,7 +7720,8 @@ const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKj
     }
     
       /**
-       * Similar to {@link getPartOf()},
+       * Similar to
+       * {@link CollectionPage.getPartOf},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get partOfId(): URL | null {
@@ -7743,7 +7786,8 @@ const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKj
     }
     
       /**
-       * Similar to {@link getNext()},
+       * Similar to
+       * {@link CollectionPage.getNext},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get nextId(): URL | null {
@@ -7806,7 +7850,8 @@ const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKj
     }
     
       /**
-       * Similar to {@link getPrev()},
+       * Similar to
+       * {@link CollectionPage.getPrev},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get prevId(): URL | null {
@@ -9599,7 +9644,8 @@ get preferredUsernames(): (string | LanguageString)[] {
     }
     
       /**
-       * Similar to {@link getPublicKey()},
+       * Similar to
+       * {@link Group.getPublicKey},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get publicKeyId(): URL | null {
@@ -9633,7 +9679,8 @@ get preferredUsernames(): (string | LanguageString)[] {
       }
       
       /**
-       * Similar to {@link getPublicKeys()},
+       * Similar to
+       * {@link Group.getPublicKeys},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get publicKeyIds(): URL[] {
@@ -9706,7 +9753,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getInbox()},
+       * Similar to
+       * {@link Group.getInbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get inboxId(): URL | null {
@@ -9776,7 +9824,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getOutbox()},
+       * Similar to
+       * {@link Group.getOutbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get outboxId(): URL | null {
@@ -9843,7 +9892,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowing()},
+       * Similar to
+       * {@link Group.getFollowing},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followingId(): URL | null {
@@ -9905,7 +9955,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowers()},
+       * Similar to
+       * {@link Group.getFollowers},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followersId(): URL | null {
@@ -9970,7 +10021,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getLinked()},
+       * Similar to
+       * {@link Group.getLinked},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get linkedId(): URL | null {
@@ -10033,7 +10085,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getStreams()},
+       * Similar to
+       * {@link Group.getStreams},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get streamIds(): URL[] {
@@ -11334,7 +11387,8 @@ get width(): (number | null) {
     }
     
       /**
-       * Similar to {@link getPreviews()},
+       * Similar to
+       * {@link Link.getPreviews},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get previewIds(): URL[] {
@@ -12555,7 +12609,8 @@ get preferredUsernames(): (string | LanguageString)[] {
     }
     
       /**
-       * Similar to {@link getPublicKey()},
+       * Similar to
+       * {@link Organization.getPublicKey},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get publicKeyId(): URL | null {
@@ -12589,7 +12644,8 @@ get preferredUsernames(): (string | LanguageString)[] {
       }
       
       /**
-       * Similar to {@link getPublicKeys()},
+       * Similar to
+       * {@link Organization.getPublicKeys},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get publicKeyIds(): URL[] {
@@ -12662,7 +12718,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getInbox()},
+       * Similar to
+       * {@link Organization.getInbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get inboxId(): URL | null {
@@ -12732,7 +12789,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getOutbox()},
+       * Similar to
+       * {@link Organization.getOutbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get outboxId(): URL | null {
@@ -12799,7 +12857,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowing()},
+       * Similar to
+       * {@link Organization.getFollowing},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followingId(): URL | null {
@@ -12861,7 +12920,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowers()},
+       * Similar to
+       * {@link Organization.getFollowers},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followersId(): URL | null {
@@ -12926,7 +12986,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getLinked()},
+       * Similar to
+       * {@link Organization.getLinked},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get linkedId(): URL | null {
@@ -12989,7 +13050,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getStreams()},
+       * Similar to
+       * {@link Organization.getStreams},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get streamIds(): URL[] {
@@ -13985,7 +14047,8 @@ get preferredUsernames(): (string | LanguageString)[] {
     }
     
       /**
-       * Similar to {@link getPublicKey()},
+       * Similar to
+       * {@link Person.getPublicKey},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get publicKeyId(): URL | null {
@@ -14019,7 +14082,8 @@ get preferredUsernames(): (string | LanguageString)[] {
       }
       
       /**
-       * Similar to {@link getPublicKeys()},
+       * Similar to
+       * {@link Person.getPublicKeys},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get publicKeyIds(): URL[] {
@@ -14092,7 +14156,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getInbox()},
+       * Similar to
+       * {@link Person.getInbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get inboxId(): URL | null {
@@ -14162,7 +14227,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getOutbox()},
+       * Similar to
+       * {@link Person.getOutbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get outboxId(): URL | null {
@@ -14229,7 +14295,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowing()},
+       * Similar to
+       * {@link Person.getFollowing},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followingId(): URL | null {
@@ -14291,7 +14358,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowers()},
+       * Similar to
+       * {@link Person.getFollowers},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followersId(): URL | null {
@@ -14356,7 +14424,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getLinked()},
+       * Similar to
+       * {@link Person.getLinked},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get linkedId(): URL | null {
@@ -14419,7 +14488,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getStreams()},
+       * Similar to
+       * {@link Person.getStreams},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get streamIds(): URL[] {
@@ -15476,7 +15546,8 @@ const clone = super.clone(values) as unknown as Profile;clone.#_3CLQ1PLSXrhSQbTG
     }
     
       /**
-       * Similar to {@link getDescribes()},
+       * Similar to
+       * {@link Profile.getDescribes},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get describesId(): URL | null {
@@ -15950,7 +16021,8 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
     }
     
       /**
-       * Similar to {@link getSubject()},
+       * Similar to
+       * {@link Relationship.getSubject},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get subjectId(): URL | null {
@@ -16011,7 +16083,8 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
     }
     
       /**
-       * Similar to {@link getObject()},
+       * Similar to
+       * {@link Relationship.getObject},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get objectId(): URL | null {
@@ -16046,7 +16119,8 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
       }
       
       /**
-       * Similar to {@link getObjects()},
+       * Similar to
+       * {@link Relationship.getObjects},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get objectIds(): URL[] {
@@ -16107,7 +16181,8 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
     }
     
       /**
-       * Similar to {@link getRelationship()},
+       * Similar to
+       * {@link Relationship.getRelationship},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get relationshipId(): URL | null {
@@ -16144,7 +16219,8 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
       }
       
       /**
-       * Similar to {@link getRelationships()},
+       * Similar to
+       * {@link Relationship.getRelationships},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get relationshipIds(): URL[] {
@@ -16815,7 +16891,8 @@ get preferredUsernames(): (string | LanguageString)[] {
     }
     
       /**
-       * Similar to {@link getPublicKey()},
+       * Similar to
+       * {@link Service.getPublicKey},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get publicKeyId(): URL | null {
@@ -16849,7 +16926,8 @@ get preferredUsernames(): (string | LanguageString)[] {
       }
       
       /**
-       * Similar to {@link getPublicKeys()},
+       * Similar to
+       * {@link Service.getPublicKeys},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get publicKeyIds(): URL[] {
@@ -16922,7 +17000,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getInbox()},
+       * Similar to
+       * {@link Service.getInbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get inboxId(): URL | null {
@@ -16992,7 +17071,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getOutbox()},
+       * Similar to
+       * {@link Service.getOutbox},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get outboxId(): URL | null {
@@ -17059,7 +17139,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowing()},
+       * Similar to
+       * {@link Service.getFollowing},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followingId(): URL | null {
@@ -17121,7 +17202,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getFollowers()},
+       * Similar to
+       * {@link Service.getFollowers},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get followersId(): URL | null {
@@ -17186,7 +17268,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getLinked()},
+       * Similar to
+       * {@link Service.getLinked},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get linkedId(): URL | null {
@@ -17249,7 +17332,8 @@ get manuallyApprovesFollowers(): (boolean | null) {
     }
     
       /**
-       * Similar to {@link getStreams()},
+       * Similar to
+       * {@link Service.getStreams},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get streamIds(): URL[] {

@@ -3,6 +3,9 @@
 Fedify: a fediverse server framework
 ====================================
 
+[![JSR][JSR badge]][JSR]
+[![GitHub Actions][GitHub Actions badge]][GitHub Actions]
+
 Fedify is a [Deno]/TypeScript library for building federated server apps
 powered by [ActivityPub] and other standards, which is so-called [fediverse].
 You may already know some of the networks in the fediverse, such as [Mastodon],
@@ -27,6 +30,10 @@ The rough roadmap is to implement the following features out of the box:
 Currently this project is not well documented, but you can find some examples
 in the *examples/* directory.
 
+[JSR]: https://jsr.io/@fedify/fedify
+[JSR badge]: https://jsr-badge.deno.dev/@fedify/fedify/unstable.svg
+[GitHub Actions]: https://github.com/dahlia/fedify/actions/workflows/build.yaml
+[GitHub Actions badge]: https://github.com/dahlia/fedify/actions/workflows/build.yaml/badge.svg
 [Deno]: https://deno.com/
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [fediverse]: https://en.wikipedia.org/wiki/Fediverse

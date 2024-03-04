@@ -34,6 +34,7 @@
     "docloader",
     "fedify",
     "fediverse",
+    "httpsig",
     "jsonld",
     "langstr",
     "Lemmy",
@@ -42,6 +43,7 @@
     "rels",
     "subproperty",
     "superproperty",
+    "unfollow",
     "webfinger"
   ]
 }

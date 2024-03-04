@@ -3,6 +3,9 @@
 Federated single-user blog
 ==========================
 
+> [!TIP]
+> The preview of this example is available at <https://fedify-blog.deno.dev/>.
+
 This project is an example of a federated single-user blog.  It is built on top
 of the following technologies:
 

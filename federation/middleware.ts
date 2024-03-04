@@ -133,7 +133,7 @@ export class Federation<TContextData> {
     if (backoffSchedule != null) {
       // TODO: Deno KV Queue's backoff schedule is too limited for our needs.
       //       We should manually implement our own backoff retrial mechanism.
-      //       Fortuneately, Deno KV Queue's delay option allows up to 30 days.
+      //       Fortunately, Deno KV Queue's delay option allows up to 30 days.
       //       We can use that to implement our own backoff schedule.
       if (backoffSchedule.length > 5) {
         throw new Error("Backoff schedule must have at most 5 entries.");
@@ -478,7 +478,7 @@ export class Federation<TContextData> {
   }
 
   /**
-   * Assigns the URL patth for the inbox and starts setting inbox listeners.
+   * Assigns the URL path for the inbox and starts setting inbox listeners.
    * @param inboxPath The URI path pattern for the inbox.  The syntax is based
    *                  on URI Template
    *                  ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
@@ -655,9 +655,30 @@ export class Federation<TContextData> {
   }
 }
 
+/**
+ * Parameters of {@link Federation.handle} method.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
+ */
 export interface FederationHandlerParameters<TContextData> {
+  /**
+   * The context data to pass to the {@link Context}.
+   */
   contextData: TContextData;
+
+  /**
+   * A callback to handle a request when the route is not found.
+   * @param request The request object.
+   * @returns The response to the request.
+   */
   onNotFound(request: Request): Response | Promise<Response>;
+
+  /**
+   * A callback to handle a request when the request's `Accept` header is not
+   * acceptable.
+   * @param request The request object.
+   * @returns The response to the request.
+   */
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
 

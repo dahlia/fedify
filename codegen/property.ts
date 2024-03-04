@@ -4,6 +4,7 @@ import { PropertySchema, TypeSchema } from "./schema.ts";
 import { areAllScalarTypes, getTypeNames } from "./type.ts";
 
 async function* generateProperty(
+  type: TypeSchema,
   property: PropertySchema,
   types: Record<string, TypeSchema>,
 ): AsyncIterable<string> {
@@ -62,7 +63,8 @@ async function* generateProperty(
     if (property.functional || property.singularAccessor) {
       yield `
       /**
-       * Similar to {@link get${toPascalCase(property.singularName)}()},
+       * Similar to
+       * {@link ${type.name}.get${toPascalCase(property.singularName)}},
        * but returns its \`@id\` URL instead of the object itself.
        */
       get ${property.singularName}Id(): URL | null {
@@ -98,7 +100,8 @@ async function* generateProperty(
     if (!property.functional) {
       yield `
       /**
-       * Similar to {@link get${toPascalCase(property.pluralName)}()},
+       * Similar to
+       * {@link ${type.name}.get${toPascalCase(property.pluralName)}},
        * but returns their \`@id\`s instead of the objects themselves.
        */
       get ${property.singularName}Ids(): URL[] {
@@ -143,6 +146,6 @@ export async function* generateProperties(
 ): AsyncIterable<string> {
   const type = types[typeUri];
   for (const property of type.properties) {
-    yield* generateProperty(property, types);
+    yield* generateProperty(type, property, types);
   }
 }

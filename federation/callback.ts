@@ -6,6 +6,8 @@ import { RequestContext } from "./context.ts";
 
 /**
  * A callback that dispatches an {@link Actor} object.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
  */
 export type ActorDispatcher<TContextData> = (
   context: RequestContext<TContextData>,
@@ -15,6 +17,8 @@ export type ActorDispatcher<TContextData> = (
 
 /**
  * A callback that dispatches a key pair for an actor.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
  */
 export type ActorKeyPairDispatcher<TContextData> = (
   contextData: TContextData,
@@ -23,6 +27,8 @@ export type ActorKeyPairDispatcher<TContextData> = (
 
 /**
  * A callback that dispatches a collection.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
  */
 export type CollectionDispatcher<TItem, TContextData> = (
   context: RequestContext<TContextData>,
@@ -32,6 +38,8 @@ export type CollectionDispatcher<TItem, TContextData> = (
 
 /**
  * A callback that counts the number of items in a collection.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
  */
 export type CollectionCounter<TContextData> = (
   context: RequestContext<TContextData>,
@@ -40,6 +48,8 @@ export type CollectionCounter<TContextData> = (
 
 /**
  * A callback that returns a cursor for a collection.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
  */
 export type CollectionCursor<TContextData> = (
   context: RequestContext<TContextData>,
@@ -48,6 +58,8 @@ export type CollectionCursor<TContextData> = (
 
 /**
  * A callback that listens for activities in an inbox.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
  */
 export type InboxListener<TContextData, TActivity extends Activity> = (
   context: RequestContext<TContextData>,
