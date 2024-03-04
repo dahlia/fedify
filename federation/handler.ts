@@ -66,8 +66,7 @@ export async function handleActor<TContextData>(
   const jsonLd = await actor.toJsonLd({ documentLoader });
   return new Response(JSON.stringify(jsonLd), {
     headers: {
-      "Content-Type":
-        'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
+      "Content-Type": "application/activity+json",
       Vary: "Accept",
     },
   });
@@ -204,8 +203,7 @@ export async function handleCollection<
   const jsonLd = await collection.toJsonLd({ documentLoader });
   return new Response(JSON.stringify(jsonLd), {
     headers: {
-      "Content-Type":
-        'application/ld+json; profile="https://www.w3.org/ns/activitystreams"',
+      "Content-Type": "application/activity+json",
       Vary: "Accept",
     },
   });
@@ -254,7 +252,7 @@ export async function handleInbox<TContextData>(
   }
   const keyId = await verify(request, documentLoader);
   if (keyId == null) {
-    const response = new Response("Failed to verify the reuqest signature.", {
+    const response = new Response("Failed to verify the request signature.", {
       status: 401,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });

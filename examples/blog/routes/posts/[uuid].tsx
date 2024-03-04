@@ -41,11 +41,13 @@ export const handler: Handler<PostPageData> = async (req, ctx) => {
     accept === "application/ld+json" || accept === "application/json"
   ) {
     const fedCtx = federation.createContext(req);
-    const note = toArticle(fedCtx, blog, post, comments);
-    const jsonLd = await note.toJsonLd(fedCtx);
+    const article = toArticle(fedCtx, blog, post, comments);
+    const jsonLd = await article.toJsonLd(fedCtx);
     return new Response(JSON.stringify(jsonLd), {
       headers: {
-        "Content-Type": "application/ld+json",
+        "Content-Type": "application/activity+json",
+        Link:
+          `<${article.id}>; rel="alternate"; type="application/activity+json"`,
         Vary: "Accept",
       },
     });
