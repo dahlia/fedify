@@ -4831,6 +4831,10 @@ export class Application extends Object {
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: Endpoints[] = [];
+#_gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+#_2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+#_79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+#_2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
 
   /**
    * Constructs a new instance of Application with the given values.
@@ -4854,7 +4858,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
 super(values);
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -4923,6 +4927,22 @@ super(values);
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
         }
+      
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          this.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
+        }
       }
 
   /**
@@ -4948,7 +4968,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Application {
 const clone = super.clone(values) as unknown as Application;clone.#_3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -5016,6 +5036,22 @@ const clone = super.clone(values) as unknown as Application;clone.#_3isuDgRAKSnt
       clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
+        }
+      clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
         }
       
     return clone;
@@ -5544,6 +5580,40 @@ get endpoints(): (Endpoints | null) {
         return this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
       
+/** Allows users to opt-in or opt-out of discoverability features like
+ * the profile directory.  This flag may also be used as an indicator of
+ * the user's preferences toward being included in external discovery services,
+ * such as search engines or other indexing tools.
+ * 
+ */
+get discoverable(): (boolean | null) {
+        if (this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH.length < 1) return null;
+        return this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      
+/** Reports whether a user was locally suspended, for better handling of
+ * these accounts.
+ * 
+ */
+get suspended(): (boolean | null) {
+        if (this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length < 1) return null;
+        return this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      
+/** Whether the actor is in-memorial state.
+ */
+get memorial(): (boolean | null) {
+        if (this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ.length < 1) return null;
+        return this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      
+/** Whether the actor allows to be indexed.
+ */
+get indexable(): (boolean | null) {
+        if (this.#_2diCorzqPGQQqftp6e4SrCEwEnyk.length < 1) return null;
+        return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -5648,6 +5718,38 @@ get endpoints(): (Endpoints | null) {
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
+    array = [];
+    for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    
+    array = [];
+    for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Application\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
     if (options.expand) {
@@ -5655,7 +5757,7 @@ get endpoints(): (Endpoints | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\"],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
       options
     );
   }
@@ -5825,6 +5927,34 @@ get endpoints(): (Endpoints | null) {
       v, options))
     }
     instance.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+    const _gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#discoverable\\"] ?? []) {
+      if (v == null) continue;
+    _gAJzg1QDc4rcefFsUzGSYmyXvNH.push(v[\\"@value\\"])
+    }
+    instance.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = _gAJzg1QDc4rcefFsUzGSYmyXvNH;
+    const _2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#suspended\\"] ?? []) {
+      if (v == null) continue;
+    _2kGKkJtoFWg8c18PaVSqj9NKP4t7.push(v[\\"@value\\"])
+    }
+    instance.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = _2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+    const _79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#memorial\\"] ?? []) {
+      if (v == null) continue;
+    _79S8K4f5J9MWUgCxziRyUe6PTHZ.push(v[\\"@value\\"])
+    }
+    instance.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = _79S8K4f5J9MWUgCxziRyUe6PTHZ;
+    const _2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#indexable\\"] ?? []) {
+      if (v == null) continue;
+    _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
+    }
+    instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
     
     return instance;
   }
@@ -5946,6 +6076,22 @@ get endpoints(): (Endpoints | null) {
       const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
+      }
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
+        proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
+        proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
+        proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
+        proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
     return proxy;
@@ -9186,6 +9332,10 @@ export class Group extends Object {
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: Endpoints[] = [];
+#_gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+#_2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+#_79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+#_2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
 
   /**
    * Constructs a new instance of Group with the given values.
@@ -9209,7 +9359,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
 super(values);
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -9278,6 +9428,22 @@ super(values);
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
         }
+      
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          this.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
+        }
       }
 
   /**
@@ -9303,7 +9469,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Group {
 const clone = super.clone(values) as unknown as Group;clone.#_3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -9371,6 +9537,22 @@ const clone = super.clone(values) as unknown as Group;clone.#_3isuDgRAKSntq9Xdbj
       clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
+        }
+      clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
         }
       
     return clone;
@@ -9899,6 +10081,40 @@ get endpoints(): (Endpoints | null) {
         return this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
       
+/** Allows users to opt-in or opt-out of discoverability features like
+ * the profile directory.  This flag may also be used as an indicator of
+ * the user's preferences toward being included in external discovery services,
+ * such as search engines or other indexing tools.
+ * 
+ */
+get discoverable(): (boolean | null) {
+        if (this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH.length < 1) return null;
+        return this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      
+/** Reports whether a user was locally suspended, for better handling of
+ * these accounts.
+ * 
+ */
+get suspended(): (boolean | null) {
+        if (this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length < 1) return null;
+        return this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      
+/** Whether the actor is in-memorial state.
+ */
+get memorial(): (boolean | null) {
+        if (this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ.length < 1) return null;
+        return this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      
+/** Whether the actor allows to be indexed.
+ */
+get indexable(): (boolean | null) {
+        if (this.#_2diCorzqPGQQqftp6e4SrCEwEnyk.length < 1) return null;
+        return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -10003,6 +10219,38 @@ get endpoints(): (Endpoints | null) {
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
+    array = [];
+    for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    
+    array = [];
+    for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Group\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
     if (options.expand) {
@@ -10010,7 +10258,7 @@ get endpoints(): (Endpoints | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\"],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
       options
     );
   }
@@ -10180,6 +10428,34 @@ get endpoints(): (Endpoints | null) {
       v, options))
     }
     instance.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+    const _gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#discoverable\\"] ?? []) {
+      if (v == null) continue;
+    _gAJzg1QDc4rcefFsUzGSYmyXvNH.push(v[\\"@value\\"])
+    }
+    instance.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = _gAJzg1QDc4rcefFsUzGSYmyXvNH;
+    const _2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#suspended\\"] ?? []) {
+      if (v == null) continue;
+    _2kGKkJtoFWg8c18PaVSqj9NKP4t7.push(v[\\"@value\\"])
+    }
+    instance.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = _2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+    const _79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#memorial\\"] ?? []) {
+      if (v == null) continue;
+    _79S8K4f5J9MWUgCxziRyUe6PTHZ.push(v[\\"@value\\"])
+    }
+    instance.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = _79S8K4f5J9MWUgCxziRyUe6PTHZ;
+    const _2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#indexable\\"] ?? []) {
+      if (v == null) continue;
+    _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
+    }
+    instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
     
     return instance;
   }
@@ -10301,6 +10577,22 @@ get endpoints(): (Endpoints | null) {
       const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
+      }
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
+        proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
+        proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
+        proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
+        proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
     return proxy;
@@ -11996,6 +12288,10 @@ export class Organization extends Object {
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: Endpoints[] = [];
+#_gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+#_2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+#_79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+#_2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
 
   /**
    * Constructs a new instance of Organization with the given values.
@@ -12019,7 +12315,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
 super(values);
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -12088,6 +12384,22 @@ super(values);
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
         }
+      
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          this.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
+        }
       }
 
   /**
@@ -12113,7 +12425,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Organization {
 const clone = super.clone(values) as unknown as Organization;clone.#_3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -12181,6 +12493,22 @@ const clone = super.clone(values) as unknown as Organization;clone.#_3isuDgRAKSn
       clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
+        }
+      clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
         }
       
     return clone;
@@ -12709,6 +13037,40 @@ get endpoints(): (Endpoints | null) {
         return this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
       
+/** Allows users to opt-in or opt-out of discoverability features like
+ * the profile directory.  This flag may also be used as an indicator of
+ * the user's preferences toward being included in external discovery services,
+ * such as search engines or other indexing tools.
+ * 
+ */
+get discoverable(): (boolean | null) {
+        if (this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH.length < 1) return null;
+        return this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      
+/** Reports whether a user was locally suspended, for better handling of
+ * these accounts.
+ * 
+ */
+get suspended(): (boolean | null) {
+        if (this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length < 1) return null;
+        return this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      
+/** Whether the actor is in-memorial state.
+ */
+get memorial(): (boolean | null) {
+        if (this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ.length < 1) return null;
+        return this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      
+/** Whether the actor allows to be indexed.
+ */
+get indexable(): (boolean | null) {
+        if (this.#_2diCorzqPGQQqftp6e4SrCEwEnyk.length < 1) return null;
+        return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -12813,6 +13175,38 @@ get endpoints(): (Endpoints | null) {
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
+    array = [];
+    for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    
+    array = [];
+    for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Organization\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
     if (options.expand) {
@@ -12820,7 +13214,7 @@ get endpoints(): (Endpoints | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\"],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
       options
     );
   }
@@ -12990,6 +13384,34 @@ get endpoints(): (Endpoints | null) {
       v, options))
     }
     instance.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+    const _gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#discoverable\\"] ?? []) {
+      if (v == null) continue;
+    _gAJzg1QDc4rcefFsUzGSYmyXvNH.push(v[\\"@value\\"])
+    }
+    instance.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = _gAJzg1QDc4rcefFsUzGSYmyXvNH;
+    const _2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#suspended\\"] ?? []) {
+      if (v == null) continue;
+    _2kGKkJtoFWg8c18PaVSqj9NKP4t7.push(v[\\"@value\\"])
+    }
+    instance.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = _2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+    const _79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#memorial\\"] ?? []) {
+      if (v == null) continue;
+    _79S8K4f5J9MWUgCxziRyUe6PTHZ.push(v[\\"@value\\"])
+    }
+    instance.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = _79S8K4f5J9MWUgCxziRyUe6PTHZ;
+    const _2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#indexable\\"] ?? []) {
+      if (v == null) continue;
+    _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
+    }
+    instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
     
     return instance;
   }
@@ -13111,6 +13533,22 @@ get endpoints(): (Endpoints | null) {
       const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
+      }
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
+        proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
+        proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
+        proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
+        proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
     return proxy;
@@ -13280,6 +13718,10 @@ export class Person extends Object {
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: Endpoints[] = [];
+#_gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+#_2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+#_79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+#_2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
 
   /**
    * Constructs a new instance of Person with the given values.
@@ -13303,7 +13745,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
 super(values);
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -13372,6 +13814,22 @@ super(values);
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
         }
+      
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          this.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
+        }
       }
 
   /**
@@ -13397,7 +13855,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Person {
 const clone = super.clone(values) as unknown as Person;clone.#_3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -13465,6 +13923,22 @@ const clone = super.clone(values) as unknown as Person;clone.#_3isuDgRAKSntq9Xdb
       clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
+        }
+      clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
         }
       
     return clone;
@@ -13993,6 +14467,40 @@ get endpoints(): (Endpoints | null) {
         return this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
       
+/** Allows users to opt-in or opt-out of discoverability features like
+ * the profile directory.  This flag may also be used as an indicator of
+ * the user's preferences toward being included in external discovery services,
+ * such as search engines or other indexing tools.
+ * 
+ */
+get discoverable(): (boolean | null) {
+        if (this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH.length < 1) return null;
+        return this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      
+/** Reports whether a user was locally suspended, for better handling of
+ * these accounts.
+ * 
+ */
+get suspended(): (boolean | null) {
+        if (this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length < 1) return null;
+        return this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      
+/** Whether the actor is in-memorial state.
+ */
+get memorial(): (boolean | null) {
+        if (this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ.length < 1) return null;
+        return this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      
+/** Whether the actor allows to be indexed.
+ */
+get indexable(): (boolean | null) {
+        if (this.#_2diCorzqPGQQqftp6e4SrCEwEnyk.length < 1) return null;
+        return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -14097,6 +14605,38 @@ get endpoints(): (Endpoints | null) {
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
+    array = [];
+    for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    
+    array = [];
+    for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Person\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
     if (options.expand) {
@@ -14104,7 +14644,7 @@ get endpoints(): (Endpoints | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\"],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
       options
     );
   }
@@ -14274,6 +14814,34 @@ get endpoints(): (Endpoints | null) {
       v, options))
     }
     instance.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+    const _gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#discoverable\\"] ?? []) {
+      if (v == null) continue;
+    _gAJzg1QDc4rcefFsUzGSYmyXvNH.push(v[\\"@value\\"])
+    }
+    instance.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = _gAJzg1QDc4rcefFsUzGSYmyXvNH;
+    const _2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#suspended\\"] ?? []) {
+      if (v == null) continue;
+    _2kGKkJtoFWg8c18PaVSqj9NKP4t7.push(v[\\"@value\\"])
+    }
+    instance.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = _2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+    const _79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#memorial\\"] ?? []) {
+      if (v == null) continue;
+    _79S8K4f5J9MWUgCxziRyUe6PTHZ.push(v[\\"@value\\"])
+    }
+    instance.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = _79S8K4f5J9MWUgCxziRyUe6PTHZ;
+    const _2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#indexable\\"] ?? []) {
+      if (v == null) continue;
+    _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
+    }
+    instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
     
     return instance;
   }
@@ -14395,6 +14963,22 @@ get endpoints(): (Endpoints | null) {
       const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
+      }
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
+        proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
+        proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
+        proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
+        proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
     return proxy;
@@ -15964,6 +16548,10 @@ export class Service extends Object {
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: Endpoints[] = [];
+#_gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+#_2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+#_79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+#_2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
 
   /**
    * Constructs a new instance of Service with the given values.
@@ -15987,7 +16575,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
 super(values);
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -16056,6 +16644,22 @@ super(values);
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
         }
+      
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          this.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
+        }
       }
 
   /**
@@ -16081,7 +16685,7 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;}
+publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Service {
 const clone = super.clone(values) as unknown as Service;clone.#_3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
         if (\\"preferredUsername\\" in values &&             values.preferredUsername != null) {
@@ -16149,6 +16753,22 @@ const clone = super.clone(values) as unknown as Service;clone.#_3isuDgRAKSntq9Xd
       clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
         if (\\"endpoints\\" in values &&             values.endpoints != null) {
           clone.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = [values.endpoints];
+        }
+      clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+        if (\\"discoverable\\" in values &&             values.discoverable != null) {
+          clone.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = [values.discoverable];
+        }
+      clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+        if (\\"suspended\\" in values &&             values.suspended != null) {
+          clone.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = [values.suspended];
+        }
+      clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+        if (\\"memorial\\" in values &&             values.memorial != null) {
+          clone.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = [values.memorial];
+        }
+      clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+        if (\\"indexable\\" in values &&             values.indexable != null) {
+          clone.#_2diCorzqPGQQqftp6e4SrCEwEnyk = [values.indexable];
         }
       
     return clone;
@@ -16677,6 +17297,40 @@ get endpoints(): (Endpoints | null) {
         return this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
       
+/** Allows users to opt-in or opt-out of discoverability features like
+ * the profile directory.  This flag may also be used as an indicator of
+ * the user's preferences toward being included in external discovery services,
+ * such as search engines or other indexing tools.
+ * 
+ */
+get discoverable(): (boolean | null) {
+        if (this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH.length < 1) return null;
+        return this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      
+/** Reports whether a user was locally suspended, for better handling of
+ * these accounts.
+ * 
+ */
+get suspended(): (boolean | null) {
+        if (this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length < 1) return null;
+        return this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      
+/** Whether the actor is in-memorial state.
+ */
+get memorial(): (boolean | null) {
+        if (this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ.length < 1) return null;
+        return this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      
+/** Whether the actor allows to be indexed.
+ */
+get indexable(): (boolean | null) {
+        if (this.#_2diCorzqPGQQqftp6e4SrCEwEnyk.length < 1) return null;
+        return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -16781,6 +17435,38 @@ get endpoints(): (Endpoints | null) {
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
+    array = [];
+    for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    
+    array = [];
+    for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Service\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
     if (options.expand) {
@@ -16788,7 +17474,7 @@ get endpoints(): (Endpoints | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\"],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
       options
     );
   }
@@ -16958,6 +17644,34 @@ get endpoints(): (Endpoints | null) {
       v, options))
     }
     instance.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+    const _gAJzg1QDc4rcefFsUzGSYmyXvNH: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#discoverable\\"] ?? []) {
+      if (v == null) continue;
+    _gAJzg1QDc4rcefFsUzGSYmyXvNH.push(v[\\"@value\\"])
+    }
+    instance.#_gAJzg1QDc4rcefFsUzGSYmyXvNH = _gAJzg1QDc4rcefFsUzGSYmyXvNH;
+    const _2kGKkJtoFWg8c18PaVSqj9NKP4t7: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#suspended\\"] ?? []) {
+      if (v == null) continue;
+    _2kGKkJtoFWg8c18PaVSqj9NKP4t7.push(v[\\"@value\\"])
+    }
+    instance.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7 = _2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+    const _79S8K4f5J9MWUgCxziRyUe6PTHZ: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#memorial\\"] ?? []) {
+      if (v == null) continue;
+    _79S8K4f5J9MWUgCxziRyUe6PTHZ.push(v[\\"@value\\"])
+    }
+    instance.#_79S8K4f5J9MWUgCxziRyUe6PTHZ = _79S8K4f5J9MWUgCxziRyUe6PTHZ;
+    const _2diCorzqPGQQqftp6e4SrCEwEnyk: boolean[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#indexable\\"] ?? []) {
+      if (v == null) continue;
+    _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
+    }
+    instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
     
     return instance;
   }
@@ -17079,6 +17793,22 @@ get endpoints(): (Endpoints | null) {
       const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
+      }
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
+        proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
+      }
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
+        proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
+      }
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
+        proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
+      }
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
+        proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
     return proxy;

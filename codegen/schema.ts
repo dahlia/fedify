@@ -1,7 +1,10 @@
 import { join } from "jsr:@std/path@^0.218.2";
 import * as url from "jsr:@std/url@^0.218.2";
 import { parse } from "jsr:@std/yaml@^0.218.2";
-import { Schema as JsonSchema } from "https://deno.land/x/jema@v1.1.9/schema.js";
+import {
+  Schema as JsonSchema,
+  Validator,
+} from "npm:@cfworker/json-schema@1.12.8";
 import { readDirRecursive } from "./fs.ts";
 
 /**
@@ -172,27 +175,28 @@ export class SchemaError extends Error {
   }
 }
 
-async function loadSchemaSchema(): Promise<JsonSchema> {
+async function loadSchemaValidator(): Promise<Validator> {
   const thisFile = new URL(import.meta.url);
   const response = await fetch(url.join(url.dirname(thisFile), "schema.yaml"));
   const content = await response.text();
   const schemaObject = parse(content);
-  const schema = new JsonSchema(schemaObject as object);
-  await schema.deref();
-  return schema;
+  return new Validator(schemaObject as JsonSchema);
 }
 
-const schemaSchema: JsonSchema = await loadSchemaSchema();
+const schemaValidator: Validator = await loadSchemaValidator();
 
 async function loadSchema(path: string): Promise<TypeSchema> {
   const content = await Deno.readTextFile(path);
   const schema = parse(content);
+  const result = schemaValidator.validate(schema);
   const errors: SchemaError[] = [];
-  for (const e of schemaSchema.errors(schema)) {
-    errors.push(new SchemaError(path, `${path}: ${e.message}`));
+  if (result.valid) return schema as TypeSchema;
+  for (const e of result.errors) {
+    errors.push(
+      new SchemaError(path, `${path}:${e.instanceLocation}: ${e.error}`),
+    );
   }
-  if (errors.length > 0) throw new AggregateError(errors);
-  return schema as TypeSchema;
+  throw new AggregateError(errors);
 }
 
 /**

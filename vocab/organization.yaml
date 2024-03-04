@@ -7,6 +7,11 @@ description: Represents an organization.
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
 - "https://w3id.org/security/v1"
+- toot: "http://joinmastodon.org/ns#"
+  discoverable: "toot:discoverable"
+  suspended: "toot:suspended"
+  memorial: "toot:memorial"
+  indexable: "toot:indexable"
 
 properties:
 - pluralName: preferredUsernames
@@ -138,3 +143,37 @@ properties:
     a link to a JSON-LD document with these properties.
   range:
   - "https://www.w3.org/ns/activitystreams#Endpoints"
+
+- singularName: discoverable
+  functional: true
+  uri: "http://joinmastodon.org/ns#discoverable"
+  description: |
+    Allows users to opt-in or opt-out of discoverability features like
+    the profile directory.  This flag may also be used as an indicator of
+    the user's preferences toward being included in external discovery services,
+    such as search engines or other indexing tools.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#boolean"
+
+- singularName: suspended
+  functional: true
+  uri: "http://joinmastodon.org/ns#suspended"
+  description: |
+    Reports whether a user was locally suspended, for better handling of
+    these accounts.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#boolean"
+
+- singularName: memorial
+  functional: true
+  uri: "http://joinmastodon.org/ns#memorial"
+  description: Whether the actor is in-memorial state.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#boolean"
+
+- singularName: indexable
+  functional: true
+  uri: "http://joinmastodon.org/ns#indexable"
+  description: Whether the actor allows to be indexed.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#boolean"

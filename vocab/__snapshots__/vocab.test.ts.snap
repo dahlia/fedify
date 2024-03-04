@@ -733,7 +733,11 @@ snapshot[`Deno.inspect(Application) [auto] 1`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -789,7 +793,11 @@ snapshot[`Deno.inspect(Application) [auto] 2`] = `
   followers: URL "https://example.com/",
   linked: URL "https://example.com/",
   streams: [ URL "https://example.com/" ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -857,7 +865,11 @@ snapshot[`Deno.inspect(Application) [auto] 3`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {}, Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -3051,7 +3063,11 @@ snapshot[`Deno.inspect(Group) [auto] 1`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -3107,7 +3123,11 @@ snapshot[`Deno.inspect(Group) [auto] 2`] = `
   followers: URL "https://example.com/",
   linked: URL "https://example.com/",
   streams: [ URL "https://example.com/" ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -3175,7 +3195,11 @@ snapshot[`Deno.inspect(Group) [auto] 3`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {}, Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -4688,7 +4712,11 @@ snapshot[`Deno.inspect(Organization) [auto] 1`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -4744,7 +4772,11 @@ snapshot[`Deno.inspect(Organization) [auto] 2`] = `
   followers: URL "https://example.com/",
   linked: URL "https://example.com/",
   streams: [ URL "https://example.com/" ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -4812,7 +4844,11 @@ snapshot[`Deno.inspect(Organization) [auto] 3`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {}, Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -5020,7 +5056,11 @@ snapshot[`Deno.inspect(Person) [auto] 1`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -5076,7 +5116,11 @@ snapshot[`Deno.inspect(Person) [auto] 2`] = `
   followers: URL "https://example.com/",
   linked: URL "https://example.com/",
   streams: [ URL "https://example.com/" ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -5144,7 +5188,11 @@ snapshot[`Deno.inspect(Person) [auto] 3`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {}, Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -5998,7 +6046,11 @@ snapshot[`Deno.inspect(Service) [auto] 1`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -6054,7 +6106,11 @@ snapshot[`Deno.inspect(Service) [auto] 2`] = `
   followers: URL "https://example.com/",
   linked: URL "https://example.com/",
   streams: [ URL "https://example.com/" ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
@@ -6122,7 +6178,11 @@ snapshot[`Deno.inspect(Service) [auto] 3`] = `
   followers: Collection {},
   linked: Collection {},
   streams: [ Collection {}, Collection {} ],
-  endpoints: Endpoints {}
+  endpoints: Endpoints {},
+  discoverable: true,
+  suspended: true,
+  memorial: true,
+  indexable: true
 }'
 `;
 
