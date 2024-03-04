@@ -17,9 +17,11 @@ export default function Comment({ comment }: CommentProps) {
           </h3>
           <p>
             {comment.author.handle} &middot;{" "}
-            <time datetime={comment.published.toString()}>
-              {comment.published.toLocaleString()}
-            </time>
+            <a href={comment.url}>
+              <time datetime={comment.published.toString()}>
+                {comment.published.toLocaleString()}
+              </time>
+            </a>
           </p>
         </hgroup>
       </header>
