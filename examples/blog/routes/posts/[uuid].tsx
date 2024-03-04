@@ -14,12 +14,14 @@ import {
   type Post as PostModel,
   toArticle,
 } from "../../models/post.ts";
+import { countFollowers } from "../../models/follower.ts";
 
 export interface PostPageData {
   domain: string;
   blog: Blog;
   post: PostModel;
   comments: CommentModel[];
+  followers: bigint;
 }
 
 export const handler: Handler<PostPageData> = async (req, ctx) => {
@@ -52,12 +54,21 @@ export const handler: Handler<PostPageData> = async (req, ctx) => {
       },
     });
   }
-  const data: PostPageData = { blog, post, domain: ctx.url.host, comments };
+  const followers = await countFollowers();
+  const data: PostPageData = {
+    blog,
+    post,
+    domain: ctx.url.host,
+    comments,
+    followers,
+  };
   return ctx.render(data);
 };
 
 export default function PostPage(
-  { data: { domain, blog, post, comments } }: PageProps<PostPageData>,
+  { data: { domain, blog, post, comments, followers } }: PageProps<
+    PostPageData
+  >,
 ) {
   return (
     <>
@@ -70,7 +81,11 @@ export default function PostPage(
             <a href="/">{blog.title}</a>
           </h1>
           <p>
-            <strong>@{blog.handle}@{domain}</strong> &middot; {blog.description}
+            <strong>@{blog.handle}@{domain}</strong> &middot;{" "}
+            <a href="/followers">
+              {followers === 1n ? "1 follower" : `${followers} followers`}
+            </a>{" "}
+            &middot; {blog.description}
           </p>
         </hgroup>
       </header>
