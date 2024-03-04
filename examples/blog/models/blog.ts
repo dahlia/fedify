@@ -1,4 +1,5 @@
 /// <reference lib="deno.unstable" />
+import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
 import { hash, verify } from "scrypt";
 import { openKv } from "./kv.ts";
 
@@ -16,6 +17,7 @@ export interface Blog extends BlogBase {
   passwordHash: string;
   privateKey: CryptoKey;
   publicKey: CryptoKey;
+  published: Temporal.Instant;
 }
 
 export async function setBlog(blog: BlogInput): Promise<void> {
@@ -34,6 +36,7 @@ export async function setBlog(blog: BlogInput): Promise<void> {
     handle: blog.handle,
     title: blog.title,
     description: blog.description,
+    published: new Date().toISOString(),
     passwordHash: hash(blog.password, undefined, "scrypt"),
     privateKey: await crypto.subtle.exportKey("jwk", privateKey),
     publicKey: await crypto.subtle.exportKey("jwk", publicKey),
@@ -44,6 +47,7 @@ export interface BlogInternal extends BlogBase {
   passwordHash: string;
   privateKey: Record<string, unknown>;
   publicKey: Record<string, unknown>;
+  published: string;
 }
 
 export async function getBlog(): Promise<Blog | null> {
@@ -66,6 +70,7 @@ export async function getBlog(): Promise<Blog | null> {
       true,
       ["verify"],
     ),
+    published: Temporal.Instant.from(entry.value.published),
   };
 }
 

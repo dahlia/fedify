@@ -50,6 +50,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
     summary: blog.description,
     preferredUsername: handle,
     url: new URL("/", ctx.request.url),
+    published: blog.published,
     // A `Context<TContextData>` object has several purposes, and one of
     // them is to provide a way to generate URIs for the dispatchers and
     // the collections:
