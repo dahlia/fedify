@@ -1,33 +1,17 @@
 import { assertEquals } from "jsr:@std/assert@^0.218.2";
 import { ActorDispatcher } from "../federation/callback.ts";
-import { RequestContext } from "../federation/context.ts";
-import { Router, RouterError } from "../federation/router.ts";
-import { mockDocumentLoader } from "../testing/docloader.ts";
+import { Router } from "../federation/router.ts";
+import { createRequestContext } from "../testing/context.ts";
 import { CryptographicKey, Link, Person } from "../vocab/vocab.ts";
 import { handleWebFinger } from "./handler.ts";
 
 Deno.test("handleWebFinger()", async () => {
   const url = new URL("https://example.com/.well-known/webfinger");
-  let request = new Request(url);
-  const context: RequestContext<void> = {
+  const context = createRequestContext<void>({
     url,
-    request,
     data: undefined,
-    documentLoader: mockDocumentLoader,
     getActorUri(handle) {
       return new URL(`https://example.com/users/${handle}`);
-    },
-    getOutboxUri(_handle) {
-      throw new RouterError("Not implemented");
-    },
-    getInboxUri(_handle?) {
-      throw new RouterError("Not implemented");
-    },
-    getFollowingUri(_handle) {
-      throw new RouterError("Not implemented");
-    },
-    getFollowersUri(_handle) {
-      throw new RouterError("Not implemented");
     },
     getActorKey(_handle) {
       return Promise.resolve(
@@ -36,10 +20,7 @@ Deno.test("handleWebFinger()", async () => {
         }),
       );
     },
-    sendActivity(_params) {
-      throw new Error("Not implemented");
-    },
-  };
+  });
   const router = new Router();
   router.add("/users/{handle}", "actor");
   const actorDispatcher: ActorDispatcher<void> = (ctx, handle, _key) => {
@@ -63,6 +44,7 @@ Deno.test("handleWebFinger()", async () => {
     return new Response("Not found", { status: 404 });
   };
 
+  let request = context.request;
   let response = await handleWebFinger(request, {
     context,
     router,

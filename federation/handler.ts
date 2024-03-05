@@ -17,7 +17,7 @@ import {
 } from "./callback.ts";
 import { RequestContext } from "./context.ts";
 
-function acceptsJsonLd(request: Request): boolean {
+export function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);
   if (types == null) return true;
   if (types[0] === "text/html" || types[0] === "application/xhtml+xml") {
@@ -31,7 +31,6 @@ function acceptsJsonLd(request: Request): boolean {
 export interface ActorHandlerParameters<TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
-  documentLoader: DocumentLoader;
   actorDispatcher?: ActorDispatcher<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
@@ -42,7 +41,6 @@ export async function handleActor<TContextData>(
   {
     handle,
     context,
-    documentLoader,
     actorDispatcher,
     onNotFound,
     onNotAcceptable,
@@ -62,7 +60,7 @@ export async function handleActor<TContextData>(
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
   }
-  const jsonLd = await actor.toJsonLd({ documentLoader });
+  const jsonLd = await actor.toJsonLd(context);
   return new Response(JSON.stringify(jsonLd), {
     headers: {
       "Content-Type": "application/activity+json",

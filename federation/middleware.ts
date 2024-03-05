@@ -654,7 +654,6 @@ export class Federation<TContextData> {
         return await handleActor(request, {
           handle: route.values.handle,
           context,
-          documentLoader: this.#documentLoader,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
           onNotFound,
           onNotAcceptable,
