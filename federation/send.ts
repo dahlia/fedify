@@ -28,14 +28,14 @@ export interface ExtractInboxesParameters {
 export function extractInboxes(
   { recipients, preferSharedInbox }: ExtractInboxesParameters,
 ): Set<URL> {
-  const inboxes = new Set<URL>();
+  const inboxes: Record<string, URL> = {};
   for (const recipient of recipients) {
     const inbox = preferSharedInbox
       ? recipient.endpoints?.sharedInbox ?? recipient.inboxId
       : recipient.inboxId;
-    if (inbox != null) inboxes.add(inbox);
+    if (inbox != null) inboxes[inbox.href] = inbox;
   }
-  return inboxes;
+  return new Set(Object.values(inboxes));
 }
 
 /**

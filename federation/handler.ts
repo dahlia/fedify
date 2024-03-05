@@ -1,4 +1,13 @@
 import { accepts } from "jsr:@std/http@^0.218.2";
+import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
+import { DocumentLoader } from "../runtime/docloader.ts";
+import {
+  Activity,
+  Link,
+  Object,
+  OrderedCollection,
+  OrderedCollectionPage,
+} from "../vocab/vocab.ts";
 import {
   ActorDispatcher,
   CollectionCounter,
@@ -7,16 +16,6 @@ import {
   InboxListener,
 } from "./callback.ts";
 import { RequestContext } from "./context.ts";
-import { verify } from "../httpsig/mod.ts";
-import { DocumentLoader } from "../runtime/docloader.ts";
-import { isActor } from "../vocab/actor.ts";
-import {
-  Activity,
-  Link,
-  Object,
-  OrderedCollection,
-  OrderedCollectionPage,
-} from "../vocab/mod.ts";
 
 function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);
@@ -250,8 +249,8 @@ export async function handleInbox<TContextData>(
       return response instanceof Promise ? await response : response;
     }
   }
-  const keyId = await verify(request, documentLoader);
-  if (keyId == null) {
+  const key = await verify(request, documentLoader);
+  if (key == null) {
     const response = new Response("Failed to verify the request signature.", {
       status: 401,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -300,7 +299,7 @@ export async function handleInbox<TContextData>(
     });
     return response;
   }
-  if (!await doesActorOwnKey(activity, keyId)) {
+  if (!await doesActorOwnKey(activity, key, documentLoader)) {
     const response = new Response("The signer and the actor do not match.", {
       status: 401,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -340,17 +339,4 @@ export async function handleInbox<TContextData>(
     status: 202,
     headers: { "Content-Type": "text/plain; charset=utf-8" },
   });
-}
-
-async function doesActorOwnKey(
-  activity: Activity,
-  keyId: URL,
-): Promise<boolean> {
-  if (activity.actorId?.href === keyId.href.replace(/#.*$/, "")) return true;
-  const actor = await activity.getActor();
-  if (actor == null || !isActor(actor)) return false;
-  for (const publicKeyId of actor.publicKeyIds) {
-    if (publicKeyId.href === keyId.href) return true;
-  }
-  return false;
 }

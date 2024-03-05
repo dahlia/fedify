@@ -1,0 +1,22 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    "https://w3id.org/security/v1"
+  ],
+  "id": "https://example.com/person",
+  "type": "Person",
+  "name": "John Doe",
+  "publicKey": [
+    {
+      "id": "https://example.com/key",
+      "owner": "https://example.com/person",
+      "type": "CryptographicKey",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyIB9rotX8G6r6/6toT+x\n24BUiQ/HaPH1Em9dOt4c94s+OPFoEdH7DY7Iym9A8LlH4JaGF8KD38bLHWe1S4x0\njV3gHJKhK7veJfGZCKUENcQecBZ+YWUs5HWvUIX1vVB//0luHrg6BQKGOrSOE+WI\nAxyr0qsWCFfZzQrvSnUD2yvg1arJX2xhms14uxoRd5Kg9efKSCmmQaNEapicARUm\nFWrIEpGFa/nUUnqimssAGw1eZFqf3wA4TjhsuARBhGaJtv/3KEa016eMZxy3kDlO\njZnXZTaTgWkXdodwUvy8563fes3Al6BlcS2iJ9qbtha8rSm0FHqoUKH73JsLPKQI\nwQIDAQAB\n-----END PUBLIC KEY-----"
+    },
+    {
+      "id": "https://example.com/key2",
+      "type": "CryptographicKey",
+      "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoRmBtnxbdFutoRd1GLGw\nwGTrsqlRRWUe11hHQaoRLGf5LwQ0tIc6I9q+dynliw+2kxYsLn9SH2je6HcTYOol\ngW7F/cOWXZQN04b+OiYcU1ConAhLjmn4k1uKawJ614y0ScPNd8PQ+CljsnlPxbq9\nofaCMe2BV3B6y09aCuGFJ0nxn1/ubjmIBIWWFTAznoz1J9BhJDGyt3IO3ABy3f9z\nDVlR32L/n5VIkXnxkjUKdzMAOzYb62kuKOp1iznRTPrV71SNtivJMwSh/LVgBrmZ\njtIn/oim+KyX/fdLU3tQ7VClyqmJzyAjccOH6Qj6nFTPh+vX07gqN8IlLT2uye4w\nawIDAQAB\n-----END PUBLIC KEY-----"
+    }
+  ]
+}

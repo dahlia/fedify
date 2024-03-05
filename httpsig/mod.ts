@@ -8,8 +8,12 @@ import { equals } from "jsr:@std/bytes@^0.218.2";
 import { decodeBase64, encodeBase64 } from "jsr:@std/encoding@^0.218.2/base64";
 import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
 import { DocumentLoader } from "../runtime/docloader.ts";
-import { CryptographicKey, Object as ASObject } from "../vocab/mod.ts";
 import { isActor } from "../vocab/actor.ts";
+import {
+  Activity,
+  CryptographicKey,
+  Object as ASObject,
+} from "../vocab/vocab.ts";
 import { validateCryptoKey } from "./key.ts";
 
 /**
@@ -19,6 +23,7 @@ import { validateCryptoKey } from "./key.ts";
  * @param keyId The key ID to use for the signature.  It will be used by the
  *              verifier.
  * @returns The signed request.
+ * @throws {TypeError} If the private key is invalid or unsupported.
  */
 export async function sign(
   request: Request,
@@ -80,13 +85,16 @@ const supportedHashAlgorithms: Record<string, string> = {
  * under the hood.
  * @param request The request to verify.
  * @param documentLoader The document loader to use for fetching the public key.
- * @returns The key ID of the verified signature, or `null` if the signature
+ * @param currentTime The current time.  If not specified, the current time is
+ *                    used.  This is useful for testing.
+ * @returns The public key of the verified signature, or `null` if the signature
  *          could not be verified.
  */
 export async function verify(
   request: Request,
   documentLoader: DocumentLoader,
-): Promise<URL | null> {
+  currentTime?: Temporal.Instant,
+): Promise<CryptographicKey | null> {
   request = request.clone();
   const dateHeader = request.headers.get("Date");
   if (dateHeader == null) return null;
@@ -120,7 +128,7 @@ export async function verify(
     if (!matched) return null;
   }
   const date = Temporal.Instant.from(new Date(dateHeader).toISOString());
-  const now = Temporal.Now.instant();
+  const now = currentTime ?? Temporal.Now.instant();
   if (Temporal.Instant.compare(date, now.add({ seconds: 30 })) > 0) {
     // Too far in the future
     return null;
@@ -143,7 +151,18 @@ export async function verify(
   }
   const { keyId, headers, signature } = sigValues;
   const { document } = await documentLoader(keyId);
-  const object = await ASObject.fromJsonLd(document);
+  let object: ASObject | CryptographicKey;
+  try {
+    object = await ASObject.fromJsonLd(document, { documentLoader });
+  } catch (e) {
+    if (!(e instanceof TypeError)) throw e;
+    try {
+      object = await CryptographicKey.fromJsonLd(document, { documentLoader });
+    } catch (e) {
+      if (e instanceof TypeError) return null;
+      throw e;
+    }
+  }
   let key: CryptographicKey | null = null;
   if (object instanceof CryptographicKey) key = object;
   else if (isActor(object)) {
@@ -167,6 +186,8 @@ export async function verify(
     `${name}: ` +
     (name == "(request-target)"
       ? `${request.method.toLowerCase()} ${new URL(request.url).pathname}`
+      : name == "host"
+      ? request.headers.get("host") ?? new URL(request.url).host
       : request.headers.get(name))
   ).join("\n");
   const sig = decodeBase64(signature);
@@ -177,5 +198,28 @@ export async function verify(
     sig,
     new TextEncoder().encode(message),
   );
-  return verified ? new URL(keyId) : null;
+  return verified ? key : null;
+}
+
+/**
+ * Checks if the actor of the given activity owns the specified key.
+ * @param activity The activity to check.
+ * @param key The public key to check.
+ * @param documentLoader The document loader to use for fetching the actor.
+ * @returns Whether the actor is the owner of the key.
+ */
+export async function doesActorOwnKey(
+  activity: Activity,
+  key: CryptographicKey,
+  documentLoader: DocumentLoader,
+): Promise<boolean> {
+  if (key.ownerId != null) {
+    return key.ownerId.href === activity.actorId?.href;
+  }
+  const actor = await activity.getActor({ documentLoader });
+  if (actor == null || !isActor(actor)) return false;
+  for (const publicKeyId of actor.publicKeyIds) {
+    if (key.id != null && publicKeyId.href === key.id.href) return true;
+  }
+  return false;
 }

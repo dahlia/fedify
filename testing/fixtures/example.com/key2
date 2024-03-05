@@ -1,0 +1,6 @@
+{
+  "@context": "https://w3id.org/security/v1",
+  "id": "https://example.com/key2",
+  "type": "CryptographicKey",
+  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoRmBtnxbdFutoRd1GLGw\nwGTrsqlRRWUe11hHQaoRLGf5LwQ0tIc6I9q+dynliw+2kxYsLn9SH2je6HcTYOol\ngW7F/cOWXZQN04b+OiYcU1ConAhLjmn4k1uKawJ614y0ScPNd8PQ+CljsnlPxbq9\nofaCMe2BV3B6y09aCuGFJ0nxn1/ubjmIBIWWFTAznoz1J9BhJDGyt3IO3ABy3f9z\nDVlR32L/n5VIkXnxkjUKdzMAOzYb62kuKOp1iznRTPrV71SNtivJMwSh/LVgBrmZ\njtIn/oim+KyX/fdLU3tQ7VClyqmJzyAjccOH6Qj6nFTPh+vX07gqN8IlLT2uye4w\nawIDAQAB\n-----END PUBLIC KEY-----"
+}

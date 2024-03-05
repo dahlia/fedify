@@ -15,7 +15,7 @@ export function validateCryptoKey(
   }
   if (key.algorithm.name != "RSASSA-PKCS1-v1_5") {
     throw new TypeError(
-      "Curently only RSASSA-PKCS1-v1_5 key is supported.  " +
+      "Currently only RSASSA-PKCS1-v1_5 key is supported.  " +
         "More algorithms will be added in the future!",
     );
   }
