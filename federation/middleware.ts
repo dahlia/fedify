@@ -662,7 +662,6 @@ export class Federation<TContextData> {
         return await handleCollection(request, {
           handle: route.values.handle,
           context,
-          documentLoader: this.#documentLoader,
           collectionCallbacks: this.#outboxCallbacks,
           onNotFound,
           onNotAcceptable,
@@ -674,7 +673,6 @@ export class Federation<TContextData> {
           context,
           kv: this.#kv,
           kvPrefix: this.#kvPrefixes.activityIdempotence,
-          documentLoader: this.#documentLoader,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
           inboxListeners: this.#inboxListeners,
           inboxErrorHandler: this.#inboxErrorHandler,
@@ -684,7 +682,6 @@ export class Federation<TContextData> {
         return await handleCollection(request, {
           handle: route.values.handle,
           context,
-          documentLoader: this.#documentLoader,
           collectionCallbacks: this.#followingCallbacks,
           onNotFound,
           onNotAcceptable,
@@ -693,7 +690,6 @@ export class Federation<TContextData> {
         return await handleCollection(request, {
           handle: route.values.handle,
           context,
-          documentLoader: this.#documentLoader,
           collectionCallbacks: this.#followersCallbacks,
           onNotFound,
           onNotAcceptable,

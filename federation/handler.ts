@@ -1,6 +1,5 @@
 import { accepts } from "jsr:@std/http@^0.218.2";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
-import { DocumentLoader } from "../runtime/docloader.ts";
 import {
   Activity,
   Link,
@@ -97,7 +96,6 @@ export interface CollectionCallbacks<TItem, TContextData> {
 export interface CollectionHandlerParameters<TItem, TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
-  documentLoader: DocumentLoader;
   collectionCallbacks?: CollectionCallbacks<TItem, TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
@@ -111,7 +109,6 @@ export async function handleCollection<
   {
     handle,
     context,
-    documentLoader,
     collectionCallbacks,
     onNotFound,
     onNotAcceptable,
@@ -197,7 +194,7 @@ export async function handleCollection<
     }
     collection = new OrderedCollectionPage({ prev, next, items });
   }
-  const jsonLd = await collection.toJsonLd({ documentLoader });
+  const jsonLd = await collection.toJsonLd(context);
   return new Response(JSON.stringify(jsonLd), {
     headers: {
       "Content-Type": "application/activity+json",
@@ -217,7 +214,6 @@ export interface InboxHandlerParameters<TContextData> {
     InboxListener<TContextData, Activity>
   >;
   inboxErrorHandler?: (error: Error) => void | Promise<void>;
-  documentLoader: DocumentLoader;
   onNotFound(request: Request): Response | Promise<Response>;
 }
 
@@ -231,7 +227,6 @@ export async function handleInbox<TContextData>(
     actorDispatcher,
     inboxListeners,
     inboxErrorHandler,
-    documentLoader,
     onNotFound,
   }: InboxHandlerParameters<TContextData>,
 ): Promise<Response> {
@@ -247,7 +242,7 @@ export async function handleInbox<TContextData>(
       return response instanceof Promise ? await response : response;
     }
   }
-  const key = await verify(request, documentLoader);
+  const key = await verify(request, context.documentLoader);
   if (key == null) {
     const response = new Response("Failed to verify the request signature.", {
       status: 401,
@@ -268,7 +263,7 @@ export async function handleInbox<TContextData>(
   }
   let activity: Activity;
   try {
-    activity = await Activity.fromJsonLd(json, { documentLoader });
+    activity = await Activity.fromJsonLd(json, context);
   } catch (e) {
     const promise = inboxErrorHandler?.(e);
     if (promise instanceof Promise) await promise;
@@ -297,7 +292,7 @@ export async function handleInbox<TContextData>(
     });
     return response;
   }
-  if (!await doesActorOwnKey(activity, key, documentLoader)) {
+  if (!await doesActorOwnKey(activity, key, context.documentLoader)) {
     const response = new Response("The signer and the actor do not match.", {
       status: 401,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
