@@ -310,6 +310,21 @@ export class Federation<TContextData> {
 
   /**
    * Registers an actor dispatcher.
+   *
+   * @example
+   * ``` typescript
+   * federation.setActorDispatcher(
+   *   "/users/{handle}",
+   *   async (ctx, handle, key) => {
+   *     return new Person({
+   *       id: ctx.getActorUri(handle),
+   *       preferredUsername: handle,
+   *       // ...
+   *     });
+   *   }
+   * );
+   * ```
+   *
    * @param path The URI path pattern for the actor dispatcher.  The syntax is
    *             based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
@@ -346,6 +361,20 @@ export class Federation<TContextData> {
 
   /**
    * Registers an outbox dispatcher.
+   *
+   * @example
+   * ``` typescript
+   * federation.setOutboxDispatcher(
+   *   "/users/{handle}/outbox",
+   *   async (ctx, handle, options) => {
+   *     let items: Activity[];
+   *     let nextCursor: string;
+   *     // ...
+   *     return { items, nextCursor };
+   *   }
+   * );
+   * ```
+   *
    * @param path The URI path pattern for the outbox dispatcher.  The syntax is
    *             based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
@@ -479,6 +508,22 @@ export class Federation<TContextData> {
 
   /**
    * Assigns the URL path for the inbox and starts setting inbox listeners.
+   *
+   * @example
+   * ``` typescript
+   * federation
+   *   .setInboxListeners("/users/{handle/inbox", "/inbox")
+   *   .on(Follow, async (ctx, follow) => {
+   *     const from = await follow.getActor(ctx);
+   *     if (!isActor(from)) return;
+   *     // ...
+   *     await ctx.sendActivity({ })
+   *   })
+   *   .on(Undo, async (ctx, undo) => {
+   *     // ...
+   *   });
+   * ```
+   *
    * @param inboxPath The URI path pattern for the inbox.  The syntax is based
    *                  on URI Template
    *                  ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
@@ -535,7 +580,9 @@ export class Federation<TContextData> {
   }
 
   /**
-   * Sends an activity to recipients' inboxes.
+   * Sends an activity to recipients' inboxes.  You would typically use
+   * {@link Context.sendActivity} instead of this method.
+   *
    * @param sender The sender's key pair.
    * @param recipients The recipients of the activity.
    * @param activity The activity to send.
@@ -570,7 +617,12 @@ export class Federation<TContextData> {
   }
 
   /**
-   * Handles a request related to federation.
+   * Handles a request related to federation.  If a request is not related to
+   * federation, the `onNotFound` or `onNotAcceptable` callback is called.
+   *
+   * Usually, this method is called from a server's request handler or
+   * a web framework's middleware.
+   *
    * @param request The request object.
    * @param parameters The parameters for handling the request.
    * @returns The response to the request.
@@ -732,11 +784,26 @@ export interface CollectionCallbackSetters<TContextData> {
  * Registry for inbox listeners for different activity types.
  */
 export interface InboxListenerSetter<TContextData> {
+  /**
+   * Registers a listener for a specific incoming activity type.
+   *
+   * @param type A subclass of {@link Activity} to listen to.
+   * @param listener A callback to handle an incoming activity.
+   * @returns The setters object so that settings can be chained.
+   */
   on<TActivity extends Activity>(
     // deno-lint-ignore no-explicit-any
     type: new (...args: any[]) => TActivity,
     listener: InboxListener<TContextData, TActivity>,
   ): InboxListenerSetter<TContextData>;
+
+  /**
+   * Registers an error handler for inbox listeners.  Any exceptions thrown
+   * from the listeners are caught and passed to this handler.
+   *
+   * @param handler A callback to handle an error.
+   * @returns The setters object so that settings can be chained.
+   */
   onError(
     handler: (error: Error) => void | Promise<void>,
   ): InboxListenerSetter<TContextData>;

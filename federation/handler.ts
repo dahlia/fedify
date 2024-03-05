@@ -322,8 +322,17 @@ export async function handleInbox<TContextData>(
     cls = globalThis.Object.getPrototypeOf(cls);
   }
   const listener = inboxListeners.get(cls)!;
-  const promise = listener(context, activity);
-  if (promise instanceof Promise) await promise;
+  try {
+    const promise = listener(context, activity);
+    if (promise instanceof Promise) await promise;
+  } catch (e) {
+    const promise = inboxErrorHandler?.(e);
+    if (promise instanceof Promise) await promise;
+    return new Response("Internal server error.", {
+      status: 500,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  }
   if (cacheKey != null) {
     await kv.set(cacheKey, true, { expireIn: 1000 * 60 * 60 * 24 });
   }
