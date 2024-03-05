@@ -93,7 +93,7 @@ export async function sendActivity(
   let request = new Request(inbox, {
     method: "POST",
     headers: {
-      "Content-Type": "application/ld+json",
+      "Content-Type": "application/activity+json",
     },
     body: JSON.stringify(jsonLd),
   });
