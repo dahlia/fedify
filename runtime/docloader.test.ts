@@ -1,7 +1,12 @@
+import * as mf from "https://deno.land/x/mock_fetch@0.3.0/mod.ts";
+import {
+  assertEquals,
+  assertRejects,
+  assertThrows,
+} from "jsr:@std/assert@^0.218.2";
 import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
-import { assertEquals, assertThrows } from "jsr:@std/assert@^0.218.2";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { FetchError, kvCache } from "./docloader.ts";
+import { fetchDocumentLoader, FetchError, kvCache } from "./docloader.ts";
 
 Deno.test("new FetchError()", () => {
   const e = new FetchError("https://example.com/", "An error message.");
@@ -12,6 +17,46 @@ Deno.test("new FetchError()", () => {
   const e2 = new FetchError(new URL("https://example.org/"));
   assertEquals(e2.url, new URL("https://example.org/"));
   assertEquals(e2.message, "https://example.org/");
+});
+
+Deno.test("fetchDocumentLoader()", async (t) => {
+  mf.install();
+
+  mf.mock("GET@/object", (_req) =>
+    new Response(
+      JSON.stringify({
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/object",
+        name: "Fetched object",
+        type: "Object",
+      }),
+      { status: 200 },
+    ));
+
+  await t.step("ok", async () => {
+    assertEquals(await fetchDocumentLoader("https://example.com/object"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/object",
+        name: "Fetched object",
+        type: "Object",
+      },
+    });
+  });
+
+  mf.mock("GET@/404", (_req) => new Response("", { status: 404 }));
+
+  await t.step("not ok", async () => {
+    await assertRejects(
+      () => fetchDocumentLoader("https://example.com/404"),
+      FetchError,
+      "HTTP 404: https://example.com/404",
+    );
+  });
+
+  mf.uninstall();
 });
 
 Deno.test("kvCache()", async (t) => {
@@ -29,7 +74,7 @@ Deno.test("kvCache()", async (t) => {
           Temporal.Duration.from({ days: 30 }),
         ],
       ],
-      prefix: ["_test"],
+      prefix: ["_test", "cached"],
     });
     const result = await loader("https://example.com/object");
     assertEquals(result, {
@@ -42,27 +87,76 @@ Deno.test("kvCache()", async (t) => {
         type: "Object",
       },
     });
-    const cache = await kv.get(["_test", "https://example.com/object"]);
+    const cache = await kv.get([
+      "_test",
+      "cached",
+      "https://example.com/object",
+    ]);
     assertEquals(cache.value, result);
 
     await kv.set(
-      ["_test", "https://example.com/mock"],
+      ["_test", "cached", "https://example.org/"],
       {
         contextUrl: null,
-        documentUrl: "https://example.com/mock",
+        documentUrl: "https://example.org/",
         document: {
-          "id": "https://example.com/mock",
+          "id": "https://example.org/",
         },
       },
     );
-    const result2 = await loader("https://example.com/mock");
+    const result2 = await loader("https://example.org/");
     assertEquals(result2, {
       contextUrl: null,
-      documentUrl: "https://example.com/mock",
+      documentUrl: "https://example.org/",
       document: {
-        "id": "https://example.com/mock",
+        "id": "https://example.org/",
       },
     });
+
+    await kv.set(
+      ["_test", "cached", "https://example.net/"],
+      {
+        contextUrl: null,
+        documentUrl: "https://example.net/",
+        document: {
+          "id": "https://example.net/",
+        },
+      },
+    );
+    const result3 = await loader("https://example.net/");
+    assertEquals(result3, {
+      contextUrl: null,
+      documentUrl: "https://example.net/",
+      document: {
+        "id": "https://example.net/",
+      },
+    });
+  });
+
+  await t.step("not cached", async () => {
+    const loader = kvCache({
+      kv,
+      loader: mockDocumentLoader,
+      rules: [],
+      prefix: ["_test", "not cached"],
+    });
+    const result = await loader("https://example.com/object");
+    assertEquals(result, {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/object",
+        name: "Fetched object",
+        type: "Object",
+      },
+    });
+    const cache = await kv.get([
+      "test2",
+      "not cached",
+      "https://example.com/object",
+    ]);
+    assertEquals(cache.value, null);
   });
 
   await t.step("maximum cache duration", () => {
@@ -73,7 +167,22 @@ Deno.test("kvCache()", async (t) => {
           loader: mockDocumentLoader,
           rules: [
             [
-              "https://example.com",
+              "https://example.com/",
+              Temporal.Duration.from({ days: 30, seconds: 1 }),
+            ],
+          ],
+        }),
+      TypeError,
+      "The maximum cache duration is 30 days",
+    );
+    assertThrows(
+      () =>
+        kvCache({
+          kv,
+          loader: mockDocumentLoader,
+          rules: [
+            [
+              new URLPattern("https://example.com/*"),
               Temporal.Duration.from({ days: 30, seconds: 1 }),
             ],
           ],

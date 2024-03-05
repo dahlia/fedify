@@ -51,16 +51,17 @@ export async function fetchDocumentLoader(
     },
     redirect: "follow",
   });
+  const documentUrl = response.url === "" ? url : response.url;
   if (!response.ok) {
     throw new FetchError(
-      response.url,
-      `HTTP ${response.status}: ${response.url}`,
+      documentUrl,
+      `HTTP ${response.status}: ${documentUrl}`,
     );
   }
   return {
     contextUrl: null,
     document: await response.json(),
-    documentUrl: response.url,
+    documentUrl,
   };
 }
 
