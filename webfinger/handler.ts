@@ -1,16 +1,41 @@
-import { RequestContext } from "../federation/context.ts";
 import { ActorDispatcher } from "../federation/callback.ts";
+import { RequestContext } from "../federation/context.ts";
 import { Router } from "../federation/router.ts";
 import { Link as LinkObject } from "../vocab/mod.ts";
 import { Link, ResourceDescriptor } from "./jrd.ts";
 
+/**
+ * Parameters for {@link handleWebFinger}.
+ */
 export interface WebFingerHandlerParameters<TContextData> {
+  /**
+   * The request context.
+   */
   context: RequestContext<TContextData>;
+
+  /**
+   * The router to use for routing the actor's URL.
+   */
   router: Router;
+
+  /**
+   * The actor dispatcher to use for dispatching the actor.
+   */
   actorDispatcher?: ActorDispatcher<TContextData>;
+
+  /**
+   * The function to call when the actor is not found.
+   */
   onNotFound(request: Request): Response | Promise<Response>;
 }
 
+/**
+ * Handles a WebFinger request.  You would not typically call this function
+ * directly, but instead use {@link Federation.handle} method.
+ * @param request The WebFinger request to handle.
+ * @param parameters The parameters for handling the request.
+ * @returns The response to the request.
+ */
 export async function handleWebFinger<TContextData>(
   request: Request,
   {
