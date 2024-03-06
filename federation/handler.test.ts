@@ -1,8 +1,13 @@
 import { assert, assertEquals, assertFalse } from "jsr:@std/assert@^0.218.2";
 import { createRequestContext } from "../testing/context.ts";
-import { Person } from "../vocab/vocab.ts";
-import { ActorDispatcher } from "./callback.ts";
-import { acceptsJsonLd, handleActor } from "./handler.ts";
+import { Activity, Create, Person } from "../vocab/vocab.ts";
+import {
+  ActorDispatcher,
+  CollectionCounter,
+  CollectionCursor,
+  CollectionDispatcher,
+} from "./callback.ts";
+import { acceptsJsonLd, handleActor, handleCollection } from "./handler.ts";
 
 Deno.test("acceptsJsonLd()", () => {
   assert(acceptsJsonLd(
@@ -107,6 +112,10 @@ Deno.test("handleActor()", async () => {
     },
   );
   assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
   assertEquals(await response.json(), {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
@@ -138,5 +147,246 @@ Deno.test("handleActor()", async () => {
   );
   assertEquals(response.status, 404);
   assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+});
+
+Deno.test("handleCollection()", async () => {
+  let context = createRequestContext<void>({
+    data: undefined,
+    url: new URL("https://example.com/"),
+    getActorUri(handle) {
+      return new URL(`https://example.com/users/${handle}`);
+    },
+  });
+  const dispatcher: CollectionDispatcher<Activity, void> = (
+    _ctx,
+    handle,
+    cursor,
+  ) => {
+    if (handle !== "someone") return null;
+    const items = [
+      new Create({ id: new URL("https://example.com/activities/1") }),
+      new Create({ id: new URL("https://example.com/activities/2") }),
+      new Create({ id: new URL("https://example.com/activities/3") }),
+    ];
+    if (cursor != null) {
+      const idx = parseInt(cursor);
+      return {
+        items: [items[idx]],
+        nextCursor: idx < items.length - 1 ? (idx + 1).toString() : null,
+        prevCursor: idx > 0 ? (idx - 1).toString() : null,
+      };
+    }
+    return { items };
+  };
+  const counter: CollectionCounter<void> = (_ctx, handle) =>
+    handle === "someone" ? 3 : null;
+  const firstCursor: CollectionCursor<void> = (_ctx, handle) =>
+    handle === "someone" ? "0" : null;
+  const lastCursor: CollectionCursor<void> = (_ctx, handle) =>
+    handle === "someone" ? "2" : null;
+  let onNotFoundCalled: Request | null = null;
+  const onNotFound = (request: Request) => {
+    onNotFoundCalled = request;
+    return new Response("Not found", { status: 404 });
+  };
+  let onNotAcceptableCalled: Request | null = null;
+  const onNotAcceptable = (request: Request) => {
+    onNotAcceptableCalled = request;
+    return new Response("Not acceptable", { status: 406 });
+  };
+  let response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+
+  onNotFoundCalled = null;
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      collectionCallbacks: { dispatcher },
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 406);
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, context.request);
+
+  onNotAcceptableCalled = null;
+  context = createRequestContext<void>({
+    ...context,
+    request: new Request(context.url, {
+      headers: {
+        Accept: "application/activity+json",
+      },
+    }),
+  });
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "no-one",
+      collectionCallbacks: { dispatcher },
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+
+  onNotFoundCalled = null;
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      collectionCallbacks: { dispatcher },
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "OrderedCollection",
+    items: [
+      { type: "Create", id: "https://example.com/activities/1" },
+      { type: "Create", id: "https://example.com/activities/2" },
+      { type: "Create", id: "https://example.com/activities/3" },
+    ],
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      collectionCallbacks: {
+        dispatcher,
+        counter,
+        firstCursor,
+        lastCursor,
+      },
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "OrderedCollection",
+    totalItems: 3,
+    first: "https://example.com/?cursor=0",
+    last: "https://example.com/?cursor=2",
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+
+  let url = new URL("https://example.com/?cursor=0");
+  context = createRequestContext({
+    ...context,
+    url,
+    request: new Request(url, {
+      headers: {
+        Accept: "application/activity+json",
+      },
+    }),
+  });
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      collectionCallbacks: {
+        dispatcher,
+        counter,
+        firstCursor,
+        lastCursor,
+      },
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "OrderedCollectionPage",
+    partOf: "https://example.com/",
+    next: "https://example.com/?cursor=1",
+    items: {
+      id: "https://example.com/activities/1",
+      type: "Create",
+    },
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+
+  url = new URL("https://example.com/?cursor=2");
+  context = createRequestContext({
+    ...context,
+    url,
+    request: new Request(url, {
+      headers: {
+        Accept: "application/activity+json",
+      },
+    }),
+  });
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      collectionCallbacks: {
+        dispatcher,
+        counter,
+        firstCursor,
+        lastCursor,
+      },
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "OrderedCollectionPage",
+    partOf: "https://example.com/",
+    prev: "https://example.com/?cursor=1",
+    items: {
+      id: "https://example.com/activities/3",
+      type: "Create",
+    },
+  });
+  assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
 });

@@ -148,7 +148,7 @@ export async function handleCollection<
       }
       const { items } = page;
       collection = new OrderedCollection({
-        totalItems: Number(totalItems),
+        totalItems: totalItems == null ? null : Number(totalItems),
         items,
       });
     } else {
@@ -192,7 +192,9 @@ export async function handleCollection<
       next = new URL(context.url);
       next.searchParams.set("cursor", nextCursor);
     }
-    collection = new OrderedCollectionPage({ prev, next, items });
+    const partOf = new URL(context.url);
+    partOf.searchParams.delete("cursor");
+    collection = new OrderedCollectionPage({ prev, next, items, partOf });
   }
   const jsonLd = await collection.toJsonLd(context);
   return new Response(JSON.stringify(jsonLd), {
