@@ -1,0 +1,29 @@
+<style>
+:root { --font-size: 20px; }
+a.external-link:not(:has(img))::after {
+  vertical-align: super;
+  content: '↗';
+  font-size: smaller;
+  color: color-mix(in srgb, var(--primary) 50%, transparent);
+  text-decoration: none;
+}
+a code { color: var(--primary); }
+a:hover code { text-decoration: underline; }
+a:active code { background-color: transparent; }
+pre, pre > code { font-size: var(--font-size); }
+dl { margin-top: var(--typography-spacing-vertical); }
+.callout {
+  border-left: 0.5rem solid var(--primary);
+  padding-left: 1.5rem;
+  margin: 2em 0;
+}
+.callout > .callout-title { font-weight: bolder; }
+.callout > .callout-title > .callout-title-icon {
+  float: left;
+  margin-right: 0.5rem;
+}
+.callout > .callout-content {
+  clear: left;
+  margin-top: 1rem;
+}
+</style>

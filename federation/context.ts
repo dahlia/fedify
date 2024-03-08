@@ -58,6 +58,13 @@ export interface Context<TContextData> {
   getFollowersUri(handle: string): URL;
 
   /**
+   * Extracts the actor's handle from an actor URI, if it is a valid actor URI.
+   * @param actorUri The actor's URI.
+   * @returns The actor's handle, or `null` if the URI is not a valid actor URI.
+   */
+  getHandleFromActorUri(actorUri: URL): string | null;
+
+  /**
    * Gets a public {@link CryptographicKey} for an actor, if any exists.
    * @param handle The actor's handle.
    * @returns The actor's public key, or `null` if the actor has no key.

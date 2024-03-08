@@ -11,6 +11,7 @@ export function createContext<TContextData>(
     getInboxUri,
     getFollowingUri,
     getFollowersUri,
+    getHandleFromActorUri,
     getActorKey,
     sendActivity,
   }: Partial<Context<TContextData>> & { data: TContextData },
@@ -26,6 +27,9 @@ export function createContext<TContextData>(
     getInboxUri: getInboxUri ?? throwRouteError,
     getFollowingUri: getFollowingUri ?? throwRouteError,
     getFollowersUri: getFollowersUri ?? throwRouteError,
+    getHandleFromActorUri: getHandleFromActorUri ?? ((_uri) => {
+      throw new Error("Not implemented");
+    }),
     getActorKey: getActorKey ?? ((_handle) => {
       return Promise.resolve(null);
     }),

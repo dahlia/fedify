@@ -14,6 +14,7 @@ import {
   CollectionCounter,
   CollectionCursor,
   CollectionDispatcher,
+  InboxErrorHandler,
   InboxListener,
 } from "./callback.ts";
 import { Context, RequestContext } from "./context.ts";
@@ -66,12 +67,13 @@ export interface FederationParameters {
 export interface FederationKvPrefixes {
   /**
    * The key prefix used for storing whether activities have already been
-   * processed or not.
+   * processed or not.  `["_fedify", "activityIdempotence"]` by default.
    */
   activityIdempotence: Deno.KvKey;
 
   /**
    * The key prefix used for storing remote JSON-LD documents.
+   * `["_fedify", "remoteDocument"]` by default.
    */
   remoteDocument: Deno.KvKey;
 }
@@ -95,7 +97,7 @@ export class Federation<TContextData> {
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
   >;
-  #inboxErrorHandler?: (error: Error) => void | Promise<void>;
+  #inboxErrorHandler?: InboxErrorHandler<TContextData>;
   #documentLoader: DocumentLoader;
   #treatHttps: boolean;
   #backoffSchedule: number[];
@@ -251,6 +253,12 @@ export class Federation<TContextData> {
           throw new RouterError("No followers collection path registered.");
         }
         return new URL(path, url);
+      },
+      getHandleFromActorUri: (actorUri: URL) => {
+        if (actorUri.origin !== url.origin) return null;
+        const route = this.#router.route(actorUri.pathname);
+        if (route?.name !== "actor") return null;
+        return route.values.handle;
       },
       getActorKey: async (handle: string): Promise<CryptographicKey | null> => {
         let keyPair = this.#actorCallbacks?.keyPairDispatcher?.(
@@ -570,7 +578,7 @@ export class Federation<TContextData> {
         return setter;
       },
       onError: (
-        handler: (error: Error) => void | Promise<void>,
+        handler: InboxErrorHandler<TContextData>,
       ): InboxListenerSetter<TContextData> => {
         this.#inboxErrorHandler = handler;
         return setter;
@@ -800,6 +808,6 @@ export interface InboxListenerSetter<TContextData> {
    * @returns The setters object so that settings can be chained.
    */
   onError(
-    handler: (error: Error) => void | Promise<void>,
+    handler: InboxErrorHandler<TContextData>,
   ): InboxListenerSetter<TContextData>;
 }

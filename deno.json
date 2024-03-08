@@ -14,6 +14,7 @@
   ],
   "exclude": [
     ".git/",
+    "apidoc/",
     "docs/",
     "examples/"
   ],
@@ -23,7 +24,7 @@
     "test-without-codegen": "deno test --check --doc --allow-read --allow-write --unstable-kv --trace-leaks",
     "test": "deno task codegen && deno task test-without-codegen",
     "coverage": "rm -rf coverage/ && deno task test --coverage && deno coverage --html coverage",
-    "doc": "deno task codegen && deno doc --html --name=Fedify mod.ts",
+    "apidoc": "deno task codegen && deno doc --html --name=Fedify --output=apidoc/ mod.ts",
     "publish": "deno task codegen && deno publish"
   },
   "unstable": [

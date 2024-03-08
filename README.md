@@ -18,7 +18,7 @@ for production use yet.  However, you can try it out and give feedback
 to help improve it.
 The rough roadmap is to implement the following features out of the box:
 
- -  Type-safe objects for [Activity Vocabulary] (including some community
+ -  Type-safe objects for [Activity Vocabulary] (including some vendor-specific
     extensions)
  -  [WebFinger] client and server
  -  [HTTP Signatures]

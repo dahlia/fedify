@@ -1,0 +1,14 @@
+{
+  "tasks": {
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable-kv -A -",
+    "serve": "deno task lume -s --port=8000"
+  },
+  "imports": {
+    "@std/collections": "jsr:@std/collections@^0.218.2",
+    "@std/semver": "jsr:@std/semver@^0.218.2",
+    "lume/": "https://deno.land/x/lume@v2.0.1/",
+    "lume_markdown_plugins/": "https://deno.land/x/lume_markdown_plugins@v0.7.0/",
+    "lumocs/": "https://deno.land/x/lumocs@0.1.2/"
+  },
+  "exclude": ["*.md", "**/*md"]
+}

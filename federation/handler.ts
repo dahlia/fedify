@@ -12,6 +12,7 @@ import {
   CollectionCounter,
   CollectionCursor,
   CollectionDispatcher,
+  InboxErrorHandler,
   InboxListener,
 } from "./callback.ts";
 import { RequestContext } from "./context.ts";
@@ -215,7 +216,7 @@ export interface InboxHandlerParameters<TContextData> {
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
   >;
-  inboxErrorHandler?: (error: Error) => void | Promise<void>;
+  inboxErrorHandler?: InboxErrorHandler<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
 }
 
@@ -256,7 +257,7 @@ export async function handleInbox<TContextData>(
   try {
     json = await request.json();
   } catch (e) {
-    const promise = inboxErrorHandler?.(e);
+    const promise = inboxErrorHandler?.(context, e);
     if (promise instanceof Promise) await promise;
     return new Response("Invalid JSON.", {
       status: 400,
@@ -267,7 +268,7 @@ export async function handleInbox<TContextData>(
   try {
     activity = await Activity.fromJsonLd(json, context);
   } catch (e) {
-    const promise = inboxErrorHandler?.(e);
+    const promise = inboxErrorHandler?.(context, e);
     if (promise instanceof Promise) await promise;
     return new Response("Invalid activity.", {
       status: 400,
@@ -320,7 +321,7 @@ export async function handleInbox<TContextData>(
     const promise = listener(context, activity);
     if (promise instanceof Promise) await promise;
   } catch (e) {
-    const promise = inboxErrorHandler?.(e);
+    const promise = inboxErrorHandler?.(context, e);
     if (promise instanceof Promise) await promise;
     return new Response("Internal server error.", {
       status: 500,

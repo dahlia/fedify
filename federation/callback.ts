@@ -60,8 +60,19 @@ export type CollectionCursor<TContextData> = (
  * A callback that listens for activities in an inbox.
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @typeParam TActivity The type of activity to listen for.
  */
 export type InboxListener<TContextData, TActivity extends Activity> = (
   context: RequestContext<TContextData>,
   activity: TActivity,
+) => void | Promise<void>;
+
+/**
+ * A callback that handles errors in an inbox.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
+ */
+export type InboxErrorHandler<TContextData> = (
+  context: RequestContext<TContextData>,
+  error: Error,
 ) => void | Promise<void>;

@@ -218,7 +218,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
       console.debug(undo);
     }
   })
-  .onError((e) => console.error(e));
+  .onError((_ctx, e) => console.error(e));
 
 // Since the blog does not follow anyone, the following dispatcher is
 // implemented to return just an empty list:

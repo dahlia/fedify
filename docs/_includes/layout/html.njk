@@ -1,0 +1,49 @@
+---
+lang: en
+title: hexagon.56k.guru
+---
+
+<!doctype html>
+<html lang="{{ lang }}">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+
+    <link rel="canonical" href="{{ page.data.url | url(true) }}" />
+
+    <title>
+      {%- if doc_title -%}
+        {{ doc_title }}
+      {%- else -%}
+        {{ metas.site }} &mdash; {{ title }}
+      {%- endif -%}
+    </title>
+
+    <!-- Pico CSS -->
+    <link rel="stylesheet" href="/css/pico.min.css" inline>
+
+    <!-- Font Awesome -->
+    <link href="/css/font-awesome.css" rel="stylesheet">
+
+    <!-- GitHub Dark Hightlight.js Theme -->
+    <link href="/css/github-dark.min.css" rel="stylesheet">
+
+    <!-- Lumocs CSS -->
+    <link href="/css/palette.css" rel="stylesheet" inline>
+    <link href="/css/general.css" rel="stylesheet" inline>
+    <link href="/css/sidebar.css" rel="stylesheet" inline>
+    <link href="/css/blockquotes.css" rel="stylesheet" inline>
+
+    <!-- Lumocs JS -->
+    <script src="/js/theme-switcher.js" inline></script>
+    <script src="/js/hamburger.js" inline></script>
+    <script src="/js/hierarchy.js" inline></script>
+
+    <!-- Overridable custom content -->
+    {% include "head.njk" %}
+
+  </head>
+  {{ content | safe }}
+</html>

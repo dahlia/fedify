@@ -1,0 +1,36 @@
+{
+  "lang": "en",
+  "layout": "page.njk",
+  "metas": {
+    "title": "=title",
+    "site": "Fedify",
+    "lang": "en",
+    "description": "=description"
+  },
+  "top_links": [
+    {
+      "icon": "fab fa-github",
+      "title": "GitHub",
+      "url": "https://github.com/dahlia/fedify"
+    },
+    {
+      "icon": "fa-solid fa-cube",
+      "title": "JSR",
+      "url": "https://jsr.io/@fedify/fedify"
+    }
+  ],
+  "nav_links": [
+    {
+      "title": "API reference",
+      "url": "https://jsr.io/@fedify/fedify/doc"
+    },
+    {
+      "title": "Examples",
+      "url": "https://github.com/dahlia/fedify/tree/main/examples"
+    },
+    {
+      "title": "GitHub",
+      "url": "https://github.com/dahlia/fedify"
+    }
+  ]
+}
