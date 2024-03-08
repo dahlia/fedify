@@ -55,7 +55,7 @@ jobs:
       working-directory: ${{ github.workspace }}/examples/blog/
     - run: deno task publish --dry-run
 
-  publish:
+  publish-jsr:
     if: github.event_name == 'push'
     needs: [test, lint]
     runs-on: ubuntu-latest
@@ -99,3 +99,25 @@ jobs:
         project: fedify-blog
         entrypoint: ./examples/blog/main.ts
         root: .
+
+  publish-docs:
+    needs: [publish-jsr]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      pages: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - run: deno task lume
+      working-directory: ${{ github.workspace }}/docs/
+    - uses: actions/upload-pages-artifact@v3
+      with:
+        path: docs/_site
+    - id: deployment
+      uses: actions/deploy-pages@v4
