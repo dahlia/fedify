@@ -61,7 +61,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       id-token: write
-      contents: read
+      contents: write
+      discussions: write
     steps:
     - uses: actions/checkout@v4
     - uses: denoland/setup-deno@v1
@@ -75,12 +76,33 @@ jobs:
           '.version = .version + "-dev." + $build + "+" + $commit' \
           deno.json > deno.json.tmp
         mv deno.json.tmp deno.json
-        # Don't know why, but the .gitignore list is not overriden by include list
-        # in deno.json:
-        rm vocab/.gitignore
     - if: github.ref_type == 'tag'
-      run: '[[ "$(jq .version deno.json)" = "$GITHUB_REF_NAME" ]]'
-    - run: deno task publish
+      run: |
+        set -ex
+        [[ "$(jq -r .version deno.json)" = "$GITHUB_REF_NAME" ]]
+        ! grep -i "to be released" CHANGES.md
+    # Don't know why, but the .gitignore list is not overriden by include list
+    # in deno.json:
+    - run: rm vocab/.gitignore
+    - id: extract-changelog
+      uses: dahlia/submark@5a5ff0a58382fb812616a5801402f5aef00f90ce
+      with:
+        input-file: CHANGES.md
+        heading-level: 2
+        heading-title-text: version ${{ github.ref_name }}
+        ignore-case: true
+        omit-heading: true
+    - run: 'cat "$CHANGES_FILE"'
+      env:
+        CHANGES_FILE: ${{ steps.extract-changelog.outputs.output-file }}
+    - if: github.ref_type == 'tag'
+      uses: softprops/action-gh-release@v1
+      with:
+        body_path: ${{ steps.extract-changelog.outputs.output-file }}
+        name: Fedify ${{ github.ref_name }}
+        generate_release_notes: false
+        discussion_category_name: Announcements
+    - run: deno task publish --allow-dirty
 
   publish-examples-blog:
     needs: [test, lint]
