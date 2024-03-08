@@ -1,10 +1,10 @@
-<!-- deno-fmt-ignore-file -->
-
+---
+title: Fedify
+doc_title: "Fedify: a fediverse server framework"
+nav_order: 1
+---
 Fedify: a fediverse server framework
 ====================================
-
-[![JSR][JSR badge]][JSR]
-[![GitHub Actions][GitHub Actions badge]][GitHub Actions]
 
 Fedify is a [Deno]/TypeScript library for building federated server apps
 powered by [ActivityPub] and other standards, which is so-called [fediverse].
@@ -30,15 +30,12 @@ The rough roadmap is to implement the following features out of the box:
 If you want to know more about the project, please take a look at the following
 resources:
 
- -  [JSR]
- -  [Manual](https://dahlia.github.io/fedify/manual/)
+ -  [GitHub](https://github.com/dahlia/fedify)
+ -  [JSR](https://jsr.io/@fedify/fedify)
+ -  [Manual](./manual.md)
  -  [API reference](https://jsr.io/@fedify/fedify/doc)
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 
-[JSR]: https://jsr.io/@fedify/fedify
-[JSR badge]: https://jsr-badge.deno.dev/@fedify/fedify/unstable.svg
-[GitHub Actions]: https://github.com/dahlia/fedify/actions/workflows/build.yaml
-[GitHub Actions badge]: https://github.com/dahlia/fedify/actions/workflows/build.yaml/badge.svg
 [Deno]: https://deno.com/
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [fediverse]: https://en.wikipedia.org/wiki/Fediverse
@@ -49,9 +46,3 @@ resources:
 [Activity Vocabulary]: https://www.w3.org/TR/activitystreams-vocabulary/
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
-
-
-Prerequisite
-------------
-
-[Deno] 1.41.0 or later with `--unstable-kv` flag
