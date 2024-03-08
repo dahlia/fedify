@@ -139,9 +139,8 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     const blog = await getBlog();
     if (blog == null) return;
-    if (follow.id == null) return;
-    const actorUri = ctx.getActorUri(blog.handle);
-    if (follow.objectId?.href != actorUri.href) {
+    if (follow.id == null || follow.objectId == null) return;
+    if (ctx.getHandleFromActorUri(follow.objectId) !== blog.handle) {
       return;
     }
     const recipient = await follow.getActor(ctx);
@@ -168,7 +167,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
     await ctx.sendActivity(
       { handle: blog.handle },
       recipient,
-      new Accept({ actor: actorUri, object: follow }),
+      new Accept({ actor: follow.objectId, object: follow }),
     );
   })
   // The `Create` activity is handled by adding a comment to the post:
