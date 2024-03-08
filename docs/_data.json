@@ -5,7 +5,9 @@
     "title": "=title",
     "site": "Fedify",
     "lang": "en",
-    "description": "=description"
+    "description": "=description",
+    "logo": "/img/logo.svg",
+    "icon": "/img/logo.svg"
   },
   "top_links": [
     {

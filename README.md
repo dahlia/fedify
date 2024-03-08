@@ -1,5 +1,6 @@
 <!-- deno-fmt-ignore-file -->
 
+![](./logo.svg)
 Fedify: a fediverse server framework
 ====================================
 
