@@ -28,10 +28,11 @@ that are registered to the `Federation` object.  The following shows a few
 callbacks that take a `Context` object as the first parameter:
 
  -  [Actor dispatcher](./actor.md)
- -  Inbox listeners
+ -  [Inbox listeners](./inbox.md)
  -  Outbox dispatcher
  -  Followers collection
  -  Following collection
+ -  [NodeInfo dispatcher](./nodeinfo.md)
 
 Those are not all; there are more callbacks that take a `Context` object.
 
