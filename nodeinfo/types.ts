@@ -190,7 +190,7 @@ export interface Usage {
  * @returns The JSON value that complies with the NodeInfo schema.
  * @throws {TypeError} If the {@link NodeInfo} object is invalid.
  */
-export function toJson(nodeInfo: NodeInfo): JsonValue {
+export function nodeInfoToJson(nodeInfo: NodeInfo): JsonValue {
   if (!nodeInfo.software.name.match(/^[a-z0-9-]+$/)) {
     throw new TypeError("Invalid software name.");
   }

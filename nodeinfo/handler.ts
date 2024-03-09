@@ -2,7 +2,7 @@ import { NodeInfoDispatcher } from "../federation/callback.ts";
 import { RequestContext } from "../federation/context.ts";
 import { RouterError } from "../federation/router.ts";
 import { Link, ResourceDescriptor } from "../webfinger/jrd.ts";
-import { toJson } from "./types.ts";
+import { nodeInfoToJson } from "./types.ts";
 
 /**
  * Parameters for {@link handleNodeInfo}.
@@ -32,7 +32,7 @@ export async function handleNodeInfo<TContextData>(
 ): Promise<Response> {
   const promise = nodeInfoDispatcher(context);
   const nodeInfo = promise instanceof Promise ? await promise : promise;
-  const json = toJson(nodeInfo);
+  const json = nodeInfoToJson(nodeInfo);
   return new Response(JSON.stringify(json), {
     headers: {
       "Content-Type": "application/json;" +

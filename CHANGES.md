@@ -14,7 +14,14 @@ To be released.
      -  Added `Federation.setNodeInfoDispatcher()` method.
      -  Added `Context.getNodeInfoUri()` method.
      -  Added `NodeInfo` interface.
+     -  Added `Software` interface.
+     -  Added `Protocol` type.
+     -  Added `Services` interface.
+     -  Added `InboundService` type.
+     -  Added `OutboundService` type.
+     -  Added `Usage` interface.
      -  Added `NodeInfoDispatcher` type.
+     -  Added `nodeInfoToJson()` function.
 
 [NodeInfo]: https://nodeinfo.diaspora.software/
 [#1]: https://github.com/dahlia/fedify/issues/1

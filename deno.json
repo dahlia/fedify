@@ -5,6 +5,7 @@
     ".": "./mod.ts",
     "./federation": "./federation/mod.ts",
     "./httpsig": "./httpsig/mod.ts",
+    "./nodeinfo": "./nodeinfo/mod.ts",
     "./runtime": "./runtime/mod.ts",
     "./vocab": "./vocab/mod.ts",
     "./webfinger": "./webfinger/mod.ts"

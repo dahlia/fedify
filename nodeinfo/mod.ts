@@ -4,4 +4,4 @@
  *
  * @module
  */
-export { type NodeInfo } from "./types.ts";
+export * from "./types.ts";

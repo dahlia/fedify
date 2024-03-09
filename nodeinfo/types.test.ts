@@ -1,7 +1,7 @@
 import { assertEquals, assertThrows } from "jsr:@std/assert@^0.218.2";
-import { NodeInfo, toJson } from "./types.ts";
+import { NodeInfo, nodeInfoToJson } from "./types.ts";
 
-Deno.test("toJson()", () => {
+Deno.test("nodeInfoToJson()", () => {
   const validInfo: NodeInfo = {
     software: {
       name: "software-name",
@@ -15,7 +15,7 @@ Deno.test("toJson()", () => {
     },
   };
   assertEquals(
-    toJson(validInfo),
+    nodeInfoToJson(validInfo),
     {
       "$schema": "http://nodeinfo.diaspora.software/ns/schema/2.1#",
       version: "2.1",
@@ -37,7 +37,7 @@ Deno.test("toJson()", () => {
     },
   );
   assertEquals(
-    toJson({
+    nodeInfoToJson({
       ...validInfo,
       software: {
         ...validInfo.software,
@@ -75,7 +75,7 @@ Deno.test("toJson()", () => {
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         software: { ...validInfo.software, name: "INVALID-NAME" },
       }),
@@ -83,13 +83,13 @@ Deno.test("toJson()", () => {
     "Invalid software name",
   );
   assertThrows(
-    () => toJson({ ...validInfo, protocols: [] }),
+    () => nodeInfoToJson({ ...validInfo, protocols: [] }),
     TypeError,
     "At least one protocol must be supported",
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         usage: {
           ...validInfo.usage,
@@ -101,7 +101,7 @@ Deno.test("toJson()", () => {
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         usage: {
           ...validInfo.usage,
@@ -113,7 +113,7 @@ Deno.test("toJson()", () => {
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         usage: {
           ...validInfo.usage,
@@ -125,7 +125,7 @@ Deno.test("toJson()", () => {
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         usage: {
           ...validInfo.usage,
@@ -137,7 +137,7 @@ Deno.test("toJson()", () => {
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         usage: {
           ...validInfo.usage,
@@ -149,7 +149,7 @@ Deno.test("toJson()", () => {
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         usage: {
           ...validInfo.usage,
@@ -161,19 +161,25 @@ Deno.test("toJson()", () => {
   );
   assertThrows(
     () =>
-      toJson({ ...validInfo, usage: { ...validInfo.usage, localPosts: -1 } }),
+      nodeInfoToJson({
+        ...validInfo,
+        usage: { ...validInfo.usage, localPosts: -1 },
+      }),
     TypeError,
     "Invalid local posts",
   );
   assertThrows(
     () =>
-      toJson({ ...validInfo, usage: { ...validInfo.usage, localPosts: 1.23 } }),
+      nodeInfoToJson({
+        ...validInfo,
+        usage: { ...validInfo.usage, localPosts: 1.23 },
+      }),
     TypeError,
     "Invalid local posts",
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         usage: { ...validInfo.usage, localComments: -1 },
       }),
@@ -182,7 +188,7 @@ Deno.test("toJson()", () => {
   );
   assertThrows(
     () =>
-      toJson({
+      nodeInfoToJson({
         ...validInfo,
         usage: { ...validInfo.usage, localComments: 1.23 },
       }),
