@@ -54,6 +54,7 @@ Building the object URIs
 The `Context` object has a few methods to build the object URIs.  The following
 shows the methods:
 
+ -  `~Context.getNodeInfoUri()`
  -  `~Context.getActorUri()`
  -  `~Context.getInboxUri()`
  -  `~Context.getOutboxUri()`
