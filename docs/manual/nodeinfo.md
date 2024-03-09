@@ -6,6 +6,8 @@ nav_order: 6
 NodeInfo
 ========
 
+*This API is available since Fedify 0.2.0.*
+
 According to the official [NodeInfo] website:
 
 > NodeInfo is an effort to create a standardized way of exposing metadata
