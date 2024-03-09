@@ -46,9 +46,14 @@ In the above example, the `~Federation.setActorDispatcher()` method registers
 an actor dispatcher for the `/users/{handle}` path.  This pattern syntax
 follows the [URI Template] specification.
 
+> [!TIP]
+> By regisrtering the actor dispatcher, `Federation.handle()` automatically
+> deals with [WebFinger] requests for the actor.
+
 [actors]: https://www.w3.org/TR/activitystreams-core/#actors
 [activities]: https://www.w3.org/TR/activitystreams-core/#activities
 [URI Template]: https://datatracker.ietf.org/doc/html/rfc6570
+[WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 
 
 Key properties of an `Actor`

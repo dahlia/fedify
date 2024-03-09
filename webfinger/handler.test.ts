@@ -83,6 +83,8 @@ Deno.test("handleWebFinger()", async () => {
     onNotFound,
   });
   assertEquals(response.status, 200);
+  assertEquals(response.headers.get("Content-Type"), "application/jrd+json");
+  assertEquals(response.headers.get("Access-Control-Allow-Origin"), "*");
   const expected = {
     subject: "acct:someone@example.com",
     aliases: [

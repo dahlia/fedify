@@ -100,6 +100,7 @@ export async function handleWebFinger<TContextData>(
   return new Response(JSON.stringify(jrd), {
     headers: {
       "Content-Type": "application/jrd+json",
+      "Access-Control-Allow-Origin": "*",
     },
   });
 }

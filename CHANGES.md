@@ -23,7 +23,15 @@ To be released.
      -  Added `NodeInfoDispatcher` type.
      -  Added `nodeInfoToJson()` function.
 
+ -  Implemented [WebFinger] client.
+
+     -  Added `lookupWebFinger()` function.
+
+ -  `Federation.handle()` now responds with `Access-Control-Allow-Origin: *`
+    header for WebFinger requests.
+
 [NodeInfo]: https://nodeinfo.diaspora.software/
+[WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 [#1]: https://github.com/dahlia/fedify/issues/1
 
 

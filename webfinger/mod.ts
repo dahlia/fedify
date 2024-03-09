@@ -4,3 +4,4 @@
  * @module
  */
 export * from "./jrd.ts";
+export * from "./lookup.ts";
