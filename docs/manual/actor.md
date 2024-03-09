@@ -169,7 +169,7 @@ this document, but here's a simple example of how to generate a key pair and
 store it in a [Deno KV] database in form of JWK:
 
 ~~~~ typescript
-const kv = await openKv();
+const kv = await Deno.openKv();
 const { privateKey, publicKey } = await crypto.subtle.generateKey(
   {
     name: "RSASSA-PKCS1-v1_5",
@@ -197,7 +197,7 @@ Here's an example of how to load a key pair from the database too:
 
 ~~~~ typescript
 .setKeyPairDispatcher(async (ctxData, handle) => {
-  const kv = await openKv();
+  const kv = await Deno.openKv();
   const entry = await kv.get<{ privateKey: unknown; publicKey: unknown }>(
     ["keypair", handle],
   );
