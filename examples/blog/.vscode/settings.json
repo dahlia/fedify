@@ -1,6 +1,9 @@
 {
   "deno.enable": true,
   "deno.lint": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
   "git.openRepositoryInParentFolders": "never",
   "[javascript]": {
     "editor.defaultFormatter": "denoland.vscode-deno",
@@ -27,12 +30,15 @@
     "editor.formatOnSave": true
   },
   "cSpell.words": [
+    "activitypub",
     "codegen",
     "deno",
     "docloader",
     "fedify",
     "fediverse",
+    "halfyear",
     "httpsig",
+    "nodeinfo",
     "preact",
     "unfollow",
     "unfollowing",

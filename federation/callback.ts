@@ -1,8 +1,17 @@
+import { NodeInfo } from "../nodeinfo/types.ts";
 import { Actor } from "../vocab/actor.ts";
-import { CryptographicKey } from "../vocab/mod.ts";
-import { Activity } from "../vocab/mod.ts";
+import { Activity, CryptographicKey } from "../vocab/mod.ts";
 import { PageItems } from "./collection.ts";
 import { RequestContext } from "./context.ts";
+
+/**
+ * A callback that dispatches a {@link NodeInfo} object.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
+ */
+export type NodeInfoDispatcher<TContextData> = (
+  context: RequestContext<TContextData>,
+) => NodeInfo | Promise<NodeInfo>;
 
 /**
  * A callback that dispatches an {@link Actor} object.

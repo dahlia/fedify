@@ -26,6 +26,7 @@ The rough roadmap is to implement the following features out of the box:
  -  [HTTP Signatures]
  -  Middlewares for handling webhooks
  -  [ActivityPub] client
+ -  [NodeInfo] protocol
  -  Special touch for interoperability with Mastodon and few other popular
     fediverse software
 
@@ -53,6 +54,7 @@ resources:
 [Activity Vocabulary]: https://www.w3.org/TR/activitystreams-vocabulary/
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
+[NodeInfo]: https://nodeinfo.diaspora.software/
 
 
 Installation

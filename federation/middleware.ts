@@ -1,5 +1,6 @@
 import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
 import { validateCryptoKey } from "../httpsig/key.ts";
+import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   DocumentLoader,
   fetchDocumentLoader,
@@ -16,6 +17,7 @@ import {
   CollectionDispatcher,
   InboxErrorHandler,
   InboxListener,
+  NodeInfoDispatcher,
 } from "./callback.ts";
 import { Context, RequestContext } from "./context.ts";
 import {
@@ -89,6 +91,7 @@ export class Federation<TContextData> {
   #kv: Deno.Kv;
   #kvPrefixes: FederationKvPrefixes;
   #router: Router;
+  #nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
   #actorCallbacks?: ActorCallbacks<TContextData>;
   #outboxCallbacks?: CollectionCallbacks<Activity, TContextData>;
   #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData>;
@@ -125,6 +128,7 @@ export class Federation<TContextData> {
     };
     this.#router = new Router();
     this.#router.add("/.well-known/webfinger", "webfinger");
+    this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
     this.#inboxListeners = new Map();
     this.#documentLoader = documentLoader ?? kvCache({
       loader: fetchDocumentLoader,
@@ -212,6 +216,13 @@ export class Federation<TContextData> {
     const context = {
       data: contextData,
       documentLoader: this.#documentLoader,
+      getNodeInfoUri: (): URL => {
+        const path = this.#router.build("nodeInfo", {});
+        if (path == null) {
+          throw new RouterError("No NodeInfo dispatcher registered.");
+        }
+        return new URL(path, url);
+      },
       getActorUri: (handle: string): URL => {
         const path = this.#router.build("actor", { handle });
         if (path == null) {
@@ -314,6 +325,31 @@ export class Federation<TContextData> {
       url,
     };
     return reqCtx;
+  }
+
+  /**
+   * Registers a NodeInfo dispatcher.
+   * @param path The URI path pattern for the NodeInfo dispatcher.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have no variables.
+   * @param dispatcher A NodeInfo dispatcher callback to register.
+   * @throws {RouterError} Thrown if the path pattern is invalid.
+   */
+  setNodeInfoDispatcher(
+    path: string,
+    dispatcher: NodeInfoDispatcher<TContextData>,
+  ) {
+    if (this.#router.has("nodeInfo")) {
+      throw new RouterError("NodeInfo dispatcher already set.");
+    }
+    const variables = this.#router.add(path, "nodeInfo");
+    if (variables.size !== 0) {
+      throw new RouterError(
+        "Path for NodeInfo dispatcher must have no variables.",
+      );
+    }
+    this.#nodeInfoDispatcher = dispatcher;
   }
 
   /**
@@ -654,9 +690,15 @@ export class Federation<TContextData> {
       case "webfinger":
         return await handleWebFinger(request, {
           context,
-          router: this.#router,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
           onNotFound,
+        });
+      case "nodeInfoJrd":
+        return await handleNodeInfoJrd(request, context);
+      case "nodeInfo":
+        return await handleNodeInfo(request, {
+          context,
+          nodeInfoDispatcher: this.#nodeInfoDispatcher!,
         });
       case "actor":
         return await handleActor(request, {

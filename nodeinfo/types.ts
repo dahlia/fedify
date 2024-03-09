@@ -1,0 +1,255 @@
+import { JsonValue } from "jsr:@std/json@^0.218.2";
+import { format, SemVer } from "jsr:@std/semver@^0.218.2";
+
+export interface NodeInfo {
+  /**
+   * Metadata about server software in use.
+   */
+  software: Software;
+
+  /**
+   * The protocols supported on this server.  At least one protocol must be
+   * supported.
+   */
+  protocols: Protocol[];
+
+  /**
+   * The third party sites this server can connect to via their application API.
+   */
+  services?: Services;
+
+  /**
+   * Whether this server allows open self-registration.  Defaults to `false`.
+   */
+  openRegistrations?: boolean;
+
+  /**
+   * Usage statistics for this server.
+   */
+  usage: Usage;
+
+  /**
+   * Free form key value pairs for software specific values.
+   * Clients should not rely on any specific key present.
+   */
+  metadata?: Record<string, JsonValue>;
+}
+
+/**
+ * Metadata about server software in use.
+ */
+export interface Software {
+  /**
+   * The canonical name of this server software.  This must comply with
+   * pattern `/^[a-z0-9-]+$/`.
+   */
+  name: string;
+
+  /**
+   * The version of this server software.
+   */
+  version: SemVer;
+
+  /**
+   * The URL of the source code repository of this server software.
+   */
+  repository?: URL;
+
+  /**
+   * The URL of the homepage of this server software.
+   */
+  homepage?: URL;
+}
+
+/**
+ * The protocols supported on this server.
+ */
+export type Protocol =
+  // cSpell: disable
+  | "activitypub"
+  | "buddycloud"
+  | "dfrn"
+  | "diaspora"
+  | "libertree"
+  | "ostatus"
+  | "pumpio"
+  | "tent"
+  | "xmpp"
+  | "zot"; // cSpell: enable
+
+/**
+ * The third party sites this server can connect to via their application API.
+ */
+export interface Services {
+  /**
+   * The third party sites this server can retrieve messages from for combined
+   * display with regular traffic.
+   */
+  inbound?: InboundService[];
+
+  /**
+   * The third party sites this server can publish messages to on the behalf
+   * of a user.
+   */
+  outbound?: OutboundService[];
+}
+
+/**
+ * The third party sites this server can retrieve messages from for combined
+ * display with regular traffic.
+ */
+export type InboundService =
+  // cSpell: disable
+  | "atom1.0"
+  | "gnusocial"
+  | "imap"
+  | "pnut"
+  | "pop3"
+  | "pumpio"
+  | "rss2.0"
+  | "twitter"; // cSpell: enable
+
+/**
+ * The third party sites this server can publish messages to on the behalf
+ * of a user.
+ */
+export type OutboundService =
+  // cSpell: disable
+  | "atom1.0"
+  | "blogger"
+  | "buddycloud"
+  | "diaspora"
+  | "dreamwidth"
+  | "drupal"
+  | "facebook"
+  | "friendica"
+  | "gnusocial"
+  | "google"
+  | "insanejournal"
+  | "libertree"
+  | "linkedin"
+  | "livejournal"
+  | "mediagoblin"
+  | "myspace"
+  | "pinterest"
+  | "pnut"
+  | "posterous"
+  | "pumpio"
+  | "redmatrix"
+  | "rss2.0"
+  | "smtp"
+  | "tent"
+  | "tumblr"
+  | "twitter"
+  | "wordpress"
+  | "xmpp"; // cSpell: enable
+
+/**
+ * Usage statistics for this server.
+ */
+export interface Usage {
+  /**
+   * Statistics about the users of this server.
+   */
+  users: {
+    /**
+     * The total amount of on this server registered users.  This number
+     * has to be an integer greater than or equal to zero.
+     */
+    total?: number;
+
+    /**
+     * The amount of users that signed in at least once in the last 180 days.
+     * This number has to be an integer greater than or equal to zero.
+     */
+    activeHalfyear?: number;
+
+    /**
+     * The amount of users that signed in at least once in the last 30 days.
+     * This number has to be an integer greater than or equal to zero.
+     */
+    activeMonth?: number;
+  };
+
+  /**
+   * The amount of posts that were made by users that are registered on this
+   * server.  This number has to be an integer greater than or equal to zero.
+   */
+  localPosts: number;
+
+  /**
+   * The amount of comments that were made by users that are registered on this
+   * server.  This number has to be an integer greater than or equal to zero.
+   */
+  localComments: number;
+}
+
+/**
+ * Converts a {@link NodeInfo} object to a JSON value.
+ * @param nodeInfo The {@link NodeInfo} object to convert.
+ * @returns The JSON value that complies with the NodeInfo schema.
+ * @throws {TypeError} If the {@link NodeInfo} object is invalid.
+ */
+export function toJson(nodeInfo: NodeInfo): JsonValue {
+  if (!nodeInfo.software.name.match(/^[a-z0-9-]+$/)) {
+    throw new TypeError("Invalid software name.");
+  }
+  if (nodeInfo.protocols.length < 1) {
+    throw new TypeError("At least one protocol must be supported.");
+  }
+  if (
+    nodeInfo.usage.users.total != null &&
+    (nodeInfo.usage.users.total < 0 ||
+      !Number.isInteger(nodeInfo.usage.users.total))
+  ) {
+    throw new TypeError("Invalid total users.");
+  }
+  if (
+    nodeInfo.usage.users.activeHalfyear != null &&
+    (nodeInfo.usage.users.activeHalfyear < 0 ||
+      !Number.isInteger(nodeInfo.usage.users.activeHalfyear))
+  ) {
+    throw new TypeError("Invalid active halfyear users.");
+  }
+  if (
+    nodeInfo.usage.users.activeMonth != null &&
+    (nodeInfo.usage.users.activeMonth < 0 ||
+      !Number.isInteger(nodeInfo.usage.users.activeMonth))
+  ) {
+    throw new TypeError("Invalid active month users.");
+  }
+  if (
+    nodeInfo.usage.localPosts < 0 ||
+    !Number.isInteger(nodeInfo.usage.localPosts)
+  ) {
+    throw new TypeError("Invalid local posts.");
+  }
+  if (
+    nodeInfo.usage.localComments < 0 ||
+    !Number.isInteger(nodeInfo.usage.localComments)
+  ) {
+    throw new TypeError("Invalid local comments.");
+  }
+  return {
+    "$schema": "http://nodeinfo.diaspora.software/ns/schema/2.1#",
+    version: "2.1",
+    software: {
+      name: nodeInfo.software.name,
+      version: format(nodeInfo.software.version),
+      repository: nodeInfo.software.repository?.href,
+      homepage: nodeInfo.software.homepage?.href,
+    },
+    protocols: nodeInfo.protocols,
+    services: nodeInfo.services == null ? { inbound: [], outbound: [] } : {
+      inbound: nodeInfo.services.inbound ?? [],
+      outbound: nodeInfo.services.outbound ?? [],
+    },
+    openRegistrations: nodeInfo.openRegistrations ?? false,
+    usage: {
+      users: nodeInfo.usage.users,
+      localPosts: nodeInfo.usage.localPosts,
+      localComments: nodeInfo.usage.localComments,
+    },
+    metadata: nodeInfo.metadata ?? {},
+  };
+}

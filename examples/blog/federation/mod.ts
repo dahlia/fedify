@@ -1,4 +1,6 @@
 import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+import { parse } from "jsr:@std/semver@^0.218.2";
+import { dirname, join } from "jsr:@std/path@^0.218.2";
 import { Federation } from "fedify/federation";
 import {
   Accept,
@@ -269,6 +271,44 @@ federation
     // Treat the empty string as the first cursor:
     return "";
   });
+
+// Registers the NodeInfo dispatcher, which is responsible for providing
+// the server information:
+federation.setNodeInfoDispatcher("/nodeinfo/2.1", async (_ctx) => {
+  const rootDenoFile = join(
+    dirname(dirname(dirname(import.meta.dirname!))),
+    "deno.json",
+  );
+  const denoJson = JSON.parse(await Deno.readTextFile(rootDenoFile));
+  const { posts } = await getPosts(1);
+  const recentPost = posts.length > 0 ? posts[0] : null;
+  const now = Temporal.Now.instant();
+  return {
+    software: {
+      name: "fedify-example-blog",
+      version: parse(denoJson.version),
+      repository: new URL(
+        "https://github.com/dahlia/fedify/tree/main/examples/blog",
+      ),
+    },
+    protocols: ["activitypub"],
+    usage: {
+      users: {
+        total: 1,
+        activeMonth: recentPost == null ||
+            recentPost.published < now.subtract({ hours: 24 * 30 })
+          ? 0
+          : 1,
+        activeHalfyear: recentPost == null ||
+            recentPost.published < now.subtract({ hours: 24 * 30 * 6 })
+          ? 0
+          : 1,
+      },
+      localComments: 0,
+      localPosts: Number(await countPosts()),
+    },
+  };
+});
 
 function getHref(link: Link | URL | string | null): string | null {
   if (link == null) return null;

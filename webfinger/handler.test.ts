@@ -1,6 +1,5 @@
 import { assertEquals } from "jsr:@std/assert@^0.218.2";
 import { ActorDispatcher } from "../federation/callback.ts";
-import { Router } from "../federation/router.ts";
 import { createRequestContext } from "../testing/context.ts";
 import { CryptographicKey, Link, Person } from "../vocab/vocab.ts";
 import { handleWebFinger } from "./handler.ts";
@@ -20,9 +19,12 @@ Deno.test("handleWebFinger()", async () => {
         }),
       );
     },
+    getHandleFromActorUri(uri) {
+      if (uri.protocol === "acct:") return null;
+      const paths = uri.pathname.split("/");
+      return paths[paths.length - 1];
+    },
   });
-  const router = new Router();
-  router.add("/users/{handle}", "actor");
   const actorDispatcher: ActorDispatcher<void> = (ctx, handle, _key) => {
     if (handle !== "someone") return null;
     return new Person({
@@ -47,7 +49,6 @@ Deno.test("handleWebFinger()", async () => {
   let request = context.request;
   let response = await handleWebFinger(request, {
     context,
-    router,
     onNotFound,
   });
   assertEquals(response.status, 404);
@@ -56,7 +57,6 @@ Deno.test("handleWebFinger()", async () => {
   onNotFoundCalled = null;
   response = await handleWebFinger(request, {
     context,
-    router,
     actorDispatcher,
     onNotFound,
   });
@@ -68,7 +68,6 @@ Deno.test("handleWebFinger()", async () => {
   request = new Request(url);
   response = await handleWebFinger(request, {
     context,
-    router,
     actorDispatcher,
     onNotFound,
   });
@@ -80,7 +79,6 @@ Deno.test("handleWebFinger()", async () => {
   request = new Request(url);
   response = await handleWebFinger(request, {
     context,
-    router,
     actorDispatcher,
     onNotFound,
   });
@@ -114,7 +112,6 @@ Deno.test("handleWebFinger()", async () => {
   request = new Request(url);
   response = await handleWebFinger(request, {
     context,
-    router,
     actorDispatcher,
     onNotFound,
   });
@@ -125,7 +122,6 @@ Deno.test("handleWebFinger()", async () => {
   request = new Request(url);
   response = await handleWebFinger(request, {
     context,
-    router,
     actorDispatcher,
     onNotFound,
   });
@@ -137,7 +133,6 @@ Deno.test("handleWebFinger()", async () => {
   request = new Request(url);
   response = await handleWebFinger(request, {
     context,
-    router,
     actorDispatcher,
     onNotFound,
   });
@@ -149,7 +144,6 @@ Deno.test("handleWebFinger()", async () => {
   request = new Request(url);
   response = await handleWebFinger(request, {
     context,
-    router,
     actorDispatcher,
     onNotFound,
   });

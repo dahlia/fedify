@@ -6,7 +6,7 @@ export interface ResourceDescriptor {
   /**
    * A URI that identifies the entity that this descriptor describes.
    */
-  subject: string;
+  subject?: string;
 
   /**
    * URIs that identify the same entity as the `subject`.

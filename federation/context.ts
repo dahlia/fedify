@@ -17,9 +17,17 @@ export interface Context<TContextData> {
   readonly documentLoader: DocumentLoader;
 
   /**
+   * Builds the URI of the NodeInfo document.
+   * @returns The NodeInfo URI.
+   * @throws {RouterError} If no NodeInfo dispatcher is available.
+   */
+  getNodeInfoUri(): URL;
+
+  /**
    * Builds the URI of an actor with the given handle.
    * @param handle The actor's handle.
    * @returns The actor's URI.
+   * @throws {RouterError} If no actor dispatcher is available.
    */
   getActorUri(handle: string): URL;
 
@@ -27,12 +35,14 @@ export interface Context<TContextData> {
    * Builds the URI of an actor's outbox with the given handle.
    * @param handle The actor's handle.
    * @returns The actor's outbox URI.
+   * @throws {RouterError} If no outbox dispatcher is available.
    */
   getOutboxUri(handle: string): URL;
 
   /**
    * Builds the URI of the shared inbox.
    * @returns The shared inbox URI.
+   * @throws {RouterError} If no inbox listener is available.
    */
   getInboxUri(): URL;
 
@@ -40,6 +50,7 @@ export interface Context<TContextData> {
    * Builds the URI of an actor's inbox with the given handle.
    * @param handle The actor's handle.
    * @returns The actor's inbox URI.
+   * @throws {RouterError} If no inbox listener is available.
    */
   getInboxUri(handle: string): URL;
 
@@ -47,6 +58,7 @@ export interface Context<TContextData> {
    * Builds the URI of an actor's following collection with the given handle.
    * @param handle The actor's handle.
    * @returns The actor's following collection URI.
+   * @throws {RouterError} If no following collection is available.
    */
   getFollowingUri(handle: string): URL;
 
@@ -54,6 +66,7 @@ export interface Context<TContextData> {
    * Builds the URI of an actor's followers collection with the given handle.
    * @param handle The actor's handle.
    * @returns The actor's followers collection URI.
+   * @throws {RouterError} If no followers collection is available.
    */
   getFollowersUri(handle: string): URL;
 

@@ -1,6 +1,5 @@
 import { ActorDispatcher } from "../federation/callback.ts";
 import { RequestContext } from "../federation/context.ts";
-import { Router } from "../federation/router.ts";
 import { Link as LinkObject } from "../vocab/mod.ts";
 import { Link, ResourceDescriptor } from "./jrd.ts";
 
@@ -14,12 +13,7 @@ export interface WebFingerHandlerParameters<TContextData> {
   context: RequestContext<TContextData>;
 
   /**
-   * The router to use for routing the actor's URL.
-   */
-  router: Router;
-
-  /**
-   * The actor dispatcher to use for dispatching the actor.
+   * The callback for dispatching the actor.
    */
   actorDispatcher?: ActorDispatcher<TContextData>;
 
@@ -40,7 +34,6 @@ export async function handleWebFinger<TContextData>(
   request: Request,
   {
     context,
-    router,
     actorDispatcher,
     onNotFound,
   }: WebFingerHandlerParameters<TContextData>,
@@ -62,13 +55,7 @@ export async function handleWebFinger<TContextData>(
     }
     throw new e();
   }
-  let handle: string | null = null;
-  if (resourceUrl.origin === context.url.origin) {
-    const route = router.route(resourceUrl.pathname);
-    if (route != null && route.name === "actor") {
-      handle = route.values.handle;
-    }
-  }
+  let handle: string | null = context.getHandleFromActorUri(resourceUrl);
   if (handle == null) {
     const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
     if (match == null || match[2] != context.url.host) {

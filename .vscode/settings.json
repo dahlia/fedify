@@ -28,6 +28,7 @@
     }
   },
   "cSpell.words": [
+    "activitypub",
     "bccs",
     "btos",
     "cfworker",
@@ -37,10 +38,13 @@
     "docloader",
     "fedify",
     "fediverse",
+    "halfyear",
     "httpsig",
     "jsonld",
     "langstr",
     "Lemmy",
+    "Misskey",
+    "nodeinfo",
     "phensley",
     "Pixelfed",
     "rels",
