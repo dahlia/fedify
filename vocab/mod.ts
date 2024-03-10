@@ -49,5 +49,6 @@
  *
  * @module
  */
-export * from "./vocab.ts";
 export * from "./actor.ts";
+export * from "./lookup.ts";
+export * from "./vocab.ts";

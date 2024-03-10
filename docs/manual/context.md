@@ -134,11 +134,12 @@ Getting a `DocumentLoader`
 The `Context.documentLoader` property carries a `DocumentLoader` object that
 is specified in the `Federation` constructor.  It is used to load remote
 document in the JSON-LD format.  There are a few methods to take
-a `DocumentLoader` as an option in [vocabulary objects](./vocab.md):
+a `DocumentLoader` as an option in vocabulary API:
 
- -  `fromJsonLd()` static method
- -  `toJsonLd()` method
- -  `get*()` dereferencing accessors
+ -  [`fromJsonLd()` static method](./vocab.md#json-ld)
+ -  [`toJsonLd()` method](./vocab.md#json-ld)
+ -  [`get*()` dereferencing accessors](./vocab.md#object-ids-and-remote-objects)
+ -  [`lookupObject()` function](./vocab.md#looking-up-remote-objects)
 
 All of those methods take options in the form of
 `{ documentLoader: DocumentLoader }` which is compatible with `Context`.

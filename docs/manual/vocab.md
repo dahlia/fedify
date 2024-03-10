@@ -169,6 +169,50 @@ Parameters of the `clone()` method share the same type with parameters of
 the constructor.
 
 
+Looking up remote objects
+-------------------------
+
+*This API is available since Fedify 0.2.0.*
+
+Suppose your app has a search box that allows the user to look up a fediverse
+user by the handle or a post by the URI.  In such cases, you need to look up
+the object from a remote server that your app haven't interacted with yet.
+The `lookupObject()` function plays a role in such cases.  The following shows
+an example of looking up an actor object from the handle:
+
+~~~~ typescript
+import { lookupObject } from "jsr:@fedify/fedify";
+
+const actor = await lookupObject("@hongminhee@todon.eu");
+~~~~
+
+In the above example, the `lookupObject()` function queries the remote server's
+WebFinger endpoint to get the actor's URI from the handle, and then fetches the
+actor object from the URI.
+
+> [!TIP]
+> The `lookupObject()` function accepts a fediverse handle without prefix `@`
+> as well:
+>
+> ~~~~ typescript
+> const actor = await lookupObject("hongminhee@todon.eu");
+> ~~~~
+>
+> Also an `acct:` URI:
+>
+> ~~~~ typescript
+> const actor = await lookupObject("acct:hongminhee@todon.eu");
+> ~~~~
+
+The `lookupObject()` function is not limited to the actor object.  It can look
+up any object in the Activity Vocabulary.  For example, the following shows an
+example of looking up a `Note` object from the URI:
+
+~~~~ typescript
+const note = await lookupObject("https://todon.eu/@hongminhee/112060633798771581");
+~~~~
+
+
 JSON-LD
 -------
 

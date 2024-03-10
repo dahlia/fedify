@@ -47,7 +47,7 @@ export async function fetchDocumentLoader(
 ): Promise<RemoteDocument> {
   const response = await fetch(url, {
     headers: {
-      Accept: "application/ld+json",
+      Accept: "application/activity+json, application/ld+json",
     },
     redirect: "follow",
   });

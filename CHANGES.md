@@ -25,10 +25,15 @@ To be released.
 
  -  Implemented [WebFinger] client.
 
+     -  Added `lookupObject()` function.
      -  Added `lookupWebFinger()` function.
 
  -  `Federation.handle()` now responds with `Access-Control-Allow-Origin: *`
     header for WebFinger requests.
+
+ -  `fetchDocumentLoader()`, the default document loader, now sends `Accept:
+    application/activity+json, application/ld+json` header (was `Accept:
+    application/ld+json` only).
 
 [NodeInfo]: https://nodeinfo.diaspora.software/
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
