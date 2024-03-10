@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.2.0
 -------------
 
-To be released.
+Released on March 10, 2024.
 
  -  Implemented [NodeInfo] 2.1 protocol.  [[#1]]
 
@@ -43,4 +43,4 @@ To be released.
 Version 0.1.0
 -------------
 
-Initial release.  Released on March 8, 2023.
+Initial release.  Released on March 8, 2024.
