@@ -1,3 +1,8 @@
+---
+title: Changelog
+doc_title: Fedify changelog
+nav_order: 9
+---
 <!-- deno-fmt-ignore-file -->
 
 Fedify changelog

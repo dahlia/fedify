@@ -16,6 +16,8 @@ title: hexagon.56k.guru
     <title>
       {%- if doc_title -%}
         {{ doc_title }}
+      {%- elif title.startsWith(metas.site) -%}
+        {{ title }}
       {%- else -%}
         {{ metas.site }} &mdash; {{ title }}
       {%- endif -%}
