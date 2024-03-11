@@ -1,12 +1,12 @@
-import lume from "lume/mod.ts";
-import lumocs from "lumocs/mod.ts";
-import relativeUrls from "lume/plugins/relative_urls.ts";
-import title from "lume_markdown_plugins/title.ts";
-import image from "lume_markdown_plugins/image.ts";
-import externalLinks from "npm:markdown-it-external-links@0.0.6";
-import callouts from "npm:markdown-it-obsidian-callouts@0.2.3";
 import { maxWith } from "@std/collections";
 import { compare, format, parse, SemVer } from "@std/semver";
+import lume from "lume/mod.ts";
+import relativeUrls from "lume/plugins/relative_urls.ts";
+import image from "lume_markdown_plugins/image.ts";
+import title from "lume_markdown_plugins/title.ts";
+import lumocs from "lumocs/mod.ts";
+import externalLinks from "npm:markdown-it-external-links@0.0.6";
+import callouts from "npm:markdown-it-obsidian-callouts@0.2.3";
 
 const site = lume({}, {
   markdown: {
@@ -96,7 +96,9 @@ async function getApiUrl(
   return null;
 }
 
-const version = await getPackageVersion();
+const version = Deno.env.get("GITHUB_REF_TYPE") === "tag"
+  ? Deno.env.get("GITHUB_REF_NAME")
+  : await getPackageVersion();
 const symbols = await getApiSymbols(version);
 
 site.process([".html"], async (pages) => {

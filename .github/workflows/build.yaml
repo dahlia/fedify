@@ -56,7 +56,6 @@ jobs:
     - run: deno task publish --dry-run
 
   publish-jsr:
-    if: github.event_name == 'push'
     needs: [test, lint]
     runs-on: ubuntu-latest
     permissions:
@@ -95,16 +94,18 @@ jobs:
     - run: 'cat "$CHANGES_FILE"'
       env:
         CHANGES_FILE: ${{ steps.extract-changelog.outputs.output-file }}
-    - if: github.ref_type == 'tag'
+    - if: github.event_name == 'push' && github.ref_type == 'tag'
       uses: softprops/action-gh-release@v1
       with:
         body_path: ${{ steps.extract-changelog.outputs.output-file }}
         name: Fedify ${{ github.ref_name }}
         generate_release_notes: false
         discussion_category_name: Announcements
-    - run: deno task publish --allow-dirty
+    - if: github.event_name == 'push'
+      run: deno task publish --allow-dirty
 
   publish-examples-blog:
+    if: github.event_name == 'push'
     needs: [test, lint]
     runs-on: ubuntu-latest
     permissions:
@@ -128,6 +129,7 @@ jobs:
     permissions:
       id-token: write
       pages: write
+      deployments: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -142,4 +144,17 @@ jobs:
       with:
         path: docs/_site
     - id: deployment
+      if: github.event_name == 'push' && github.ref_type == 'tag'
       uses: actions/deploy-pages@v4
+    - if: github.event_name == 'pull_request' || github.ref_type == 'branch'
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        publish-dir: docs/_site
+        production-branch: main
+        github-token: ${{ github.token }}
+        enable-pull-request-comment: false
+        enable-commit-comment: false
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      timeout-minutes: 1
