@@ -42,3 +42,9 @@ dd { margin-bottom: var(--typography-spacing-vertical); }
   margin-top: 1rem;
 }
 </style>
+{% if plausible_domain %}
+  <script
+    defer
+    data-domain="{{ plausible_domain }}"
+    src="https://plausible.io/js/script.js"></script>
+{% endif %}

@@ -138,6 +138,16 @@ jobs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: v1.x
+    - run: |
+        set -ex
+        jq \
+          --arg domain "$PLAUSIBLE_DOMAIN" \
+          '.plausible_domain = $domain' \
+          _data.json > _data.json.tmp
+        mv _data.json.tmp _data.json
+      env:
+        PLAUSIBLE_DOMAIN: ${{ secrets.PLAUSIBLE_DOMAIN }}
+      working-directory: ${{ github.workspace }}/docs/
     - run: deno task lume
       working-directory: ${{ github.workspace }}/docs/
     - uses: actions/upload-pages-artifact@v3
