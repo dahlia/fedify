@@ -13,6 +13,9 @@ export function validateCryptoKey(
   if (type != null && key.type !== type) {
     throw new TypeError(`The key is not a ${type} key.`);
   }
+  if (!key.extractable) {
+    throw new TypeError("The key is not extractable.");
+  }
   if (key.algorithm.name != "RSASSA-PKCS1-v1_5") {
     throw new TypeError(
       "Currently only RSASSA-PKCS1-v1_5 key is supported.  " +

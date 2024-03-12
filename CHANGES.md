@@ -19,6 +19,14 @@ To be released.
      -  Added `respondWithObjectIfAcceptable()` function.
      -  Added `RespondWithObjectOptions` interface.
 
+ -  The following functions and methods now throw `TypeError` if the specified
+    `CryptoKey` is not `extractable`:
+
+     -  `validateCryptoKey()` function
+     -  `Context.getActorKey()` method
+     -  `Context.sendActivity()` method
+     -  `Federation.sendActivity()` method
+
 
 Version 0.2.0
 -------------
