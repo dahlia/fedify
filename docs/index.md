@@ -6,16 +6,19 @@ nav_order: 1
 Fedify: a fediverse server framework
 ====================================
 
-Fedify is a [Deno]/TypeScript library for building federated server apps
-powered by [ActivityPub] and other standards, which is so-called [fediverse].
-You may already know some of the networks in the fediverse, such as [Mastodon],
-[Lemmy], [Pixelfed], [PeerTube], and so on.  It aims to eliminate
-the complexity and redundant boilerplate code when building a federated server
-app, so that you can focus on your business logic and user experience.
+> [!NOTE]
+> Looking for a quick demo?  Here it is: [Fedify Demo] on Deno Playground.
 
-Fedify is still in the early stage of development, and it's not ready
-for production use yet.  However, you can try it out and give feedback
-to help improve it.
+Fedify is a [Deno]/TypeScript library for building federated server apps
+powered by [ActivityPub] and other standards, so-called [fediverse].[^1]
+It aims to eliminate the complexity and redundant boilerplate code when
+building a federated server app, so that you can focus on your business logic
+and user experience.
+
+Currently, Fedify is moving fast and the API is not stable yet.  We do not
+recommend using it in production yet, so please use it if you would like to
+experiment with it and help us improve it.
+
 The rough roadmap is to implement the following features out of the box:
 
  -  Type-safe objects for [Activity Vocabulary] (including some vendor-specific
@@ -37,14 +40,18 @@ resources:
  -  [API reference](https://jsr.io/@fedify/fedify/doc)
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 
+ [^1]: You may already know some of the networks in the fediverse, such as
+       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
+
+[Fedify Demo]: https://dash.deno.com/playground/fedify-demo
 [Deno]: https://deno.com/
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [fediverse]: https://en.wikipedia.org/wiki/Fediverse
-[Mastodon]: https://joinmastodon.org/
-[Lemmy]: https://join-lemmy.org/
-[Pixelfed]: https://pixelfed.org/
-[PeerTube]: https://joinpeertube.org/
 [Activity Vocabulary]: https://www.w3.org/TR/activitystreams-vocabulary/
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
 [NodeInfo]: https://nodeinfo.diaspora.software/
+[Mastodon]: https://joinmastodon.org/
+[Lemmy]: https://join-lemmy.org/
+[Pixelfed]: https://pixelfed.org/
+[PeerTube]: https://joinpeertube.org/
