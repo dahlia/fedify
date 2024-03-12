@@ -13,16 +13,22 @@ Version 0.3.0
 
 To be released.
 
- -  Utility functions for responding with an ActivityPub object.
+ -  Added utility functions for responding with an ActivityPub object:
 
      -  Added `respondWithObject()` function.
      -  Added `respondWithObjectIfAcceptable()` function.
      -  Added `RespondWithObjectOptions` interface.
 
+ -  Added utility functions for generating and exporting cryptographic keys
+    which are compatible with popular ActivityPub software:
+
+     -  Added `generateCryptoKeyPair()` function.
+     -  Added `exportJwk()` function.
+     -  Added `importJwk()` function.
+
  -  The following functions and methods now throw `TypeError` if the specified
     `CryptoKey` is not `extractable`:
 
-     -  `validateCryptoKey()` function
      -  `Context.getActorKey()` method
      -  `Context.sendActivity()` method
      -  `Federation.sendActivity()` method

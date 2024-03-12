@@ -18,6 +18,7 @@ import {
 import { areAllScalarTypes } from "../codegen/type.ts";
 import { LanguageString } from "../runtime/langstr.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
+import { publicKey1 } from "../testing/keys.ts";
 import {
   Activity,
   Create,
@@ -389,16 +390,7 @@ const sampleValues: Record<string, any> = {
     hours: 1,
   }),
   "fedify:langTag": parseLanguageTag("en"),
-  "fedify:publicKey": (await crypto.subtle.generateKey(
-    {
-      name: "RSASSA-PKCS1-v1_5",
-      modulusLength: 4096,
-      publicExponent: new Uint8Array([1, 0, 1]),
-      hash: "SHA-256",
-    },
-    true,
-    ["sign", "verify"],
-  )).publicKey,
+  "fedify:publicKey": publicKey1.publicKey,
   "fedify:units": "m",
 };
 

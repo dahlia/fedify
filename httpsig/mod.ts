@@ -15,6 +15,7 @@ import {
   Object as ASObject,
 } from "../vocab/vocab.ts";
 import { validateCryptoKey } from "./key.ts";
+export { exportJwk, generateCryptoKeyPair, importJwk } from "./key.ts";
 
 /**
  * Signs a request using the given private key.

@@ -30,3 +30,54 @@ export function validateCryptoKey(
     );
   }
 }
+
+/**
+ * Generates a key pair which is appropriate for Fedify.
+ * @returns The generated key pair.
+ */
+export function generateCryptoKeyPair(): Promise<CryptoKeyPair> {
+  return crypto.subtle.generateKey(
+    {
+      name: "RSASSA-PKCS1-v1_5",
+      modulusLength: 4096,
+      publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+      hash: "SHA-256",
+    },
+    true,
+    ["sign", "verify"],
+  );
+}
+
+/**
+ * Exports a key in JWK format.
+ * @param key The key to export.  Either public or private key.
+ * @returns The exported key in JWK format.  The key is suitable for
+ *          serialization and storage.
+ * @throws {TypeError} If the key is invalid or unsupported.
+ */
+export async function exportJwk(key: CryptoKey): Promise<JsonWebKey> {
+  validateCryptoKey(key);
+  return await crypto.subtle.exportKey("jwk", key);
+}
+
+/**
+ * Imports a key from JWK format.
+ * @param jwk The key in JWK format.
+ * @param type Which type of key to import, either `"public"`" or `"private"`".
+ * @returns The imported key.
+ * @throws {TypeError} If the key is invalid or unsupported.
+ */
+export async function importJwk(
+  jwk: JsonWebKey,
+  type: "public" | "private",
+): Promise<CryptoKey> {
+  const key = await crypto.subtle.importKey(
+    "jwk",
+    jwk,
+    { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+    true,
+    type === "public" ? ["verify"] : ["sign"],
+  );
+  validateCryptoKey(key, type);
+  return key;
+}
