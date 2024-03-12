@@ -1,5 +1,5 @@
 import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
-import { validateCryptoKey } from "../httpsig/key.ts";
+import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   DocumentLoader,
@@ -164,13 +164,7 @@ export class Federation<TContextData> {
   async #listenQueue(message: OutboxMessage): Promise<void> {
     await sendActivity({
       keyId: new URL(message.keyId),
-      privateKey: await crypto.subtle.importKey(
-        "jwk",
-        message.privateKey,
-        { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-        true,
-        ["sign"],
-      ),
+      privateKey: await importJwk(message.privateKey, "private"),
       activity: await Activity.fromJsonLd(message.activity, {
         documentLoader: this.#documentLoader,
       }),
@@ -652,7 +646,7 @@ export class Federation<TContextData> {
       const message: OutboxMessage = {
         type: "outbox",
         keyId: keyId.href,
-        privateKey: await crypto.subtle.exportKey("jwk", privateKey),
+        privateKey: await exportJwk(privateKey),
         activity: await activity.toJsonLd({ expand: true }),
         inbox: inbox.href,
       };
