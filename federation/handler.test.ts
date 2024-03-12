@@ -1,13 +1,20 @@
 import { assert, assertEquals, assertFalse } from "jsr:@std/assert@^0.218.2";
 import { createRequestContext } from "../testing/context.ts";
-import { Activity, Create, Person } from "../vocab/vocab.ts";
+import { Activity, Create, Note, Person } from "../vocab/vocab.ts";
 import {
   ActorDispatcher,
   CollectionCounter,
   CollectionCursor,
   CollectionDispatcher,
 } from "./callback.ts";
-import { acceptsJsonLd, handleActor, handleCollection } from "./handler.ts";
+import {
+  acceptsJsonLd,
+  handleActor,
+  handleCollection,
+  respondWithObject,
+  respondWithObjectIfAcceptable,
+} from "./handler.ts";
+import { mockDocumentLoader } from "../testing/docloader.ts";
 
 Deno.test("acceptsJsonLd()", () => {
   assert(acceptsJsonLd(
@@ -389,4 +396,64 @@ Deno.test("handleCollection()", async () => {
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
+});
+
+Deno.test("respondWithObject()", async () => {
+  const response = await respondWithObject(
+    new Note({
+      id: new URL("https://example.com/notes/1"),
+      content: "Hello, world!",
+    }),
+    { documentLoader: mockDocumentLoader },
+  );
+  assert(response.ok);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    id: "https://example.com/notes/1",
+    type: "Note",
+    content: "Hello, world!",
+  });
+});
+
+Deno.test("respondWithObjectIfAcceptable", async () => {
+  let request = new Request("https://example.com/", {
+    headers: { Accept: "application/activity+json" },
+  });
+  let response = await respondWithObjectIfAcceptable(
+    new Note({
+      id: new URL("https://example.com/notes/1"),
+      content: "Hello, world!",
+    }),
+    request,
+    { documentLoader: mockDocumentLoader },
+  );
+  assert(response != null);
+  assert(response.ok);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    id: "https://example.com/notes/1",
+    type: "Note",
+    content: "Hello, world!",
+  });
+
+  request = new Request("https://example.com/", {
+    headers: { Accept: "text/html" },
+  });
+  response = await respondWithObjectIfAcceptable(
+    new Note({
+      id: new URL("https://example.com/notes/1"),
+      content: "Hello, world!",
+    }),
+    request,
+    { documentLoader: mockDocumentLoader },
+  );
+  assertEquals(response, null);
 });

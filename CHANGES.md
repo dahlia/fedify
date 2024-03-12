@@ -13,6 +13,12 @@ Version 0.3.0
 
 To be released.
 
+ -  Utility functions for responding with an ActivityPub object.
+
+     -  Added `respondWithObject()` function.
+     -  Added `respondWithObjectIfAcceptable()` function.
+     -  Added `RespondWithObjectOptions` interface.
+
 
 Version 0.2.0
 -------------

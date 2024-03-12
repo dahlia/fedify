@@ -1,5 +1,6 @@
 import { accepts } from "jsr:@std/http@^0.218.2";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
+import { DocumentLoader } from "../runtime/docloader.ts";
 import {
   Activity,
   Link,
@@ -335,4 +336,52 @@ export async function handleInbox<TContextData>(
     status: 202,
     headers: { "Content-Type": "text/plain; charset=utf-8" },
   });
+}
+
+/**
+ * Options for the {@link respondWithObject} and
+ * {@link respondWithObjectIfAcceptable} functions.
+ */
+export interface RespondWithObjectOptions {
+  /**
+   * The document loader to use for compacting JSON-LD.
+   */
+  documentLoader: DocumentLoader;
+}
+
+/**
+ * Responds with the given object in JSON-LD format.
+ *
+ * @param object The object to respond with.
+ * @param options Options.
+ */
+export async function respondWithObject(
+  object: Object,
+  options?: RespondWithObjectOptions,
+): Promise<Response> {
+  const jsonLd = await object.toJsonLd(options);
+  return new Response(JSON.stringify(jsonLd), {
+    headers: {
+      "Content-Type": "application/activity+json",
+    },
+  });
+}
+
+/**
+ * Responds with the given object in JSON-LD format if the request accepts
+ * JSON-LD.
+ *
+ * @param object The object to respond with.
+ * @param request The request to check for JSON-LD acceptability.
+ * @param options Options.
+ */
+export async function respondWithObjectIfAcceptable(
+  object: Object,
+  request: Request,
+  options?: RespondWithObjectOptions,
+): Promise<Response | null> {
+  if (!acceptsJsonLd(request)) return null;
+  const response = await respondWithObject(object, options);
+  response.headers.set("Vary", "Accept");
+  return response;
 }
