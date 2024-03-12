@@ -95,7 +95,7 @@ export interface Context<TContextData> {
     sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
     recipients: Actor | Actor[],
     activity: Activity,
-    options?: { preferSharedInbox?: boolean },
+    options?: SendActivityOptions,
   ): Promise<void>;
 }
 
@@ -112,4 +112,22 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
    * The URL of the request.
    */
   readonly url: URL;
+}
+
+/**
+ * Options for {@link Context.sendActivity} method and
+ * {@link Federation.sendActivity} method.
+ */
+export interface SendActivityOptions {
+  /**
+   * Whether to prefer the shared inbox for the recipients.
+   */
+  preferSharedInbox?: boolean;
+
+  /**
+   * Whether to send the activity immediately, without enqueuing it.
+   * If `true`, the activity will be sent immediately and the retrial
+   * policy will not be applied.
+   */
+  immediate?: boolean;
 }

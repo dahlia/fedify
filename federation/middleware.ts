@@ -19,7 +19,7 @@ import {
   InboxListener,
   NodeInfoDispatcher,
 } from "./callback.ts";
-import { Context, RequestContext } from "./context.ts";
+import { Context, RequestContext, SendActivityOptions } from "./context.ts";
 import {
   CollectionCallbacks,
   handleActor,
@@ -282,7 +282,7 @@ export class Federation<TContextData> {
         sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
         recipients: Actor | Actor[],
         activity: Activity,
-        options: { preferSharedInbox?: boolean } = {},
+        options: SendActivityOptions = {},
       ): Promise<void> => {
         let senderPair: { keyId: URL; privateKey: CryptoKey };
         if ("handle" in sender) {
@@ -630,7 +630,7 @@ export class Federation<TContextData> {
     { keyId, privateKey }: { keyId: URL; privateKey: CryptoKey },
     recipients: Actor | Actor[],
     activity: Activity,
-    { preferSharedInbox }: { preferSharedInbox?: boolean } = {},
+    { preferSharedInbox, immediate }: SendActivityOptions = {},
   ): Promise<void> {
     if (activity.id == null) {
       activity = activity.clone({
@@ -642,6 +642,22 @@ export class Federation<TContextData> {
       recipients: Array.isArray(recipients) ? recipients : [recipients],
       preferSharedInbox,
     });
+    if (immediate) {
+      const promises: Promise<void>[] = [];
+      for (const inbox of inboxes) {
+        promises.push(
+          sendActivity({
+            keyId,
+            privateKey,
+            activity,
+            inbox,
+            documentLoader: this.#documentLoader,
+          }),
+        );
+      }
+      await Promise.all(promises);
+      return;
+    }
     for (const inbox of inboxes) {
       const message: OutboxMessage = {
         type: "outbox",

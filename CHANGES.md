@@ -33,6 +33,11 @@ To be released.
      -  `Context.sendActivity()` method
      -  `Federation.sendActivity()` method
 
+ -  Added `immediate` option to `Context.sendActivity()` and
+    `Federation.sendActivity()` methods.
+
+ -  Added `SendActivityOptions` interface.
+
 
 Version 0.2.0
 -------------
