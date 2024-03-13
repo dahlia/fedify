@@ -1,5 +1,7 @@
 ---
 nav_order: 2
+metas:
+  description: How to install Fedify.
 ---
 Installation
 ============

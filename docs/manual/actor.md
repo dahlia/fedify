@@ -1,6 +1,11 @@
 ---
 parent: Manual
 nav_order: 4
+metas:
+  description: >-
+    You can register an actor dispatcher so that Fedify can dispatch
+    an appropriate actor by its bare handle.  This section explains
+    how to register an actor dispatcher and the key properties of an actor.
 ---
 
 Actor dispatcher

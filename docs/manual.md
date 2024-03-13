@@ -1,5 +1,10 @@
 ---
 nav_order: 3
+metas:
+  description: >-
+    This manual provides a comprehensive guide to the Fedify framework.  It is
+    intended for developers who want to build a federated server with the Fedify
+    framework.
 ---
 
 Manual

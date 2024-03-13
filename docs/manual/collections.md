@@ -1,6 +1,10 @@
 ---
 parent: Manual
 nav_order: 6
+metas:
+  description: >-
+    Fedify provides a generic way to construct and handle collections.
+    This section explains how to work with collections in Fedify.
 ---
 
 Collections

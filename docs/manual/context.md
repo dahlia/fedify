@@ -1,6 +1,10 @@
 ---
 parent: Manual
 nav_order: 2
+metas:
+  description: >-
+    The Context object is a container that holds the information of the current
+    request.  This section explains the key features of the Context object.
 ---
 
 Context

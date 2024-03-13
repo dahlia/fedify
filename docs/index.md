@@ -2,6 +2,10 @@
 title: Fedify
 doc_title: "Fedify: a fediverse server framework"
 nav_order: 1
+metas:
+  description: >-
+    Fedify is a Deno/TypeScript library for building federated server apps
+    powered by ActivityPub and other standards, so-called fediverse.
 ---
 Fedify: a fediverse server framework
 ====================================

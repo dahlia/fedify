@@ -1,6 +1,11 @@
 ---
 parent: Manual
 nav_order: 5
+metas:
+  description: >-
+    Fedify provides a way to register inbox listeners so that you can handle
+    incoming activities from other actors.  This section explains how to
+    register an inbox listener and how to handle errors.
 ---
 
 Inbox listeners

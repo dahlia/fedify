@@ -1,6 +1,11 @@
 ---
 parent: Manual
 nav_order: 3
+metas:
+  description: >-
+    The Activity Vocabulary is a collection of type-safe objects that represent
+    the Activity Vocabulary and the vendor-specific extensions.  This section
+    explains the key features of the objects.
 ---
 
 Vocabulary

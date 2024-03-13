@@ -1,6 +1,10 @@
 ---
 parent: Manual
 nav_order: 1
+metas:
+  description: >-
+    The Federation object is the main entry point of the Fedify library.
+    This section explains the key features of the Federation object.
 ---
 
 Federation
