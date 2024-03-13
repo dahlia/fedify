@@ -47,7 +47,7 @@ an actor dispatcher for the `/users/{handle}` path.  This pattern syntax
 follows the [URI Template] specification.
 
 > [!TIP]
-> By regisrtering the actor dispatcher, `Federation.handle()` automatically
+> By registering the actor dispatcher, `Federation.handle()` automatically
 > deals with [WebFinger] requests for the actor.
 
 [actors]: https://www.w3.org/TR/activitystreams-core/#actors
@@ -155,6 +155,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
   .setKeyPairDispatcher(async (ctxData, handle) => {
     // Work with the database to find the key pair by the handle.
     if (user == null) return null;  // Return null if the key pair is not found.
+    // Return the loaded key pair.  See the below example for details.
     return { publicKey, privateKey };
   });
 ~~~~
@@ -164,7 +165,7 @@ registers a key pair dispatcher.  The key pair dispatcher is a callback function
 that takes context data and a bare handle, and returns a [`CryptoKeyPair`]
 object which is defined in the Web Cryptography API.
 
-Usuaully, you need to generate a key pair for each actor when the actor is
+Usually, you need to generate a key pair for each actor when the actor is
 created (i.e., when a new user is signed up), and securely store an actor's key
 pair in the database.  The key pair dispatcher should load the key pair from
 the database and return it.
@@ -174,20 +175,13 @@ this document, but here's a simple example of how to generate a key pair and
 store it in a [Deno KV] database in form of JWK:
 
 ~~~~ typescript
+import { generateCryptoKeyPair, exportJwk } from "jsr:@fedify/fedify";
+
 const kv = await Deno.openKv();
-const { privateKey, publicKey } = await crypto.subtle.generateKey(
-  {
-    name: "RSASSA-PKCS1-v1_5",
-    modulusLength: 4096,
-    publicExponent: new Uint8Array([1, 0, 1]),
-    hash: "SHA-256",
-  },
-  true,
-  ["sign", "verify"],
-);
+const { privateKey, publicKey } = await generateCryptoKeyPair();
 await kv.set(["keypair", handle], {
-  privateKey: await crypto.subtle.exportKey("jwk", privateKey),
-  publicKey: await crypto.subtle.exportKey("jwk", publicKey),
+  privateKey: await exportJwk(privateKey),
+  publicKey: await exportJwk(publicKey),
 });
 ~~~~
 
@@ -201,29 +195,23 @@ await kv.set(["keypair", handle], {
 Here's an example of how to load a key pair from the database too:
 
 ~~~~ typescript
-.setKeyPairDispatcher(async (ctxData, handle) => {
-  const kv = await Deno.openKv();
-  const entry = await kv.get<{ privateKey: unknown; publicKey: unknown }>(
-    ["keypair", handle],
-  );
-  if (entry == null || entry.value == null) return null;
-  return {
-    privateKey: await crypto.subtle.importKey(
-      "jwk",
-      entry.value.privateKey,
-      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-      true,
-      ["sign"],
-    ),
-    publicKey: await crypto.subtle.importKey(
-      "jwk",
-      entry.value.publicKey,
-      { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
-      true,
-      ["verify"],
-    ),
-  };
-});
+import { importJwk } from "jsr:@fedify/fedify";
+
+federation
+  .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+    // Omitted for brevity; see the previous example for details.
+  })
+  .setKeyPairDispatcher(async (ctxData, handle) => {
+    const kv = await Deno.openKv();
+    const entry = await kv.get<{ privateKey: unknown; publicKey: unknown }>(
+      ["keypair", handle],
+    );
+    if (entry == null || entry.value == null) return null;
+    return {
+      privateKey: await importJwk(entry.value.privateKey, "private"),
+      publicKey: await importJwk(entry.value.publicKey, "public"),
+    };
+  });
 ~~~~
 
 [`CryptoKeyPair`]: https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair

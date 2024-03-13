@@ -36,6 +36,7 @@
     "cfworker",
     "codegen",
     "Deno",
+    "dereferenceable",
     "discoverability",
     "docloader",
     "fedify",
