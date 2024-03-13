@@ -35,9 +35,8 @@ If you want to know more about the project, please take a look at the following
 resources:
 
  -  [GitHub](https://github.com/dahlia/fedify)
- -  [JSR](https://jsr.io/@fedify/fedify)
  -  [Manual](./manual.md)
- -  [API reference](https://jsr.io/@fedify/fedify/doc)
+ -  [API reference](https://jsr.io/@fedify/fedify)
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 
  [^1]: You may already know some of the networks in the fediverse, such as

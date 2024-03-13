@@ -138,6 +138,26 @@ jobs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: v1.x
+    - if: github.event_name == 'push' && github.ref_type == 'tag'
+      run: |
+        jq \
+          --arg url "$UNSTABLE_DOCS_URL" \
+          '.nav_links = [{"title":"Go to unstable","url":$url}] + .nav_links' \
+          _data.json > _data.json.tmp
+        mv _data.json.tmp _data.json
+      env:
+        UNSTABLE_DOCS_URL: ${{ vars.UNSTABLE_DOCS_URL }}
+      working-directory: ${{ github.workspace }}/docs/
+    - if: github.event_name != 'push' || github.ref_type != 'tag'
+      run: |
+        jq \
+          --arg url "$STABLE_DOCS_URL" \
+          '.nav_links = [{"title":"Go to stable","url":$url}] + .nav_links' \
+          _data.json > _data.json.tmp
+        mv _data.json.tmp _data.json
+      env:
+        STABLE_DOCS_URL: ${{ vars.STABLE_DOCS_URL }}
+      working-directory: ${{ github.workspace }}/docs/
     - run: |
         set -ex
         jq \

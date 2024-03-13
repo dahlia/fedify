@@ -6,11 +6,13 @@ import image from "lume_markdown_plugins/image.ts";
 import title from "lume_markdown_plugins/title.ts";
 import lumocs from "lumocs/mod.ts";
 import externalLinks from "npm:markdown-it-external-links@0.0.6";
+import footnote from "npm:markdown-it-footnote@4.0.0";
 import callouts from "npm:markdown-it-obsidian-callouts@0.2.3";
 
 const site = lume({}, {
   markdown: {
     plugins: [
+      footnote,
       externalLinks,
       callouts,
     ],

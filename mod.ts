@@ -28,7 +28,8 @@
  * following resources:
  *
  * - [GitHub](https://github.com/dahlia/fedify)
- * - [Manual](./manual.md)
+ * - [Manual](https://fedify.dev/manual/)
+ *   ([Unstable](https://unstable.fedify.dev/manual/))
  * - [Examples](https://github.com/dahlia/fedify/tree/main/examples)
  *
  * [Deno]: https://deno.com/
