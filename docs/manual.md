@@ -14,6 +14,7 @@ framework.
  -  [Vocabulary](./manual/vocab.md)
  -  [Actor dispatcher](./manual/actor.md)
  -  [Inbox listeners](./manual/inbox.md)
+ -  [Collections](./manual/collections.md)
  -  [NodeInfo](./manual/nodeinfo.md)
 
 However, this manual is not a complete guide to the Fedify framework.

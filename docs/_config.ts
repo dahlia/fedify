@@ -137,3 +137,5 @@ site.process([".html"], async (pages) => {
 });
 
 export default site;
+
+// cSpell: ignore wekanteam
