@@ -1,6 +1,6 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
-import { respondWithObjectIfAcceptable } from "fedify/federation";
+import { respondWithObjectIfAcceptable } from "@fedify/fedify/federation";
 import Comment from "../../components/Comment.tsx";
 import Post from "../../components/Post.tsx";
 import { federation } from "../../federation/mod.ts";

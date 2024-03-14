@@ -1,4 +1,4 @@
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+import { Temporal } from "@js-temporal/polyfill";
 
 /**
  * A remote JSON-LD document and its context fetched by

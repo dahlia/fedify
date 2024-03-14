@@ -1,4 +1,4 @@
-import { assertEquals, assertThrows } from "jsr:@std/assert@^0.218.2";
+import { assertEquals, assertThrows } from "@std/assert";
 import { Router, RouterError } from "./router.ts";
 
 function setUp(): Router {

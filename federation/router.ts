@@ -1,5 +1,5 @@
-import { Router as InnerRouter } from "npm:uri-template-router@0.0.16";
-import { parseTemplate, type Template } from "npm:url-template@3.1.1";
+import { Router as InnerRouter } from "uri-template-router";
+import { parseTemplate, type Template } from "url-template";
 
 /**
  * URL router and constructor based on URI Template

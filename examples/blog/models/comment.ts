@@ -1,5 +1,5 @@
-import sanitizeHtml from "npm:sanitize-html";
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+import sanitizeHtml from "sanitize-html";
+import { Temporal } from "@js-temporal/polyfill";
 import { openKv } from "./kv.ts";
 
 export interface Comment {

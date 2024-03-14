@@ -1,5 +1,5 @@
+import { assertEquals } from "@std/assert";
 import * as mf from "https://deno.land/x/mock_fetch@0.3.0/mod.ts";
-import { assertEquals } from "jsr:@std/assert@^0.218.2";
 import { ResourceDescriptor } from "./jrd.ts";
 import { lookupWebFinger } from "./lookup.ts";
 
@@ -65,3 +65,5 @@ Deno.test("lookupWebFinger()", async (t) => {
 
   mf.uninstall();
 });
+
+// cSpell: ignore johndoe

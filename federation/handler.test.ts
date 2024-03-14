@@ -1,5 +1,6 @@
-import { assert, assertEquals, assertFalse } from "jsr:@std/assert@^0.218.2";
+import { assert, assertEquals, assertFalse } from "@std/assert";
 import { createRequestContext } from "../testing/context.ts";
+import { mockDocumentLoader } from "../testing/docloader.ts";
 import { Activity, Create, Note, Person } from "../vocab/vocab.ts";
 import {
   ActorDispatcher,
@@ -14,7 +15,6 @@ import {
   respondWithObject,
   respondWithObjectIfAcceptable,
 } from "./handler.ts";
-import { mockDocumentLoader } from "../testing/docloader.ts";
 
 Deno.test("acceptsJsonLd()", () => {
   assert(acceptsJsonLd(

@@ -1,4 +1,4 @@
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+import { Temporal } from "@js-temporal/polyfill";
 import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {

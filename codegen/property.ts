@@ -1,4 +1,4 @@
-import { toPascalCase } from "jsr:@std/text@^0.218.2";
+import { toPascalCase } from "@std/text";
 import { getFieldName } from "./field.ts";
 import { PropertySchema, TypeSchema } from "./schema.ts";
 import { areAllScalarTypes, getTypeNames } from "./type.ts";

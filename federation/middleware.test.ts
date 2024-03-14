@@ -3,7 +3,7 @@ import {
   assertRejects,
   assertStrictEquals,
   assertThrows,
-} from "jsr:@std/assert@^0.218.2";
+} from "@std/assert";
 import { FetchError } from "../runtime/docloader.ts";
 import { privateKey2, publicKey2 } from "../testing/keys.ts";
 import { Create, Person } from "../vocab/vocab.ts";

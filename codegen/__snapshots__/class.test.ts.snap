@@ -2,11 +2,11 @@ export const snapshot = {};
 
 snapshot[`generateClasses() 1`] = `
 "// deno-lint-ignore-file ban-unused-ignore
-import { Temporal } from \\"npm:@js-temporal/polyfill@^0.4.4\\";
-import jsonld from \\"npm:jsonld@8.3.2\\";
+import { Temporal } from \\"@js-temporal/polyfill\\";
+import jsonld from \\"jsonld\\";
 import { LanguageTag, parseLanguageTag }
-    from \\"npm:@phensley/language-tag@1.8.0\\";
-import { exportSPKI, importSPKI } from \\"npm:jose@5.2.2\\";
+    from \\"@phensley/language-tag\\";
+import { exportSPKI, importSPKI } from \\"jose\\";
 import { DocumentLoader, fetchDocumentLoader }
     from \\"../runtime/docloader.ts\\";
 import { LanguageString } from \\"../runtime/langstr.ts\\";

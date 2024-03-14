@@ -3,8 +3,8 @@ import {
   assertEquals,
   assertFalse,
   assertStrictEquals,
-} from "jsr:@std/assert@^0.218.2";
-import * as fc from "npm:fast-check@3.15.1";
+} from "@std/assert";
+import * as fc from "fast-check";
 import {
   Actor,
   getActorClassByTypeName,

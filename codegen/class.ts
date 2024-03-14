@@ -69,11 +69,11 @@ export async function* generateClasses(
 ): AsyncIterable<string> {
   runtimePath = runtimePath.replace(/\/+$/, "");
   yield "// deno-lint-ignore-file ban-unused-ignore\n";
-  yield 'import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";\n';
-  yield 'import jsonld from "npm:jsonld@8.3.2";\n';
+  yield 'import { Temporal } from "@js-temporal/polyfill";\n';
+  yield 'import jsonld from "jsonld";\n';
   yield `import { LanguageTag, parseLanguageTag }
-    from "npm:@phensley/language-tag@1.8.0";\n`;
-  yield `import { exportSPKI, importSPKI } from "npm:jose@5.2.2";\n`;
+    from "@phensley/language-tag";\n`;
+  yield `import { exportSPKI, importSPKI } from "jose";\n`;
   yield `import { DocumentLoader, fetchDocumentLoader }
     from "${runtimePath}/docloader.ts";\n`;
   yield `import { LanguageString } from "${runtimePath}/langstr.ts";\n`;

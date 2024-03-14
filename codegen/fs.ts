@@ -1,4 +1,4 @@
-import { join } from "jsr:@std/path@^0.218.2";
+import { join } from "@std/path";
 
 /**
  * Recursively read a directory, yielding the paths of all files.  File paths

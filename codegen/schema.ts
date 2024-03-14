@@ -1,10 +1,7 @@
-import { join } from "jsr:@std/path@^0.218.2";
-import * as url from "jsr:@std/url@^0.218.2";
-import { parse } from "jsr:@std/yaml@^0.218.2";
-import {
-  Schema as JsonSchema,
-  Validator,
-} from "npm:@cfworker/json-schema@1.12.8";
+import { Schema as JsonSchema, Validator } from "@cfworker/json-schema";
+import { join } from "@std/path";
+import * as url from "@std/url";
+import { parse } from "@std/yaml";
 import { readDirRecursive } from "./fs.ts";
 
 /**

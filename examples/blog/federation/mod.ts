@@ -1,7 +1,7 @@
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
-import { parse } from "jsr:@std/semver@^0.218.2";
-import { dirname, join } from "jsr:@std/path@^0.218.2";
-import { Federation } from "fedify/federation";
+import { Temporal } from "@js-temporal/polyfill";
+import { parse } from "@std/semver";
+import { dirname, join } from "@std/path";
+import { Federation } from "@fedify/fedify/federation";
 import {
   Accept,
   Activity,
@@ -14,7 +14,7 @@ import {
   Note,
   Person,
   Undo,
-} from "fedify/vocab";
+} from "@fedify/fedify/vocab";
 import { getBlog } from "../models/blog.ts";
 import { addComment, Comment, getComments } from "../models/comment.ts";
 import {

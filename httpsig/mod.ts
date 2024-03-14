@@ -4,9 +4,9 @@
  *
  * @module
  */
-import { equals } from "jsr:@std/bytes@^0.218.2";
-import { decodeBase64, encodeBase64 } from "jsr:@std/encoding@^0.218.2/base64";
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+import { Temporal } from "@js-temporal/polyfill";
+import { equals } from "@std/bytes";
+import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import { DocumentLoader } from "../runtime/docloader.ts";
 import { isActor } from "../vocab/actor.ts";
 import {

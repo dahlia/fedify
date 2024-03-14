@@ -10,6 +10,29 @@
     "./vocab": "./vocab/mod.ts",
     "./webfinger": "./webfinger/mod.ts"
   },
+  "imports": {
+    "@cfworker/json-schema": "npm:@cfworker/json-schema@^1.12.8",
+    "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.4.4",
+    "@phensley/language-tag": "npm:@phensley/language-tag@^1.8.0",
+    "@std/assert": "jsr:@std/assert@^0.219.1",
+    "@std/bytes": "jsr:@std/bytes@^0.219.1",
+    "@std/collections": "jsr:@std/collections@^0.219.1",
+    "@std/encoding": "jsr:@std/encoding@^0.219.1",
+    "@std/encoding/base64": "jsr:@std/encoding@^0.219.1/base64",
+    "@std/http": "jsr:@std/http@^0.219.1",
+    "@std/json": "jsr:@std/json@^0.219.1",
+    "@std/path": "jsr:@std/path@^0.219.1",
+    "@std/semver": "jsr:@std/semver@^0.219.1",
+    "@std/testing": "jsr:@std/testing@^0.219.1",
+    "@std/text": "jsr:@std/text@^0.219.1",
+    "@std/url": "jsr:@std/url@^0.219.1",
+    "@std/yaml": "jsr:@std/yaml@^0.219.1",
+    "fast-check": "npm:fast-check@^3.16.0",
+    "jose": "npm:jose@^5.2.3",
+    "jsonld": "npm:jsonld@^8.3.2",
+    "uri-template-router": "npm:uri-template-router@^0.0.16",
+    "url-template": "npm:url-template@^3.1.1"
+  },
   "include": [
     "vocab/vocab.ts"
   ],

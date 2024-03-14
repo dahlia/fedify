@@ -1,5 +1,5 @@
-import { JsonValue } from "jsr:@std/json@^0.218.2";
-import { format, SemVer } from "jsr:@std/semver@^0.218.2";
+import { JsonValue } from "@std/json";
+import { format, SemVer } from "@std/semver";
 
 export interface NodeInfo {
   /**

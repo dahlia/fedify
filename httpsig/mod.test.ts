@@ -1,5 +1,5 @@
-import { assert, assertEquals, assertFalse } from "jsr:@std/assert@^0.218.2";
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+import { Temporal } from "@js-temporal/polyfill";
+import { assert, assertEquals, assertFalse } from "@std/assert";
 import { doesActorOwnKey, sign, verify } from "../mod.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2, publicKey1, publicKey2 } from "../testing/keys.ts";

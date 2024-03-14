@@ -1,3 +1,5 @@
+import { Temporal } from "@js-temporal/polyfill";
+import { parseLanguageTag } from "@phensley/language-tag";
 import {
   assertEquals,
   assertFalse,
@@ -5,10 +7,9 @@ import {
   assertNotEquals,
   assertRejects,
   assertThrows,
-} from "jsr:@std/assert@^0.218.2";
-import { assertSnapshot } from "jsr:@std/testing@^0.218.2/snapshot";
-import { toPascalCase } from "jsr:@std/text@^0.218.2";
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+} from "@std/assert";
+import { assertSnapshot } from "@std/testing/snapshot";
+import { toPascalCase } from "@std/text";
 import { toArray } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
 import {
   loadSchemaFiles,
@@ -19,6 +20,7 @@ import { areAllScalarTypes } from "../codegen/type.ts";
 import { LanguageString } from "../runtime/langstr.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { publicKey1 } from "../testing/keys.ts";
+import * as vocab from "./vocab.ts";
 import {
   Activity,
   Create,
@@ -29,8 +31,6 @@ import {
   Person,
   Place,
 } from "./vocab.ts";
-import * as vocab from "./vocab.ts";
-import { parseLanguageTag } from "npm:@phensley/language-tag@1.8.0";
 
 Deno.test("new Object()", () => {
   const obj = new Object({

@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert@^0.218.2";
+import { assertEquals } from "@std/assert";
 import { mockDocumentLoader } from "./docloader.ts";
 
 Deno.test("mockDocumentLoader()", async () => {

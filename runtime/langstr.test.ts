@@ -1,5 +1,5 @@
-import { assertEquals } from "jsr:@std/assert@^0.218.2";
-import { parseLanguageTag } from "npm:@phensley/language-tag@1.8.0";
+import { parseLanguageTag } from "@phensley/language-tag";
+import { assertEquals } from "@std/assert";
 import { LanguageString } from "./langstr.ts";
 
 Deno.test("new LanguageString()", () => {

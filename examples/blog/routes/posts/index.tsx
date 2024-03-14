@@ -1,6 +1,6 @@
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
+import { Temporal } from "@js-temporal/polyfill";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { Create } from "fedify/vocab";
+import { Create } from "@fedify/fedify/vocab";
 import { PostFormProps } from "../../components/PostForm.tsx";
 import PostList from "../../components/PostList.tsx";
 import { federation } from "../../federation/mod.ts";

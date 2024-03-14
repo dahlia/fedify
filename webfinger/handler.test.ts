@@ -1,4 +1,4 @@
-import { assertEquals } from "jsr:@std/assert@^0.218.2";
+import { assertEquals } from "@std/assert";
 import { ActorDispatcher } from "../federation/callback.ts";
 import { createRequestContext } from "../testing/context.ts";
 import { CryptographicKey, Link, Person } from "../vocab/vocab.ts";

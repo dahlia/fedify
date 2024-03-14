@@ -1,4 +1,4 @@
-import { dirname, fromFileUrl, join } from "jsr:@std/path@^0.218.2";
+import { dirname, fromFileUrl, join } from "@std/path";
 import { RemoteDocument } from "../runtime/docloader.ts";
 
 /**

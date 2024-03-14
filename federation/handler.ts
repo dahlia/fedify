@@ -1,4 +1,4 @@
-import { accepts } from "jsr:@std/http@^0.218.2";
+import { accepts } from "@std/http";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
 import { DocumentLoader } from "../runtime/docloader.ts";
 import {

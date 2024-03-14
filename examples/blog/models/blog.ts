@@ -1,6 +1,10 @@
 /// <reference lib="deno.unstable" />
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
-import { exportJwk, generateCryptoKeyPair, importJwk } from "fedify/httpsig";
+import { Temporal } from "@js-temporal/polyfill";
+import {
+  exportJwk,
+  generateCryptoKeyPair,
+  importJwk,
+} from "@fedify/fedify/httpsig";
 import { hash, verify } from "scrypt";
 import { openKv } from "./kv.ts";
 

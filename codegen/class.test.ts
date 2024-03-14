@@ -1,6 +1,6 @@
-import { assertEquals } from "jsr:@std/assert@^0.218.2";
-import { dirname, join } from "jsr:@std/path@^0.218.2";
-import { assertSnapshot } from "jsr:@std/testing@^0.218.2/snapshot";
+import { assertEquals } from "@std/assert";
+import { dirname, join } from "@std/path";
+import { assertSnapshot } from "@std/testing/snapshot";
 import { generateClasses, sortTopologically } from "./class.ts";
 import { loadSchemaFiles } from "./schema.ts";
 

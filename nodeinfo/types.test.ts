@@ -1,4 +1,4 @@
-import { assertEquals, assertThrows } from "jsr:@std/assert@^0.218.2";
+import { assertEquals, assertThrows } from "@std/assert";
 import { NodeInfo, nodeInfoToJson } from "./types.ts";
 
 Deno.test("nodeInfoToJson()", () => {

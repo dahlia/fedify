@@ -1,6 +1,6 @@
-import { Temporal } from "npm:@js-temporal/polyfill@^0.4.4";
-import { RequestContext } from "fedify/federation";
-import { Article, Collection, CollectionPage } from "fedify/vocab";
+import { Temporal } from "@js-temporal/polyfill";
+import { RequestContext } from "@fedify/fedify/federation";
+import { Article, Collection, CollectionPage } from "@fedify/fedify/vocab";
 import markdownIt from "markdown-it";
 import { uuidv7 } from "uuidv7";
 import { Blog } from "./blog.ts";

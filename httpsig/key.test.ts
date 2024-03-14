@@ -1,15 +1,11 @@
-import {
-  assertEquals,
-  assertRejects,
-  assertThrows,
-} from "jsr:@std/assert@^0.218.2";
+import { assertEquals, assertRejects, assertThrows } from "@std/assert";
+import { privateKey2, publicKey2 } from "../testing/keys.ts";
 import {
   exportJwk,
   generateCryptoKeyPair,
   importJwk,
   validateCryptoKey,
 } from "./key.ts";
-import { privateKey2, publicKey2 } from "../testing/keys.ts";
 
 Deno.test("validateCryptoKey()", async () => {
   const pkcs1v15 = await crypto.subtle.generateKey(

@@ -1,5 +1,5 @@
-import { join } from "jsr:@std/path@^0.218.2";
-import { assertEquals } from "jsr:@std/assert@^0.218.2";
+import { assertEquals } from "@std/assert";
+import { join } from "@std/path";
 import { toSet } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
 import { readDirRecursive } from "./fs.ts";
 
