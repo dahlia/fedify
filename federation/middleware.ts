@@ -689,6 +689,8 @@ export class Federation<TContextData> {
       contextData,
     }: FederationHandlerParameters<TContextData>,
   ): Promise<Response> {
+    onNotFound ??= notFound;
+    onNotAcceptable ??= notAcceptable;
     const url = new URL(request.url);
     const route = this.#router.route(url.pathname);
     if (route == null) {
@@ -775,18 +777,19 @@ export interface FederationHandlerParameters<TContextData> {
 
   /**
    * A callback to handle a request when the route is not found.
+   * If not provided, a 404 response is returned.
    * @param request The request object.
    * @returns The response to the request.
    */
-  onNotFound(request: Request): Response | Promise<Response>;
+  onNotFound?: (request: Request) => Response | Promise<Response>;
 
   /**
    * A callback to handle a request when the request's `Accept` header is not
-   * acceptable.
+   * acceptable.  If not provided, a 406 response is returned.
    * @param request The request object.
    * @returns The response to the request.
    */
-  onNotAcceptable(request: Request): Response | Promise<Response>;
+  onNotAcceptable?: (request: Request) => Response | Promise<Response>;
 }
 
 interface ActorCallbacks<TContextData> {
@@ -862,4 +865,12 @@ export interface InboxListenerSetter<TContextData> {
   onError(
     handler: InboxErrorHandler<TContextData>,
   ): InboxListenerSetter<TContextData>;
+}
+
+function notFound(_request: Request): Response {
+  return new Response("Not Found", { status: 404 });
+}
+
+function notAcceptable(_request: Request): Response {
+  return new Response("Not Acceptable", { status: 406 });
 }

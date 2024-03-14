@@ -38,6 +38,11 @@ To be released.
 
  -  Added `SendActivityOptions` interface.
 
+ -  Now `onNotFound`/`onNotAcceptable` options are optional for
+    `Federation.handle()` method.  [[#9]]
+
+[#9]: https://github.com/dahlia/fedify/issues/9
+
 
 Version 0.2.0
 -------------
