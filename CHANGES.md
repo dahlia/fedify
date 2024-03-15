@@ -11,7 +11,7 @@ Fedify changelog
 Version 0.3.0
 -------------
 
-To be released.
+Released on March 15, 2024.
 
  -  Added utility functions for responding with an ActivityPub object:
 
