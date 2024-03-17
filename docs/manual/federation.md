@@ -142,6 +142,19 @@ as [`Request`] and [`Response`] objects.  In that case, you need to convert
 the request and response objects to the appropriate types that the `Federation`
 object can handle.
 
+> [!NOTE]
+> The above example artificially shows a verbose way to integrate
+> the `Federation` object with Fresh, so that a user of other web frameworks
+> can understand the concept.  In practice, you can define a middleware
+> using `integrateHandler()` function from `@fedify/fedify/x/fresh` module:
+>
+> ~~~~ typescript
+> import { federation } from "../federation.ts"; // Import the `Federation` object
+> import { integrateHandler } from "jsr:@fedify/fedify/x/fresh";
+>
+> export const handler = integrateHandler(federation, () => undefined);
+> ~~~~
+
 > [!TIP]
 > In theory, you can directly pass `Federation.handle()` to the [`Deno.serve()`]
 > function, but you probably wouldn't want to do that because you want to handle

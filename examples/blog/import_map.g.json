@@ -31,6 +31,7 @@
     "@fedify/fedify/runtime": "../../runtime/mod.ts",
     "@fedify/fedify/vocab": "../../vocab/mod.ts",
     "@fedify/fedify/webfinger": "../../webfinger/mod.ts",
+    "@fedify/fedify/x/fresh": "../../x/fresh.ts",
     "markdown-it": "npm:markdown-it@^14.0.0",
     "preact": "https://esm.sh/preact@10.19.2",
     "preact/": "https://esm.sh/preact@10.19.2/",

@@ -8,7 +8,8 @@
     "./nodeinfo": "./nodeinfo/mod.ts",
     "./runtime": "./runtime/mod.ts",
     "./vocab": "./vocab/mod.ts",
-    "./webfinger": "./webfinger/mod.ts"
+    "./webfinger": "./webfinger/mod.ts",
+    "./x/fresh": "./x/fresh.ts"
   },
   "imports": {
     "@cfworker/json-schema": "npm:@cfworker/json-schema@^1.12.8",

@@ -13,6 +13,14 @@ Version 0.4.0
 
 To be released.
 
+ -  Added `@fedify/fedify/x/fresh` module for integrating with [Fresh]
+    middleware.
+
+     -  Added `integrateHandler()` function.
+     -  Added `integrateHandlerOptions()` function.
+
+[Fresh]: https://fresh.deno.dev/
+
 
 Version 0.3.0
 -------------
