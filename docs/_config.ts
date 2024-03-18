@@ -44,11 +44,19 @@ async function getPackageVersion(): Promise<string> {
 
 export type SymbolType = "typeAlias" | "function" | "class" | "interface";
 
-async function getApiSymbols(
+export interface Node {
+  name: string;
+  kind: SymbolType[];
+  file: string;
+  declarationKind: "export" | "private";
+}
+
+const kv = await Deno.openKv();
+
+async function getApiNodes(
   version: string,
-): Promise<Record<string, SymbolType>> {
-  const kv = await Deno.openKv();
-  const cache = await kv.get<Record<string, SymbolType>>(["api", version]);
+): Promise<Record<string, Node>> {
+  const cache = await kv.get<Record<string, Node>>(["api", version]);
   if (cache != null && cache.value != null) return cache.value;
   const response = await fetch(
     `https://jsr.io/api/scopes/fedify/packages/fedify/versions/${
@@ -56,10 +64,11 @@ async function getApiSymbols(
     }/docs/search`,
   );
   const json = await response.json();
+  const nodes: Node[] = json.nodes;
   const types = Object.fromEntries(
-    json.nodes.map(
-      (node: { name: string; kind: SymbolType[] }) => [node.name, node.kind[0]],
-    ),
+    nodes
+      .filter((node) => node.declarationKind === "export")
+      .map((node) => [node.name, node])
   );
   await kv.set(["api", version], types);
   return types;
@@ -67,13 +76,16 @@ async function getApiSymbols(
 
 async function getApiUrl(
   version: string,
-  symbol: string,
+  node: Node,
   attr?: string,
 ): Promise<string | null> {
-  const baseUrl = `https://jsr.io/@fedify/fedify@${version}/doc/~/${symbol}`;
-  if (attr == null) return baseUrl;
-  const kv = await Deno.openKv();
-  const cache = await kv.get<Record<string, string>>(["api", version, symbol]);
+  const baseUrl = new URL(
+    (node.file === "." ? "." : `.${node.file}/`),
+    `https://jsr.io/@fedify/fedify@${version}/doc/`
+  );
+  const url = new URL(`./~/${node.name}`, baseUrl);
+  if (attr == null) return url.href;
+  const cache = await kv.get<Record<string, string>>(["api", version, node.name]);
   let anchors: Record<string, string>;
   if (
     cache != null && cache.value != null && Array.isArray(cache.value) &&
@@ -81,7 +93,7 @@ async function getApiUrl(
   ) {
     anchors = cache.value;
   } else {
-    const response = await fetch(baseUrl, {
+    const response = await fetch(url, {
       headers: { Accept: "text/html" },
     });
     const html = await response.text();
@@ -92,16 +104,16 @@ async function getApiUrl(
     for (const match of matches) {
       anchors[match[2]] = match[1];
     }
-    await kv.set(["api", version, symbol], anchors);
+    await kv.set(["api", version, node.name], anchors);
   }
-  if (attr in anchors) return `${baseUrl}#${anchors[attr]}`;
+  if (attr in anchors) return `${url.href}#${anchors[attr]}`;
   return null;
 }
 
 const version = Deno.env.get("GITHUB_REF_TYPE") === "tag"
-  ? Deno.env.get("GITHUB_REF_NAME")
+  ? Deno.env.get("GITHUB_REF_NAME")!
   : await getPackageVersion();
-const symbols = await getApiSymbols(version);
+const nodes = await getApiNodes(version);
 
 site.process([".html"], async (pages) => {
   const pattern =
@@ -117,10 +129,10 @@ site.process([".html"], async (pages) => {
         const match = pattern.exec(code.innerText);
         if (match == null) continue;
         const [_, prefix, symbol, attr, parens] = match;
-        if (symbols[symbol] == null) continue;
+        if (nodes[symbol] == null) continue;
         const apiUrl = await getApiUrl(
           version,
-          symbol,
+          nodes[symbol],
           attr,
         );
         if (apiUrl == null) continue;

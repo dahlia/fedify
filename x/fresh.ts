@@ -79,6 +79,9 @@ export function integrateHandlerOptions(
  * export const handler = integrateHandler(federation, () => undefined);
  * ```
  *
+ * @typeParam TContextData A type of the context data for the {@link Federation}
+ *                         object.
+ * @typeParam TFreshContext A type of the Fresh context.
  * @param federation A {@link Federation} object to integrate with Fresh.
  * @param createContextData A function to create a context data for the
  *                          {@link Federation} object.
