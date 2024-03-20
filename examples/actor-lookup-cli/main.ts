@@ -1,4 +1,9 @@
-import { getActorHandle, isActor, lookupObject } from "@fedify/fedify/vocab";
+import {
+  Collection,
+  getActorHandle,
+  isActor,
+  lookupObject,
+} from "@fedify/fedify/vocab";
 import { Temporal } from "@js-temporal/polyfill";
 import { convert } from "npm:html-to-text@^9.0.5";
 
@@ -16,9 +21,18 @@ export interface Actor {
 async function lookupActor(handle: string): Promise<Actor> {
   const actor = await lookupObject(handle);
   if (!isActor(actor)) throw new TypeError("Not an actor!");
-  const following = await actor.getFollowing();
-  const followers = await actor.getFollowers();
-  const posts = await actor.getOutbox();
+  let following: Collection | null = null;
+  try {
+    following = await actor.getFollowing();
+  } catch (_) {}
+  let followers: Collection | null = null;
+  try {
+    followers = await actor.getFollowers();
+  } catch (_) {}
+  let posts: Collection | null = null;
+  try {
+    posts = await actor.getOutbox();
+  } catch (_) {}
   return {
     handle: await getActorHandle(actor),
     url: actor.url,
