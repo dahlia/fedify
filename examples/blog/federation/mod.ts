@@ -8,6 +8,7 @@ import {
   Create,
   Endpoints,
   Follow,
+  getActorHandle,
   getActorTypeName,
   isActor,
   Link,
@@ -151,8 +152,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
       recipient.preferredUsername == null ||
       recipient.inboxId == null
     ) return;
-    const handle =
-      `@${recipient.preferredUsername.toString()}@${recipient.id.host}`;
+    const handle = await getActorHandle(recipient);
     await addFollower({
       activityId: follow.id.href,
       id: recipient.id.href,

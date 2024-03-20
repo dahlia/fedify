@@ -1,3 +1,4 @@
+import { lookupWebFinger } from "../webfinger/lookup.ts";
 import { Application, Group, Organization, Person, Service } from "./vocab.ts";
 
 /**
@@ -73,4 +74,51 @@ export function getActorClassByTypeName(
       return Service;
   }
   throw new Error("Unknown actor type name.");
+}
+
+/**
+ * Gets the actor handle, of the form `@username@domain`, from the given actor
+ * or an actor URI.
+ *
+ * @example
+ * ``` typescript
+ * // Get the handle of an actor object:
+ * await getActorHandle(
+ *   new Person({ id: new URL("https://todon.eu/users/hongminhee") })
+ * );
+ *
+ * // Get the handle of an actor URI:
+ * await getActorHandle(new URL("https://todon.eu/users/hongminhee"));
+ * ```
+ *
+ * @param actor The actor or actor URI to get the handle from.
+ * @returns The actor handle.  It starts with `@` and is followed by the
+ *          username and domain, separated by `@`.
+ * @throws {TypeError} If the actor does not have enough information to get the
+ *                     handle.
+ */
+export async function getActorHandle(
+  actor: Actor | URL,
+): Promise<`@${string}@${string}`> {
+  const actorId = actor instanceof URL ? actor : actor.id;
+  if (actorId != null) {
+    const result = await lookupWebFinger(actorId);
+    if (result != null) {
+      const aliases = [...(result.aliases ?? [])];
+      if (result.subject != null) aliases.unshift(result.subject);
+      for (const alias of aliases) {
+        const match = alias.match(/^acct:([^@]+)@([^@]+)$/);
+        if (match != null) return `@${match[1]}@${match[2]}`;
+      }
+    }
+  }
+  if (
+    !(actor instanceof URL) && actor.preferredUsername != null &&
+    actor.id != null
+  ) {
+    return `@${actor.preferredUsername}@${actor.id.host}`;
+  }
+  throw new TypeError(
+    "Actor does not have enough information to get the handle.",
+  );
 }

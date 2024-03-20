@@ -1,6 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
-import * as mf from "https://deno.land/x/mock_fetch@0.3.0/mod.ts";
+import * as mf from "mock_fetch";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { fetchDocumentLoader, FetchError, kvCache } from "./docloader.ts";
 

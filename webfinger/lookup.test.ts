@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import * as mf from "https://deno.land/x/mock_fetch@0.3.0/mod.ts";
+import * as mf from "mock_fetch";
 import { ResourceDescriptor } from "./jrd.ts";
 import { lookupWebFinger } from "./lookup.ts";
 

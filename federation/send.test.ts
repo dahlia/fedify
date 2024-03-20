@@ -4,7 +4,7 @@ import {
   assertRejects,
   assertStrictEquals,
 } from "@std/assert";
-import * as mf from "https://deno.land/x/mock_fetch@0.3.0/mod.ts";
+import * as mf from "mock_fetch";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2, publicKey2 } from "../testing/keys.ts";

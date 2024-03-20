@@ -19,6 +19,7 @@
     "fast-check": "npm:fast-check@^3.16.0",
     "jose": "npm:jose@^5.2.3",
     "jsonld": "npm:jsonld@^8.3.2",
+    "mock_fetch": "https://deno.land/x/mock_fetch@0.3.0/mod.ts",
     "uri-template-router": "npm:uri-template-router@^0.0.16",
     "url-template": "npm:url-template@^3.1.1",
     "$fresh/": "https://deno.land/x/fresh@1.6.5/",

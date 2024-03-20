@@ -19,6 +19,8 @@ To be released.
      -  Added `integrateHandler()` function.
      -  Added `integrateHandlerOptions()` function.
 
+ -  Added `getActorHandle()` function.
+
  -  Now `loookupWebFinger()` follows redirections.
 
 [Fresh]: https://fresh.deno.dev/
