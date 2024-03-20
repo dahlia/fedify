@@ -63,6 +63,19 @@ Deno.test("lookupWebFinger()", async (t) => {
     assertEquals(await lookupWebFinger("acct:johndoe@example.com"), null);
   });
 
+  mf.mock(
+    "GET@/.well-known/webfinger",
+    (req) => Response.redirect(new URL("/.well-known/webfinger2", req.url)),
+  );
+  mf.mock(
+    "GET@/.well-known/webfinger2",
+    (_) => new Response(JSON.stringify(expected)),
+  );
+
+  await t.step("redirection", async () => {
+    assertEquals(await lookupWebFinger("acct:johndoe@example.com"), expected);
+  });
+
   mf.uninstall();
 });
 

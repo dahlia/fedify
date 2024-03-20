@@ -18,18 +18,26 @@ export async function lookupWebFinger(
   } else {
     server = resource.hostname;
   }
-  const url = new URL(`https://${server}/.well-known/webfinger`);
+  let url = new URL(`https://${server}/.well-known/webfinger`);
   url.searchParams.set("resource", resource.href);
-  const response = await fetch(url, {
-    headers: {
-      Accept: "application/jrd+json",
-    },
-  });
-  if (!response.ok) return null;
-  try {
-    return await response.json();
-  } catch (e) {
-    if (e instanceof SyntaxError) return null;
-    throw e;
+  while (true) {
+    const response = await fetch(url, {
+      headers: { Accept: "application/jrd+json" },
+      redirect: "manual",
+    });
+    if (
+      response.status >= 300 && response.status < 400 &&
+      response.headers.has("Location")
+    ) {
+      url = new URL(response.headers.get("Location")!);
+      continue;
+    }
+    if (!response.ok) return null;
+    try {
+      return await response.json();
+    } catch (e) {
+      if (e instanceof SyntaxError) return null;
+      throw e;
+    }
   }
 }
