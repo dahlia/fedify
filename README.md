@@ -8,6 +8,7 @@ Fedify: a fediverse server framework
 [![JSR score][JSR score badge]][JSR score]
 [![GitHub Actions][GitHub Actions badge]][GitHub Actions]
 [![Matrix][Matrix badge]][Matrix]
+[![Follow @hongminhee@todon.eu][@hongminhee.todon.eu badge]][@hongminhee.todon.eu]
 
 > [!NOTE]
 > Looking for a quick demo?  Here it is: [Fedify Demo] on Deno Playground.
@@ -53,6 +54,8 @@ resources:
 [GitHub Actions badge]: https://github.com/dahlia/fedify/actions/workflows/build.yaml/badge.svg
 [Matrix]: https://matrix.to/#/#fedify:matrix.org
 [Matrix badge]: https://img.shields.io/matrix/fedify%3Amatrix.org
+[@hongminhee.todon.eu badge]: https://fedi-badge.deno.dev/@hongminhee@todon.eu/followers.svg
+[@hongminhee.todon.eu]: https://todon.eu/@hongminhee
 [Fedify Demo]: https://dash.deno.com/playground/fedify-demo
 [Deno]: https://deno.com/
 [ActivityPub]: https://www.w3.org/TR/activitypub/
