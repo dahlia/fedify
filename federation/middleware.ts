@@ -4,6 +4,7 @@ import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   DocumentLoader,
   fetchDocumentLoader,
+  getAuthenticatedDocumentLoader,
   kvCache,
 } from "../runtime/docloader.ts";
 import { Actor } from "../vocab/actor.ts";
@@ -207,7 +208,41 @@ export class Federation<TContextData> {
       url.search = "";
     }
     if (this.#treatHttps) url.protocol = "https:";
-    const context = {
+    const getKeyPairFromHandle = async (handle: string) => {
+      if (this.#actorCallbacks?.keyPairDispatcher == null) {
+        throw new Error("No actor key pair dispatcher registered.");
+      }
+      let keyPair = this.#actorCallbacks?.keyPairDispatcher(
+        contextData,
+        handle,
+      );
+      if (keyPair instanceof Promise) keyPair = await keyPair;
+      if (keyPair == null) {
+        throw new Error(
+          `No key pair found for actor ${JSON.stringify(handle)}`,
+        );
+      }
+      return {
+        keyId: new URL(`${context.getActorUri(handle)}#main-key`),
+        privateKey: keyPair.privateKey,
+      };
+    };
+    function getDocumentLoader(
+      identity: { handle: string },
+    ): Promise<DocumentLoader>;
+    function getDocumentLoader(
+      identity: { keyId: URL; privateKey: CryptoKey },
+    ): DocumentLoader;
+    function getDocumentLoader(
+      identity: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+    ): DocumentLoader | Promise<DocumentLoader> {
+      if ("handle" in identity) {
+        const keyPair = getKeyPairFromHandle(identity.handle);
+        return keyPair.then((pair) => getAuthenticatedDocumentLoader(pair));
+      }
+      return getAuthenticatedDocumentLoader(identity);
+    }
+    const context: Context<TContextData> = {
       data: contextData,
       documentLoader: this.#documentLoader,
       getNodeInfoUri: (): URL => {
@@ -278,32 +313,17 @@ export class Federation<TContextData> {
           publicKey: keyPair.publicKey,
         });
       },
+      getDocumentLoader,
       sendActivity: async (
         sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
         recipients: Actor | Actor[],
         activity: Activity,
         options: SendActivityOptions = {},
       ): Promise<void> => {
-        let senderPair: { keyId: URL; privateKey: CryptoKey };
-        if ("handle" in sender) {
-          if (this.#actorCallbacks?.keyPairDispatcher == null) {
-            throw new Error("No actor key pair dispatcher registered.");
-          }
-          let keyPair = this.#actorCallbacks?.keyPairDispatcher(
-            contextData,
-            sender.handle,
-          );
-          if (keyPair instanceof Promise) keyPair = await keyPair;
-          if (keyPair == null) {
-            throw new Error(`No key pair found for actor ${sender.handle}`);
-          }
-          senderPair = {
-            keyId: new URL(`${context.getActorUri(sender.handle)}#main-key`),
-            privateKey: keyPair.privateKey,
-          };
-        } else {
-          senderPair = sender;
-        }
+        const senderPair: { keyId: URL; privateKey: CryptoKey } =
+          "handle" in sender
+            ? await getKeyPairFromHandle(sender.handle)
+            : sender;
         return await this.sendActivity(
           senderPair,
           recipients,

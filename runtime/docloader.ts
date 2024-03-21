@@ -1,4 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
+import { validateCryptoKey } from "../httpsig/key.ts";
+import { sign } from "../httpsig/mod.ts";
 
 /**
  * A remote JSON-LD document and its context fetched by
@@ -37,20 +39,19 @@ export class FetchError extends Error {
   }
 }
 
-/**
- * A JSON-LD document loader that utilizes the browser's `fetch` API.
- * @param url The URL of the document to load.
- * @returns The remote document.
- */
-export async function fetchDocumentLoader(
-  url: string,
-): Promise<RemoteDocument> {
-  const response = await fetch(url, {
+function createRequest(url: string): Request {
+  return new Request(url, {
     headers: {
       Accept: "application/activity+json, application/ld+json",
     },
     redirect: "follow",
   });
+}
+
+async function getRemoteDocument(
+  url: string,
+  response: Response,
+): Promise<RemoteDocument> {
   const documentUrl = response.url === "" ? url : response.url;
   if (!response.ok) {
     throw new FetchError(
@@ -62,6 +63,39 @@ export async function fetchDocumentLoader(
     contextUrl: null,
     document: await response.json(),
     documentUrl,
+  };
+}
+
+/**
+ * A JSON-LD document loader that utilizes the browser's `fetch` API.
+ * @param url The URL of the document to load.
+ * @returns The remote document.
+ */
+export async function fetchDocumentLoader(
+  url: string,
+): Promise<RemoteDocument> {
+  const response = await fetch(createRequest(url));
+  return getRemoteDocument(url, response);
+}
+
+/**
+ * Gets an authenticated {@link DocumentLoader} for the given identity.
+ * Note that an authenticated document loader intentionally does not cache
+ * the fetched documents.
+ * @param identity The identity to get the document loader for.
+ *                 The actor's key pair.
+ * @returns The authenticated document loader.
+ * @throws {TypeError} If the key is invalid or unsupported.
+ */
+export function getAuthenticatedDocumentLoader(
+  identity: { keyId: URL; privateKey: CryptoKey },
+): DocumentLoader {
+  validateCryptoKey(identity.privateKey);
+  return async (url: string): Promise<RemoteDocument> => {
+    let request = createRequest(url);
+    request = await sign(request, identity.privateKey, identity.keyId);
+    const response = await fetch(request);
+    return getRemoteDocument(url, response);
   };
 }
 

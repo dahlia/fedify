@@ -85,11 +85,37 @@ export interface Context<TContextData> {
   getActorKey(handle: string): Promise<CryptographicKey | null>;
 
   /**
+   * Gets an authenticated {@link DocumentLoader} for the given identity.
+   * Note that an authenticated document loader intentionally does not cache
+   * the fetched documents.
+   * @param identity The identity to get the document loader for.
+   *                 The actor's handle.
+   * @returns The authenticated document loader.
+   * @throws {Error} If the identity is not valid.
+   * @throws {TypeError} If the key is invalid or unsupported.
+   */
+  getDocumentLoader(identity: { handle: string }): Promise<DocumentLoader>;
+
+  /**
+   * Gets an authenticated {@link DocumentLoader} for the given identity.
+   * Note that an authenticated document loader intentionally does not cache
+   * the fetched documents.
+   * @param identity The identity to get the document loader for.
+   *                 The actor's key pair.
+   * @returns The authenticated document loader.
+   * @throws {TypeError} If the key is invalid or unsupported.
+   */
+  getDocumentLoader(
+    identity: { keyId: URL; privateKey: CryptoKey },
+  ): DocumentLoader;
+
+  /**
    * Sends an activity to recipients' inboxes.
-   * @param sender The sender's handle or sender's key pair.
+   * @param sender The sender's handle or the sender's key pair.
    * @param recipients The recipients of the activity.
    * @param activity The activity to send.
    * @param options Options for sending the activity.
+   * @throws {Error} If the sender is not valid.
    */
   sendActivity(
     sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },

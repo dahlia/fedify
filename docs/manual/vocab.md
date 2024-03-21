@@ -217,6 +217,22 @@ example of looking up a `Note` object from the URI:
 const note = await lookupObject("https://todon.eu/@hongminhee/112060633798771581");
 ~~~~
 
+> [!NOTE]
+> Some objects require authentication to look up, such as a `Note` object with
+> a visibility of followers-only.  In such cases, you need to use
+> the `Context.getDocumentLoader()` method to get an authenticated
+> `DocumentLoader` object.  The `lookupObject()` function takes the
+> `documentLoader` option to specify the method to fetch the remote object:
+>
+> ~~~~ typescript
+> const documentLoader = await ctx.getDocumentLoader({ handle: "john" });
+> const note = await lookupObject("...", { documentLoader });
+> ~~~~
+>
+> See the [*Getting an authenticated
+> `DocumentLoader`*](./context.md#getting-an-authenticated-documentloader)
+> section for details.
+
 
 JSON-LD
 -------

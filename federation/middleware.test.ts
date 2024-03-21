@@ -1,10 +1,14 @@
+import { Temporal } from "@js-temporal/polyfill";
 import {
   assertEquals,
   assertRejects,
   assertStrictEquals,
   assertThrows,
 } from "@std/assert";
+import * as mf from "mock_fetch";
+import { verify } from "../httpsig/mod.ts";
 import { FetchError } from "../runtime/docloader.ts";
+import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2, publicKey2 } from "../testing/keys.ts";
 import { Create, Person } from "../vocab/vocab.ts";
 import { Federation } from "./middleware.ts";
@@ -15,6 +19,15 @@ Deno.test("Federation.createContext()", async (t) => {
   const documentLoader = (url: string) => {
     throw new FetchError(new URL(url), "Not found");
   };
+
+  mf.install();
+
+  mf.mock("GET@/object", async (req) => {
+    const v = await verify(req, mockDocumentLoader, Temporal.Now.instant());
+    return new Response(JSON.stringify(v != null), {
+      headers: { "Content-Type": "application/json" },
+    });
+  });
 
   await t.step("Context", async () => {
     const federation = new Federation<number>({ kv, documentLoader });
@@ -33,6 +46,11 @@ Deno.test("Federation.createContext()", async (t) => {
       null,
     );
     assertEquals(await ctx.getActorKey("handle"), null);
+    assertRejects(
+      () => ctx.getDocumentLoader({ handle: "handle" }),
+      Error,
+      "No actor key pair dispatcher registered",
+    );
     assertRejects(
       () => ctx.sendActivity({ handle: "handle" }, [], new Create({})),
       Error,
@@ -81,6 +99,21 @@ Deno.test("Federation.createContext()", async (t) => {
         owner: new URL("https://example.com/users/handle"),
       }),
     );
+    const loader = await ctx.getDocumentLoader({ handle: "handle" });
+    assertEquals(await loader("https://example.com/object"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: true,
+    });
+    const loader2 = ctx.getDocumentLoader({
+      keyId: new URL("https://example.com/key2"),
+      privateKey: privateKey2,
+    });
+    assertEquals(await loader2("https://example.com/object"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: true,
+    });
     await ctx.sendActivity({ handle: "handle" }, [], new Create({}));
 
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox");

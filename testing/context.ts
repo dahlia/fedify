@@ -14,6 +14,7 @@ export function createContext<TContextData>(
     getFollowersUri,
     getHandleFromActorUri,
     getActorKey,
+    getDocumentLoader,
     sendActivity,
   }: Partial<Context<TContextData>> & { data: TContextData },
 ): Context<TContextData> {
@@ -30,6 +31,9 @@ export function createContext<TContextData>(
     getFollowingUri: getFollowingUri ?? throwRouteError,
     getFollowersUri: getFollowersUri ?? throwRouteError,
     getHandleFromActorUri: getHandleFromActorUri ?? ((_uri) => {
+      throw new Error("Not implemented");
+    }),
+    getDocumentLoader: getDocumentLoader ?? ((_params) => {
       throw new Error("Not implemented");
     }),
     getActorKey: getActorKey ?? ((_handle) => {

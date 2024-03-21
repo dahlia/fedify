@@ -1,8 +1,15 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
 import * as mf from "mock_fetch";
+import { verify } from "../httpsig/mod.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { fetchDocumentLoader, FetchError, kvCache } from "./docloader.ts";
+import { privateKey2 } from "../testing/keys.ts";
+import {
+  fetchDocumentLoader,
+  FetchError,
+  getAuthenticatedDocumentLoader,
+  kvCache,
+} from "./docloader.ts";
 
 Deno.test("new FetchError()", () => {
   const e = new FetchError("https://example.com/", "An error message.");
@@ -50,6 +57,31 @@ Deno.test("fetchDocumentLoader()", async (t) => {
       FetchError,
       "HTTP 404: https://example.com/404",
     );
+  });
+
+  mf.uninstall();
+});
+
+Deno.test("getAuthenticatedDocumentLoader()", async (t) => {
+  mf.install();
+
+  mf.mock("GET@/object", async (req) => {
+    const v = await verify(req, mockDocumentLoader, Temporal.Now.instant());
+    return new Response(JSON.stringify(v != null), {
+      headers: { "Content-Type": "application/json" },
+    });
+  });
+
+  await t.step("test", async () => {
+    const loader = await getAuthenticatedDocumentLoader({
+      keyId: new URL("https://example.com/key2"),
+      privateKey: privateKey2,
+    });
+    assertEquals(await loader("https://example.com/object"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: true,
+    });
   });
 
   mf.uninstall();

@@ -153,3 +153,22 @@ So you can just pass a `Context` object to those methods:
 const object = await Object.fromJsonLd(jsonLd, ctx);
 const json = await object.toJsonLd(ctx);
 ~~~~
+
+
+Getting an authenticated `DocumentLoader`
+-----------------------------------------
+
+Sometimes you need to load a remote document which requires authentication,
+such as an actor's following collection that is configured as private.
+In such cases, you can use the `Context.getDocumentLoader()` method to get
+an authenticated `DocumentLoader` object.  The following shows an example:
+
+~~~~ typescript
+const documentLoader = await ctx.getDocumentLoader({ handle: "john" });
+const following = await actor.getFollowing({ documentLoader });
+~~~~
+
+In the above example, the `getFollowing()` method takes the `documentLoader`
+which is authenticated as the actor with a handle of `john`.
+If the `actor` allows `john` to see the following collection,
+the `getFollowing()` method returns the following collection.

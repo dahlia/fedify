@@ -21,9 +21,15 @@ To be released.
 
  -  Added `getActorHandle()` function.
 
- -  Now `loookupWebFinger()` follows redirections.
+ -  Fedify now has authenticated document loader.  [[#12]]
+
+     -  Added `Context.getDocumentLoader()` method.
+     -  Added `getAuthenticatedDocumentLoader()` function.
+
+ -  Now `lookupWebFinger()` follows redirections.
 
 [Fresh]: https://fresh.deno.dev/
+[#12]: https://github.com/dahlia/fedify/issues/12
 
 
 Version 0.3.0
