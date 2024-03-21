@@ -2,7 +2,7 @@ Fedify examples
 ===============
 
 This directory contains example applications built with the Fedify framework.
-Currently, there is only one example application, but more examples will be
+Currently, there is only few examples, but more examples will be
 added in the future.[^1]
 
   -  [Actor lookup CLI](./actor-lookup-cli/)
