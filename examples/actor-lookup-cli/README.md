@@ -10,5 +10,6 @@ Usage
 -----
 
 ~~~~ sh
+deno task codegen  # At very first time only
 deno run -A ./main.ts @hongminhee@todon.eu
 ~~~~
