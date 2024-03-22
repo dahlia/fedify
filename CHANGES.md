@@ -26,9 +26,14 @@ To be released.
      -  Added `Context.getDocumentLoader()` method.
      -  Added `getAuthenticatedDocumentLoader()` function.
 
- -  Added `Object.getIcon()` method.
+ -  Added singular accessors to `Object`'s `icon` and `image` properties.
 
- -  Added `Object.getImage()` method.
+     -  `new Object()` constructor now accepts `icon` option.
+     -  `new Object()` constructor now accepts `image` option.
+     -  Added `Object.getIcon()` method.
+     -  Added `Object.getImage()` method.
+     -  `Object.clone()` method now accepts `icon` option.
+     -  `Object.clone()` method now accepts `image` option.
 
  -  Now `lookupWebFinger()` follows redirections.
 

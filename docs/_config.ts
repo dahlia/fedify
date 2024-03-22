@@ -68,7 +68,7 @@ async function getApiNodes(
   const types = Object.fromEntries(
     nodes
       .filter((node) => node.declarationKind === "export")
-      .map((node) => [node.name, node])
+      .map((node) => [node.name, node]),
   );
   await kv.set(["api", version], types);
   return types;
@@ -77,15 +77,19 @@ async function getApiNodes(
 async function getApiUrl(
   version: string,
   node: Node,
-  attr?: string,
+  opt: null | { attr: string } | { ctor: true },
 ): Promise<string | null> {
   const baseUrl = new URL(
-    (node.file === "." ? "." : `.${node.file}/`),
-    `https://jsr.io/@fedify/fedify@${version}/doc/`
+    node.file === "." ? "." : `.${node.file}/`,
+    `https://jsr.io/@fedify/fedify@${version}/doc/`,
   );
   const url = new URL(`./~/${node.name}`, baseUrl);
-  if (attr == null) return url.href;
-  const cache = await kv.get<Record<string, string>>(["api", version, node.name]);
+  if (opt == null) return url.href;
+  const cache = await kv.get<Record<string, string>>([
+    "api",
+    version,
+    node.name,
+  ]);
   let anchors: Record<string, string>;
   if (
     cache != null && cache.value != null && Array.isArray(cache.value) &&
@@ -106,7 +110,8 @@ async function getApiUrl(
     }
     await kv.set(["api", version, node.name], anchors);
   }
-  if (attr in anchors) return `${url.href}#${anchors[attr]}`;
+  if ("ctor" in opt) return `${url.href}#constructor_0`;
+  if (opt.attr in anchors) return `${url.href}#${anchors[opt.attr]}`;
   return null;
 }
 
@@ -117,7 +122,7 @@ const nodes = await getApiNodes(version);
 
 site.process([".html"], async (pages) => {
   const pattern =
-    /^(~)?([A-Za-z][A-Za-z0-9]*)(?:\.([a-z][A-Za-z0-9]*))?(\(\))?$/;
+    /^(~|new\s+)?([A-Za-z][A-Za-z0-9]*)(?:\.([a-z][A-Za-z0-9]*))?(\(\))?$/;
   for (const page of pages) {
     if (page.document != null) {
       for (
@@ -130,10 +135,15 @@ site.process([".html"], async (pages) => {
         if (match == null) continue;
         const [_, prefix, symbol, attr, parens] = match;
         if (nodes[symbol] == null) continue;
+        if (prefix === "new" && (attr != null || parens == null)) continue;
         const apiUrl = await getApiUrl(
           version,
           nodes[symbol],
-          attr,
+          prefix?.trim() === "new"
+            ? { ctor: true }
+            : attr == null
+            ? null
+            : { attr },
         );
         if (apiUrl == null) continue;
         const link = page.document.createElement("a");
@@ -141,7 +151,9 @@ site.process([".html"], async (pages) => {
         code.parentNode!.replaceChild(link, code);
         code.innerText = prefix == null
           ? `${symbol}${attr == null ? "" : `.${attr}`}${parens ?? ""}`
-          : `${attr}${parens ?? ""}`;
+          : prefix === "~"
+          ? `${attr}${parens ?? ""}`
+          : `new ${symbol}()`;
         link.appendChild(code);
       }
     }
