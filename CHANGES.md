@@ -37,14 +37,15 @@ To be released.
 
  -  `Object`'s `icon` and `image` properties no more accept `Link` objects.
 
-     -  `new Object()` constructor's `icon` option no more accepts `Link`
-        object.
-     -  `new Object()` constructor's `image` option no more accepts `Link`
-        object.
+     -  `new Object()` constructor's `icons` option no more accepts `Link`
+        objects.
+     -  `new Object()` constructor's `images` option no more accepts `Link`
+        objects.
      -  `Object.getIcons()` method no more yields `Link` objects.
      -  `Object.getImages()` method no more yields `Link` objects.
-     -  `Object.clone()` method's `icon` option no more accepts `Link` object.
-     -  `Object.clone()` method's `image` option no more accepts `Link` object.
+     -  `Object.clone()` method's `icons` option no more accepts `Link` objects.
+     -  `Object.clone()` method's `images` option no more accepts `Link`
+        objects.
 
  -  Now `lookupWebFinger()` follows redirections.
 
