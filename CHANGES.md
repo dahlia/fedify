@@ -35,6 +35,17 @@ To be released.
      -  `Object.clone()` method now accepts `icon` option.
      -  `Object.clone()` method now accepts `image` option.
 
+ -  `Object`'s `icon` and `image` properties no more accept `Link` objects.
+
+     -  `new Object()` constructor's `icon` option no more accepts `Link`
+        object.
+     -  `new Object()` constructor's `image` option no more accepts `Link`
+        object.
+     -  `Object.getIcons()` method no more yields `Link` objects.
+     -  `Object.getImages()` method no more yields `Link` objects.
+     -  `Object.clone()` method's `icon` option no more accepts `Link` object.
+     -  `Object.clone()` method's `image` option no more accepts `Link` object.
+
  -  Now `lookupWebFinger()` follows redirections.
 
 [Fresh]: https://fresh.deno.dev/
