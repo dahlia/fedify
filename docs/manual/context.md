@@ -158,6 +158,8 @@ const json = await object.toJsonLd(ctx);
 Getting an authenticated `DocumentLoader`
 -----------------------------------------
 
+*This API is available since Fedify 0.4.0.*
+
 Sometimes you need to load a remote document which requires authentication,
 such as an actor's following collection that is configured as private.
 In such cases, you can use the `Context.getDocumentLoader()` method to get
