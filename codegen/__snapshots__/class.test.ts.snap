@@ -360,7 +360,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -459,13 +461,37 @@ this.id = values.id ?? null;
           this.#_86xFhmgBapoMvYqjbjRuDPayTrS = values.generators;
         }
       
+        if (\\"icon\\" in values &&             values.icon != null) {
+          this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR = [values.icon];
+        }
+      
         if (\\"icons\\" in values &&             values.icons != null) {
       
+          if (\\"icon\\" in values &&
+              values.icon != null) {
+            throw new TypeError(
+              \\"Cannot initialize both icon and \\" +
+                \\"icons at the same time.\\",
+            );
+          }
+        
           this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR = values.icons;
+        }
+      
+        if (\\"image\\" in values &&             values.image != null) {
+          this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U = [values.image];
         }
       
         if (\\"images\\" in values &&             values.images != null) {
       
+          if (\\"image\\" in values &&
+              values.image != null) {
+            throw new TypeError(
+              \\"Cannot initialize both image and \\" +
+                \\"images at the same time.\\",
+            );
+          }
+        
           this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U = values.images;
         }
       
@@ -664,7 +690,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -766,13 +794,37 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
           clone.#_86xFhmgBapoMvYqjbjRuDPayTrS = values.generators;
         }
       clone.#_33CjRLy5ujtsUrwRSCrsggvGdKuR = this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR;
+        if (\\"icon\\" in values &&             values.icon != null) {
+          clone.#_33CjRLy5ujtsUrwRSCrsggvGdKuR = [values.icon];
+        }
+      
         if (\\"icons\\" in values &&             values.icons != null) {
       
+          if (\\"icon\\" in values &&
+              values.icon != null) {
+            throw new TypeError(
+              \\"Cannot update both icon and \\" +
+                \\"icons at the same time.\\",
+            );
+          }
+        
           clone.#_33CjRLy5ujtsUrwRSCrsggvGdKuR = values.icons;
         }
       clone.#_3dXrUdkARxwyJLtJcYi1AJ92H41U = this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U;
+        if (\\"image\\" in values &&             values.image != null) {
+          clone.#_3dXrUdkARxwyJLtJcYi1AJ92H41U = [values.image];
+        }
+      
         if (\\"images\\" in values &&             values.images != null) {
       
+          if (\\"image\\" in values &&
+              values.image != null) {
+            throw new TypeError(
+              \\"Cannot update both image and \\" +
+                \\"images at the same time.\\",
+            );
+          }
+        
           clone.#_3dXrUdkARxwyJLtJcYi1AJ92H41U = values.images;
         }
       clone.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s = this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s;
@@ -1459,6 +1511,44 @@ get endTime(): (Temporal.Instant | null) {
     
       /**
        * Similar to
+       * {@link Object.getIcon},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get iconId(): URL | null {
+        if (this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR.length < 1) return null;
+        const v = this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Indicates an entity that describes an icon for this object.
+ * The image should have an aspect ratio of one (horizontal) to one
+ * (vertical) and should be suitable for presentation at a small size.
+ * 
+ */
+
+      async getIcon(
+        options: {
+          documentLoader?: (url: string) => Promise<{
+            contextUrl: string | null;
+            document: unknown;
+            documentUrl: string;
+          }>
+        } = {}
+      ): Promise<Image | Link | null> {
+        if (this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR.length < 1) return null;
+        const v = this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchIcon(v, options);
+          this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
        * {@link Object.getIcons},
        * but returns their \`@id\`s instead of the objects themselves.
        */
@@ -1527,6 +1617,44 @@ get endTime(): (Temporal.Instant | null) {
         [\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
     }
     
+      /**
+       * Similar to
+       * {@link Object.getImage},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get imageId(): URL | null {
+        if (this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U.length < 1) return null;
+        const v = this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Indicates an entity that describes an image for this object.
+ * Unlike the icon property, there are no aspect ratio or display size
+ * limitations assumed.
+ * 
+ */
+
+      async getImage(
+        options: {
+          documentLoader?: (url: string) => Promise<{
+            contextUrl: string | null;
+            document: unknown;
+            documentUrl: string;
+          }>
+        } = {}
+      ): Promise<Image | Link | null> {
+        if (this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U.length < 1) return null;
+        const v = this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchImage(v, options);
+          this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
       /**
        * Similar to
        * {@link Object.getImages},
@@ -3539,6 +3667,10 @@ get duration(): (Temporal.Duration | null) {
           }
         : v);
       
+      if (_33CjRLy5ujtsUrwRSCrsggvGdKuR.length == 1) {
+        proxy.icon = _33CjRLy5ujtsUrwRSCrsggvGdKuR[0];
+      }
+      
       if (_33CjRLy5ujtsUrwRSCrsggvGdKuR.length > 1
           || !(\\"icon\\" in proxy)
           && _33CjRLy5ujtsUrwRSCrsggvGdKuR.length > 0) {
@@ -3553,6 +3685,10 @@ get duration(): (Temporal.Duration | null) {
             ): string => \\"URL \\" + inspect(v.href, options)
           }
         : v);
+      
+      if (_3dXrUdkARxwyJLtJcYi1AJ92H41U.length == 1) {
+        proxy.image = _3dXrUdkARxwyJLtJcYi1AJ92H41U[0];
+      }
       
       if (_3dXrUdkARxwyJLtJcYi1AJ92H41U.length > 1
           || !(\\"image\\" in proxy)
@@ -3795,7 +3931,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -3856,7 +3994,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -4418,7 +4558,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -4445,7 +4587,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -4568,7 +4712,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -4595,7 +4741,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -4717,7 +4865,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -4744,7 +4894,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -4877,7 +5029,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -4987,7 +5141,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6159,7 +6315,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6184,7 +6342,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6301,7 +6461,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6326,7 +6488,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6469,7 +6633,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6494,7 +6660,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6613,7 +6781,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6640,7 +6810,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6774,7 +6946,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6801,7 +6975,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6930,7 +7106,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -6976,7 +7154,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -7626,7 +7806,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -7663,7 +7845,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -8136,7 +8320,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -8163,7 +8349,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -8284,7 +8472,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -8311,7 +8501,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -8430,7 +8622,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -8457,7 +8651,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -8938,7 +9134,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -8963,7 +9161,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -9083,7 +9283,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -9110,7 +9312,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -9233,7 +9437,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -9260,7 +9466,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -9393,7 +9601,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -9503,7 +9713,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -10675,7 +10887,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -10700,7 +10914,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -10820,7 +11036,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -10847,7 +11065,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -10968,7 +11188,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -10995,7 +11217,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -11873,7 +12097,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -11898,7 +12124,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -12017,7 +12245,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -12042,7 +12272,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -12163,7 +12395,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -12192,7 +12426,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -12358,7 +12594,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -12468,7 +12706,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -13640,7 +13880,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -13665,7 +13907,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -13796,7 +14040,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -13906,7 +14152,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -15087,7 +15335,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -15136,7 +15386,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -15474,7 +15726,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -15503,7 +15757,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -15721,7 +15977,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -15748,7 +16006,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -15877,7 +16137,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -15942,7 +16204,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -16480,7 +16744,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -16507,7 +16773,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -16640,7 +16908,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -16750,7 +17020,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -17929,7 +18201,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -17956,7 +18230,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -18080,7 +18356,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -18107,7 +18385,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -18226,7 +18506,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
@@ -18251,7 +18533,9 @@ attachments?: (Object | Link | URL)[];attributedTo?: Object | URL | null;
 attributedTos?: (Object | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
-names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icons?: (Image | Link | URL)[];images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | Link | URL | null;
+icons?: (Image | Link | URL)[];image?: Image | Link | URL | null;
+images?: (Image | Link | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
 previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;

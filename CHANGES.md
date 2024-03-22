@@ -26,6 +26,10 @@ To be released.
      -  Added `Context.getDocumentLoader()` method.
      -  Added `getAuthenticatedDocumentLoader()` function.
 
+ -  Added `Object.getIcon()` method.
+
+ -  Added `Object.getImage()` method.
+
  -  Now `lookupWebFinger()` follows redirections.
 
 [Fresh]: https://fresh.deno.dev/

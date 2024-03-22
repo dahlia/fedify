@@ -106,6 +106,7 @@ properties:
 
 - pluralName: icons
   singularName: icon
+  singularAccessor: true
   uri: "https://www.w3.org/ns/activitystreams#icon"
   description: |
     Indicates an entity that describes an icon for this object.
@@ -117,6 +118,7 @@ properties:
 
 - pluralName: images
   singularName: image
+  singularAccessor: true
   uri: "https://www.w3.org/ns/activitystreams#image"
   description: |
     Indicates an entity that describes an image for this object.
