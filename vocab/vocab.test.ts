@@ -132,12 +132,15 @@ Deno.test("Object.toJsonLd()", async () => {
     ],
   );
   assertEquals(await obj.toJsonLd({ documentLoader: mockDocumentLoader }), {
-    "@context": "https://www.w3.org/ns/activitystreams",
-    "type": "Object",
-    "name": "Test",
-    "contentMap": {
-      "en": "Hello",
-      "zh": "你好",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      { sensitive: "as:sensitive" },
+    ],
+    type: "Object",
+    name: "Test",
+    contentMap: {
+      en: "Hello",
+      zh: "你好",
     },
   });
 });

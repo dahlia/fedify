@@ -8,7 +8,9 @@ description: |
   including other Core types such as {@link Activity},
   {@link IntransitiveActivity}, {@link Collection} and
   {@link OrderedCollection}.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- sensitive: "as:sensitive"
 
 properties:
 - pluralName: attachments
@@ -286,3 +288,10 @@ properties:
     3.3.6 (e.g. a period of 5 seconds is represented as `PT5S`).
   range:
   - "http://www.w3.org/2001/XMLSchema#duration"
+
+- singularName: sensitive
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#sensitive"
+  description: Whether it contains any sensitive contents.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#boolean"

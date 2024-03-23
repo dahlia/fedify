@@ -47,6 +47,12 @@ To be released.
      -  `Object.clone()` method's `images` option no more accepts `Link`
         objects.
 
+ -  Added `sensitive` property to `Object` class.
+
+     -  `new Object()` constructor now accepts `sensitive` option.
+     -  Added `Object.sensitive` attribute.
+     -  `Object.clone()` method now accepts `sensitive` option.
+
  -  Now `lookupWebFinger()` follows redirections.
 
 [Fresh]: https://fresh.deno.dev/

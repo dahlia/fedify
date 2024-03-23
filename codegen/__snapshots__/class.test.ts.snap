@@ -348,6 +348,7 @@ readonly id: URL | null;
 #_3qvegKUB8YLgTXRpEf8E6JZSkz2H: (Object | URL)[] = [];
 #_3BLrzmscsjHCw8TF5BHRW9WkPnX8: string[] = [];
 #_3bNvLMBN1bCJETiTihM3wvi1B2JX: Temporal.Duration[] = [];
+#_u8gdcDTtChQ4tbSQMXc4cYWyum7: boolean[] = [];
 
   /**
    * Constructs a new instance of Object with the given values.
@@ -371,7 +372,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 this.id = values.id ?? null;
         if (\\"attachments\\" in values &&             values.attachments != null) {
@@ -676,6 +677,10 @@ this.id = values.id ?? null;
         if (\\"duration\\" in values &&             values.duration != null) {
           this.#_3bNvLMBN1bCJETiTihM3wvi1B2JX = [values.duration];
         }
+      
+        if (\\"sensitive\\" in values &&             values.sensitive != null) {
+          this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7 = [values.sensitive];
+        }
       }
 
   /**
@@ -701,7 +706,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Object {
 
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
@@ -1008,6 +1013,10 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       clone.#_3bNvLMBN1bCJETiTihM3wvi1B2JX = this.#_3bNvLMBN1bCJETiTihM3wvi1B2JX;
         if (\\"duration\\" in values &&             values.duration != null) {
           clone.#_3bNvLMBN1bCJETiTihM3wvi1B2JX = [values.duration];
+        }
+      clone.#_u8gdcDTtChQ4tbSQMXc4cYWyum7 = this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7;
+        if (\\"sensitive\\" in values &&             values.sensitive != null) {
+          clone.#_u8gdcDTtChQ4tbSQMXc4cYWyum7 = [values.sensitive];
         }
       
     return clone;
@@ -2610,6 +2619,13 @@ get duration(): (Temporal.Duration | null) {
         return this.#_3bNvLMBN1bCJETiTihM3wvi1B2JX[0];
       }
       
+/** Whether it contains any sensitive contents.
+ */
+get sensitive(): (boolean | null) {
+        if (this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7.length < 1) return null;
+        return this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -2857,6 +2873,14 @@ get duration(): (Temporal.Duration | null) {
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#duration\\"] = array;
     
+    array = [];
+    for (const v of this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#sensitive\\"] = array;
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Object\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
     if (options.expand) {
@@ -2864,7 +2888,7 @@ get duration(): (Temporal.Duration | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\"}],
       options
     );
   }
@@ -3503,6 +3527,13 @@ get duration(): (Temporal.Duration | null) {
     _3bNvLMBN1bCJETiTihM3wvi1B2JX.push(Temporal.Duration.from(v[\\"@value\\"]))
     }
     instance.#_3bNvLMBN1bCJETiTihM3wvi1B2JX = _3bNvLMBN1bCJETiTihM3wvi1B2JX;
+    const _u8gdcDTtChQ4tbSQMXc4cYWyum7: boolean[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#sensitive\\"] ?? []) {
+      if (v == null) continue;
+    _u8gdcDTtChQ4tbSQMXc4cYWyum7.push(v[\\"@value\\"])
+    }
+    instance.#_u8gdcDTtChQ4tbSQMXc4cYWyum7 = _u8gdcDTtChQ4tbSQMXc4cYWyum7;
     
     return instance;
   }
@@ -3864,6 +3895,10 @@ get duration(): (Temporal.Duration | null) {
       if (_3bNvLMBN1bCJETiTihM3wvi1B2JX.length == 1) {
         proxy.duration = _3bNvLMBN1bCJETiTihM3wvi1B2JX[0];
       }
+      const _u8gdcDTtChQ4tbSQMXc4cYWyum7 = this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7;
+      if (_u8gdcDTtChQ4tbSQMXc4cYWyum7.length == 1) {
+        proxy.sensitive = _u8gdcDTtChQ4tbSQMXc4cYWyum7[0];
+      }
       
     return proxy;
   }
@@ -3910,7 +3945,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -3973,7 +4008,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Activity {
@@ -4537,7 +4572,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -4566,7 +4601,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Accept {
@@ -4691,7 +4726,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -4720,7 +4755,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Add {
@@ -4844,7 +4879,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -4873,7 +4908,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Announce {
@@ -5008,7 +5043,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
@@ -5120,7 +5155,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Application {
@@ -6294,7 +6329,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 super(values);}
 
@@ -6321,7 +6356,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Article {
 const clone = super.clone(values) as unknown as Article;
     return clone;
@@ -6440,7 +6475,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 super(values);}
 
@@ -6467,7 +6502,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Document {
 const clone = super.clone(values) as unknown as Document;
     return clone;
@@ -6612,7 +6647,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 super(values);}
 
@@ -6639,7 +6674,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Audio {
 const clone = super.clone(values) as unknown as Audio;
     return clone;
@@ -6760,7 +6795,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -6789,7 +6824,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Ignore {
@@ -6925,7 +6960,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -6954,7 +6989,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Block {
@@ -7085,7 +7120,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
 ) {
 super(values);
         if (\\"totalItems\\" in values &&             values.totalItems != null) {
@@ -7133,7 +7168,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
  = {}): Collection {
 const clone = super.clone(values) as unknown as Collection;clone.#_XDbmNDuWHmrhqH712zqtecdbv1V = this.#_XDbmNDuWHmrhqH712zqtecdbv1V;
         if (\\"totalItems\\" in values &&             values.totalItems != null) {
@@ -7785,7 +7820,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
 ) {
 super(values);
         if (\\"partOf\\" in values &&             values.partOf != null) {
@@ -7824,7 +7859,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
  = {}): CollectionPage {
 const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le = this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le;
         if (\\"partOf\\" in values &&             values.partOf != null) {
@@ -8299,7 +8334,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -8328,7 +8363,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Create {
@@ -8451,7 +8486,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -8480,7 +8515,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Delete {
@@ -8601,7 +8636,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -8630,7 +8665,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Dislike {
@@ -9113,7 +9148,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 super(values);}
 
@@ -9140,7 +9175,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Event {
 const clone = super.clone(values) as unknown as Event;
     return clone;
@@ -9262,7 +9297,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -9291,7 +9326,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Flag {
@@ -9416,7 +9451,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -9445,7 +9480,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Follow {
@@ -9580,7 +9615,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
@@ -9692,7 +9727,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Group {
@@ -10866,7 +10901,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 super(values);}
 
@@ -10893,7 +10928,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Image {
 const clone = super.clone(values) as unknown as Image;
     return clone;
@@ -11015,7 +11050,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -11044,7 +11079,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): IntransitiveActivity {
@@ -11167,7 +11202,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -11196,7 +11231,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Like {
@@ -12076,7 +12111,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 super(values);}
 
@@ -12103,7 +12138,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Note {
 const clone = super.clone(values) as unknown as Note;
     return clone;
@@ -12224,7 +12259,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
 ) {
 super(values);}
 
@@ -12251,7 +12286,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
  = {}): OrderedCollection {
 const clone = super.clone(values) as unknown as OrderedCollection;
     return clone;
@@ -12374,7 +12409,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
 ) {
 super(values);
         if (\\"startIndex\\" in values &&             values.startIndex != null) {
@@ -12405,7 +12440,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
  = {}): OrderedCollectionPage {
 const clone = super.clone(values) as unknown as OrderedCollectionPage;clone.#_2W4yinFwqmpneu2h4m1mZ3pcLADd = this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd;
         if (\\"startIndex\\" in values &&             values.startIndex != null) {
@@ -12573,7 +12608,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
@@ -12685,7 +12720,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Organization {
@@ -13859,7 +13894,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 super(values);}
 
@@ -13886,7 +13921,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Page {
 const clone = super.clone(values) as unknown as Page;
     return clone;
@@ -14019,7 +14054,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
@@ -14131,7 +14166,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Person {
@@ -15314,7 +15349,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;accuracy?: number | null;altitude?: number | null;latitude?: number | null;longitude?: number | null;radius?: number | null;units?: \\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"miles\\" | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;accuracy?: number | null;altitude?: number | null;latitude?: number | null;longitude?: number | null;radius?: number | null;units?: \\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"miles\\" | URL | null;}
 ) {
 super(values);
         if (\\"accuracy\\" in values &&             values.accuracy != null) {
@@ -15365,7 +15400,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;accuracy?: number | null;altitude?: number | null;latitude?: number | null;longitude?: number | null;radius?: number | null;units?: \\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"miles\\" | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;accuracy?: number | null;altitude?: number | null;latitude?: number | null;longitude?: number | null;radius?: number | null;units?: \\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"miles\\" | URL | null;}
  = {}): Place {
 const clone = super.clone(values) as unknown as Place;clone.#_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne = this.#_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne;
         if (\\"accuracy\\" in values &&             values.accuracy != null) {
@@ -15705,7 +15740,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;describes?: Object | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;describes?: Object | URL | null;}
 ) {
 super(values);
         if (\\"describes\\" in values &&             values.describes != null) {
@@ -15736,7 +15771,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;describes?: Object | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;describes?: Object | URL | null;}
  = {}): Profile {
 const clone = super.clone(values) as unknown as Profile;clone.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1 = this.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1;
         if (\\"describes\\" in values &&             values.describes != null) {
@@ -15956,7 +15991,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -15985,7 +16020,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Reject {
@@ -16116,7 +16151,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;subject?: Object | URL | null;object?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;subject?: Object | URL | null;object?: Object | URL | null;
 objects?: (Object | URL)[];relationship?: Object | URL | null;
 relationships?: (Object | URL)[];}
 ) {
@@ -16183,7 +16218,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;subject?: Object | URL | null;object?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;subject?: Object | URL | null;object?: Object | URL | null;
 objects?: (Object | URL)[];relationship?: Object | URL | null;
 relationships?: (Object | URL)[];}
  = {}): Relationship {
@@ -16723,7 +16758,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -16752,7 +16787,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Remove {
@@ -16887,7 +16922,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ) {
@@ -16999,7 +17034,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
  = {}): Service {
@@ -18180,7 +18215,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -18209,7 +18244,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Undo {
@@ -18335,7 +18370,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
 ) {
@@ -18364,7 +18399,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;actor?: Object | Link | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
 actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
 objects?: (Object | Link | URL)[];}
  = {}): Update {
@@ -18485,7 +18520,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
 ) {
 super(values);}
 
@@ -18512,7 +18547,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
  = {}): Video {
 const clone = super.clone(values) as unknown as Video;
     return clone;
