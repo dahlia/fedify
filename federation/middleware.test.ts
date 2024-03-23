@@ -1,3 +1,4 @@
+import { sign } from "@fedify/fedify";
 import { Temporal } from "@js-temporal/polyfill";
 import {
   assertEquals,
@@ -11,6 +12,7 @@ import { FetchError } from "../runtime/docloader.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2, publicKey2 } from "../testing/keys.ts";
 import { Create, Person } from "../vocab/vocab.ts";
+import { Context } from "./context.ts";
 import { Federation } from "./middleware.ts";
 import { RouterError } from "./router.ts";
 
@@ -158,6 +160,145 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(ctx.request, req);
     assertEquals(ctx.url, new URL("https://example.com/"));
     assertEquals(ctx.data, 123);
+  });
+
+  kv.close();
+});
+
+Deno.test("Federation.setInboxListeners()", async (t) => {
+  const kv = await Deno.openKv(":memory:");
+
+  await t.step("on()", async () => {
+    const federation = new Federation<void>({
+      kv,
+      documentLoader: mockDocumentLoader,
+    });
+    const inbox: [Context<void>, Create][] = [];
+    federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
+      .on(Create, (ctx, create) => {
+        inbox.push([ctx, create]);
+      });
+
+    let response = await federation.handle(
+      new Request("https://example.com/inbox", { method: "POST" }),
+      { contextData: undefined },
+    );
+    assertEquals(inbox, []);
+    assertEquals(response.status, 404);
+
+    federation
+      .setActorDispatcher(
+        "/users/{handle}",
+        (_, handle) => handle === "john" ? new Person({}) : null,
+      )
+      .setKeyPairDispatcher(() => ({
+        privateKey: privateKey2,
+        publicKey: publicKey2.publicKey!,
+      }));
+    response = await federation.handle(
+      new Request("https://example.com/inbox", { method: "POST" }),
+      { contextData: undefined },
+    );
+    assertEquals(inbox, []);
+    assertEquals(response.status, 401);
+
+    response = await federation.handle(
+      new Request("https://example.com/users/no-one/inbox", { method: "POST" }),
+      { contextData: undefined },
+    );
+    assertEquals(inbox, []);
+    assertEquals(response.status, 404);
+
+    response = await federation.handle(
+      new Request("https://example.com/users/john/inbox", { method: "POST" }),
+      { contextData: undefined },
+    );
+    assertEquals(inbox, []);
+    assertEquals(response.status, 401);
+
+    const activity = new Create({
+      actor: new URL("https://example.com/person"),
+    });
+    let request = new Request("https://example.com/users/john/inbox", {
+      method: "POST",
+      headers: { "Content-Type": "application/activity+json" },
+      body: JSON.stringify(
+        await activity.toJsonLd({ documentLoader: mockDocumentLoader }),
+      ),
+    });
+    request = await sign(
+      request,
+      privateKey2,
+      new URL("https://example.com/key2"),
+    );
+    response = await federation.handle(request, { contextData: undefined });
+    assertEquals(inbox.length, 1);
+    assertEquals(inbox[0][1], activity);
+    assertEquals(response.status, 202);
+
+    inbox.shift();
+    request = new Request("https://example.com/inbox", {
+      method: "POST",
+      headers: { "Content-Type": "application/activity+json" },
+      body: JSON.stringify(
+        await activity.toJsonLd({ documentLoader: mockDocumentLoader }),
+      ),
+    });
+    request = await sign(
+      request,
+      privateKey2,
+      new URL("https://example.com/key2"),
+    );
+    response = await federation.handle(request, { contextData: undefined });
+    assertEquals(inbox.length, 1);
+    assertEquals(inbox[0][1], activity);
+    assertEquals(response.status, 202);
+  });
+
+  await t.step("onError()", async () => {
+    const federation = new Federation<void>({
+      kv,
+      documentLoader: mockDocumentLoader,
+    });
+    federation
+      .setActorDispatcher(
+        "/users/{handle}",
+        (_, handle) => handle === "john" ? new Person({}) : null,
+      )
+      .setKeyPairDispatcher(() => ({
+        privateKey: privateKey2,
+        publicKey: publicKey2.publicKey!,
+      }));
+    const errors: unknown[] = [];
+    federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
+      .on(Create, () => {
+        throw new Error("test");
+      })
+      .onError((_, e) => {
+        errors.push(e);
+      });
+
+    const activity = new Create({
+      actor: new URL("https://example.com/person"),
+    });
+    let request = new Request("https://example.com/users/john/inbox", {
+      method: "POST",
+      headers: { "Content-Type": "application/activity+json" },
+      body: JSON.stringify(
+        await activity.toJsonLd({ documentLoader: mockDocumentLoader }),
+      ),
+    });
+    request = await sign(
+      request,
+      privateKey2,
+      new URL("https://example.com/key2"),
+    );
+    const response = await federation.handle(request, {
+      contextData: undefined,
+    });
+    assertEquals(errors.length, 1);
+    assertEquals(errors[0], new Error("test"));
+    assertEquals(response.status, 500);
   });
 
   kv.close();
