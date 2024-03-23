@@ -76,6 +76,22 @@ See the
 [*Getting a `DocumentLoader`* section](./context.md#getting-a-documentloader)
 for details.
 
+### `authenticatedDocumentLoaderFactory`
+
+*This API is available since Fedify 0.4.0.*
+
+A factory function that creates an authenticated document loader function.
+The factory function takes the key pair of an actor and returns a document
+loader function that loads remote JSON-LD documents as the actor.
+
+Usually, you don't need to set this property because the default document
+loader factory is sufficient for most cases.  The default document loader
+factory intentionally doesn't cache the loaded documents in the key-value
+store.
+
+See the [*Getting an authenticated `DocumentLoader`*
+section](./context.md#getting-an-authenticated-documentloader) for details.
+
 ### `treatHttps`
 
 Whether to treat HTTP requests as HTTPS.  This is useful for testing and

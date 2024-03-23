@@ -25,6 +25,9 @@ To be released.
 
      -  Added `Context.getDocumentLoader()` method.
      -  Added `getAuthenticatedDocumentLoader()` function.
+     -  Added `AuthenticatedDocumentLoaderFactory` type.
+     -  Added `authenticatedDocumentLoaderFactory` option to `new Federation()`
+        constructor.
 
  -  Added singular accessors to `Object`'s `icon` and `image` properties.
 

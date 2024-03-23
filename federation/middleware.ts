@@ -2,6 +2,7 @@ import { Temporal } from "@js-temporal/polyfill";
 import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
+  AuthenticatedDocumentLoaderFactory,
   DocumentLoader,
   fetchDocumentLoader,
   getAuthenticatedDocumentLoader,
@@ -51,6 +52,13 @@ export interface FederationParameters {
    * cache-backed loader that fetches remote documents over HTTP(S).
    */
   documentLoader?: DocumentLoader;
+
+  /**
+   * A factory function that creates an authenticated document loader for a
+   * given identity.  This is used for fetching documents that require
+   * authentication.
+   */
+  authenticatedDocumentLoaderFactory?: AuthenticatedDocumentLoaderFactory;
 
   /**
    * Whether to treat HTTP requests as HTTPS.  This is useful for testing and
@@ -103,6 +111,7 @@ export class Federation<TContextData> {
   >;
   #inboxErrorHandler?: InboxErrorHandler<TContextData>;
   #documentLoader: DocumentLoader;
+  #authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   #treatHttps: boolean;
   #backoffSchedule: number[];
 
@@ -115,6 +124,7 @@ export class Federation<TContextData> {
       kv,
       kvPrefixes,
       documentLoader,
+      authenticatedDocumentLoaderFactory,
       treatHttps,
       backoffSchedule,
     }: FederationParameters,
@@ -136,6 +146,9 @@ export class Federation<TContextData> {
       kv: kv,
       prefix: this.#kvPrefixes.remoteDocument,
     });
+    this.#authenticatedDocumentLoaderFactory =
+      authenticatedDocumentLoaderFactory ??
+        getAuthenticatedDocumentLoader;
     this.#treatHttps = treatHttps ?? false;
     if (backoffSchedule != null) {
       // TODO: Deno KV Queue's backoff schedule is too limited for our needs.
@@ -227,6 +240,8 @@ export class Federation<TContextData> {
         privateKey: keyPair.privateKey,
       };
     };
+    const getAuthenticatedDocumentLoader =
+      this.#authenticatedDocumentLoaderFactory;
     function getDocumentLoader(
       identity: { handle: string },
     ): Promise<DocumentLoader>;

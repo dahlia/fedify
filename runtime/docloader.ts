@@ -14,8 +14,22 @@ export interface RemoteDocument {
 
 /**
  * A JSON-LD document loader that fetches documents from the Web.
+ * @param url The URL of the document to load.
+ * @returns The loaded remote document.
  */
 export type DocumentLoader = (url: string) => Promise<RemoteDocument>;
+
+/**
+ * A factory function that creates an authenticated {@link DocumentLoader} for
+ * a given identity.  This is used for fetching documents that require
+ * authentication.
+ * @param identity The identity to create the document loader for.
+ *                 The actor's key pair.
+ * @returns The authenticated document loader.
+ */
+export type AuthenticatedDocumentLoaderFactory = (
+  identity: { keyId: URL; privateKey: CryptoKey },
+) => DocumentLoader;
 
 /**
  * Error thrown when fetching a JSON-LD document failed.
