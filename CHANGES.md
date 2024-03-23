@@ -28,6 +28,9 @@ To be released.
      -  Added `AuthenticatedDocumentLoaderFactory` type.
      -  Added `authenticatedDocumentLoaderFactory` option to `new Federation()`
         constructor.
+     -  `Context.documentLoader` property now returns an authenticated document
+        loader in personal inbox listeners.  (Note that it's not affected in
+        shared inbox listeners.)
 
  -  Added singular accessors to `Object`'s `icon` and `image` properties.
 

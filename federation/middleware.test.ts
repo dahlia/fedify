@@ -6,9 +6,13 @@ import {
   assertStrictEquals,
   assertThrows,
 } from "@std/assert";
+import { dirname, join } from "@std/path";
 import * as mf from "mock_fetch";
 import { verify } from "../httpsig/mod.ts";
-import { FetchError } from "../runtime/docloader.ts";
+import {
+  FetchError,
+  getAuthenticatedDocumentLoader,
+} from "../runtime/docloader.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2, publicKey2 } from "../testing/keys.ts";
 import { Create, Person } from "../vocab/vocab.ts";
@@ -168,10 +172,46 @@ Deno.test("Federation.createContext()", async (t) => {
 Deno.test("Federation.setInboxListeners()", async (t) => {
   const kv = await Deno.openKv(":memory:");
 
+  mf.install();
+
+  mf.mock("GET@/key2", async () => {
+    return new Response(
+      JSON.stringify(
+        await publicKey2.toJsonLd({ documentLoader: mockDocumentLoader }),
+      ),
+      { headers: { "Content-Type": "application/activity+json" } },
+    );
+  });
+
+  mf.mock("GET@/person", async () => {
+    return new Response(
+      await Deno.readFile(
+        join(
+          dirname(import.meta.dirname!),
+          "testing",
+          "fixtures",
+          "example.com",
+          "person",
+        ),
+      ),
+      { headers: { "Content-Type": "application/activity+json" } },
+    );
+  });
+
   await t.step("on()", async () => {
+    const authenticatedRequests: [string, string][] = [];
     const federation = new Federation<void>({
       kv,
       documentLoader: mockDocumentLoader,
+      authenticatedDocumentLoaderFactory(identity) {
+        const docLoader = getAuthenticatedDocumentLoader(identity);
+        return (url: string) => {
+          const urlObj = new URL(url);
+          authenticatedRequests.push([url, identity.keyId.href]);
+          if (urlObj.host === "example.com") return docLoader(url);
+          return mockDocumentLoader(url);
+        };
+      },
     });
     const inbox: [Context<void>, Create][] = [];
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
@@ -236,6 +276,13 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     assertEquals(inbox[0][1], activity);
     assertEquals(response.status, 202);
 
+    while (authenticatedRequests.length > 0) authenticatedRequests.shift();
+    assertEquals(authenticatedRequests, []);
+    await inbox[0][0].documentLoader("https://example.com/person");
+    assertEquals(authenticatedRequests, [
+      ["https://example.com/person", "https://example.com/users/john#main-key"],
+    ]);
+
     inbox.shift();
     request = new Request("https://example.com/inbox", {
       method: "POST",
@@ -253,12 +300,25 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     assertEquals(inbox.length, 1);
     assertEquals(inbox[0][1], activity);
     assertEquals(response.status, 202);
+
+    while (authenticatedRequests.length > 0) authenticatedRequests.shift();
+    assertEquals(authenticatedRequests, []);
+    await inbox[0][0].documentLoader("https://example.com/person");
+    assertEquals(authenticatedRequests, []);
   });
 
   await t.step("onError()", async () => {
     const federation = new Federation<void>({
       kv,
       documentLoader: mockDocumentLoader,
+      authenticatedDocumentLoaderFactory(identity) {
+        const docLoader = getAuthenticatedDocumentLoader(identity);
+        return (url: string) => {
+          const urlObj = new URL(url);
+          if (urlObj.host === "example.com") return docLoader(url);
+          return mockDocumentLoader(url);
+        };
+      },
     });
     federation
       .setActorDispatcher(
@@ -301,5 +361,6 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     assertEquals(response.status, 500);
   });
 
+  mf.uninstall();
   kv.close();
 });

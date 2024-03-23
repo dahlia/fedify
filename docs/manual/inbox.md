@@ -76,6 +76,26 @@ multiple inbox listeners for different activity types.
 [shared inbox]: https://www.w3.org/TR/activitypub/#shared-inbox-delivery
 
 
+`Context.documentLoader` on an inbox listener
+---------------------------------------------
+
+The `Context.documentLoader` property carries a `DocumentLoader` object that
+you can use to fetch a remote document.  If a request is made to a shared inbox,
+the `Context.documentLoader` property is set to the default `documentLoader`
+that is specified in the `new Federation()` constructor.  However, if a request
+is made to a personal inbox, the `Context.documentLoader` property is set to
+an authenticated `DocumentLoader` object that is identified by the inbox owner's
+key.
+
+This means that you can pass the `Context` object to dereferencing accessors[^1]
+inside a personal inbox listener so that they can fetch remote documents with
+the correct authentication.
+
+[^1]: See the [*Object IDs and remote objects*
+      section](./vocab.md#object-ids-and-remote-objects) if you are not familiar
+      with dereferencing accessors.
+
+
 Error handling
 --------------
 

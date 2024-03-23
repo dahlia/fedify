@@ -732,7 +732,7 @@ export class Federation<TContextData> {
       const response = onNotFound(request);
       return response instanceof Promise ? await response : response;
     }
-    const context = this.createContext(request, contextData);
+    let context = this.createContext(request, contextData);
     switch (route.name) {
       case "webfinger":
         return await handleWebFinger(request, {
@@ -764,6 +764,13 @@ export class Federation<TContextData> {
           onNotAcceptable,
         });
       case "inbox":
+        context = {
+          ...context,
+          documentLoader: await context.getDocumentLoader({
+            handle: route.values.handle,
+          }),
+        };
+        // falls through
       case "sharedInbox":
         return await handleInbox(request, {
           handle: route.values.handle ?? null,

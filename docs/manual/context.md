@@ -174,3 +174,13 @@ In the above example, the `getFollowing()` method takes the `documentLoader`
 which is authenticated as the actor with a handle of `john`.
 If the `actor` allows `john` to see the following collection,
 the `getFollowing()` method returns the following collection.
+
+> [!TIP]
+> Inside a personal inbox listener, the `Context.documentLoader` property is
+> automatically set to an authenticated `DocumentLoader` object that is
+> identified by the inbox owner's key.  So you don't need to call the
+> `Context.getDocumentLoader()` method in the personal inbox listener,
+> but just passing the `Context` object to dereferencing accessors is enough.
+>
+> See the [*`Context.documentLoader` on an inbox listener*
+> section](./inbox.md#context.documentloader-on-an-inbox-listener) for details.
