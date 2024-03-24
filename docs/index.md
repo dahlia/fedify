@@ -39,6 +39,7 @@ If you want to know more about the project, please take a look at the following
 resources:
 
  -  [GitHub](https://github.com/dahlia/fedify)
+ -  [Tutorial](./tutorial.md)
  -  [Manual](./manual.md)
  -  [API reference](https://jsr.io/@fedify/fedify)
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)

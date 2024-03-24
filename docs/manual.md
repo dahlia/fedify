@@ -1,5 +1,5 @@
 ---
-nav_order: 3
+nav_order: 4
 metas:
   description: >-
     This manual provides a comprehensive guide to the Fedify framework.  It is

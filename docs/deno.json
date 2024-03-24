@@ -1,7 +1,7 @@
 {
   "tasks": {
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable-kv -A -",
-    "serve": "deno task lume -s --port=8000"
+    "serve": "deno task lume -s --port=3000"
   },
   "imports": {
     "@std/collections": "jsr:@std/collections@^0.218.2",

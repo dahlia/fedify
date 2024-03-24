@@ -25,6 +25,7 @@ site.use(title());
 site.use(image());
 
 site.copy("img");
+site.copyRemainingFiles();
 
 async function getPackageVersion(): Promise<string> {
   const response = await fetch("https://jsr.io/@fedify/fedify/meta.json");
