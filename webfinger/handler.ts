@@ -88,7 +88,6 @@ export async function handleWebFinger<TContextData>(
       links.push({
         rel: "http://webfinger.net/rel/profile-page",
         href: url.href,
-        type: "application/activity+json",
       });
     }
   }

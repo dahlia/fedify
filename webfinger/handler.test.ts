@@ -99,7 +99,6 @@ Deno.test("handleWebFinger()", async () => {
       {
         href: "https://example.com/@someone",
         rel: "http://webfinger.net/rel/profile-page",
-        type: "application/activity+json",
       },
       {
         href: "https://example.org/@someone",

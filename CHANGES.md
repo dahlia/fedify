@@ -61,6 +61,9 @@ To be released.
 
  -  Now `lookupWebFinger()` follows redirections.
 
+ -  The `http://webfinger.net/rel/profile-page` links in WebFinger responses
+    now omit `type` property.
+
 [Fresh]: https://fresh.deno.dev/
 [#12]: https://github.com/dahlia/fedify/issues/12
 
