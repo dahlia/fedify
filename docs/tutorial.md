@@ -10,7 +10,7 @@ metas:
 Tutorial
 ========
 
-In this tutorial, we will build a small federated server that only can accept
+In this tutorial, we will build a small federated server that can only accept
 follow requests.  Despite its simplicity, it will cover the key features of the
 ActivityPub protocol and the Fedify framework, such as actors, sending and
 receiving activities, and the inbox.
