@@ -756,8 +756,8 @@ Exercises
     routing system and [JSX] templates to produce HTML.
     
     See also the [*Integrating with a web framework*
-    section](./manual.md#integrating-with-a-web-framework) in the manual for
-    more details.
+    section](./manual/federation.md#integrating-with-a-web-framework) in
+    the manual for more details.
 
 [Fresh]: https://fresh.deno.dev/
 [JSX]: https://facebook.github.io/jsx/
