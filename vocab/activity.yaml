@@ -24,8 +24,11 @@ properties:
     perform the activity.  Any single activity can have multiple actors.
     The actor MAY be specified using an indirect {@link Link}.
   range:
-  - "https://www.w3.org/ns/activitystreams#Object"
-  - "https://www.w3.org/ns/activitystreams#Link"
+  - "https://www.w3.org/ns/activitystreams#Application"
+  - "https://www.w3.org/ns/activitystreams#Group"
+  - "https://www.w3.org/ns/activitystreams#Organization"
+  - "https://www.w3.org/ns/activitystreams#Person"
+  - "https://www.w3.org/ns/activitystreams#Service"
 
 - pluralName: objects
   singularName: object

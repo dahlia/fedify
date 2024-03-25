@@ -148,7 +148,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
     }
     const recipient = await follow.getActor(ctx);
     if (
-      !isActor(recipient) || recipient.id == null ||
+      recipient == null || recipient.id == null ||
       recipient.preferredUsername == null ||
       recipient.inboxId == null
     ) return;

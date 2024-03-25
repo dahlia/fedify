@@ -97,7 +97,7 @@ snapshot[`Deno.inspect(Accept) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -207,7 +207,7 @@ snapshot[`Deno.inspect(Accept) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -257,7 +257,7 @@ snapshot[`Deno.inspect(Activity) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -367,7 +367,7 @@ snapshot[`Deno.inspect(Activity) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -417,7 +417,7 @@ snapshot[`Deno.inspect(Add) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -527,7 +527,7 @@ snapshot[`Deno.inspect(Add) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -577,7 +577,7 @@ snapshot[`Deno.inspect(Announce) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -687,7 +687,7 @@ snapshot[`Deno.inspect(Announce) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -1241,7 +1241,7 @@ snapshot[`Deno.inspect(Block) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -1351,7 +1351,7 @@ snapshot[`Deno.inspect(Block) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -1748,7 +1748,7 @@ snapshot[`Deno.inspect(Create) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -1858,7 +1858,7 @@ snapshot[`Deno.inspect(Create) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -1908,7 +1908,7 @@ snapshot[`Deno.inspect(Delete) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -2018,7 +2018,7 @@ snapshot[`Deno.inspect(Delete) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -2068,7 +2068,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -2178,7 +2178,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -2786,7 +2786,7 @@ snapshot[`Deno.inspect(Flag) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -2896,7 +2896,7 @@ snapshot[`Deno.inspect(Flag) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -2946,7 +2946,7 @@ snapshot[`Deno.inspect(Follow) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -3056,7 +3056,7 @@ snapshot[`Deno.inspect(Follow) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -3302,7 +3302,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -3412,7 +3412,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -3616,7 +3616,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -3726,7 +3726,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -3776,7 +3776,7 @@ snapshot[`Deno.inspect(Like) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -3886,7 +3886,7 @@ snapshot[`Deno.inspect(Like) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -5657,7 +5657,7 @@ snapshot[`Deno.inspect(Reject) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -5767,7 +5767,7 @@ snapshot[`Deno.inspect(Reject) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -5980,7 +5980,7 @@ snapshot[`Deno.inspect(Remove) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -6090,7 +6090,7 @@ snapshot[`Deno.inspect(Remove) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -6336,7 +6336,7 @@ snapshot[`Deno.inspect(Undo) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -6446,7 +6446,7 @@ snapshot[`Deno.inspect(Undo) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;
@@ -6496,7 +6496,7 @@ snapshot[`Deno.inspect(Update) [auto] 1`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Link {} ],
+  actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {}
 }'
 `;
@@ -6606,7 +6606,7 @@ snapshot[`Deno.inspect(Update) [auto] 3`] = `
   mediaType: "hello",
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
-  actors: [ Object {}, Object {} ],
+  actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ]
 }'
 `;

@@ -62,6 +62,15 @@ To be released.
      -  `Activity.clone()` method's `object` option no more accepts `Link`
         objects.
 
+ -  `Activity`'s `actor` property now accepts only `Actor` objects.
+
+     -  `new Activity()` constructor's `actor` option now accepts only `Actor`
+        objects.
+     -  `Activity.getActor()` method now returns only an `Actor` object.
+     -  `Activity.getActors()` method now returns only `Actor` objects.
+     -  `Activity.clone()` method's `actor` option now accepts only `Actor`
+        objects.
+
  -  Added `sensitive` property to `Object` class.
 
      -  `new Object()` constructor now accepts `sensitive` option.
