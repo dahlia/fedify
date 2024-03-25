@@ -33,7 +33,11 @@ properties:
     The attributed entities might not be Actors.  For instance,
     an object might be attributed to the completion of another activity.
   range:
-  - "https://www.w3.org/ns/activitystreams#Object"
+  - "https://www.w3.org/ns/activitystreams#Application"
+  - "https://www.w3.org/ns/activitystreams#Group"
+  - "https://www.w3.org/ns/activitystreams#Organization"
+  - "https://www.w3.org/ns/activitystreams#Person"
+  - "https://www.w3.org/ns/activitystreams#Service"
 
 - pluralName: audiences
   singularName: audience

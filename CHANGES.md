@@ -53,6 +53,15 @@ To be released.
      -  `Object.clone()` method's `images` option no more accepts `Link`
         objects.
 
+ -  `Object`'s `attributedTo` property now accepts only `Actor` objects.
+
+     -  `new Object()` constructor's `attributedTo` option now accepts only
+        `Actor` objects.
+     -  `Object.getAttributedTo()` method now returns only an `Actor` object.
+     -  `Object.getAttributedTos()` method now returns only `Actor` objects.
+     -  `Object.clone()` method's `attributedTo` option now accepts only
+        `Actor` objects.
+
  -  `Activity`'s `object` property no more accepts `Link` objects.
 
      -  `new Activity()` constructor's `object` option no more accepts `Link`

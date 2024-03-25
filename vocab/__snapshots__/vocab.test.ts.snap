@@ -56,7 +56,7 @@ snapshot[`Deno.inspect(Accept) [auto] 1`] = `
 'Accept {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -154,7 +154,7 @@ snapshot[`Deno.inspect(Accept) [auto] 2`] = `
 snapshot[`Deno.inspect(Accept) [auto] 3`] = `
 'Accept {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -216,7 +216,7 @@ snapshot[`Deno.inspect(Activity) [auto] 1`] = `
 'Activity {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -314,7 +314,7 @@ snapshot[`Deno.inspect(Activity) [auto] 2`] = `
 snapshot[`Deno.inspect(Activity) [auto] 3`] = `
 'Activity {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -376,7 +376,7 @@ snapshot[`Deno.inspect(Add) [auto] 1`] = `
 'Add {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -474,7 +474,7 @@ snapshot[`Deno.inspect(Add) [auto] 2`] = `
 snapshot[`Deno.inspect(Add) [auto] 3`] = `
 'Add {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -536,7 +536,7 @@ snapshot[`Deno.inspect(Announce) [auto] 1`] = `
 'Announce {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -634,7 +634,7 @@ snapshot[`Deno.inspect(Announce) [auto] 2`] = `
 snapshot[`Deno.inspect(Announce) [auto] 3`] = `
 'Announce {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -696,7 +696,7 @@ snapshot[`Deno.inspect(Application) [auto] 1`] = `
 'Application {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -818,7 +818,7 @@ snapshot[`Deno.inspect(Application) [auto] 2`] = `
 snapshot[`Deno.inspect(Application) [auto] 3`] = `
 'Application {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -892,7 +892,7 @@ snapshot[`Deno.inspect(Article) [auto] 1`] = `
 'Article {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -986,7 +986,7 @@ snapshot[`Deno.inspect(Article) [auto] 2`] = `
 snapshot[`Deno.inspect(Article) [auto] 3`] = `
 'Article {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -1046,7 +1046,7 @@ snapshot[`Deno.inspect(Audio) [auto] 1`] = `
 'Audio {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -1140,7 +1140,7 @@ snapshot[`Deno.inspect(Audio) [auto] 2`] = `
 snapshot[`Deno.inspect(Audio) [auto] 3`] = `
 'Audio {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -1200,7 +1200,7 @@ snapshot[`Deno.inspect(Block) [auto] 1`] = `
 'Block {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -1298,7 +1298,7 @@ snapshot[`Deno.inspect(Block) [auto] 2`] = `
 snapshot[`Deno.inspect(Block) [auto] 3`] = `
 'Block {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -1360,7 +1360,7 @@ snapshot[`Deno.inspect(Collection) [auto] 1`] = `
 'Collection {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -1464,7 +1464,7 @@ snapshot[`Deno.inspect(Collection) [auto] 2`] = `
 snapshot[`Deno.inspect(Collection) [auto] 3`] = `
 'Collection {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -1529,7 +1529,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 1`] = `
 'CollectionPage {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -1639,7 +1639,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 2`] = `
 snapshot[`Deno.inspect(CollectionPage) [auto] 3`] = `
 'CollectionPage {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -1707,7 +1707,7 @@ snapshot[`Deno.inspect(Create) [auto] 1`] = `
 'Create {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -1805,7 +1805,7 @@ snapshot[`Deno.inspect(Create) [auto] 2`] = `
 snapshot[`Deno.inspect(Create) [auto] 3`] = `
 'Create {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -1867,7 +1867,7 @@ snapshot[`Deno.inspect(Delete) [auto] 1`] = `
 'Delete {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -1965,7 +1965,7 @@ snapshot[`Deno.inspect(Delete) [auto] 2`] = `
 snapshot[`Deno.inspect(Delete) [auto] 3`] = `
 'Delete {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -2027,7 +2027,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
 'Dislike {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -2125,7 +2125,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 2`] = `
 snapshot[`Deno.inspect(Dislike) [auto] 3`] = `
 'Dislike {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -2187,7 +2187,7 @@ snapshot[`Deno.inspect(Document) [auto] 1`] = `
 'Document {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -2281,7 +2281,7 @@ snapshot[`Deno.inspect(Document) [auto] 2`] = `
 snapshot[`Deno.inspect(Document) [auto] 3`] = `
 'Document {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -2591,7 +2591,7 @@ snapshot[`Deno.inspect(Event) [auto] 1`] = `
 'Event {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -2685,7 +2685,7 @@ snapshot[`Deno.inspect(Event) [auto] 2`] = `
 snapshot[`Deno.inspect(Event) [auto] 3`] = `
 'Event {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -2745,7 +2745,7 @@ snapshot[`Deno.inspect(Flag) [auto] 1`] = `
 'Flag {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -2843,7 +2843,7 @@ snapshot[`Deno.inspect(Flag) [auto] 2`] = `
 snapshot[`Deno.inspect(Flag) [auto] 3`] = `
 'Flag {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -2905,7 +2905,7 @@ snapshot[`Deno.inspect(Follow) [auto] 1`] = `
 'Follow {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -3003,7 +3003,7 @@ snapshot[`Deno.inspect(Follow) [auto] 2`] = `
 snapshot[`Deno.inspect(Follow) [auto] 3`] = `
 'Follow {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -3065,7 +3065,7 @@ snapshot[`Deno.inspect(Group) [auto] 1`] = `
 'Group {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -3187,7 +3187,7 @@ snapshot[`Deno.inspect(Group) [auto] 2`] = `
 snapshot[`Deno.inspect(Group) [auto] 3`] = `
 'Group {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -3261,7 +3261,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
 'Ignore {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -3359,7 +3359,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 2`] = `
 snapshot[`Deno.inspect(Ignore) [auto] 3`] = `
 'Ignore {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -3421,7 +3421,7 @@ snapshot[`Deno.inspect(Image) [auto] 1`] = `
 'Image {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -3515,7 +3515,7 @@ snapshot[`Deno.inspect(Image) [auto] 2`] = `
 snapshot[`Deno.inspect(Image) [auto] 3`] = `
 'Image {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -3575,7 +3575,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
 'IntransitiveActivity {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -3673,7 +3673,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 2`] = `
 snapshot[`Deno.inspect(IntransitiveActivity) [auto] 3`] = `
 'IntransitiveActivity {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -3735,7 +3735,7 @@ snapshot[`Deno.inspect(Like) [auto] 1`] = `
 'Like {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -3833,7 +3833,7 @@ snapshot[`Deno.inspect(Like) [auto] 2`] = `
 snapshot[`Deno.inspect(Like) [auto] 3`] = `
 'Like {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -4083,7 +4083,7 @@ snapshot[`Deno.inspect(Note) [auto] 1`] = `
 'Note {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -4177,7 +4177,7 @@ snapshot[`Deno.inspect(Note) [auto] 2`] = `
 snapshot[`Deno.inspect(Note) [auto] 3`] = `
 'Note {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -4237,7 +4237,7 @@ snapshot[`Deno.inspect(Object) [auto] 1`] = `
 'Object {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -4331,7 +4331,7 @@ snapshot[`Deno.inspect(Object) [auto] 2`] = `
 snapshot[`Deno.inspect(Object) [auto] 3`] = `
 'Object {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -4391,7 +4391,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 1`] = `
 'OrderedCollection {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -4495,7 +4495,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 2`] = `
 snapshot[`Deno.inspect(OrderedCollection) [auto] 3`] = `
 'OrderedCollection {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -4560,7 +4560,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 1`] = `
 'OrderedCollectionPage {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -4672,7 +4672,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 2`] = `
 snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 3`] = `
 'OrderedCollectionPage {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -4741,7 +4741,7 @@ snapshot[`Deno.inspect(Organization) [auto] 1`] = `
 'Organization {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -4863,7 +4863,7 @@ snapshot[`Deno.inspect(Organization) [auto] 2`] = `
 snapshot[`Deno.inspect(Organization) [auto] 3`] = `
 'Organization {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -4937,7 +4937,7 @@ snapshot[`Deno.inspect(Page) [auto] 1`] = `
 'Page {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -5031,7 +5031,7 @@ snapshot[`Deno.inspect(Page) [auto] 2`] = `
 snapshot[`Deno.inspect(Page) [auto] 3`] = `
 'Page {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -5091,7 +5091,7 @@ snapshot[`Deno.inspect(Person) [auto] 1`] = `
 'Person {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -5213,7 +5213,7 @@ snapshot[`Deno.inspect(Person) [auto] 2`] = `
 snapshot[`Deno.inspect(Person) [auto] 3`] = `
 'Person {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -5287,7 +5287,7 @@ snapshot[`Deno.inspect(Place) [auto] 1`] = `
 'Place {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -5393,7 +5393,7 @@ snapshot[`Deno.inspect(Place) [auto] 2`] = `
 snapshot[`Deno.inspect(Place) [auto] 3`] = `
 'Place {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -5459,7 +5459,7 @@ snapshot[`Deno.inspect(Profile) [auto] 1`] = `
 'Profile {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -5555,7 +5555,7 @@ snapshot[`Deno.inspect(Profile) [auto] 2`] = `
 snapshot[`Deno.inspect(Profile) [auto] 3`] = `
 'Profile {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -5616,7 +5616,7 @@ snapshot[`Deno.inspect(Reject) [auto] 1`] = `
 'Reject {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -5714,7 +5714,7 @@ snapshot[`Deno.inspect(Reject) [auto] 2`] = `
 snapshot[`Deno.inspect(Reject) [auto] 3`] = `
 'Reject {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -5776,7 +5776,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 1`] = `
 'Relationship {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -5876,7 +5876,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 2`] = `
 snapshot[`Deno.inspect(Relationship) [auto] 3`] = `
 'Relationship {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -5939,7 +5939,7 @@ snapshot[`Deno.inspect(Remove) [auto] 1`] = `
 'Remove {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -6037,7 +6037,7 @@ snapshot[`Deno.inspect(Remove) [auto] 2`] = `
 snapshot[`Deno.inspect(Remove) [auto] 3`] = `
 'Remove {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -6099,7 +6099,7 @@ snapshot[`Deno.inspect(Service) [auto] 1`] = `
 'Service {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -6221,7 +6221,7 @@ snapshot[`Deno.inspect(Service) [auto] 2`] = `
 snapshot[`Deno.inspect(Service) [auto] 3`] = `
 'Service {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -6295,7 +6295,7 @@ snapshot[`Deno.inspect(Undo) [auto] 1`] = `
 'Undo {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -6393,7 +6393,7 @@ snapshot[`Deno.inspect(Undo) [auto] 2`] = `
 snapshot[`Deno.inspect(Undo) [auto] 3`] = `
 'Undo {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -6455,7 +6455,7 @@ snapshot[`Deno.inspect(Update) [auto] 1`] = `
 'Update {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -6553,7 +6553,7 @@ snapshot[`Deno.inspect(Update) [auto] 2`] = `
 snapshot[`Deno.inspect(Update) [auto] 3`] = `
 'Update {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],
@@ -6615,7 +6615,7 @@ snapshot[`Deno.inspect(Video) [auto] 1`] = `
 'Video {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
-  attributedTo: Object {},
+  attributedTos: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   audience: Object {},
   contents: [ "hello", <en> "hello" ],
   contexts: [ Object {}, Link {} ],
@@ -6709,7 +6709,7 @@ snapshot[`Deno.inspect(Video) [auto] 2`] = `
 snapshot[`Deno.inspect(Video) [auto] 3`] = `
 'Video {
   attachments: [ Object {}, Object {} ],
-  attributedTos: [ Object {}, Object {} ],
+  attributedTos: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
   contents: [ "hello", "hello" ],
   contexts: [ Object {}, Object {} ],

@@ -10,7 +10,6 @@ import {
   Follow,
   getActorHandle,
   getActorTypeName,
-  isActor,
   Link,
   Note,
   Person,
@@ -179,8 +178,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
       if (object.id == null || object.content == null) return;
       const author = await object.getAttributedTo();
       if (
-        !isActor(author) || author.id == null ||
-        author.preferredUsername == null
+        author == null || author.id == null || author.preferredUsername == null
       ) return;
       const comment: Omit<Comment, "postUuid"> = {
         id: object.id.href,
