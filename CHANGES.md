@@ -53,6 +53,15 @@ To be released.
      -  `Object.clone()` method's `images` option no more accepts `Link`
         objects.
 
+ -  `Activity`'s `object` property no more accepts `Link` objects.
+
+     -  `new Activity()` constructor's `object` option no more accepts `Link`
+        objects.
+     -  `Activity.getObject()` method no more returns a `Link` object.
+     -  `Activity.getObjects()` method no more returns `Link` objects.
+     -  `Activity.clone()` method's `object` option no more accepts `Link`
+        objects.
+
  -  Added `sensitive` property to `Object` class.
 
      -  `new Object()` constructor now accepts `sensitive` option.

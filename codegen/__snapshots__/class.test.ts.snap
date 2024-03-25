@@ -3921,7 +3921,7 @@ get sensitive(): (boolean | null) {
  */
 export class Activity extends Object {
 #_2DjTTboo3CNHU2a2JQqUSE2dbv9D: (Object | Link | URL)[] = [];
-#_2MH19yxjn1wnHsNfa5n4JBhJzxyc: (Object | Link | URL)[] = [];
+#_2MH19yxjn1wnHsNfa5n4JBhJzxyc: (Object | URL)[] = [];
 
   /**
    * Constructs a new instance of Activity with the given values.
@@ -3946,8 +3946,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);
         if (\\"actor\\" in values &&             values.actor != null) {
@@ -4009,8 +4009,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Activity {
 const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D = this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D;
         if (\\"actor\\" in values &&             values.actor != null) {
@@ -4167,7 +4167,7 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
           documentUrl: string;
         }>
       } = {}
-    ): Promise<Object | Link> {
+    ): Promise<Object> {
       const documentLoader = options.documentLoader ?? fetchDocumentLoader;
       const { document } = await documentLoader(url.href);
     
@@ -4177,14 +4177,8 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
         if (!(e instanceof TypeError)) throw e;
       }
       
-      try {
-        return await Link.fromJsonLd(document, options);
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
     }
     
       /**
@@ -4213,7 +4207,7 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
             documentUrl: string;
           }>
         } = {}
-      ): Promise<Object | Link | null> {
+      ): Promise<Object | null> {
         if (this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc.length < 1) return null;
         const v = this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc[0];
         if (v instanceof URL) {
@@ -4250,7 +4244,7 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
             documentUrl: string;
           }>
         } = {}
-      ): AsyncIterable<Object | Link> {
+      ): AsyncIterable<Object> {
         const vs = this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc;
         for (let i = 0; i < vs.length; i++) {
           const v = vs[i];
@@ -4298,7 +4292,7 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
     array = [];
     for (const v of this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc) {
       array.push(
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#object\\"] = array;
@@ -4462,7 +4456,7 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
       
     }
     instance.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D = _2DjTTboo3CNHU2a2JQqUSE2dbv9D;
-    const _2MH19yxjn1wnHsNfa5n4JBhJzxyc: (Object | Link | URL)[] = [];
+    const _2MH19yxjn1wnHsNfa5n4JBhJzxyc: (Object | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#object\\"] ?? []) {
       if (v == null) continue;
@@ -4472,19 +4466,8 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
         _2MH19yxjn1wnHsNfa5n4JBhJzxyc.push(new URL(v[\\"@id\\"]));
         continue;
       }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _2MH19yxjn1wnHsNfa5n4JBhJzxyc.push(decoded);
-      
+      _2MH19yxjn1wnHsNfa5n4JBhJzxyc.push(await Object.fromJsonLd(
+      v, options))
     }
     instance.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc = _2MH19yxjn1wnHsNfa5n4JBhJzxyc;
     
@@ -4573,8 +4556,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -4602,8 +4585,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Accept {
 const clone = super.clone(values) as unknown as Accept;
     return clone;
@@ -4727,8 +4710,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -4756,8 +4739,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Add {
 const clone = super.clone(values) as unknown as Add;
     return clone;
@@ -4880,8 +4863,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -4909,8 +4892,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Announce {
 const clone = super.clone(values) as unknown as Announce;
     return clone;
@@ -6796,8 +6779,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -6825,8 +6808,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Ignore {
 const clone = super.clone(values) as unknown as Ignore;
     return clone;
@@ -6961,8 +6944,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -6990,8 +6973,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Block {
 const clone = super.clone(values) as unknown as Block;
     return clone;
@@ -8335,8 +8318,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -8364,8 +8347,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Create {
 const clone = super.clone(values) as unknown as Create;
     return clone;
@@ -8487,8 +8470,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -8516,8 +8499,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Delete {
 const clone = super.clone(values) as unknown as Delete;
     return clone;
@@ -8637,8 +8620,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -8666,8 +8649,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Dislike {
 const clone = super.clone(values) as unknown as Dislike;
     return clone;
@@ -9298,8 +9281,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -9327,8 +9310,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Flag {
 const clone = super.clone(values) as unknown as Flag;
     return clone;
@@ -9452,8 +9435,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -9481,8 +9464,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Follow {
 const clone = super.clone(values) as unknown as Follow;
     return clone;
@@ -11051,8 +11034,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -11080,8 +11063,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): IntransitiveActivity {
 const clone = super.clone(values) as unknown as IntransitiveActivity;
     return clone;
@@ -11203,8 +11186,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -11232,8 +11215,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Like {
 const clone = super.clone(values) as unknown as Like;
     return clone;
@@ -15992,8 +15975,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -16021,8 +16004,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Reject {
 const clone = super.clone(values) as unknown as Reject;
     return clone;
@@ -16759,8 +16742,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -16788,8 +16771,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Remove {
 const clone = super.clone(values) as unknown as Remove;
     return clone;
@@ -18216,8 +18199,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -18245,8 +18228,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Undo {
 const clone = super.clone(values) as unknown as Undo;
     return clone;
@@ -18371,8 +18354,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
 ) {
 super(values);}
 
@@ -18400,8 +18383,8 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Object | Link | URL | null;
-actors?: (Object | Link | URL)[];object?: Object | Link | URL | null;
-objects?: (Object | Link | URL)[];}
+actors?: (Object | Link | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];}
  = {}): Update {
 const clone = super.clone(values) as unknown as Update;
     return clone;

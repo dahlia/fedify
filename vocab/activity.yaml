@@ -37,4 +37,3 @@ properties:
     wishlist", the object of the activity is the movie added.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
-  - "https://www.w3.org/ns/activitystreams#Link"

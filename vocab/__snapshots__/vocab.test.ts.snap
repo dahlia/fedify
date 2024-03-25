@@ -98,7 +98,7 @@ snapshot[`Deno.inspect(Accept) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -258,7 +258,7 @@ snapshot[`Deno.inspect(Activity) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -418,7 +418,7 @@ snapshot[`Deno.inspect(Add) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -578,7 +578,7 @@ snapshot[`Deno.inspect(Announce) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -1242,7 +1242,7 @@ snapshot[`Deno.inspect(Block) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -1749,7 +1749,7 @@ snapshot[`Deno.inspect(Create) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -1909,7 +1909,7 @@ snapshot[`Deno.inspect(Delete) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -2069,7 +2069,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -2787,7 +2787,7 @@ snapshot[`Deno.inspect(Flag) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -2947,7 +2947,7 @@ snapshot[`Deno.inspect(Follow) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -3303,7 +3303,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -3617,7 +3617,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -3777,7 +3777,7 @@ snapshot[`Deno.inspect(Like) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -5658,7 +5658,7 @@ snapshot[`Deno.inspect(Reject) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -5981,7 +5981,7 @@ snapshot[`Deno.inspect(Remove) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -6337,7 +6337,7 @@ snapshot[`Deno.inspect(Undo) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
@@ -6497,7 +6497,7 @@ snapshot[`Deno.inspect(Update) [auto] 1`] = `
   duration: Duration [Temporal.Duration] {},
   sensitive: true,
   actors: [ Object {}, Link {} ],
-  objects: [ Object {}, Link {} ]
+  object: Object {}
 }'
 `;
 
