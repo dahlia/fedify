@@ -11,7 +11,7 @@ Fedify changelog
 Version 0.4.0
 -------------
 
-To be released.
+Released on March 26, 2024.
 
  -  Added `@fedify/fedify/x/fresh` module for integrating with [Fresh]
     middleware.
