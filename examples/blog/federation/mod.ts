@@ -176,7 +176,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
     const object = await create.getObject(ctx);
     if (object instanceof Note) {
       if (object.id == null || object.content == null) return;
-      const author = await object.getAttributedTo();
+      const author = await object.getAttribution();
       if (
         author == null || author.id == null || author.preferredUsername == null
       ) return;

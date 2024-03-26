@@ -236,7 +236,7 @@ Deno.test("Activity.clone()", async () => {
 Deno.test("Deno.inspect(Object)", () => {
   const obj = new Object({
     id: new URL("https://example.com/"),
-    attributedTo: new URL("https://example.com/foo"),
+    attribution: new URL("https://example.com/foo"),
     name: "Test",
     contents: [
       new LanguageString("Hello", "en"),
@@ -246,7 +246,7 @@ Deno.test("Deno.inspect(Object)", () => {
   assertEquals(
     Deno.inspect(obj, { colors: false, sorted: true, compact: false }),
     "Object {\n" +
-      '  attributedTo: URL "https://example.com/foo",\n' +
+      '  attribution: URL "https://example.com/foo",\n' +
       "  contents: [\n" +
       '    <en> "Hello",\n' +
       '    <zh> "你好"\n' +

@@ -24,7 +24,7 @@
     "editor.defaultFormatter": "denoland.vscode-deno",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.sortImports": true
+      "source.sortImports": "always"
     }
   },
   "cSpell.words": [

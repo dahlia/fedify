@@ -53,31 +53,61 @@ To be released.
      -  `Object.clone()` method's `images` option no more accepts `Link`
         objects.
 
- -  `Object`'s `attributedTo` property now accepts only `Actor` objects.
+ -  `Object`'s `attributedTo` property was renamed to `attribution`.
 
-     -  `new Object()` constructor's `attributedTo` option now accepts only
-        `Actor` objects.
-     -  `Object.getAttributedTo()` method now returns only an `Actor` object.
-     -  `Object.getAttributedTos()` method now returns only `Actor` objects.
-     -  `Object.clone()` method's `attributedTo` option now accepts only
-        `Actor` objects.
+    -  `new Object()` constructor's `attributedTo` option was renamed to
+       `attribution`.
+    -  `new Object()` constructor's `attributedTos` option was renamed to
+       `attributions`.
+    -  `Object.getAttributedTo()` method is renamed to
+       `Object.getAttribution()`.
+    -  `Object.getAttributedTos()` method is renamed to
+       `Object.getAttributions()`.
+    -  `Object.clone()` method's `attributedTo` option is renamed to
+       `attribution`.
+    -  `Object.clone()` method's `attributedTos` option is renamed to
+       `attributions`.
+
+ -  `Object`'s `attribution` property (was `attributedTo`) now accepts only
+    `Actor` objects.
+
+     -  `new Object()` constructor's `attribution` option (was `attributedTo`)
+        now accepts only an `Actor` object.
+     -  `new Object()` constructor's `attributions` option (was `attributedTos`)
+        now accepts only `Actor` objects.
+     -  `Object.getAttribution()` method (was `getAttributedTo()`) now returns
+        only an `Actor` object.
+     -  `Object.getAttributions()` method (was `getAttributedTos()`) now returns
+        only `Actor` objects.
+     -  `Object.clone()` method's `attribution` option (`attributedTo`) now
+        accepts only an `Actor` object.
+     -  `Object.clone()` method's `attributions` option (`attributedTos`) now
+        accepts only `Actor` objects.
 
  -  `Activity`'s `object` property no more accepts `Link` objects.
 
-     -  `new Activity()` constructor's `object` option no more accepts `Link`
+     -  `new Activity()` constructor's `object` option no more accepts a `Link`
+        object.
+     -  `new Activity()` constructor's `objects` option no more accepts `Link`
         objects.
      -  `Activity.getObject()` method no more returns a `Link` object.
      -  `Activity.getObjects()` method no more returns `Link` objects.
-     -  `Activity.clone()` method's `object` option no more accepts `Link`
+     -  `Activity.clone()` method's `object` option no more accepts a `Link`
+        object.
+     -  `Activity.clone()` method's `objects` option no more accepts `Link`
         objects.
 
  -  `Activity`'s `actor` property now accepts only `Actor` objects.
 
-     -  `new Activity()` constructor's `actor` option now accepts only `Actor`
+     -  `new Activity()` constructor's `actor` option now accepts only
+        an `Actor` object.
+     -  `new Activity()` constructor's `actors` option now accepts only `Actor`
         objects.
      -  `Activity.getActor()` method now returns only an `Actor` object.
      -  `Activity.getActors()` method now returns only `Actor` objects.
-     -  `Activity.clone()` method's `actor` option now accepts only `Actor`
+     -  `Activity.clone()` method's `actor` option now accepts only an `Actor`
+        object.
+     -  `Activity.clone()` method's `actors` option now accepts only `Actor`
         objects.
 
  -  Added `sensitive` property to `Object` class.

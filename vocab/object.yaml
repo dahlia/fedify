@@ -24,8 +24,8 @@ properties:
   - "https://www.w3.org/ns/activitystreams#Object"
   - "https://www.w3.org/ns/activitystreams#Link"
 
-- pluralName: attributedTos
-  singularName: attributedTo
+- pluralName: attributions
+  singularName: attribution
   singularAccessor: true
   uri: "https://www.w3.org/ns/activitystreams#attributedTo"
   description: |

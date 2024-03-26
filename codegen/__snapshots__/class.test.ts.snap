@@ -357,8 +357,8 @@ readonly id: URL | null;
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -380,21 +380,21 @@ this.id = values.id ?? null;
           this.#_49BipA5dq9eoH8LX8xdsVumveTca = values.attachments;
         }
       
-        if (\\"attributedTo\\" in values &&             values.attributedTo != null) {
-          this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = [values.attributedTo];
+        if (\\"attribution\\" in values &&             values.attribution != null) {
+          this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = [values.attribution];
         }
       
-        if (\\"attributedTos\\" in values &&             values.attributedTos != null) {
+        if (\\"attributions\\" in values &&             values.attributions != null) {
       
-          if (\\"attributedTo\\" in values &&
-              values.attributedTo != null) {
+          if (\\"attribution\\" in values &&
+              values.attribution != null) {
             throw new TypeError(
-              \\"Cannot initialize both attributedTo and \\" +
-                \\"attributedTos at the same time.\\",
+              \\"Cannot initialize both attribution and \\" +
+                \\"attributions at the same time.\\",
             );
           }
         
-          this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = values.attributedTos;
+          this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = values.attributions;
         }
       
         if (\\"audience\\" in values &&             values.audience != null) {
@@ -691,8 +691,8 @@ this.id = values.id ?? null;
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -717,21 +717,21 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
           clone.#_49BipA5dq9eoH8LX8xdsVumveTca = values.attachments;
         }
       clone.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py;
-        if (\\"attributedTo\\" in values &&             values.attributedTo != null) {
-          clone.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = [values.attributedTo];
+        if (\\"attribution\\" in values &&             values.attribution != null) {
+          clone.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = [values.attribution];
         }
       
-        if (\\"attributedTos\\" in values &&             values.attributedTos != null) {
+        if (\\"attributions\\" in values &&             values.attributions != null) {
       
-          if (\\"attributedTo\\" in values &&
-              values.attributedTo != null) {
+          if (\\"attribution\\" in values &&
+              values.attribution != null) {
             throw new TypeError(
-              \\"Cannot update both attributedTo and \\" +
-                \\"attributedTos at the same time.\\",
+              \\"Cannot update both attribution and \\" +
+                \\"attributions at the same time.\\",
             );
           }
         
-          clone.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = values.attributedTos;
+          clone.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = values.attributions;
         }
       clone.#_3ocC3VVi88cEd5sPWL8djkZsvTN6 = this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6;
         if (\\"audience\\" in values &&             values.audience != null) {
@@ -1092,7 +1092,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
         }
       }
       
-    async #fetchAttributedTo(
+    async #fetchAttribution(
       url: URL,
       options: {
         documentLoader?: (url: string) => Promise<{
@@ -1141,10 +1141,10 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     
       /**
        * Similar to
-       * {@link Object.getAttributedTo},
+       * {@link Object.getAttribution},
        * but returns its \`@id\` URL instead of the object itself.
        */
-      get attributedToId(): URL | null {
+      get attributionId(): URL | null {
         if (this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py.length < 1) return null;
         const v = this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py[0];
         if (v instanceof URL) return v;
@@ -1157,7 +1157,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  * 
  */
 
-      async getAttributedTo(
+      async getAttribution(
         options: {
           documentLoader?: (url: string) => Promise<{
             contextUrl: string | null;
@@ -1170,7 +1170,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
         const v = this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py[0];
         if (v instanceof URL) {
           const fetched =
-            await this.#fetchAttributedTo(v, options);
+            await this.#fetchAttribution(v, options);
           this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py[0] = fetched;
           return fetched;
         }
@@ -1179,10 +1179,10 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       
       /**
        * Similar to
-       * {@link Object.getAttributedTos},
+       * {@link Object.getAttributions},
        * but returns their \`@id\`s instead of the objects themselves.
        */
-      get attributedToIds(): URL[] {
+      get attributionIds(): URL[] {
         return this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py.map((v) =>
           v instanceof URL ? v : v.id!
         ).filter(id => id !== null);
@@ -1194,7 +1194,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  * 
  */
 
-      async* getAttributedTos(
+      async* getAttributions(
         options: {
           documentLoader?: (url: string) => Promise<{
             contextUrl: string | null;
@@ -1208,7 +1208,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
           const v = vs[i];
           if (v instanceof URL) {
             const fetched =
-              await this.#fetchAttributedTo(
+              await this.#fetchAttribution(
                 v, options);
             vs[i] = fetched;
             yield fetched;
@@ -3614,13 +3614,13 @@ get sensitive(): (boolean | null) {
         : v);
       
       if (_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py.length == 1) {
-        proxy.attributedTo = _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py[0];
+        proxy.attribution = _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py[0];
       }
       
       if (_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py.length > 1
-          || !(\\"attributedTo\\" in proxy)
+          || !(\\"attribution\\" in proxy)
           && _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py.length > 0) {
-        proxy.attributedTos = _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py;
+        proxy.attributions = _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py;
       }
       
       const _3ocC3VVi88cEd5sPWL8djkZsvTN6 = this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6.map(v => v instanceof URL
@@ -3969,8 +3969,8 @@ export class Activity extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -4032,8 +4032,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -4601,8 +4601,8 @@ export class Accept extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -4630,8 +4630,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -4755,8 +4755,8 @@ export class Add extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -4784,8 +4784,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -4908,8 +4908,8 @@ export class Announce extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -4937,8 +4937,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -5072,8 +5072,8 @@ export class Application extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -5184,8 +5184,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6358,8 +6358,8 @@ export class Article extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6385,8 +6385,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6504,8 +6504,8 @@ export class Document extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6531,8 +6531,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6676,8 +6676,8 @@ export class Audio extends Document {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6703,8 +6703,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6824,8 +6824,8 @@ export class Ignore extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6853,8 +6853,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -6989,8 +6989,8 @@ export class Block extends Ignore {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -7018,8 +7018,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -7149,8 +7149,8 @@ export class Collection extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -7197,8 +7197,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -7849,8 +7849,8 @@ export class CollectionPage extends Collection {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -7888,8 +7888,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -8363,8 +8363,8 @@ export class Create extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -8392,8 +8392,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -8515,8 +8515,8 @@ export class Delete extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -8544,8 +8544,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -8665,8 +8665,8 @@ export class Dislike extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -8694,8 +8694,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -9177,8 +9177,8 @@ export class Event extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -9204,8 +9204,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -9326,8 +9326,8 @@ export class Flag extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -9355,8 +9355,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -9480,8 +9480,8 @@ export class Follow extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -9509,8 +9509,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -9644,8 +9644,8 @@ export class Group extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -9756,8 +9756,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -10930,8 +10930,8 @@ export class Image extends Document {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -10957,8 +10957,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -11079,8 +11079,8 @@ export class IntransitiveActivity extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -11108,8 +11108,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -11231,8 +11231,8 @@ export class Like extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -11260,8 +11260,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -12140,8 +12140,8 @@ export class Note extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -12167,8 +12167,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -12288,8 +12288,8 @@ export class OrderedCollection extends Collection {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -12315,8 +12315,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -12438,8 +12438,8 @@ export class OrderedCollectionPage extends CollectionPage {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -12469,8 +12469,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -12637,8 +12637,8 @@ export class Organization extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -12749,8 +12749,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -13923,8 +13923,8 @@ export class Page extends Document {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -13950,8 +13950,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -14083,8 +14083,8 @@ export class Person extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -14195,8 +14195,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -15378,8 +15378,8 @@ export class Place extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -15429,8 +15429,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -15769,8 +15769,8 @@ export class Profile extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -15800,8 +15800,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -16020,8 +16020,8 @@ export class Reject extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -16049,8 +16049,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -16180,8 +16180,8 @@ export class Relationship extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -16247,8 +16247,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -16787,8 +16787,8 @@ export class Remove extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -16816,8 +16816,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -16951,8 +16951,8 @@ export class Service extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -17063,8 +17063,8 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -18244,8 +18244,8 @@ export class Undo extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -18273,8 +18273,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -18399,8 +18399,8 @@ export class Update extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -18428,8 +18428,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -18549,8 +18549,8 @@ export class Video extends Document {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
@@ -18576,8 +18576,8 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attributedTo?: Application | Group | Organization | Person | Service | URL | null;
-attributedTos?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
 names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;

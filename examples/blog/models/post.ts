@@ -81,7 +81,7 @@ export function toArticle(
   const url = new URL(`/posts/${post.uuid}`, context.url);
   return new Article({
     id: url,
-    attributedTo: context.getActorUri(blog.handle),
+    attribution: context.getActorUri(blog.handle),
     to: new URL("https://www.w3.org/ns/activitystreams#Public"),
     summary: post.title,
     content: getContentHtml(post),
