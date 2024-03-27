@@ -12,13 +12,18 @@
   "top_links": [
     {
       "icon": "fab fa-github",
-      "title": "GitHub",
+      "title": "GitHub (repository)",
       "url": "https://github.com/dahlia/fedify"
     },
     {
       "icon": "fa-solid fa-cube",
-      "title": "JSR",
+      "title": "JSR (package)",
       "url": "https://jsr.io/@fedify/fedify"
+    },
+    {
+      "icon": "fa-regular fa-comments",
+      "title": "Matrix (chat)",
+      "url": "https://matrix.to/#/#fedify:matrix.org"
     }
   ],
   "nav_links": [

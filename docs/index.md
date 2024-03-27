@@ -1,14 +1,15 @@
 ---
 title: Fedify
-doc_title: "Fedify: a fediverse server framework"
+doc_title: "Fedify: an ActivityPub server framework"
 nav_order: 1
 metas:
   description: >-
     Fedify is a Deno/TypeScript library for building federated server apps
     powered by ActivityPub and other standards, so-called fediverse.
 ---
-Fedify: a fediverse server framework
-====================================
+
+Fedify: an ActivityPub server framework
+=======================================
 
 > [!NOTE]
 > Looking for a quick demo?  Here it is: [Fedify Demo] on Deno Playground.
@@ -44,8 +45,11 @@ resources:
  -  [API reference](https://jsr.io/@fedify/fedify)
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 
- [^1]: You may already know some of the networks in the fediverse, such as
-       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
+If you have any questions, suggestions, or feedback, please feel free to
+join our [Matrix chat space] or [GitHub Discussions].
+
+[^1]: You may already know some of the networks in the fediverse, such as
+      [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
 
 [Fedify Demo]: https://dash.deno.com/playground/fedify-demo
 [Deno]: https://deno.com/
@@ -55,6 +59,8 @@ resources:
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
 [NodeInfo]: https://nodeinfo.diaspora.software/
+[Matrix chat space]: https://matrix.to/#/#fedify:matrix.org
+[GitHub Discussions]: https://github.com/dahlia/fedify/discussions
 [Mastodon]: https://joinmastodon.org/
 [Lemmy]: https://join-lemmy.org/
 [Pixelfed]: https://pixelfed.org/

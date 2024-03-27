@@ -1,8 +1,8 @@
 <!-- deno-fmt-ignore-file -->
 
 ![](./logo.svg)
-Fedify: a fediverse server framework
-====================================
+Fedify: an ActivityPub server framework
+=======================================
 
 [![JSR][JSR badge]][JSR]
 [![JSR score][JSR score badge]][JSR score]
@@ -44,6 +44,9 @@ resources:
  -  [API reference][JSR]
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 
+If you have any questions, suggestions, or feedback, please feel free to
+join our [Matrix chat space][Matrix] or [GitHub Discussions].
+
 [^1]: You may already know some of the networks in the fediverse, such as
       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
 
@@ -65,6 +68,7 @@ resources:
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
 [NodeInfo]: https://nodeinfo.diaspora.software/
+[GitHub Discussions]: https://github.com/dahlia/fedify/discussions
 [Mastodon]: https://joinmastodon.org/
 [Lemmy]: https://join-lemmy.org/
 [Pixelfed]: https://pixelfed.org/
