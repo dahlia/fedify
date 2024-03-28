@@ -16,12 +16,12 @@ Deno.test("sign()", async () => {
   });
   const signed = await sign(
     request,
-    privateKey2,
+    await privateKey2(),
     new URL("https://example.com/key2"),
   );
   assertEquals(
     await verify(signed, mockDocumentLoader),
-    publicKey2,
+    await publicKey2(),
   );
 });
 
@@ -50,10 +50,7 @@ Deno.test("verify()", async () => {
     mockDocumentLoader,
     Temporal.Instant.from("2024-03-05T07:49:44Z"),
   );
-  assertEquals(
-    key,
-    publicKey1,
-  );
+  assertEquals(key, await publicKey1());
 
   assertEquals(
     await verify(
@@ -134,12 +131,20 @@ Deno.test("verify()", async () => {
 
 Deno.test("doesActorOwnKey()", async () => {
   const activity = new Create({ actor: new URL("https://example.com/person") });
-  assert(await doesActorOwnKey(activity, publicKey1, mockDocumentLoader));
-  assert(await doesActorOwnKey(activity, publicKey2, mockDocumentLoader));
+  assert(
+    await doesActorOwnKey(activity, await publicKey1(), mockDocumentLoader),
+  );
+  assert(
+    await doesActorOwnKey(activity, await publicKey2(), mockDocumentLoader),
+  );
 
   const activity2 = new Create({
     actor: new URL("https://example.com/hong-gildong"),
   });
-  assertFalse(await doesActorOwnKey(activity2, publicKey1, mockDocumentLoader));
-  assertFalse(await doesActorOwnKey(activity2, publicKey2, mockDocumentLoader));
+  assertFalse(
+    await doesActorOwnKey(activity2, await publicKey1(), mockDocumentLoader),
+  );
+  assertFalse(
+    await doesActorOwnKey(activity2, await publicKey2(), mockDocumentLoader),
+  );
 });

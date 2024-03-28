@@ -34,7 +34,7 @@ export async function lookupWebFinger(
     }
     if (!response.ok) return null;
     try {
-      return await response.json();
+      return await response.json() as ResourceDescriptor;
     } catch (e) {
       if (e instanceof SyntaxError) return null;
       throw e;

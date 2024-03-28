@@ -82,9 +82,9 @@ Deno.test("Federation.createContext()", async (t) => {
 
     federation
       .setActorDispatcher("/users/{handle}", () => new Person({}))
-      .setKeyPairDispatcher(() => ({
-        privateKey: privateKey2,
-        publicKey: publicKey2.publicKey!,
+      .setKeyPairDispatcher(async () => ({
+        privateKey: await privateKey2(),
+        publicKey: (await publicKey2()).publicKey!,
       }));
     assertEquals(
       ctx.getActorUri("handle"),
@@ -100,7 +100,7 @@ Deno.test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       await ctx.getActorKey("handle"),
-      publicKey2.clone({
+      (await publicKey2()).clone({
         id: new URL("https://example.com/users/handle#main-key"),
         owner: new URL("https://example.com/users/handle"),
       }),
@@ -113,7 +113,7 @@ Deno.test("Federation.createContext()", async (t) => {
     });
     const loader2 = ctx.getDocumentLoader({
       keyId: new URL("https://example.com/key2"),
-      privateKey: privateKey2,
+      privateKey: await privateKey2(),
     });
     assertEquals(await loader2("https://example.com/object"), {
       contextUrl: null,
@@ -177,7 +177,9 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
   mf.mock("GET@/key2", async () => {
     return new Response(
       JSON.stringify(
-        await publicKey2.toJsonLd({ documentLoader: mockDocumentLoader }),
+        await (await publicKey2()).toJsonLd({
+          documentLoader: mockDocumentLoader,
+        }),
       ),
       { headers: { "Content-Type": "application/activity+json" } },
     );
@@ -231,9 +233,9 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         "/users/{handle}",
         (_, handle) => handle === "john" ? new Person({}) : null,
       )
-      .setKeyPairDispatcher(() => ({
-        privateKey: privateKey2,
-        publicKey: publicKey2.publicKey!,
+      .setKeyPairDispatcher(async () => ({
+        privateKey: await privateKey2(),
+        publicKey: (await publicKey2()).publicKey!,
       }));
     response = await federation.handle(
       new Request("https://example.com/inbox", { method: "POST" }),
@@ -268,7 +270,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     });
     request = await sign(
       request,
-      privateKey2,
+      await privateKey2(),
       new URL("https://example.com/key2"),
     );
     response = await federation.handle(request, { contextData: undefined });
@@ -293,7 +295,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     });
     request = await sign(
       request,
-      privateKey2,
+      await privateKey2(),
       new URL("https://example.com/key2"),
     );
     response = await federation.handle(request, { contextData: undefined });
@@ -325,9 +327,9 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         "/users/{handle}",
         (_, handle) => handle === "john" ? new Person({}) : null,
       )
-      .setKeyPairDispatcher(() => ({
-        privateKey: privateKey2,
-        publicKey: publicKey2.publicKey!,
+      .setKeyPairDispatcher(async () => ({
+        privateKey: await privateKey2(),
+        publicKey: (await publicKey2()).publicKey!,
       }));
     const errors: unknown[] = [];
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
@@ -350,7 +352,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     });
     request = await sign(
       request,
-      privateKey2,
+      await privateKey2(),
       new URL("https://example.com/key2"),
     );
     const response = await federation.handle(request, {

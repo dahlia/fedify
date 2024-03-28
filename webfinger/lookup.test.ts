@@ -65,7 +65,8 @@ Deno.test("lookupWebFinger()", async (t) => {
 
   mf.mock(
     "GET@/.well-known/webfinger",
-    (req) => Response.redirect(new URL("/.well-known/webfinger2", req.url)),
+    (req) =>
+      Response.redirect(new URL("/.well-known/webfinger2", req.url), 302),
   );
   mf.mock(
     "GET@/.well-known/webfinger2",

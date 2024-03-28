@@ -22,6 +22,7 @@ export function validateCryptoKey(
         "More algorithms will be added in the future!",
     );
   }
+  // @ts-ignore TS2304
   const algorithm = key.algorithm as unknown as RsaHashedKeyAlgorithm;
   if (algorithm.hash.name != "SHA-256") {
     throw new TypeError(

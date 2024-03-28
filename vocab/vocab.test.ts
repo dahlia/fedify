@@ -374,372 +374,393 @@ function getAllProperties(
   return props;
 }
 
-// deno-lint-ignore no-explicit-any
-const sampleValues: Record<string, any> = {
-  "http://www.w3.org/2001/XMLSchema#boolean": true,
-  "http://www.w3.org/2001/XMLSchema#integer": -123,
-  "http://www.w3.org/2001/XMLSchema#nonNegativeInteger": 123,
-  "http://www.w3.org/2001/XMLSchema#float": 12.34,
-  "http://www.w3.org/2001/XMLSchema#string": "hello",
-  "http://www.w3.org/2001/XMLSchema#anyURI": new URL("https://example.com/"),
-  "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString": new LanguageString(
-    "hello",
-    "en",
-  ),
-  "http://www.w3.org/2001/XMLSchema#dateTime": Temporal.Instant.from(
-    "2024-03-03T08:30:06.796196096Z",
-  ),
-  "http://www.w3.org/2001/XMLSchema#duration": Temporal.Duration.from({
-    hours: 1,
-  }),
-  "fedify:langTag": parseLanguageTag("en"),
-  "fedify:publicKey": publicKey1.publicKey,
-  "fedify:units": "m",
-};
-
-const types = await loadSchemaFiles(import.meta.dirname!);
-for (const typeUri in types) {
-  const type = types[typeUri];
-  // @ts-ignore: classes are all different
-  const cls = vocab[type.name];
-  sampleValues[typeUri] = new cls({
-    "@id": "https://example.com/",
-    "@type": typeUri,
-  });
-}
-
-for (const typeUri in types) {
-  const type = types[typeUri];
-  // @ts-ignore: classes are all different
-  const cls = vocab[type.name];
-  const allProperties = getAllProperties(type, types);
-  const initValues = globalThis.Object.fromEntries(
-    allProperties.map((property) =>
-      !property.functional
-        ? [property.pluralName, property.range.map((t) => sampleValues[t])]
-        : [property.singularName, sampleValues[property.range[0]]]
+Deno.test("auto-generated tests", async (t) => {
+  // deno-lint-ignore no-explicit-any
+  const sampleValues: Record<string, any> = {
+    "http://www.w3.org/2001/XMLSchema#boolean": true,
+    "http://www.w3.org/2001/XMLSchema#integer": -123,
+    "http://www.w3.org/2001/XMLSchema#nonNegativeInteger": 123,
+    "http://www.w3.org/2001/XMLSchema#float": 12.34,
+    "http://www.w3.org/2001/XMLSchema#string": "hello",
+    "http://www.w3.org/2001/XMLSchema#anyURI": new URL("https://example.com/"),
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString": new LanguageString(
+      "hello",
+      "en",
     ),
-  );
+    "http://www.w3.org/2001/XMLSchema#dateTime": Temporal.Instant.from(
+      "2024-03-03T08:30:06.796196096Z",
+    ),
+    "http://www.w3.org/2001/XMLSchema#duration": Temporal.Duration.from({
+      hours: 1,
+    }),
+    "fedify:langTag": parseLanguageTag("en"),
+    "fedify:publicKey": (await publicKey1()).publicKey,
+    "fedify:units": "m",
+  };
 
-  Deno.test(`new ${type.name}() [auto]`, async () => {
-    const instance = new cls(initValues);
-    for (const property of allProperties) {
-      if (areAllScalarTypes(property.range, types)) {
-        if (property.functional || property.singularAccessor) {
-          assertEquals(
-            instance[property.singularName],
-            sampleValues[property.range[0]],
-          );
-        }
-        if (!property.functional) {
-          assertEquals(
-            instance[property.pluralName],
-            property.range.map((t) => sampleValues[t]),
-          );
-        }
-      } else {
-        if (property.functional || property.singularAccessor) {
-          assertEquals(
-            await instance[`get${toPascalCase(property.singularName)}`].call(
-              instance,
-              { documentLoader: mockDocumentLoader },
-            ),
-            sampleValues[property.range[0]],
-          );
-          assertEquals(
-            instance[`${property.singularName}Id`],
-            sampleValues[property.range[0]].id,
-          );
-        }
-        if (!property.functional) {
-          assertEquals(
-            await toArray(
-              instance[`get${toPascalCase(property.pluralName)}`].call(
-                instance,
-                { documentLoader: mockDocumentLoader },
-              ),
-            ),
-            property.range.map((t) => sampleValues[t]),
-          );
-          assertEquals(
-            instance[`${property.singularName}Ids`],
-            property.range.map((t) => sampleValues[t].id).filter((i) =>
-              i != null
-            ),
-          );
-        }
-      }
+  const types = await loadSchemaFiles(import.meta.dirname!);
+  for (const typeUri in types) {
+    const type = types[typeUri];
+    // @ts-ignore: classes are all different
+    const cls = vocab[type.name];
+    sampleValues[typeUri] = new cls({
+      "@id": "https://example.com/",
+      "@type": typeUri,
+    });
+  }
 
-      const empty = new cls({});
+  for (const typeUri in types) {
+    const type = types[typeUri];
+    // @ts-ignore: classes are all different
+    const cls = vocab[type.name];
+    const allProperties = getAllProperties(type, types);
+    const initValues = globalThis.Object.fromEntries(
+      allProperties.map((property) =>
+        !property.functional
+          ? [property.pluralName, property.range.map((t) => sampleValues[t])]
+          : [property.singularName, sampleValues[property.range[0]]]
+      ),
+    );
+
+    await t.step(`new ${type.name}()`, async () => {
+      const instance = new cls(initValues);
       for (const property of allProperties) {
         if (areAllScalarTypes(property.range, types)) {
           if (property.functional || property.singularAccessor) {
-            assertEquals(empty[property.singularName], null);
+            assertEquals(
+              instance[property.singularName],
+              sampleValues[property.range[0]],
+            );
           }
           if (!property.functional) {
-            assertEquals(empty[property.pluralName], []);
+            assertEquals(
+              instance[property.pluralName],
+              property.range.map((t) => sampleValues[t]),
+            );
           }
         } else {
           if (property.functional || property.singularAccessor) {
             assertEquals(
-              await empty[`get${toPascalCase(property.singularName)}`].call(
-                empty,
+              await instance[`get${toPascalCase(property.singularName)}`].call(
+                instance,
                 { documentLoader: mockDocumentLoader },
               ),
-              null,
+              sampleValues[property.range[0]],
             );
-            assertEquals(empty[`${property.singularName}Id`], null);
+            assertEquals(
+              instance[`${property.singularName}Id`],
+              sampleValues[property.range[0]].id,
+            );
           }
           if (!property.functional) {
             assertEquals(
               await toArray(
-                empty[`get${toPascalCase(property.pluralName)}`].call(
-                  empty,
+                instance[`get${toPascalCase(property.pluralName)}`].call(
+                  instance,
                   { documentLoader: mockDocumentLoader },
                 ),
               ),
-              [],
+              property.range.map((t) => sampleValues[t]),
             );
-            assertEquals(empty[`${property.singularName}Ids`], []);
+            assertEquals(
+              instance[`${property.singularName}Ids`],
+              property.range.map((t) => sampleValues[t].id).filter((i) =>
+                i != null
+              ),
+            );
+          }
+        }
+
+        const empty = new cls({});
+        for (const property of allProperties) {
+          if (areAllScalarTypes(property.range, types)) {
+            if (property.functional || property.singularAccessor) {
+              assertEquals(empty[property.singularName], null);
+            }
+            if (!property.functional) {
+              assertEquals(empty[property.pluralName], []);
+            }
+          } else {
+            if (property.functional || property.singularAccessor) {
+              assertEquals(
+                await empty[`get${toPascalCase(property.singularName)}`].call(
+                  empty,
+                  { documentLoader: mockDocumentLoader },
+                ),
+                null,
+              );
+              assertEquals(empty[`${property.singularName}Id`], null);
+            }
+            if (!property.functional) {
+              assertEquals(
+                await toArray(
+                  empty[`get${toPascalCase(property.pluralName)}`].call(
+                    empty,
+                    { documentLoader: mockDocumentLoader },
+                  ),
+                ),
+                [],
+              );
+              assertEquals(empty[`${property.singularName}Ids`], []);
+            }
           }
         }
       }
-    }
 
-    for (const property of allProperties) {
-      if (!property.functional && property.singularAccessor) {
-        assertThrows(
-          () =>
-            new cls({
-              [property.singularName]: sampleValues[property.range[0]],
-              [property.pluralName]: property.range.map((t) => sampleValues[t]),
-            }),
-          TypeError,
-        );
+      for (const property of allProperties) {
+        if (!property.functional && property.singularAccessor) {
+          assertThrows(
+            () =>
+              new cls({
+                [property.singularName]: sampleValues[property.range[0]],
+                [property.pluralName]: property.range.map((t) =>
+                  sampleValues[t]
+                ),
+              }),
+            TypeError,
+          );
+        }
       }
-    }
 
-    const instance2 = new cls({
-      id: new URL("https://example.com/"),
-      ...globalThis.Object.fromEntries(
-        allProperties.filter((p) => !areAllScalarTypes(p.range, types)).map(
-          (p) =>
-            p.functional
-              ? [p.singularName, new URL("https://example.com/test")]
-              : [p.pluralName, [new URL("https://example.com/test")]],
+      const instance2 = new cls({
+        id: new URL("https://example.com/"),
+        ...globalThis.Object.fromEntries(
+          allProperties.filter((p) => !areAllScalarTypes(p.range, types)).map(
+            (p) =>
+              p.functional
+                ? [p.singularName, new URL("https://example.com/test")]
+                : [p.pluralName, [new URL("https://example.com/test")]],
+          ),
         ),
-      ),
+      });
+      for (const property of allProperties) {
+        if (areAllScalarTypes(property.range, types)) continue;
+        if (property.functional || property.singularAccessor) {
+          assertEquals(
+            instance2[`${property.singularName}Id`],
+            new URL("https://example.com/test"),
+          );
+        }
+        if (!property.functional) {
+          assertEquals(
+            instance2[`${property.singularName}Ids`],
+            [new URL("https://example.com/test")],
+          );
+        }
+      }
     });
+
+    await t.step(`${type.name}.clone()`, () => {
+      const instance = new cls({});
+      for (const property of allProperties) {
+        if (!property.functional && property.singularAccessor) {
+          assertThrows(
+            () =>
+              instance.clone({
+                [property.singularName]: sampleValues[property.range[0]],
+                [property.pluralName]: property.range.map((t) =>
+                  sampleValues[t]
+                ),
+              }),
+            TypeError,
+          );
+        }
+      }
+    });
+
     for (const property of allProperties) {
       if (areAllScalarTypes(property.range, types)) continue;
+
+      const docLoader = (url: string) => {
+        if (url !== `https://example.com/test`) throw new Error("Not Found");
+        return {
+          documentUrl: url,
+          contextUrl: null,
+          document: sampleValues[property.range[0]].toJsonLd({
+            documentLoader: mockDocumentLoader,
+          }),
+        };
+      };
+
       if (property.functional || property.singularAccessor) {
-        assertEquals(
-          instance2[`${property.singularName}Id`],
-          new URL("https://example.com/test"),
+        await t.step(
+          `${type.name}.get${toPascalCase(property.singularName)}()`,
+          async () => {
+            const instance = new cls({
+              [property.singularName]: new URL("https://example.com/test"),
+            });
+            const value =
+              await instance[`get${toPascalCase(property.singularName)}`]
+                .call(instance, { documentLoader: docLoader });
+            assertEquals(value, sampleValues[property.range[0]]);
+
+            if (property.untyped) return;
+            const wrongRef = new cls({
+              [property.singularName]: new URL(
+                "https://example.com/wrong-type",
+              ),
+            });
+            await assertRejects(
+              () =>
+                wrongRef[`get${toPascalCase(property.singularName)}`].call(
+                  wrongRef,
+                  {
+                    documentLoader: mockDocumentLoader,
+                  },
+                ),
+              TypeError,
+            );
+          },
         );
       }
       if (!property.functional) {
-        assertEquals(
-          instance2[`${property.singularName}Ids`],
-          [new URL("https://example.com/test")],
-        );
-      }
-    }
-  });
+        await t.step(
+          `${type.name}.get${toPascalCase(property.pluralName)}()`,
+          async () => {
+            const instance = new cls({
+              [property.pluralName]: [new URL("https://example.com/test")],
+            });
+            const value = instance[`get${toPascalCase(property.pluralName)}`]
+              .call(
+                instance,
+                { documentLoader: docLoader },
+              );
+            assertEquals(await toArray(value), [
+              sampleValues[property.range[0]],
+            ]);
 
-  Deno.test(`${type.name}.clone() [auto]`, () => {
-    const instance = new cls({});
-    for (const property of allProperties) {
-      if (!property.functional && property.singularAccessor) {
-        assertThrows(
-          () =>
-            instance.clone({
-              [property.singularName]: sampleValues[property.range[0]],
-              [property.pluralName]: property.range.map((t) => sampleValues[t]),
-            }),
-          TypeError,
-        );
-      }
-    }
-  });
-
-  for (const property of allProperties) {
-    if (areAllScalarTypes(property.range, types)) continue;
-
-    const docLoader = (url: string) => {
-      if (url !== `https://example.com/test`) throw new Error("Not Found");
-      return {
-        documentUrl: url,
-        contextUrl: null,
-        document: sampleValues[property.range[0]].toJsonLd({
-          documentLoader: mockDocumentLoader,
-        }),
-      };
-    };
-
-    if (property.functional || property.singularAccessor) {
-      Deno.test(`${type.name}.get${toPascalCase(property.singularName)}() [auto]`, async () => {
-        const instance = new cls({
-          [property.singularName]: new URL("https://example.com/test"),
-        });
-        const value =
-          await instance[`get${toPascalCase(property.singularName)}`]
-            .call(instance, { documentLoader: docLoader });
-        assertEquals(value, sampleValues[property.range[0]]);
-
-        if (property.untyped) return;
-        const wrongRef = new cls({
-          [property.singularName]: new URL("https://example.com/wrong-type"),
-        });
-        await assertRejects(
-          () =>
-            wrongRef[`get${toPascalCase(property.singularName)}`].call(
-              wrongRef,
-              {
-                documentLoader: mockDocumentLoader,
-              },
-            ),
-          TypeError,
-        );
-      });
-    }
-    if (!property.functional) {
-      Deno.test(`${type.name}.get${toPascalCase(property.pluralName)}() [auto]`, async () => {
-        const instance = new cls({
-          [property.pluralName]: [new URL("https://example.com/test")],
-        });
-        const value = instance[`get${toPascalCase(property.pluralName)}`].call(
-          instance,
-          { documentLoader: docLoader },
-        );
-        assertEquals(await toArray(value), [sampleValues[property.range[0]]]);
-
-        if (property.untyped) return;
-        const wrongRef = new cls({
-          [property.pluralName]: [new URL("https://example.com/wrong-type")],
-        });
-        await assertRejects(
-          () =>
-            toArray(wrongRef[`get${toPascalCase(property.pluralName)}`].call(
-              wrongRef,
-              {
-                documentLoader: mockDocumentLoader,
-              },
-            )),
-          TypeError,
-        );
-      });
-    }
-  }
-
-  Deno.test(`${type.name}.fromJsonLd() [auto]`, async () => {
-    const instance = await cls.fromJsonLd({
-      "@id": "https://example.com/",
-      "@type": typeUri,
-    }, { documentLoader: mockDocumentLoader });
-    assertInstanceOf(instance, cls);
-    assertEquals(instance.id, new URL("https://example.com/"));
-    assertEquals(
-      await instance.toJsonLd({ documentLoader: mockDocumentLoader }),
-      {
-        "@context": type.defaultContext,
-        "id": "https://example.com/",
-        "type": type.name === "Endpoints" ? "as:Endpoints" : type.name,
-      },
-    );
-
-    if (type.extends != null) {
-      await assertRejects(() =>
-        cls.fromJsonLd({
-          "@id": "https://example.com/",
-          "@type": "https://example.com/",
-        }), TypeError);
-    }
-
-    await assertRejects(() => cls.fromJsonLd(null), TypeError);
-    await assertRejects(() => cls.fromJsonLd(undefined), TypeError);
-  });
-
-  Deno.test(`${type.name}.toJsonLd() [auto]`, async () => {
-    const instance = new cls({
-      id: new URL("https://example.com/"),
-      ...initValues,
-    });
-    const jsonLd = await instance.toJsonLd({
-      documentLoader: mockDocumentLoader,
-    });
-    assertEquals(jsonLd["@context"], type.defaultContext);
-    assertEquals(jsonLd.id, "https://example.com/");
-    const restored = await cls.fromJsonLd(jsonLd, {
-      documentLoader: mockDocumentLoader,
-    });
-    assertEquals(restored, instance);
-
-    const expanded = await instance.toJsonLd({
-      documentLoader: mockDocumentLoader,
-      expand: true,
-    });
-    const restored2 = await cls.fromJsonLd(expanded, {
-      documentLoader: mockDocumentLoader,
-    });
-    assertEquals(restored2, instance);
-
-    const instance2 = new cls({
-      id: new URL("https://example.com/"),
-      ...initValues,
-      ...globalThis.Object.fromEntries(
-        allProperties.filter((p) => !areAllScalarTypes(p.range, types)).map(
-          (p) =>
-            p.functional
-              ? [p.singularName, new URL("https://example.com/test")]
-              : [p.pluralName, [new URL("https://example.com/test")]],
-        ),
-      ),
-    });
-    const jsonLd2 = await instance2.toJsonLd({
-      documentLoader: mockDocumentLoader,
-    });
-    const restored3 = await cls.fromJsonLd(jsonLd2, {
-      documentLoader: mockDocumentLoader,
-    });
-    assertEquals(restored3, instance2);
-  });
-
-  Deno.test(`Deno.inspect(${type.name}) [auto]`, async (t) => {
-    const empty = new cls({});
-    assertEquals(Deno.inspect(empty), `${type.name} {}`);
-
-    const instance = new cls({
-      id: new URL("https://example.com/"),
-      ...initValues,
-    });
-    await assertSnapshot(t, Deno.inspect(instance));
-
-    const instance2 = instance.clone(
-      globalThis.Object.fromEntries(
-        type.properties.filter((p) => !areAllScalarTypes(p.range, types)).map(
-          (p) =>
-            p.functional
-              ? [p.singularName, new URL("https://example.com/")]
-              : [p.pluralName, [new URL("https://example.com/")]],
-        ),
-      ),
-    );
-    await assertSnapshot(t, Deno.inspect(instance2));
-
-    const instance3 = instance.clone(
-      globalThis.Object.fromEntries(
-        type.properties.filter((p) => !p.functional).map(
-          (p) => {
-            assertFalse(p.functional);
-            return [
-              p.pluralName,
-              [sampleValues[p.range[0]], sampleValues[p.range[0]]],
-            ];
+            if (property.untyped) return;
+            const wrongRef = new cls({
+              [property.pluralName]: [
+                new URL("https://example.com/wrong-type"),
+              ],
+            });
+            await assertRejects(
+              () =>
+                toArray(
+                  wrongRef[`get${toPascalCase(property.pluralName)}`].call(
+                    wrongRef,
+                    {
+                      documentLoader: mockDocumentLoader,
+                    },
+                  ),
+                ),
+              TypeError,
+            );
           },
+        );
+      }
+    }
+
+    await t.step(`${type.name}.fromJsonLd()`, async () => {
+      const instance = await cls.fromJsonLd({
+        "@id": "https://example.com/",
+        "@type": typeUri,
+      }, { documentLoader: mockDocumentLoader });
+      assertInstanceOf(instance, cls);
+      assertEquals(instance.id, new URL("https://example.com/"));
+      assertEquals(
+        await instance.toJsonLd({ documentLoader: mockDocumentLoader }),
+        {
+          "@context": type.defaultContext,
+          "id": "https://example.com/",
+          "type": type.name === "Endpoints" ? "as:Endpoints" : type.name,
+        },
+      );
+
+      if (type.extends != null) {
+        await assertRejects(() =>
+          cls.fromJsonLd({
+            "@id": "https://example.com/",
+            "@type": "https://example.com/",
+          }), TypeError);
+      }
+
+      await assertRejects(() => cls.fromJsonLd(null), TypeError);
+      await assertRejects(() => cls.fromJsonLd(undefined), TypeError);
+    });
+
+    await t.step(`${type.name}.toJsonLd()`, async () => {
+      const instance = new cls({
+        id: new URL("https://example.com/"),
+        ...initValues,
+      });
+      const jsonLd = await instance.toJsonLd({
+        documentLoader: mockDocumentLoader,
+      });
+      assertEquals(jsonLd["@context"], type.defaultContext);
+      assertEquals(jsonLd.id, "https://example.com/");
+      const restored = await cls.fromJsonLd(jsonLd, {
+        documentLoader: mockDocumentLoader,
+      });
+      assertEquals(restored, instance);
+
+      const expanded = await instance.toJsonLd({
+        documentLoader: mockDocumentLoader,
+        expand: true,
+      });
+      const restored2 = await cls.fromJsonLd(expanded, {
+        documentLoader: mockDocumentLoader,
+      });
+      assertEquals(restored2, instance);
+
+      const instance2 = new cls({
+        id: new URL("https://example.com/"),
+        ...initValues,
+        ...globalThis.Object.fromEntries(
+          allProperties.filter((p) => !areAllScalarTypes(p.range, types)).map(
+            (p) =>
+              p.functional
+                ? [p.singularName, new URL("https://example.com/test")]
+                : [p.pluralName, [new URL("https://example.com/test")]],
+          ),
         ),
-      ),
-    );
-    await assertSnapshot(t, Deno.inspect(instance3));
-  });
-}
+      });
+      const jsonLd2 = await instance2.toJsonLd({
+        documentLoader: mockDocumentLoader,
+      });
+      const restored3 = await cls.fromJsonLd(jsonLd2, {
+        documentLoader: mockDocumentLoader,
+      });
+      assertEquals(restored3, instance2);
+    });
+
+    await t.step(`Deno.inspect(${type.name})`, async (t) => {
+      const empty = new cls({});
+      assertEquals(Deno.inspect(empty), `${type.name} {}`);
+
+      const instance = new cls({
+        id: new URL("https://example.com/"),
+        ...initValues,
+      });
+      await assertSnapshot(t, Deno.inspect(instance));
+
+      const instance2 = instance.clone(
+        globalThis.Object.fromEntries(
+          type.properties.filter((p) => !areAllScalarTypes(p.range, types)).map(
+            (p) =>
+              p.functional
+                ? [p.singularName, new URL("https://example.com/")]
+                : [p.pluralName, [new URL("https://example.com/")]],
+          ),
+        ),
+      );
+      await assertSnapshot(t, Deno.inspect(instance2));
+
+      const instance3 = instance.clone(
+        globalThis.Object.fromEntries(
+          type.properties.filter((p) => !p.functional).map(
+            (p) => {
+              assertFalse(p.functional);
+              return [
+                p.pluralName,
+                [sampleValues[p.range[0]], sampleValues[p.range[0]]],
+              ];
+            },
+          ),
+        ),
+      );
+      await assertSnapshot(t, Deno.inspect(instance3));
+    });
+  }
+});

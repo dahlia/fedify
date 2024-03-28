@@ -180,11 +180,12 @@ async function loadSchemaValidator(): Promise<Validator> {
   return new Validator(schemaObject as JsonSchema);
 }
 
-const schemaValidator: Validator = await loadSchemaValidator();
+let schemaValidator: Validator | undefined = undefined;
 
 async function loadSchema(path: string): Promise<TypeSchema> {
   const content = await Deno.readTextFile(path);
   const schema = parse(content);
+  if (schemaValidator == null) schemaValidator = await loadSchemaValidator();
   const result = schemaValidator.validate(schema);
   const errors: SchemaError[] = [];
   if (result.valid) return schema as TypeSchema;

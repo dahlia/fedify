@@ -96,8 +96,8 @@ Deno.test("sendActivity()", async (t) => {
     });
     await sendActivity({
       activity,
-      privateKey: privateKey2,
-      keyId: publicKey2.id!,
+      privateKey: await privateKey2(),
+      keyId: (await publicKey2()).id!,
       inbox: new URL("https://example.com/inbox"),
       documentLoader: mockDocumentLoader,
     });
@@ -123,11 +123,11 @@ Deno.test("sendActivity()", async (t) => {
       actor: new URL("https://example.com/person"),
     });
     await assertRejects(
-      () =>
-        sendActivity({
+      async () =>
+        await sendActivity({
           activity,
-          privateKey: privateKey2,
-          keyId: publicKey2.id!,
+          privateKey: await privateKey2(),
+          keyId: (await publicKey2()).id!,
           inbox: new URL("https://example.com/inbox2"),
           documentLoader: mockDocumentLoader,
         }),
@@ -139,11 +139,11 @@ Deno.test("sendActivity()", async (t) => {
 
     activity = new Create({});
     await assertRejects(
-      () =>
-        sendActivity({
+      async () =>
+        await sendActivity({
           activity,
-          privateKey: privateKey2,
-          keyId: publicKey2.id!,
+          privateKey: await privateKey2(),
+          keyId: (await publicKey2()).id!,
           inbox: new URL("https://example.com/inbox2"),
           documentLoader: mockDocumentLoader,
         }),

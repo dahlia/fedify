@@ -1,6 +1,6 @@
 export const snapshot = {};
 
-snapshot[`Deno.inspect(CryptographicKey) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(CryptographicKey) 1`] = `
 'CryptographicKey {
   id: URL "https://example.com/",
   owner: Application {},
@@ -18,7 +18,7 @@ snapshot[`Deno.inspect(CryptographicKey) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(CryptographicKey) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(CryptographicKey) 2`] = `
 'CryptographicKey {
   owner: URL "https://example.com/",
   publicKey: CryptoKey {
@@ -35,7 +35,7 @@ snapshot[`Deno.inspect(CryptographicKey) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(CryptographicKey) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(CryptographicKey) 3`] = `
 'CryptographicKey {
   owner: Application {},
   publicKey: CryptoKey {
@@ -52,7 +52,7 @@ snapshot[`Deno.inspect(CryptographicKey) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Accept) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Accept) 1`] = `
 'Accept {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -102,7 +102,7 @@ snapshot[`Deno.inspect(Accept) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Accept) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Accept) 2`] = `
 'Accept {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -151,7 +151,7 @@ snapshot[`Deno.inspect(Accept) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Accept) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Accept) 3`] = `
 'Accept {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -212,7 +212,7 @@ snapshot[`Deno.inspect(Accept) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Activity) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Activity) 1`] = `
 'Activity {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -262,7 +262,7 @@ snapshot[`Deno.inspect(Activity) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Activity) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Activity) 2`] = `
 'Activity {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -311,7 +311,7 @@ snapshot[`Deno.inspect(Activity) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Activity) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Activity) 3`] = `
 'Activity {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -372,7 +372,7 @@ snapshot[`Deno.inspect(Activity) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Add) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Add) 1`] = `
 'Add {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -422,7 +422,7 @@ snapshot[`Deno.inspect(Add) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Add) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Add) 2`] = `
 'Add {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -471,7 +471,7 @@ snapshot[`Deno.inspect(Add) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Add) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Add) 3`] = `
 'Add {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -532,7 +532,7 @@ snapshot[`Deno.inspect(Add) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Announce) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Announce) 1`] = `
 'Announce {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -582,7 +582,7 @@ snapshot[`Deno.inspect(Announce) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Announce) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Announce) 2`] = `
 'Announce {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -631,7 +631,7 @@ snapshot[`Deno.inspect(Announce) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Announce) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Announce) 3`] = `
 'Announce {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -692,7 +692,7 @@ snapshot[`Deno.inspect(Announce) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Application) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Application) 1`] = `
 'Application {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -754,7 +754,7 @@ snapshot[`Deno.inspect(Application) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Application) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Application) 2`] = `
 'Application {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -815,7 +815,7 @@ snapshot[`Deno.inspect(Application) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Application) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Application) 3`] = `
 'Application {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -888,7 +888,7 @@ snapshot[`Deno.inspect(Application) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Article) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Article) 1`] = `
 'Article {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -936,7 +936,7 @@ snapshot[`Deno.inspect(Article) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Article) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Article) 2`] = `
 'Article {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -983,7 +983,7 @@ snapshot[`Deno.inspect(Article) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Article) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Article) 3`] = `
 'Article {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -1042,7 +1042,7 @@ snapshot[`Deno.inspect(Article) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Audio) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Audio) 1`] = `
 'Audio {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -1090,7 +1090,7 @@ snapshot[`Deno.inspect(Audio) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Audio) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Audio) 2`] = `
 'Audio {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -1137,7 +1137,7 @@ snapshot[`Deno.inspect(Audio) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Audio) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Audio) 3`] = `
 'Audio {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -1196,7 +1196,7 @@ snapshot[`Deno.inspect(Audio) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Block) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Block) 1`] = `
 'Block {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -1246,7 +1246,7 @@ snapshot[`Deno.inspect(Block) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Block) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Block) 2`] = `
 'Block {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -1295,7 +1295,7 @@ snapshot[`Deno.inspect(Block) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Block) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Block) 3`] = `
 'Block {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -1356,7 +1356,7 @@ snapshot[`Deno.inspect(Block) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Collection) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Collection) 1`] = `
 'Collection {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -1409,7 +1409,7 @@ snapshot[`Deno.inspect(Collection) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Collection) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Collection) 2`] = `
 'Collection {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -1461,7 +1461,7 @@ snapshot[`Deno.inspect(Collection) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Collection) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Collection) 3`] = `
 'Collection {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -1525,7 +1525,7 @@ snapshot[`Deno.inspect(Collection) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(CollectionPage) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(CollectionPage) 1`] = `
 'CollectionPage {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -1581,7 +1581,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(CollectionPage) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(CollectionPage) 2`] = `
 'CollectionPage {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -1636,7 +1636,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(CollectionPage) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(CollectionPage) 3`] = `
 'CollectionPage {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -1703,7 +1703,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Create) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Create) 1`] = `
 'Create {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -1753,7 +1753,7 @@ snapshot[`Deno.inspect(Create) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Create) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Create) 2`] = `
 'Create {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -1802,7 +1802,7 @@ snapshot[`Deno.inspect(Create) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Create) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Create) 3`] = `
 'Create {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -1863,7 +1863,7 @@ snapshot[`Deno.inspect(Create) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Delete) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Delete) 1`] = `
 'Delete {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -1913,7 +1913,7 @@ snapshot[`Deno.inspect(Delete) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Delete) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Delete) 2`] = `
 'Delete {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -1962,7 +1962,7 @@ snapshot[`Deno.inspect(Delete) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Delete) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Delete) 3`] = `
 'Delete {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -2023,7 +2023,7 @@ snapshot[`Deno.inspect(Delete) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Dislike) 1`] = `
 'Dislike {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -2073,7 +2073,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Dislike) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Dislike) 2`] = `
 'Dislike {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -2122,7 +2122,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Dislike) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Dislike) 3`] = `
 'Dislike {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -2183,7 +2183,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Document) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Document) 1`] = `
 'Document {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -2231,7 +2231,7 @@ snapshot[`Deno.inspect(Document) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Document) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Document) 2`] = `
 'Document {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -2278,7 +2278,7 @@ snapshot[`Deno.inspect(Document) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Document) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Document) 3`] = `
 'Document {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -2337,7 +2337,7 @@ snapshot[`Deno.inspect(Document) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Endpoints) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Endpoints) 1`] = `
 'Endpoints {
   id: URL "https://example.com/",
   proxyUrl: URL {
@@ -2421,7 +2421,7 @@ snapshot[`Deno.inspect(Endpoints) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Endpoints) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Endpoints) 2`] = `
 'Endpoints {
   proxyUrl: URL {
     href: "https://example.com/",
@@ -2504,7 +2504,7 @@ snapshot[`Deno.inspect(Endpoints) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Endpoints) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Endpoints) 3`] = `
 'Endpoints {
   proxyUrl: URL {
     href: "https://example.com/",
@@ -2587,7 +2587,7 @@ snapshot[`Deno.inspect(Endpoints) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Event) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Event) 1`] = `
 'Event {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -2635,7 +2635,7 @@ snapshot[`Deno.inspect(Event) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Event) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Event) 2`] = `
 'Event {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -2682,7 +2682,7 @@ snapshot[`Deno.inspect(Event) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Event) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Event) 3`] = `
 'Event {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -2741,7 +2741,7 @@ snapshot[`Deno.inspect(Event) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Flag) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Flag) 1`] = `
 'Flag {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -2791,7 +2791,7 @@ snapshot[`Deno.inspect(Flag) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Flag) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Flag) 2`] = `
 'Flag {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -2840,7 +2840,7 @@ snapshot[`Deno.inspect(Flag) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Flag) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Flag) 3`] = `
 'Flag {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -2901,7 +2901,7 @@ snapshot[`Deno.inspect(Flag) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Follow) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Follow) 1`] = `
 'Follow {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -2951,7 +2951,7 @@ snapshot[`Deno.inspect(Follow) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Follow) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Follow) 2`] = `
 'Follow {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -3000,7 +3000,7 @@ snapshot[`Deno.inspect(Follow) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Follow) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Follow) 3`] = `
 'Follow {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -3061,7 +3061,7 @@ snapshot[`Deno.inspect(Follow) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Group) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Group) 1`] = `
 'Group {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -3123,7 +3123,7 @@ snapshot[`Deno.inspect(Group) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Group) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Group) 2`] = `
 'Group {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -3184,7 +3184,7 @@ snapshot[`Deno.inspect(Group) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Group) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Group) 3`] = `
 'Group {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -3257,7 +3257,7 @@ snapshot[`Deno.inspect(Group) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Ignore) 1`] = `
 'Ignore {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -3307,7 +3307,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Ignore) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Ignore) 2`] = `
 'Ignore {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -3356,7 +3356,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Ignore) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Ignore) 3`] = `
 'Ignore {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -3417,7 +3417,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Image) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Image) 1`] = `
 'Image {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -3465,7 +3465,7 @@ snapshot[`Deno.inspect(Image) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Image) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Image) 2`] = `
 'Image {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -3512,7 +3512,7 @@ snapshot[`Deno.inspect(Image) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Image) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Image) 3`] = `
 'Image {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -3571,7 +3571,7 @@ snapshot[`Deno.inspect(Image) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(IntransitiveActivity) 1`] = `
 'IntransitiveActivity {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -3621,7 +3621,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(IntransitiveActivity) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(IntransitiveActivity) 2`] = `
 'IntransitiveActivity {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -3670,7 +3670,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(IntransitiveActivity) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(IntransitiveActivity) 3`] = `
 'IntransitiveActivity {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -3731,7 +3731,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Like) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Like) 1`] = `
 'Like {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -3781,7 +3781,7 @@ snapshot[`Deno.inspect(Like) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Like) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Like) 2`] = `
 'Like {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -3830,7 +3830,7 @@ snapshot[`Deno.inspect(Like) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Like) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Like) 3`] = `
 'Like {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -3891,7 +3891,7 @@ snapshot[`Deno.inspect(Like) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Link) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Link) 1`] = `
 'Link {
   id: URL "https://example.com/",
   href: URL {
@@ -3923,7 +3923,7 @@ snapshot[`Deno.inspect(Link) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Link) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Link) 2`] = `
 'Link {
   href: URL {
     href: "https://example.com/",
@@ -3954,7 +3954,7 @@ snapshot[`Deno.inspect(Link) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Link) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Link) 3`] = `
 'Link {
   href: URL {
     href: "https://example.com/",
@@ -3985,7 +3985,7 @@ snapshot[`Deno.inspect(Link) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Mention) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Mention) 1`] = `
 'Mention {
   id: URL "https://example.com/",
   href: URL {
@@ -4017,7 +4017,7 @@ snapshot[`Deno.inspect(Mention) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Mention) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Mention) 2`] = `
 'Mention {
   href: URL {
     href: "https://example.com/",
@@ -4048,7 +4048,7 @@ snapshot[`Deno.inspect(Mention) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Mention) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Mention) 3`] = `
 'Mention {
   href: URL {
     href: "https://example.com/",
@@ -4079,7 +4079,7 @@ snapshot[`Deno.inspect(Mention) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Note) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Note) 1`] = `
 'Note {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -4127,7 +4127,7 @@ snapshot[`Deno.inspect(Note) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Note) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Note) 2`] = `
 'Note {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -4174,7 +4174,7 @@ snapshot[`Deno.inspect(Note) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Note) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Note) 3`] = `
 'Note {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -4233,7 +4233,7 @@ snapshot[`Deno.inspect(Note) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Object) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Object) 1`] = `
 'Object {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -4281,7 +4281,7 @@ snapshot[`Deno.inspect(Object) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Object) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Object) 2`] = `
 'Object {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -4328,7 +4328,7 @@ snapshot[`Deno.inspect(Object) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Object) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Object) 3`] = `
 'Object {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -4387,7 +4387,7 @@ snapshot[`Deno.inspect(Object) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(OrderedCollection) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(OrderedCollection) 1`] = `
 'OrderedCollection {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -4440,7 +4440,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(OrderedCollection) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(OrderedCollection) 2`] = `
 'OrderedCollection {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -4492,7 +4492,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(OrderedCollection) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(OrderedCollection) 3`] = `
 'OrderedCollection {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -4556,7 +4556,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(OrderedCollectionPage) 1`] = `
 'OrderedCollectionPage {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -4613,7 +4613,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(OrderedCollectionPage) 2`] = `
 'OrderedCollectionPage {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -4669,7 +4669,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(OrderedCollectionPage) 3`] = `
 'OrderedCollectionPage {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -4737,7 +4737,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Organization) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Organization) 1`] = `
 'Organization {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -4799,7 +4799,7 @@ snapshot[`Deno.inspect(Organization) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Organization) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Organization) 2`] = `
 'Organization {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -4860,7 +4860,7 @@ snapshot[`Deno.inspect(Organization) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Organization) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Organization) 3`] = `
 'Organization {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -4933,7 +4933,7 @@ snapshot[`Deno.inspect(Organization) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Page) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Page) 1`] = `
 'Page {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -4981,7 +4981,7 @@ snapshot[`Deno.inspect(Page) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Page) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Page) 2`] = `
 'Page {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -5028,7 +5028,7 @@ snapshot[`Deno.inspect(Page) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Page) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Page) 3`] = `
 'Page {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -5087,7 +5087,7 @@ snapshot[`Deno.inspect(Page) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Person) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Person) 1`] = `
 'Person {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -5149,7 +5149,7 @@ snapshot[`Deno.inspect(Person) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Person) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Person) 2`] = `
 'Person {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -5210,7 +5210,7 @@ snapshot[`Deno.inspect(Person) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Person) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Person) 3`] = `
 'Person {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -5283,7 +5283,7 @@ snapshot[`Deno.inspect(Person) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Place) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Place) 1`] = `
 'Place {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -5337,7 +5337,7 @@ snapshot[`Deno.inspect(Place) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Place) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Place) 2`] = `
 'Place {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -5390,7 +5390,7 @@ snapshot[`Deno.inspect(Place) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Place) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Place) 3`] = `
 'Place {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -5455,7 +5455,7 @@ snapshot[`Deno.inspect(Place) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Profile) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Profile) 1`] = `
 'Profile {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -5504,7 +5504,7 @@ snapshot[`Deno.inspect(Profile) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Profile) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Profile) 2`] = `
 'Profile {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -5552,7 +5552,7 @@ snapshot[`Deno.inspect(Profile) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Profile) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Profile) 3`] = `
 'Profile {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -5612,7 +5612,7 @@ snapshot[`Deno.inspect(Profile) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Reject) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Reject) 1`] = `
 'Reject {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -5662,7 +5662,7 @@ snapshot[`Deno.inspect(Reject) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Reject) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Reject) 2`] = `
 'Reject {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -5711,7 +5711,7 @@ snapshot[`Deno.inspect(Reject) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Reject) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Reject) 3`] = `
 'Reject {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -5772,7 +5772,7 @@ snapshot[`Deno.inspect(Reject) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Relationship) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Relationship) 1`] = `
 'Relationship {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -5823,7 +5823,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Relationship) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Relationship) 2`] = `
 'Relationship {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -5873,7 +5873,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Relationship) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Relationship) 3`] = `
 'Relationship {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -5935,7 +5935,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Remove) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Remove) 1`] = `
 'Remove {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -5985,7 +5985,7 @@ snapshot[`Deno.inspect(Remove) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Remove) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Remove) 2`] = `
 'Remove {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -6034,7 +6034,7 @@ snapshot[`Deno.inspect(Remove) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Remove) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Remove) 3`] = `
 'Remove {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -6095,7 +6095,7 @@ snapshot[`Deno.inspect(Remove) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Service) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Service) 1`] = `
 'Service {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -6157,7 +6157,7 @@ snapshot[`Deno.inspect(Service) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Service) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Service) 2`] = `
 'Service {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -6218,7 +6218,7 @@ snapshot[`Deno.inspect(Service) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Service) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Service) 3`] = `
 'Service {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -6291,7 +6291,7 @@ snapshot[`Deno.inspect(Service) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Undo) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Undo) 1`] = `
 'Undo {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -6341,7 +6341,7 @@ snapshot[`Deno.inspect(Undo) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Undo) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Undo) 2`] = `
 'Undo {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -6390,7 +6390,7 @@ snapshot[`Deno.inspect(Undo) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Undo) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Undo) 3`] = `
 'Undo {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -6451,7 +6451,7 @@ snapshot[`Deno.inspect(Undo) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Update) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Update) 1`] = `
 'Update {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -6501,7 +6501,7 @@ snapshot[`Deno.inspect(Update) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Update) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Update) 2`] = `
 'Update {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -6550,7 +6550,7 @@ snapshot[`Deno.inspect(Update) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Update) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Update) 3`] = `
 'Update {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
@@ -6611,7 +6611,7 @@ snapshot[`Deno.inspect(Update) [auto] 3`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Video) [auto] 1`] = `
+snapshot[`auto-generated tests > Deno.inspect(Video) 1`] = `
 'Video {
   id: URL "https://example.com/",
   attachments: [ Object {}, Link {} ],
@@ -6659,7 +6659,7 @@ snapshot[`Deno.inspect(Video) [auto] 1`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Video) [auto] 2`] = `
+snapshot[`auto-generated tests > Deno.inspect(Video) 2`] = `
 'Video {
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
@@ -6706,7 +6706,7 @@ snapshot[`Deno.inspect(Video) [auto] 2`] = `
 }'
 `;
 
-snapshot[`Deno.inspect(Video) [auto] 3`] = `
+snapshot[`auto-generated tests > Deno.inspect(Video) 3`] = `
 'Video {
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],

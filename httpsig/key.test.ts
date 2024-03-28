@@ -122,13 +122,16 @@ const privateJwk: JsonWebKey = {
 };
 
 Deno.test("exportJwk()", async () => {
-  assertEquals(await exportJwk(privateKey2), privateJwk);
-  assertEquals(await exportJwk(publicKey2.publicKey!), publicJwk);
+  assertEquals(await exportJwk(await privateKey2()), privateJwk);
+  assertEquals(await exportJwk((await publicKey2()).publicKey!), publicJwk);
 });
 
 Deno.test("importJwk()", async () => {
-  assertEquals(await importJwk(privateJwk, "private"), privateKey2);
-  assertEquals(await importJwk(publicJwk, "public"), publicKey2.publicKey!);
+  assertEquals(await importJwk(privateJwk, "private"), await privateKey2());
+  assertEquals(
+    await importJwk(publicJwk, "public"),
+    (await publicKey2()).publicKey!,
+  );
   assertRejects(() => importJwk(publicJwk, "private"));
   assertRejects(() => importJwk(privateJwk, "public"));
 });

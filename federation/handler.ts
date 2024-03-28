@@ -1,4 +1,4 @@
-import { accepts } from "@std/http";
+import { accepts } from "@std/http/negotiation";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
 import { DocumentLoader } from "../runtime/docloader.ts";
 import {

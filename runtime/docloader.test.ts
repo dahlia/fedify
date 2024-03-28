@@ -75,7 +75,7 @@ Deno.test("getAuthenticatedDocumentLoader()", async (t) => {
   await t.step("test", async () => {
     const loader = await getAuthenticatedDocumentLoader({
       keyId: new URL("https://example.com/key2"),
-      privateKey: privateKey2,
+      privateKey: await privateKey2(),
     });
     assertEquals(await loader("https://example.com/object"), {
       contextUrl: null,
