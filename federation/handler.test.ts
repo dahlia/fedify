@@ -1,8 +1,8 @@
 import { assert, assertEquals, assertFalse } from "@std/assert";
 import { createRequestContext } from "../testing/context.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { Activity, Create, Note, Person } from "../vocab/vocab.ts";
-import {
+import { type Activity, Create, Note, Person } from "../vocab/vocab.ts";
+import type {
   ActorDispatcher,
   CollectionCounter,
   CollectionCursor,

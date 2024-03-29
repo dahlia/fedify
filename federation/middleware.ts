@@ -2,16 +2,16 @@ import { Temporal } from "@js-temporal/polyfill";
 import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
-  AuthenticatedDocumentLoaderFactory,
-  DocumentLoader,
+  type AuthenticatedDocumentLoaderFactory,
+  type DocumentLoader,
   fetchDocumentLoader,
   getAuthenticatedDocumentLoader,
   kvCache,
 } from "../runtime/docloader.ts";
-import { Actor } from "../vocab/actor.ts";
+import type { Actor } from "../vocab/actor.ts";
 import { Activity, CryptographicKey } from "../vocab/mod.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
-import {
+import type {
   ActorDispatcher,
   ActorKeyPairDispatcher,
   CollectionCounter,
@@ -21,14 +21,18 @@ import {
   InboxListener,
   NodeInfoDispatcher,
 } from "./callback.ts";
-import { Context, RequestContext, SendActivityOptions } from "./context.ts";
+import type {
+  Context,
+  RequestContext,
+  SendActivityOptions,
+} from "./context.ts";
 import {
-  CollectionCallbacks,
+  type CollectionCallbacks,
   handleActor,
   handleCollection,
   handleInbox,
 } from "./handler.ts";
-import { OutboxMessage } from "./queue.ts";
+import type { OutboxMessage } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
 import { extractInboxes, sendActivity } from "./send.ts";
 

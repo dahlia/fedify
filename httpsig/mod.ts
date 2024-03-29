@@ -7,10 +7,10 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { equals } from "@std/bytes";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
-import { DocumentLoader } from "../runtime/docloader.ts";
+import type { DocumentLoader } from "../runtime/docloader.ts";
 import { isActor } from "../vocab/actor.ts";
 import {
-  Activity,
+  type Activity,
   CryptographicKey,
   Object as ASObject,
 } from "../vocab/vocab.ts";

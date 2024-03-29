@@ -1,4 +1,7 @@
-import { DocumentLoader, fetchDocumentLoader } from "../runtime/docloader.ts";
+import {
+  type DocumentLoader,
+  fetchDocumentLoader,
+} from "../runtime/docloader.ts";
 import { lookupWebFinger } from "../webfinger/lookup.ts";
 import { Object } from "./vocab.ts";
 

@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { ActorDispatcher } from "../federation/callback.ts";
+import type { ActorDispatcher } from "../federation/callback.ts";
 import { createRequestContext } from "../testing/context.ts";
 import { CryptographicKey, Link, Person } from "../vocab/vocab.ts";
 import { handleWebFinger } from "./handler.ts";

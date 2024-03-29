@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert";
 import { parse } from "@std/semver";
-import { NodeInfoDispatcher } from "../federation/callback.ts";
+import type { NodeInfoDispatcher } from "../federation/callback.ts";
 import { createRequestContext } from "../testing/context.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "./handler.ts";
 

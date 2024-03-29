@@ -1,5 +1,5 @@
 import { generateField, getFieldName } from "./field.ts";
-import { TypeSchema } from "./schema.ts";
+import type { TypeSchema } from "./schema.ts";
 import {
   areAllScalarTypes,
   getDecoder,

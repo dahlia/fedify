@@ -1,4 +1,4 @@
-import { Context, RequestContext } from "../federation/context.ts";
+import type { Context, RequestContext } from "../federation/context.ts";
 import { RouterError } from "../federation/router.ts";
 import { mockDocumentLoader } from "./docloader.ts";
 

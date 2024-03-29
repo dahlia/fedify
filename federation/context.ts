@@ -1,6 +1,6 @@
-import { DocumentLoader } from "../runtime/docloader.ts";
-import { Actor } from "../vocab/actor.ts";
-import { Activity, CryptographicKey } from "../vocab/mod.ts";
+import type { DocumentLoader } from "../runtime/docloader.ts";
+import type { Actor } from "../vocab/actor.ts";
+import type { Activity, CryptographicKey } from "../vocab/mod.ts";
 
 /**
  * A context.

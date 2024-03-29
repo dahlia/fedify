@@ -1,4 +1,4 @@
-import { Schema as JsonSchema, Validator } from "@cfworker/json-schema";
+import { type Schema as JsonSchema, Validator } from "@cfworker/json-schema";
 import { join } from "@std/path";
 import * as url from "@std/url";
 import { parse } from "@std/yaml";

@@ -1,6 +1,6 @@
 import { toPascalCase } from "@std/text";
 import { getFieldName } from "./field.ts";
-import { PropertySchema, TypeSchema } from "./schema.ts";
+import type { PropertySchema, TypeSchema } from "./schema.ts";
 import { areAllScalarTypes, getTypeNames } from "./type.ts";
 
 async function* generateProperty(

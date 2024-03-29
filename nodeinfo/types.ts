@@ -1,5 +1,5 @@
-import { JsonValue } from "@std/json";
-import { format, SemVer } from "@std/semver";
+import type { JsonValue } from "@std/json";
+import { format, type SemVer } from "@std/semver";
 
 export interface NodeInfo {
   /**

@@ -1,8 +1,8 @@
-import { NodeInfo } from "../nodeinfo/types.ts";
-import { Actor } from "../vocab/actor.ts";
-import { Activity, CryptographicKey } from "../vocab/mod.ts";
-import { PageItems } from "./collection.ts";
-import { RequestContext } from "./context.ts";
+import type { NodeInfo } from "../nodeinfo/types.ts";
+import type { Actor } from "../vocab/actor.ts";
+import type { Activity, CryptographicKey } from "../vocab/mod.ts";
+import type { PageItems } from "./collection.ts";
+import type { RequestContext } from "./context.ts";
 
 /**
  * A callback that dispatches a {@link NodeInfo} object.

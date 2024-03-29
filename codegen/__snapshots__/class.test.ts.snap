@@ -4,10 +4,10 @@ snapshot[`generateClasses() 1`] = `
 "// deno-lint-ignore-file ban-unused-ignore
 import { Temporal } from \\"@js-temporal/polyfill\\";
 import jsonld from \\"jsonld\\";
-import { LanguageTag, parseLanguageTag }
+import { type LanguageTag, parseLanguageTag }
     from \\"@phensley/language-tag\\";
 import { exportSPKI, importSPKI } from \\"jose\\";
-import { DocumentLoader, fetchDocumentLoader }
+import { type DocumentLoader, fetchDocumentLoader }
     from \\"../runtime/docloader.ts\\";
 import { LanguageString } from \\"../runtime/langstr.ts\\";
 

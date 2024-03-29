@@ -13,8 +13,8 @@ import { toPascalCase } from "@std/text";
 import { toArray } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
 import {
   loadSchemaFiles,
-  PropertySchema,
-  TypeSchema,
+  type PropertySchema,
+  type TypeSchema,
 } from "../codegen/schema.ts";
 import { areAllScalarTypes } from "../codegen/type.ts";
 import { LanguageString } from "../runtime/langstr.ts";

@@ -1,7 +1,7 @@
-import { ActorDispatcher } from "../federation/callback.ts";
-import { RequestContext } from "../federation/context.ts";
+import type { ActorDispatcher } from "../federation/callback.ts";
+import type { RequestContext } from "../federation/context.ts";
 import { Link as LinkObject } from "../vocab/mod.ts";
-import { Link, ResourceDescriptor } from "./jrd.ts";
+import type { Link, ResourceDescriptor } from "./jrd.ts";
 
 /**
  * Parameters for {@link handleWebFinger}.

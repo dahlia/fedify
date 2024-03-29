@@ -1,4 +1,4 @@
-import { LanguageTag, parseLanguageTag } from "@phensley/language-tag";
+import { type LanguageTag, parseLanguageTag } from "@phensley/language-tag";
 
 /**
  * A language-tagged string which corresponds to the `rdf:langString` type.

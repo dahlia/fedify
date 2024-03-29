@@ -9,7 +9,7 @@
  *
  * @module
  */
-import {
+import type {
   Federation,
   FederationHandlerParameters,
 } from "../federation/middleware.ts";

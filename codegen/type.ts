@@ -1,4 +1,4 @@
-import { TypeSchema } from "./schema.ts";
+import type { TypeSchema } from "./schema.ts";
 
 interface ScalarType {
   name: string;

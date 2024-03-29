@@ -8,7 +8,7 @@ import {
 import * as fc from "fast-check";
 import * as mf from "mock_fetch";
 import {
-  Actor,
+  type Actor,
   getActorClassByTypeName,
   getActorHandle,
   getActorTypeName,

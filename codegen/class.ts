@@ -3,7 +3,7 @@ import { generateCloner, generateConstructor } from "./constructor.ts";
 import { generateFields } from "./field.ts";
 import { generateInspector } from "./inspector.ts";
 import { generateProperties } from "./property.ts";
-import { TypeSchema } from "./schema.ts";
+import type { TypeSchema } from "./schema.ts";
 
 /**
  * Sorts the given types topologically so that the base types come before the
@@ -71,10 +71,10 @@ export async function* generateClasses(
   yield "// deno-lint-ignore-file ban-unused-ignore\n";
   yield 'import { Temporal } from "@js-temporal/polyfill";\n';
   yield 'import jsonld from "jsonld";\n';
-  yield `import { LanguageTag, parseLanguageTag }
+  yield `import { type LanguageTag, parseLanguageTag }
     from "@phensley/language-tag";\n`;
   yield `import { exportSPKI, importSPKI } from "jose";\n`;
-  yield `import { DocumentLoader, fetchDocumentLoader }
+  yield `import { type DocumentLoader, fetchDocumentLoader }
     from "${runtimePath}/docloader.ts";\n`;
   yield `import { LanguageString } from "${runtimePath}/langstr.ts";\n`;
   yield "\n\n";

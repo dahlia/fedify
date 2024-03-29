@@ -1,4 +1,4 @@
-import { ResourceDescriptor } from "./jrd.ts";
+import type { ResourceDescriptor } from "./jrd.ts";
 
 /**
  * Looks up a WebFinger resource.

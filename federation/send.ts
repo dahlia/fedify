@@ -1,7 +1,7 @@
 import { sign } from "../httpsig/mod.ts";
-import { DocumentLoader } from "../runtime/docloader.ts";
-import { Actor } from "../vocab/actor.ts";
-import { Activity } from "../vocab/mod.ts";
+import type { DocumentLoader } from "../runtime/docloader.ts";
+import type { Actor } from "../vocab/actor.ts";
+import type { Activity } from "../vocab/mod.ts";
 
 /**
  * Parameters for {@link extractInboxes}.

@@ -1,5 +1,5 @@
 import { encodeBase58 } from "@std/encoding/base58";
-import { PropertySchema, TypeSchema } from "./schema.ts";
+import type { PropertySchema, TypeSchema } from "./schema.ts";
 import { areAllScalarTypes, getTypeNames } from "./type.ts";
 
 export async function getFieldName(

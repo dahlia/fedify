@@ -1,5 +1,5 @@
 import { getFieldName } from "./field.ts";
-import { TypeSchema } from "./schema.ts";
+import type { TypeSchema } from "./schema.ts";
 import { areAllScalarTypes } from "./type.ts";
 
 export async function* generateInspector(

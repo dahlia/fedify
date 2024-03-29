@@ -1,14 +1,14 @@
 import { accepts } from "@std/http";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
-import { DocumentLoader } from "../runtime/docloader.ts";
+import type { DocumentLoader } from "../runtime/docloader.ts";
 import {
   Activity,
-  Link,
-  Object,
+  type Link,
+  type Object,
   OrderedCollection,
   OrderedCollectionPage,
 } from "../vocab/vocab.ts";
-import {
+import type {
   ActorDispatcher,
   CollectionCounter,
   CollectionCursor,
@@ -16,7 +16,7 @@ import {
   InboxErrorHandler,
   InboxListener,
 } from "./callback.ts";
-import { RequestContext } from "./context.ts";
+import type { RequestContext } from "./context.ts";
 
 export function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);

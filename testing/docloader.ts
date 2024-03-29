@@ -1,5 +1,5 @@
 import { dirname, fromFileUrl, join } from "@std/path";
-import { RemoteDocument } from "../runtime/docloader.ts";
+import type { RemoteDocument } from "../runtime/docloader.ts";
 
 /**
  * A mock of the document loader.  This does not make any actual HTTP requests

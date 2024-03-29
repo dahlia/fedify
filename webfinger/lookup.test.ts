@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert";
 import * as mf from "mock_fetch";
-import { ResourceDescriptor } from "./jrd.ts";
+import type { ResourceDescriptor } from "./jrd.ts";
 import { lookupWebFinger } from "./lookup.ts";
 
 Deno.test("lookupWebFinger()", async (t) => {
