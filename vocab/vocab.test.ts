@@ -1,3 +1,4 @@
+import { toArray } from "@hongminhee/aitertools";
 import { Temporal } from "@js-temporal/polyfill";
 import { parseLanguageTag } from "@phensley/language-tag";
 import {
@@ -10,7 +11,6 @@ import {
 } from "@std/assert";
 import { assertSnapshot } from "@std/testing/snapshot";
 import { toPascalCase } from "@std/text";
-import { toArray } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
 import {
   loadSchemaFiles,
   type PropertySchema,

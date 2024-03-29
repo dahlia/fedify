@@ -21,6 +21,7 @@
     "@fedify/fedify/vocab": "./vocab/mod.ts",
     "@fedify/fedify/webfinger": "./webfinger/mod.ts",
     "@fedify/fedify/x/fresh": "./x/fresh.ts",
+    "@hongminhee/aitertools": "jsr:@hongminhee/aitertools@^0.6.0",
     "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.4.4",
     "@phensley/language-tag": "npm:@phensley/language-tag@^1.8.0",
     "@std/assert": "jsr:@std/assert@^0.220.1",

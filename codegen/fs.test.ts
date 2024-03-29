@@ -1,6 +1,6 @@
+import { toSet } from "@hongminhee/aitertools";
 import { assertEquals } from "@std/assert";
 import { join } from "@std/path";
-import { toSet } from "https://deno.land/x/aitertools@0.5.0/mod.ts";
 import { readDirRecursive } from "./fs.ts";
 
 Deno.test("readDirRecursive()", async () => {
