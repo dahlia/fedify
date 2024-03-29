@@ -1,7 +1,11 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { parse } from "@std/semver";
 import { dirname, join } from "@std/path";
-import { Federation } from "@fedify/fedify/federation";
+import {
+  Federation,
+  InProcessMessageQueue,
+  MemoryKvStore,
+} from "@fedify/fedify/federation";
 import {
   Accept,
   Activity,
@@ -23,15 +27,16 @@ import {
   getFollowers,
   removeFollower,
 } from "../models/follower.ts";
-import { openKv } from "../models/kv.ts";
 import { countPosts, getPosts, toArticle } from "../models/post.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
 export const federation = new Federation<void>({
-  // The following Deno KV storage is used for several purposes, such as
-  // cache and outbox queue:
-  kv: await openKv(),
+  // The following key-value storage is used for internal cache:
+  kv: new MemoryKvStore(),
+
+  // The following message queue is used for maintaining outgoing activities:
+  queue: new InProcessMessageQueue(),
 
   // The following option is useful for local development, as Fresh's dev
   // server does not support HTTPS:

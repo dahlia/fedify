@@ -13,6 +13,30 @@ Version 0.5.0
 
 To be released.
 
+ -  Abstract key-value store for caching.
+
+     -  Added `KvStore` interface.
+     -  Added `KvStoreSetOptions` interface.
+     -  Added `KvKey` type.
+     -  Added `MemoryKvStore` class.
+     -  `KvCacheParameters.kv` option now accepts a `KvStore` instead of
+        `Deno.Kv`.
+     -  `KvCacheParameters.prefix` option now accepts a `KvKey` instead of
+        `Deno.KvKey`.
+     -  `FederationParameters.kv` option now accepts a `KvStore` instead of
+        `Deno.Kv`.
+     -  `FederationKvPrefixes.activityIdempotence` option now accepts a `KvKey`
+        instead of `Deno.KvKey`.
+     -  `FederationKvPrefixes.remoteDocument` option now accepts a `KvKey`
+        instead of `Deno.KvKey`.
+
+ -  Abstract message queue for outgoing activities.
+
+     -  Added `MessageQueue` interface.
+     -  Added `MessageQueueEnqueueOptions` interface.
+     -  Added `InProcessMessageQueue` class.
+     -  Added `FederationParameters.queue` option.
+
  -  Removed dependency on *jose*.
 
      -  Added `exportSpki()` function.

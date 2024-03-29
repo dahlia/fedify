@@ -40,13 +40,14 @@ properties.  Some of them are required:
 
 ### `kv`
 
-*Required.*  The `~FederationParameters.kv` property is a [`Deno.Kv`] instance
+*Required.*  The `~FederationParameters.kv` property is a `KvStore` instance
 that the `Federation` object uses to store several kinds of cache data and
-to maintain the queue of outgoing activities.  Usually instantiated by
-calling the [`Deno.openKv()`] function.
+to maintain the queue of outgoing activities.
 
-[`Deno.Kv`]: https://deno.land/api?unstable&s=Deno.Kv
-[`Deno.openKv()`]: https://deno.land/api?unstable&s=Deno.openKv
+`KvStore` is an abstract interface that represents a key-value store.
+Currently, there is only one implementation of `KvStore`, which is the
+`MemoryKvStore` class, but you can define your own `KvStore` implementation
+if you want to use a different key-value store.
 
 ### `kvPrefixes`
 
@@ -61,6 +62,18 @@ that the `Federation` object uses:
 `~FederationKvPrefixes.remoteDocument`
 :   The key prefix used for storing remote JSON-LD documents.
     `["_fedify", "remoteDocument"]` by default.
+
+### `queue`
+
+The `~FederationParameters.queue` property is a `MessageQueue` instance that
+the `Federation` object uses to maintain the queue of outgoing activities.
+If you don't provide this option, activities will not be queued and will
+be sent immediately.
+
+`MessageQueue` is an abstract interface that represents a message queue.
+Currently, there is only one implementation of `MessageQueue`, which is the
+`InProcessMessageQueue` class, but you can define your own `MessageQueue`
+implementation if you want to use a different message queue.
 
 ### `documentLoader`
 

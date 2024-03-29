@@ -4,4 +4,5 @@ export interface OutboxMessage {
   privateKey: JsonWebKey;
   activity: unknown;
   inbox: string;
+  trial: number;
 }

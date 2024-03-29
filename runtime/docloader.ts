@@ -1,4 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
+import type { KvKey, KvStore } from "../federation/kv.ts";
 import { validateCryptoKey } from "../httpsig/key.ts";
 import { sign } from "../httpsig/mod.ts";
 
@@ -123,15 +124,15 @@ export interface KvCacheParameters {
   loader: DocumentLoader;
 
   /**
-   * The Deno KV store to use for backing the cache.
+   * The key-value store to use for backing the cache.
    */
-  kv: Deno.Kv;
+  kv: KvStore;
 
   /**
    * The key prefix to use for namespacing the cache.
    * `["_fedify", "remoteDocument"]` by default.
    */
-  prefix?: Deno.KvKey;
+  prefix?: KvKey;
 
   /**
    * The per-URL cache rules in the array of `[urlPattern, duration]` pairs
@@ -194,15 +195,13 @@ export function kvCache(
   return async (url: string): Promise<RemoteDocument> => {
     const match = matchRule(url);
     if (match == null) return await loader(url);
-    const key: Deno.KvKey = [...keyPrefix, url];
+    const key: KvKey = [...keyPrefix, url];
     const cache = await kv.get<RemoteDocument>(key);
-    if (cache == null || cache.value == null) {
+    if (cache == null) {
       const remoteDoc = await loader(url);
-      await kv.set(key, remoteDoc, {
-        expireIn: match.total("milliseconds"),
-      });
+      await kv.set(key, remoteDoc, { ttl: match });
       return remoteDoc;
     }
-    return cache.value;
+    return cache;
   };
 }

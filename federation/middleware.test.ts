@@ -17,11 +17,12 @@ import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2, publicKey2 } from "../testing/keys.ts";
 import { Create, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
+import { MemoryKvStore } from "./kv.ts";
 import { Federation } from "./middleware.ts";
 import { RouterError } from "./router.ts";
 
 Deno.test("Federation.createContext()", async (t) => {
-  const kv = await Deno.openKv(":memory:");
+  const kv = new MemoryKvStore();
   const documentLoader = (url: string) => {
     throw new FetchError(new URL(url), "Not found");
   };
@@ -165,12 +166,10 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(ctx.url, new URL("https://example.com/"));
     assertEquals(ctx.data, 123);
   });
-
-  kv.close();
 });
 
 Deno.test("Federation.setInboxListeners()", async (t) => {
-  const kv = await Deno.openKv(":memory:");
+  const kv = new MemoryKvStore();
 
   mf.install();
 
@@ -362,5 +361,4 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
   });
 
   mf.uninstall();
-  kv.close();
 });

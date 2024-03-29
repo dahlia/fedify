@@ -32,6 +32,8 @@ import {
   handleCollection,
   handleInbox,
 } from "./handler.ts";
+import type { KvKey, KvStore } from "./kv.ts";
+import type { MessageQueue } from "./mq.ts";
 import type { OutboxMessage } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
 import { extractInboxes, sendActivity } from "./send.ts";
@@ -41,15 +43,22 @@ import { extractInboxes, sendActivity } from "./send.ts";
  */
 export interface FederationParameters {
   /**
-   * The Deno KV store used for caching, outbox queues, and inbox idempotence.
+   * The key-value store used for caching, outbox queues, and inbox idempotence.
    */
-  kv: Deno.Kv;
+  kv: KvStore;
 
   /**
    * Prefixes for namespacing keys in the Deno KV store.  By default, all keys
    * are prefixed with `["_fedify"]`.
    */
   kvPrefixes?: Partial<FederationKvPrefixes>;
+
+  /**
+   * The message queue for sending activities to recipients' inboxes.
+   * If not provided, activities will not be queued and will be sent
+   * immediately.
+   */
+  queue?: MessageQueue;
 
   /**
    * A custom JSON-LD document loader.  By default, this uses the built-in
@@ -84,13 +93,13 @@ export interface FederationKvPrefixes {
    * The key prefix used for storing whether activities have already been
    * processed or not.  `["_fedify", "activityIdempotence"]` by default.
    */
-  activityIdempotence: Deno.KvKey;
+  activityIdempotence: KvKey;
 
   /**
    * The key prefix used for storing remote JSON-LD documents.
    * `["_fedify", "remoteDocument"]` by default.
    */
-  remoteDocument: Deno.KvKey;
+  remoteDocument: KvKey;
 }
 
 /**
@@ -101,8 +110,9 @@ export interface FederationKvPrefixes {
  * web framework's router; see {@link Federation.handle}.
  */
 export class Federation<TContextData> {
-  #kv: Deno.Kv;
+  #kv: KvStore;
   #kvPrefixes: FederationKvPrefixes;
+  #queue?: MessageQueue;
   #router: Router;
   #nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
   #actorCallbacks?: ActorCallbacks<TContextData>;
@@ -117,7 +127,7 @@ export class Federation<TContextData> {
   #documentLoader: DocumentLoader;
   #authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   #treatHttps: boolean;
-  #backoffSchedule: number[];
+  #backoffSchedule: Temporal.Duration[];
 
   /**
    * Create a new {@link Federation} instance.
@@ -127,6 +137,7 @@ export class Federation<TContextData> {
     {
       kv,
       kvPrefixes,
+      queue,
       documentLoader,
       authenticatedDocumentLoaderFactory,
       treatHttps,
@@ -141,6 +152,7 @@ export class Federation<TContextData> {
       } satisfies FederationKvPrefixes),
       ...(kvPrefixes ?? {}),
     };
+    this.#queue = queue;
     this.#router = new Router();
     this.#router.add("/.well-known/webfinger", "webfinger");
     this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
@@ -167,28 +179,36 @@ export class Federation<TContextData> {
         throw new Error("Backoff schedule must not exceed 1 hour.");
       }
     }
-    this.#backoffSchedule =
-      backoffSchedule?.map((d) => d.total("millisecond")) ?? [
-        3_000,
-        15_000,
-        60_000,
-        15 * 60_000,
-        60 * 60_000,
-      ];
+    this.#backoffSchedule = backoffSchedule ?? [
+      3_000,
+      15_000,
+      60_000,
+      15 * 60_000,
+      60 * 60_000,
+    ].map((ms) => Temporal.Duration.from({ milliseconds: ms }));
 
-    kv.listenQueue(this.#listenQueue.bind(this));
+    queue?.listen(this.#listenQueue.bind(this));
   }
 
   async #listenQueue(message: OutboxMessage): Promise<void> {
-    await sendActivity({
-      keyId: new URL(message.keyId),
-      privateKey: await importJwk(message.privateKey, "private"),
-      activity: await Activity.fromJsonLd(message.activity, {
+    try {
+      await sendActivity({
+        keyId: new URL(message.keyId),
+        privateKey: await importJwk(message.privateKey, "private"),
+        activity: await Activity.fromJsonLd(message.activity, {
+          documentLoader: this.#documentLoader,
+        }),
+        inbox: new URL(message.inbox),
         documentLoader: this.#documentLoader,
-      }),
-      inbox: new URL(message.inbox),
-      documentLoader: this.#documentLoader,
-    });
+      });
+    } catch (_) {
+      if (message.trial < this.#backoffSchedule.length) {
+        this.#queue?.enqueue({
+          ...message,
+          trial: message.trial + 1,
+        }, { delay: this.#backoffSchedule[message.trial] });
+      }
+    }
   }
 
   /**
@@ -681,7 +701,7 @@ export class Federation<TContextData> {
       recipients: Array.isArray(recipients) ? recipients : [recipients],
       preferSharedInbox,
     });
-    if (immediate) {
+    if (immediate || this.#queue == null) {
       const promises: Promise<void>[] = [];
       for (const inbox of inboxes) {
         promises.push(
@@ -697,15 +717,18 @@ export class Federation<TContextData> {
       await Promise.all(promises);
       return;
     }
+    const privateKeyJwk = await exportJwk(privateKey);
+    const activityJson = await activity.toJsonLd({ expand: true });
     for (const inbox of inboxes) {
       const message: OutboxMessage = {
         type: "outbox",
         keyId: keyId.href,
-        privateKey: await exportJwk(privateKey),
-        activity: await activity.toJsonLd({ expand: true }),
+        privateKey: privateKeyJwk,
+        activity: activityJson,
         inbox: inbox.href,
+        trial: 0,
       };
-      this.#kv.enqueue(message, { backoffSchedule: this.#backoffSchedule });
+      this.#queue.enqueue(message);
     }
   }
 
