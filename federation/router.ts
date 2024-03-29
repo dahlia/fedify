@@ -1,3 +1,4 @@
+// @ts-ignore TS7016
 import { Router as InnerRouter } from "uri-template-router";
 import { parseTemplate, type Template } from "url-template";
 

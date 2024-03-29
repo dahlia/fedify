@@ -1,6 +1,19 @@
-import type { JsonValue } from "@std/json";
 import { format, type SemVer } from "@std/semver";
 
+/**
+ * The type of the result of parsing JSON.
+ */
+export type JsonValue =
+  | { [key: string]: JsonValue | undefined }
+  | JsonValue[]
+  | string
+  | number
+  | boolean
+  | null;
+
+/**
+ * A NodeInfo object as defined in the NodeInfo 2.1 schema.
+ */
 export interface NodeInfo {
   /**
    * Metadata about server software in use.

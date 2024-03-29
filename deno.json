@@ -13,6 +13,7 @@
   },
   "imports": {
     "@cfworker/json-schema": "npm:@cfworker/json-schema@^1.12.8",
+    "@deno/dnt": "jsr:@deno/dnt@^0.41.1",
     "@fedify/fedify": "./mod.ts",
     "@fedify/fedify/federation": "./federation/mod.ts",
     "@fedify/fedify/httpsig": "./httpsig/mod.ts",
@@ -29,8 +30,9 @@
     "@std/collections": "jsr:@std/collections@^0.220.1",
     "@std/encoding": "jsr:@std/encoding@^0.220.1",
     "@std/encoding/base64": "jsr:@std/encoding@^0.220.1/base64",
-    "@std/http": "jsr:@std/http@^0.220.1",
-    "@std/json": "jsr:@std/json@^0.220.1",
+    "@std/fs": "jsr:@std/fs@^0.220.1",
+    "@std/http/negotiation": "jsr:@std/http@^0.220.1/negotiation",
+    "@std/json/common": "jsr:@std/json@^0.220.1/common",
     "@std/path": "jsr:@std/path@^0.220.1",
     "@std/semver": "jsr:@std/semver@^0.220.1",
     "@std/testing": "jsr:@std/testing@^0.220.1",
@@ -50,7 +52,8 @@
     ".git/",
     "apidoc/",
     "docs/",
-    "examples/"
+    "examples/",
+    "npm/"
   ],
   "tasks": {
     "check": "deno task codegen && deno fmt --check && deno lint && deno check */*.ts",

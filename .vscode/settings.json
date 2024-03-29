@@ -64,6 +64,7 @@
     "superproperty",
     "unfollow",
     "unfollowing",
+    "urlpattern",
     "webfinger"
   ]
 }

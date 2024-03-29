@@ -1,5 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
-import { accepts } from "@std/http";
+import { accepts } from "@std/http/negotiation";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import {
