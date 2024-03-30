@@ -42,9 +42,6 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
     steps:
     - uses: actions/checkout@v4
     - uses: denoland/setup-deno@v1
@@ -53,10 +50,27 @@ jobs:
     - run: deno task check
     - run: deno task check
       working-directory: ${{ github.workspace }}/examples/blog/
-    - run: deno task publish --dry-run
 
-  publish-jsr:
-    needs: [test, lint]
+  release-test:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - uses: actions/checkout@v4
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - run: deno task publish --dry-run
+    - run: deno task dnt
+    - run: npm publish --dry-run
+      working-directory: ${{ github.workspace }}/npm/
+
+  publish:
+    needs: [test, lint, release-test]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -67,6 +81,9 @@ jobs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: v1.x
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
     - if: github.ref_type == 'branch'
       run: |
         jq \
@@ -83,6 +100,9 @@ jobs:
     # Don't know why, but the .gitignore list is not overriden by include list
     # in deno.json:
     - run: rm vocab/.gitignore
+    - run: 'deno task dnt "$(jq -r .version deno.json)"'
+    - run: npm pack
+      working-directory: ${{ github.workspace }}/npm/
     - id: extract-changelog
       uses: dahlia/submark@5a5ff0a58382fb812616a5801402f5aef00f90ce
       with:
@@ -99,10 +119,23 @@ jobs:
       with:
         body_path: ${{ steps.extract-changelog.outputs.output-file }}
         name: Fedify ${{ github.ref_name }}
+        files: npm/*.tgz
         generate_release_notes: false
         discussion_category_name: Announcements
     - if: github.event_name == 'push'
       run: deno task publish --allow-dirty
+    - if: github.event_name == 'push'
+      run: |
+        set -ex
+        npm config set //registry.npmjs.org/:_authToken "$NPM_AUTH_TOKEN"
+        if [[ "$GITHUB_REF_TYPE" = "tag" ]]; then
+          npm publish --provenance --access public *.tgz
+        else
+          npm publish --provenance --access public --tag dev *.tgz
+        fi
+      env:
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      working-directory: ${{ github.workspace }}/npm/
 
   publish-examples-blog:
     if: github.event_name == 'push'
@@ -124,7 +157,7 @@ jobs:
         root: .
 
   publish-docs:
-    needs: [publish-jsr]
+    needs: [publish]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
