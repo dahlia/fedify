@@ -6,10 +6,10 @@ await emptyDir("./npm");
 
 const denoJson = join(import.meta.dirname!, "deno.json");
 const metadata = JSON.parse(await Deno.readTextFile(denoJson));
-const exports = [];
+const testExports = [];
 for (const exportName in metadata.exports) {
   const match = exportName.match(/^\.\/([^/]+)/);
-  if (match) exports.push(match[1]);
+  if (match && match[1] != "x") testExports.push(match[1]);
 }
 
 await build({
@@ -28,7 +28,8 @@ await build({
     },
   },
   outDir: "./npm",
-  entryPoints: ["./mod.ts"],
+  entryPoints: Object.entries(metadata.exports as Record<string, string>)
+    .map(([name, path]) => ({ name, path })),
   importMap: denoJson,
   scriptModule: false,
   shims: {
@@ -69,7 +70,7 @@ await build({
     // etc... more checks here
     return true;
   },
-  testPattern: `{${exports.join(",")}}/**/*.test.ts`,
+  testPattern: `{${testExports.join(",")}}/**/*.test.ts`,
   async postBuild() {
     await copy(
       "testing/fixtures",
