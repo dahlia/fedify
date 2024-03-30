@@ -5,7 +5,7 @@ Fedify: an ActivityPub server framework
 =======================================
 
 [![JSR][JSR badge]][JSR]
-[![JSR score][JSR score badge]][JSR score]
+[![npm][npm badge]][npm]
 [![GitHub Actions][GitHub Actions badge]][GitHub Actions]
 [![Matrix][Matrix badge]][Matrix]
 [![Follow @hongminhee@todon.eu][@hongminhee.todon.eu badge]][@hongminhee.todon.eu]
@@ -13,7 +13,7 @@ Fedify: an ActivityPub server framework
 > [!NOTE]
 > Looking for a quick demo?  Here it is: [Fedify Demo] on Deno Playground.
 
-Fedify is a [Deno]/TypeScript library for building federated server apps
+Fedify is a TypeScript library for building federated server apps
 powered by [ActivityPub] and other standards, so-called [fediverse].[^1]
 It aims to eliminate the complexity and redundant boilerplate code when
 building a federated server app, so that you can focus on your business logic
@@ -51,9 +51,9 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].
       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
 
 [JSR]: https://jsr.io/@fedify/fedify
-[JSR badge]: https://jsr.io/badges/@fedify/fedify
-[JSR score]: https://jsr.io/@fedify/fedify/score
-[JSR score badge]: https://jsr.io/badges/@fedify/fedify/score
+[JSR badge]: https://jsr.io/badges/@fedify/fedify?
+[npm]: https://www.npmjs.com/package/@fedify/fedify
+[npm badge]: https://img.shields.io/npm/v/@fedify/fedify?logo=npm
 [GitHub Actions]: https://github.com/dahlia/fedify/actions/workflows/build.yaml
 [GitHub Actions badge]: https://github.com/dahlia/fedify/actions/workflows/build.yaml/badge.svg
 [Matrix]: https://matrix.to/#/#fedify:matrix.org
@@ -61,7 +61,6 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].
 [@hongminhee.todon.eu badge]: https://fedi-badge.deno.dev/@hongminhee@todon.eu/followers.svg
 [@hongminhee.todon.eu]: https://todon.eu/@hongminhee
 [Fedify Demo]: https://dash.deno.com/playground/fedify-demo
-[Deno]: https://deno.com/
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [fediverse]: https://en.wikipedia.org/wiki/Fediverse
 [Activity Vocabulary]: https://www.w3.org/TR/activitystreams-vocabulary/
@@ -94,3 +93,5 @@ Or you can directly import it in your code using `jsr:` specifier:
 ~~~~ typescript
 import { Federation } from "jsr:@fedify/fedify";
 ~~~~
+
+[Deno]: https://deno.com/

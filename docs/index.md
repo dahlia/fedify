@@ -14,7 +14,7 @@ Fedify: an ActivityPub server framework
 > [!NOTE]
 > Looking for a quick demo?  Here it is: [Fedify Demo] on Deno Playground.
 
-Fedify is a [Deno]/TypeScript library for building federated server apps
+Fedify is a TypeScript library for building federated server apps
 powered by [ActivityPub] and other standards, so-called [fediverse].[^1]
 It aims to eliminate the complexity and redundant boilerplate code when
 building a federated server app, so that you can focus on your business logic
@@ -52,7 +52,6 @@ join our [Matrix chat space] or [GitHub Discussions].
       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
 
 [Fedify Demo]: https://dash.deno.com/playground/fedify-demo
-[Deno]: https://deno.com/
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [fediverse]: https://en.wikipedia.org/wiki/Fediverse
 [Activity Vocabulary]: https://www.w3.org/TR/activitystreams-vocabulary/

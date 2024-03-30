@@ -18,7 +18,14 @@ await build({
     name: "@fedify/fedify",
     version: Deno.args[0] ?? metadata.version,
     description: "An ActivityPub server framework",
+    keywords: ["ActivityPub", "fediverse"],
     license: "AGPL-3.0",
+    author: {
+      name: "Hong Minhee",
+      email: "hong@minhee.org",
+      url: "https://hongminhee.org/",
+    },
+    homepage: "https://fedify.dev/",
     repository: {
       type: "git",
       url: "git+https://github.com/dahlia/fedify.git",
@@ -89,4 +96,4 @@ await build({
   },
 });
 
-// cSpell: ignore 2KNRVU
+// cSpell: ignore Minhee 2KNRVU
