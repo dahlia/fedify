@@ -199,17 +199,14 @@ const scalarTypes: Record<string, ScalarType> = {
       return `${v} instanceof CryptoKey`;
     },
     encoder(v) {
-      return `{ "@value": await exportSPKI(${v}) }`;
+      return `{ "@value": await exportSpki(${v}) }`;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
         && typeof ${v}["@value"] === "string"`;
     },
     decoder(v) {
-      // TODO: support other than RSASSA-PKCS1-v1_5:
-      return `await importSPKI<CryptoKey>(${v}["@value"], "RS256", {
-        extractable: true
-      })`;
+      return `await importSpki(${v}["@value"])`;
     },
   },
   "fedify:units": {

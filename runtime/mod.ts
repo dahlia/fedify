@@ -5,4 +5,5 @@
  * @module
  */
 export * from "./docloader.ts";
+export * from "./key.ts";
 export * from "./langstr.ts";

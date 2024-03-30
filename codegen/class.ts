@@ -73,9 +73,9 @@ export async function* generateClasses(
   yield 'import jsonld from "jsonld";\n';
   yield `import { type LanguageTag, parseLanguageTag }
     from "@phensley/language-tag";\n`;
-  yield `import { exportSPKI, importSPKI } from "jose";\n`;
   yield `import { type DocumentLoader, fetchDocumentLoader }
     from "${runtimePath}/docloader.ts";\n`;
+  yield `import { exportSpki, importSpki } from "${runtimePath}/key.ts";\n`;
   yield `import { LanguageString } from "${runtimePath}/langstr.ts";\n`;
   yield "\n\n";
   const sorted = sortTopologically(types);

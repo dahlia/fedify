@@ -6,9 +6,9 @@ import { Temporal } from \\"@js-temporal/polyfill\\";
 import jsonld from \\"jsonld\\";
 import { type LanguageTag, parseLanguageTag }
     from \\"@phensley/language-tag\\";
-import { exportSPKI, importSPKI } from \\"jose\\";
 import { type DocumentLoader, fetchDocumentLoader }
     from \\"../runtime/docloader.ts\\";
+import { exportSpki, importSpki } from \\"../runtime/key.ts\\";
 import { LanguageString } from \\"../runtime/langstr.ts\\";
 
 
@@ -178,7 +178,7 @@ get publicKey(): (CryptoKey | null) {
     array = [];
     for (const v of this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD) {
       array.push(
-    { \\"@value\\": await exportSPKI(v) }
+    { \\"@value\\": await exportSpki(v) }
       );
     }
     if (array.length > 0) values[\\"https://w3id.org/security#publicKeyPem\\"] = array;
@@ -263,9 +263,7 @@ get publicKey(): (CryptoKey | null) {
 
     for (const v of values[\\"https://w3id.org/security#publicKeyPem\\"] ?? []) {
       if (v == null) continue;
-    _2fE2QMDdg6KFGqa4NEC3TmjApSAD.push(await importSPKI<CryptoKey>(v[\\"@value\\"], \\"RS256\\", {
-        extractable: true
-      }))
+    _2fE2QMDdg6KFGqa4NEC3TmjApSAD.push(await importSpki(v[\\"@value\\"]))
     }
     instance.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = _2fE2QMDdg6KFGqa4NEC3TmjApSAD;
     

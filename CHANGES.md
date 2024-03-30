@@ -13,6 +13,11 @@ Version 0.5.0
 
 To be released.
 
+ -  Removed dependency on *jose*.
+
+     -  Added `exportSpki()` function.
+     -  Added `importSpki()` function.
+
 
 Version 0.4.0
 -------------

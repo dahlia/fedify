@@ -266,6 +266,7 @@ Deno.test("Person.fromJsonLd()", async () => {
     "publicKey": {
       "id": "https://todon.eu/users/hongminhee#main-key",
       "owner": "https://todon.eu/users/hongminhee",
+      // cSpell: disable
       "publicKeyPem": "-----BEGIN PUBLIC KEY-----\n" +
         "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxsRuvCkgJtflBTl4OVsm\n" +
         "nt/J1mQfZasfJtN33dcZ3d1lJroxmgmMu69zjGEAwkNbMQaWNLqC4eogkJaeJ4RR\n" +
@@ -275,6 +276,7 @@ Deno.test("Person.fromJsonLd()", async () => {
         "Ie/YUBOGj/ImSEXhRwlFerKsoAVnZ0Hwbfa46qk44TAt8CyoPMWmpK6pt0ng4pQ2\n" +
         "uwIDAQAB\n" +
         "-----END PUBLIC KEY-----\n",
+      // cSpell: enable
     },
   }, { documentLoader: mockDocumentLoader });
   assertEquals(
@@ -296,7 +298,11 @@ Deno.test("Key.publicKey", async () => {
     kty: "RSA",
     alg: "RS256",
     // cSpell: disable
-    n: "xsRuvCkgJtflBTl4OVsmnt_J1mQfZasfJtN33dcZ3d1lJroxmgmMu69zjGEAwkNbMQaWNLqC4eogkJaeJ4RR5MHYXkL9nNilVoTkjX5BVit3puzs7XJ7WQnKQgQMI-ezn24GHsZ_v1JIo77lerX5k4HNwTNVt-yaZVQWaOMR3-6FwziQR6kd0VuG9_a9dgAnz2cEoORRC1i4W7IZaB1sZnh1WbHbevlGd72HSXll5rocPIHn8gq6xpBgpHwRphlRsgn4KHaJ6brXDIJjrnQhIe_YUBOGj_ImSEXhRwlFerKsoAVnZ0Hwbfa46qk44TAt8CyoPMWmpK6pt0ng4pQ2uw",
+    n: "xsRuvCkgJtflBTl4OVsmnt_J1mQfZasfJtN33dcZ3d1lJroxmgmMu69zjGEAwkNbMQaWN" +
+      "LqC4eogkJaeJ4RR5MHYXkL9nNilVoTkjX5BVit3puzs7XJ7WQnKQgQMI-ezn24GHsZ_v1J" +
+      "Io77lerX5k4HNwTNVt-yaZVQWaOMR3-6FwziQR6kd0VuG9_a9dgAnz2cEoORRC1i4W7IZa" +
+      "B1sZnh1WbHbevlGd72HSXll5rocPIHn8gq6xpBgpHwRphlRsgn4KHaJ6brXDIJjrnQhIe_" +
+      "YUBOGj_ImSEXhRwlFerKsoAVnZ0Hwbfa46qk44TAt8CyoPMWmpK6pt0ng4pQ2uw",
     e: "AQAB",
     // cSpell: enable
     key_ops: ["verify"],
@@ -324,7 +330,7 @@ Deno.test("Key.publicKey", async () => {
       "Ie/YUBOGj/ImSEXhRwlFerKsoAVnZ0Hwbfa46qk44TAt8CyoPMWmpK6pt0ng4pQ2\n" +
       "uwIDAQAB\n" +
       // cSpell: enable
-      "-----END PUBLIC KEY-----",
+      "-----END PUBLIC KEY-----\n",
     type: "CryptographicKey",
   });
   const loadedKey = await CryptographicKey.fromJsonLd(jsonLd, {
