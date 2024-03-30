@@ -13,6 +13,7 @@
   },
   "imports": {
     "@cfworker/json-schema": "npm:@cfworker/json-schema@^1.12.8",
+    "@david/which-runtime": "jsr:@david/which-runtime@^0.2.0",
     "@deno/dnt": "jsr:@deno/dnt@^0.41.1",
     "@fedify/fedify": "./mod.ts",
     "@fedify/fedify/federation": "./federation/mod.ts",
@@ -62,7 +63,8 @@
     "test": "deno task codegen && deno task test-without-codegen",
     "coverage": "rm -rf coverage/ && deno task test --coverage && deno coverage --html coverage",
     "apidoc": "deno task codegen && deno doc --html --name=Fedify --output=apidoc/ mod.ts",
-    "publish": "deno task codegen && deno publish"
+    "publish": "deno task codegen && deno publish",
+    "dnt": "deno task codegen && deno run -A dnt.ts"
   },
   "unstable": [
     "kv"

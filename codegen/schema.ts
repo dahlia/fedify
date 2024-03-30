@@ -174,8 +174,14 @@ export class SchemaError extends Error {
 
 async function loadSchemaValidator(): Promise<Validator> {
   const thisFile = new URL(import.meta.url);
-  const response = await fetch(url.join(url.dirname(thisFile), "schema.yaml"));
-  const content = await response.text();
+  const schemaFile = url.join(url.dirname(thisFile), "schema.yaml");
+  let content: string;
+  if (schemaFile.protocol !== "file:") {
+    const response = await fetch(schemaFile);
+    content = await response.text();
+  } else {
+    content = await Deno.readTextFile(schemaFile);
+  }
   const schemaObject = parse(content);
   return new Validator(schemaObject as JsonSchema);
 }

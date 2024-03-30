@@ -280,6 +280,11 @@ get publicKey(): (CryptoKey | null) {
           inspect: typeof Deno.inspect,
           options: Deno.InspectOptions,
         ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
       };
     }
     
@@ -288,7 +293,12 @@ get publicKey(): (CryptoKey | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -306,6 +316,15 @@ get publicKey(): (CryptoKey | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"CryptographicKey \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"CryptographicKey \\" + inspect(proxy, options);
@@ -3585,6 +3604,11 @@ get sensitive(): (boolean | null) {
           inspect: typeof Deno.inspect,
           options: Deno.InspectOptions,
         ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
       };
     }
     
@@ -3593,7 +3617,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3608,7 +3637,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3627,7 +3661,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3656,7 +3695,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3685,7 +3729,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3700,7 +3749,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3719,7 +3773,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3738,7 +3797,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3757,7 +3821,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3776,7 +3845,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3799,7 +3873,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3826,7 +3905,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3855,7 +3939,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3874,7 +3963,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3893,7 +3987,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3912,7 +4011,12 @@ get sensitive(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -3944,6 +4048,15 @@ get sensitive(): (boolean | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Object \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Object \\" + inspect(proxy, options);
@@ -4541,7 +4654,12 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -4560,7 +4678,12 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -4580,6 +4703,15 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Activity \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Activity \\" + inspect(proxy, options);
@@ -4733,6 +4865,15 @@ const clone = super.clone(values) as unknown as Accept;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Accept \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Accept \\" + inspect(proxy, options);
@@ -4891,6 +5032,15 @@ const clone = super.clone(values) as unknown as Add;
     const proxy = this._getCustomInspectProxy();
     return \\"Add \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Add \\" + inspect(proxy, options);
+  }
   }
 
 /** Indicates that the \`actor\` is calling the \`target\`'s attention the \`object\`.
@@ -5040,6 +5190,15 @@ const clone = super.clone(values) as unknown as Announce;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Announce \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Announce \\" + inspect(proxy, options);
@@ -6216,7 +6375,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -6239,7 +6403,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -6252,7 +6421,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -6265,7 +6439,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -6278,7 +6457,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -6291,7 +6475,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -6304,7 +6493,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -6340,6 +6534,15 @@ get indexable(): (boolean | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Application \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Application \\" + inspect(proxy, options);
@@ -6486,6 +6689,15 @@ const clone = super.clone(values) as unknown as Article;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Article \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Article \\" + inspect(proxy, options);
@@ -6662,6 +6874,15 @@ const clone = super.clone(values) as unknown as Document;
     const proxy = this._getCustomInspectProxy();
     return \\"Document \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Document \\" + inspect(proxy, options);
+  }
   }
 
 /** Represents an audio document of any kind.
@@ -6804,6 +7025,15 @@ const clone = super.clone(values) as unknown as Audio;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Audio \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Audio \\" + inspect(proxy, options);
@@ -6971,6 +7201,15 @@ const clone = super.clone(values) as unknown as Ignore;
     const proxy = this._getCustomInspectProxy();
     return \\"Ignore \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Ignore \\" + inspect(proxy, options);
+  }
   }
 
 /** Indicates that the \`actor\` is blocking the \`object\`.  Blocking is a stronger
@@ -7121,6 +7360,15 @@ const clone = super.clone(values) as unknown as Block;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Block \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Block \\" + inspect(proxy, options);
@@ -7770,7 +8018,12 @@ get totalItems(): (number | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -7783,7 +8036,12 @@ get totalItems(): (number | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -7796,7 +8054,12 @@ get totalItems(): (number | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -7809,7 +8072,12 @@ get totalItems(): (number | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -7825,6 +8093,15 @@ get totalItems(): (number | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Collection \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Collection \\" + inspect(proxy, options);
@@ -8305,7 +8582,12 @@ const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKj
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -8318,7 +8600,12 @@ const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKj
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -8331,7 +8618,12 @@ const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKj
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -8345,6 +8637,15 @@ const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKj
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"CollectionPage \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"CollectionPage \\" + inspect(proxy, options);
@@ -8495,6 +8796,15 @@ const clone = super.clone(values) as unknown as Create;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Create \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Create \\" + inspect(proxy, options);
@@ -8651,6 +8961,15 @@ const clone = super.clone(values) as unknown as Delete;
     const proxy = this._getCustomInspectProxy();
     return \\"Delete \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Delete \\" + inspect(proxy, options);
+  }
   }
 
 /** Indicates that the \`actor\` dislikes the \`object\`.
@@ -8797,6 +9116,15 @@ const clone = super.clone(values) as unknown as Dislike;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Dislike \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Dislike \\" + inspect(proxy, options);
@@ -9126,6 +9454,11 @@ get sharedInbox(): (URL | null) {
           inspect: typeof Deno.inspect,
           options: Deno.InspectOptions,
         ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
       };
     }
     const _2JCYDbSxEHCCLdBYed33cCETfGyR = this.#_2JCYDbSxEHCCLdBYed33cCETfGyR;
@@ -9159,6 +9492,15 @@ get sharedInbox(): (URL | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Endpoints \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Endpoints \\" + inspect(proxy, options);
@@ -9305,6 +9647,15 @@ const clone = super.clone(values) as unknown as Event;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Event \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Event \\" + inspect(proxy, options);
@@ -9462,6 +9813,15 @@ const clone = super.clone(values) as unknown as Flag;
     const proxy = this._getCustomInspectProxy();
     return \\"Flag \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Flag \\" + inspect(proxy, options);
+  }
   }
 
 /** Indicates that the \`actor\` is \\"following\\" the \`object\`.  Following is defined
@@ -9612,6 +9972,15 @@ const clone = super.clone(values) as unknown as Follow;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Follow \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Follow \\" + inspect(proxy, options);
@@ -10788,7 +11157,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -10811,7 +11185,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -10824,7 +11203,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -10837,7 +11221,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -10850,7 +11239,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -10863,7 +11257,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -10876,7 +11275,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -10912,6 +11316,15 @@ get indexable(): (boolean | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Group \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Group \\" + inspect(proxy, options);
@@ -11058,6 +11471,15 @@ const clone = super.clone(values) as unknown as Image;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Image \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Image \\" + inspect(proxy, options);
@@ -11215,6 +11637,15 @@ const clone = super.clone(values) as unknown as IntransitiveActivity;
     const proxy = this._getCustomInspectProxy();
     return \\"IntransitiveActivity \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"IntransitiveActivity \\" + inspect(proxy, options);
+  }
   }
 
 /** Indicates that the \`actor\` likes, recommends or endorses the \`object\`.
@@ -11363,6 +11794,15 @@ const clone = super.clone(values) as unknown as Like;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Like \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Like \\" + inspect(proxy, options);
@@ -11936,6 +12376,11 @@ get width(): (number | null) {
           inspect: typeof Deno.inspect,
           options: Deno.InspectOptions,
         ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
       };
     }
     const _pVjLsybKQdmkjuU7MHjiVmNnuj7 = this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7;
@@ -11984,7 +12429,12 @@ get width(): (number | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -12000,6 +12450,15 @@ get width(): (number | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Link \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Link \\" + inspect(proxy, options);
@@ -12120,6 +12579,15 @@ const clone = super.clone(values) as unknown as Mention;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Mention \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Mention \\" + inspect(proxy, options);
@@ -12272,6 +12740,15 @@ const clone = super.clone(values) as unknown as Note;
     const proxy = this._getCustomInspectProxy();
     return \\"Note \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Note \\" + inspect(proxy, options);
+  }
   }
 
 /** A subtype of {@link Collection} in which members of the logical collection
@@ -12416,6 +12893,15 @@ const clone = super.clone(values) as unknown as OrderedCollection;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"OrderedCollection \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"OrderedCollection \\" + inspect(proxy, options);
@@ -12605,6 +13091,15 @@ get startIndex(): (number | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"OrderedCollectionPage \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"OrderedCollectionPage \\" + inspect(proxy, options);
@@ -13781,7 +14276,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -13804,7 +14304,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -13817,7 +14322,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -13830,7 +14340,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -13843,7 +14358,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -13856,7 +14376,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -13869,7 +14394,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -13905,6 +14435,15 @@ get indexable(): (boolean | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Organization \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Organization \\" + inspect(proxy, options);
@@ -14051,6 +14590,15 @@ const clone = super.clone(values) as unknown as Page;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Page \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Page \\" + inspect(proxy, options);
@@ -15227,7 +15775,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -15250,7 +15803,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -15263,7 +15821,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -15276,7 +15839,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -15289,7 +15857,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -15302,7 +15875,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -15315,7 +15893,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -15351,6 +15934,15 @@ get indexable(): (boolean | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Person \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Person \\" + inspect(proxy, options);
@@ -15749,6 +16341,15 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
     const proxy = this._getCustomInspectProxy();
     return \\"Place \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Place \\" + inspect(proxy, options);
+  }
   }
 
 /** A {@link Profile} is a content object that describes another {@link Object},
@@ -15986,7 +16587,12 @@ const clone = super.clone(values) as unknown as Profile;clone.#_3CLQ1PLSXrhSQbTG
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -16000,6 +16606,15 @@ const clone = super.clone(values) as unknown as Profile;clone.#_3CLQ1PLSXrhSQbTG
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Profile \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Profile \\" + inspect(proxy, options);
@@ -16152,6 +16767,15 @@ const clone = super.clone(values) as unknown as Reject;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Reject \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Reject \\" + inspect(proxy, options);
@@ -16715,7 +17339,12 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -16728,7 +17357,12 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -16747,7 +17381,12 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -16767,6 +17406,15 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Relationship \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Relationship \\" + inspect(proxy, options);
@@ -16919,6 +17567,15 @@ const clone = super.clone(values) as unknown as Remove;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Remove \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Remove \\" + inspect(proxy, options);
@@ -18095,7 +18752,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -18118,7 +18780,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -18131,7 +18798,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -18144,7 +18816,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -18157,7 +18834,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -18170,7 +18852,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -18183,7 +18870,12 @@ get indexable(): (boolean | null) {
             [Symbol.for(\\"Deno.customInspect\\")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options)
+            ): string => \\"URL \\" + inspect(v.href, options),
+            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => \\"URL \\" + inspect(v.href, options),
           }
         : v);
       
@@ -18219,6 +18911,15 @@ get indexable(): (boolean | null) {
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Service \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Service \\" + inspect(proxy, options);
@@ -18380,6 +19081,15 @@ const clone = super.clone(values) as unknown as Undo;
     const proxy = this._getCustomInspectProxy();
     return \\"Undo \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Undo \\" + inspect(proxy, options);
+  }
   }
 
 /** Indicates that the \`actor\` has updated the \`object\`.  Note, however,
@@ -18535,6 +19245,15 @@ const clone = super.clone(values) as unknown as Update;
     const proxy = this._getCustomInspectProxy();
     return \\"Update \\" + inspect(proxy, options);
   }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Update \\" + inspect(proxy, options);
+  }
   }
 
 /** Represents a video document of any kind.
@@ -18677,6 +19396,15 @@ const clone = super.clone(values) as unknown as Video;
   [Symbol.for(\\"Deno.customInspect\\")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Video \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Video \\" + inspect(proxy, options);

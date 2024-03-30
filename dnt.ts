@@ -76,6 +76,11 @@ await build({
       "npm/esm/testing/fixtures",
       { overwrite: true },
     );
+    for await (const entry of Deno.readDir("vocab")) {
+      if (!entry.isFile || !entry.name.endsWith(".yaml")) continue;
+      await Deno.copyFile(`vocab/${entry.name}`, `npm/esm/vocab/${entry.name}`);
+    }
+    await Deno.copyFile("codegen/schema.yaml", "npm/esm/codegen/schema.yaml");
     await Deno.copyFile("CHANGES.md", "npm/CHANGES.md");
     await Deno.copyFile("LICENSE", "npm/LICENSE");
     await Deno.copyFile("logo.svg", "npm/logo.svg");

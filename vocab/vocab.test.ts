@@ -1,3 +1,4 @@
+import { isDeno } from "@david/which-runtime";
 import { toArray } from "@hongminhee/aitertools";
 import { Temporal } from "@js-temporal/polyfill";
 import { parseLanguageTag } from "@phensley/language-tag";
@@ -245,15 +246,25 @@ Deno.test("Deno.inspect(Object)", () => {
   });
   assertEquals(
     Deno.inspect(obj, { colors: false, sorted: true, compact: false }),
-    "Object {\n" +
-      '  attribution: URL "https://example.com/foo",\n' +
-      "  contents: [\n" +
-      '    <en> "Hello",\n' +
-      '    <zh> "你好"\n' +
-      "  ],\n" +
-      '  id: URL "https://example.com/",\n' +
-      '  name: "Test"\n' +
-      "}",
+    isDeno
+      ? "Object {\n" +
+        '  attribution: URL "https://example.com/foo",\n' +
+        "  contents: [\n" +
+        '    <en> "Hello",\n' +
+        '    <zh> "你好"\n' +
+        "  ],\n" +
+        '  id: URL "https://example.com/",\n' +
+        '  name: "Test"\n' +
+        "}"
+      : "Object {\n" +
+        "  attribution: URL 'https://example.com/foo',\n" +
+        "  contents: [\n" +
+        "    <en> 'Hello',\n" +
+        "    <zh> '你好'\n" +
+        "  ],\n" +
+        "  id: URL 'https://example.com/',\n" +
+        "  name: 'Test'\n" +
+        "}",
   );
 });
 
@@ -711,41 +722,43 @@ for (const typeUri in types) {
     assertEquals(restored3, instance2);
   });
 
-  Deno.test(`Deno.inspect(${type.name}) [auto]`, async (t) => {
-    const empty = new cls({});
-    assertEquals(Deno.inspect(empty), `${type.name} {}`);
+  if (isDeno) {
+    Deno.test(`Deno.inspect(${type.name}) [auto]`, async (t) => {
+      const empty = new cls({});
+      assertEquals(Deno.inspect(empty), `${type.name} {}`);
 
-    const instance = new cls({
-      id: new URL("https://example.com/"),
-      ...initValues,
+      const instance = new cls({
+        id: new URL("https://example.com/"),
+        ...initValues,
+      });
+      await assertSnapshot(t, Deno.inspect(instance));
+
+      const instance2 = instance.clone(
+        globalThis.Object.fromEntries(
+          type.properties.filter((p) => !areAllScalarTypes(p.range, types)).map(
+            (p) =>
+              p.functional
+                ? [p.singularName, new URL("https://example.com/")]
+                : [p.pluralName, [new URL("https://example.com/")]],
+          ),
+        ),
+      );
+      await assertSnapshot(t, Deno.inspect(instance2));
+
+      const instance3 = instance.clone(
+        globalThis.Object.fromEntries(
+          type.properties.filter((p) => !p.functional).map(
+            (p) => {
+              assertFalse(p.functional);
+              return [
+                p.pluralName,
+                [sampleValues[p.range[0]], sampleValues[p.range[0]]],
+              ];
+            },
+          ),
+        ),
+      );
+      await assertSnapshot(t, Deno.inspect(instance3));
     });
-    await assertSnapshot(t, Deno.inspect(instance));
-
-    const instance2 = instance.clone(
-      globalThis.Object.fromEntries(
-        type.properties.filter((p) => !areAllScalarTypes(p.range, types)).map(
-          (p) =>
-            p.functional
-              ? [p.singularName, new URL("https://example.com/")]
-              : [p.pluralName, [new URL("https://example.com/")]],
-        ),
-      ),
-    );
-    await assertSnapshot(t, Deno.inspect(instance2));
-
-    const instance3 = instance.clone(
-      globalThis.Object.fromEntries(
-        type.properties.filter((p) => !p.functional).map(
-          (p) => {
-            assertFalse(p.functional);
-            return [
-              p.pluralName,
-              [sampleValues[p.range[0]], sampleValues[p.range[0]]],
-            ];
-          },
-        ),
-      ),
-    );
-    await assertSnapshot(t, Deno.inspect(instance3));
-  });
+  }
 }

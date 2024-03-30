@@ -1,6 +1,7 @@
 {
   "imports": {
     "@cfworker/json-schema": "npm:@cfworker/json-schema@^1.12.8",
+    "@david/which-runtime": "jsr:@david/which-runtime@^0.2.0",
     "@deno/dnt": "jsr:@deno/dnt@^0.41.1",
     "@fedify/fedify": "../../mod.ts",
     "@fedify/fedify/federation": "../../federation/mod.ts",
@@ -10,6 +11,7 @@
     "@fedify/fedify/vocab": "../../vocab/mod.ts",
     "@fedify/fedify/webfinger": "../../webfinger/mod.ts",
     "@fedify/fedify/x/fresh": "../../x/fresh.ts",
+    "@hongminhee/aitertools": "jsr:@hongminhee/aitertools@^0.6.0",
     "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.4.4",
     "@phensley/language-tag": "npm:@phensley/language-tag@^1.8.0",
     "@std/assert": "jsr:@std/assert@^0.220.1",
@@ -17,6 +19,7 @@
     "@std/collections": "jsr:@std/collections@^0.220.1",
     "@std/encoding": "jsr:@std/encoding@^0.220.1",
     "@std/encoding/base64": "jsr:@std/encoding@^0.220.1/base64",
+    "@std/fs": "jsr:@std/fs@^0.220.1",
     "@std/http/negotiation": "jsr:@std/http@^0.220.1/negotiation",
     "@std/json/common": "jsr:@std/json@^0.220.1/common",
     "@std/path": "jsr:@std/path@^0.220.1",
