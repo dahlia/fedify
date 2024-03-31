@@ -36,7 +36,8 @@ await build({
   },
   outDir: "./npm",
   entryPoints: Object.entries(metadata.exports as Record<string, string>)
-    .map(([name, path]) => ({ name, path })),
+    .map(([name, path]) => ({ name, path }))
+    .filter(({ name }) => !name.startsWith("./x/")),
   importMap: denoJson,
   scriptModule: false,
   shims: {

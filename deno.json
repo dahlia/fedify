@@ -9,6 +9,7 @@
     "./runtime": "./runtime/mod.ts",
     "./vocab": "./vocab/mod.ts",
     "./webfinger": "./webfinger/mod.ts",
+    "./x/denokv": "./x/denokv.ts",
     "./x/fresh": "./x/fresh.ts"
   },
   "imports": {

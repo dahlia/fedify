@@ -20,7 +20,7 @@ To be released.
      -  Added `KvStore` interface.
      -  Added `KvStoreSetOptions` interface.
      -  Added `KvKey` type.
-     -  Added `MemoryKvStore` class.
+     -  Added `DenoKvStore` class.
      -  `KvCacheParameters.kv` option now accepts a `KvStore` instead of
         `Deno.Kv`.
      -  `KvCacheParameters.prefix` option now accepts a `KvKey` instead of
@@ -38,6 +38,12 @@ To be released.
      -  Added `MessageQueueEnqueueOptions` interface.
      -  Added `InProcessMessageQueue` class.
      -  Added `FederationParameters.queue` option.
+
+ -  Added `@fedify/fedify/x/denokv` module for adapting `Deno.Kv` to `KvStore`
+    and `MessageQueue`.  It is only available in Deno runtime.
+
+     -  Added `DenoKvStore` class.
+     -  Added `DenoKvMessageQueue` class.
 
  -  Removed dependency on *jose*.
 
