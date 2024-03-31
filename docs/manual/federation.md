@@ -40,13 +40,20 @@ properties.  Some of them are required:
 
 ### `kv`
 
-*Required.*  The `~FederationParameters.kv` property is a [`Deno.Kv`] instance
+*Required.*  The `~FederationParameters.kv` property is a `KvStore` instance
 that the `Federation` object uses to store several kinds of cache data and
-to maintain the queue of outgoing activities.  Usually instantiated by
-calling the [`Deno.openKv()`] function.
+to maintain the queue of outgoing activities.
 
-[`Deno.Kv`]: https://deno.land/api?unstable&s=Deno.Kv
-[`Deno.openKv()`]: https://deno.land/api?unstable&s=Deno.openKv
+`KvStore` is an abstract interface that represents a key-value store.
+Currently, there are two implementations of `KvStore`, which are the
+`MemoryKvStore` and `DenoKvStore` classes.  The `MemoryKvStore` class is for
+testing and development purposes, and the `DenoKvStore` class is Deno KV-backed
+implementation for production use (as you can guess from the name, it is only
+available in Deno runtime).  However, you can define your own `KvStore`
+implementation if you want to use a different key-value store.[^1]
+
+[^1]: We are welcome to contributions of `KvStore` implementations for other
+      key-value stores.
 
 ### `kvPrefixes`
 
@@ -61,6 +68,29 @@ that the `Federation` object uses:
 `~FederationKvPrefixes.remoteDocument`
 :   The key prefix used for storing remote JSON-LD documents.
     `["_fedify", "remoteDocument"]` by default.
+
+### `queue`
+
+The `~FederationParameters.queue` property is a `MessageQueue` instance that
+the `Federation` object uses to maintain the queue of outgoing activities.
+If you don't provide this option, activities will not be queued and will
+be sent immediately.
+
+`MessageQueue` is an abstract interface that represents a message queue.
+Currently, there are only two implementations of `MessageQueue`, which are
+the `InProcessMessageQueue` and `DenoKvMessageQueue` classes.
+The `InProcessMessageQueue` class is for testing and development purposes,
+and the `DenoKvMessageQueue` class is a Deno KV-backed implementation for
+production use (as you can guess from the name, it is only available in Deno
+runtime).  However, you can define your own `MessageQueue` implementation if
+you want to use a different message queue.[^1]
+
+> [!IMPORTANT]
+> While the `queue` option is optional, it is highly recommended to provide
+> a message queue implementation in production environments.  If you don't
+> provide a message queue implementation, activities will not be queued and
+> will be sent immediately.  This can make delivery of activities unreliable
+> and can cause performance issues.
 
 ### `documentLoader`
 

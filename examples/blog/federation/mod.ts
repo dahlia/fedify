@@ -15,6 +15,7 @@ import {
   Person,
   Undo,
 } from "@fedify/fedify/vocab";
+import { DenoKvMessageQueue, DenoKvStore } from "@fedify/fedify/x/denokv";
 import { getBlog } from "../models/blog.ts";
 import { addComment, Comment, getComments } from "../models/comment.ts";
 import {
@@ -23,15 +24,17 @@ import {
   getFollowers,
   removeFollower,
 } from "../models/follower.ts";
-import { openKv } from "../models/kv.ts";
 import { countPosts, getPosts, toArticle } from "../models/post.ts";
+import { openKv } from "../models/kv.ts";
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
 export const federation = new Federation<void>({
-  // The following Deno KV storage is used for several purposes, such as
-  // cache and outbox queue:
-  kv: await openKv(),
+  // The following key-value storage is used for internal cache:
+  kv: new DenoKvStore(await openKv()),
+
+  // The following message queue is used for maintaining outgoing activities:
+  queue: new DenoKvMessageQueue(await openKv()),
 
   // The following option is useful for local development, as Fresh's dev
   // server does not support HTTPS:

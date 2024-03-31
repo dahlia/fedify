@@ -96,6 +96,7 @@ export function getActorClassByTypeName(
  *          username and domain, separated by `@`.
  * @throws {TypeError} If the actor does not have enough information to get the
  *                     handle.
+ * @since 0.4.0
  */
 export async function getActorHandle(
   actor: Actor | URL,

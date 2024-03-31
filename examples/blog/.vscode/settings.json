@@ -33,6 +33,7 @@
     "activitypub",
     "codegen",
     "deno",
+    "denokv",
     "docloader",
     "fedify",
     "fediverse",

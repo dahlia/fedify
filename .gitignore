@@ -5,3 +5,4 @@
 apidoc/
 coverage/
 deno.lock
+npm/

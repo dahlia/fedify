@@ -1,6 +1,7 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
 import * as mf from "mock_fetch";
+import { MemoryKvStore } from "../federation/kv.ts";
 import { verify } from "../httpsig/mod.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2 } from "../testing/keys.ts";
@@ -88,7 +89,7 @@ Deno.test("getAuthenticatedDocumentLoader()", async (t) => {
 });
 
 Deno.test("kvCache()", async (t) => {
-  const kv = await Deno.openKv(":memory:");
+  const kv = new MemoryKvStore();
 
   await t.step("cached", async () => {
     const loader = kvCache({
@@ -120,7 +121,7 @@ Deno.test("kvCache()", async (t) => {
       "cached",
       "https://example.com/object",
     ]);
-    assertEquals(cache.value, result);
+    assertEquals(cache, result);
 
     await kv.set(
       ["_test", "cached", "https://example.org/"],
@@ -184,7 +185,7 @@ Deno.test("kvCache()", async (t) => {
       "not cached",
       "https://example.com/object",
     ]);
-    assertEquals(cache.value, null);
+    assertEquals(cache, undefined);
   });
 
   await t.step("maximum cache duration", () => {
@@ -219,6 +220,4 @@ Deno.test("kvCache()", async (t) => {
       "The maximum cache duration is 30 days",
     );
   });
-
-  kv.close();
 });

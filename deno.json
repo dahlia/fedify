@@ -9,10 +9,13 @@
     "./runtime": "./runtime/mod.ts",
     "./vocab": "./vocab/mod.ts",
     "./webfinger": "./webfinger/mod.ts",
+    "./x/denokv": "./x/denokv.ts",
     "./x/fresh": "./x/fresh.ts"
   },
   "imports": {
     "@cfworker/json-schema": "npm:@cfworker/json-schema@^1.12.8",
+    "@david/which-runtime": "jsr:@david/which-runtime@^0.2.0",
+    "@deno/dnt": "jsr:@deno/dnt@^0.41.1",
     "@fedify/fedify": "./mod.ts",
     "@fedify/fedify/federation": "./federation/mod.ts",
     "@fedify/fedify/httpsig": "./httpsig/mod.ts",
@@ -21,15 +24,18 @@
     "@fedify/fedify/vocab": "./vocab/mod.ts",
     "@fedify/fedify/webfinger": "./webfinger/mod.ts",
     "@fedify/fedify/x/fresh": "./x/fresh.ts",
+    "@hongminhee/aitertools": "jsr:@hongminhee/aitertools@^0.6.0",
     "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.4.4",
     "@phensley/language-tag": "npm:@phensley/language-tag@^1.8.0",
     "@std/assert": "jsr:@std/assert@^0.220.1",
+    "@std/async/delay": "jsr:@std/async@^0.220.1/delay",
     "@std/bytes": "jsr:@std/bytes@^0.220.1",
     "@std/collections": "jsr:@std/collections@^0.220.1",
     "@std/encoding": "jsr:@std/encoding@^0.220.1",
     "@std/encoding/base64": "jsr:@std/encoding@^0.220.1/base64",
-    "@std/http": "jsr:@std/http@^0.220.1",
-    "@std/json": "jsr:@std/json@^0.220.1",
+    "@std/fs": "jsr:@std/fs@^0.220.1",
+    "@std/http/negotiation": "jsr:@std/http@^0.220.1/negotiation",
+    "@std/json/common": "jsr:@std/json@^0.220.1/common",
     "@std/path": "jsr:@std/path@^0.220.1",
     "@std/semver": "jsr:@std/semver@^0.220.1",
     "@std/testing": "jsr:@std/testing@^0.220.1",
@@ -49,7 +55,8 @@
     ".git/",
     "apidoc/",
     "docs/",
-    "examples/"
+    "examples/",
+    "npm/"
   ],
   "tasks": {
     "check": "deno task codegen && deno fmt --check && deno lint && deno check */*.ts",
@@ -58,7 +65,8 @@
     "test": "deno task codegen && deno task test-without-codegen",
     "coverage": "rm -rf coverage/ && deno task test --coverage && deno coverage --html coverage",
     "apidoc": "deno task codegen && deno doc --html --name=Fedify --output=apidoc/ mod.ts",
-    "publish": "deno task codegen && deno publish"
+    "publish": "deno task codegen && deno publish",
+    "dnt": "deno task codegen && deno run -A dnt.ts"
   },
   "unstable": [
     "kv"

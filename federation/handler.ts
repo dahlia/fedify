@@ -1,4 +1,5 @@
-import { accepts } from "@std/http";
+import { Temporal } from "@js-temporal/polyfill";
+import { accepts } from "@std/http/negotiation";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import {
@@ -17,6 +18,7 @@ import type {
   InboxListener,
 } from "./callback.ts";
 import type { RequestContext } from "./context.ts";
+import type { KvKey, KvStore } from "./kv.ts";
 
 export function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);
@@ -210,8 +212,8 @@ export async function handleCollection<
 export interface InboxHandlerParameters<TContextData> {
   handle: string | null;
   context: RequestContext<TContextData>;
-  kv: Deno.Kv;
-  kvPrefix: Deno.KvKey;
+  kv: KvStore;
+  kvPrefix: KvKey;
   actorDispatcher?: ActorDispatcher<TContextData>;
   inboxListeners: Map<
     new (...args: unknown[]) => Activity,
@@ -276,10 +278,12 @@ export async function handleInbox<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  const cacheKey = activity.id == null ? null : [...kvPrefix, activity.id.href];
+  const cacheKey = activity.id == null
+    ? null
+    : [...kvPrefix, activity.id.href] satisfies KvKey;
   if (cacheKey != null) {
     const cached = await kv.get(cacheKey);
-    if (cached != null && cached.value === true) {
+    if (cached === true) {
       return new Response(
         `Activity <${activity.id}> has already been processed.`,
         {
@@ -330,7 +334,7 @@ export async function handleInbox<TContextData>(
     });
   }
   if (cacheKey != null) {
-    await kv.set(cacheKey, true, { expireIn: 1000 * 60 * 60 * 24 });
+    await kv.set(cacheKey, true, { ttl: Temporal.Duration.from({ days: 1 }) });
   }
   return new Response("", {
     status: 202,
@@ -341,6 +345,7 @@ export async function handleInbox<TContextData>(
 /**
  * Options for the {@link respondWithObject} and
  * {@link respondWithObjectIfAcceptable} functions.
+ * @since 0.3.0
  */
 export interface RespondWithObjectOptions {
   /**
@@ -354,6 +359,7 @@ export interface RespondWithObjectOptions {
  *
  * @param object The object to respond with.
  * @param options Options.
+ * @since 0.3.0
  */
 export async function respondWithObject(
   object: Object,
@@ -374,6 +380,7 @@ export async function respondWithObject(
  * @param object The object to respond with.
  * @param request The request to check for JSON-LD acceptability.
  * @param options Options.
+ * @since 0.3.0
  */
 export async function respondWithObjectIfAcceptable(
   object: Object,

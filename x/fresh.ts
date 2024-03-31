@@ -8,6 +8,7 @@
  * [Fresh]: https://fresh.deno.dev/
  *
  * @module
+ * @since 0.4.0
  */
 import type {
   Federation,

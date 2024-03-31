@@ -29,6 +29,7 @@
   },
   "cSpell.words": [
     "activitypub",
+    "aitertools",
     "apidoc",
     "bccs",
     "btos",
@@ -36,6 +37,7 @@
     "cfworker",
     "codegen",
     "Deno",
+    "denokv",
     "dereferenceable",
     "discoverability",
     "docloader",
@@ -63,6 +65,7 @@
     "superproperty",
     "unfollow",
     "unfollowing",
+    "urlpattern",
     "webfinger"
   ]
 }

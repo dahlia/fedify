@@ -19,6 +19,11 @@ export async function* generateInspector(
           inspect: typeof Deno.inspect,
           options: Deno.InspectOptions,
         ): string => "URL " + inspect(this.id!.href, options),
+        [Symbol.for("nodejs.util.inspect.custom")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => "URL " + inspect(this.id!.href, options),
       };
     }
     `;
@@ -37,7 +42,12 @@ export async function* generateInspector(
             [Symbol.for("Deno.customInspect")]: (
               inspect: typeof Deno.inspect,
               options: Deno.InspectOptions,
-            ): string => "URL " + inspect(v.href, options)
+            ): string => "URL " + inspect(v.href, options),
+            [Symbol.for("nodejs.util.inspect.custom")]: (
+              _depth: number,
+              options: unknown,
+              inspect: (value: unknown, options: unknown) => string,
+            ): string => "URL " + inspect(v.href, options),
           }
         : v);
       `;
@@ -66,6 +76,15 @@ export async function* generateInspector(
   [Symbol.for("Deno.customInspect")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return ${JSON.stringify(type.name + " ")} + inspect(proxy, options);
+  }
+
+  [Symbol.for("nodejs.util.inspect.custom")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
   ): string {
     const proxy = this._getCustomInspectProxy();
     return ${JSON.stringify(type.name + " ")} + inspect(proxy, options);

@@ -2,7 +2,7 @@
  * Fedify: a fediverse server framework
  * ====================================
  *
- * Fedify is a [Deno]/TypeScript library for building federated server apps
+ * Fedify is a TypeScript library for building federated server apps
  * powered by [ActivityPub] and other standards, which is so-called [fediverse].
  * It aims to eliminate the complexity and redundant boilerplate code when
  * building a federated server app, so that you can focus on your business
@@ -32,7 +32,6 @@
  *   ([Unstable](https://unstable.fedify.dev/manual/))
  * - [Examples](https://github.com/dahlia/fedify/tree/main/examples)
  *
- * [Deno]: https://deno.com/
  * [ActivityPub]: https://www.w3.org/TR/activitypub/
  * [fediverse]: https://en.wikipedia.org/wiki/Fediverse
  * [Activity Vocabulary]: https://www.w3.org/TR/activitystreams-vocabulary/

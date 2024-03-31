@@ -70,6 +70,7 @@ export async function* generateClasses(
   runtimePath = runtimePath.replace(/\/+$/, "");
   yield "// deno-lint-ignore-file ban-unused-ignore\n";
   yield 'import { Temporal } from "@js-temporal/polyfill";\n';
+  yield "// @ts-ignore TS7016\n";
   yield 'import jsonld from "jsonld";\n';
   yield `import { type LanguageTag, parseLanguageTag }
     from "@phensley/language-tag";\n`;

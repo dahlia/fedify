@@ -25,4 +25,12 @@ export class LanguageString extends String {
   ): string {
     return `<${this.language.compact()}> ${inspect(this.toString(), options)}`;
   }
+
+  [Symbol.for("nodejs.util.inspect.custom")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    return `<${this.language.compact()}> ${inspect(this.toString(), options)}`;
+  }
 }

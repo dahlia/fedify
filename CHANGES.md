@@ -13,11 +13,45 @@ Version 0.5.0
 
 To be released.
 
+ -  Fedify is now available on npm: [@fedify/fedify].  [[#24]]
+
+ -  Abstract key-value store for caching.
+
+     -  Added `KvStore` interface.
+     -  Added `KvStoreSetOptions` interface.
+     -  Added `KvKey` type.
+     -  Added `DenoKvStore` class.
+     -  `KvCacheParameters.kv` option now accepts a `KvStore` instead of
+        `Deno.Kv`.
+     -  `KvCacheParameters.prefix` option now accepts a `KvKey` instead of
+        `Deno.KvKey`.
+     -  `FederationParameters.kv` option now accepts a `KvStore` instead of
+        `Deno.Kv`.
+     -  `FederationKvPrefixes.activityIdempotence` option now accepts a `KvKey`
+        instead of `Deno.KvKey`.
+     -  `FederationKvPrefixes.remoteDocument` option now accepts a `KvKey`
+        instead of `Deno.KvKey`.
+
+ -  Abstract message queue for outgoing activities.
+
+     -  Added `MessageQueue` interface.
+     -  Added `MessageQueueEnqueueOptions` interface.
+     -  Added `InProcessMessageQueue` class.
+     -  Added `FederationParameters.queue` option.
+
+ -  Added `@fedify/fedify/x/denokv` module for adapting `Deno.Kv` to `KvStore`
+    and `MessageQueue`.  It is only available in Deno runtime.
+
+     -  Added `DenoKvStore` class.
+     -  Added `DenoKvMessageQueue` class.
+
  -  Removed dependency on *jose*.
 
      -  Added `exportSpki()` function.
      -  Added `importSpki()` function.
 
+[@fedify/fedify]: https://www.npmjs.com/package/@fedify/fedify
+[#24]: https://github.com/dahlia/fedify/discussions/24
 
 Version 0.4.0
 -------------

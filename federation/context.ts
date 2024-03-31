@@ -20,6 +20,7 @@ export interface Context<TContextData> {
    * Builds the URI of the NodeInfo document.
    * @returns The NodeInfo URI.
    * @throws {RouterError} If no NodeInfo dispatcher is available.
+   * @since 0.2.0
    */
   getNodeInfoUri(): URL;
 
@@ -93,6 +94,7 @@ export interface Context<TContextData> {
    * @returns The authenticated document loader.
    * @throws {Error} If the identity is not valid.
    * @throws {TypeError} If the key is invalid or unsupported.
+   * @since 0.4.0
    */
   getDocumentLoader(identity: { handle: string }): Promise<DocumentLoader>;
 
@@ -104,6 +106,7 @@ export interface Context<TContextData> {
    *                 The actor's key pair.
    * @returns The authenticated document loader.
    * @throws {TypeError} If the key is invalid or unsupported.
+   * @since 0.4.0
    */
   getDocumentLoader(
     identity: { keyId: URL; privateKey: CryptoKey },
