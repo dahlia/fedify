@@ -4,6 +4,7 @@ import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
  * Imports a PEM-SPKI formatted public key.
  * @param pem The PEM-SPKI formatted public key.
  * @returns The imported public key.
+ * @since 0.5.0
  */
 export async function importSpki(pem: string): Promise<CryptoKey> {
   pem = pem.replace(/(?:-----(?:BEGIN|END) PUBLIC KEY-----|\s)/g, "");
@@ -22,6 +23,7 @@ export async function importSpki(pem: string): Promise<CryptoKey> {
  * Exports a public key in PEM-SPKI format.
  * @param key The public key to export.
  * @returns The exported public key in PEM-SPKI format.
+ * @since 0.5.0
  */
 export async function exportSpki(key: CryptoKey): Promise<string> {
   const spki = await crypto.subtle.exportKey("spki", key);

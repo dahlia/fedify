@@ -3,5 +3,6 @@
  * protocol.
  *
  * @module
+ * @since 0.2.0
  */
 export * from "./types.ts";

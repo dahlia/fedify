@@ -2,11 +2,15 @@ import { Temporal } from "@js-temporal/polyfill";
 
 /**
  * A key for a key-value store.  An array of one or more strings.
+ *
+ * @since 0.5.0
  */
 export type KvKey = readonly [string] | readonly [string, ...string[]];
 
 /**
  * Additional options for setting a value in a key-value store.
+ *
+ * @since 0.5.0
  */
 export interface KvStoreSetOptions {
   /**
@@ -17,6 +21,8 @@ export interface KvStoreSetOptions {
 
 /**
  * An abstract interface for a key-value store.
+ *
+ * @since 0.5.0
  */
 export interface KvStore {
   /**
@@ -45,6 +51,8 @@ export interface KvStore {
 /**
  * A key-value store that stores values in memory.
  * Do not use this in production as it does not persist values.
+ *
+ * @since 0.5.0
  */
 export class MemoryKvStore implements KvStore {
   #values: Record<string, [unknown, null | Temporal.Instant]> = {};

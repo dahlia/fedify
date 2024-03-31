@@ -4,6 +4,7 @@ import type { ResourceDescriptor } from "./jrd.ts";
  * Looks up a WebFinger resource.
  * @param resource The resource URL to look up.
  * @returns The resource descriptor, or `null` if not found.
+ * @since 0.2.0
  */
 export async function lookupWebFinger(
   resource: URL | string,

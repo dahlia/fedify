@@ -70,6 +70,8 @@ export interface FederationParameters {
    * A factory function that creates an authenticated document loader for a
    * given identity.  This is used for fetching documents that require
    * authentication.
+   *
+   * @since 0.4.0
    */
   authenticatedDocumentLoaderFactory?: AuthenticatedDocumentLoaderFactory;
 
@@ -388,6 +390,7 @@ export class Federation<TContextData> {
    *             must have no variables.
    * @param dispatcher A NodeInfo dispatcher callback to register.
    * @throws {RouterError} Thrown if the path pattern is invalid.
+   * @since 0.2.0
    */
   setNodeInfoDispatcher(
     path: string,

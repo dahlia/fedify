@@ -27,6 +27,7 @@ export type DocumentLoader = (url: string) => Promise<RemoteDocument>;
  * @param identity The identity to create the document loader for.
  *                 The actor's key pair.
  * @returns The authenticated document loader.
+ * @since 0.4.0
  */
 export type AuthenticatedDocumentLoaderFactory = (
   identity: { keyId: URL; privateKey: CryptoKey },
@@ -101,6 +102,7 @@ export async function fetchDocumentLoader(
  *                 The actor's key pair.
  * @returns The authenticated document loader.
  * @throws {TypeError} If the key is invalid or unsupported.
+ * @since 0.4.0
  */
 export function getAuthenticatedDocumentLoader(
   identity: { keyId: URL; privateKey: CryptoKey },

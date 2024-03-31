@@ -345,6 +345,7 @@ export async function handleInbox<TContextData>(
 /**
  * Options for the {@link respondWithObject} and
  * {@link respondWithObjectIfAcceptable} functions.
+ * @since 0.3.0
  */
 export interface RespondWithObjectOptions {
   /**
@@ -358,6 +359,7 @@ export interface RespondWithObjectOptions {
  *
  * @param object The object to respond with.
  * @param options Options.
+ * @since 0.3.0
  */
 export async function respondWithObject(
   object: Object,
@@ -378,6 +380,7 @@ export async function respondWithObject(
  * @param object The object to respond with.
  * @param request The request to check for JSON-LD acceptability.
  * @param options Options.
+ * @since 0.3.0
  */
 export async function respondWithObjectIfAcceptable(
   object: Object,

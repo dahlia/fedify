@@ -7,6 +7,8 @@ import { Object } from "./vocab.ts";
 
 /**
  * Options for the `lookupObject` function.
+ *
+ * @since 0.2.0
  */
 export interface LookupObjectOptions {
   documentLoader?: DocumentLoader;
@@ -45,6 +47,7 @@ const handleRegexp =
  * @param identifier The URI or fediverse handle to look up.
  * @param options Lookup options.
  * @returns The object, or `null` if not found.
+ * @since 0.2.0
  */
 export async function lookupObject(
   identifier: string | URL,

@@ -3,6 +3,8 @@ import type { Temporal } from "@js-temporal/polyfill";
 
 /**
  * Additional options for enqueuing a message in a queue.
+ *
+ * @since 0.5.0
  */
 export interface MessageQueueEnqueueOptions {
   /**
@@ -13,6 +15,8 @@ export interface MessageQueueEnqueueOptions {
 
 /**
  * An abstract interface for a message queue.
+ *
+ * @since 0.5.0
  */
 export interface MessageQueue {
   /**
@@ -32,6 +36,8 @@ export interface MessageQueue {
 /**
  * A message queue that processes messages in the same process.
  * Do not use this in production as it does not persist messages.
+ *
+ * @since 0.5.0
  */
 export class InProcessMessageQueue implements MessageQueue {
   #handlers: ((message: any) => Promise<void> | void)[] = [];
