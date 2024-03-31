@@ -145,10 +145,10 @@ ActivityPub activities and actors.  Let's modify the server script to use the
 `Federation` object:
 
 ~~~~ typescript
-import { Federation } from "@fedify/fedify";
+import { Federation, MemoryKvStore } from "@fedify/fedify";
 
 const federation = new Federation<void>({
-  kv: await Deno.openKv(),
+  kv: new MemoryKvStore(),
 });
 ~~~~
 
@@ -156,23 +156,12 @@ In the above code, we import the `Federation` object from the Fedify framework
 and create a new `Federation` object.  We pass an object to the
 `new Federation()` constructor, which is the configuration object.
 The `kv` property is a key-value store that is used to store several internal
-data of the `Federation` object.  We use the [`Deno.openKv()`] function to open
+data of the `Federation` object.  We use the `MemoryKvStore` to open
 a key-value store.
 
-> [!NOTE]
-> Since the `Deno.openKv()` function is one of the unstable APIs in Deno as of
-> March 2024, you need to specify the `"unstable": ["kv"]` field in
-> the *deno.json* file to use the `Deno.openKv()` function.  The *deno.json*
-> file should look like this:
->
-> ~~~~ json
-> {
->   "imports": {
->     "@fedify/fedify": "jsr:@fedify/fedify@^0.3.0"
->   },
->   "unstable": ["kv"]
-> }
-> ~~~~
+> [!IMPORTANT]
+> Since `MemoryKvStore` is for testing and development purposes, you should
+> use a persistent key-value store like [`DenoKvStore`] for production use.
 
 Then, we pass the incoming `Request` to the `federation.handle()` method:
 
@@ -217,10 +206,10 @@ like).
 Let's create an actor dispatcher for our server:
 
 ~~~~ typescript
-import { Federation, Person } from "@fedify/fedify";
+import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
 
 const federation = new Federation<void>({
-  kv: await Deno.openKv(),
+  kv: new MemoryKvStore(),
 });
 
 federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
@@ -371,7 +360,7 @@ set the `treatHttps` property to `true` in the `Federation` object:
 
 ~~~~ typescript
 const federation = new Federation<void>({
-  kv: await Deno.openKv(),
+  kv: new MemoryKvStore(),
   treatHttps: true,  // Treat HTTP requests as HTTPS
 });
 ~~~~
@@ -417,7 +406,7 @@ represents the `Follow` activity.  We will use the `Follow` class to handle
 incoming follow requests:
 
 ~~~~ typescript
-import { Federation, Follow, Person } from "@fedify/fedify";
+import { Federation, Follow, Person, MemoryKvStore } from "@fedify/fedify";
 ~~~~
 
 Then, we register an inbox listener for the `Follow` activity:
@@ -493,7 +482,7 @@ Fedify provides helper functions to generate and export/import keys:
 
 ~~~~ typescript
 import {
-  Federation, Follow, Person,
+  Federation, Follow, Person, MemoryKvStore,
   // Import helper functions:
   exportJwk, generateCryptoKeyPair, importJwk,
 } from "@fedify/fedify";
@@ -512,11 +501,6 @@ should be chained after the `Federation.setActorDispatcher()` method:
 
 ~~~~ typescript
 const kv = await Deno.openKv();  // Open the key-value store
-
-const federation = new Federation<void>({
-  kv,
-  treatHttps: true,
-});
 
 federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
@@ -563,6 +547,26 @@ and the public key of the actor.  In this case, we generate a new key pair
 at the first time and store it in the key-value store.  When the actor *me* is
 dispatched again, the key pair dispatcher loads the key pair from the key-value
 store.
+
+> [!IMPORTANT]
+> In the above code, we use the `Deno.openKv()` function to open the key-value
+> store, which is persistent.  However, Deno KV is an unstable feature as of
+> March 2024, so you need to add the `"unstable": ["kv"]` field to the
+> *deno.json* file:
+>
+> ~~~~ json
+> {
+>   "imports": {
+>     "@fedify/fedify": "jsr:@fedify/fedify@^0.4.0"
+>   },
+>   "unstable": ["kv"]
+> }
+> ~~~~
+
+> [!NOTE]
+> Although we use the Deno KV database in this tutorial, you can use any
+> other your favorite database to store the key pair.  The key-value store
+> is just an example.
 
 Restart the server and make an HTTP request to the actor *me* using `curl`.
 Now you should see the actor *me* with the public key in the response:

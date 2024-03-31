@@ -168,19 +168,6 @@ export class Federation<TContextData> {
       authenticatedDocumentLoaderFactory ??
         getAuthenticatedDocumentLoader;
     this.#treatHttps = treatHttps ?? false;
-    if (backoffSchedule != null) {
-      // TODO: Deno KV Queue's backoff schedule is too limited for our needs.
-      //       We should manually implement our own backoff retrial mechanism.
-      //       Fortunately, Deno KV Queue's delay option allows up to 30 days.
-      //       We can use that to implement our own backoff schedule.
-      if (backoffSchedule.length > 5) {
-        throw new Error("Backoff schedule must have at most 5 entries.");
-      }
-      const hour = Temporal.Duration.from({ hours: 1 });
-      if (backoffSchedule.some((d) => Temporal.Duration.compare(d, hour) > 0)) {
-        throw new Error("Backoff schedule must not exceed 1 hour.");
-      }
-    }
     this.#backoffSchedule = backoffSchedule ?? [
       3_000,
       15_000,
