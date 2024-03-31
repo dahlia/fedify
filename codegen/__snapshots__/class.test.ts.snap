@@ -13,6 +13,243 @@ import { exportSpki, importSpki } from \\"../runtime/key.ts\\";
 import { LanguageString } from \\"../runtime/langstr.ts\\";
 
 
+/** A pair of property name and value.
+ */
+export class PropertyValue {
+readonly id: URL | null;
+#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
+#_2cSy2magg4iZ7zLaG8U7DiJMoCkx: (string | LanguageString)[] = [];
+
+  /**
+   * Constructs a new instance of PropertyValue with the given values.
+   * @param values The values to initialize the instance with.
+   */
+  constructor(values:
+  {
+id?: URL | null;
+name?: string | LanguageString | null;value?: string | LanguageString | null;}
+) {
+this.id = values.id ?? null;
+        if (\\"name\\" in values &&             values.name != null) {
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
+        }
+      
+        if (\\"value\\" in values &&             values.value != null) {
+          this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = [values.value];
+        }
+      }
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @returns The cloned instance.
+   */
+  clone(values:
+  {
+id?: URL | null;
+name?: string | LanguageString | null;value?: string | LanguageString | null;}
+ = {}): PropertyValue {
+
+    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
+    const clone: PropertyValue = new this.constructor({ id: values.id });
+    clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+        if (\\"name\\" in values &&             values.name != null) {
+          clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
+        }
+      clone.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx;
+        if (\\"value\\" in values &&             values.value != null) {
+          clone.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = [values.value];
+        }
+      
+    return clone;
+  }
+  
+/** The name of a property.
+ */
+get name(): (string | LanguageString | null) {
+        if (this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length < 1) return null;
+        return this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
+      }
+      
+/** The value of a property.
+ */
+get value(): (string | LanguageString | null) {
+        if (this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx.length < 1) return null;
+        return this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx[0];
+      }
+      
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    documentLoader?: DocumentLoader
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  const values: Record<string, unknown[] | string> = {};
+    array = [];
+    for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
+      array.push(
+    typeof v === \\"string\\" ? { \\"@value\\": v } : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx) {
+      array.push(
+    typeof v === \\"string\\" ? { \\"@value\\": v } : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"http://schema.org#value\\"] = array;
+    
+    values[\\"@type\\"] = [\\"http://schema.org#PropertyValue\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(values, options);
+    }
+    return await jsonld.compact(
+      values,
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: { documentLoader?: DocumentLoader } = {}
+  ): Promise<PropertyValue> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        ...options,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"http://schema.org#PropertyValue\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = new this({
+      id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined,
+    });
+    const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#name\\"] ?? []) {
+      if (v == null) continue;
+    
+      const decoded =
+      typeof v === \\"object\\" && \\"@value\\" in v
+        && typeof v[\\"@value\\"] === \\"string\\" && !(\\"@language\\" in v) ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@language\\" in v && \\"@value\\" in v
+        && typeof v[\\"@language\\"] === \\"string\\"
+        && typeof v[\\"@value\\"] === \\"string\\" ? new LanguageString(v[\\"@value\\"], v[\\"@language\\"]) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.push(decoded);
+      
+    }
+    instance.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+    const _2cSy2magg4iZ7zLaG8U7DiJMoCkx: (string | LanguageString)[] = [];
+
+    for (const v of values[\\"http://schema.org#value\\"] ?? []) {
+      if (v == null) continue;
+    
+      const decoded =
+      typeof v === \\"object\\" && \\"@value\\" in v
+        && typeof v[\\"@value\\"] === \\"string\\" && !(\\"@language\\" in v) ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@language\\" in v && \\"@value\\" in v
+        && typeof v[\\"@language\\"] === \\"string\\"
+        && typeof v[\\"@value\\"] === \\"string\\" ? new LanguageString(v[\\"@value\\"], v[\\"@language\\"]) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _2cSy2magg4iZ7zLaG8U7DiJMoCkx.push(decoded);
+      
+    }
+    instance.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = _2cSy2magg4iZ7zLaG8U7DiJMoCkx;
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  
+    const proxy: Record<string, unknown> = {};
+    if (this.id != null) {
+      proxy.id = {
+        [Symbol.for(\\"Deno.customInspect\\")]: (
+          inspect: typeof Deno.inspect,
+          options: Deno.InspectOptions,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+      };
+    }
+    const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+      if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length == 1) {
+        proxy.name = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
+      }
+      const _2cSy2magg4iZ7zLaG8U7DiJMoCkx = this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx;
+      if (_2cSy2magg4iZ7zLaG8U7DiJMoCkx.length == 1) {
+        proxy.value = _2cSy2magg4iZ7zLaG8U7DiJMoCkx[0];
+      }
+      
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"PropertyValue \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"PropertyValue \\" + inspect(proxy, options);
+  }
+  }
+
 /** A key owned by an actor.
  */
 export class CryptographicKey {
@@ -227,6 +464,12 @@ get publicKey(): (CryptoKey | null) {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://w3id.org/security#Key\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = new this({
       id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined,
@@ -340,7 +583,7 @@ get publicKey(): (CryptoKey | null) {
  */
 export class Object {
 readonly id: URL | null;
-#_49BipA5dq9eoH8LX8xdsVumveTca: (Object | Link | URL)[] = [];
+#_49BipA5dq9eoH8LX8xdsVumveTca: (Object | Link | PropertyValue | URL)[] = [];
 #_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_3ocC3VVi88cEd5sPWL8djkZsvTN6: (Object | URL)[] = [];
 #_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz: (string | LanguageString)[] = [];
@@ -375,7 +618,7 @@ readonly id: URL | null;
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -709,7 +952,7 @@ this.id = values.id ?? null;
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -1049,7 +1292,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
           documentUrl: string;
         }>
       } = {}
-    ): Promise<Object | Link> {
+    ): Promise<Object | Link | PropertyValue> {
       const documentLoader = options.documentLoader ?? fetchDocumentLoader;
       const { document } = await documentLoader(url.href);
     
@@ -1065,8 +1308,14 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await PropertyValue.fromJsonLd(document, options);
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Link\\",\\"http://schema.org#PropertyValue\\"].join(\\", \\"));
     }
     
       /**
@@ -1094,7 +1343,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
             documentUrl: string;
           }>
         } = {}
-      ): AsyncIterable<Object | Link> {
+      ): AsyncIterable<Object | Link | PropertyValue> {
         const vs = this.#_49BipA5dq9eoH8LX8xdsVumveTca;
         for (let i = 0; i < vs.length; i++) {
           const v = vs[i];
@@ -2686,7 +2935,7 @@ get sensitive(): (boolean | null) {
     array = [];
     for (const v of this.#_49BipA5dq9eoH8LX8xdsVumveTca) {
       array.push(
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : v instanceof Link ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#attachment\\"] = array;
@@ -2968,200 +3217,200 @@ get sensitive(): (boolean | null) {
     }
   if (\\"@type\\" in values) {
 
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Activity\\")) {
-        delete values[\\"@type\\"];
-        return await Activity.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
-        delete values[\\"@type\\"];
-        return await Accept.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
-        delete values[\\"@type\\"];
-        return await Add.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Announce\\")) {
-        delete values[\\"@type\\"];
-        return await Announce.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Create\\")) {
-        delete values[\\"@type\\"];
-        return await Create.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Delete\\")) {
-        delete values[\\"@type\\"];
-        return await Delete.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Dislike\\")) {
-        delete values[\\"@type\\"];
-        return await Dislike.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Flag\\")) {
-        delete values[\\"@type\\"];
-        return await Flag.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Follow\\")) {
-        delete values[\\"@type\\"];
-        return await Follow.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
-        delete values[\\"@type\\"];
-        return await Ignore.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
-        delete values[\\"@type\\"];
-        return await Block.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
-        delete values[\\"@type\\"];
-        return await IntransitiveActivity.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Like\\")) {
-        delete values[\\"@type\\"];
-        return await Like.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
-        delete values[\\"@type\\"];
-        return await Reject.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
-        delete values[\\"@type\\"];
-        return await Remove.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Undo\\")) {
-        delete values[\\"@type\\"];
-        return await Undo.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
-        delete values[\\"@type\\"];
-        return await Update.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\")) {
-        delete values[\\"@type\\"];
-        return await Application.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Article\\")) {
-        delete values[\\"@type\\"];
-        return await Article.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Collection\\")) {
-        delete values[\\"@type\\"];
-        return await Collection.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
-        delete values[\\"@type\\"];
-        return await CollectionPage.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
-        delete values[\\"@type\\"];
-        return await OrderedCollectionPage.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\")) {
-        delete values[\\"@type\\"];
-        return await OrderedCollection.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Document\\")) {
-        delete values[\\"@type\\"];
-        return await Document.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
-        delete values[\\"@type\\"];
-        return await Audio.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Image\\")) {
-        delete values[\\"@type\\"];
-        return await Image.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Page\\")) {
-        delete values[\\"@type\\"];
-        return await Page.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Video\\")) {
-        delete values[\\"@type\\"];
-        return await Video.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Event\\")) {
-        delete values[\\"@type\\"];
-        return await Event.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\")) {
-        delete values[\\"@type\\"];
-        return await Group.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Note\\")) {
-        delete values[\\"@type\\"];
-        return await Note.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\")) {
-        delete values[\\"@type\\"];
-        return await Organization.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\")) {
-        delete values[\\"@type\\"];
-        return await Person.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Place\\")) {
-        delete values[\\"@type\\"];
-        return await Place.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Profile\\")) {
-        delete values[\\"@type\\"];
-        return await Profile.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Relationship\\")) {
-        delete values[\\"@type\\"];
-        return await Relationship.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\")) {
-        delete values[\\"@type\\"];
-        return await Service.fromJsonLd(values, options);
-      }
-      
-      if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Object\\")) {
-        throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-      }
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Activity\\")) {
+      delete values[\\"@type\\"];
+      return await Activity.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
+      delete values[\\"@type\\"];
+      return await Accept.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
+      delete values[\\"@type\\"];
+      return await Add.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Announce\\")) {
+      delete values[\\"@type\\"];
+      return await Announce.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Create\\")) {
+      delete values[\\"@type\\"];
+      return await Create.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Delete\\")) {
+      delete values[\\"@type\\"];
+      return await Delete.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Dislike\\")) {
+      delete values[\\"@type\\"];
+      return await Dislike.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Flag\\")) {
+      delete values[\\"@type\\"];
+      return await Flag.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Follow\\")) {
+      delete values[\\"@type\\"];
+      return await Follow.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
+      delete values[\\"@type\\"];
+      return await Ignore.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
+      delete values[\\"@type\\"];
+      return await Block.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
+      delete values[\\"@type\\"];
+      return await IntransitiveActivity.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Like\\")) {
+      delete values[\\"@type\\"];
+      return await Like.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
+      delete values[\\"@type\\"];
+      return await Reject.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
+      delete values[\\"@type\\"];
+      return await Remove.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Undo\\")) {
+      delete values[\\"@type\\"];
+      return await Undo.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
+      delete values[\\"@type\\"];
+      return await Update.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\")) {
+      delete values[\\"@type\\"];
+      return await Application.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Article\\")) {
+      delete values[\\"@type\\"];
+      return await Article.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Collection\\")) {
+      delete values[\\"@type\\"];
+      return await Collection.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
+      delete values[\\"@type\\"];
+      return await CollectionPage.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
+      delete values[\\"@type\\"];
+      return await OrderedCollectionPage.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\")) {
+      delete values[\\"@type\\"];
+      return await OrderedCollection.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Document\\")) {
+      delete values[\\"@type\\"];
+      return await Document.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
+      delete values[\\"@type\\"];
+      return await Audio.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Image\\")) {
+      delete values[\\"@type\\"];
+      return await Image.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Page\\")) {
+      delete values[\\"@type\\"];
+      return await Page.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Video\\")) {
+      delete values[\\"@type\\"];
+      return await Video.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Event\\")) {
+      delete values[\\"@type\\"];
+      return await Event.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\")) {
+      delete values[\\"@type\\"];
+      return await Group.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Note\\")) {
+      delete values[\\"@type\\"];
+      return await Note.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\")) {
+      delete values[\\"@type\\"];
+      return await Organization.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\")) {
+      delete values[\\"@type\\"];
+      return await Person.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Place\\")) {
+      delete values[\\"@type\\"];
+      return await Place.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Profile\\")) {
+      delete values[\\"@type\\"];
+      return await Profile.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Relationship\\")) {
+      delete values[\\"@type\\"];
+      return await Relationship.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\")) {
+      delete values[\\"@type\\"];
+      return await Service.fromJsonLd(values, options);
+    }
+    
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Object\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
     const instance = new this({
       id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined,
     });
-    const _49BipA5dq9eoH8LX8xdsVumveTca: (Object | Link | URL)[] = [];
+    const _49BipA5dq9eoH8LX8xdsVumveTca: (Object | Link | PropertyValue | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#attachment\\"] ?? []) {
       if (v == null) continue;
@@ -3179,6 +3428,8 @@ get sensitive(): (boolean | null) {
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"http://schema.org#PropertyValue\\") ? await PropertyValue.fromJsonLd(
       v, options) : undefined
       ;
       if (typeof decoded === \\"undefined\\") continue;
@@ -4081,7 +4332,7 @@ export class Activity extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -4144,7 +4395,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -4511,91 +4762,91 @@ const clone = super.clone(values) as unknown as Activity;clone.#_2DjTTboo3CNHU2a
     }
   if (\\"@type\\" in values) {
 
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
-        delete values[\\"@type\\"];
-        return await Accept.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
-        delete values[\\"@type\\"];
-        return await Add.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Announce\\")) {
-        delete values[\\"@type\\"];
-        return await Announce.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Create\\")) {
-        delete values[\\"@type\\"];
-        return await Create.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Delete\\")) {
-        delete values[\\"@type\\"];
-        return await Delete.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Dislike\\")) {
-        delete values[\\"@type\\"];
-        return await Dislike.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Flag\\")) {
-        delete values[\\"@type\\"];
-        return await Flag.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Follow\\")) {
-        delete values[\\"@type\\"];
-        return await Follow.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
-        delete values[\\"@type\\"];
-        return await Ignore.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
-        delete values[\\"@type\\"];
-        return await Block.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
-        delete values[\\"@type\\"];
-        return await IntransitiveActivity.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Like\\")) {
-        delete values[\\"@type\\"];
-        return await Like.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
-        delete values[\\"@type\\"];
-        return await Reject.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
-        delete values[\\"@type\\"];
-        return await Remove.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Undo\\")) {
-        delete values[\\"@type\\"];
-        return await Undo.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
-        delete values[\\"@type\\"];
-        return await Update.fromJsonLd(values, options);
-      }
-      
-      if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Activity\\")) {
-        throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-      }
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
+      delete values[\\"@type\\"];
+      return await Accept.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
+      delete values[\\"@type\\"];
+      return await Add.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Announce\\")) {
+      delete values[\\"@type\\"];
+      return await Announce.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Create\\")) {
+      delete values[\\"@type\\"];
+      return await Create.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Delete\\")) {
+      delete values[\\"@type\\"];
+      return await Delete.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Dislike\\")) {
+      delete values[\\"@type\\"];
+      return await Dislike.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Flag\\")) {
+      delete values[\\"@type\\"];
+      return await Flag.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Follow\\")) {
+      delete values[\\"@type\\"];
+      return await Follow.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
+      delete values[\\"@type\\"];
+      return await Ignore.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
+      delete values[\\"@type\\"];
+      return await Block.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
+      delete values[\\"@type\\"];
+      return await IntransitiveActivity.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Like\\")) {
+      delete values[\\"@type\\"];
+      return await Like.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
+      delete values[\\"@type\\"];
+      return await Reject.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
+      delete values[\\"@type\\"];
+      return await Remove.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Undo\\")) {
+      delete values[\\"@type\\"];
+      return await Undo.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
+      delete values[\\"@type\\"];
+      return await Update.fromJsonLd(values, options);
+    }
+    
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Activity\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Activity)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
@@ -4732,7 +4983,7 @@ export class Accept extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -4761,7 +5012,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -4848,6 +5099,12 @@ const clone = super.clone(values) as unknown as Accept;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Accept)) {
@@ -4895,7 +5152,7 @@ export class Add extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -4924,7 +5181,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -5011,6 +5268,12 @@ const clone = super.clone(values) as unknown as Add;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Add)) {
@@ -5057,7 +5320,7 @@ export class Announce extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -5086,7 +5349,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -5173,6 +5436,12 @@ const clone = super.clone(values) as unknown as Announce;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Announce\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Announce)) {
@@ -5230,7 +5499,7 @@ export class Application extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -5342,7 +5611,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -6156,7 +6425,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       options
     );
   }
@@ -6192,6 +6461,12 @@ get indexable(): (boolean | null) {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Application)) {
@@ -6560,7 +6835,7 @@ export class Article extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -6587,7 +6862,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -6672,6 +6947,12 @@ const clone = super.clone(values) as unknown as Article;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Article\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Article)) {
@@ -6715,7 +6996,7 @@ export class Document extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -6742,7 +7023,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -6829,31 +7110,31 @@ const clone = super.clone(values) as unknown as Document;
     }
   if (\\"@type\\" in values) {
 
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
-        delete values[\\"@type\\"];
-        return await Audio.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Image\\")) {
-        delete values[\\"@type\\"];
-        return await Image.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Page\\")) {
-        delete values[\\"@type\\"];
-        return await Page.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Video\\")) {
-        delete values[\\"@type\\"];
-        return await Video.fromJsonLd(values, options);
-      }
-      
-      if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Document\\")) {
-        throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-      }
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
+      delete values[\\"@type\\"];
+      return await Audio.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Image\\")) {
+      delete values[\\"@type\\"];
+      return await Image.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Page\\")) {
+      delete values[\\"@type\\"];
+      return await Page.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Video\\")) {
+      delete values[\\"@type\\"];
+      return await Video.fromJsonLd(values, options);
+    }
+    
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Document\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Document)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
@@ -6896,7 +7177,7 @@ export class Audio extends Document {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -6923,7 +7204,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -7008,6 +7289,12 @@ const clone = super.clone(values) as unknown as Audio;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Audio)) {
@@ -7053,7 +7340,7 @@ export class Ignore extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -7082,7 +7369,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -7171,16 +7458,16 @@ const clone = super.clone(values) as unknown as Ignore;
     }
   if (\\"@type\\" in values) {
 
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
-        delete values[\\"@type\\"];
-        return await Block.fromJsonLd(values, options);
-      }
-      
-      if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
-        throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-      }
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
+      delete values[\\"@type\\"];
+      return await Block.fromJsonLd(values, options);
     }
     
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Ignore)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
@@ -7227,7 +7514,7 @@ export class Block extends Ignore {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -7256,7 +7543,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -7343,6 +7630,12 @@ const clone = super.clone(values) as unknown as Block;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Block)) {
@@ -7396,7 +7689,7 @@ export class Collection extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -7444,7 +7737,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -7872,26 +8165,26 @@ get totalItems(): (number | null) {
     }
   if (\\"@type\\" in values) {
 
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
-        delete values[\\"@type\\"];
-        return await CollectionPage.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
-        delete values[\\"@type\\"];
-        return await OrderedCollectionPage.fromJsonLd(values, options);
-      }
-      
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\")) {
-        delete values[\\"@type\\"];
-        return await OrderedCollection.fromJsonLd(values, options);
-      }
-      
-      if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Collection\\")) {
-        throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-      }
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
+      delete values[\\"@type\\"];
+      return await CollectionPage.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
+      delete values[\\"@type\\"];
+      return await OrderedCollectionPage.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\")) {
+      delete values[\\"@type\\"];
+      return await OrderedCollection.fromJsonLd(values, options);
+    }
+    
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Collection\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Collection)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
@@ -8125,7 +8418,7 @@ export class CollectionPage extends Collection {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -8164,7 +8457,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -8482,16 +8775,16 @@ const clone = super.clone(values) as unknown as CollectionPage;clone.#_2kWgBhQKj
     }
   if (\\"@type\\" in values) {
 
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
-        delete values[\\"@type\\"];
-        return await OrderedCollectionPage.fromJsonLd(values, options);
-      }
-      
-      if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
-        throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-      }
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
+      delete values[\\"@type\\"];
+      return await OrderedCollectionPage.fromJsonLd(values, options);
     }
     
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof CollectionPage)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
@@ -8663,7 +8956,7 @@ export class Create extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -8692,7 +8985,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -8779,6 +9072,12 @@ const clone = super.clone(values) as unknown as Create;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Create\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Create)) {
@@ -8824,7 +9123,7 @@ export class Delete extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -8853,7 +9152,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -8940,6 +9239,12 @@ const clone = super.clone(values) as unknown as Delete;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Delete\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Delete)) {
@@ -8983,7 +9288,7 @@ export class Dislike extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -9012,7 +9317,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -9099,6 +9404,12 @@ const clone = super.clone(values) as unknown as Dislike;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Dislike\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Dislike)) {
@@ -9395,6 +9706,12 @@ get sharedInbox(): (URL | null) {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Endpoints\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = new this({
       id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined,
@@ -9518,7 +9835,7 @@ export class Event extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -9545,7 +9862,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -9630,6 +9947,12 @@ const clone = super.clone(values) as unknown as Event;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Event\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Event)) {
@@ -9676,7 +9999,7 @@ export class Flag extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -9705,7 +10028,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -9792,6 +10115,12 @@ const clone = super.clone(values) as unknown as Flag;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Flag\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Flag)) {
@@ -9839,7 +10168,7 @@ export class Follow extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -9868,7 +10197,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -9955,6 +10284,12 @@ const clone = super.clone(values) as unknown as Follow;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Follow\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Follow)) {
@@ -10012,7 +10347,7 @@ export class Group extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -10124,7 +10459,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -10938,7 +11273,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       options
     );
   }
@@ -10974,6 +11309,12 @@ get indexable(): (boolean | null) {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Group)) {
@@ -11342,7 +11683,7 @@ export class Image extends Document {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -11369,7 +11710,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -11454,6 +11795,12 @@ const clone = super.clone(values) as unknown as Image;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Image\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Image)) {
@@ -11500,7 +11847,7 @@ export class IntransitiveActivity extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -11529,7 +11876,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -11616,6 +11963,12 @@ const clone = super.clone(values) as unknown as IntransitiveActivity;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof IntransitiveActivity)) {
@@ -11661,7 +12014,7 @@ export class Like extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -11690,7 +12043,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -11777,6 +12130,12 @@ const clone = super.clone(values) as unknown as Like;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Like\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Like)) {
@@ -12267,16 +12626,16 @@ get width(): (number | null) {
     }
   if (\\"@type\\" in values) {
 
-      if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Mention\\")) {
-        delete values[\\"@type\\"];
-        return await Mention.fromJsonLd(values, options);
-      }
-      
-      if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Link\\")) {
-        throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-      }
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Mention\\")) {
+      delete values[\\"@type\\"];
+      return await Mention.fromJsonLd(values, options);
     }
     
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Link\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
     const instance = new this({
       id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined,
     });
@@ -12562,6 +12921,12 @@ const clone = super.clone(values) as unknown as Mention;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Mention\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Mention)) {
@@ -12607,7 +12972,7 @@ export class Note extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -12634,7 +12999,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -12719,6 +13084,12 @@ const clone = super.clone(values) as unknown as Note;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Note\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Note)) {
@@ -12764,7 +13135,7 @@ export class OrderedCollection extends Collection {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -12791,7 +13162,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -12876,6 +13247,12 @@ const clone = super.clone(values) as unknown as OrderedCollection;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof OrderedCollection)) {
@@ -12923,7 +13300,7 @@ export class OrderedCollectionPage extends CollectionPage {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -12954,7 +13331,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -13063,6 +13440,12 @@ get startIndex(): (number | null) {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof OrderedCollectionPage)) {
@@ -13131,7 +13514,7 @@ export class Organization extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -13243,7 +13626,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -14057,7 +14440,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       options
     );
   }
@@ -14093,6 +14476,12 @@ get indexable(): (boolean | null) {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Organization)) {
@@ -14461,7 +14850,7 @@ export class Page extends Document {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -14488,7 +14877,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -14573,6 +14962,12 @@ const clone = super.clone(values) as unknown as Page;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Page\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Page)) {
@@ -14630,7 +15025,7 @@ export class Person extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -14742,7 +15137,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -15556,7 +15951,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       options
     );
   }
@@ -15592,6 +15987,12 @@ get indexable(): (boolean | null) {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Person)) {
@@ -15969,7 +16370,7 @@ export class Place extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -16020,7 +16421,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -16246,6 +16647,12 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Place\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Place)) {
@@ -16369,7 +16776,7 @@ export class Profile extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -16400,7 +16807,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -16557,6 +16964,12 @@ const clone = super.clone(values) as unknown as Profile;clone.#_3CLQ1PLSXrhSQbTG
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Profile\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Profile)) {
@@ -16634,7 +17047,7 @@ export class Reject extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -16663,7 +17076,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -16750,6 +17163,12 @@ const clone = super.clone(values) as unknown as Reject;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Reject)) {
@@ -16803,7 +17222,7 @@ export class Relationship extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -16870,7 +17289,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -17281,6 +17700,12 @@ const clone = super.clone(values) as unknown as Relationship;clone.#_2Zqdmi46ZnD
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Relationship\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Relationship)) {
@@ -17434,7 +17859,7 @@ export class Remove extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -17463,7 +17888,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -17550,6 +17975,12 @@ const clone = super.clone(values) as unknown as Remove;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Remove)) {
@@ -17607,7 +18038,7 @@ export class Service extends Object {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -17719,7 +18150,7 @@ super(values);
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -18533,7 +18964,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       options
     );
   }
@@ -18569,6 +19000,12 @@ get indexable(): (boolean | null) {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Service)) {
@@ -18944,7 +19381,7 @@ export class Undo extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -18973,7 +19410,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -19060,6 +19497,12 @@ const clone = super.clone(values) as unknown as Undo;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Undo\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Undo)) {
@@ -19108,7 +19551,7 @@ export class Update extends Activity {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -19137,7 +19580,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -19224,6 +19667,12 @@ const clone = super.clone(values) as unknown as Update;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Update)) {
@@ -19267,7 +19716,7 @@ export class Video extends Document {
   constructor(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -19294,7 +19743,7 @@ super(values);}
   clone(values:
   {
 id?: URL | null;
-attachments?: (Object | Link | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
 attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
 audiences?: (Object | URL)[];content?: string | LanguageString | null;
 contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
@@ -19379,6 +19828,12 @@ const clone = super.clone(values) as unknown as Video;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Video\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
   
     const instance = await super.fromJsonLd(values, options);
     if (!(instance instanceof Video)) {

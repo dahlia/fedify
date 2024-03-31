@@ -112,23 +112,21 @@ export async function* generateDecoder(
     }
   `;
   const subtypes = getSubtypes(typeUri, types, true);
-  if (subtypes.length > 0) {
-    yield 'if ("@type" in values) {\n';
-    for (const subtypeUri of subtypes) {
-      yield `
-      if (values["@type"].includes(${JSON.stringify(subtypeUri)})) {
-        delete values["@type"];
-        return await ${types[subtypeUri].name}.fromJsonLd(values, options);
-      }
-      `;
-    }
+  yield 'if ("@type" in values) {\n';
+  for (const subtypeUri of subtypes) {
     yield `
-      if (!values["@type"].includes(${JSON.stringify(typeUri)})) {
-        throw new TypeError("Invalid type: " + values["@type"]);
-      }
+    if (values["@type"].includes(${JSON.stringify(subtypeUri)})) {
+      delete values["@type"];
+      return await ${types[subtypeUri].name}.fromJsonLd(values, options);
     }
     `;
   }
+  yield `
+    if (!values["@type"].includes(${JSON.stringify(typeUri)})) {
+      throw new TypeError("Invalid type: " + values["@type"]);
+    }
+  }
+  `;
   if (type.extends == null) {
     yield `
     const instance = new this({

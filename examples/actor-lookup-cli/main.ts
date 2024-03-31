@@ -3,6 +3,7 @@ import {
   getActorHandle,
   isActor,
   lookupObject,
+  PropertyValue,
 } from "@fedify/fedify/vocab";
 import { Temporal } from "@js-temporal/polyfill";
 import { convert } from "npm:html-to-text@^9.0.5";
@@ -15,6 +16,7 @@ export interface Actor {
   following: number | null;
   followers: number | null;
   posts: number | null;
+  properties: Record<string, string>;
   joined: Temporal.Instant | null;
 }
 
@@ -33,6 +35,14 @@ async function lookupActor(handle: string): Promise<Actor> {
   try {
     posts = await actor.getOutbox();
   } catch (_) {}
+  const properties: Record<string, string> = {};
+  for await (const attachment of actor.getAttachments()) {
+    if (attachment instanceof PropertyValue && attachment.name != null) {
+      properties[attachment.name] = convert(attachment.value ?? "", {
+        selectors: [{ selector: "a", options: { ignoreHref: true } }],
+      });
+    }
+  }
   return {
     handle: await getActorHandle(actor),
     url: actor.url,
@@ -43,6 +53,7 @@ async function lookupActor(handle: string): Promise<Actor> {
     following: following?.totalItems,
     followers: followers?.totalItems,
     posts: posts?.totalItems,
+    properties,
     joined: actor.published,
   };
 }
@@ -58,6 +69,12 @@ function displayActor(actor: Actor): void {
   if (actor.following) console.log(`Following: ${actor.following}`);
   if (actor.followers) console.log(`Followers: ${actor.followers}`);
   if (actor.posts) console.log(`Posts: ${actor.posts}`);
+  if (Object.keys(actor.properties).length > 0) {
+    console.log();
+    for (const name in actor.properties) {
+      console.log(`${name}: ${actor.properties[name]}`);
+    }
+  }
 }
 
 async function main() {

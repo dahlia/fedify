@@ -45,6 +45,22 @@ To be released.
      -  Added `DenoKvStore` class.
      -  Added `DenoKvMessageQueue` class.
 
+ -  Added `PropertyValue` to Activity Vocabulary API.  [[#29]]
+
+     -  Added `PropertyValue` class.
+     -  `new Object()` constructor's `attachments` option now accepts
+        `PropertyValue` objects.
+     -  `new Object()` constructor's `attachment` option now accepts
+        a `PropertyValue` object.
+     -  `Object.getAttachments()` method now yields `PropertyValue` objects
+        besides `Object` and `Link` objects.
+     -  `Object.getAttachment()` method now returns a `PropertyValue` object
+        besides an `Object` and a `Link` object.
+     -  `Object.clone()` method's `attachments` option now accepts
+        `PropertyValue` objects.
+     -  `Object.clone()` method's `attachment` option now accepts
+        a `PropertyValue` object.
+
  -  Removed dependency on *jose*.
 
      -  Added `exportSpki()` function.
@@ -52,6 +68,7 @@ To be released.
 
 [@fedify/fedify]: https://www.npmjs.com/package/@fedify/fedify
 [#24]: https://github.com/dahlia/fedify/discussions/24
+[#29]: https://github.com/dahlia/fedify/issues/29
 
 Version 0.4.0
 -------------

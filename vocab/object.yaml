@@ -23,6 +23,7 @@ properties:
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
   - "https://www.w3.org/ns/activitystreams#Link"
+  - "http://schema.org#PropertyValue"
 
 - pluralName: attributions
   singularName: attribution
