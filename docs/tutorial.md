@@ -18,15 +18,18 @@ receiving activities, and the inbox.
 As prerequisite knowledge, you should have a basic understanding of
 JavaScript/TypeScript, command-line interfaces, and minimum experience with
 building web server apps.  However, it's perfectly fine if you're not familiar
-with the ActivityPub protocol or the Deno runtime;[^1] we will explain them as
+with the ActivityPub protocol or the Deno runtime; we will explain them as
 we go.
 
-[^1]: The Deno runtime is a secure runtime for JavaScript and TypeScript.  It is
-      similar to Node.js but has a few differences, such as a built-in
-      TypeScript compiler and a secure-by-default design.  If you are already
-      familiar with Node.js, you can think of Deno as a more modern version of
-      Node.js.  Fun fact: Deno is created by Ryan Dahl, the original creator of
-      Node.js.
+> [!NOTE]
+> The Deno runtime is a secure runtime for JavaScript and TypeScript.  It is
+> similar to Node.js but has a few differences, such as a built-in
+> TypeScript compiler and a secure-by-default design.  If you are already
+> familiar with Node.js, you can think of Deno as a more modern version of
+> Node.js created by the same person, Ryan Dahl.
+>
+> Although this tutorial is written for Deno, you can use the Fedify framework
+> in Node.js as well.  The API is the same in both Deno and Node.js.
 
 
 What we will build
@@ -161,7 +164,7 @@ a key-value store.
 
 > [!IMPORTANT]
 > Since `MemoryKvStore` is for testing and development purposes, you should
-> use a persistent key-value store like [`DenoKvStore`] for production use.
+> use a persistent key-value store like `DenoKvStore` for production use.
 
 Then, we pass the incoming `Request` to the `federation.handle()` method:
 

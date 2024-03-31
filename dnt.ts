@@ -65,6 +65,8 @@ await build({
     ],
   },
   typeCheck: "both",
+  declaration: "separate",
+  declarationMap: true,
   compilerOptions: {
     target: "ES2022",
   },
