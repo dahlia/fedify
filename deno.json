@@ -1,6 +1,6 @@
 {
   "name": "@fedify/fedify",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "exports": {
     ".": "./mod.ts",
     "./federation": "./federation/mod.ts",
