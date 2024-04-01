@@ -30,7 +30,7 @@ the following:
 The below example shows how to register an actor dispatcher:
 
 ~~~~ typescript
-import { Federation, Person } from "jsr:@fedify/fedify";
+import { Federation, Person } from "@fedify/fedify";
 
 const federation = new Federation({
   // Omitted for brevity; see the related section for details.
@@ -180,7 +180,7 @@ this document, but here's a simple example of how to generate a key pair and
 store it in a [Deno KV] database in form of JWK:
 
 ~~~~ typescript
-import { generateCryptoKeyPair, exportJwk } from "jsr:@fedify/fedify";
+import { generateCryptoKeyPair, exportJwk } from "@fedify/fedify";
 
 const kv = await Deno.openKv();
 const { privateKey, publicKey } = await generateCryptoKeyPair();
@@ -200,7 +200,7 @@ await kv.set(["keypair", handle], {
 Here's an example of how to load a key pair from the database too:
 
 ~~~~ typescript
-import { importJwk } from "jsr:@fedify/fedify";
+import { importJwk } from "@fedify/fedify";
 
 federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {

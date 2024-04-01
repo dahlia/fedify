@@ -31,8 +31,8 @@ that contains the properties of the object.  The following shows an example of
 instantiating a `Create` object:
 
 ~~~~ typescript
-import { Create, Note } from "jsr:@fedify/fedify";
-import { Temporal } from "npm:@js-temporal/polyfill";
+import { Create, Note } from "@fedify/fedify";
+import { Temporal } from "@js-temporal/polyfill";
 
 const create = new Create({
   id: new URL("https://example.com/activities/123"),
@@ -157,8 +157,8 @@ properties.  The following shows an example of changing the `~Object.content`
 property of a `Note` object:
 
 ~~~~ typescript
-import { LanguageString, Note } from "jsr:@fedify/fedify";
-import { Temporal } from "npm:@js-temporal/polyfill";
+import { LanguageString, Note } from "@fedify/fedify";
+import { Temporal } from "@js-temporal/polyfill";
 
 const noteInEnglish = new Note({
   id: new URL("https://example.com/notes/123"),
@@ -186,7 +186,7 @@ The `lookupObject()` function plays a role in such cases.  The following shows
 an example of looking up an actor object from the handle:
 
 ~~~~ typescript
-import { lookupObject } from "jsr:@fedify/fedify";
+import { lookupObject } from "@fedify/fedify";
 
 const actor = await lookupObject("@hongminhee@todon.eu");
 ~~~~
@@ -262,7 +262,7 @@ If you want to instantiate an object from a JSON-LD document, you can use the
 instantiating a `Create` object from the JSON-LD document:
 
 ~~~~ typescript
-import { Create } from "jsr:@fedify/fedify";
+import { Create } from "@fedify/fedify";
 
 const create = await Create.fromJsonLd({
   "@context": "https://www.w3.org/ns/activitystreams",
@@ -283,7 +283,7 @@ since `Create` is a subtype of `Activity`, the `Activity.fromJsonLd()` method
 can parse a `Create` object as well:
 
 ~~~~ typescript
-import { Activity } from "jsr:@fedify/fedify";
+import { Activity } from "@fedify/fedify";
 
 const create = await Activity.fromJsonLd({
   "@context": "https://www.w3.org/ns/activitystreams",

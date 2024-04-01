@@ -23,7 +23,7 @@ You can create a `Federation` object by calling the constructor function
 with an optional configuration object:
 
 ~~~~ typescript
-import { Federation } from "jsr:@fedify/fedify";
+import { Federation } from "@fedify/fedify";
 
 const federation = new Federation<void>({
   kv: await Deno.openKv(),
@@ -196,7 +196,7 @@ object can handle.
 >
 > ~~~~ typescript
 > import { federation } from "../federation.ts"; // Import the `Federation` object
-> import { integrateHandler } from "jsr:@fedify/fedify/x/fresh";
+> import { integrateHandler } from "@fedify/fedify/x/fresh";
 >
 > export const handler = integrateHandler(federation, () => undefined);
 > ~~~~

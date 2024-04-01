@@ -51,7 +51,7 @@ return an array of activities.  The following example shows how to construct
 an outbox collection:
 
 ~~~~ typescript
-import { Article, Create } from "jsr:@fedify/fedify";
+import { Article, Create } from "@fedify/fedify";
 
 federation
   .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle) => {

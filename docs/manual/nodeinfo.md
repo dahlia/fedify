@@ -40,7 +40,7 @@ To expose a NodeInfo endpoint, you need to register a NodeInfo dispatcher with
 a NodeInfo endpoint:
 
 ~~~~ typescript
-import { Federation } from "jsr:@fedify/fedify";
+import { Federation } from "@fedify/fedify";
 
 const federation = new Federation({
   // Omitted for brevity; see the related section for details.

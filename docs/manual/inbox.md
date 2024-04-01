@@ -31,7 +31,7 @@ With Fedify, you can register an inbox listener for both types of inboxes at
 a time.  The following shows how to register an inbox listener:
 
 ~~~~ typescript
-import { Federation, Follow } from "jsr:@fedify/fedify";
+import { Federation, Follow } from "@fedify/fedify";
 
 const federation = new Federation({
   // Omitted for brevity; see the related section for details.
