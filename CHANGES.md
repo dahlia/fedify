@@ -11,7 +11,7 @@ Fedify changelog
 Version 0.5.0
 -------------
 
-To be released.
+Released on April 2, 2024.
 
  -  Fedify is now available on npm: [@fedify/fedify].  [[#24]]
 
