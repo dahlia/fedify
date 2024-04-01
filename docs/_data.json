@@ -16,6 +16,11 @@
       "url": "https://github.com/dahlia/fedify"
     },
     {
+      "icon": "fa-brands fa-npm",
+      "title": "npm (package)",
+      "url": "https://www.npmjs.com/package/@fedify/fedify"
+    },
+    {
       "icon": "fa-solid fa-cube",
       "title": "JSR (package)",
       "url": "https://jsr.io/@fedify/fedify"
