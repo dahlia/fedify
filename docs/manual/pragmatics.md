@@ -249,3 +249,143 @@ For example, the above actor object is displayed like the following in Mastodon:
 
 ![Screenshot: An actor profile with custom fields in
 Mastodon](pragmatics/mastodon-custom-fields.png)
+
+### `manuallyApprovesFollowers`: Lock account
+
+The `manuallyApprovesFollowers` property is used to *indicate* that the actor
+manually approves followers.  In Mastodon and Misskey, the actor is displayed as
+a locked account if the `manuallyApprovesFollowers` property is `true`.
+
+> [!WARNING]
+> The `manuallyApprovesFollowers` property only *indicates* that the actor
+> manually approves followers.  The actual behavior of the actor is determined
+> by the [inbox listener](./inbox.md) for `Follow` activities.
+> If it automatically sends `Accept` activities right after receiving `Follow`,
+> the actor behaves as an unlocked account.  If it sends `Accept` when the
+> owner explicitly clicks the *Accept* button, the actor behaves as a locked
+> account.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  manuallyApprovesFollowers: true,
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with a lock icon next to the handle in
+Mastodon](pragmatics/mastodon-lock.png)
+
+### `suspended`
+
+The `suspended` property is used to suspend an actor in Mastodon.
+If the `suspended` property is `true`, the profile page of the actor is
+displayed as suspended.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  suspended: true,
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with a suspended status in
+Mastodon](pragmatics/mastodon-suspended.png)
+
+### `memorial`
+
+The `memorial` property is used to memorialize an actor in Mastodon.
+If the `memorial` property is `true`, the profile page of the actor is
+displayed as memorialized.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  memorial: true,
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with a memorialized status in
+Mastodon](pragmatics/mastodon-memorial.png)
+
+### `Federation.setFollowingDispatcher()`: Following collection
+
+The `Federation.setFollowingDispatcher()` method registers a dispatcher for
+the collection of actors that the actor follows.  The number of the collection
+is displayed in the profile page of the actor.  Each item in the collection is
+a URI of the actor that the actor follows, or an actor object itself.
+
+~~~~ typescript
+federation
+  .setFollowingDispatcher(
+    "/users/{handle}/following", async (ctx, handle, cursor) => {
+      // Loads the list of actors that the actor follows...
+      return {
+        items: [
+          new URL("..."),
+          new URL("..."),
+          // ...
+        ]
+      };
+    }
+  )
+  .setCounter((ctx, handle) => 123);
+~~~~
+
+For example, the above following collection is displayed like the below
+in Mastodon:
+
+![Screenshot: An actor profile with 123 following in
+Mastodon](pragmatics/mastodon-following.png)
+
+> [!NOTE]
+> Mastodon does not display the following collection of a remote actor,
+> but other ActivityPub implementations may display it.
+
+### `Federation.setFollowersDispatcher()`: Followers collection
+
+The `Federation.setFollowersDispatcher()` method registers a dispatcher for
+the collection of actors that follow the actor.  The number of the collection
+is displayed in the profile page of the actor.  Each item in the collection is
+a URI of the actor that follows the actor, or an actor object itself.
+
+~~~~ typescript
+federation
+  .setFollowersDispatcher(
+    "/users/{handle}/followers", async (ctx, handle, cursor) => {
+      // Loads the list of actors that follow the actor...
+      return {
+        items: [
+          new URL("..."),
+          new URL("..."),
+          // ...
+        ]
+      };
+    }
+  )
+  .setCounter((ctx, handle) => 456);
+~~~~
+
+For example, the above followers collection is displayed like the below
+in Mastodon:
+
+![Screenshot: An actor profile with 456 followers in
+Mastodon](pragmatics/mastodon-followers.png)
+
+> [!NOTE]
+> Mastodon does not display the followers collection of a remote actor,
+> but other ActivityPub implementations may display it.
