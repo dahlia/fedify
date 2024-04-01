@@ -70,6 +70,7 @@ To be released.
 [#24]: https://github.com/dahlia/fedify/discussions/24
 [#29]: https://github.com/dahlia/fedify/issues/29
 
+
 Version 0.4.0
 -------------
 

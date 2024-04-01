@@ -1,0 +1,251 @@
+---
+parent: Manual
+nav_order: 8
+metas:
+  description: >-
+    This section explains the pragmatic aspects of using Fedify, such as
+    how to utilize the vocabulary API and the de facto norms of ActivityPub
+    implementations.
+---
+
+Pragmatics
+==========
+
+> [!NOTE]
+> This section is a work in progress.  Contributions are welcome.
+
+While Fedify provides [vocabulary API](./vocab.md), it does not inherently
+define how to utilize those vocabularies.  ActivityPub implementations like
+[Mastodon] and [Misskey] already have de facto norms for how to use them,
+which you should follow to get the desired results.
+
+For example, you need to know which properties on a `Person` object should be
+populated with which values to display an avatar or header image, which property
+represents a date joined, and so on.
+
+In this section, we will explain the pragmatic aspects of using Fedify, such as
+how to utilize the vocabulary API and the de facto norms of ActivityPub
+implementations.
+
+[Mastodon]: https://joinmastodon.org/
+[Misskey]: https://misskey-hub.net/
+
+
+Actors
+------
+
+The following five types of actors represent entities that can perform
+activities in ActivityPub:
+
+ -  `Application` describes a software application.
+ -  `Group` represents a formal or informal collective of actors.
+ -  `Organization` represents an organization.
+ -  `Person` represents an individual person.
+ -  `Service` represents a service of any kind.
+
+The most common type of actor is `Person`, which represents an individual user.
+When you register an [actor dispatcher], you should return an actor object of
+an appropriate type of the account.
+
+Those five types of actors have the same set of properties, e.g., `name`,
+`preferredUsername`, `summary`, and `published`.
+
+[actor dispatcher]: ./actor.md
+
+### `Application`/`Service`: Automated/bot actors
+
+If an actor is represented as an `Application` or `Service` object, it is
+considered an automated actor by Mastodon and a bot actor by Misskey.
+
+~~~~ typescript
+new Application({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed as an automated actor in
+Mastodon like the following:
+
+![Screenshot: An automated actor in Mastodon](pragmatics/mastodon-automated.png)
+
+### `Group`
+
+If an actor is represented as a `Group` object, it is considered a group actor
+by Mastodon.
+
+~~~~ typescript
+new Group({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed as a group actor in Mastodon
+like the following:
+
+![Screenshot: A group actor in Mastodon](pragmatics/mastodon-group.png)
+
+> [!TIP]
+> [Lemmy] communities and [Guppe] groups are also represented as `Group`
+> objects.
+
+[Lemmy]: https://join-lemmy.org/
+[Guppe]: https://a.gup.pe/
+
+### `name`: Display name
+
+The `name` property is used as a display name in Mastodon and the most
+ActivityPub implementations.  The display name is usually a full name or
+a nickname of a person, or a title of a group or an organization.
+It is displayed in the profile page of an actor and the timeline.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with display name Fedify Demo in
+Mastodon](pragmatics/mastodon-person.png)
+
+### `summary`: Bio
+
+The `summary` property is used as a bio in Mastodon and the most ActivityPub
+implementations.  The bio is displayed in the profile page of the actor.
+
+> [!NOTE]
+> The `summary` property expects an HTML string, so you should escape HTML
+> entities if it contains characters like `<`, `>`, and `&`.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with a bio in
+Mastodon](pragmatics/mastodon-person.png)
+
+### `published`: Date joined
+
+The `published` property is used as a date joined in Mastodon and Misskey.
+The date joined is displayed in the profile page of the actor.
+
+> [!NOTE]
+> Although the `published` property contains a date and time, it is displayed
+> as a date only in Mastodon and Misskey.  However, there may be ActivityPub
+> implementations that display the date and time.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  published: Temporal.Instant.from("2024-03-31T00:00:00Z"),
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with a date joined in
+Mastodon](pragmatics/mastodon-person.png)
+
+### `icon`: Avatar image
+
+The `icon` property is used as an avatar image in Mastodon and the most
+ActivityPub implementations.  The avatar image is displayed next to the name
+of the actor in the profile page and the timeline.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  icon: new Image({
+    url: new URL("https://i.imgur.com/CUBXuVX.jpeg"),
+    mediaType: "image/jpeg",
+  }),
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with a cat avatar image in
+Mastodon](pragmatics/mastodon-avatar.png)
+
+### `image`: Header image
+
+The `image` property is used as a header image in Mastodon and Misskey.
+The header image is displayed on the top of the profile page.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  image: new Image({
+    url: new URL("https://i.imgur.com/yEZ0EEw.jpeg"),
+    mediaType: "image/jpeg",
+  }),
+  // Other properties...
+})
+~~~~
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with a cat header image in
+Mastodon](pragmatics/mastodon-header.png)
+
+### `attachments`: Custom fields
+
+The `attachments` property is used as custom fields in Mastodon and Misskey.
+The custom fields are displayed as a table in the profile page.
+
+~~~~ typescript
+new Person({
+  name: "Fedify Demo",
+  preferredUsername: "demo",
+  summary: "This is a Fedify Demo account",
+  attachments: [
+    new PropertyValue({
+      name: "Location",
+      value: "Seoul, South Korea",
+    }),
+    new PropertyValue({
+      name: "Pronoun",
+      value: "they/them",
+    }),
+    new PropertyValue({
+      name: "Website",
+      value: '<a href="https://fedify.dev/">fedify.dev</a>'
+    }),
+  ],
+  // Other properties...
+})
+~~~~
+
+> [!NOTE]
+> The `PropertyValue.value` property expects an HTML string, so you should
+> escape HTML entities if it contains characters like `<`, `>`, and `&`.
+
+For example, the above actor object is displayed like the following in Mastodon:
+
+![Screenshot: An actor profile with custom fields in
+Mastodon](pragmatics/mastodon-custom-fields.png)
