@@ -7,7 +7,8 @@ description: Describes a software application.
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
 - "https://w3id.org/security/v1"
-- toot: "http://joinmastodon.org/ns#"
+- manuallyApprovesFollowers: "as:manuallyApprovesFollowers"
+  toot: "http://joinmastodon.org/ns#"
   discoverable: "toot:discoverable"
   suspended: "toot:suspended"
   memorial: "toot:memorial"

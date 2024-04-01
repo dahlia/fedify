@@ -128,6 +128,7 @@ Deno.test("handleActor()", async () => {
       "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/v1",
       {
+        manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
         discoverable: "toot:discoverable",
         indexable: "toot:indexable",
         memorial: "toot:memorial",

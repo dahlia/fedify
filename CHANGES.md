@@ -66,6 +66,11 @@ To be released.
      -  Added `exportSpki()` function.
      -  Added `importSpki()` function.
 
+ -  Fixed a bug that `Application.manuallyApprovesFollowers`,
+    `Group.manuallyApprovesFollowers`, `Organization.manuallyApprovesFollowers`,
+    `Person.manuallyApprovesFollowers`, and `Service.manuallyApprovesFollowers`
+    properties were not properly displayed in Mastodon.
+
 [@fedify/fedify]: https://www.npmjs.com/package/@fedify/fedify
 [#24]: https://github.com/dahlia/fedify/discussions/24
 [#29]: https://github.com/dahlia/fedify/issues/29
