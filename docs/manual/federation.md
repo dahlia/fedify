@@ -23,10 +23,10 @@ You can create a `Federation` object by calling the constructor function
 with an optional configuration object:
 
 ~~~~ typescript
-import { Federation } from "@fedify/fedify";
+import { Federation, MemoryKvStore } from "@fedify/fedify";
 
 const federation = new Federation<void>({
-  kv: await Deno.openKv(),
+  kv: new MemoryKvStore(),
   // Omitted for brevity; see the following sections for details.
 });
 ~~~~
@@ -151,7 +151,7 @@ import { FreshContext } from "$fresh/server.ts";
 import { federation } from "../federation.ts"; // Import the `Federation` object
 
 export async function handler(request: Request, context: FreshContext) {
-  return await federation.handle(request, {
+  return await federation.fetch(request, {
     // Wonder what is `contextData`?  See the next section for details.
     contextData: undefined,
 
@@ -202,7 +202,7 @@ object can handle.
 > ~~~~
 
 > [!TIP]
-> In theory, you can directly pass `Federation.handle()` to the [`Deno.serve()`]
+> In theory, you can directly pass `Federation.fetch()` to the [`Deno.serve()`]
 > function, but you probably wouldn't want to do that because you want to handle
 > other requests with the web framework.
 
@@ -233,7 +233,7 @@ import { federation } from "../federation.ts"; // Import the `Federation` object
 import { DatabasePool, getPool } from "./database.ts";
 
 export async function handler(request: Request, context: FreshContext) {
-  return federation.handle(request, {
+  return federation.fetch(request, {
     contextData: getPool(),
     onNotFound: context.next.bind(context),
     onNotAcceptable: async (request: Request) => {

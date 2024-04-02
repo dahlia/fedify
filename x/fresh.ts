@@ -12,7 +12,7 @@
  */
 import type {
   Federation,
-  FederationHandlerParameters,
+  FederationFetchOptions,
 } from "../federation/middleware.ts";
 
 interface FreshContext {
@@ -37,10 +37,11 @@ interface FreshContext {
  *
  * @param context A Fresh context.
  * @returns Options for the {@link Federation.handle} method.
+ * @since 0.6.0
  */
-export function integrateHandlerOptions(
+export function integrateFetchOptions(
   context: FreshContext,
-): Omit<FederationHandlerParameters<void>, "contextData"> {
+): Omit<FederationFetchOptions<void>, "contextData"> {
   return {
     // If the `federation` object finds a request not responsible for it
     // (i.e., not a federation-related request), it will call the `next`
@@ -68,6 +69,15 @@ export function integrateHandlerOptions(
     },
   };
 }
+
+/**
+ * Create options for the `federation` object to integrate with Fresh.
+ *
+ * @param context A Fresh context.
+ * @returns Options for the {@link Federation.handle} method.
+ * @deprecated
+ */
+export const integrateHandlerOptions = integrateFetchOptions;
 
 /**
  * Create a Fresh middleware handler to integrate with the {@link Federation}
@@ -104,9 +114,9 @@ export function integrateHandler<
   ): Promise<Response> => {
     let contextData = createContextData(request, context);
     if (contextData instanceof Promise) contextData = await contextData;
-    return await federation.handle(request, {
+    return await federation.fetch(request, {
       contextData,
-      ...integrateHandlerOptions(context),
+      ...integrateFetchOptions(context),
     });
   };
 }

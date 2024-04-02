@@ -732,14 +732,34 @@ export class Federation<TContextData> {
    * @param request The request object.
    * @param parameters The parameters for handling the request.
    * @returns The response to the request.
+   * @deprecated Use {@link Federation.fetch} instead.
    */
-  async handle(
+  handle(
+    request: Request,
+    options: FederationFetchOptions<TContextData>,
+  ): Promise<Response> {
+    return this.fetch(request, options);
+  }
+
+  /**
+   * Handles a request related to federation.  If a request is not related to
+   * federation, the `onNotFound` or `onNotAcceptable` callback is called.
+   *
+   * Usually, this method is called from a server's request handler or
+   * a web framework's middleware.
+   *
+   * @param request The request object.
+   * @param parameters The parameters for handling the request.
+   * @returns The response to the request.
+   * @since 0.6.0
+   */
+  async fetch(
     request: Request,
     {
       onNotFound,
       onNotAcceptable,
       contextData,
-    }: FederationHandlerParameters<TContextData>,
+    }: FederationFetchOptions<TContextData>,
   ): Promise<Response> {
     onNotFound ??= notFound;
     onNotAcceptable ??= notAcceptable;
@@ -824,11 +844,12 @@ export class Federation<TContextData> {
 }
 
 /**
- * Parameters of {@link Federation.handle} method.
+ * Parameters of {@link Federation.fetch} method.
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @since 0.6.0
  */
-export interface FederationHandlerParameters<TContextData> {
+export interface FederationFetchOptions<TContextData> {
   /**
    * The context data to pass to the {@link Context}.
    */

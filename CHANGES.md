@@ -22,6 +22,14 @@ To be released.
      -  The Activity Vocabulary object passed to `InboxListener` now implicitly
         loads remote object with an authenticated `DocumentLoader`.
 
+ -  Added `Federation.fetch()` method.
+
+     -  Deprecated `Federation.handle()` method.  Use `Federation.fetch()`
+        method instead.
+     -  Renamed `FederationHandlerParameters` type to `FederationFetchOptions`.
+     -  Added `integrateFetchOptions()` function.
+     -  Deprecated `integrateHandlerOptions()` function.
+
 [#27]: https://github.com/dahlia/fedify/issues/27
 
 

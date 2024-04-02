@@ -166,15 +166,15 @@ a key-value store.
 > Since `MemoryKvStore` is for testing and development purposes, you should
 > use a persistent key-value store like `DenoKvStore` for production use.
 
-Then, we pass the incoming `Request` to the `federation.handle()` method:
+Then, we pass the incoming `Request` to the `Federation.fetch()` method:
 
 ~~~~ typescript
 Deno.serve(
-  request => federation.handle(request, { contextData: undefined })
+  request => federation.fetch(request, { contextData: undefined })
 );
 ~~~~
 
-The `federation.handle()` method takes the incoming `Request` and few options.
+The `Federation.fetch()` method takes the incoming `Request` and few options.
 In this case, we pass `undefined` as the `contextData` because we don't
 need to share any context data here.
 
@@ -227,7 +227,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
 });
 
 Deno.serve(
-  request => federation.handle(request, { contextData: undefined })
+  request => federation.fetch(request, { contextData: undefined })
 );
 ~~~~
 
