@@ -30,6 +30,14 @@ To be released.
      -  Added `integrateFetchOptions()` function.
      -  Deprecated `integrateHandlerOptions()` function.
 
+ -  Added `@fedify/fedify/x/hono` module for integrating with [Hono] middleware.
+    [[#25]]
+
+     -  Added `federation()` function.
+     -  Added `ContextDataFactory` type.
+
+[Hono]: https://hono.dev/
+[#25]: https://github.com/dahlia/fedify/issues/25
 [#27]: https://github.com/dahlia/fedify/issues/27
 
 

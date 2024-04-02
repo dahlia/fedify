@@ -1,0 +1,13 @@
+{
+  "imports": {
+    "@fedify/fedify": "../../mod.ts",
+    "@fedify/fedify/federation": "../../federation/mod.ts",
+    "@fedify/fedify/httpsig": "../../httpsig/mod.ts",
+    "@fedify/fedify/runtime": "../../runtime/mod.ts",
+    "@fedify/fedify/vocab": "../../vocab/mod.ts",
+    "@fedify/fedify/webfinger": "../../webfinger/mod.ts",
+    "@fedify/fedify/x/denokv": "../../x/denokv.ts",
+    "@fedify/fedify/x/hono": "../../x/hono.ts",
+    "hono": "https://deno.land/x/hono@v4.1.7/mod.ts"
+  }
+}
