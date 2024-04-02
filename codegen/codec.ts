@@ -87,7 +87,7 @@ export async function* generateDecoder(
    */
   static async fromJsonLd(
     json: unknown,
-    options: { documentLoader?: DocumentLoader } = {}
+    options: { documentLoader?: DocumentLoader } = {},
   ): Promise<${type.name}> {
     if (typeof json === "undefined") {
       throw new TypeError("Invalid JSON-LD: undefined.");
@@ -129,9 +129,10 @@ export async function* generateDecoder(
   `;
   if (type.extends == null) {
     yield `
-    const instance = new this({
-      id: "@id" in values ? new URL(values["@id"] as string) : undefined,
-    });
+    const instance = new this(
+      { id: "@id" in values ? new URL(values["@id"] as string) : undefined },
+      { documentLoader: options?.documentLoader },
+    );
     `;
   } else {
     yield `

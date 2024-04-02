@@ -46,7 +46,14 @@ async function* generateClass(
     yield `export class ${type.name} {\n`;
   }
   if (type.extends == null) {
-    yield "readonly id: URL | null;\n";
+    yield `
+    readonly #documentLoader?: DocumentLoader;
+    readonly id: URL | null;
+
+    protected get _documentLoader(): DocumentLoader | undefined {
+      return this.#documentLoader;
+    }
+    `;
   }
   for await (const code of generateFields(typeUri, types)) yield code;
   for await (const code of generateConstructor(typeUri, types)) yield code;

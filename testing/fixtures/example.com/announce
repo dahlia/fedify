@@ -1,0 +1,6 @@
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "type": "Announce",
+  "id": "https://example.com/announce",
+  "object": "https://example.com/object"
+}

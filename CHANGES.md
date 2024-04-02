@@ -13,6 +13,17 @@ Version 0.6.0
 
 To be released.
 
+ -  `DocumentLoader` is now propagated to the loaded remote objects from
+    Activity Vocabulary objects.  [[#27]]
+
+     -  Added `options` parameter to Activity Vocabulary constructors.
+     -  Added `options` parameter to `clone()` method of Activity Vocabulary
+        objects.
+     -  The Activity Vocabulary object passed to `InboxListener` now implicitly
+        loads remote object with an authenticated `DocumentLoader`.
+
+[#27]: https://github.com/dahlia/fedify/issues/27
+
 
 Version 0.5.0
 -------------

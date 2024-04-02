@@ -33,15 +33,10 @@ async function* generateProperty(
     yield `
     async #fetch${toPascalCase(property.singularName)}(
       url: URL,
-      options: {
-        documentLoader?: (url: string) => Promise<{
-          contextUrl: string | null;
-          document: unknown;
-          documentUrl: string;
-        }>
-      } = {}
+      options: { documentLoader?: DocumentLoader } = {}
     ): Promise<${getTypeNames(property.range, types)}> {
-      const documentLoader = options.documentLoader ?? fetchDocumentLoader;
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const { document } = await documentLoader(url.href);
     `;
     for (const range of property.range) {
@@ -49,7 +44,7 @@ async function* generateProperty(
       const rangeType = types[range];
       yield `
       try {
-        return await ${rangeType.name}.fromJsonLd(document, options);
+        return await ${rangeType.name}.fromJsonLd(document, { documentLoader });
       } catch (e) {
         if (!(e instanceof TypeError)) throw e;
       }
@@ -77,13 +72,7 @@ async function* generateProperty(
       yield doc;
       yield `
       async get${toPascalCase(property.singularName)}(
-        options: {
-          documentLoader?: (url: string) => Promise<{
-            contextUrl: string | null;
-            document: unknown;
-            documentUrl: string;
-          }>
-        } = {}
+        options: { documentLoader?: DocumentLoader } = {}
       ): Promise<${getTypeNames(property.range, types)} | null> {
         if (this.${await getFieldName(property.uri)}.length < 1) return null;
         const v = this.${await getFieldName(property.uri)}[0];
@@ -113,13 +102,7 @@ async function* generateProperty(
       yield doc;
       yield `
       async* get${toPascalCase(property.pluralName)}(
-        options: {
-          documentLoader?: (url: string) => Promise<{
-            contextUrl: string | null;
-            document: unknown;
-            documentUrl: string;
-          }>
-        } = {}
+        options: { documentLoader?: DocumentLoader } = {}
       ): AsyncIterable<${getTypeNames(property.range, types)}> {
         const vs = this.${await getFieldName(property.uri)};
         for (let i = 0; i < vs.length; i++) {

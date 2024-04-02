@@ -24,6 +24,7 @@ import { publicKey1 } from "../testing/keys.ts";
 import * as vocab from "./vocab.ts";
 import {
   Activity,
+  Announce,
   Create,
   CryptographicKey,
   Follow,
@@ -171,11 +172,15 @@ Deno.test("Activity.fromJsonLd()", async () => {
 
 Deno.test("Activity.getObject()", async () => {
   const activity = new Activity({
-    object: new URL("https://example.com/object"),
+    object: new URL("https://example.com/announce"),
   });
-  const object = await activity.getObject({
+  const announce = await activity.getObject({
     documentLoader: mockDocumentLoader,
   });
+  assertInstanceOf(announce, Announce);
+  assertEquals(announce.id, new URL("https://example.com/announce"));
+
+  const object = await announce.getObject();
   assertInstanceOf(object, Object);
   assertEquals(object.id, new URL("https://example.com/object"));
   assertEquals(object.name, "Fetched object");

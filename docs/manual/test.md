@@ -1,6 +1,6 @@
 ---
 parent: Manual
-nav_order: 8
+nav_order: 9
 metas:
   description: >-
     Testing a federated server app is a bit tricky because it requires a

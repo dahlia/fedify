@@ -67,15 +67,23 @@ export async function* generateConstructor(
   /**
    * Constructs a new instance of ${type.name} with the given values.
    * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
    */
-  constructor(values:
+  constructor(
+    values:
   `;
   for await (const code of generateParametersType(typeUri, types)) yield code;
-  yield ") {\n";
+  yield `,
+    { documentLoader }: { documentLoader?: DocumentLoader } = {},
+  ) {
+  `;
   if (type.extends == null) {
-    yield "this.id = values.id ?? null;";
+    yield `
+    this.#documentLoader = documentLoader;
+    this.id = values.id ?? null;
+    `;
   } else {
-    yield "super(values);";
+    yield "super(values, { documentLoader });";
   }
   for (const property of type.properties) {
     const fieldName = await getFieldName(property.uri);
@@ -121,19 +129,25 @@ export async function* generateCloner(
   /**
    * Clones this instance, optionally updating it with the given values.
    * @param values The values to update the clone with.
+   * @options The options to use for cloning.
    * @returns The cloned instance.
    */
-  clone(values:
+  clone(
+    values:
   `;
   for await (const code of generateParametersType(typeUri, types)) yield code;
-  yield ` = {}): ${type.name} {\n`;
+  yield `
+    = {},
+    options: { documentLoader?: DocumentLoader } = {}
+  ): ${type.name} {
+  `;
   if (type.extends == null) {
     yield `
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: ${type.name} = new this.constructor({ id: values.id });
+    const clone: ${type.name} = new this.constructor({ id: values.id }, options);
     `;
   } else {
-    yield `const clone = super.clone(values) as unknown as ${type.name};`;
+    yield `const clone = super.clone(values, options) as unknown as ${type.name};`;
   }
   for (const property of type.properties) {
     const fieldName = await getFieldName(property.uri);
