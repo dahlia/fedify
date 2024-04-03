@@ -10,7 +10,8 @@
     "./vocab": "./vocab/mod.ts",
     "./webfinger": "./webfinger/mod.ts",
     "./x/denokv": "./x/denokv.ts",
-    "./x/fresh": "./x/fresh.ts"
+    "./x/fresh": "./x/fresh.ts",
+    "./x/hono": "./x/hono.ts"
   },
   "imports": {
     "@cfworker/json-schema": "npm:@cfworker/json-schema@^1.12.8",
@@ -23,7 +24,9 @@
     "@fedify/fedify/runtime": "./runtime/mod.ts",
     "@fedify/fedify/vocab": "./vocab/mod.ts",
     "@fedify/fedify/webfinger": "./webfinger/mod.ts",
+    "@fedify/fedify/x/denokv": "./x/denokv.ts",
     "@fedify/fedify/x/fresh": "./x/fresh.ts",
+    "@fedify/fedify/x/hono": "./x/hono.ts",
     "@hongminhee/aitertools": "jsr:@hongminhee/aitertools@^0.6.0",
     "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.4.4",
     "@phensley/language-tag": "npm:@phensley/language-tag@^1.8.0",

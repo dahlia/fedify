@@ -3,12 +3,20 @@ import { copy } from "@std/fs";
 import { join } from "@std/path";
 
 await emptyDir("./npm");
+await emptyDir("./npm/esm/codegen");
 
 const denoJson = join(import.meta.dirname!, "deno.json");
 const metadata = JSON.parse(await Deno.readTextFile(denoJson));
+
+const excludedExports = ["./x/denokv", "./x/fresh"];
+
+const entryPoints = Object.entries(metadata.exports as Record<string, string>)
+  .map(([name, path]) => ({ name, path }))
+  .filter(({ name }) => !excludedExports.includes(name));
+
 const testExports = [];
-for (const exportName in metadata.exports) {
-  const match = exportName.match(/^\.\/([^/]+)/);
+for (const { name } of entryPoints) {
+  const match = name.match(/^\.\/([^/]+)/);
   if (match && match[1] != "x") testExports.push(match[1]);
 }
 
@@ -35,9 +43,7 @@ await build({
     },
   },
   outDir: "./npm",
-  entryPoints: Object.entries(metadata.exports as Record<string, string>)
-    .map(([name, path]) => ({ name, path }))
-    .filter(({ name }) => !name.startsWith("./x/")),
+  entryPoints,
   importMap: denoJson,
   scriptModule: false,
   shims: {
