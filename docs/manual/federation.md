@@ -129,88 +129,11 @@ local development.  However, it must be disabled in production.
 Turned off by default.
 
 
-Integrating with a web framework
---------------------------------
+Integrating with web frameworks
+-------------------------------
 
-The `Federation` object is designed to be integrated with a web framework
-such as [Fresh].  By integrating, you can handle only federation-related
-requests with the `Federation` object, and handle other requests with
-the web framework.
-
-Web frameworks usually provide a way to intercept requests and handle them
-in the middle, which is so-called <dfn>middleware</dfn>.  If your web framework
-has a middleware feature, you can use it to intercept federation-related
-requests and handle them with the `Federation` object.
-
-For example, if you use the Fresh web framework, [you can define a middleware
-in a *routes/_middleware.ts* file.][fresh-middleware]  The following is an
-example of how to integrate the `Federation` object with Fresh:
-
-~~~~ typescript
-import { FreshContext } from "$fresh/server.ts";
-import { federation } from "../federation.ts"; // Import the `Federation` object
-
-export async function handler(request: Request, context: FreshContext) {
-  return await federation.fetch(request, {
-    // Wonder what is `contextData`?  See the next section for details.
-    contextData: undefined,
-
-    // If the `federation` object finds a request not responsible for it
-    // (i.e., not a federation-related request), it will call the `next`
-    // provided by the Fresh framework to continue the request handling
-    // by the Fresh:
-    onNotFound: context.next.bind(context),
-
-    // Similar to `onNotFound`, but slightly more tricky one.
-    // When the `federation` object finds a request not acceptable type-wise
-    // (i.e., a user-agent doesn't want JSON-LD), it will call the `next`
-    // provided by the Fresh framework so that it renders HTML if there's some
-    // page.  Otherwise, it will simply return a 406 Not Acceptable response.
-    // This kind of trick enables the Fedify and Fresh to share the same routes
-    // and they do content negotiation depending on `Accept` header:
-    async onNotAcceptable(_request: Request) {
-      const response = await context.next();
-      if (response.status !== 404) return response;
-      return new Response("Not acceptable", {
-        status: 406,
-        headers: {
-          "Content-Type": "text/plain",
-          Vary: "Accept",
-        },
-      });
-    },
-  });
-}
-~~~~
-
-In some cases, your web framework may not represent requests and responses
-as [`Request`] and [`Response`] objects.  In that case, you need to convert
-the request and response objects to the appropriate types that the `Federation`
-object can handle.
-
-> [!NOTE]
-> The above example artificially shows a verbose way to integrate
-> the `Federation` object with Fresh, so that a user of other web frameworks
-> can understand the concept.  In practice, you can define a middleware
-> using `integrateHandler()` function from `@fedify/fedify/x/fresh` module:
->
-> ~~~~ typescript
-> import { federation } from "../federation.ts"; // Import the `Federation` object
-> import { integrateHandler } from "@fedify/fedify/x/fresh";
->
-> export const handler = integrateHandler(federation, () => undefined);
-> ~~~~
-
-> [!TIP]
-> In theory, you can directly pass `Federation.fetch()` to the [`Deno.serve()`]
-> function, but you probably wouldn't want to do that because you want to handle
-> other requests with the web framework.
-
-[Fresh]: https://fresh.deno.dev/
-[fresh-middleware]: https://fresh.deno.dev/docs/concepts/middleware
-[`Request`]: https://developer.mozilla.org/en-US/docs/Web/API/Request
-[`Response`]: https://developer.mozilla.org/en-US/docs/Web/API/Response
-[`Deno.serve()`]: https://deno.land/api?unstable&s=Deno.serve
+`Federation` is designed to be used together with web frameworks.  For details,
+see the [*Integration* section](./integration.md).
 
 
 `TContextData`
