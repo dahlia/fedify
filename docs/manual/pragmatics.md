@@ -1,11 +1,14 @@
 ---
-parent: Manual
-nav_order: 8
-metas:
-  description: >-
-    This section explains the pragmatic aspects of using Fedify, such as
-    how to utilize the vocabulary API and the de facto norms of ActivityPub
-    implementations.
+description: >-
+  This section explains the pragmatic aspects of using Fedify, such as
+  how to utilize the vocabulary API and the de facto norms of ActivityPub
+  implementations.
+prev:
+  text: NodeInfo
+  link: ./nodeinfo.md
+next:
+  text: Integration
+  link: ./integration.md
 ---
 
 Pragmatics
@@ -58,7 +61,7 @@ If an actor is represented as an `Application` or `Service` object, it is
 considered an automated actor by Mastodon and a bot actor by Misskey.
 
 ~~~~ typescript
-new Application({
+new Application({  // [!code highlight]
   name: "Fedify Demo",
   preferredUsername: "demo",
   summary: "This is a Fedify Demo account",
@@ -77,7 +80,7 @@ If an actor is represented as a `Group` object, it is considered a group actor
 by Mastodon.
 
 ~~~~ typescript
-new Group({
+new Group({  // [!code highlight]
   name: "Fedify Demo",
   preferredUsername: "demo",
   summary: "This is a Fedify Demo account",
@@ -106,7 +109,7 @@ It is displayed in the profile page of an actor and the timeline.
 
 ~~~~ typescript
 new Person({
-  name: "Fedify Demo",
+  name: "Fedify Demo",  // [!code highlight]
   preferredUsername: "demo",
   summary: "This is a Fedify Demo account",
   // Other properties...
@@ -131,7 +134,7 @@ implementations.  The bio is displayed in the profile page of the actor.
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
-  summary: "This is a Fedify Demo account",
+  summary: "This is a Fedify Demo account",  // [!code highlight]
   // Other properties...
 })
 ~~~~
@@ -156,7 +159,7 @@ new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
   summary: "This is a Fedify Demo account",
-  published: Temporal.Instant.from("2024-03-31T00:00:00Z"),
+  published: Temporal.Instant.from("2024-03-31T00:00:00Z"), // [!code highlight]
   // Other properties...
 })
 ~~~~
@@ -172,7 +175,7 @@ The `icon` property is used as an avatar image in Mastodon and the most
 ActivityPub implementations.  The avatar image is displayed next to the name
 of the actor in the profile page and the timeline.
 
-~~~~ typescript
+~~~~ typescript{5-8}
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -195,7 +198,7 @@ Mastodon](pragmatics/mastodon-avatar.png)
 The `image` property is used as a header image in Mastodon and Misskey.
 The header image is displayed on the top of the profile page.
 
-~~~~ typescript
+~~~~ typescript{5-8}
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -218,7 +221,7 @@ Mastodon](pragmatics/mastodon-header.png)
 The `attachments` property is used as custom fields in Mastodon and Misskey.
 The custom fields are displayed as a table in the profile page.
 
-~~~~ typescript
+~~~~ typescript{5-18}
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -270,7 +273,7 @@ new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
   summary: "This is a Fedify Demo account",
-  manuallyApprovesFollowers: true,
+  manuallyApprovesFollowers: true,  // [!code highlight]
   // Other properties...
 })
 ~~~~
@@ -291,7 +294,7 @@ new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
   summary: "This is a Fedify Demo account",
-  suspended: true,
+  suspended: true,  // [!code highlight]
   // Other properties...
 })
 ~~~~
@@ -312,7 +315,7 @@ new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
   summary: "This is a Fedify Demo account",
-  memorial: true,
+  memorial: true,  // [!code highlight]
   // Other properties...
 })
 ~~~~

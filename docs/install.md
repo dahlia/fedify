@@ -1,7 +1,11 @@
 ---
-nav_order: 2
-metas:
-  description: How to install Fedify.
+description: How to install Fedify.
+prev:
+  text: What is Fedify?
+  link: ./intro.md
+next:
+  text: Tutorial
+  link: ./tutorial.md
 ---
 Installation
 ============

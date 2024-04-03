@@ -1,11 +1,14 @@
 ---
-parent: Manual
-nav_order: 4
-metas:
-  description: >-
-    You can register an actor dispatcher so that Fedify can dispatch
-    an appropriate actor by its bare handle.  This section explains
-    how to register an actor dispatcher and the key properties of an actor.
+description: >-
+  You can register an actor dispatcher so that Fedify can dispatch
+  an appropriate actor by its bare handle.  This section explains
+  how to register an actor dispatcher and the key properties of an actor.
+prev:
+  text: Vocabulary
+  link: ./vocab.md
+next:
+  text: Inbox listeners
+  link: ./inbox.md
 ---
 
 Actor dispatcher
@@ -29,7 +32,7 @@ the following:
 
 The below example shows how to register an actor dispatcher:
 
-~~~~ typescript
+~~~~ typescript{7-15}
 import { Federation, Person } from "@fedify/fedify";
 
 const federation = new Federation({
@@ -145,7 +148,7 @@ Instead, you can register a key pair dispatcher through
 the `~ActorCallbackSetters.setKeyPairDispatcher()` method so that Fedify can
 dispatch an appropriate key pair by the actor's bare handle:
 
-~~~~ typescript
+~~~~ typescript{7-9,12-17}
 federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
   // Work with the database to find the actor by the handle.
   if (user == null) return null;  // Return null if the actor is not found.
@@ -199,7 +202,7 @@ await kv.set(["keypair", handle], {
 
 Here's an example of how to load a key pair from the database too:
 
-~~~~ typescript
+~~~~ typescript{8-16}
 import { importJwk } from "@fedify/fedify";
 
 federation
@@ -208,7 +211,7 @@ federation
   })
   .setKeyPairDispatcher(async (ctxData, handle) => {
     const kv = await Deno.openKv();
-    const entry = await kv.get<{ privateKey: unknown; publicKey: unknown }>(
+    const entry = await kv.get<{ privateKey: JsonWebKey; publicKey: JsonWebKey }>(
       ["keypair", handle],
     );
     if (entry == null || entry.value == null) return null;

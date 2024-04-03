@@ -1,11 +1,14 @@
 ---
-parent: Manual
-nav_order: 5
-metas:
-  description: >-
-    Fedify provides a way to register inbox listeners so that you can handle
-    incoming activities from other actors.  This section explains how to
-    register an inbox listener and how to handle errors.
+description: >-
+  Fedify provides a way to register inbox listeners so that you can handle
+  incoming activities from other actors.  This section explains how to
+  register an inbox listener and how to handle errors.
+prev:
+  text: Actor dispatcher
+  link: ./actor.md
+next:
+  text: Collections
+  link: ./collections.md
 ---
 
 Inbox listeners
@@ -30,7 +33,7 @@ actor.
 With Fedify, you can register an inbox listener for both types of inboxes at
 a time.  The following shows how to register an inbox listener:
 
-~~~~ typescript
+~~~~ typescript{7-18}
 import { Federation, Follow } from "@fedify/fedify";
 
 const federation = new Federation({
@@ -105,7 +108,7 @@ The `~InboxListenerSetter.onError()` method registers a callback
 function that takes a `Context` object and an error object.  The following shows
 an example of handling errors:
 
-~~~~ typescript
+~~~~ typescript{6-8}
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {

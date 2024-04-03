@@ -1,10 +1,14 @@
 ---
-nav_order: 3
-metas:
-  description: >-
-    This tutorial provides a step-by-step guide to building a small federated
-    server with the Fedify framework.  It is intended for developers who want
-    to build a federated server with the Fedify framework.
+description: >-
+  This tutorial provides a step-by-step guide to building a small federated
+  server with the Fedify framework.  It is intended for developers who want
+  to build a federated server with the Fedify framework.
+prev:
+  text: Installation
+  link: ./install.md
+next:
+  text: Manual
+  link: ./manual.md
 ---
 
 Tutorial
@@ -208,7 +212,7 @@ like).
 
 Let's create an actor dispatcher for our server:
 
-~~~~ typescript
+~~~~ typescript{7-16}
 import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
 
 const federation = new Federation<void>({
@@ -364,7 +368,7 @@ set the `treatHttps` property to `true` in the `Federation` object:
 ~~~~ typescript
 const federation = new Federation<void>({
   kv: new MemoryKvStore(),
-  treatHttps: true,  // Treat HTTP requests as HTTPS
+  treatHttps: true,  // Treat HTTP requests as HTTPS // [!code highlight]
 });
 ~~~~
 
@@ -446,7 +450,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     summary: "This is me!",
     preferredUsername: handle,
     url: new URL("/", ctx.url),
-    inbox: ctx.getInboxUri(handle),  // Inbox URI
+    inbox: ctx.getInboxUri(handle),  // Inbox URI // [!code highlight]
   });
 });
 ~~~~
@@ -487,7 +491,7 @@ Fedify provides helper functions to generate and export/import keys:
 import {
   Federation, Follow, Person, MemoryKvStore,
   // Import helper functions:
-  exportJwk, generateCryptoKeyPair, importJwk,
+  exportJwk, generateCryptoKeyPair, importJwk,  // [!code highlight]
 } from "@fedify/fedify";
 ~~~~
 
@@ -502,7 +506,7 @@ called when the key pair of an actor is needed.  Let's set a key pair dispatcher
 for the actor *me*.  `~ActorCallbackSetters.setKeyPairDispatcher()` method
 should be chained after the `Federation.setActorDispatcher()` method:
 
-~~~~ typescript
+~~~~ typescript{13-14,17-37}
 const kv = await Deno.openKv();  // Open the key-value store
 
 federation
@@ -557,12 +561,12 @@ store.
 > March 2024, so you need to add the `"unstable": ["kv"]` field to the
 > *deno.json* file:
 >
-> ~~~~ json
+> ~~~~ jsonc
 > {
 >   "imports": {
 >     "@fedify/fedify": "jsr:@fedify/fedify@^0.4.0"
 >   },
->   "unstable": ["kv"]
+>   "unstable": ["kv"] // [!code highlight]
 > }
 > ~~~~
 
@@ -619,7 +623,7 @@ Let's import the `Accept` class from the Fedify framework:
 
 ~~~~ typescript
 import {
-  Accept,  // Import the Accept class
+  Accept,  // Import the Accept class // [!code highlight]
   Federation, Follow, Person,
   exportJwk, generateCryptoKeyPair, importJwk,
 } from "@fedify/fedify";
@@ -628,7 +632,7 @@ import {
 Then, we modify the inbox listener to send an `Accept` activity back to the
 follower when we receive a follow request:
 
-~~~~ typescript
+~~~~ typescript{10-17}
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -661,7 +665,7 @@ The server should list the actor's followers on the home page.  To do this,
 we need to store the followers in the key-value store.  We will store each
 `Follow` activity's ID as the key and the follower's actor ID as the value:
 
-~~~~ typescript
+~~~~ typescript{15-16}
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -684,7 +688,7 @@ federation
 Now, we need to make the home page to show the actor's followers.  Let's modify
 the script inside the callback function passed to the `Deno.serve()`:
 
-~~~~ typescript
+~~~~ typescript{2-16}
 Deno.serve(async (request) => {
   const url = new URL(request.url);
   // The home page:

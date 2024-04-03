@@ -1,11 +1,14 @@
 ---
-parent: Manual
-nav_order: 3
-metas:
-  description: >-
-    The Activity Vocabulary is a collection of type-safe objects that represent
-    the Activity Vocabulary and the vendor-specific extensions.  This section
-    explains the key features of the objects.
+description: >-
+  The Activity Vocabulary is a collection of type-safe objects that represent
+  the Activity Vocabulary and the vendor-specific extensions.  This section
+  explains the key features of the objects.
+prev:
+  text: Context
+  link: ./context.md
+next:
+  text: Actor dispatcher
+  link: ./actor.md
 ---
 
 Vocabulary
@@ -156,7 +159,7 @@ takes an object with the new properties and returns a new object with the new
 properties.  The following shows an example of changing the `~Object.content`
 property of a `Note` object:
 
-~~~~ typescript
+~~~~ typescript{9-11}
 import { LanguageString, Note } from "@fedify/fedify";
 import { Temporal } from "@js-temporal/polyfill";
 

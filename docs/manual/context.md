@@ -1,10 +1,13 @@
 ---
-parent: Manual
-nav_order: 2
-metas:
-  description: >-
-    The Context object is a container that holds the information of the current
-    request.  This section explains the key features of the Context object.
+description: >-
+  The Context object is a container that holds the information of the current
+  request.  This section explains the key features of the Context object.
+prev:
+  text: Federation
+  link: ./federation.md
+next:
+  text: Vocabulary
+  link: ./vocab.md
 ---
 
 Context
@@ -77,7 +80,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
   // Work with the database to find the actor by the handle.
   if (user == null) return null;
   return new Person({
-    id: ctx.getActorUri(handle),
+    id: ctx.getActorUri(handle),  // [!code highlight]
     preferredUsername: handle,
     // Many more properties...
   });
@@ -95,7 +98,7 @@ The `Context` object can enqueue an outgoing activity to the actor's outbox
 by calling the `~Context.sendActivity()` method.  The following shows an
 example in an [inbox listener](./inbox.md):
 
-~~~~ typescript
+~~~~ typescript{10-14}
 import { Accept, Follow } from "@fedify/fedify";
 
 federation

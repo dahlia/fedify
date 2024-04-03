@@ -1,10 +1,13 @@
 ---
-parent: Manual
-nav_order: 1
-metas:
-  description: >-
-    The Federation object is the main entry point of the Fedify library.
-    This section explains the key features of the Federation object.
+description: >-
+  The Federation object is the main entry point of the Fedify library.
+  This section explains the key features of the Federation object.
+prev:
+  text: Manual
+  link: ../manual.md
+next:
+  text: Context
+  link: ./context.md
 ---
 
 Federation
@@ -157,7 +160,7 @@ import { DatabasePool, getPool } from "./database.ts";
 
 export async function handler(request: Request, context: FreshContext) {
   return federation.fetch(request, {
-    contextData: getPool(),
+    contextData: getPool(),  // [!code highlight]
     onNotFound: context.next.bind(context),
     onNotAcceptable: async (request: Request) => {
       // Omitted for brevity

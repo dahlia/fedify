@@ -1,12 +1,15 @@
 ---
-parent: Manual
-nav_order: 7
-metas:
-  description: >-
-    According to the official NodeInfo website, NodeInfo is an effort to create
-    a standardized way of exposing metadata about a server running one of the
-    distributed social networks.  This section explains how to expose a NodeInfo
-    endpoint and the key properties of a NodeInfo object.
+description: >-
+  According to the official NodeInfo website, NodeInfo is an effort to create
+  a standardized way of exposing metadata about a server running one of the
+  distributed social networks.  This section explains how to expose a NodeInfo
+  endpoint and the key properties of a NodeInfo object.
+prev:
+  text: Collections
+  link: ./collections.md
+next:
+  text: Pragmatics
+  link: ./pragmatics.md
 ---
 
 NodeInfo

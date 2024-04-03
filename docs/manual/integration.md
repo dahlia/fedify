@@ -1,10 +1,13 @@
 ---
-parent: Manual
-nav_order: 9
-metas:
-  description: >-
-    Fedify is designed to be used together with web frameworks.  This document
-    explains how to integrate Fedify with web frameworks.
+description: >-
+  Fedify is designed to be used together with web frameworks.  This document
+  explains how to integrate Fedify with web frameworks.
+prev:
+  text: Pragmatics
+  link: ./pragmatics.md
+next:
+  text: Testing
+  link: ./test.md
 ---
 
 Integration
@@ -31,7 +34,7 @@ const fedi = new Federation<string>({
 });
 
 const app = new Hono();
-app.use(federation(fedi, (ctx) => "context data"));
+app.use(federation(fedi, (ctx) => "context data"));  // [!code highlight]
 ~~~~
 
 [Hono]: https://hono.dev/
@@ -44,7 +47,7 @@ Fresh
 `@fedify/fedify/x/fresh` module that provides a middleware to integrate Fedify
 with Fresh.  Put the following code in your *routes/_middleware.ts* file:
 
-~~~~ typescript
+~~~~ typescript{8-12}
 import { Federation } from "@fedify/fedify";
 import { integrateHandler } from "@fedify/fedify/x/fresh";
 

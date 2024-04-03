@@ -1,11 +1,12 @@
 ---
-parent: Manual
-nav_order: 10
-metas:
-  description: >-
-    Testing a federated server app is a bit tricky because it requires a
-    federated environment.  This document explains how to easily test your
-    federated server app with the help of several tools.
+description: >-
+  Testing a federated server app is a bit tricky because it requires a
+  federated environment.  This document explains how to easily test your
+  federated server app with the help of several tools.
+prev:
+  text: Integration
+  link: ./integration.md
+next: false
 ---
 
 Testing
