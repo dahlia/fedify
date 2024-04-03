@@ -18,8 +18,8 @@ Hono
 ----
 
 [Hono] is a fast, lightweight, and Web standard-compliant server framework for
-TypeScript.  Fedify has the *x/hono* module that provides a middleware to
-integrate Fedify with Hono:
+TypeScript.  Fedify has the `@fedify/fedify/x/hono` module that provides
+a middleware to integrate Fedify with Hono:
 
 ~~~~ typescript
 import { Federation } from "@fedify/fedify";
@@ -40,9 +40,9 @@ app.use(federation(fedi, (ctx) => "context data"));
 Fresh
 -----
 
-[Fresh] is a full stack modern web framework for Deno.  Fedify has the *x/fresh*
-module that provides a middleware to integrate Fedify with Fresh.
-Put the following code in your *routes/_middleware.ts* file:
+[Fresh] is a full stack modern web framework for Deno.  Fedify has the
+`@fedify/fedify/x/fresh` module that provides a middleware to integrate Fedify
+with Fresh.  Put the following code in your *routes/_middleware.ts* file:
 
 ~~~~ typescript
 import { Federation } from "@fedify/fedify";
