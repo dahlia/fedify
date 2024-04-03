@@ -762,8 +762,7 @@ Exercises
     Instead, you can use a web framework like [Fresh] to utilize the proper
     routing system and [JSX] templates to produce HTML.
     
-    See also the [*Integrating with a web framework*
-    section](./manual/federation.md#integrating-with-a-web-framework) in
+    See also the [*Integration* section](./manual/integration.md) in
     the manual for more details.
 
 [Fresh]: https://fresh.deno.dev/

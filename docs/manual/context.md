@@ -33,9 +33,9 @@ callbacks that take a `Context` object as the first parameter:
 
  -  [Actor dispatcher](./actor.md)
  -  [Inbox listeners](./inbox.md)
- -  Outbox dispatcher
- -  Followers collection
- -  Following collection
+ -  [Outbox collection dispatcher](./collections.md#outbox)
+ -  [Following collection dispatcher](./collections.md#following)
+ -  [Followers collection dispatcher](./collections.md#followers)
  -  [NodeInfo dispatcher](./nodeinfo.md)
 
 Those are not all; there are more callbacks that take a `Context` object.
