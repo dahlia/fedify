@@ -4,11 +4,15 @@
     "serve": "deno task lume -s --port=3000"
   },
   "imports": {
-    "@std/collections": "jsr:@std/collections@^0.218.2",
-    "@std/semver": "jsr:@std/semver@^0.218.2",
+    "@std/collections": "jsr:@std/collections@^0.221.0",
+    "@std/html": "jsr:@std/html@^0.221.0",
+    "@std/semver": "jsr:@std/semver@^0.221.0",
     "lume/": "https://deno.land/x/lume@v2.0.1/",
     "lume_markdown_plugins/": "https://deno.land/x/lume_markdown_plugins@v0.7.0/",
     "lumocs/": "https://deno.land/x/lumocs@0.1.2/"
   },
-  "exclude": ["*.md", "**/*md"]
+  "exclude": [
+    "*.md",
+    "**/*md"
+  ]
 }

@@ -1,4 +1,5 @@
 import { maxWith } from "@std/collections";
+import { unescape } from "@std/html";
 import { compare, format, parse, SemVer } from "@std/semver";
 import lume from "lume/mod.ts";
 import relativeUrls from "lume/plugins/relative_urls.ts";
@@ -81,7 +82,7 @@ async function getApiUrl(
   opt: null | { attr: string } | { ctor: true },
 ): Promise<string | null> {
   const baseUrl = new URL(
-    node.file === "." ? "." : `.${node.file}/`,
+    node.file === "." ? "." : `.${unescape(node.file)}/`,
     `https://jsr.io/@fedify/fedify@${version}/doc/`,
   );
   const url = new URL(`./~/${node.name}`, baseUrl);

@@ -22,6 +22,7 @@ framework.
  -  [Collections](./manual/collections.md)
  -  [NodeInfo](./manual/nodeinfo.md)
  -  [Pragmatics](./manual/pragmatics.md)
+ -  [Integration](./manual/integration.md)
  -  [Testing](./manual/test.md)
 
 However, this manual is not a complete guide to the Fedify framework.
