@@ -5,7 +5,7 @@ hero:
   name: Fedify
   text: ActivityPub server framework
   tagline: >-
-    A Deno/TypeScript library for building federated server apps
+    A TypeScript library for building federated server apps
     powered by ActivityPub and other standards, so-called fediverse
   image: /logo.png
   actions:
