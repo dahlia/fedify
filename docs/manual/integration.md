@@ -20,6 +20,8 @@ explains how to integrate Fedify with web frameworks.
 Hono
 ----
 
+*This API is available since Fedify 0.6.0.*
+
 [Hono] is a fast, lightweight, and Web standard-compliant server framework for
 TypeScript.  Fedify has the `@fedify/fedify/x/hono` module that provides
 a middleware to integrate Fedify with Hono:
@@ -42,6 +44,8 @@ app.use(federation(fedi, (ctx) => "context data"));  // [!code highlight]
 
 Fresh
 -----
+
+*This API is available since Fedify 0.4.0.*
 
 [Fresh] is a full stack modern web framework for Deno.  Fedify has the
 `@fedify/fedify/x/fresh` module that provides a middleware to integrate Fedify
