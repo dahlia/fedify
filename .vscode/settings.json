@@ -36,6 +36,7 @@
     "callouts",
     "cfworker",
     "codegen",
+    "deflist",
     "Deno",
     "denokv",
     "dereferenceable",
@@ -69,6 +70,7 @@
     "unfollow",
     "unfollowing",
     "urlpattern",
+    "vitepress",
     "webfinger"
   ]
 }

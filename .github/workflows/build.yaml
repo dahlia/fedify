@@ -168,51 +168,36 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
     - uses: actions/checkout@v4
-    - uses: denoland/setup-deno@v1
+    - uses: oven-sh/setup-bun@v1
       with:
-        deno-version: v1.x
-    - if: github.event_name == 'push' && github.ref_type == 'tag'
-      run: |
-        jq \
-          --arg url "$UNSTABLE_DOCS_URL" \
-          '.nav_links = [{"title":"Go to unstable","url":$url}] + .nav_links' \
-          _data.json > _data.json.tmp
-        mv _data.json.tmp _data.json
-      env:
-        UNSTABLE_DOCS_URL: ${{ vars.UNSTABLE_DOCS_URL }}
-      working-directory: ${{ github.workspace }}/docs/
-    - if: github.event_name != 'push' || github.ref_type != 'tag'
-      run: |
-        jq \
-          --arg url "$STABLE_DOCS_URL" \
-          '.nav_links = [{"title":"Go to stable","url":$url}] + .nav_links' \
-          _data.json > _data.json.tmp
-        mv _data.json.tmp _data.json
-      env:
-        STABLE_DOCS_URL: ${{ vars.STABLE_DOCS_URL }}
-      working-directory: ${{ github.workspace }}/docs/
+        bun-version: latest
     - run: |
         set -ex
-        jq \
-          --arg domain "$PLAUSIBLE_DOMAIN" \
-          '.plausible_domain = $domain' \
-          _data.json > _data.json.tmp
-        mv _data.json.tmp _data.json
+        bun install
+        if [[ "$GITHUB_EVENT_NAME" = "push" && "$GITHUB_REF_TYPE" = "tag" ]]; then
+          EXTRA_NAV_TEXT=Unstable \
+          EXTRA_NAV_LINK="$UNSTABLE_DOCS_URL" \
+          bun run build
+        else
+          EXTRA_NAV_TEXT=Stable \
+          EXTRA_NAV_LINK="$STABLE_DOCS_URL" \
+          bun run build
+        fi
       env:
         PLAUSIBLE_DOMAIN: ${{ secrets.PLAUSIBLE_DOMAIN }}
-      working-directory: ${{ github.workspace }}/docs/
-    - run: deno task lume
+        STABLE_DOCS_URL: ${{ vars.STABLE_DOCS_URL }}
+        UNSTABLE_DOCS_URL: ${{ vars.UNSTABLE_DOCS_URL }}
       working-directory: ${{ github.workspace }}/docs/
     - uses: actions/upload-pages-artifact@v3
       with:
-        path: docs/_site
+        path: docs/.vitepress/dist
     - id: deployment
       if: github.event_name == 'push' && github.ref_type == 'tag'
       uses: actions/deploy-pages@v4
     - if: github.event_name == 'pull_request' || github.ref_type == 'branch'
       uses: nwtgck/actions-netlify@v3.0
       with:
-        publish-dir: docs/_site
+        publish-dir: docs/.vitepress/dist
         production-branch: main
         github-token: ${{ github.token }}
         enable-pull-request-comment: false

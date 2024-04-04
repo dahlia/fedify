@@ -2,6 +2,7 @@ import { Presets, SingleBar } from "cli-progress";
 import deflist from "markdown-it-deflist";
 import footnote from "markdown-it-footnote";
 import { jsrRef } from "markdown-it-jsr-ref";
+import process from "node:process";
 import { defineConfig } from "vitepress";
 
 const progress = new SingleBar({}, Presets.shades_classic);
@@ -20,6 +21,30 @@ const jsrRefPlugin = await jsrRef({
   },
 });
 
+let extraNav: { text: string; link: string }[] = [];
+if (process.env.EXTRA_NAV_TEXT && process.env.EXTRA_NAV_LINK) {
+  extraNav = [
+    {
+      text: process.env.EXTRA_NAV_TEXT,
+      link: process.env.EXTRA_NAV_LINK,
+    },
+  ];
+}
+
+let plausibleScript: [string, Record<string, string>][] = [];
+if (process.env.PLAUSIBLE_DOMAIN) {
+  plausibleScript = [
+    [
+      "script",
+      {
+        defer: "defer",
+        "data-domain": process.env.PLAUSIBLE_DOMAIN,
+        src: "https://plausible.io/js/plausible.js",
+      },
+    ],
+  ];
+}
+
 export default defineConfig({
   title: "Fedify",
   description: "Fedify docs",
@@ -29,6 +54,7 @@ export default defineConfig({
       { text: "Home", link: "/" },
       { text: "Manual", link: "/manual.md", activeMatch: "/manual" },
       { text: "API reference", link: "https://jsr.io/@fedify/fedify" },
+      ...extraNav
     ],
 
     sidebar: [
@@ -94,6 +120,7 @@ export default defineConfig({
         href: "/assets/favicon-32x32.png",
       },
     ],
+    ...plausibleScript
   ],
 
   cleanUrls: true,

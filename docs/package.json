@@ -3,7 +3,7 @@
     "cli-progress": "^3.12.0",
     "markdown-it-deflist": "^3.0.0",
     "markdown-it-footnote": "^4.0.0",
-    "markdown-it-jsr-ref": "0.1.0-dev.11",
+    "markdown-it-jsr-ref": "^0.1.0",
     "vitepress": "^1.0.2"
   },
   "scripts": {
