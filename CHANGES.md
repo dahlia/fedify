@@ -8,6 +8,12 @@ nav_order: 9
 Fedify changelog
 ================
 
+Version 0.5.1
+-------------
+
+To be released.
+
+
 Version 0.5.0
 -------------
 
