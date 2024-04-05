@@ -11,7 +11,7 @@ Fedify changelog
 Version 0.5.1
 -------------
 
-To be released.
+Released on April 5, 2024.
 
  -  Fixed a bug of `Federation` that its actor/collection dispatchers had done
     content negotiation before determining if the resource exists or not.
