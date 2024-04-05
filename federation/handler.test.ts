@@ -100,6 +100,21 @@ Deno.test("handleActor()", async () => {
   assertEquals(onNotAcceptableCalled, context.request);
 
   onNotAcceptableCalled = null;
+  response = await handleActor(
+    context.request,
+    {
+      context,
+      handle: "no-one",
+      actorDispatcher,
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+
+  onNotFoundCalled = null;
   context = createRequestContext<void>({
     ...context,
     request: new Request(context.url, {
@@ -235,6 +250,21 @@ Deno.test("handleCollection()", async () => {
   assertEquals(onNotAcceptableCalled, context.request);
 
   onNotAcceptableCalled = null;
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "no-one",
+      collectionCallbacks: { dispatcher },
+      onNotFound,
+      onNotAcceptable,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+
+  onNotFoundCalled = null;
   context = createRequestContext<void>({
     ...context,
     request: new Request(context.url, {

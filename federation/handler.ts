@@ -53,14 +53,14 @@ export async function handleActor<TContextData>(
     const response = onNotFound(request);
     return response instanceof Promise ? await response : response;
   }
-  if (!acceptsJsonLd(request)) {
-    const response = onNotAcceptable(request);
-    return response instanceof Promise ? await response : response;
-  }
   const key = await context.getActorKey(handle);
   const actor = await actorDispatcher(context, handle, key);
   if (actor == null) {
     const response = onNotFound(request);
+    return response instanceof Promise ? await response : response;
+  }
+  if (!acceptsJsonLd(request)) {
+    const response = onNotAcceptable(request);
     return response instanceof Promise ? await response : response;
   }
   const jsonLd = await actor.toJsonLd(context);
@@ -120,10 +120,6 @@ export async function handleCollection<
 ): Promise<Response> {
   if (collectionCallbacks == null) {
     const response = onNotFound(request);
-    return response instanceof Promise ? await response : response;
-  }
-  if (!acceptsJsonLd(request)) {
-    const response = onNotAcceptable(request);
     return response instanceof Promise ? await response : response;
   }
   const url = new URL(request.url);
@@ -199,6 +195,10 @@ export async function handleCollection<
     const partOf = new URL(context.url);
     partOf.searchParams.delete("cursor");
     collection = new OrderedCollectionPage({ prev, next, items, partOf });
+  }
+  if (!acceptsJsonLd(request)) {
+    const response = onNotAcceptable(request);
+    return response instanceof Promise ? await response : response;
   }
   const jsonLd = await collection.toJsonLd(context);
   return new Response(JSON.stringify(jsonLd), {

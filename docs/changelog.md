@@ -42,6 +42,20 @@ To be released.
 [#27]: https://github.com/dahlia/fedify/issues/27
 
 
+Version 0.5.1
+-------------
+
+Released on April 5, 2024.
+
+ -  Fixed a bug of `Federation` that its actor/collection dispatchers had done
+    content negotiation before determining if the resource exists or not.
+    It also fixed a bug that `integrateHandler()` from `@fedify/fedify/x/fresh`
+    had responded with `406 Not Acceptable` instead of `404 Not Found` when
+    the resource does not exist in the web browser.  [[#34]]
+
+[#34]: https://github.com/dahlia/fedify/issues/34
+
+
 Version 0.5.0
 -------------
 
