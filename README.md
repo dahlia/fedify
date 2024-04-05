@@ -51,7 +51,7 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].
       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
 
 [JSR]: https://jsr.io/@fedify/fedify
-[JSR badge]: https://jsr.io/badges/@fedify/fedify?_v=0.5.0
+[JSR badge]: https://jsr.io/badges/@fedify/fedify?_v=0.5.1
 [npm]: https://www.npmjs.com/package/@fedify/fedify
 [npm badge]: https://img.shields.io/npm/v/@fedify/fedify?logo=npm
 [GitHub Actions]: https://github.com/dahlia/fedify/actions/workflows/build.yaml
@@ -79,7 +79,7 @@ Installation
 
 Fedify is available on [JSR] for [Deno] and on [npm] for [Node.js] and [Bun].
 Although Fedify can be used in Node.js and Bun, it's primarily designed for
-Deno.  We recommend using Deno for the best experience, but you can use Node.js 
+Deno.  We recommend using Deno for the best experience, but you can use Node.js
 or Bun if you prefer.
 
 > [!TIP]

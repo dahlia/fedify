@@ -108,7 +108,7 @@ export default defineConfig({
         rel: "icon",
         type: "image/png",
         sizes: "192x192",
-        href: "/assets/favicon-192x192.png",
+        href: "/favicon-192x192.png",
       },
     ],
     [
@@ -117,7 +117,7 @@ export default defineConfig({
         rel: "icon",
         type: "image/png",
         sizes: "32x32",
-        href: "/assets/favicon-32x32.png",
+        href: "/favicon-32x32.png",
       },
     ],
     ...plausibleScript
