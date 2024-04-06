@@ -52,6 +52,8 @@ export default defineConfig({
     logo: "/logo.svg",
     nav: [
       { text: "Home", link: "/" },
+      { text: "Installation", link: "/install.md" },
+      { text: "Tutorial", link: "/tutorial.md" },
       { text: "Manual", link: "/manual.md", activeMatch: "/manual" },
       { text: "API reference", link: "https://jsr.io/@fedify/fedify" },
       ...extraNav
@@ -59,6 +61,7 @@ export default defineConfig({
 
     sidebar: [
       { text: "What is Fedify?", link: "/intro.md" },
+      { text: "Quick demo", link: "https://dash.deno.com/playground/fedify-demo" },
       { text: "Installation", link: "/install.md" },
       { text: "Tutorial", link: "/tutorial.md" },
       {
