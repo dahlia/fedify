@@ -674,6 +674,7 @@ export class Federation<TContextData> {
    * @param recipients The recipients of the activity.
    * @param activity The activity to send.
    * @param options Options for sending the activity.
+   * @throws {TypeError} If the activity to send does not have an actor.
    */
   async sendActivity(
     { keyId, privateKey }: { keyId: URL; privateKey: CryptoKey },
@@ -681,6 +682,11 @@ export class Federation<TContextData> {
     activity: Activity,
     { preferSharedInbox, immediate }: SendActivityOptions = {},
   ): Promise<void> {
+    if (activity.actorId == null) {
+      throw new TypeError(
+        "The activity to send must have at least one actor property.",
+      );
+    }
     if (activity.id == null) {
       activity = activity.clone({
         id: new URL(`urn:uuid:${crypto.randomUUID()}`),

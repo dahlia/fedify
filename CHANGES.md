@@ -31,6 +31,9 @@ To be released.
      -  Added `federation()` function.
      -  Added `ContextDataFactory` type.
 
+ -  `Context.sendActivity()` method now throws `TypeError` instead of silently
+    failing when the given `Activity` object lacks the actor property.
+
 [Hono]: https://hono.dev/
 [#25]: https://github.com/dahlia/fedify/issues/25
 [#27]: https://github.com/dahlia/fedify/issues/27

@@ -121,7 +121,18 @@ Deno.test("Federation.createContext()", async (t) => {
       documentUrl: "https://example.com/object",
       document: true,
     });
-    await ctx.sendActivity({ handle: "handle" }, [], new Create({}));
+    assertRejects(
+      () => ctx.sendActivity({ handle: "handle" }, [], new Create({})),
+      TypeError,
+      "The activity to send must have at least one actor property.",
+    );
+    await ctx.sendActivity(
+      { handle: "handle" },
+      [],
+      new Create({
+        actor: new URL("https://example.com/users/handle"),
+      }),
+    );
 
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
     assertEquals(ctx.getInboxUri(), new URL("https://example.com/inbox"));
