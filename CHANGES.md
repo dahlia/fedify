@@ -34,6 +34,9 @@ To be released.
  -  `Context.sendActivity()` method now throws `TypeError` instead of silently
     failing when the given `Activity` object lacks the actor property.
 
+ -  `Context.sendActivity()` method now uses an authenticated document
+    loader under the hood.
+
  -  Added outbox error handler to `Federation`.
 
      -  Added `onOutboxError` option to `new Federation()` constructor.

@@ -198,15 +198,20 @@ export class Federation<TContextData> {
   async #listenQueue(message: OutboxMessage): Promise<void> {
     let activity: Activity | null = null;
     try {
+      const keyId = new URL(message.keyId);
+      const privateKey = await importJwk(message.privateKey, "private");
+      const documentLoader = this.#authenticatedDocumentLoaderFactory(
+        { keyId, privateKey },
+      );
       activity = await Activity.fromJsonLd(message.activity, {
-        documentLoader: this.#documentLoader,
+        documentLoader,
       });
       await sendActivity({
-        keyId: new URL(message.keyId),
-        privateKey: await importJwk(message.privateKey, "private"),
+        keyId,
+        privateKey,
         activity,
         inbox: new URL(message.inbox),
-        documentLoader: this.#documentLoader,
+        documentLoader,
       });
     } catch (e) {
       try {
@@ -721,6 +726,9 @@ export class Federation<TContextData> {
       preferSharedInbox,
     });
     if (immediate || this.#queue == null) {
+      const documentLoader = this.#authenticatedDocumentLoaderFactory(
+        { keyId, privateKey },
+      );
       const promises: Promise<void>[] = [];
       for (const inbox of inboxes) {
         promises.push(
@@ -729,7 +737,7 @@ export class Federation<TContextData> {
             privateKey,
             activity,
             inbox,
-            documentLoader: this.#documentLoader,
+            documentLoader,
           }),
         );
       }
