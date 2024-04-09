@@ -6,7 +6,11 @@ hero:
   text: ActivityPub server framework
   tagline: >-
     A TypeScript library for building federated server apps
-    powered by ActivityPub and other standards, so-called fediverse
+    powered by <a style="border-bottom: 2px solid;"
+    href="https://activitypub.rocks/">ActivityPub</a> and other standards,
+    so-called <a style="border-bottom: 2px solid;"
+    href="https://www.theverge.com/24063290/fediverse-explained-activitypub-social-media-open-protocol"
+    >fediverse</a>
   image: /logo.png
   actions:
   - theme: brand
