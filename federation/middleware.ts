@@ -85,8 +85,9 @@ export interface FederationParameters {
 
   /**
    * A callback that handles errors during outbox processing.  Note that this
-   * callback can be called multiple times for the same error, because failed
-   * deliveries are retried.
+   * callback can be called multiple times for the same activity, because
+   * the delivery is retried according to the backoff schedule until it
+   * succeeds or reaches the maximum retry count.
    *
    * If any errors are thrown in this callback, they are ignored.
    *

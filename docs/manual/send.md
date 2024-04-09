@@ -166,3 +166,33 @@ async function sendNote(
 > the personal inbox delivery.
 
 [shared inbox delivery]: https://www.w3.org/TR/activitypub/#shared-inbox-delivery
+
+
+Error handling
+--------------
+
+Since an outgoing activity is not immediately processed, but enqueued to the
+queue, the `~Context.sendActivity()` method does not throw an error even if
+the delivery fails.  Instead, the delivery failure is reported to the queue
+and retried later.
+
+If you want to handle the delivery failure, you can register an error handler
+to the queue:
+
+~~~~ typescript{6-9}
+import { Federation, InProcessMessageQueue } from "@fedify/fedify";
+
+const federation = new Federation({
+  // Omitted for brevity; see the related section for details.
+  queue: new InProcessMessageQueue(),
+  onOutboxError: (error, activity) => {
+    console.error("Failed to deliver an activity:", error);
+    console.error("Activity:", activity);
+  },
+});
+~~~~
+
+> [!NOTE]
+> The `onOutboxError` callback can be called multiple times for the same
+> activity, because the delivery is retried according to the backoff schedule
+> until it succeeds or reaches the maximum retry count.
