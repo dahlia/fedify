@@ -85,3 +85,16 @@ export type InboxErrorHandler<TContextData> = (
   context: RequestContext<TContextData>,
   error: Error,
 ) => void | Promise<void>;
+
+/**
+ * A callback that handles errors during outbox processing.
+ *
+ * @param error The error that occurred.
+ * @param activity The activity that caused the error.  If it is `null`, the
+ *                 error occurred during deserializing the activity.
+ * @since 0.6.0
+ */
+export type OutboxErrorHandler = (
+  error: Error,
+  activity: Activity | null,
+) => void | Promise<void>;

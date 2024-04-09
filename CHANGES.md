@@ -34,6 +34,11 @@ To be released.
  -  `Context.sendActivity()` method now throws `TypeError` instead of silently
     failing when the given `Activity` object lacks the actor property.
 
+ -  Added outbox error handler to `Federation`.
+
+     -  Added `onOutboxError` option to `new Federation()` constructor.
+     -  Added `OutboxErrorHandler` type.
+
 [Hono]: https://hono.dev/
 [#25]: https://github.com/dahlia/fedify/issues/25
 [#27]: https://github.com/dahlia/fedify/issues/27

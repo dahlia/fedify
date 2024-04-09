@@ -20,6 +20,7 @@ import type {
   InboxErrorHandler,
   InboxListener,
   NodeInfoDispatcher,
+  OutboxErrorHandler,
 } from "./callback.ts";
 import type {
   Context,
@@ -82,6 +83,17 @@ export interface FederationParameters {
    */
   treatHttps?: boolean;
 
+  /**
+   * A callback that handles errors during outbox processing.  Note that this
+   * callback can be called multiple times for the same error, because failed
+   * deliveries are retried.
+   *
+   * If any errors are thrown in this callback, they are ignored.
+   *
+   * @since 0.6.0
+   */
+  onOutboxError?: OutboxErrorHandler;
+
   // TODO: The following option should be removed, and exponential backoff
   // should be used instead:
   backoffSchedule?: Temporal.Duration[];
@@ -129,6 +141,7 @@ export class Federation<TContextData> {
   #documentLoader: DocumentLoader;
   #authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   #treatHttps: boolean;
+  #onOutboxError?: OutboxErrorHandler;
   #backoffSchedule: Temporal.Duration[];
 
   /**
@@ -143,6 +156,7 @@ export class Federation<TContextData> {
       documentLoader,
       authenticatedDocumentLoaderFactory,
       treatHttps,
+      onOutboxError,
       backoffSchedule,
     }: FederationParameters,
   ) {
@@ -167,6 +181,7 @@ export class Federation<TContextData> {
     this.#authenticatedDocumentLoaderFactory =
       authenticatedDocumentLoaderFactory ??
         getAuthenticatedDocumentLoader;
+    this.#onOutboxError = onOutboxError;
     this.#treatHttps = treatHttps ?? false;
     this.#backoffSchedule = backoffSchedule ?? [
       3_000,
@@ -180,17 +195,24 @@ export class Federation<TContextData> {
   }
 
   async #listenQueue(message: OutboxMessage): Promise<void> {
+    let activity: Activity | null = null;
     try {
+      activity = await Activity.fromJsonLd(message.activity, {
+        documentLoader: this.#documentLoader,
+      });
       await sendActivity({
         keyId: new URL(message.keyId),
         privateKey: await importJwk(message.privateKey, "private"),
-        activity: await Activity.fromJsonLd(message.activity, {
-          documentLoader: this.#documentLoader,
-        }),
+        activity,
         inbox: new URL(message.inbox),
         documentLoader: this.#documentLoader,
       });
-    } catch (_) {
+    } catch (e) {
+      try {
+        this.#onOutboxError?.(e, activity);
+      } catch (_) {
+        // Ignore errors in the error handler.
+      }
       if (message.trial < this.#backoffSchedule.length) {
         this.#queue?.enqueue({
           ...message,
