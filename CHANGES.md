@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.6.0
 -------------
 
-To be released.
+Released on April 9, 2024.
 
  -  `DocumentLoader` is now propagated to the loaded remote objects from
     Activity Vocabulary objects.  [[#27]]
