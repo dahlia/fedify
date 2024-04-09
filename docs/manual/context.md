@@ -116,6 +116,9 @@ federation
   });
 ~~~~
 
+For more information about this topic, see the [*Sending activities*
+section](./send.md).
+
 > [!NOTE]
 > The `~Context.sendActivity()` method works only if the [key pair dispatcher]
 > is registered to the `Federation` object.  If the key pair dispatcher is not

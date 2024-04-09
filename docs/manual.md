@@ -23,6 +23,7 @@ framework.
  -  [Vocabulary](./manual/vocab.md)
  -  [Actor dispatcher](./manual/actor.md)
  -  [Inbox listeners](./manual/inbox.md)
+ -  [Send activities](./manual/send.md)
  -  [Collections](./manual/collections.md)
  -  [NodeInfo](./manual/nodeinfo.md)
  -  [Pragmatics](./manual/pragmatics.md)

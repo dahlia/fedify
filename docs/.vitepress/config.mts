@@ -73,6 +73,7 @@ export default defineConfig({
           { text: "Vocabulary", link: "/manual/vocab.md" },
           { text: "Actor dispatcher", link: "/manual/actor.md" },
           { text: "Inbox listeners", link: "/manual/inbox.md" },
+          { text: "Sending activities", link: "/manual/send.md" },
           { text: "Collections", link: "/manual/collections.md" },
           { text: "NodeInfo", link: "/manual/nodeinfo.md" },
           { text: "Pragmatics", link: "/manual/pragmatics.md" },

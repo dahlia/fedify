@@ -7,8 +7,8 @@ prev:
   text: Actor dispatcher
   link: ./actor.md
 next:
-  text: Collections
-  link: ./collections.md
+  text: Sending activities
+  link: ./send.md
 ---
 
 Inbox listeners

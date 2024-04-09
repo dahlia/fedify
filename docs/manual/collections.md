@@ -3,8 +3,8 @@ description: >-
   Fedify provides a generic way to construct and handle collections.
   This section explains how to work with collections in Fedify.
 prev:
-  text: Inbox listeners
-  link: ./inbox.md
+  text: Sending activities
+  link: ./send.md
 next:
   text: NodeInfo
   link: ./nodeinfo.md
