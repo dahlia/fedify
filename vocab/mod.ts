@@ -50,5 +50,6 @@
  * @module
  */
 export * from "./actor.ts";
+export * from "./constants.ts";
 export * from "./lookup.ts";
 export * from "./vocab.ts";

@@ -132,7 +132,7 @@ recipient's personal inbox.  To deliver an activity to the shared inbox,
 you can pass the `preferSharedInbox` option:
 
 ~~~~ typescript
-import { Actor, Context, Create, Note } from "@fedify/fedify";
+import { Actor, Context, Create, Note, PUBLIC_COLLECTION } from "@fedify/fedify";
 
 async function sendNote(
   ctx: Context<void>,
@@ -144,10 +144,10 @@ async function sendNote(
     recipient,
     new Create({
       actor: ctx.getActorUri(senderHandle),
-      to: new URL("https://www.w3.org/ns/activitystreams#Public"),
+      to: PUBLIC_COLLECTION,
       object: new Note({
         attribution: ctx.getActorUri(senderHandle),
-        to: new URL("https://www.w3.org/ns/activitystreams#Public"),
+        to: PUBLIC_COLLECTION,
       }),
     }),
     { preferSharedInbox: true },  // [!code highlight]
@@ -156,9 +156,12 @@ async function sendNote(
 ~~~~
 
 > [!TIP]
-> <https://www.w3.org/ns/activitystreams#Public> is a special IRI that
+> `PUBLIC_COLLECTION` constant contains a `URL` object of
+> <https://www.w3.org/ns/activitystreams#Public>, a special IRI that
 > represents the public audience.  By setting the `to` property to this IRI,
-> the activity is visible to everyone.
+> the activity is visible to everyone.  See also the [*Public Addressing*
+> section](https://www.w3.org/TR/activitypub/#public-addressing) in the
+> ActivityPub specification.
 
 > [!NOTE]
 > To deliver an activity to the shared inbox, the recipient server must support

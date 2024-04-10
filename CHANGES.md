@@ -8,6 +8,10 @@ Version 0.7.0
 
 To be released.
 
+ -  Added `PUBLIC_COLLECTION` constant for [public addressing].
+
+[public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
+
 
 Version 0.6.0
 -------------
