@@ -171,6 +171,8 @@ async function sendNote(
 Error handling
 --------------
 
+*This API is available since Fedify 0.6.0.*
+
 Since an outgoing activity is not immediately processed, but enqueued to the
 queue, the `~Context.sendActivity()` method does not throw an error even if
 the delivery fails.  Instead, the delivery failure is reported to the queue
