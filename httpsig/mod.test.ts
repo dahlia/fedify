@@ -168,6 +168,9 @@ Deno.test("getKeyOwner()", async () => {
     }),
   );
 
+  const owner3 = await getKeyOwner(publicKey1, mockDocumentLoader);
+  assertEquals(owner3, owner2);
+
   const noOwner = await getKeyOwner(
     new URL("https://example.com/key2"),
     mockDocumentLoader,

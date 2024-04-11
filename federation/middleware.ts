@@ -1,6 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
-import { verify } from "../httpsig/mod.ts";
+import { getKeyOwner, verify } from "../httpsig/mod.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
@@ -392,6 +392,7 @@ export class Federation<TContextData> {
     };
     if (request == null) return context;
     let signedKey: CryptographicKey | null | undefined = undefined;
+    let signedKeyOwner: Actor | null | undefined = undefined;
     const reqCtx: RequestContext<TContextData> = {
       ...context,
       request,
@@ -399,6 +400,12 @@ export class Federation<TContextData> {
       async getSignedKey() {
         if (signedKey !== undefined) return signedKey;
         return signedKey = await verify(request, context.documentLoader);
+      },
+      async getSignedKeyOwner() {
+        if (signedKeyOwner !== undefined) return signedKeyOwner;
+        const key = await this.getSignedKey();
+        if (key == null) return signedKeyOwner = null;
+        return signedKeyOwner = await getKeyOwner(key, context.documentLoader);
       },
     };
     return reqCtx;

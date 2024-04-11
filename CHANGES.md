@@ -17,6 +17,7 @@ To be released.
      -  Added `CollectionCallbackSetters.authorize()` method.
      -  Added `AuthorizedPredicate` type.
      -  Added `RequestContext.getSignedKey()` method.
+     -  Added `RequestContext.getSignedKeyOwner()` method.
      -  Added `FederationFetchOptions.onUnauthorized` option for handling
         unauthorized fetches.
      -  Added `getKeyOwner()` function.

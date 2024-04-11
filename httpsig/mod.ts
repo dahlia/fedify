@@ -228,32 +228,38 @@ export async function doesActorOwnKey(
 /**
  * Gets the actor that owns the specified key.  Returns `null` if the key has no known owner.
  *
- * @param keyId The ID of the key to check.
+ * @param keyId The ID of the key to check, or the key itself.
  * @param documentLoader The document loader to use for fetching the key and its owner.
  * @returns The actor that owns the key, or `null` if the key has no known owner.
  * @sicne 0.7.0
  */
 export async function getKeyOwner(
-  keyId: URL,
+  keyId: URL | CryptographicKey,
   documentLoader: DocumentLoader,
 ): Promise<Actor | null> {
-  let keyDoc: unknown;
-  try {
-    const { document } = await documentLoader(keyId.href);
-    keyDoc = document;
-  } catch (_) {
-    return null;
-  }
   let object: ASObject | CryptographicKey;
-  try {
-    object = await ASObject.fromJsonLd(keyDoc, { documentLoader });
-  } catch (e) {
-    if (!(e instanceof TypeError)) throw e;
+  if (keyId instanceof CryptographicKey) {
+    object = keyId;
+    if (object.id == null) return null;
+    keyId = object.id;
+  } else {
+    let keyDoc: unknown;
     try {
-      object = await CryptographicKey.fromJsonLd(keyDoc, { documentLoader });
+      const { document } = await documentLoader(keyId.href);
+      keyDoc = document;
+    } catch (_) {
+      return null;
+    }
+    try {
+      object = await ASObject.fromJsonLd(keyDoc, { documentLoader });
     } catch (e) {
-      if (e instanceof TypeError) return null;
-      throw e;
+      if (!(e instanceof TypeError)) throw e;
+      try {
+        object = await CryptographicKey.fromJsonLd(keyDoc, { documentLoader });
+      } catch (e) {
+        if (e instanceof TypeError) return null;
+        throw e;
+      }
     }
   }
   let owner: Actor | null = null;

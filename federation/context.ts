@@ -155,6 +155,21 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
    * @since 0.7.0
    */
   getSignedKey(): Promise<CryptographicKey | null>;
+
+  /**
+   * Gets the owner of the signed key, if any exists and it is verified.
+   * Otherwise, `null` is returned.
+   *
+   * This can be used for implementing [authorized fetch] (also known as
+   * secure mode) in ActivityPub.
+   *
+   * [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
+   *
+   * @returns The owner of the signed key, or `null` if the key is not verified
+   *          or the owner is not found.
+   * @since 0.7.0
+   */
+  getSignedKeyOwner(): Promise<Actor | null>;
 }
 
 /**

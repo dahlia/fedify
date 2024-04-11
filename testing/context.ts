@@ -56,5 +56,6 @@ export function createRequestContext<TContextData>(
     request: args.request ?? new Request(args.url),
     url: args.url,
     getSignedKey: args.getSignedKey ?? (() => Promise.resolve(null)),
+    getSignedKeyOwner: args.getSignedKeyOwner ?? (() => Promise.resolve(null)),
   };
 }

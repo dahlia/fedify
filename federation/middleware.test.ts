@@ -13,12 +13,18 @@ import {
   getAuthenticatedDocumentLoader,
 } from "../runtime/docloader.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { privateKey2, publicKey2 } from "../testing/keys.ts";
+import {
+  privateKey2,
+  privateKey3,
+  publicKey2,
+  publicKey3,
+} from "../testing/keys.ts";
 import { Create, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
 import { Federation } from "./middleware.ts";
 import { RouterError } from "./router.ts";
+import { lookupObject } from "@fedify/fedify/vocab";
 
 Deno.test("Federation.createContext()", async (t) => {
   const kv = new MemoryKvStore();
@@ -179,8 +185,10 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(ctx.url, new URL("https://example.com/"));
     assertEquals(ctx.data, 123);
     assertEquals(await ctx.getSignedKey(), null);
+    assertEquals(await ctx.getSignedKeyOwner(), null);
     // Multiple calls should return the same result:
     assertEquals(await ctx.getSignedKey(), null);
+    assertEquals(await ctx.getSignedKeyOwner(), null);
 
     const signedReq = await sign(
       new Request("https://example.com/"),
@@ -192,8 +200,29 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(signedCtx.url, new URL("https://example.com/"));
     assertEquals(signedCtx.data, 456);
     assertEquals(await signedCtx.getSignedKey(), publicKey2);
+    assertEquals(await signedCtx.getSignedKeyOwner(), null);
     // Multiple calls should return the same result:
     assertEquals(await signedCtx.getSignedKey(), publicKey2);
+    assertEquals(await signedCtx.getSignedKeyOwner(), null);
+
+    const signedReq2 = await sign(
+      new Request("https://example.com/"),
+      privateKey3,
+      publicKey3.id!,
+    );
+    const signedCtx2 = federation.createContext(signedReq2, 456);
+    assertEquals(signedCtx2.request, signedReq2);
+    assertEquals(signedCtx2.url, new URL("https://example.com/"));
+    assertEquals(signedCtx2.data, 456);
+    assertEquals(await signedCtx2.getSignedKey(), publicKey3);
+    const expectedOwner = await lookupObject(
+      "https://example.com/person2",
+      { documentLoader: mockDocumentLoader },
+    );
+    assertEquals(await signedCtx2.getSignedKeyOwner(), expectedOwner);
+    // Multiple calls should return the same result:
+    assertEquals(await signedCtx2.getSignedKey(), publicKey3);
+    assertEquals(await signedCtx2.getSignedKeyOwner(), expectedOwner);
   });
 
   mf.uninstall();

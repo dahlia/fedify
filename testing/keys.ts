@@ -32,8 +32,8 @@ export const publicKey1 = new CryptographicKey({
 export const privateKey2 = await crypto.subtle.importKey(
   "jwk",
   {
-    "kty": "RSA",
-    "alg": "RS256",
+    kty: "RSA",
+    alg: "RS256",
     // cSpell: disable
     n: "oRmBtnxbdFutoRd1GLGwwGTrsqlRRWUe11hHQaoRLGf5LwQ0tIc6I9q-dynliw-2kxY" +
       "sLn9SH2je6HcTYOolgW7F_cOWXZQN04b-OiYcU1ConAhLjmn4k1uKawJ614y0ScPNd8P" +
@@ -88,6 +88,100 @@ export const publicKey2 = new CryptographicKey({
         "Ph-vX07gqN8IlLT2uye4waw",
       e: "AQAB",
       // cSpell: enable
+      key_ops: ["verify"],
+      ext: true,
+    },
+    { "name": "RSASSA-PKCS1-v1_5", "hash": "SHA-256" },
+    true,
+    ["verify"],
+  ),
+});
+
+export const privateKey3 = await crypto.subtle.importKey(
+  "jwk",
+  {
+    kty: "RSA",
+    alg: "RS256",
+    // cSpell: disable
+    n: "4GUqWgdiYlN3Su5Gr4l6i-xRS8gDDVKZ718vpGk6eIpvqs33q430nRbHIzbHRXRaAhc_" +
+      "1--rUBcK0V4_kjZlCSzVtRgGU6HMkmjcD-uE56a8XbTczfltbEDj7afoEuB2F3UhQEWrS" +
+      "z-QJ29DPXaLMIa1Yv61NR2vxGqNbdtoMjDORMBYtg77CYbcFkiJHw65PDa7-f_yjLxuCR" +
+      "Pye5L7hncN0UZuuFoRJmHNRLSg5omBad9WTvQXmSyXEhEdk9fHwlI022AqAzlWbT79hld" +
+      "cDSKGGLLbQIs1c3JZIG8G5i6Uh5Vy0Z7tSNBcxbhqoI9i9je4f_x_OPIVc19f04BE1LgW" +
+      "uHsftZzRgW9Sdqz53W83XxVdxlyHeywXOnstSWT11f8dkLyQUcHKTH-E6urbH-aiPLiRp" +
+      "YK8W7D9KTQA9kZ5JXaEuveBd5vJX7wakhbzAn8pWJU7GYIHNY38YcokmivkU5pY8S2cKF" +
+      "MwY0b7ade3MComlir5P3ZYSjF-n6gRVsT96P-9mNfCu9gXt_f8XCyjKlH89kGwuJ7HhR8" +
+      "CuVdm0l-jYozVt6GsDy0hHYyn79NCCAEzP7ZbhBMR0T5Vrkl-TIGXoJH9WFiz4VxO-Nng" +
+      "lF6dNQjDS5IzYLoFRXIK1f3cmQiEB4FZmL70l9HLrgwR-Xys83xia79OqFDRezM",
+    e: "AQAB",
+    d: "HJ_LD0Dx4-kRxpUunyXCZCb5F9mjygdHa6mQwkBKHSZLqFYtycyJ76AANxW9xbZZ5Ppi" +
+      "QoFoMQc_cgW7xkL6EHmPqVIvPGvfVK3bpIw-n-49CRcRM5UlyDFe4eoRSJcpeUSPwUsh1" +
+      "q99DAq9YRHGH6KPcNlc9DGdQkj1UZYzbHOdXFfM-SxgCY8SdCU8mKGgL3Yr9HAZ2KoQv0" +
+      "e0Ht9ZBoYZVSDO7uVOWr8PGDySadYQlBjRQbERcZCmlL9qLnnQGZGy_Gj_8vlVdQob_Q8" +
+      "XxvUode4a2djoMJndlK2VC7fVapY910-WpTsvGmmz8FdaIF5rQqhK8lCvO9BmwOwT23Ga" +
+      "DVs0iMpFrVqQ6c0ZwD5Q-c39U8HE3-mlSyyz5kdsa1OdcJ64JSJH7Xl_vwLRgFgO7pPQh" +
+      "Pm1N1XkDUgZOHAE6Hg-PEM3QdXSWnj2_znildsdUagf-1RsWVouVBSDNjUk5MQFPERW4w" +
+      "H2ersndnkvYe7FeU_HfkIi2A9xBr7Ti4O-MPU0sl_HdZ9PXGhzSMpMTB9NSeMpi9gd1ZZ" +
+      "KmAe_t3mj1x6m2qXBv-Z05Gifae82YcaghuqkZ6QCxlpNxwbeZjb0vmMVqsds_qLQ4eg9" +
+      "Ww-R-8AlWm5HGCOrdJk4JnHZ5HzrFtwCj55cuutd6gHAq3Q1cbaKVO8rM_Ve5cE",
+    p: "8P4sJeDvEDJFMxARDuzmztlwdPtGfmHBvtzDFCm5UbL1w8Ga3mSv7uQMDMuc9vBqAq2J" +
+      "d9d4MDwlXtUrk8Q9weuwgGWKLFrsmdgwH6-shNrHzar1Tojf9Fgi-t-Tr_PQwKnyioaKQ" +
+      "htPNCbishGRt0GJuLq5ag0RPPtHXIX8Ch-00ppL1yW3wFpPBBiOV7yPLEhwowa33yPYEl" +
+      "TsASNiDKKtS4c_EyzdRWuJjtMZmEPPWfXvrOQSqXR6KY71tOOuo1S7ZkSZibcf88IILSm" +
+      "aAdzidgkZWlazjBBmNo54KaT6j6x5EMSr6EyafW8tBU-bCLVs__Hap_kSYsQw95l8Fw",
+    q: "7l5l9KqwDE0uBPKlXzpdg6rZ1dDuInnx0QTp_XUj8GRaeVCP1JfLJoa38-lN39AoAGUv" +
+      "ndiHpnXkKKbKizcR5WY-6LAUFkAcXit7NP4fHPDLyiOZvTblZEryCbDS6jJrF5ii7rBXc" +
+      "C8LziZEBce-I7W9CZHUwOXfDAJNeslqDVZ9tlFXezjXZnqiBo3eq0hWQxO7CweZv0qE4G" +
+      "xMjs0E6IndQk8SAXA5RRbyoFzfChOyRtKOf9gxXOhwTKcKqWkjhK3xdpwcmHDpWycRShu" +
+      "r-hazt6yBCUbJ402nIxQRfOwdRIgfRO2K5-O54RzF7UkzHX3zeQdZIuzLeXGgu13fRQ",
+    dp:
+      "qeITTxR0kg9N9sQRslrQDer8OorT082n3ZsULceH6w7j7v4w5StHVnkOAYsbeHxbzs10h" +
+      "bWv9RjBI0vUb1M8UdKK1sg9kiz6cy0SJ5QYYoMzrEkiqh0U-tOSvRUUsEmI0_g5kOts1V" +
+      "MZD2OGFQ8LkIqzwjRm9lqF114vnQqadKyLNJcudVkSYpeG8hU5aqHyr73VISdgQP2smKe" +
+      "iwt6lhNC8puyNS0AqL4CyNKuddFgA-KLFNTSF70y7vUYY8U47UsotXNdpAMrFzHjweJ3G" +
+      "AiAqyBh79dH-ufLpivX9wSWat-NWaLqrkJNHqLrRmtfWK1pxny9n-1c6XcN93V0mOw",
+    dq:
+      "n_-xA_eGT9uGZj_RDQiKOJT3vvOMxIuB60EXJs_4HaXerMuMn7B75hJLa2dQpEh-cTV6L" +
+      "sNm2i8LxNWf4q5GTurAk0ONWBoUcIlTHBDvJWfkAny-9yjf9N_xctvD1vucsqv7waeQKX" +
+      "cKv4cj5ZVbZXDZwJCodApYGyF4jFCh5O4HV9dllwpiWyE5nJihu-rELCYUSKUDaElGw7U" +
+      "t9jRbdRME9ztH5LtFVcC_fzCXbZYm9i7jA6FEEQ7cQjdliq1N8AMprum-r_wqRssEafAF" +
+      "EcsnOsSJoIZpgS9gXsVbr7R1OMj95DBmKpzK6fV8TXfy3XrrcHOkOzMiqRPCRcIO2Q",
+    qi: "LhkzXD7HOowopZpKmEklXoAZlZV-tPqZm9m_0fkh-dXoFaHfIj-eXUr-7Z8yJWx4-nn" +
+      "GITZR28Q10QHvnG5phqhvgUJ2nHixqaphXfYt80nictRfVcRW4bN_oHm-87zK0BS5OjJv" +
+      "LoMYKSREvdz1UqVJxA4jKsYURCIj6KSDJyZsd5ENAQWjxs0jEw73sKPT-J-ePCEz05V-e" +
+      "uBp6RBSePnu3rphrtZ54MNnShyqhoimnymNqx7iXTFBdIP2OKRmzSyKMpwBLU54tctXIO" +
+      "lv_l89gN7V6F8_I0q359M9tdGmmqxjIzAKm9USP7jfcoejXXt3lpSglwKpEfQBfFF9yg",
+    // cSpell: enable
+    key_ops: ["sign"],
+    ext: true,
+  },
+  { name: "RSASSA-PKCS1-v1_5", hash: "SHA-256" },
+  true,
+  ["sign"],
+);
+
+export const publicKey3 = new CryptographicKey({
+  id: new URL("https://example.com/key3"),
+  owner: new URL("https://example.com/person2"),
+  publicKey: await crypto.subtle.importKey(
+    "jwk",
+    {
+      kty: "RSA",
+      alg: "RS256",
+      // cSpell: disable
+      n: "4GUqWgdiYlN3Su5Gr4l6i-xRS8gDDVKZ718vpGk6eIpvqs33q430nRbHIzbHRXRaAh" +
+        "c_1--rUBcK0V4_kjZlCSzVtRgGU6HMkmjcD-uE56a8XbTczfltbEDj7afoEuB2F3UhQ" +
+        "EWrSz-QJ29DPXaLMIa1Yv61NR2vxGqNbdtoMjDORMBYtg77CYbcFkiJHw65PDa7-f_y" +
+        "jLxuCRPye5L7hncN0UZuuFoRJmHNRLSg5omBad9WTvQXmSyXEhEdk9fHwlI022AqAzl" +
+        "WbT79hldcDSKGGLLbQIs1c3JZIG8G5i6Uh5Vy0Z7tSNBcxbhqoI9i9je4f_x_OPIVc1" +
+        "9f04BE1LgWuHsftZzRgW9Sdqz53W83XxVdxlyHeywXOnstSWT11f8dkLyQUcHKTH-E6" +
+        "urbH-aiPLiRpYK8W7D9KTQA9kZ5JXaEuveBd5vJX7wakhbzAn8pWJU7GYIHNY38Ycok" +
+        "mivkU5pY8S2cKFMwY0b7ade3MComlir5P3ZYSjF-n6gRVsT96P-9mNfCu9gXt_f8XCy" +
+        "jKlH89kGwuJ7HhR8CuVdm0l-jYozVt6GsDy0hHYyn79NCCAEzP7ZbhBMR0T5Vrkl-TI" +
+        "GXoJH9WFiz4VxO-NnglF6dNQjDS5IzYLoFRXIK1f3cmQiEB4FZmL70l9HLrgwR-Xys8" +
+        "3xia79OqFDRezM",
+      // cSpell: enable
+      e: "AQAB",
       key_ops: ["verify"],
       ext: true,
     },
