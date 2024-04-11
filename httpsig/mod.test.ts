@@ -1,8 +1,9 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { assert, assertEquals, assertFalse } from "@std/assert";
-import { doesActorOwnKey, sign, verify } from "../mod.ts";
+import { doesActorOwnKey, getKeyOwner, sign, verify } from "../mod.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2, publicKey1, publicKey2 } from "../testing/keys.ts";
+import { lookupObject } from "../vocab/lookup.ts";
 import { Create } from "../vocab/vocab.ts";
 
 Deno.test("sign()", async () => {
@@ -142,4 +143,40 @@ Deno.test("doesActorOwnKey()", async () => {
   });
   assertFalse(await doesActorOwnKey(activity2, publicKey1, mockDocumentLoader));
   assertFalse(await doesActorOwnKey(activity2, publicKey2, mockDocumentLoader));
+});
+
+Deno.test("getKeyOwner()", async () => {
+  const owner = await getKeyOwner(
+    new URL("https://example.com/users/handle#main-key"),
+    mockDocumentLoader,
+  );
+  assertEquals(
+    owner,
+    await lookupObject("https://example.com/users/handle", {
+      documentLoader: mockDocumentLoader,
+    }),
+  );
+
+  const owner2 = await getKeyOwner(
+    new URL("https://example.com/key"),
+    mockDocumentLoader,
+  );
+  assertEquals(
+    owner2,
+    await lookupObject("https://example.com/person", {
+      documentLoader: mockDocumentLoader,
+    }),
+  );
+
+  const noOwner = await getKeyOwner(
+    new URL("https://example.com/key2"),
+    mockDocumentLoader,
+  );
+  assertEquals(noOwner, null);
+
+  const noOwner2 = await getKeyOwner(
+    new URL("https://example.com/object"),
+    mockDocumentLoader,
+  );
+  assertEquals(noOwner2, null);
 });

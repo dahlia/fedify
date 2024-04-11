@@ -8,7 +8,7 @@ import { Temporal } from "@js-temporal/polyfill";
 import { equals } from "@std/bytes";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import type { DocumentLoader } from "../runtime/docloader.ts";
-import { isActor } from "../vocab/actor.ts";
+import { type Actor, isActor } from "../vocab/actor.ts";
 import {
   type Activity,
   CryptographicKey,
@@ -223,4 +223,51 @@ export async function doesActorOwnKey(
     if (key.id != null && publicKeyId.href === key.id.href) return true;
   }
   return false;
+}
+
+/**
+ * Gets the actor that owns the specified key.  Returns `null` if the key has no known owner.
+ *
+ * @param keyId The ID of the key to check.
+ * @param documentLoader The document loader to use for fetching the key and its owner.
+ * @returns The actor that owns the key, or `null` if the key has no known owner.
+ * @sicne 0.7.0
+ */
+export async function getKeyOwner(
+  keyId: URL,
+  documentLoader: DocumentLoader,
+): Promise<Actor | null> {
+  let keyDoc: unknown;
+  try {
+    const { document } = await documentLoader(keyId.href);
+    keyDoc = document;
+  } catch (_) {
+    return null;
+  }
+  let object: ASObject | CryptographicKey;
+  try {
+    object = await ASObject.fromJsonLd(keyDoc, { documentLoader });
+  } catch (e) {
+    if (!(e instanceof TypeError)) throw e;
+    try {
+      object = await CryptographicKey.fromJsonLd(keyDoc, { documentLoader });
+    } catch (e) {
+      if (e instanceof TypeError) return null;
+      throw e;
+    }
+  }
+  let owner: Actor | null = null;
+  if (object instanceof CryptographicKey) {
+    if (object.ownerId == null) return null;
+    owner = await object.getOwner({ documentLoader });
+  } else if (isActor(object)) {
+    owner = object;
+  } else {
+    return null;
+  }
+  if (owner == null) return null;
+  for (const kid of owner.publicKeyIds) {
+    if (kid.href === keyId.href) return owner;
+  }
+  return null;
 }

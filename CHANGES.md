@@ -19,6 +19,7 @@ To be released.
      -  Added `RequestContext.getSignedKey()` method.
      -  Added `FederationFetchOptions.onUnauthorized` option for handling
         unauthorized fetches.
+     -  Added `getKeyOwner()` function.
 
  -  The default implementation of `FederationFetchOptions.onNotAcceptable`
     option now responds with `Vary: Accept, Signature` header.
