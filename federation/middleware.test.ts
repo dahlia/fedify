@@ -179,6 +179,8 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(ctx.url, new URL("https://example.com/"));
     assertEquals(ctx.data, 123);
     assertEquals(await ctx.getSignedKey(), null);
+    // Multiple calls should return the same result:
+    assertEquals(await ctx.getSignedKey(), null);
 
     const signedReq = await sign(
       new Request("https://example.com/"),
@@ -189,6 +191,8 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(signedCtx.request, signedReq);
     assertEquals(signedCtx.url, new URL("https://example.com/"));
     assertEquals(signedCtx.data, 456);
+    assertEquals(await signedCtx.getSignedKey(), publicKey2);
+    // Multiple calls should return the same result:
     assertEquals(await signedCtx.getSignedKey(), publicKey2);
   });
 

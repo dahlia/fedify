@@ -390,12 +390,14 @@ export class Federation<TContextData> {
       },
     };
     if (request == null) return context;
+    let signedKey: CryptographicKey | null | undefined = undefined;
     const reqCtx: RequestContext<TContextData> = {
       ...context,
       request,
       url,
-      getSignedKey() {
-        return verify(request, context.documentLoader);
+      async getSignedKey() {
+        if (signedKey !== undefined) return signedKey;
+        return signedKey = await verify(request, context.documentLoader);
       },
     };
     return reqCtx;
