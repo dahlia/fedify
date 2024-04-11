@@ -141,6 +141,20 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
    * The URL of the request.
    */
   readonly url: URL;
+
+  /**
+   * Gets the public key of the sender, if any exists and it is verified.
+   * Otherwise, `null` is returned.
+   *
+   * This can be used for implementing [authorized fetch] (also known as
+   * secure mode) in ActivityPub.
+   *
+   * [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
+   *
+   * @returns The public key of the sender, or `null` if the sender is not verified.
+   * @since 0.7.0
+   */
+  getSignedKey(): Promise<CryptographicKey | null>;
 }
 
 /**

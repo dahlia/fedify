@@ -1,4 +1,3 @@
-import { sign } from "@fedify/fedify";
 import { Temporal } from "@js-temporal/polyfill";
 import {
   assertEquals,
@@ -8,7 +7,7 @@ import {
 } from "@std/assert";
 import { dirname, join } from "@std/path";
 import * as mf from "mock_fetch";
-import { verify } from "../httpsig/mod.ts";
+import { sign, verify } from "../httpsig/mod.ts";
 import {
   FetchError,
   getAuthenticatedDocumentLoader,
@@ -169,14 +168,31 @@ Deno.test("Federation.createContext()", async (t) => {
     );
   });
 
-  await t.step("RequestContext", () => {
-    const federation = new Federation<number>({ kv, documentLoader });
+  await t.step("RequestContext", async () => {
+    const federation = new Federation<number>({
+      kv,
+      documentLoader: mockDocumentLoader,
+    });
     const req = new Request("https://example.com/");
     const ctx = federation.createContext(req, 123);
     assertEquals(ctx.request, req);
     assertEquals(ctx.url, new URL("https://example.com/"));
     assertEquals(ctx.data, 123);
+    assertEquals(await ctx.getSignedKey(), null);
+
+    const signedReq = await sign(
+      new Request("https://example.com/"),
+      privateKey2,
+      publicKey2.id!,
+    );
+    const signedCtx = federation.createContext(signedReq, 456);
+    assertEquals(signedCtx.request, signedReq);
+    assertEquals(signedCtx.url, new URL("https://example.com/"));
+    assertEquals(signedCtx.data, 456);
+    assertEquals(await signedCtx.getSignedKey(), publicKey2);
   });
+
+  mf.uninstall();
 });
 
 Deno.test("Federation.setInboxListeners()", async (t) => {

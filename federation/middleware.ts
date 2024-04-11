@@ -1,5 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
+import { verify } from "../httpsig/mod.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
@@ -393,6 +394,9 @@ export class Federation<TContextData> {
       ...context,
       request,
       url,
+      getSignedKey() {
+        return verify(request, context.documentLoader);
+      },
     };
     return reqCtx;
   }

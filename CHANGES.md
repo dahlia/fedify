@@ -10,7 +10,11 @@ To be released.
 
  -  Added `PUBLIC_COLLECTION` constant for [public addressing].
 
+ -  Added `RequestContext.getSignedKey()` method for [authorized fetch]
+    (also known as secure mode).
+
 [public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
+[authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
 
 
 Version 0.6.0
