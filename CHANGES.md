@@ -10,8 +10,18 @@ To be released.
 
  -  Added `PUBLIC_COLLECTION` constant for [public addressing].
 
- -  Added `RequestContext.getSignedKey()` method for [authorized fetch]
-    (also known as secure mode).
+ -  `Federation` now supports [authorized fetch] for actor dispatcher and
+    collection dispatchers.
+
+     -  Added `ActorCallbackSetters.authorize()` method.
+     -  Added `CollectionCallbackSetters.authorize()` method.
+     -  Added `AuthorizedPredicate` type.
+     -  Added `RequestContext.getSignedKey()` method.
+     -  Added `FederationFetchOptions.onUnauthorized` option for handling
+        unauthorized fetches.
+
+ -  The default implementation of `FederationFetchOptions.onNotAcceptable`
+    option now responds with `Vary: Accept, Signature` header.
 
 [public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
 [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch

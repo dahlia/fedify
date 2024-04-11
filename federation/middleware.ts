@@ -15,6 +15,7 @@ import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
   ActorDispatcher,
   ActorKeyPairDispatcher,
+  AuthorizePredicate,
   CollectionCounter,
   CollectionCursor,
   CollectionDispatcher,
@@ -470,10 +471,12 @@ export class Federation<TContextData> {
     const callbacks: ActorCallbacks<TContextData> = { dispatcher };
     this.#actorCallbacks = callbacks;
     const setters: ActorCallbackSetters<TContextData> = {
-      setKeyPairDispatcher: (
-        dispatcher: ActorKeyPairDispatcher<TContextData>,
-      ) => {
+      setKeyPairDispatcher(dispatcher: ActorKeyPairDispatcher<TContextData>) {
         callbacks.keyPairDispatcher = dispatcher;
+        return setters;
+      },
+      authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
         return setters;
       },
     };
@@ -533,6 +536,10 @@ export class Federation<TContextData> {
         callbacks.lastCursor = cursor;
         return setters;
       },
+      authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
+        return setters;
+      },
     };
     return setters;
   }
@@ -578,6 +585,10 @@ export class Federation<TContextData> {
         callbacks.lastCursor = cursor;
         return setters;
       },
+      authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
+        return setters;
+      },
     };
     return setters;
   }
@@ -621,6 +632,10 @@ export class Federation<TContextData> {
       },
       setLastCursor(cursor: CollectionCursor<TContextData>) {
         callbacks.lastCursor = cursor;
+        return setters;
+      },
+      authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
         return setters;
       },
     };
@@ -801,11 +816,13 @@ export class Federation<TContextData> {
     {
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
       contextData,
     }: FederationFetchOptions<TContextData>,
   ): Promise<Response> {
     onNotFound ??= notFound;
     onNotAcceptable ??= notAcceptable;
+    onUnauthorized ??= unauthorized;
     const url = new URL(request.url);
     const route = this.#router.route(url.pathname);
     if (route == null) {
@@ -832,6 +849,8 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
+          authorizePredicate: this.#actorCallbacks?.authorizePredicate,
+          onUnauthorized,
           onNotFound,
           onNotAcceptable,
         });
@@ -840,6 +859,7 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           collectionCallbacks: this.#outboxCallbacks,
+          onUnauthorized,
           onNotFound,
           onNotAcceptable,
         });
@@ -867,6 +887,7 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           collectionCallbacks: this.#followingCallbacks,
+          onUnauthorized,
           onNotFound,
           onNotAcceptable,
         });
@@ -875,6 +896,7 @@ export class Federation<TContextData> {
           handle: route.values.handle,
           context,
           collectionCallbacks: this.#followersCallbacks,
+          onUnauthorized,
           onNotFound,
           onNotAcceptable,
         });
@@ -913,11 +935,21 @@ export interface FederationFetchOptions<TContextData> {
    * @returns The response to the request.
    */
   onNotAcceptable?: (request: Request) => Response | Promise<Response>;
+
+  /**
+   * A callback to handle a request when the request is unauthorized.
+   * If not provided, a 401 response is returned.
+   * @param request The request object.
+   * @returns The response to the request.
+   * @since 0.7.0
+   */
+  onUnauthorized?: (request: Request) => Response | Promise<Response>;
 }
 
 interface ActorCallbacks<TContextData> {
   dispatcher?: ActorDispatcher<TContextData>;
   keyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
+  authorizePredicate?: AuthorizePredicate<TContextData>;
 }
 
 /**
@@ -942,22 +974,57 @@ export interface ActorCallbackSetters<TContextData> {
   setKeyPairDispatcher(
     dispatcher: ActorKeyPairDispatcher<TContextData>,
   ): ActorCallbackSetters<TContextData>;
+
+  /**
+   * Specifies the conditions under which requests are authorized.
+   * @param predicate A callback that returns whether a request is authorized.
+   * @returns The setters object so that settings can be chained.
+   * @since 0.7.0
+   */
+  authorize(
+    predicate: AuthorizePredicate<TContextData>,
+  ): ActorCallbackSetters<TContextData>;
 }
 
 /**
  * Additional settings for a collection dispatcher.
  */
 export interface CollectionCallbackSetters<TContextData> {
+  /**
+   * Sets the counter for the collection.
+   * @param counter A callback that returns the number of items in the collection.
+   * @returns The setters object so that settings can be chained.
+   */
   setCounter(
     counter: CollectionCounter<TContextData>,
   ): CollectionCallbackSetters<TContextData>;
 
+  /**
+   * Sets the first cursor for the collection.
+   * @param cursor The cursor for the first item in the collection.
+   * @returns The setters object so that settings can be chained.
+   */
   setFirstCursor(
     cursor: CollectionCursor<TContextData>,
   ): CollectionCallbackSetters<TContextData>;
 
+  /**
+   * Sets the last cursor for the collection.
+   * @param cursor The cursor for the last item in the collection.
+   * @returns The setters object so that settings can be chained.
+   */
   setLastCursor(
     cursor: CollectionCursor<TContextData>,
+  ): CollectionCallbackSetters<TContextData>;
+
+  /**
+   * Specifies the conditions under which requests are authorized.
+   * @param predicate A callback that returns whether a request is authorized.
+   * @returns The setters object so that settings can be chained.
+   * @since 0.7.0
+   */
+  authorize(
+    predicate: AuthorizePredicate<TContextData>,
   ): CollectionCallbackSetters<TContextData>;
 }
 
@@ -995,5 +1062,19 @@ function notFound(_request: Request): Response {
 }
 
 function notAcceptable(_request: Request): Response {
-  return new Response("Not Acceptable", { status: 406 });
+  return new Response("Not Acceptable", {
+    status: 406,
+    headers: {
+      Vary: "Accept, Signature",
+    },
+  });
+}
+
+function unauthorized(_request: Request): Response {
+  return new Response("Unauthorized", {
+    status: 401,
+    headers: {
+      Vary: "Accept, Signature",
+    },
+  });
 }

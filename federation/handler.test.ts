@@ -1,6 +1,7 @@
 import { assert, assertEquals, assertFalse } from "@std/assert";
 import { createRequestContext } from "../testing/context.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
+import { publicKey2 } from "../testing/keys.ts";
 import { type Activity, Create, Note, Person } from "../vocab/vocab.ts";
 import type {
   ActorDispatcher,
@@ -71,6 +72,11 @@ Deno.test("handleActor()", async () => {
     onNotAcceptableCalled = request;
     return new Response("Not acceptable", { status: 406 });
   };
+  let onUnauthorizedCalled: Request | null = null;
+  const onUnauthorized = (request: Request) => {
+    onUnauthorizedCalled = request;
+    return new Response("Unauthorized", { status: 401 });
+  };
   let response = await handleActor(
     context.request,
     {
@@ -78,11 +84,13 @@ Deno.test("handleActor()", async () => {
       handle: "someone",
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 404);
   assertEquals(onNotFoundCalled, context.request);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   onNotFoundCalled = null;
   response = await handleActor(
@@ -93,11 +101,13 @@ Deno.test("handleActor()", async () => {
       actorDispatcher,
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 406);
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, context.request);
+  assertEquals(onUnauthorizedCalled, null);
 
   onNotAcceptableCalled = null;
   response = await handleActor(
@@ -108,11 +118,13 @@ Deno.test("handleActor()", async () => {
       actorDispatcher,
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 404);
   assertEquals(onNotFoundCalled, context.request);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   onNotFoundCalled = null;
   context = createRequestContext<void>({
@@ -131,6 +143,7 @@ Deno.test("handleActor()", async () => {
       actorDispatcher,
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 200);
@@ -160,6 +173,7 @@ Deno.test("handleActor()", async () => {
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   response = await handleActor(
     context.request,
@@ -169,11 +183,85 @@ Deno.test("handleActor()", async () => {
       actorDispatcher,
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 404);
   assertEquals(onNotFoundCalled, context.request);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+
+  onNotFoundCalled = null;
+  context = createRequestContext<void>({
+    ...context,
+    request: new Request(context.url, {
+      headers: {
+        Accept: "application/activity+json",
+      },
+    }),
+  });
+  response = await handleActor(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      actorDispatcher,
+      authorizePredicate: (_ctx, _handle, signedKey) => signedKey != null,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 401);
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, context.request);
+
+  onUnauthorizedCalled = null;
+  context = createRequestContext<void>({
+    ...context,
+    getSignedKey: () => Promise.resolve(publicKey2),
+  });
+  response = await handleActor(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      actorDispatcher,
+      authorizePredicate: (_ctx, _handle, signedKey) => signedKey != null,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/v1",
+      {
+        manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
+        discoverable: "toot:discoverable",
+        indexable: "toot:indexable",
+        memorial: "toot:memorial",
+        suspended: "toot:suspended",
+        toot: "http://joinmastodon.org/ns#",
+        schema: "http://schema.org#",
+        PropertyValue: "schema:PropertyValue",
+        value: "schema:value",
+      },
+    ],
+    id: "https://example.com/users/someone",
+    type: "Person",
+    name: "Someone",
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 });
 
 Deno.test("handleCollection()", async () => {
@@ -221,6 +309,11 @@ Deno.test("handleCollection()", async () => {
     onNotAcceptableCalled = request;
     return new Response("Not acceptable", { status: 406 });
   };
+  let onUnauthorizedCalled: Request | null = null;
+  const onUnauthorized = (request: Request) => {
+    onUnauthorizedCalled = request;
+    return new Response("Unauthorized", { status: 401 });
+  };
   let response = await handleCollection(
     context.request,
     {
@@ -228,11 +321,13 @@ Deno.test("handleCollection()", async () => {
       handle: "someone",
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 404);
   assertEquals(onNotFoundCalled, context.request);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   onNotFoundCalled = null;
   response = await handleCollection(
@@ -243,11 +338,13 @@ Deno.test("handleCollection()", async () => {
       collectionCallbacks: { dispatcher },
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 406);
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, context.request);
+  assertEquals(onUnauthorizedCalled, null);
 
   onNotAcceptableCalled = null;
   response = await handleCollection(
@@ -258,11 +355,13 @@ Deno.test("handleCollection()", async () => {
       collectionCallbacks: { dispatcher },
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 404);
   assertEquals(onNotFoundCalled, context.request);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   onNotFoundCalled = null;
   context = createRequestContext<void>({
@@ -281,11 +380,13 @@ Deno.test("handleCollection()", async () => {
       collectionCallbacks: { dispatcher },
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 404);
   assertEquals(onNotFoundCalled, context.request);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   onNotFoundCalled = null;
   response = await handleCollection(
@@ -296,6 +397,7 @@ Deno.test("handleCollection()", async () => {
       collectionCallbacks: { dispatcher },
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 200);
@@ -314,6 +416,63 @@ Deno.test("handleCollection()", async () => {
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      collectionCallbacks: {
+        dispatcher,
+        authorizePredicate: (_ctx, _handle, key) => key != null,
+      },
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 401);
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, context.request);
+
+  onUnauthorizedCalled = null;
+  context = createRequestContext<void>({
+    ...context,
+    getSignedKey: () => Promise.resolve(publicKey2),
+  });
+  response = await handleCollection(
+    context.request,
+    {
+      context,
+      handle: "someone",
+      collectionCallbacks: {
+        dispatcher,
+        authorizePredicate: (_ctx, _handle, key) => key != null,
+      },
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "OrderedCollection",
+    items: [
+      { type: "Create", id: "https://example.com/activities/1" },
+      { type: "Create", id: "https://example.com/activities/2" },
+      { type: "Create", id: "https://example.com/activities/3" },
+    ],
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   response = await handleCollection(
     context.request,
@@ -328,6 +487,7 @@ Deno.test("handleCollection()", async () => {
       },
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 200);
@@ -344,6 +504,7 @@ Deno.test("handleCollection()", async () => {
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   let url = new URL("https://example.com/?cursor=0");
   context = createRequestContext({
@@ -368,6 +529,7 @@ Deno.test("handleCollection()", async () => {
       },
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 200);
@@ -387,6 +549,7 @@ Deno.test("handleCollection()", async () => {
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 
   url = new URL("https://example.com/?cursor=2");
   context = createRequestContext({
@@ -411,6 +574,7 @@ Deno.test("handleCollection()", async () => {
       },
       onNotFound,
       onNotAcceptable,
+      onUnauthorized,
     },
   );
   assertEquals(response.status, 200);
@@ -430,6 +594,7 @@ Deno.test("handleCollection()", async () => {
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
 });
 
 Deno.test("respondWithObject()", async () => {

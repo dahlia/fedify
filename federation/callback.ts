@@ -98,3 +98,20 @@ export type OutboxErrorHandler = (
   error: Error,
   activity: Activity | null,
 ) => void | Promise<void>;
+
+/**
+ * A callback that determines if a request is authorized or not.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @param context The request context.
+ * @param handle The handle of the actor that is being requested.
+ * @param signedKey The key that was used to sign the request, or `null` if
+ *                  the request was not signed or the signature was invalid.
+ * @returns `true` if the request is authorized, `false` otherwise.
+ * @since 0.7.0
+ */
+export type AuthorizePredicate<TContextData> = (
+  context: RequestContext<TContextData>,
+  handle: string,
+  signedKey: CryptographicKey | null,
+) => boolean | Promise<boolean>;

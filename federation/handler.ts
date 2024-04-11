@@ -11,6 +11,7 @@ import {
 } from "../vocab/vocab.ts";
 import type {
   ActorDispatcher,
+  AuthorizePredicate,
   CollectionCounter,
   CollectionCursor,
   CollectionDispatcher,
@@ -35,6 +36,8 @@ export interface ActorHandlerParameters<TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
   actorDispatcher?: ActorDispatcher<TContextData>;
+  authorizePredicate?: AuthorizePredicate<TContextData>;
+  onUnauthorized(request: Request): Response | Promise<Response>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
@@ -45,8 +48,10 @@ export async function handleActor<TContextData>(
     handle,
     context,
     actorDispatcher,
+    authorizePredicate,
     onNotFound,
     onNotAcceptable,
+    onUnauthorized,
   }: ActorHandlerParameters<TContextData>,
 ): Promise<Response> {
   if (actorDispatcher == null) {
@@ -55,13 +60,13 @@ export async function handleActor<TContextData>(
   }
   const key = await context.getActorKey(handle);
   const actor = await actorDispatcher(context, handle, key);
-  if (actor == null) {
-    const response = onNotFound(request);
-    return response instanceof Promise ? await response : response;
-  }
-  if (!acceptsJsonLd(request)) {
-    const response = onNotAcceptable(request);
-    return response instanceof Promise ? await response : response;
+  if (actor == null) return await onNotFound(request);
+  if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
+  if (authorizePredicate != null) {
+    const key = await context.getSignedKey();
+    if (!await authorizePredicate(context, handle, key)) {
+      return await onUnauthorized(request);
+    }
   }
   const jsonLd = await actor.toJsonLd(context);
   return new Response(JSON.stringify(jsonLd), {
@@ -95,12 +100,18 @@ export interface CollectionCallbacks<TItem, TContextData> {
    * A callback that returns the last cursor for a collection.
    */
   lastCursor?: CollectionCursor<TContextData>;
+
+  /**
+   * A callback that determines if a request is authorized to access the collection.
+   */
+  authorizePredicate?: AuthorizePredicate<TContextData>;
 }
 
 export interface CollectionHandlerParameters<TItem, TContextData> {
   handle: string;
   context: RequestContext<TContextData>;
   collectionCallbacks?: CollectionCallbacks<TItem, TContextData>;
+  onUnauthorized(request: Request): Response | Promise<Response>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
@@ -114,51 +125,34 @@ export async function handleCollection<
     handle,
     context,
     collectionCallbacks,
+    onUnauthorized,
     onNotFound,
     onNotAcceptable,
   }: CollectionHandlerParameters<TItem, TContextData>,
 ): Promise<Response> {
-  if (collectionCallbacks == null) {
-    const response = onNotFound(request);
-    return response instanceof Promise ? await response : response;
-  }
+  if (collectionCallbacks == null) return await onNotFound(request);
   const url = new URL(request.url);
   const cursor = url.searchParams.get("cursor");
   let collection: OrderedCollection | OrderedCollectionPage;
   if (cursor == null) {
-    const firstCursorPromise = collectionCallbacks.firstCursor?.(
+    const firstCursor = await collectionCallbacks.firstCursor?.(
       context,
       handle,
     );
-    const firstCursor = firstCursorPromise instanceof Promise
-      ? await firstCursorPromise
-      : firstCursorPromise;
-    const totalItemsPromise = collectionCallbacks.counter?.(context, handle);
-    const totalItems = totalItemsPromise instanceof Promise
-      ? await totalItemsPromise
-      : totalItemsPromise;
+    const totalItems = await collectionCallbacks.counter?.(context, handle);
     if (firstCursor == null) {
-      const pagePromise = collectionCallbacks.dispatcher(context, handle, null);
-      const page = pagePromise instanceof Promise
-        ? await pagePromise
-        : pagePromise;
-      if (page == null) {
-        const response = onNotFound(request);
-        return response instanceof Promise ? await response : response;
-      }
+      const page = await collectionCallbacks.dispatcher(context, handle, null);
+      if (page == null) return await onNotFound(request);
       const { items } = page;
       collection = new OrderedCollection({
         totalItems: totalItems == null ? null : Number(totalItems),
         items,
       });
     } else {
-      const lastCursorPromise = collectionCallbacks.lastCursor?.(
+      const lastCursor = await collectionCallbacks.lastCursor?.(
         context,
         handle,
       );
-      const lastCursor = lastCursorPromise instanceof Promise
-        ? await lastCursorPromise
-        : lastCursorPromise;
       const first = new URL(context.url);
       first.searchParams.set("cursor", firstCursor);
       let last = null;
@@ -173,14 +167,8 @@ export async function handleCollection<
       });
     }
   } else {
-    const pagePromise = collectionCallbacks.dispatcher(context, handle, cursor);
-    const page = pagePromise instanceof Promise
-      ? await pagePromise
-      : pagePromise;
-    if (page == null) {
-      const response = onNotFound(request);
-      return response instanceof Promise ? await response : response;
-    }
+    const page = await collectionCallbacks.dispatcher(context, handle, cursor);
+    if (page == null) return await onNotFound(request);
     const { items, prevCursor, nextCursor } = page;
     let prev = null;
     if (prevCursor != null) {
@@ -196,9 +184,12 @@ export async function handleCollection<
     partOf.searchParams.delete("cursor");
     collection = new OrderedCollectionPage({ prev, next, items, partOf });
   }
-  if (!acceptsJsonLd(request)) {
-    const response = onNotAcceptable(request);
-    return response instanceof Promise ? await response : response;
+  if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
+  if (collectionCallbacks.authorizePredicate != null) {
+    const key = await context.getSignedKey();
+    if (!await collectionCallbacks.authorizePredicate(context, handle, key)) {
+      return await onUnauthorized(request);
+    }
   }
   const jsonLd = await collection.toJsonLd(context);
   return new Response(JSON.stringify(jsonLd), {
