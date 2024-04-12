@@ -56,12 +56,15 @@ export default defineConfig({
       { text: "Tutorial", link: "/tutorial.md" },
       { text: "Manual", link: "/manual.md", activeMatch: "/manual" },
       { text: "API reference", link: "https://jsr.io/@fedify/fedify" },
-      ...extraNav
+      ...extraNav,
     ],
 
     sidebar: [
       { text: "What is Fedify?", link: "/intro.md" },
-      { text: "Quick demo", link: "https://dash.deno.com/playground/fedify-demo" },
+      {
+        text: "Quick demo",
+        link: "https://dash.deno.com/playground/fedify-demo",
+      },
       { text: "Installation", link: "/install.md" },
       { text: "Tutorial", link: "/tutorial.md" },
       {
@@ -75,6 +78,7 @@ export default defineConfig({
           { text: "Inbox listeners", link: "/manual/inbox.md" },
           { text: "Sending activities", link: "/manual/send.md" },
           { text: "Collections", link: "/manual/collections.md" },
+          { text: "Access control", link: "/manual/access-control.md" },
           { text: "NodeInfo", link: "/manual/nodeinfo.md" },
           { text: "Pragmatics", link: "/manual/pragmatics.md" },
           { text: "Integration", link: "/manual/integration.md" },
@@ -124,7 +128,7 @@ export default defineConfig({
         href: "/favicon-32x32.png",
       },
     ],
-    ...plausibleScript
+    ...plausibleScript,
   ],
 
   cleanUrls: true,

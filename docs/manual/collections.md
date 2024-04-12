@@ -6,8 +6,8 @@ prev:
   text: Sending activities
   link: ./send.md
 next:
-  text: NodeInfo
-  link: ./nodeinfo.md
+  text: Access control
+  link: ./access-control.md
 ---
 
 Collections

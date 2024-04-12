@@ -5,8 +5,8 @@ description: >-
   distributed social networks.  This section explains how to expose a NodeInfo
   endpoint and the key properties of a NodeInfo object.
 prev:
-  text: Collections
-  link: ./collections.md
+  text: Access control
+  link: ./access-control.md
 next:
   text: Pragmatics
   link: ./pragmatics.md
