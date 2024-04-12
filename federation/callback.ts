@@ -107,6 +107,10 @@ export type OutboxErrorHandler = (
  * @param handle The handle of the actor that is being requested.
  * @param signedKey The key that was used to sign the request, or `null` if
  *                  the request was not signed or the signature was invalid.
+ * @param signedKeyOwner The actor that owns the key that was used to sign the
+ *                       request, or `null` if the request was not signed or the
+ *                       signature was invalid, or if the key is not associated
+ *                       with an actor.
  * @returns `true` if the request is authorized, `false` otherwise.
  * @since 0.7.0
  */
@@ -114,4 +118,5 @@ export type AuthorizePredicate<TContextData> = (
   context: RequestContext<TContextData>,
   handle: string,
   signedKey: CryptographicKey | null,
+  signedKeyOwner: Actor | null,
 ) => boolean | Promise<boolean>;

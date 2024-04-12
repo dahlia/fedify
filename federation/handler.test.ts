@@ -206,7 +206,8 @@ Deno.test("handleActor()", async () => {
       context,
       handle: "someone",
       actorDispatcher,
-      authorizePredicate: (_ctx, _handle, signedKey) => signedKey != null,
+      authorizePredicate: (_ctx, _handle, signedKey, signedKeyOwner) =>
+        signedKey != null && signedKeyOwner != null,
       onNotFound,
       onNotAcceptable,
       onUnauthorized,
@@ -221,6 +222,7 @@ Deno.test("handleActor()", async () => {
   context = createRequestContext<void>({
     ...context,
     getSignedKey: () => Promise.resolve(publicKey2),
+    getSignedKeyOwner: () => Promise.resolve(new Person({})),
   });
   response = await handleActor(
     context.request,
@@ -228,7 +230,8 @@ Deno.test("handleActor()", async () => {
       context,
       handle: "someone",
       actorDispatcher,
-      authorizePredicate: (_ctx, _handle, signedKey) => signedKey != null,
+      authorizePredicate: (_ctx, _handle, signedKey, signedKeyOwner) =>
+        signedKey != null && signedKeyOwner != null,
       onNotFound,
       onNotAcceptable,
       onUnauthorized,
@@ -425,7 +428,8 @@ Deno.test("handleCollection()", async () => {
       handle: "someone",
       collectionCallbacks: {
         dispatcher,
-        authorizePredicate: (_ctx, _handle, key) => key != null,
+        authorizePredicate: (_ctx, _handle, key, keyOwner) =>
+          key != null && keyOwner != null,
       },
       onNotFound,
       onNotAcceptable,
@@ -441,6 +445,7 @@ Deno.test("handleCollection()", async () => {
   context = createRequestContext<void>({
     ...context,
     getSignedKey: () => Promise.resolve(publicKey2),
+    getSignedKeyOwner: () => Promise.resolve(new Person({})),
   });
   response = await handleCollection(
     context.request,
@@ -449,7 +454,8 @@ Deno.test("handleCollection()", async () => {
       handle: "someone",
       collectionCallbacks: {
         dispatcher,
-        authorizePredicate: (_ctx, _handle, key) => key != null,
+        authorizePredicate: (_ctx, _handle, key, keyOwner) =>
+          key != null && keyOwner != null,
       },
       onNotFound,
       onNotAcceptable,

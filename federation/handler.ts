@@ -64,7 +64,8 @@ export async function handleActor<TContextData>(
   if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
   if (authorizePredicate != null) {
     const key = await context.getSignedKey();
-    if (!await authorizePredicate(context, handle, key)) {
+    const keyOwner = await context.getSignedKeyOwner();
+    if (!await authorizePredicate(context, handle, key, keyOwner)) {
       return await onUnauthorized(request);
     }
   }
@@ -187,7 +188,15 @@ export async function handleCollection<
   if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
   if (collectionCallbacks.authorizePredicate != null) {
     const key = await context.getSignedKey();
-    if (!await collectionCallbacks.authorizePredicate(context, handle, key)) {
+    const keyOwner = await context.getSignedKeyOwner();
+    if (
+      !await collectionCallbacks.authorizePredicate(
+        context,
+        handle,
+        key,
+        keyOwner,
+      )
+    ) {
       return await onUnauthorized(request);
     }
   }
