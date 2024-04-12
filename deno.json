@@ -69,7 +69,9 @@
     "coverage": "rm -rf coverage/ && deno task test --coverage && deno coverage --html coverage",
     "apidoc": "deno task codegen && deno doc --html --name=Fedify --output=apidoc/ mod.ts",
     "publish": "deno task codegen && deno publish",
-    "dnt": "deno task codegen && deno run -A dnt.ts"
+    "dnt": "deno task codegen && deno run -A dnt.ts",
+    "hooks:install": "deno run --allow-read=deno.json,.git/hooks/ --allow-write=.git/hooks/ jsr:@hongminhee/deno-task-hooks",
+    "hooks:pre-commit": "deno task check"
   },
   "unstable": [
     "kv"
