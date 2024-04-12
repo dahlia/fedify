@@ -128,6 +128,14 @@ export default defineConfig({
         href: "/favicon-32x32.png",
       },
     ],
+    [
+      "meta",
+      {
+        property: "og:image",
+        content:
+          "https://repository-images.githubusercontent.com/766072261/03a63032-03aa-481e-aa31-091809a49043",
+      },
+    ],
     ...plausibleScript,
   ],
 
@@ -140,5 +148,18 @@ export default defineConfig({
       md.use(footnote);
       md.use(jsrRefPlugin);
     },
+  },
+
+  async transformHead(context) {
+    return [
+      [
+        "meta",
+        { property: "og:title", content: context.title },
+      ],
+      [
+        "meta",
+        { property: "og:description", content: context.description },
+      ],
+    ];
   },
 });
