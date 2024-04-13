@@ -127,9 +127,21 @@ section](./context.md#getting-an-authenticated-documentloader) for details.
 
 ### `treatHttps`
 
-Whether to treat HTTP requests as HTTPS.  This is useful for testing and
-local development.  However, it must be disabled in production.
-Turned off by default.
+Whether to treat HTTP requests as HTTPS.  This affects how URLs are generated
+as well.  According to the [*Object Identifiers* section][1] in the ActivityPub
+specification, the public dereferenceable URIs should use HTTPS URIs, so this
+option is useful for testing and local development, which is normally done
+over HTTP.
+
+However, it should be disabled in production.  Turned off by default.
+
+> [!TIP]
+> This option is usually used together with tunneling services like [ngrok]
+> in testing and local development.  See also the [*Exposing a local server
+> to the public* section](./test.md#exposing-a-local-server-to-the-public).
+
+[1]: https://www.w3.org/TR/activitypub/#obj-id
+[ngrok]: https://ngrok.com/
 
 
 Integrating with web frameworks

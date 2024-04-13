@@ -27,13 +27,38 @@ that help you do that:
  -  [ngrok](https://ngrok.com/)
  -  [serveo](https://serveo.net/)
  -  [localhost.run](https://localhost.run/)
+ -  [Tailscale Funnel](https://tailscale.com/kb/1223/funnel)
 
 > [!NOTE]
 > These tools are not for production use; they are for testing only.
 > In production, you should expose your server with a proper domain and TLS
 > certificate.
 
-<!-- cSpell: ignore serveo -->
+> [!TIP]
+> These tools behave like a reverse proxy, so basically the federation server
+> cannot recognize if it is behind a reverse proxy, and if the reverse proxy
+> is in HTTPS.  So the federation server will generate HTTP URLs in the
+> ActivityPub messages, which cause interoperability issues.[^1]  In this case,
+> you can use the [`treatHttps` option](./federation.md#treathttps) in
+> the `new Federation()` constructor to force the federation server to generate
+> HTTPS URLs:
+>
+> ~~~~ typescript
+> import { Federation } from "@fedify/fedify";
+>
+> const federation = new Federation({
+>   // ...
+>   treatHttps: true,   // [!code highlight]
+> });
+> ~~~~
+
+
+[^1]: According to the [*Object Identifiers* section][1] in the ActivityPub
+      specification, the public dereferenceable URIs should use HTTPS URIs.
+
+[1]: https://www.w3.org/TR/activitypub/#obj-id
+
+<!-- cSpell: ignore serveo tailscale -->
 
 
 Inspecting ActivityPub messages
