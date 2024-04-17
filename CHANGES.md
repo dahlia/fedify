@@ -11,7 +11,7 @@ Fedify changelog
 Version 0.5.2
 -------------
 
-To be released.
+Released on April 17, 2024.
 
  -  Fixed a bug of `new Federation()` constructor that if it is once called
     the process will never exit.  [[#39]]
