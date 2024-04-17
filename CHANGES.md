@@ -13,6 +13,11 @@ Version 0.5.2
 
 To be released.
 
+ -  Fixed a bug of `new Federation()` constructor that if it is once called
+    the process will never exit.  [[#39]]
+
+[#39]: https://github.com/dahlia/fedify/issues/39
+
 
 Version 0.5.1
 -------------

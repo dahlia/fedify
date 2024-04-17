@@ -115,6 +115,7 @@ export class Federation<TContextData> {
   #kv: KvStore;
   #kvPrefixes: FederationKvPrefixes;
   #queue?: MessageQueue;
+  #queueStarted: boolean;
   #router: Router;
   #nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
   #actorCallbacks?: ActorCallbacks<TContextData>;
@@ -155,6 +156,7 @@ export class Federation<TContextData> {
       ...(kvPrefixes ?? {}),
     };
     this.#queue = queue;
+    this.#queueStarted = false;
     this.#router = new Router();
     this.#router.add("/.well-known/webfinger", "webfinger");
     this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
@@ -175,8 +177,13 @@ export class Federation<TContextData> {
       15 * 60_000,
       60 * 60_000,
     ].map((ms) => Temporal.Duration.from({ milliseconds: ms }));
+  }
 
-    queue?.listen(this.#listenQueue.bind(this));
+  #startQueue() {
+    if (this.#queue != null && !this.#queueStarted) {
+      this.#queue?.listen(this.#listenQueue.bind(this));
+      this.#queueStarted = true;
+    }
   }
 
   async #listenQueue(message: OutboxMessage): Promise<void> {
@@ -681,6 +688,7 @@ export class Federation<TContextData> {
     activity: Activity,
     { preferSharedInbox, immediate }: SendActivityOptions = {},
   ): Promise<void> {
+    this.#startQueue();
     if (activity.id == null) {
       activity = activity.clone({
         id: new URL(`urn:uuid:${crypto.randomUUID()}`),
@@ -741,6 +749,7 @@ export class Federation<TContextData> {
       contextData,
     }: FederationHandlerParameters<TContextData>,
   ): Promise<Response> {
+    this.#startQueue();
     onNotFound ??= notFound;
     onNotAcceptable ??= notAcceptable;
     const url = new URL(request.url);
