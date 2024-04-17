@@ -8,6 +8,9 @@ Version 0.6.1
 
 To be released.
 
+ -  Fixed a bug of `new Federation()` constructor that if it is once called
+    the process will never exit.  [[#39]]
+
 
 Version 0.6.0
 -------------
@@ -51,6 +54,17 @@ Released on April 9, 2024.
 [Hono]: https://hono.dev/
 [#25]: https://github.com/dahlia/fedify/issues/25
 [#27]: https://github.com/dahlia/fedify/issues/27
+
+
+Version 0.5.2
+-------------
+
+Released on April 17, 2024.
+
+ -  Fixed a bug of `new Federation()` constructor that if it is once called
+    the process will never exit.  [[#39]]
+
+[#39]: https://github.com/dahlia/fedify/issues/39
 
 
 Version 0.5.1
