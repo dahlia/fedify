@@ -54,10 +54,7 @@ export async function handleActor<TContextData>(
     onUnauthorized,
   }: ActorHandlerParameters<TContextData>,
 ): Promise<Response> {
-  if (actorDispatcher == null) {
-    const response = onNotFound(request);
-    return response instanceof Promise ? await response : response;
-  }
+  if (actorDispatcher == null) return await onNotFound(request);
   const key = await context.getActorKey(handle);
   const actor = await actorDispatcher(context, handle, key);
   if (actor == null) return await onNotFound(request);
@@ -236,17 +233,11 @@ export async function handleInbox<TContextData>(
     onNotFound,
   }: InboxHandlerParameters<TContextData>,
 ): Promise<Response> {
-  if (actorDispatcher == null) {
-    const response = onNotFound(request);
-    return response instanceof Promise ? await response : response;
-  } else if (handle != null) {
+  if (actorDispatcher == null) return await onNotFound(request);
+  else if (handle != null) {
     const key = await context.getActorKey(handle);
-    const promise = actorDispatcher(context, handle, key);
-    const actor = promise instanceof Promise ? await promise : promise;
-    if (actor == null) {
-      const response = onNotFound(request);
-      return response instanceof Promise ? await response : response;
-    }
+    const actor = await actorDispatcher(context, handle, key);
+    if (actor == null) return await onNotFound(request);
   }
   const key = await verify(request, context.documentLoader);
   if (key == null) {
@@ -260,8 +251,7 @@ export async function handleInbox<TContextData>(
   try {
     json = await request.json();
   } catch (e) {
-    const promise = inboxErrorHandler?.(context, e);
-    if (promise instanceof Promise) await promise;
+    await inboxErrorHandler?.(context, e);
     return new Response("Invalid JSON.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -271,8 +261,7 @@ export async function handleInbox<TContextData>(
   try {
     activity = await Activity.fromJsonLd(json, context);
   } catch (e) {
-    const promise = inboxErrorHandler?.(context, e);
-    if (promise instanceof Promise) await promise;
+    await inboxErrorHandler?.(context, e);
     return new Response("Invalid activity.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -323,11 +312,9 @@ export async function handleInbox<TContextData>(
   }
   const listener = inboxListeners.get(cls)!;
   try {
-    const promise = listener(context, activity);
-    if (promise instanceof Promise) await promise;
+    await listener(context, activity);
   } catch (e) {
-    const promise = inboxErrorHandler?.(context, e);
-    if (promise instanceof Promise) await promise;
+    await inboxErrorHandler?.(context, e);
     return new Response("Internal server error.", {
       status: 500,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
