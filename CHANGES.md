@@ -25,8 +25,17 @@ To be released.
  -  The default implementation of `FederationFetchOptions.onNotAcceptable`
     option now responds with `Vary: Accept, Signature` header.
 
+ -  Added log messages using the [LogTape] library.  Currently the below
+    categories are used:
+
+     -  `["fedify"]`
+     -  `["fedify", "federation"]`
+     -  `["fedify", "federation", "inbox"]`
+     -  `["fedify", "federation", "outbox"]`
+
 [public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
 [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
+[LogTape]: https://github.com/dahlia/logtape
 
 
 Version 0.6.1
