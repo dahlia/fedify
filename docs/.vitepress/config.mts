@@ -83,6 +83,7 @@ export default defineConfig({
           { text: "Pragmatics", link: "/manual/pragmatics.md" },
           { text: "Integration", link: "/manual/integration.md" },
           { text: "Testing", link: "/manual/test.md" },
+          { text: "Logging", link: "/manual/log.md" },
         ],
       },
       {

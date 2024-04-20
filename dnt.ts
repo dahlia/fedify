@@ -20,6 +20,18 @@ for (const { name } of entryPoints) {
   if (match && match[1] != "x") testExports.push(match[1]);
 }
 
+const importMap = ".dnt-import-map.json";
+await Deno.writeTextFile(
+  importMap,
+  JSON.stringify({
+    imports: {
+      ...metadata.imports,
+      "@logtape/logtape": metadata.imports["@logtape/logtape"]
+        .replace(/^jsr:/, "npm:"),
+    },
+  }),
+);
+
 await build({
   package: {
     // package.json properties
@@ -44,7 +56,7 @@ await build({
   },
   outDir: "./npm",
   entryPoints,
-  importMap: denoJson,
+  importMap,
   scriptModule: false,
   shims: {
     deno: true,
@@ -104,5 +116,7 @@ await build({
     await Deno.copyFile("README.md", "npm/README.md");
   },
 });
+
+await Deno.remove(importMap);
 
 // cSpell: ignore Minhee 2KNRVU

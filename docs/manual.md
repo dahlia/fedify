@@ -30,6 +30,7 @@ framework.
  -  [Pragmatics](./manual/pragmatics.md)
  -  [Integration](./manual/integration.md)
  -  [Testing](./manual/test.md)
+ -  [Logging](./manual/log.md)
 
 However, this manual is not a complete guide to the Fedify framework.
 In particular, you probably want to look up the [API reference] times to times,

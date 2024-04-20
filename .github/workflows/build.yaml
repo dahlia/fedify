@@ -18,7 +18,10 @@ jobs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: v1.x
+    - run: deno task cache
     - run: deno task test --coverage=.cov --junit-path=.test-report.xml
+      env:
+        RUST_BACKTRACE: ${{ runner.debug }}
     - uses: EnricoMi/publish-unit-test-result-action@v2
       if: runner.os == 'Linux' && always()
       with:

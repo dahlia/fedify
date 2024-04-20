@@ -1,3 +1,4 @@
+import { getLogger } from "@logtape/logtape";
 import { sign } from "../httpsig/mod.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Actor } from "../vocab/actor.ts";
@@ -84,6 +85,7 @@ export async function sendActivity(
     documentLoader,
   }: SendActivityParameters,
 ): Promise<void> {
+  const logger = getLogger(["fedify", "federation", "outbox"]);
   if (activity.actorId == null) {
     throw new TypeError(
       "The activity to send must have at least one actor property.",
@@ -100,10 +102,21 @@ export async function sendActivity(
   request = await sign(request, privateKey, keyId);
   const response = await fetch(request);
   if (!response.ok) {
+    const error = await response.text();
+    logger.error(
+      "Failed to send activity {activityId} to {inbox} ({status} " +
+        "{statusText}):\n{error}",
+      {
+        activityId: activity.id?.href,
+        inbox: inbox.href,
+        status: response.status,
+        statusText: response.statusText,
+        error,
+      },
+    );
     throw new Error(
-      `Failed to send activity to ${inbox} ` +
-        `(${response.status} ${response.statusText}):\n` +
-        await response.text(),
+      `Failed to send activity ${activity?.id?.href} to ${inbox.href} ` +
+        `(${response.status} ${response.statusText}):\n${error}`,
     );
   }
 }

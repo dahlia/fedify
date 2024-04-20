@@ -1,3 +1,4 @@
+import { configure, getConsoleSink, reset } from "@logtape/logtape";
 import {
   assertEquals,
   assertNotEquals,
@@ -72,6 +73,25 @@ Deno.test("extractInboxes()", () => {
 Deno.test("sendActivity()", async (t) => {
   mf.install();
 
+  await configure({
+    sinks: {
+      console: getConsoleSink(),
+    },
+    filters: {},
+    loggers: [
+      {
+        category: ["fedify", "federation", "outbox"],
+        level: "debug",
+        sinks: ["console"],
+      },
+      {
+        category: ["logtape", "meta"],
+        level: "warning",
+        sinks: ["console"],
+      },
+    ],
+  });
+
   let verified: boolean | null = null;
   let request: Request | null = null;
   mf.mock("POST@/inbox", async (req) => {
@@ -120,6 +140,7 @@ Deno.test("sendActivity()", async (t) => {
 
   await t.step("failure", async () => {
     let activity = new Create({
+      id: new URL("https://example.com/activity"),
       actor: new URL("https://example.com/person"),
     });
     await assertRejects(
@@ -132,8 +153,8 @@ Deno.test("sendActivity()", async (t) => {
           documentLoader: mockDocumentLoader,
         }),
       Error,
-      "Failed to send activity to https://example.com/inbox2 " +
-        "(500 Internal Server Error):\n" +
+      "Failed to send activity https://example.com/activity to " +
+        "https://example.com/inbox2 (500 Internal Server Error):\n" +
         "something went wrong",
     );
 
@@ -152,5 +173,6 @@ Deno.test("sendActivity()", async (t) => {
     );
   });
 
+  await reset();
   mf.uninstall();
 });

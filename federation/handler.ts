@@ -1,4 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
+import { getLogger } from "@logtape/logtape";
 import { accepts } from "@std/http/negotiation";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
@@ -233,14 +234,21 @@ export async function handleInbox<TContextData>(
     onNotFound,
   }: InboxHandlerParameters<TContextData>,
 ): Promise<Response> {
-  if (actorDispatcher == null) return await onNotFound(request);
-  else if (handle != null) {
+  const logger = getLogger(["fedify", "federation", "inbox"]);
+  if (actorDispatcher == null) {
+    logger.error("Actor dispatcher is not set.", { handle });
+    return await onNotFound(request);
+  } else if (handle != null) {
     const key = await context.getActorKey(handle);
     const actor = await actorDispatcher(context, handle, key);
-    if (actor == null) return await onNotFound(request);
+    if (actor == null) {
+      logger.error("Actor {handle} not found.", { handle });
+      return await onNotFound(request);
+    }
   }
   const key = await verify(request, context.documentLoader);
   if (key == null) {
+    logger.error("Failed to verify the request signature.", { handle });
     const response = new Response("Failed to verify the request signature.", {
       status: 401,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -250,8 +258,9 @@ export async function handleInbox<TContextData>(
   let json: unknown;
   try {
     json = await request.json();
-  } catch (e) {
-    await inboxErrorHandler?.(context, e);
+  } catch (error) {
+    logger.error("Failed to parse JSON:\n{error}", { handle, error });
+    await inboxErrorHandler?.(context, error);
     return new Response("Invalid JSON.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -260,8 +269,9 @@ export async function handleInbox<TContextData>(
   let activity: Activity;
   try {
     activity = await Activity.fromJsonLd(json, context);
-  } catch (e) {
-    await inboxErrorHandler?.(context, e);
+  } catch (error) {
+    logger.error("Failed to parse activity:\n{error}", { handle, json, error });
+    await inboxErrorHandler?.(context, error);
     return new Response("Invalid activity.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -273,6 +283,10 @@ export async function handleInbox<TContextData>(
   if (cacheKey != null) {
     const cached = await kv.get(cacheKey);
     if (cached === true) {
+      logger.debug("Activity {activityId} has already been processed.", {
+        activityId: activity.id?.href,
+        activity: json,
+      });
       return new Response(
         `Activity <${activity.id}> has already been processed.`,
         {
@@ -283,6 +297,7 @@ export async function handleInbox<TContextData>(
     }
   }
   if (activity.actorId == null) {
+    logger.error("Missing actor.", { activity: json });
     const response = new Response("Missing actor.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -290,6 +305,10 @@ export async function handleInbox<TContextData>(
     return response;
   }
   if (!await doesActorOwnKey(activity, key, context.documentLoader)) {
+    logger.error(
+      "The signer ({keyId}) and the actor ({actorId}) do not match.",
+      { activity: json, keyId: key.id?.href, actorId: activity.actorId.href },
+    );
     const response = new Response("The signer and the actor do not match.", {
       status: 401,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -303,6 +322,10 @@ export async function handleInbox<TContextData>(
   while (true) {
     if (inboxListeners.has(cls)) break;
     if (cls === Activity) {
+      logger.error(
+        "Unsupported activity type:\n{activity}",
+        { activity: json },
+      );
       return new Response("", {
         status: 202,
         headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -313,8 +336,12 @@ export async function handleInbox<TContextData>(
   const listener = inboxListeners.get(cls)!;
   try {
     await listener(context, activity);
-  } catch (e) {
-    await inboxErrorHandler?.(context, e);
+  } catch (error) {
+    logger.error(
+      "Failed to process the activity:\n{error}",
+      { error, activity: json },
+    );
+    await inboxErrorHandler?.(context, error);
     return new Response("Internal server error.", {
       status: 500,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -323,6 +350,10 @@ export async function handleInbox<TContextData>(
   if (cacheKey != null) {
     await kv.set(cacheKey, true, { ttl: Temporal.Duration.from({ days: 1 }) });
   }
+  logger.info(
+    "Activity {activityId} has been processed.",
+    { activityId: activity.id?.href, activity: json },
+  );
   return new Response("", {
     status: 202,
     headers: { "Content-Type": "text/plain; charset=utf-8" },

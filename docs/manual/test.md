@@ -6,7 +6,9 @@ description: >-
 prev:
   text: Integration
   link: ./integration.md
-next: false
+next:
+  text: Logging
+  link: ./log.md
 ---
 
 Testing

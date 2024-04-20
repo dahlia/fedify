@@ -1,4 +1,5 @@
 import { Temporal } from "@js-temporal/polyfill";
+import { getLogger } from "@logtape/logtape";
 import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
 import { getKeyOwner, verify } from "../httpsig/mod.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
@@ -199,6 +200,8 @@ export class Federation<TContextData> {
 
   #startQueue() {
     if (this.#queue != null && !this.#queueStarted) {
+      getLogger(["fedify", "federation", "outbox"])
+        .debug("Starting an outbox queue.");
       this.#queue?.listen(this.#listenQueue.bind(this));
       this.#queueStarted = true;
     }
@@ -745,7 +748,12 @@ export class Federation<TContextData> {
     activity: Activity,
     { preferSharedInbox, immediate }: SendActivityOptions = {},
   ): Promise<void> {
+    const logger = getLogger(["fedify", "federation", "outbox"]);
     if (activity.actorId == null) {
+      logger.error(
+        "Activity {activityId} to send does not have an actor.",
+        { activity, activityId: activity?.id?.href },
+      );
       throw new TypeError(
         "The activity to send must have at least one actor property.",
       );
@@ -761,7 +769,23 @@ export class Federation<TContextData> {
       recipients: Array.isArray(recipients) ? recipients : [recipients],
       preferSharedInbox,
     });
+    logger.debug(
+      "Sending activity {activityId} to inboxes:\n{inboxes}",
+      { inboxes, activityId: activity.id?.href, activity },
+    );
     if (immediate || this.#queue == null) {
+      if (immediate) {
+        logger.debug(
+          "Sending activity immediately without queue since immediate option " +
+            "is set.",
+          { activityId: activity.id?.href, activity },
+        );
+      } else {
+        logger.debug(
+          "Sending activity immediately without queue since queue is not set.",
+          { activityId: activity.id?.href, activity },
+        );
+      }
       const documentLoader = this.#authenticatedDocumentLoaderFactory(
         { keyId, privateKey },
       );
@@ -780,6 +804,10 @@ export class Federation<TContextData> {
       await Promise.all(promises);
       return;
     }
+    logger.debug(
+      "Enqueuing activity {activityId} to send later.",
+      { activityId: activity.id?.href, activity },
+    );
     const privateKeyJwk = await exportJwk(privateKey);
     const activityJson = await activity.toJsonLd({ expand: true });
     for (const inbox of inboxes) {
@@ -835,7 +863,6 @@ export class Federation<TContextData> {
       contextData,
     }: FederationFetchOptions<TContextData>,
   ): Promise<Response> {
-    this.#startQueue();
     onNotFound ??= notFound;
     onNotAcceptable ??= notAcceptable;
     onUnauthorized ??= unauthorized;
