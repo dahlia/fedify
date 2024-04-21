@@ -209,6 +209,12 @@ export class Federation<TContextData> {
 
   async #listenQueue(message: OutboxMessage): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
+    const logData = {
+      keyId: message.keyId,
+      inbox: message.inbox,
+      activity: message.activity,
+      trial: message.trial,
+    };
     let activity: Activity | null = null;
     try {
       const keyId = new URL(message.keyId);
@@ -232,14 +238,14 @@ export class Federation<TContextData> {
       } catch (error) {
         logger.error(
           "An unexpected error occurred in onError handler:\n{error}",
-          { ...message, error, activityId: activity?.id?.href },
+          { ...logData, error, activityId: activity?.id?.href },
         );
       }
       if (message.trial < this.#backoffSchedule.length) {
         logger.error(
           "Failed to send activity {activityId} to {inbox} (trial #{trial})" +
             "; retry...:\n{error}",
-          { ...message, error, activityId: activity?.id?.href },
+          { ...logData, error, activityId: activity?.id?.href },
         );
         this.#queue?.enqueue({
           ...message,
@@ -249,14 +255,14 @@ export class Federation<TContextData> {
         logger.error(
           "Failed to send activity {activityId} to {inbox} after {trial} " +
             "trials; giving up:\n{error}",
-          { ...message, error, activityId: activity?.id?.href },
+          { ...logData, error, activityId: activity?.id?.href },
         );
       }
       return;
     }
     logger.info(
       "Successfully sent activity {activityId} to {inbox}.",
-      { ...message, activityId: activity?.id?.href },
+      { ...logData, activityId: activity?.id?.href },
     );
   }
 
@@ -794,6 +800,9 @@ export class Federation<TContextData> {
       activityId: activity.id?.href,
       activity,
     });
+    const documentLoader = this.#authenticatedDocumentLoaderFactory(
+      { keyId, privateKey },
+    );
     if (immediate || this.#queue == null) {
       if (immediate) {
         logger.debug(
@@ -807,9 +816,6 @@ export class Federation<TContextData> {
           { activityId: activity.id?.href, activity },
         );
       }
-      const documentLoader = this.#authenticatedDocumentLoaderFactory(
-        { keyId, privateKey },
-      );
       const promises: Promise<void>[] = [];
       for (const inbox of inboxes) {
         promises.push(
@@ -830,7 +836,7 @@ export class Federation<TContextData> {
       { activityId: activity.id?.href, activity },
     );
     const privateKeyJwk = await exportJwk(privateKey);
-    const activityJson = await activity.toJsonLd({ expand: true });
+    const activityJson = await activity.toJsonLd({ documentLoader });
     for (const inbox of inboxes) {
       const message: OutboxMessage = {
         type: "outbox",
