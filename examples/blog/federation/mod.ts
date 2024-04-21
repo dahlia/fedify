@@ -5,6 +5,7 @@ import { Federation } from "@fedify/fedify/federation";
 import {
   Accept,
   Activity,
+  Article,
   Create,
   Endpoints,
   Follow,
@@ -26,6 +27,9 @@ import {
 } from "../models/follower.ts";
 import { countPosts, getPosts, toArticle } from "../models/post.ts";
 import { openKv } from "../models/kv.ts";
+import { getLogger } from "@logtape/logtape";
+
+const logger = getLogger(["blog", "federation"]);
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
@@ -177,7 +181,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
   // The `Create` activity is handled by adding a comment to the post:
   .on(Create, async (ctx, create) => {
     const object = await create.getObject(ctx);
-    if (object instanceof Note) {
+    if (object instanceof Note || object instanceof Article) {
       if (object.id == null || object.content == null) return;
       const author = await object.getAttribution();
       if (
@@ -205,7 +209,10 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
         await addComment({ ...comment, postUuid });
       }
     } else {
-      console.debug(object);
+      logger.getChild("inbox").warn(
+        "Unsupported object type ({type}) for Create activity: {object}",
+        { type: object?.constructor.name, object },
+      );
     }
   })
   // The `Undo` activity purposes to undo the previous activity.  In this
@@ -217,10 +224,19 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
       if (activity.id == null) return;
       await removeFollower(activity.id.href);
     } else {
-      console.debug(undo);
+      logger.getChild("inbox").warn(
+        "Unsupported object type ({type}) for Undo activity: {object}",
+        { type: activity?.constructor.name, object: activity },
+      );
     }
   })
-  .onError((_ctx, e) => console.error(e));
+  .onError((_ctx, error) => {
+    logger.getChild("inbox").error(
+      "An error occurred while processing an activity in the inbox handler:\n" +
+        "{error}",
+      { error },
+    );
+  });
 
 // Since the blog does not follow anyone, the following dispatcher is
 // implemented to return just an empty list:

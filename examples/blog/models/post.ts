@@ -6,6 +6,9 @@ import { uuidv7 } from "uuidv7";
 import { Blog } from "./blog.ts";
 import { Comment } from "./comment.ts";
 import { openKv } from "./kv.ts";
+import { getLogger } from "@logtape/logtape";
+
+const logger = getLogger(["blog", "models", "post"]);
 
 export interface Post {
   uuid: string;
@@ -27,6 +30,7 @@ export async function addPost(post: Omit<Post, "uuid"> | Post): Promise<Post> {
     .set(["post", uuid], newPost)
     .sum(["count"], 1n)
     .commit();
+  logger.debug("Added post {uuid}.", { uuid, post: newPost });
   return { uuid, ...post };
 }
 

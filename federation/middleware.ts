@@ -200,14 +200,15 @@ export class Federation<TContextData> {
 
   #startQueue() {
     if (this.#queue != null && !this.#queueStarted) {
-      getLogger(["fedify", "federation", "outbox"])
-        .debug("Starting an outbox queue.");
+      const logger = getLogger(["fedify", "federation", "outbox"]);
+      logger.debug("Starting an outbox queue.");
       this.#queue?.listen(this.#listenQueue.bind(this));
       this.#queueStarted = true;
     }
   }
 
   async #listenQueue(message: OutboxMessage): Promise<void> {
+    const logger = getLogger(["fedify", "federation", "outbox"]);
     let activity: Activity | null = null;
     try {
       const keyId = new URL(message.keyId);
@@ -225,19 +226,38 @@ export class Federation<TContextData> {
         inbox: new URL(message.inbox),
         documentLoader,
       });
-    } catch (e) {
+    } catch (error) {
       try {
-        this.#onOutboxError?.(e, activity);
-      } catch (_) {
-        // Ignore errors in the error handler.
+        this.#onOutboxError?.(error, activity);
+      } catch (error) {
+        logger.error(
+          "An unexpected error occurred in onError handler:\n{error}",
+          { ...message, error, activityId: activity?.id?.href },
+        );
       }
       if (message.trial < this.#backoffSchedule.length) {
+        logger.error(
+          "Failed to send activity {activityId} to {inbox} (trial #{trial})" +
+            "; retry...:\n{error}",
+          { ...message, error, activityId: activity?.id?.href },
+        );
         this.#queue?.enqueue({
           ...message,
           trial: message.trial + 1,
         }, { delay: this.#backoffSchedule[message.trial] });
+      } else {
+        logger.error(
+          "Failed to send activity {activityId} to {inbox} after {trial} " +
+            "trials; giving up:\n{error}",
+          { ...message, error, activityId: activity?.id?.href },
+        );
       }
+      return;
     }
+    logger.info(
+      "Successfully sent activity {activityId} to {inbox}.",
+      { ...message, activityId: activity?.id?.href },
+    );
   }
 
   /**
@@ -769,10 +789,11 @@ export class Federation<TContextData> {
       recipients: Array.isArray(recipients) ? recipients : [recipients],
       preferSharedInbox,
     });
-    logger.debug(
-      "Sending activity {activityId} to inboxes:\n{inboxes}",
-      { inboxes, activityId: activity.id?.href, activity },
-    );
+    logger.debug("Sending activity {activityId} to inboxes:\n{inboxes}", {
+      inboxes: [...inboxes].map((u) => u.href),
+      activityId: activity.id?.href,
+      activity,
+    });
     if (immediate || this.#queue == null) {
       if (immediate) {
         logger.debug(

@@ -82,7 +82,7 @@ export const handler: Handlers<PostsData> = {
       published: Temporal.Now.instant(),
     });
     // Gets a federation context for enqueueing an activity:
-    const fedCtx = await federation.createContext(req);
+    const fedCtx = federation.createContext(req);
     // Enqueues a `Create` activity to the outbox:
     await fedCtx.sendActivity(
       { handle: blog.handle },
