@@ -1,3 +1,4 @@
+import { lookupObject } from "@fedify/fedify/vocab";
 import { Temporal } from "@js-temporal/polyfill";
 import {
   assertEquals,
@@ -24,7 +25,6 @@ import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
 import { Federation } from "./middleware.ts";
 import { RouterError } from "./router.ts";
-import { lookupObject } from "@fedify/fedify/vocab";
 
 Deno.test("Federation.createContext()", async (t) => {
   const kv = new MemoryKvStore();
@@ -189,6 +189,11 @@ Deno.test("Federation.createContext()", async (t) => {
     // Multiple calls should return the same result:
     assertEquals(await ctx.getSignedKey(), null);
     assertEquals(await ctx.getSignedKeyOwner(), null);
+    assertRejects(
+      () => ctx.getActor("someone"),
+      Error,
+      "No actor dispatcher registered",
+    );
 
     const signedReq = await sign(
       new Request("https://example.com/"),
@@ -223,6 +228,19 @@ Deno.test("Federation.createContext()", async (t) => {
     // Multiple calls should return the same result:
     assertEquals(await signedCtx2.getSignedKey(), publicKey3);
     assertEquals(await signedCtx2.getSignedKeyOwner(), expectedOwner);
+
+    federation.setActorDispatcher(
+      "/users/{handle}",
+      (_ctx, handle) => new Person({ preferredUsername: handle }),
+    );
+    const ctx2 = federation.createContext(req, 789);
+    assertEquals(ctx2.request, req);
+    assertEquals(ctx2.url, new URL("https://example.com/"));
+    assertEquals(ctx2.data, 789);
+    assertEquals(
+      await ctx2.getActor("john"),
+      new Person({ preferredUsername: "john" }),
+    );
   });
 
   mf.uninstall();

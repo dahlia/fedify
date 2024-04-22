@@ -433,6 +433,30 @@ export class Federation<TContextData> {
       ...context,
       request,
       url,
+      getActor: async (handle: string) => {
+        if (
+          this.#actorCallbacks == null ||
+          this.#actorCallbacks.dispatcher == null
+        ) {
+          throw new Error("No actor dispatcher registered.");
+        }
+        return this.#actorCallbacks.dispatcher(
+          {
+            ...reqCtx,
+            getActor(handle2: string) {
+              getLogger(["fedify", "federation"]).warn(
+                "RequestContext.getActor({getActorHandle}) is invoked from " +
+                  "the actor dispatcher ({actorDispatcherHandle}); " +
+                  "this may cause an infinite loop.",
+                { getActorHandle: handle2, actorDispatcherHandle: handle },
+              );
+              return reqCtx.getActor(handle2);
+            },
+          },
+          handle,
+          await context.getActorKey(handle),
+        );
+      },
       async getSignedKey() {
         if (signedKey !== undefined) return signedKey;
         return signedKey = await verify(request, context.documentLoader);

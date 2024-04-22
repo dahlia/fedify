@@ -33,6 +33,8 @@ To be released.
      -  `["fedify", "federation", "inbox"]`
      -  `["fedify", "federation", "outbox"]`
 
+ -  Added `RequestContext.getActor()` method.
+
 [public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
 [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
 [LogTape]: https://github.com/dahlia/logtape

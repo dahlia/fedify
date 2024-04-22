@@ -22,6 +22,7 @@ The key features of the `Context` object are as follows:
 
  -  Carrying [`TContextData`](./federation.md#tcontextdata)
  -  Building the object URIs (e.g., actor URIs, shared inbox URI)
+ -  Building Activity Vocabulary objects
  -  Getting the current HTTP request
  -  Enqueuing an outgoing activity
  -  Getting a `DocumentLoader`
@@ -136,6 +137,29 @@ section](./send.md).
 > activity to the actor's outbox and retrying the delivery on failure.
 
 [key pair dispatcher]: ./actor.md#public-key-of-an-actor
+
+
+Building `Actor` objects
+------------------------
+
+The `RequestContext` object has a method to build an `Actor` object from
+the handle.  The following shows an example of using
+the `RequestContext.getActor()` method:
+
+~~~~ typescript
+const ctx = federation.createContext(request, undefined);
+const actor = await ctx.getActor(handle);  // [!code highlight]
+await ctx.sendActivity(
+  { handle },
+  followers,
+  new Update({ actor: actor.id, object: actor }),
+);
+~~~~
+
+> [!NOTE]
+> The `RequestContext.getActor()` method is only available when the actor
+> dispatcher is registered to the `Federation` object.  If the actor dispatcher
+> is not registered, the `RequestContext.getActor()` method throws an error.
 
 
 Getting a `DocumentLoader`

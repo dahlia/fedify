@@ -143,6 +143,15 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
   readonly url: URL;
 
   /**
+   * Gets an {@link Actor} object for the given handle.
+   * @param handle The actor's handle.
+   * @returns The actor object, or `null` if the actor is not found.
+   * @throws {Error} If no actor dispatcher is available.
+   * @since 0.7.0
+   */
+  getActor(handle: string): Promise<Actor | null>;
+
+  /**
    * Gets the public key of the sender, if any exists and it is verified.
    * Otherwise, `null` is returned.
    *
