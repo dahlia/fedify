@@ -41,9 +41,18 @@ To be released.
     a path as <code>`${string}{handle}${string}`</code> instead of `string`
     so that it is more type-safe.
 
+ -  Added generalized object dispatchers.  [[#33]]
+
+     -  Added `Federation.setObjectDispatcher()` method.
+     -  Added `ObjectDispatcher` type.
+     -  Added `ObjectAuthorizePredicate` type.
+     -  Added `Context.getObjectUri()` method.
+     -  Added `RequestContext.getObject()` method.
+
 [public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
 [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
 [LogTape]: https://github.com/dahlia/logtape
+[#33]: https://github.com/dahlia/fedify/issues/33
 
 
 Version 0.6.1

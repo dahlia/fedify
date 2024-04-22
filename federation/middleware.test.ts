@@ -20,7 +20,7 @@ import {
   publicKey2,
   publicKey3,
 } from "../testing/keys.ts";
-import { Create, Person } from "../vocab/vocab.ts";
+import { Create, Note, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
 import { Federation } from "./middleware.ts";
@@ -48,6 +48,10 @@ Deno.test("Federation.createContext()", async (t) => {
     assertStrictEquals(ctx.documentLoader, documentLoader);
     assertThrows(() => ctx.getNodeInfoUri(), RouterError);
     assertThrows(() => ctx.getActorUri("handle"), RouterError);
+    assertThrows(
+      () => ctx.getObjectUri(Note, { handle: "handle", id: "id" }),
+      RouterError,
+    );
     assertThrows(() => ctx.getInboxUri(), RouterError);
     assertThrows(() => ctx.getInboxUri("handle"), RouterError);
     assertThrows(() => ctx.getOutboxUri("handle"), RouterError);
@@ -139,6 +143,20 @@ Deno.test("Federation.createContext()", async (t) => {
       }),
     );
 
+    federation.setObjectDispatcher(
+      Note,
+      "/users/{handle}/notes/{id}",
+      (_ctx, values) => {
+        return new Note({
+          summary: `Note ${values.id} by ${values.handle}`,
+        });
+      },
+    );
+    assertEquals(
+      ctx.getObjectUri(Note, { handle: "john", id: "123" }),
+      new URL("https://example.com/users/john/notes/123"),
+    );
+
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
     assertEquals(ctx.getInboxUri(), new URL("https://example.com/inbox"));
     assertEquals(
@@ -184,6 +202,14 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(ctx.request, req);
     assertEquals(ctx.url, new URL("https://example.com/"));
     assertEquals(ctx.data, 123);
+    assertRejects(
+      () => ctx.getActor("someone"),
+      Error,
+    );
+    assertRejects(
+      () => ctx.getObject(Note, { handle: "someone", id: "123" }),
+      Error,
+    );
     assertEquals(await ctx.getSignedKey(), null);
     assertEquals(await ctx.getSignedKeyOwner(), null);
     // Multiple calls should return the same result:
@@ -240,6 +266,24 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(
       await ctx2.getActor("john"),
       new Person({ preferredUsername: "john" }),
+    );
+
+    federation.setObjectDispatcher(
+      Note,
+      "/users/{handle}/notes/{id}",
+      (_ctx, values) => {
+        return new Note({
+          summary: `Note ${values.id} by ${values.handle}`,
+        });
+      },
+    );
+    const ctx3 = federation.createContext(req, 123);
+    assertEquals(ctx3.request, req);
+    assertEquals(ctx3.url, new URL("https://example.com/"));
+    assertEquals(ctx3.data, 123);
+    assertEquals(
+      await ctx2.getObject(Note, { handle: "john", id: "123" }),
+      new Note({ summary: "Note 123 by john" }),
     );
   });
 

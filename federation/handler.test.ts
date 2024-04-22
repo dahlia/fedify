@@ -2,17 +2,25 @@ import { assert, assertEquals, assertFalse } from "@std/assert";
 import { createRequestContext } from "../testing/context.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { publicKey2 } from "../testing/keys.ts";
-import { type Activity, Create, Note, Person } from "../vocab/vocab.ts";
+import {
+  type Activity,
+  Create,
+  Note,
+  type Object,
+  Person,
+} from "../vocab/vocab.ts";
 import type {
   ActorDispatcher,
   CollectionCounter,
   CollectionCursor,
   CollectionDispatcher,
+  ObjectDispatcher,
 } from "./callback.ts";
 import {
   acceptsJsonLd,
   handleActor,
   handleCollection,
+  handleObject,
   respondWithObject,
   respondWithObjectIfAcceptable,
 } from "./handler.ts";
@@ -192,14 +200,6 @@ Deno.test("handleActor()", async () => {
   assertEquals(onUnauthorizedCalled, null);
 
   onNotFoundCalled = null;
-  context = createRequestContext<void>({
-    ...context,
-    request: new Request(context.url, {
-      headers: {
-        Accept: "application/activity+json",
-      },
-    }),
-  });
   response = await handleActor(
     context.request,
     {
@@ -261,6 +261,229 @@ Deno.test("handleActor()", async () => {
     id: "https://example.com/users/someone",
     type: "Person",
     name: "Someone",
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+});
+
+Deno.test("handleObject()", async () => {
+  let context = createRequestContext<void>({
+    data: undefined,
+    url: new URL("https://example.com/"),
+    getObjectUri(_cls, values) {
+      return new URL(
+        `https://example.com/users/${values.handle}/notes/${values.id}`,
+      );
+    },
+  });
+  const objectDispatcher: ObjectDispatcher<void, Object, string> = (
+    ctx,
+    values,
+  ) => {
+    if (values.handle !== "someone" || values.id !== "123") return null;
+    return new Note({
+      id: ctx.getObjectUri(Note, values),
+      summary: "Hello, world!",
+    });
+  };
+  let onNotFoundCalled: Request | null = null;
+  const onNotFound = (request: Request) => {
+    onNotFoundCalled = request;
+    return new Response("Not found", { status: 404 });
+  };
+  let onNotAcceptableCalled: Request | null = null;
+  const onNotAcceptable = (request: Request) => {
+    onNotAcceptableCalled = request;
+    return new Response("Not acceptable", { status: 406 });
+  };
+  let onUnauthorizedCalled: Request | null = null;
+  const onUnauthorized = (request: Request) => {
+    onUnauthorizedCalled = request;
+    return new Response("Unauthorized", { status: 401 });
+  };
+  let response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "someone", id: "123" },
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+
+  onNotFoundCalled = null;
+  response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "someone", id: "123" },
+      objectDispatcher,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 406);
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, context.request);
+  assertEquals(onUnauthorizedCalled, null);
+
+  onNotAcceptableCalled = null;
+  response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "no-one", id: "123" },
+      objectDispatcher,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+
+  onNotFoundCalled = null;
+  response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "someone", id: "not-exist" },
+      objectDispatcher,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+
+  onNotFoundCalled = null;
+  context = createRequestContext<void>({
+    ...context,
+    request: new Request(context.url, {
+      headers: {
+        Accept: "application/activity+json",
+      },
+    }),
+  });
+  response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "someone", id: "123" },
+      objectDispatcher,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    id: "https://example.com/users/someone/notes/123",
+    summary: "Hello, world!",
+    type: "Note",
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+
+  response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "no-one", id: "123" },
+      objectDispatcher,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+
+  onNotFoundCalled = null;
+  response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "someone", id: "not-exist" },
+      objectDispatcher,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 404);
+  assertEquals(onNotFoundCalled, context.request);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, null);
+
+  onNotFoundCalled = null;
+  response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "someone", id: "123" },
+      objectDispatcher,
+      authorizePredicate: (_ctx, _values, signedKey, signedKeyOwner) =>
+        signedKey != null && signedKeyOwner != null,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 401);
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(onNotAcceptableCalled, null);
+  assertEquals(onUnauthorizedCalled, context.request);
+
+  onUnauthorizedCalled = null;
+  context = createRequestContext<void>({
+    ...context,
+    getSignedKey: () => Promise.resolve(publicKey2),
+    getSignedKeyOwner: () => Promise.resolve(new Person({})),
+  });
+  response = await handleObject(
+    context.request,
+    {
+      context,
+      values: { handle: "someone", id: "123" },
+      objectDispatcher,
+      authorizePredicate: (_ctx, _values, signedKey, signedKeyOwner) =>
+        signedKey != null && signedKeyOwner != null,
+      onNotFound,
+      onNotAcceptable,
+      onUnauthorized,
+    },
+  );
+  assertEquals(response.status, 200);
+  assertEquals(
+    response.headers.get("Content-Type"),
+    "application/activity+json",
+  );
+  assertEquals(await response.json(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    id: "https://example.com/users/someone/notes/123",
+    summary: "Hello, world!",
+    type: "Note",
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);

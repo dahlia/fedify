@@ -78,6 +78,7 @@ export default defineConfig({
           { text: "Inbox listeners", link: "/manual/inbox.md" },
           { text: "Sending activities", link: "/manual/send.md" },
           { text: "Collections", link: "/manual/collections.md" },
+          { text: "Object dispatcher", link: "/manual/object.md" },
           { text: "Access control", link: "/manual/access-control.md" },
           { text: "NodeInfo", link: "/manual/nodeinfo.md" },
           { text: "Pragmatics", link: "/manual/pragmatics.md" },

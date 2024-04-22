@@ -1,6 +1,6 @@
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Actor } from "../vocab/actor.ts";
-import type { Activity, CryptographicKey } from "../vocab/mod.ts";
+import type { Activity, CryptographicKey, Object } from "../vocab/mod.ts";
 
 /**
  * A context.
@@ -31,6 +31,21 @@ export interface Context<TContextData> {
    * @throws {RouterError} If no actor dispatcher is available.
    */
   getActorUri(handle: string): URL;
+
+  /**
+   * Builds the URI of an object with the given class and values.
+   * @param cls The class of the object.
+   * @param values The values to pass to the object dispatcher.
+   * @returns The object's URI.
+   * @throws {RouteError} If no object dispatcher is available for the class.
+   * @throws {TypeError} If values are invalid.
+   * @since 0.7.0
+   */
+  getObjectUri<TObject extends Object>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    values: Record<string, string>,
+  ): URL;
 
   /**
    * Builds the URI of an actor's outbox with the given handle.
@@ -150,6 +165,22 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
    * @since 0.7.0
    */
   getActor(handle: string): Promise<Actor | null>;
+
+  /**
+   * Gets an object of the given class with the given values.
+   * @param cls The class to instantiate.
+   * @param values The values to pass to the object dispatcher.
+   * @returns The object of the given class with the given values, or `null`
+   *          if the object is not found.
+   * @throws {Error} If no object dispatcher is available for the class.
+   * @throws {TypeError} If values are invalid.
+   * @since 0.7.0
+   */
+  getObject<TObject extends Object>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    values: Record<string, string>,
+  ): Promise<TObject | null>;
 
   /**
    * Gets the public key of the sender, if any exists and it is verified.

@@ -11,7 +11,7 @@ import {
   kvCache,
 } from "../runtime/docloader.ts";
 import type { Actor } from "../vocab/actor.ts";
-import { Activity, CryptographicKey } from "../vocab/mod.ts";
+import { Activity, CryptographicKey, type Object } from "../vocab/mod.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
   ActorDispatcher,
@@ -23,6 +23,8 @@ import type {
   InboxErrorHandler,
   InboxListener,
   NodeInfoDispatcher,
+  ObjectAuthorizePredicate,
+  ObjectDispatcher,
   OutboxErrorHandler,
 } from "./callback.ts";
 import type {
@@ -35,6 +37,7 @@ import {
   handleActor,
   handleCollection,
   handleInbox,
+  handleObject,
 } from "./handler.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
@@ -135,6 +138,7 @@ export class Federation<TContextData> {
   #router: Router;
   #nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
   #actorCallbacks?: ActorCallbacks<TContextData>;
+  #objectCallbacks: Record<string, ObjectCallbacks<TContextData, string>>;
   #outboxCallbacks?: CollectionCallbacks<Activity, TContextData>;
   #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData>;
   #followersCallbacks?: CollectionCallbacks<Actor | URL, TContextData>;
@@ -179,6 +183,7 @@ export class Federation<TContextData> {
     this.#router.add("/.well-known/webfinger", "webfinger");
     this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
     this.#inboxListeners = new Map();
+    this.#objectCallbacks = {};
     this.#documentLoader = documentLoader ?? kvCache({
       loader: fetchDocumentLoader,
       kv: kv,
@@ -353,6 +358,22 @@ export class Federation<TContextData> {
         }
         return new URL(path, url);
       },
+      getObjectUri: (cls, values) => {
+        const callbacks = this.#objectCallbacks[cls.typeId.href];
+        if (callbacks == null) {
+          throw new RouterError("No object dispatcher registered.");
+        }
+        for (const param of callbacks.parameters) {
+          if (!(param in values)) {
+            throw new TypeError(`Missing parameter: ${param}`);
+          }
+        }
+        const path = this.#router.build(`object:${cls.typeId.href}`, values);
+        if (path == null) {
+          throw new RouterError("No object dispatcher registered.");
+        }
+        return new URL(path, url);
+      },
       getOutboxUri: (handle: string): URL => {
         const path = this.#router.build("outbox", { handle });
         if (path == null) {
@@ -440,7 +461,7 @@ export class Federation<TContextData> {
         ) {
           throw new Error("No actor dispatcher registered.");
         }
-        return this.#actorCallbacks.dispatcher(
+        return await this.#actorCallbacks.dispatcher(
           {
             ...reqCtx,
             getActor(handle2: string) {
@@ -456,6 +477,39 @@ export class Federation<TContextData> {
           handle,
           await context.getActorKey(handle),
         );
+      },
+      getObject: async (cls, values) => {
+        const callbacks = this.#objectCallbacks[cls.typeId.href];
+        if (callbacks == null) {
+          throw new Error("No object dispatcher registered.");
+        }
+        for (const param of callbacks.parameters) {
+          if (!(param in values)) {
+            throw new TypeError(`Missing parameter: ${param}`);
+          }
+        }
+        return await callbacks.dispatcher(
+          {
+            ...reqCtx,
+            getObject(cls2, values2) {
+              getLogger(["fedify", "federation"]).warn(
+                "RequestContext.getObject({getObjectClass}, " +
+                  "{getObjectValues}) is invoked from the object dispatcher " +
+                  "({actorDispatcherClass}, {actorDispatcherValues}); " +
+                  "this may cause an infinite loop.",
+                {
+                  getObjectClass: cls2.name,
+                  getObjectValues: values2,
+                  actorDispatcherClass: cls.name,
+                  actorDispatcherValues: values,
+                },
+              );
+              return reqCtx.getObject(cls2, values2);
+            },
+          },
+          values,
+          // deno-lint-ignore no-explicit-any
+        ) as any;
       },
       async getSignedKey() {
         if (signedKey !== undefined) return signedKey;
@@ -543,6 +597,166 @@ export class Federation<TContextData> {
         return setters;
       },
       authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
+        return setters;
+      },
+    };
+    return setters;
+  }
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   * @since 0.7.0
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path:
+      `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   * @since 0.7.0
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path:
+      `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   * @since 0.7.0
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path:
+      `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   * @since 0.7.0
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path:
+      `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   * @since 0.7.0
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path: `${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   * @since 0.7.0
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path: `${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path: string,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam> {
+    const routeName = `object:${cls.typeId.href}`;
+    if (this.#router.has(routeName)) {
+      throw new RouterError(`Object dispatcher for ${cls.name} already set.`);
+    }
+    const variables = this.#router.add(path, routeName);
+    if (variables.size < 1) {
+      throw new RouterError(
+        "Path for object dispatcher must have at least one variable.",
+      );
+    }
+    const callbacks: ObjectCallbacks<TContextData, TParam> = {
+      dispatcher,
+      parameters: variables as unknown as Set<TParam>,
+    };
+    this.#objectCallbacks[cls.typeId.href] = callbacks;
+    const setters: ObjectCallbackSetters<TContextData, TObject, TParam> = {
+      authorize(predicate: ObjectAuthorizePredicate<TContextData, TParam>) {
         callbacks.authorizePredicate = predicate;
         return setters;
       },
@@ -924,7 +1138,7 @@ export class Federation<TContextData> {
       return response instanceof Promise ? await response : response;
     }
     let context = this.createContext(request, contextData);
-    switch (route.name) {
+    switch (route.name.replace(/:.*$/, "")) {
       case "webfinger":
         return await handleWebFinger(request, {
           context,
@@ -948,6 +1162,19 @@ export class Federation<TContextData> {
           onNotFound,
           onNotAcceptable,
         });
+      case "object": {
+        const typeId = route.name.replace(/^object:/, "");
+        const callbacks = this.#objectCallbacks[typeId];
+        return await handleObject(request, {
+          values: route.values,
+          context,
+          objectDispatcher: callbacks?.dispatcher,
+          authorizePredicate: callbacks?.authorizePredicate,
+          onUnauthorized,
+          onNotFound,
+          onNotAcceptable,
+        });
+      }
       case "outbox":
         return await handleCollection(request, {
           handle: route.values.handle,
@@ -1078,6 +1305,31 @@ export interface ActorCallbackSetters<TContextData> {
   authorize(
     predicate: AuthorizePredicate<TContextData>,
   ): ActorCallbackSetters<TContextData>;
+}
+
+interface ObjectCallbacks<TContextData, TParam extends string> {
+  dispatcher: ObjectDispatcher<TContextData, Object, string>;
+  parameters: Set<TParam>;
+  authorizePredicate?: ObjectAuthorizePredicate<TContextData, TParam>;
+}
+
+/**
+ * Additional settings for an object dispatcher.
+ */
+export interface ObjectCallbackSetters<
+  TContextData,
+  TObject extends Object,
+  TParam extends string,
+> {
+  /**
+   * Specifies the conditions under which requests are authorized.
+   * @param predicate A callback that returns whether a request is authorized.
+   * @returns The setters object so that settings can be chained.
+   * @since 0.7.0
+   */
+  authorize(
+    predicate: ObjectAuthorizePredicate<TContextData, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
 }
 
 /**

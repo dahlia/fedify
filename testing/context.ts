@@ -8,6 +8,7 @@ export function createContext<TContextData>(
     documentLoader,
     getNodeInfoUri,
     getActorUri,
+    getObjectUri,
     getOutboxUri,
     getInboxUri,
     getFollowingUri,
@@ -18,7 +19,7 @@ export function createContext<TContextData>(
     sendActivity,
   }: Partial<Context<TContextData>> & { data: TContextData },
 ): Context<TContextData> {
-  function throwRouteError(_handle?: string): URL {
+  function throwRouteError(): URL {
     throw new RouterError("Not implemented");
   }
   return {
@@ -26,6 +27,7 @@ export function createContext<TContextData>(
     documentLoader: documentLoader ?? mockDocumentLoader,
     getNodeInfoUri: getNodeInfoUri ?? throwRouteError,
     getActorUri: getActorUri ?? throwRouteError,
+    getObjectUri: getObjectUri ?? throwRouteError,
     getOutboxUri: getOutboxUri ?? throwRouteError,
     getInboxUri: getInboxUri ?? throwRouteError,
     getFollowingUri: getFollowingUri ?? throwRouteError,
@@ -56,6 +58,7 @@ export function createRequestContext<TContextData>(
     request: args.request ?? new Request(args.url),
     url: args.url,
     getActor: args.getActor ?? (() => Promise.resolve(null)),
+    getObject: args.getObject ?? (() => Promise.resolve(null)),
     getSignedKey: args.getSignedKey ?? (() => Promise.resolve(null)),
     getSignedKeyOwner: args.getSignedKeyOwner ?? (() => Promise.resolve(null)),
   };

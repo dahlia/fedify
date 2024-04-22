@@ -4,8 +4,8 @@ description: >-
   who can access your resources.  This section explains how to use the access
   control system.
 prev:
-  text: Collections
-  link: ./collections.md
+  text: Object dispatcher
+  link: ./object.md
 next:
   text: NodeInfo
   link: ./nodeinfo.md
@@ -35,7 +35,8 @@ Enabling authorized fetch
 
 To enable authorized fetch, you need to register an `AuthorizePredicate`
 callback with `ActorCallbackSetters.authorize()` or
-`CollectionCallbackSetters.authorize()`.  The below example shows how to enable
+`CollectionCallbackSetters.authorize()`, or `ObjectAuthorizePredicate` callback
+with `ObjectCallbackSetters.authorize()`.  The below example shows how to enable
 authorized fetch for the actor dispatcher:
 
 ~~~~ typescript{8-10}

@@ -18,6 +18,8 @@ import type {
   CollectionDispatcher,
   InboxErrorHandler,
   InboxListener,
+  ObjectAuthorizePredicate,
+  ObjectDispatcher,
 } from "./callback.ts";
 import type { RequestContext } from "./context.ts";
 import type { KvKey, KvStore } from "./kv.ts";
@@ -68,6 +70,48 @@ export async function handleActor<TContextData>(
     }
   }
   const jsonLd = await actor.toJsonLd(context);
+  return new Response(JSON.stringify(jsonLd), {
+    headers: {
+      "Content-Type": "application/activity+json",
+      Vary: "Accept",
+    },
+  });
+}
+
+export interface ObjectHandlerParameters<TContextData> {
+  values: Record<string, string>;
+  context: RequestContext<TContextData>;
+  objectDispatcher?: ObjectDispatcher<TContextData, Object, string>;
+  authorizePredicate?: ObjectAuthorizePredicate<TContextData, string>;
+  onUnauthorized(request: Request): Response | Promise<Response>;
+  onNotFound(request: Request): Response | Promise<Response>;
+  onNotAcceptable(request: Request): Response | Promise<Response>;
+}
+
+export async function handleObject<TContextData>(
+  request: Request,
+  {
+    values,
+    context,
+    objectDispatcher,
+    authorizePredicate,
+    onNotFound,
+    onNotAcceptable,
+    onUnauthorized,
+  }: ObjectHandlerParameters<TContextData>,
+): Promise<Response> {
+  if (objectDispatcher == null) return await onNotFound(request);
+  const object = await objectDispatcher(context, values);
+  if (object == null) return await onNotFound(request);
+  if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
+  if (authorizePredicate != null) {
+    const key = await context.getSignedKey();
+    const keyOwner = await context.getSignedKeyOwner();
+    if (!await authorizePredicate(context, values, key, keyOwner)) {
+      return await onUnauthorized(request);
+    }
+  }
+  const jsonLd = await object.toJsonLd(context);
   return new Response(JSON.stringify(jsonLd), {
     headers: {
       "Content-Type": "application/activity+json",

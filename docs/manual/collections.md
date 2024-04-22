@@ -6,8 +6,8 @@ prev:
   text: Sending activities
   link: ./send.md
 next:
-  text: Access control
-  link: ./access-control.md
+  text: Object dispatcher
+  link: ./object.md
 ---
 
 Collections

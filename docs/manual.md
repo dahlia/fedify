@@ -25,6 +25,7 @@ framework.
  -  [Inbox listeners](./manual/inbox.md)
  -  [Send activities](./manual/send.md)
  -  [Collections](./manual/collections.md)
+ -  [Object](./manual/object.md)
  -  [Access control](./manual/access-control.md)
  -  [NodeInfo](./manual/nodeinfo.md)
  -  [Pragmatics](./manual/pragmatics.md)

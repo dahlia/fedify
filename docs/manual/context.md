@@ -22,7 +22,7 @@ The key features of the `Context` object are as follows:
 
  -  Carrying [`TContextData`](./federation.md#tcontextdata)
  -  Building the object URIs (e.g., actor URIs, shared inbox URI)
- -  Building Activity Vocabulary objects
+ -  Dispatching Activity Vocabulary objects
  -  Getting the current HTTP request
  -  Enqueuing an outgoing activity
  -  Getting a `DocumentLoader`
@@ -139,11 +139,13 @@ section](./send.md).
 [key pair dispatcher]: ./actor.md#public-key-of-an-actor
 
 
-Building `Actor` objects
-------------------------
+Dispatching objects
+-------------------
 
-The `RequestContext` object has a method to build an `Actor` object from
-the handle.  The following shows an example of using
+*This API is available since Fedify 0.7.0.*
+
+The `RequestContext` object has a method to dispatch an Activity Vocabulary
+object from the URL arguments.  The following shows an example of using
 the `RequestContext.getActor()` method:
 
 ~~~~ typescript
@@ -160,6 +162,14 @@ await ctx.sendActivity(
 > The `RequestContext.getActor()` method is only available when the actor
 > dispatcher is registered to the `Federation` object.  If the actor dispatcher
 > is not registered, the `RequestContext.getActor()` method throws an error.
+
+In the same way, you can use the `RequestContext.getObject()` method to dispatch
+an object from the URL arguments.  The following shows an example:
+
+~~~~ typescript
+const ctx = federation.createContext(request, undefined);
+const note = await ctx.getObject(Note, { handle, id });  // [!code highlight]
+~~~~
 
 
 Getting a `DocumentLoader`
