@@ -19,8 +19,11 @@ The key features of the `Federation` object are as follows:
 
  -  Registering an [actor dispatcher](./actor.md)
  -  Registering [inbox listeners](./inbox.md)
+ -  Registering [collections](./collections.md)
+ -  Registering [object dispatchers](./object.md)
  -  Creating a `Context` object
- -  Maintaining a queue of outgoing activities
+ -  Maintaining a queue of [outgoing activities](./send.md)
+ -  Registering a [NodeInfo dispatcher](./nodeinfo.md)
 
 You can create a `Federation` object by calling the constructor function
 with an optional configuration object:

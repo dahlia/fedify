@@ -65,6 +65,7 @@ shows the methods:
 
  -  `~Context.getNodeInfoUri()`
  -  `~Context.getActorUri()`
+ -  `~Context.getObjectUri()`
  -  `~Context.getInboxUri()`
  -  `~Context.getOutboxUri()`
  -  `~Context.getFollowingUri()`

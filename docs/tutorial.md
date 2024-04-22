@@ -22,11 +22,11 @@ receiving activities, and the inbox.
 As prerequisite knowledge, you should have a basic understanding of
 JavaScript/TypeScript, command-line interfaces, and minimum experience with
 building web server apps.  However, it's perfectly fine if you're not familiar
-with the ActivityPub protocol or the Deno runtime; we will explain them as
+with the ActivityPub protocol or the [Deno] runtime; we will explain them as
 we go.
 
 > [!NOTE]
-> The Deno runtime is a secure runtime for JavaScript and TypeScript.  It is
+> The [Deno] runtime is a secure runtime for JavaScript and TypeScript.  It is
 > similar to Node.js but has a few differences, such as a built-in
 > TypeScript compiler and a secure-by-default design.  If you are already
 > familiar with Node.js, you can think of Deno as a more modern version of
@@ -34,6 +34,8 @@ we go.
 >
 > Although this tutorial is written for Deno, you can use the Fedify framework
 > in Node.js as well.  The API is the same in both Deno and Node.js.
+
+[Deno]: https://deno.com/
 
 
 What we will build
@@ -53,16 +55,20 @@ Setting up Deno
 > If you are already familiar with Deno, you can skip to the [*`Federation`
 > object* section](#federation-object).
 
-First, you need to install the Deno runtime.  Please run the following command
+First, you need to install the [Deno] runtime.  Please run the following command
 in your terminal:
 
-~~~~ sh
-curl -fsSL https://deno.land/install.sh | sh  # Linux or macOS
+::: code-group
+
+~~~~ sh [Linux/macOS]
+curl -fsSL https://deno.land/install.sh | sh
 ~~~~
 
-~~~~ powershell
-irm https://deno.land/install.ps1 | iex  # Windows
+~~~~ powershell [Windows]
+irm https://deno.land/install.ps1 | iex
 ~~~~
+
+:::
 
 > [!TIP]
 > If you are doubtful about running scripts from the internet, there are
