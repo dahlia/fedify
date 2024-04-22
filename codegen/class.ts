@@ -55,6 +55,14 @@ async function* generateClass(
     }
     `;
   }
+  yield `
+    /**
+     * The type URI of {@link ${type.name}}: \`${typeUri}\`.
+     */
+    static get typeId(): URL {
+      return new URL(${JSON.stringify(typeUri)});
+    }
+  `;
   for await (const code of generateFields(typeUri, types)) yield code;
   for await (const code of generateConstructor(typeUri, types)) yield code;
   for await (const code of generateCloner(typeUri, types)) yield code;

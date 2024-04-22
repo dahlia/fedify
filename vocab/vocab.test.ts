@@ -766,4 +766,8 @@ for (const typeUri in types) {
       await assertSnapshot(t, Deno.inspect(instance3));
     });
   }
+
+  Deno.test(`${type.name}.typeId`, () => {
+    assertEquals(cls.typeId, new URL(type.uri));
+  });
 }

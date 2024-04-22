@@ -23,7 +23,14 @@ export class PropertyValue {
     protected get _documentLoader(): DocumentLoader | undefined {
       return this.#documentLoader;
     }
-    #_4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
+    
+    /**
+     * The type URI of {@link PropertyValue}: \`http://schema.org#PropertyValue\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"http://schema.org#PropertyValue\\");
+    }
+  #_4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
 #_2cSy2magg4iZ7zLaG8U7DiJMoCkx: (string | LanguageString)[] = [];
 
   /**
@@ -279,7 +286,14 @@ export class CryptographicKey {
     protected get _documentLoader(): DocumentLoader | undefined {
       return this.#documentLoader;
     }
-    #_5UJq9NDh3ZHgswFwwdVxQvJxdx2: (Application | Group | Organization | Person | Service | URL)[] = [];
+    
+    /**
+     * The type URI of {@link CryptographicKey}: \`https://w3id.org/security#Key\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://w3id.org/security#Key\\");
+    }
+  #_5UJq9NDh3ZHgswFwwdVxQvJxdx2: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_2fE2QMDdg6KFGqa4NEC3TmjApSAD: CryptoKey[] = [];
 
   /**
@@ -616,7 +630,14 @@ export class Object {
     protected get _documentLoader(): DocumentLoader | undefined {
       return this.#documentLoader;
     }
-    #_49BipA5dq9eoH8LX8xdsVumveTca: (Object | Link | PropertyValue | URL)[] = [];
+    
+    /**
+     * The type URI of {@link Object}: \`https://www.w3.org/ns/activitystreams#Object\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Object\\");
+    }
+  #_49BipA5dq9eoH8LX8xdsVumveTca: (Object | Link | PropertyValue | URL)[] = [];
 #_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_3ocC3VVi88cEd5sPWL8djkZsvTN6: (Object | URL)[] = [];
 #_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz: (string | LanguageString)[] = [];
@@ -4126,7 +4147,14 @@ get sensitive(): (boolean | null) {
  * 
  */
 export class Activity extends Object {
-#_2DjTTboo3CNHU2a2JQqUSE2dbv9D: (Application | Group | Organization | Person | Service | URL)[] = [];
+
+    /**
+     * The type URI of {@link Activity}: \`https://www.w3.org/ns/activitystreams#Activity\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Activity\\");
+    }
+  #_2DjTTboo3CNHU2a2JQqUSE2dbv9D: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_2MH19yxjn1wnHsNfa5n4JBhJzxyc: (Object | URL)[] = [];
 
   /**
@@ -4755,6 +4783,13 @@ objects?: (Object | URL)[];}
  */
 export class Accept extends Activity {
 
+    /**
+     * The type URI of {@link Accept}: \`https://www.w3.org/ns/activitystreams#Accept\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Accept\\");
+    }
+  
   /**
    * Constructs a new instance of Accept with the given values.
    * @param values The values to initialize the instance with.
@@ -4933,6 +4968,13 @@ objects?: (Object | URL)[];}
  */
 export class Add extends Activity {
 
+    /**
+     * The type URI of {@link Add}: \`https://www.w3.org/ns/activitystreams#Add\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Add\\");
+    }
+  
   /**
    * Constructs a new instance of Add with the given values.
    * @param values The values to initialize the instance with.
@@ -5110,6 +5152,13 @@ objects?: (Object | URL)[];}
  */
 export class Announce extends Activity {
 
+    /**
+     * The type URI of {@link Announce}: \`https://www.w3.org/ns/activitystreams#Announce\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Announce\\");
+    }
+  
   /**
    * Constructs a new instance of Announce with the given values.
    * @param values The values to initialize the instance with.
@@ -5283,7 +5332,14 @@ objects?: (Object | URL)[];}
 /** Describes a software application.
  */
 export class Application extends Object {
-#_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
+
+    /**
+     * The type URI of {@link Application}: \`https://www.w3.org/ns/activitystreams#Application\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Application\\");
+    }
+  #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
@@ -6560,6 +6616,13 @@ get indexable(): (boolean | null) {
  */
 export class Article extends Object {
 
+    /**
+     * The type URI of {@link Article}: \`https://www.w3.org/ns/activitystreams#Article\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Article\\");
+    }
+  
   /**
    * Constructs a new instance of Article with the given values.
    * @param values The values to initialize the instance with.
@@ -6730,6 +6793,13 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  */
 export class Document extends Object {
 
+    /**
+     * The type URI of {@link Document}: \`https://www.w3.org/ns/activitystreams#Document\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Document\\");
+    }
+  
   /**
    * Constructs a new instance of Document with the given values.
    * @param values The values to initialize the instance with.
@@ -6920,6 +6990,13 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  */
 export class Audio extends Document {
 
+    /**
+     * The type URI of {@link Audio}: \`https://www.w3.org/ns/activitystreams#Audio\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Audio\\");
+    }
+  
   /**
    * Constructs a new instance of Audio with the given values.
    * @param values The values to initialize the instance with.
@@ -7092,6 +7169,13 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  */
 export class Ignore extends Activity {
 
+    /**
+     * The type URI of {@link Ignore}: \`https://www.w3.org/ns/activitystreams#Ignore\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Ignore\\");
+    }
+  
   /**
    * Constructs a new instance of Ignore with the given values.
    * @param values The values to initialize the instance with.
@@ -7275,6 +7359,13 @@ objects?: (Object | URL)[];}
  */
 export class Block extends Ignore {
 
+    /**
+     * The type URI of {@link Block}: \`https://www.w3.org/ns/activitystreams#Block\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Block\\");
+    }
+  
   /**
    * Constructs a new instance of Block with the given values.
    * @param values The values to initialize the instance with.
@@ -7453,7 +7544,14 @@ objects?: (Object | URL)[];}
  * 
  */
 export class Collection extends Object {
-#_XDbmNDuWHmrhqH712zqtecdbv1V: number[] = [];
+
+    /**
+     * The type URI of {@link Collection}: \`https://www.w3.org/ns/activitystreams#Collection\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Collection\\");
+    }
+  #_XDbmNDuWHmrhqH712zqtecdbv1V: number[] = [];
 #_3UyUdxnyn6cDn53QKrh4MBiearma: (CollectionPage | Link | URL)[] = [];
 #_J52RqweMe6hhv7RnLJMC8BExTE5: (CollectionPage | Link | URL)[] = [];
 #_gyJJnyEFnuNVi1HFZKfAn3Hfn26: (CollectionPage | Link | URL)[] = [];
@@ -8149,7 +8247,14 @@ get totalItems(): (number | null) {
  * 
  */
 export class CollectionPage extends Collection {
-#_2kWgBhQKjEauxx8C6qF3ZQamK4Le: (Link | Collection | URL)[] = [];
+
+    /**
+     * The type URI of {@link CollectionPage}: \`https://www.w3.org/ns/activitystreams#CollectionPage\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\");
+    }
+  #_2kWgBhQKjEauxx8C6qF3ZQamK4Le: (Link | Collection | URL)[] = [];
 #_3BT4kQLcXhHx7TAWaNDKh8nFn9eY: (CollectionPage | Link | URL)[] = [];
 #_3b8yG8tDNzQFFEnWhCc13G8eHooA: (CollectionPage | Link | URL)[] = [];
 
@@ -8667,6 +8772,13 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  */
 export class Create extends Activity {
 
+    /**
+     * The type URI of {@link Create}: \`https://www.w3.org/ns/activitystreams#Create\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Create\\");
+    }
+  
   /**
    * Constructs a new instance of Create with the given values.
    * @param values The values to initialize the instance with.
@@ -8843,6 +8955,13 @@ objects?: (Object | URL)[];}
  */
 export class Delete extends Activity {
 
+    /**
+     * The type URI of {@link Delete}: \`https://www.w3.org/ns/activitystreams#Delete\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Delete\\");
+    }
+  
   /**
    * Constructs a new instance of Delete with the given values.
    * @param values The values to initialize the instance with.
@@ -9017,6 +9136,13 @@ objects?: (Object | URL)[];}
  */
 export class Dislike extends Activity {
 
+    /**
+     * The type URI of {@link Dislike}: \`https://www.w3.org/ns/activitystreams#Dislike\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Dislike\\");
+    }
+  
   /**
    * Constructs a new instance of Dislike with the given values.
    * @param values The values to initialize the instance with.
@@ -9197,7 +9323,14 @@ export class Endpoints {
     protected get _documentLoader(): DocumentLoader | undefined {
       return this.#documentLoader;
     }
-    #_2JCYDbSxEHCCLdBYed33cCETfGyR: URL[] = [];
+    
+    /**
+     * The type URI of {@link Endpoints}: \`https://www.w3.org/ns/activitystreams#Endpoints\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Endpoints\\");
+    }
+  #_2JCYDbSxEHCCLdBYed33cCETfGyR: URL[] = [];
 #_25S6UmgzDead8hxL5sQFezZTAusd: URL[] = [];
 #_iAMxqrSba7yBCRB1FZ5kEVdKEZ3: URL[] = [];
 #_8Bx9qN8oU7Bpt2xi6khaxWp1gMr: URL[] = [];
@@ -9592,6 +9725,13 @@ get sharedInbox(): (URL | null) {
  */
 export class Event extends Object {
 
+    /**
+     * The type URI of {@link Event}: \`https://www.w3.org/ns/activitystreams#Event\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Event\\");
+    }
+  
   /**
    * Constructs a new instance of Event with the given values.
    * @param values The values to initialize the instance with.
@@ -9765,6 +9905,13 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  */
 export class Flag extends Activity {
 
+    /**
+     * The type URI of {@link Flag}: \`https://www.w3.org/ns/activitystreams#Flag\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Flag\\");
+    }
+  
   /**
    * Constructs a new instance of Flag with the given values.
    * @param values The values to initialize the instance with.
@@ -9943,6 +10090,13 @@ objects?: (Object | URL)[];}
  */
 export class Follow extends Activity {
 
+    /**
+     * The type URI of {@link Follow}: \`https://www.w3.org/ns/activitystreams#Follow\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Follow\\");
+    }
+  
   /**
    * Constructs a new instance of Follow with the given values.
    * @param values The values to initialize the instance with.
@@ -10116,7 +10270,14 @@ objects?: (Object | URL)[];}
 /** Represents a formal or informal collective of Actors.
  */
 export class Group extends Object {
-#_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
+
+    /**
+     * The type URI of {@link Group}: \`https://www.w3.org/ns/activitystreams#Group\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Group\\");
+    }
+  #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
@@ -11393,6 +11554,13 @@ get indexable(): (boolean | null) {
  */
 export class Image extends Document {
 
+    /**
+     * The type URI of {@link Image}: \`https://www.w3.org/ns/activitystreams#Image\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Image\\");
+    }
+  
   /**
    * Constructs a new instance of Image with the given values.
    * @param values The values to initialize the instance with.
@@ -11566,6 +11734,13 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  */
 export class IntransitiveActivity extends Activity {
 
+    /**
+     * The type URI of {@link IntransitiveActivity}: \`https://www.w3.org/ns/activitystreams#IntransitiveActivity\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\");
+    }
+  
   /**
    * Constructs a new instance of IntransitiveActivity with the given values.
    * @param values The values to initialize the instance with.
@@ -11742,6 +11917,13 @@ objects?: (Object | URL)[];}
  */
 export class Like extends Activity {
 
+    /**
+     * The type URI of {@link Like}: \`https://www.w3.org/ns/activitystreams#Like\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Like\\");
+    }
+  
   /**
    * Constructs a new instance of Like with the given values.
    * @param values The values to initialize the instance with.
@@ -11930,7 +12112,14 @@ export class Link {
     protected get _documentLoader(): DocumentLoader | undefined {
       return this.#documentLoader;
     }
-    #_pVjLsybKQdmkjuU7MHjiVmNnuj7: URL[] = [];
+    
+    /**
+     * The type URI of {@link Link}: \`https://www.w3.org/ns/activitystreams#Link\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Link\\");
+    }
+  #_pVjLsybKQdmkjuU7MHjiVmNnuj7: URL[] = [];
 #_2a1c5GkfkQsnyyLybF8UXBQfFuHZ: string[] = [];
 #_3BLrzmscsjHCw8TF5BHRW9WkPnX8: string[] = [];
 #_4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
@@ -12580,6 +12769,13 @@ get width(): (number | null) {
  */
 export class Mention extends Link {
 
+    /**
+     * The type URI of {@link Mention}: \`https://www.w3.org/ns/activitystreams#Mention\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Mention\\");
+    }
+  
   /**
    * Constructs a new instance of Mention with the given values.
    * @param values The values to initialize the instance with.
@@ -12726,6 +12922,13 @@ names?: (string | LanguageString)[];language?: LanguageTag | null;height?: numbe
  */
 export class Note extends Object {
 
+    /**
+     * The type URI of {@link Note}: \`https://www.w3.org/ns/activitystreams#Note\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Note\\");
+    }
+  
   /**
    * Constructs a new instance of Note with the given values.
    * @param values The values to initialize the instance with.
@@ -12898,6 +13101,13 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  */
 export class OrderedCollection extends Collection {
 
+    /**
+     * The type URI of {@link OrderedCollection}: \`https://www.w3.org/ns/activitystreams#OrderedCollection\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\");
+    }
+  
   /**
    * Constructs a new instance of OrderedCollection with the given values.
    * @param values The values to initialize the instance with.
@@ -13070,7 +13280,14 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  * 
  */
 export class OrderedCollectionPage extends CollectionPage {
-#_2W4yinFwqmpneu2h4m1mZ3pcLADd: number[] = [];
+
+    /**
+     * The type URI of {@link OrderedCollectionPage}: \`https://www.w3.org/ns/activitystreams#OrderedCollectionPage\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\");
+    }
+  #_2W4yinFwqmpneu2h4m1mZ3pcLADd: number[] = [];
 
   /**
    * Constructs a new instance of OrderedCollectionPage with the given values.
@@ -13280,7 +13497,14 @@ get startIndex(): (number | null) {
 /** Represents an organization.
  */
 export class Organization extends Object {
-#_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
+
+    /**
+     * The type URI of {@link Organization}: \`https://www.w3.org/ns/activitystreams#Organization\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Organization\\");
+    }
+  #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
@@ -14557,6 +14781,13 @@ get indexable(): (boolean | null) {
  */
 export class Page extends Document {
 
+    /**
+     * The type URI of {@link Page}: \`https://www.w3.org/ns/activitystreams#Page\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Page\\");
+    }
+  
   /**
    * Constructs a new instance of Page with the given values.
    * @param values The values to initialize the instance with.
@@ -14726,7 +14957,14 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 /** Represents an individual person.
  */
 export class Person extends Object {
-#_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
+
+    /**
+     * The type URI of {@link Person}: \`https://www.w3.org/ns/activitystreams#Person\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Person\\");
+    }
+  #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
@@ -16005,7 +16243,14 @@ get indexable(): (boolean | null) {
  * 
  */
 export class Place extends Object {
-#_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne: number[] = [];
+
+    /**
+     * The type URI of {@link Place}: \`https://www.w3.org/ns/activitystreams#Place\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Place\\");
+    }
+  #_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne: number[] = [];
 #_3Q6KDcFQUJRRaBux1BL2yp5QWiBi: number[] = [];
 #_3g85RoKRnaNjP7DFyLSvsWDg7HGM: number[] = [];
 #_B2GEYdS9yBAF3ho1pm1rcRg7cSf: number[] = [];
@@ -16425,7 +16670,14 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
  * 
  */
 export class Profile extends Object {
-#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1: (Object | URL)[] = [];
+
+    /**
+     * The type URI of {@link Profile}: \`https://www.w3.org/ns/activitystreams#Profile\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Profile\\");
+    }
+  #_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1: (Object | URL)[] = [];
 
   /**
    * Constructs a new instance of Profile with the given values.
@@ -16696,6 +16948,13 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
  */
 export class Reject extends Activity {
 
+    /**
+     * The type URI of {@link Reject}: \`https://www.w3.org/ns/activitystreams#Reject\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Reject\\");
+    }
+  
   /**
    * Constructs a new instance of Reject with the given values.
    * @param values The values to initialize the instance with.
@@ -16876,7 +17135,14 @@ objects?: (Object | URL)[];}
  * 
  */
 export class Relationship extends Object {
-#_2Zqdmi46ZnDQsECS6mzwhrv3rUKq: (Object | URL)[] = [];
+
+    /**
+     * The type URI of {@link Relationship}: \`https://www.w3.org/ns/activitystreams#Relationship\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Relationship\\");
+    }
+  #_2Zqdmi46ZnDQsECS6mzwhrv3rUKq: (Object | URL)[] = [];
 #_2MH19yxjn1wnHsNfa5n4JBhJzxyc: (Object | URL)[] = [];
 #_4Lzz89F9qipAQSGkWyX9DGWiUojG: (Object | URL)[] = [];
 
@@ -17481,6 +17747,13 @@ relationships?: (Object | URL)[];}
  */
 export class Remove extends Activity {
 
+    /**
+     * The type URI of {@link Remove}: \`https://www.w3.org/ns/activitystreams#Remove\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Remove\\");
+    }
+  
   /**
    * Constructs a new instance of Remove with the given values.
    * @param values The values to initialize the instance with.
@@ -17654,7 +17927,14 @@ objects?: (Object | URL)[];}
 /** Represents a service of any kind.
  */
 export class Service extends Object {
-#_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
+
+    /**
+     * The type URI of {@link Service}: \`https://www.w3.org/ns/activitystreams#Service\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Service\\");
+    }
+  #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
@@ -18938,6 +19218,13 @@ get indexable(): (boolean | null) {
  */
 export class Undo extends Activity {
 
+    /**
+     * The type URI of {@link Undo}: \`https://www.w3.org/ns/activitystreams#Undo\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Undo\\");
+    }
+  
   /**
    * Constructs a new instance of Undo with the given values.
    * @param values The values to initialize the instance with.
@@ -19117,6 +19404,13 @@ objects?: (Object | URL)[];}
  */
 export class Update extends Activity {
 
+    /**
+     * The type URI of {@link Update}: \`https://www.w3.org/ns/activitystreams#Update\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Update\\");
+    }
+  
   /**
    * Constructs a new instance of Update with the given values.
    * @param values The values to initialize the instance with.
@@ -19291,6 +19585,13 @@ objects?: (Object | URL)[];}
  */
 export class Video extends Document {
 
+    /**
+     * The type URI of {@link Video}: \`https://www.w3.org/ns/activitystreams#Video\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Video\\");
+    }
+  
   /**
    * Constructs a new instance of Video with the given values.
    * @param values The values to initialize the instance with.

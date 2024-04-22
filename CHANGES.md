@@ -26,7 +26,7 @@ To be released.
     option now responds with `Vary: Accept, Signature` header.
 
  -  Added log messages using the [LogTape] library.  Currently the below
-    categories are used:
+    logger categories are used:
 
      -  `["fedify"]`
      -  `["fedify", "federation"]`
@@ -34,6 +34,8 @@ To be released.
      -  `["fedify", "federation", "outbox"]`
 
  -  Added `RequestContext.getActor()` method.
+
+ -  Activity Vocabulary classes now have `typeId` static property.
 
 [public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
 [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
