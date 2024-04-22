@@ -37,6 +37,10 @@ To be released.
 
  -  Activity Vocabulary classes now have `typeId` static property.
 
+ -  Dispatcher setters and inbox listener setters in `Federation` now take
+    a path as <code>`${string}{handle}${string}`</code> instead of `string`
+    so that it is more type-safe.
+
 [public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
 [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
 [LogTape]: https://github.com/dahlia/logtape

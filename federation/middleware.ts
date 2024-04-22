@@ -523,7 +523,7 @@ export class Federation<TContextData> {
    * @throws {RouterError} Thrown if the path pattern is invalid.
    */
   setActorDispatcher(
-    path: string,
+    path: `${string}{handle}${string}`,
     dispatcher: ActorDispatcher<TContextData>,
   ): ActorCallbackSetters<TContextData> {
     if (this.#router.has("actor")) {
@@ -574,7 +574,7 @@ export class Federation<TContextData> {
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setOutboxDispatcher(
-    path: string,
+    path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Activity, TContextData>,
   ): CollectionCallbackSetters<TContextData> {
     if (this.#router.has("outbox")) {
@@ -623,7 +623,7 @@ export class Federation<TContextData> {
    * @throws {RouterError} Thrown if the path pattern is invalid.
    */
   setFollowingDispatcher(
-    path: string,
+    path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Actor | URL, TContextData>,
   ): CollectionCallbackSetters<TContextData> {
     if (this.#router.has("following")) {
@@ -672,7 +672,7 @@ export class Federation<TContextData> {
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setFollowersDispatcher(
-    path: string,
+    path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Actor | URL, TContextData>,
   ): CollectionCallbackSetters<TContextData> {
     if (this.#router.has("followers")) {
@@ -739,7 +739,7 @@ export class Federation<TContextData> {
    * @throws {RouteError} Thrown if the path pattern is invalid.
    */
   setInboxListeners(
-    inboxPath: string,
+    inboxPath: `${string}{handle}${string}`,
     sharedInboxPath?: string,
   ): InboxListenerSetter<TContextData> {
     if (this.#router.has("inbox")) {
