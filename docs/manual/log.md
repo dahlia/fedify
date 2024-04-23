@@ -11,6 +11,8 @@ next: false
 Logging
 =======
 
+*This API is available since Fedify 0.7.0.*
+
 Fedify uses the [LogTape] package to log message.  You can enable logging in
 your federated server app by installing the `@logtape/logtape` package and
 configuring it in the entry point of your app.
