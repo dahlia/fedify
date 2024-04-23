@@ -10,6 +10,7 @@
  * @module
  * @since 0.4.0
  */
+import { getLogger } from "@logtape/logtape";
 import type {
   Federation,
   FederationFetchOptions,
@@ -75,9 +76,17 @@ export function integrateFetchOptions(
  *
  * @param context A Fresh context.
  * @returns Options for the {@link Federation.handle} method.
- * @deprecated
+ * @deprecated Use {@link integrateFetchOptions} instead.
  */
-export const integrateHandlerOptions = integrateFetchOptions;
+export function integrateHandlerOptions(
+  context: FreshContext,
+): Omit<FederationFetchOptions<void>, "contextData"> {
+  getLogger(["fedify", "x", "fresh"]).warn(
+    "The integrateHandlerOptions() is deprecated.  " +
+      "Use the integrateFetchOptions() instead.",
+  );
+  return integrateFetchOptions(context);
+}
 
 /**
  * Create a Fresh middleware handler to integrate with the {@link Federation}

@@ -127,6 +127,11 @@ The `["fedify", "federation", "outbox"]` category is used for logging messages
 related to outgoing activities.  When you cannot send an activity, you can
 check the log messages in this category with the `"debug"` level.
 
+### `["fedify", "x", "fresh"]`
+
+The `["fedify", "x", "fresh"]` category is used for logging messages related
+to the `@fedify/fedify/x/fresh` module.
+
 
 Sinks
 -----

@@ -1104,6 +1104,9 @@ export class Federation<TContextData> {
     request: Request,
     options: FederationFetchOptions<TContextData>,
   ): Promise<Response> {
+    getLogger(["fedify", "federation"]).warn(
+      "Federation.handle() is deprecated.  Use Federation.fetch() instead.",
+    );
     return this.fetch(request, options);
   }
 
