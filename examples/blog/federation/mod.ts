@@ -25,7 +25,7 @@ import {
   getFollowers,
   removeFollower,
 } from "../models/follower.ts";
-import { countPosts, getPosts, toArticle } from "../models/post.ts";
+import { countPosts, getPost, getPosts, toArticle } from "../models/post.ts";
 import { openKv } from "../models/kv.ts";
 import { getLogger } from "@logtape/logtape";
 
@@ -90,6 +90,21 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
       privateKey: blog.privateKey,
     };
   });
+
+// Registers the object dispatcher, which is responsible for creating an
+// `Article` object for a given post UUID:
+federation.setObjectDispatcher(
+  Article,
+  "/posts/{uuid}",
+  async (ctx, { uuid }) => {
+    const blog = await getBlog();
+    if (blog == null) return null;
+    const post = await getPost(uuid);
+    if (post == null) return null;
+    const comments = await getComments(post.uuid);
+    return toArticle(ctx, blog, post, comments);
+  },
+);
 
 // Registers the outbox dispatcher, which is responsible for listing
 // activities in the outbox:

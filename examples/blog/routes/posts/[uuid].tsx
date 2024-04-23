@@ -24,17 +24,12 @@ export interface PostPageData {
   followers: bigint;
 }
 
-export const handler: Handler<PostPageData> = async (req, ctx) => {
+export const handler: Handler<PostPageData> = async (_req, ctx) => {
   const blog = await getBlog();
   if (blog == null) return await ctx.renderNotFound();
   const post = await getPost(ctx.params.uuid);
   if (post == null) return await ctx.renderNotFound();
   const comments = await getComments(post.uuid);
-  const fedCtx = federation.createContext(req);
-  const article = toArticle(fedCtx, blog, post, comments);
-  const response = await respondWithObjectIfAcceptable(article, req, fedCtx);
-  if (response != null) return response;
-
   const followers = await countFollowers();
   const data: PostPageData = {
     blog,
