@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.7.0
 -------------
 
-To be released.
+Released on April 23, 2024.
 
  -  Added `PUBLIC_COLLECTION` constant for [public addressing].
 
