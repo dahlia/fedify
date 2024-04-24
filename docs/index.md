@@ -59,7 +59,7 @@ features:
     <a href="https://nodeinfo.diaspora.software/">NodeInfo</a> server
   link: /manual/nodeinfo.md
 - icon: 🤝
-  title: Interoparability
+  title: Interoperability
   details: >-
     Special touch for interoperability with Mastodon and few other popular
     fediverse software
