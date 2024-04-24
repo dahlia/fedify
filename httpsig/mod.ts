@@ -231,7 +231,7 @@ export async function doesActorOwnKey(
  * @param keyId The ID of the key to check, or the key itself.
  * @param documentLoader The document loader to use for fetching the key and its owner.
  * @returns The actor that owns the key, or `null` if the key has no known owner.
- * @sicne 0.7.0
+ * @since 0.7.0
  */
 export async function getKeyOwner(
   keyId: URL | CryptographicKey,

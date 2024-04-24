@@ -52,7 +52,7 @@ federation
   });
 ~~~~
 
-The equivalet method is available for collections as well:
+The equivalent method is available for collections as well:
 
 ~~~~ typescript{8-10}
 import { federation } from "./your-federation.ts";
@@ -74,7 +74,7 @@ If the predicate returns `false`, the request is rejected with a
 Fine-grained access control
 ---------------------------
 
-You may not want to block everything from an unauthroized user, but only filter
+You may not want to block everything from an unauthorized user, but only filter
 some resources.  For example, you may want to show some private posts to
 a specific group of users.  In such cases, you can use the
 `RequestContext.getSignedKeyOwner()` method to get the actor who signed
