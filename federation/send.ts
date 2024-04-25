@@ -1,7 +1,7 @@
 import { getLogger } from "@logtape/logtape";
 import { sign } from "../httpsig/mod.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
-import type { Actor } from "../vocab/actor.ts";
+import type { Recipient } from "../vocab/actor.ts";
 import type { Activity } from "../vocab/mod.ts";
 
 /**
@@ -11,7 +11,7 @@ export interface ExtractInboxesParameters {
   /**
    * Actors to extract the inboxes from.
    */
-  recipients: Actor[];
+  recipients: Recipient[];
 
   /**
    * Whether to prefer the shared inbox over the personal inbox.

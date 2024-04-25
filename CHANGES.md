@@ -8,6 +8,14 @@ Version 0.8.0
 
 To be released.
 
+ -  Relaxed the required type for activity recipients. 
+
+     -  Added `Recipient` interface.
+     -  The type of the second parameter of `Context.sendActivity()` method
+        became `Recipient | Recipient[]` (was `Actor | Actor[]`).  However,
+        since `Recipient` is a supertype of `Actor`, the existing code should
+        work without any change.
+
 
 Version 0.7.0
 -------------

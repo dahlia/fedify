@@ -39,12 +39,12 @@ To send an activity to another actor, you can use the `Context.sendActivity()`
 method.  The following shows how to send a `Follow` activity to another actor:
 
 ~~~~ typescript{8-15}
-import { Actor, Context, Follow } from "@fedify/fedify";
+import { Context, Follow, Recipient } from "@fedify/fedify";
 
 async function sendFollow(
   ctx: Context<void>,
   senderHandle: string,
-  recipient: Actor,
+  recipient: Recipient,
 ) {
   await ctx.sendActivity(
     { handle: senderHandle },
@@ -101,12 +101,12 @@ You can do this by calling the `~Context.sendActivity()` method with the
 
 
 ~~~~ typescript
-import { Actor, Context, Follow } from "@fedify/fedify";
+import { Context, Follow, Recipient } from "@fedify/fedify";
 
 async function sendFollow(
   ctx: Context<void>,
   senderHandle: string,
-  recipient: Actor,
+  recipient: Recipient,
 ) {
   await ctx.sendActivity(
     { handle: senderHandle },
@@ -132,12 +132,18 @@ recipient's personal inbox.  To deliver an activity to the shared inbox,
 you can pass the `preferSharedInbox` option:
 
 ~~~~ typescript
-import { Actor, Context, Create, Note, PUBLIC_COLLECTION } from "@fedify/fedify";
+import {
+  Context,
+  Create,
+  Note,
+  Recipient,
+  PUBLIC_COLLECTION,
+} from "@fedify/fedify";
 
 async function sendNote(
   ctx: Context<void>,
   senderHandle: string,
-  recipient: Actor,
+  recipient: Recipient,
 ) {
   await ctx.sendActivity(
     { handle: senderHandle },

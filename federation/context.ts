@@ -1,5 +1,5 @@
 import type { DocumentLoader } from "../runtime/docloader.ts";
-import type { Actor } from "../vocab/actor.ts";
+import type { Actor, Recipient } from "../vocab/actor.ts";
 import type { Activity, CryptographicKey, Object } from "../vocab/mod.ts";
 
 /**
@@ -137,7 +137,7 @@ export interface Context<TContextData> {
    */
   sendActivity(
     sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
-    recipients: Actor | Actor[],
+    recipients: Recipient | Recipient[],
     activity: Activity,
     options?: SendActivityOptions,
   ): Promise<void>;

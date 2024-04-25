@@ -123,3 +123,30 @@ export async function getActorHandle(
     "Actor does not have enough information to get the handle.",
   );
 }
+
+/**
+ * The object that can be a recipient of an activity.
+ *
+ * Note that every {@link Actor} is also a {@link Recipient}.
+ */
+export interface Recipient {
+  /**
+   * The URI of the actor.
+   */
+  readonly id: URL | null;
+
+  /**
+   * The URI of the actor's inbox.
+   */
+  readonly inboxId: URL | null;
+
+  /**
+   * The endpoints of the actor.
+   */
+  readonly endpoints?: {
+    /**
+     * The URI of the actor's shared inbox.
+     */
+    sharedInbox: URL | null;
+  } | null;
+}

@@ -10,7 +10,7 @@ import {
   getAuthenticatedDocumentLoader,
   kvCache,
 } from "../runtime/docloader.ts";
-import type { Actor } from "../vocab/actor.ts";
+import type { Actor, Recipient } from "../vocab/actor.ts";
 import { Activity, CryptographicKey, type Object } from "../vocab/mod.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
@@ -431,7 +431,7 @@ export class Federation<TContextData> {
       getDocumentLoader,
       sendActivity: async (
         sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
-        recipients: Actor | Actor[],
+        recipients: Recipient | Recipient[],
         activity: Activity,
         options: SendActivityOptions = {},
       ): Promise<void> => {
@@ -1008,7 +1008,7 @@ export class Federation<TContextData> {
    */
   async sendActivity(
     { keyId, privateKey }: { keyId: URL; privateKey: CryptoKey },
-    recipients: Actor | Actor[],
+    recipients: Recipient | Recipient[],
     activity: Activity,
     { preferSharedInbox, immediate }: SendActivityOptions = {},
   ): Promise<void> {
