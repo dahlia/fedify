@@ -7,5 +7,7 @@
 
 # Fresh build directory
 _fresh/
+# Log files
+log.jsonl
 # npm dependencies
 node_modules/

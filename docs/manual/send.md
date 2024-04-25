@@ -177,6 +177,60 @@ async function sendNote(
 [shared inbox delivery]: https://www.w3.org/TR/activitypub/#shared-inbox-delivery
 
 
+Followers collection synchronization
+------------------------------------
+
+*This API is available since Fedify 0.8.0.*
+
+> [!NOTE]
+> For efficiency, you should implement
+> [filtering-by-server](./collections.md#filtering-by-server) of
+> the followers collection, otherwise the synchronization may be slow.
+
+If an activity needs to be delivered to only followers of the sender through
+the shared inbox, the server of the recipients has to be aware of the list of
+followers residing on the server.  However, synchronizing the followers
+collection every time an activity is sent is inefficient. To solve this problem,
+Mastodon, etc., use a mechanism called [followers collection
+synchronization][FEP-8fcf].
+
+The idea is to send a digest of the followers collection with the activity
+so that the recipient server can check if it needs to resynchronize
+the followers collection.  Fedify provides a way to include the digest
+of the followers collection in the activity delivery request by specifying
+the recipients parameter of the `~Context.sendActivity()` method as
+the `"followers"` string:
+
+~~~~ typescript
+await ctx.sendActivity(
+  { handle: senderHandle },
+  "followers",  // [!code highlight]
+  new Create({
+    actor: ctx.getActorUri(senderHandle),
+    to: ctx.getFollowersUri(senderHandle),
+    object: new Note({
+      attribution: ctx.getActorUri(senderHandle),
+      to: ctx.getFollowersUri(senderHandle),
+    }),
+  }),
+  { preferSharedInbox: true },  // [!code highlight]
+);
+~~~~
+
+If you specify the `"followers"` string as the recipients parameter,
+it automatically sends the activity to the sender's followers and includes
+the digest of the followers collection in the payload.
+
+> [!NOTE]
+> The `to` and `cc` properties of an `Activity` and its `object` should be set
+> to the followers collection IRI to ensure that the activity is visible to
+> the followers.  If you set the `to` and `cc` properties to
+> the `PUBLIC_COLLECTION`, the activity is visible to everyone regardless of
+> the recipients parameter.
+
+[FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
+
+
 Error handling
 --------------
 

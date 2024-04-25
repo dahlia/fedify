@@ -3,10 +3,11 @@ import { getLogger } from "@logtape/logtape";
 import { accepts } from "@std/http/negotiation";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
+import type { Recipient } from "../vocab/actor.ts";
 import {
   Activity,
-  type Link,
-  type Object,
+  Link,
+  Object,
   OrderedCollection,
   OrderedCollectionPage,
 } from "../vocab/vocab.ts";
@@ -123,26 +124,26 @@ export async function handleObject<TContextData>(
 /**
  * Callbacks for handling a collection.
  */
-export interface CollectionCallbacks<TItem, TContextData> {
+export interface CollectionCallbacks<TItem, TContextData, TFilter> {
   /**
    * A callback that dispatches a collection.
    */
-  dispatcher: CollectionDispatcher<TItem, TContextData>;
+  dispatcher: CollectionDispatcher<TItem, TContextData, TFilter>;
 
   /**
    * A callback that counts the number of items in a collection.
    */
-  counter?: CollectionCounter<TContextData>;
+  counter?: CollectionCounter<TContextData, TFilter>;
 
   /**
    * A callback that returns the first cursor for a collection.
    */
-  firstCursor?: CollectionCursor<TContextData>;
+  firstCursor?: CollectionCursor<TContextData, TFilter>;
 
   /**
    * A callback that returns the last cursor for a collection.
    */
-  lastCursor?: CollectionCursor<TContextData>;
+  lastCursor?: CollectionCursor<TContextData, TFilter>;
 
   /**
    * A callback that determines if a request is authorized to access the collection.
@@ -150,28 +151,35 @@ export interface CollectionCallbacks<TItem, TContextData> {
   authorizePredicate?: AuthorizePredicate<TContextData>;
 }
 
-export interface CollectionHandlerParameters<TItem, TContextData> {
+export interface CollectionHandlerParameters<TItem, TContextData, TFilter> {
+  name: string;
   handle: string;
+  filter?: TFilter;
+  filterPredicate?: (item: TItem) => boolean;
   context: RequestContext<TContextData>;
-  collectionCallbacks?: CollectionCallbacks<TItem, TContextData>;
+  collectionCallbacks?: CollectionCallbacks<TItem, TContextData, TFilter>;
   onUnauthorized(request: Request): Response | Promise<Response>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
 
 export async function handleCollection<
-  TItem extends URL | Object | Link,
+  TItem extends URL | Object | Link | Recipient,
   TContextData,
+  TFilter,
 >(
   request: Request,
   {
+    name,
     handle,
+    filter,
+    filterPredicate,
     context,
     collectionCallbacks,
     onUnauthorized,
     onNotFound,
     onNotAcceptable,
-  }: CollectionHandlerParameters<TItem, TContextData>,
+  }: CollectionHandlerParameters<TItem, TContextData, TFilter>,
 ): Promise<Response> {
   if (collectionCallbacks == null) return await onNotFound(request);
   const url = new URL(request.url);
@@ -184,12 +192,17 @@ export async function handleCollection<
     );
     const totalItems = await collectionCallbacks.counter?.(context, handle);
     if (firstCursor == null) {
-      const page = await collectionCallbacks.dispatcher(context, handle, null);
+      const page = await collectionCallbacks.dispatcher(
+        context,
+        handle,
+        null,
+        filter,
+      );
       if (page == null) return await onNotFound(request);
       const { items } = page;
       collection = new OrderedCollection({
         totalItems: totalItems == null ? null : Number(totalItems),
-        items,
+        items: filterCollectionItems(items, name, filterPredicate),
       });
     } else {
       const lastCursor = await collectionCallbacks.lastCursor?.(
@@ -210,7 +223,12 @@ export async function handleCollection<
       });
     }
   } else {
-    const page = await collectionCallbacks.dispatcher(context, handle, cursor);
+    const page = await collectionCallbacks.dispatcher(
+      context,
+      handle,
+      cursor,
+      filter,
+    );
     if (page == null) return await onNotFound(request);
     const { items, prevCursor, nextCursor } = page;
     let prev = null;
@@ -225,7 +243,12 @@ export async function handleCollection<
     }
     const partOf = new URL(context.url);
     partOf.searchParams.delete("cursor");
-    collection = new OrderedCollectionPage({ prev, next, items, partOf });
+    collection = new OrderedCollectionPage({
+      prev,
+      next,
+      items: filterCollectionItems(items, name, filterPredicate),
+      partOf,
+    });
   }
   if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
   if (collectionCallbacks.authorizePredicate != null) {
@@ -249,6 +272,35 @@ export async function handleCollection<
       Vary: "Accept",
     },
   });
+}
+
+function filterCollectionItems<TItem extends Object | Link | Recipient | URL>(
+  items: TItem[],
+  collectionName: string,
+  filterPredicate?: (item: TItem) => boolean,
+): (Object | Link | URL)[] {
+  const result: (Object | Link | URL)[] = [];
+  let logged = false;
+  for (const item of items) {
+    let mappedItem: Object | Link | URL;
+    if (item instanceof Object || item instanceof Link || item instanceof URL) {
+      mappedItem = item;
+    } else if (item.id == null) continue;
+    else mappedItem = item.id;
+    if (filterPredicate != null && !filterPredicate(item)) {
+      if (!logged) {
+        getLogger(["fedify", "federation", "collection"]).warn(
+          `The ${collectionName} collection apparently does not implement ` +
+            "filtering.  This may result in a large response payload.  " +
+            "Please consider implementing filtering for the collection.",
+        );
+        logged = true;
+      }
+      continue;
+    }
+    result.push(mappedItem);
+  }
+  return result;
 }
 
 export interface InboxHandlerParameters<TContextData> {

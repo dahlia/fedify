@@ -24,19 +24,22 @@ export interface ExtractInboxesParameters {
  * Extracts the inbox URLs from recipients.
  * @param parameters The parameters to extract the inboxes.
  *                   See also {@link ExtractInboxesParameters}.
- * @returns The inbox URLs.
+ * @returns The inboxes as a map of inbox URL to actor URIs.
  */
 export function extractInboxes(
   { recipients, preferSharedInbox }: ExtractInboxesParameters,
-): Set<URL> {
-  const inboxes: Record<string, URL> = {};
+): Record<string, Set<string>> {
+  const inboxes: Record<string, Set<string>> = {};
   for (const recipient of recipients) {
     const inbox = preferSharedInbox
       ? recipient.endpoints?.sharedInbox ?? recipient.inboxId
       : recipient.inboxId;
-    if (inbox != null) inboxes[inbox.href] = inbox;
+    if (inbox != null && recipient.id != null) {
+      inboxes[inbox.href] ??= new Set();
+      inboxes[inbox.href].add(recipient.id.href);
+    }
   }
-  return new Set(Object.values(inboxes));
+  return inboxes;
 }
 
 /**
@@ -67,6 +70,11 @@ export interface SendActivityParameters {
    * The document loader to use for JSON-LD context retrieval.
    */
   documentLoader?: DocumentLoader;
+
+  /**
+   * Additional headers to include in the request.
+   */
+  headers?: Headers;
 }
 
 /**
@@ -83,6 +91,7 @@ export async function sendActivity(
     keyId,
     inbox,
     documentLoader,
+    headers,
   }: SendActivityParameters,
 ): Promise<void> {
   const logger = getLogger(["fedify", "federation", "outbox"]);
@@ -92,11 +101,11 @@ export async function sendActivity(
     );
   }
   const jsonLd = await activity.toJsonLd({ documentLoader });
+  headers = new Headers(headers);
+  headers.set("Content-Type", "application/activity+json");
   let request = new Request(inbox, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/activity+json",
-    },
+    headers,
     body: JSON.stringify(jsonLd),
   });
   request = await sign(request, privateKey, keyId);

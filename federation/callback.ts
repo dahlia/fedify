@@ -57,10 +57,11 @@ export type ObjectDispatcher<
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
  */
-export type CollectionDispatcher<TItem, TContextData> = (
+export type CollectionDispatcher<TItem, TContextData, TFilter> = (
   context: RequestContext<TContextData>,
   handle: string,
   cursor: string | null,
+  filter?: TFilter,
 ) => PageItems<TItem> | null | Promise<PageItems<TItem> | null>;
 
 /**
@@ -68,9 +69,10 @@ export type CollectionDispatcher<TItem, TContextData> = (
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
  */
-export type CollectionCounter<TContextData> = (
+export type CollectionCounter<TContextData, TFilter> = (
   context: RequestContext<TContextData>,
   handle: string,
+  filter?: TFilter,
 ) => number | bigint | null | Promise<number | bigint | null>;
 
 /**
@@ -78,9 +80,10 @@ export type CollectionCounter<TContextData> = (
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
  */
-export type CollectionCursor<TContextData> = (
+export type CollectionCursor<TContextData, TFilter> = (
   context: RequestContext<TContextData>,
   handle: string,
+  filter?: TFilter,
 ) => string | null | Promise<string | null>;
 
 /**

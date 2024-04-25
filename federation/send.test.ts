@@ -52,21 +52,26 @@ Deno.test("extractInboxes()", () => {
   let inboxes = extractInboxes({ recipients });
   assertEquals(
     inboxes,
-    new Set([
-      new URL("https://example.com/alice/inbox"),
-      new URL("https://example.com/app/inbox"),
-      new URL("https://example.org/group/inbox"),
-      new URL("https://example.net/service/inbox"),
-    ]),
+    {
+      "https://example.com/alice/inbox": new Set(["https://example.com/alice"]),
+      "https://example.com/app/inbox": new Set(["https://example.com/app"]),
+      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
+      "https://example.net/service/inbox": new Set([
+        "https://example.net/service",
+      ]),
+    },
   );
   inboxes = extractInboxes({ recipients, preferSharedInbox: true });
   assertEquals(
     inboxes,
-    new Set([
-      new URL("https://example.com/inbox"),
-      new URL("https://example.org/group/inbox"),
-      new URL("https://example.net/inbox"),
-    ]),
+    {
+      "https://example.com/inbox": new Set([
+        "https://example.com/alice",
+        "https://example.com/app",
+      ]),
+      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
+      "https://example.net/inbox": new Set(["https://example.net/service"]),
+    },
   );
 });
 
@@ -120,6 +125,9 @@ Deno.test("sendActivity()", async (t) => {
       keyId: publicKey2.id!,
       inbox: new URL("https://example.com/inbox"),
       documentLoader: mockDocumentLoader,
+      headers: new Headers({
+        "X-Test": "test",
+      }),
     });
     assertStrictEquals(verified, true);
     assertNotEquals(request, null);
@@ -129,6 +137,7 @@ Deno.test("sendActivity()", async (t) => {
       request?.headers.get("Content-Type"),
       "application/activity+json",
     );
+    assertEquals(request?.headers.get("X-Test"), "test");
   });
 
   mf.mock("POST@/inbox2", (_req) => {

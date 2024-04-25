@@ -133,7 +133,6 @@ export interface Context<TContextData> {
    * @param recipients The recipients of the activity.
    * @param activity The activity to send.
    * @param options Options for sending the activity.
-   * @throws {Error} If the sender is not valid.
    */
   sendActivity(
     sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
@@ -210,6 +209,36 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
    * @since 0.7.0
    */
   getSignedKeyOwner(): Promise<Actor | null>;
+
+  /**
+   * Sends an activity to recipients' inboxes.
+   * @param sender The sender's handle or the sender's key pair.
+   * @param recipients The recipients of the activity.
+   * @param activity The activity to send.
+   * @param options Options for sending the activity.
+   */
+  sendActivity(
+    sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+    recipients: Recipient | Recipient[],
+    activity: Activity,
+    options?: SendActivityOptions,
+  ): Promise<void>;
+
+  /**
+   * Sends an activity to the outboxes of the sender's followers.
+   * @param sender The sender's handle.
+   * @param recipients In this case, it must be `"followers"`.
+   * @param activity The activity to send.
+   * @param options Options for sending the activity.
+   * @throws {Error} If no followers collection is registered.
+   * @since 0.8.0
+   */
+  sendActivity(
+    sender: { handle: string },
+    recipients: "followers",
+    activity: Activity,
+    options?: SendActivityOptions,
+  ): Promise<void>;
 }
 
 /**

@@ -8,6 +8,19 @@ Version 0.8.0
 
 To be released.
 
+ -  Implemented [followers collection synchronization mechanism][FEP-8fcf].
+
+     -  Added `RequestContext.sendActivity()` overload that takes `"followers"`
+        as the second parameter.
+     -  Added the second type parameter to `CollectionCallbackSetters`
+        interface.
+     -  Added the second type parameter to `CollectionDispatcher` type.
+     -  Added the fourth parameter to `CollectionDispatcher` type.
+     -  Added the second type parameter to `CollectionCounter` type.
+     -  Added the third parameter to `CollectionCounter` type.
+     -  Added the second type parameter to `CollectionCursor` type.
+     -  Added the third parameter to `CollectionCursor` type.
+
  -  Relaxed the required type for activity recipients. 
 
      -  Added `Recipient` interface.
@@ -15,6 +28,15 @@ To be released.
         became `Recipient | Recipient[]` (was `Actor | Actor[]`).  However,
         since `Recipient` is a supertype of `Actor`, the existing code should
         work without any change.
+
+ -  Followers collection now has to consist of `Recipient` objects only.
+    (It could consist of `URL`s as well as `Actor`s before.)
+
+     -  The type of `Federation.setFollowersDispatcher()` method's second
+        parameter became `CollectionDispatcher<Recipient, TContextData, URL>`
+        (was `CollectionDispatcher<Actor | URL, TContextData>`).
+
+[FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
 
 
 Version 0.7.0
@@ -52,7 +74,7 @@ Released on April 23, 2024.
  -  Activity Vocabulary classes now have `typeId` static property.
 
  -  Dispatcher setters and inbox listener setters in `Federation` now take
-    a path as <code>`${string}{handle}${string}`</code> instead of `string`
+    a path as `` `${string}{handle}${string}` `` instead of `string`
     so that it is more type-safe.
 
  -  Added generalized object dispatchers.  [[#33]]

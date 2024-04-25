@@ -498,7 +498,7 @@ Deno.test("handleCollection()", async () => {
       return new URL(`https://example.com/users/${handle}`);
     },
   });
-  const dispatcher: CollectionDispatcher<Activity, void> = (
+  const dispatcher: CollectionDispatcher<Activity, void, void> = (
     _ctx,
     handle,
     cursor,
@@ -519,11 +519,11 @@ Deno.test("handleCollection()", async () => {
     }
     return { items };
   };
-  const counter: CollectionCounter<void> = (_ctx, handle) =>
+  const counter: CollectionCounter<void, void> = (_ctx, handle) =>
     handle === "someone" ? 3 : null;
-  const firstCursor: CollectionCursor<void> = (_ctx, handle) =>
+  const firstCursor: CollectionCursor<void, void> = (_ctx, handle) =>
     handle === "someone" ? "0" : null;
-  const lastCursor: CollectionCursor<void> = (_ctx, handle) =>
+  const lastCursor: CollectionCursor<void, void> = (_ctx, handle) =>
     handle === "someone" ? "2" : null;
   let onNotFoundCalled: Request | null = null;
   const onNotFound = (request: Request) => {
@@ -544,6 +544,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "someone",
       onNotFound,
       onNotAcceptable,
@@ -560,6 +561,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "someone",
       collectionCallbacks: { dispatcher },
       onNotFound,
@@ -577,6 +579,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "no-one",
       collectionCallbacks: { dispatcher },
       onNotFound,
@@ -602,6 +605,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "no-one",
       collectionCallbacks: { dispatcher },
       onNotFound,
@@ -619,6 +623,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "someone",
       collectionCallbacks: { dispatcher },
       onNotFound,
@@ -648,6 +653,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "someone",
       collectionCallbacks: {
         dispatcher,
@@ -674,6 +680,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "someone",
       collectionCallbacks: {
         dispatcher,
@@ -707,6 +714,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "someone",
       collectionCallbacks: {
         dispatcher,
@@ -749,6 +757,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "someone",
       collectionCallbacks: {
         dispatcher,
@@ -794,6 +803,7 @@ Deno.test("handleCollection()", async () => {
     context.request,
     {
       context,
+      name: "collection",
       handle: "someone",
       collectionCallbacks: {
         dispatcher,

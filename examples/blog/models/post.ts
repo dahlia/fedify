@@ -1,6 +1,11 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { RequestContext } from "@fedify/fedify/federation";
-import { Article, Collection, CollectionPage } from "@fedify/fedify/vocab";
+import {
+  Article,
+  Collection,
+  CollectionPage,
+  PUBLIC_COLLECTION,
+} from "@fedify/fedify/vocab";
 import markdownIt from "markdown-it";
 import { uuidv7 } from "uuidv7";
 import { Blog } from "./blog.ts";
@@ -86,7 +91,7 @@ export function toArticle(
   return new Article({
     id: url,
     attribution: context.getActorUri(blog.handle),
-    to: new URL("https://www.w3.org/ns/activitystreams#Public"),
+    to: PUBLIC_COLLECTION,
     summary: post.title,
     content: getContentHtml(post),
     published: post.published,

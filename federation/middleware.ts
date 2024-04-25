@@ -27,6 +27,7 @@ import type {
   ObjectDispatcher,
   OutboxErrorHandler,
 } from "./callback.ts";
+import { buildCollectionSynchronizationHeader } from "./collection.ts";
 import type {
   Context,
   RequestContext,
@@ -139,9 +140,9 @@ export class Federation<TContextData> {
   #nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
   #actorCallbacks?: ActorCallbacks<TContextData>;
   #objectCallbacks: Record<string, ObjectCallbacks<TContextData, string>>;
-  #outboxCallbacks?: CollectionCallbacks<Activity, TContextData>;
-  #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData>;
-  #followersCallbacks?: CollectionCallbacks<Actor | URL, TContextData>;
+  #outboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
+  #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData, void>;
+  #followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
   #inboxListeners: Map<
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
@@ -219,6 +220,7 @@ export class Federation<TContextData> {
       inbox: message.inbox,
       activity: message.activity,
       trial: message.trial,
+      headers: message.headers,
     };
     let activity: Activity | null = null;
     try {
@@ -236,6 +238,7 @@ export class Federation<TContextData> {
         activity,
         inbox: new URL(message.inbox),
         documentLoader,
+        headers: new Headers(message.headers),
       });
     } catch (error) {
       try {
@@ -341,7 +344,7 @@ export class Federation<TContextData> {
       }
       return getAuthenticatedDocumentLoader(identity);
     }
-    const context: Context<TContextData> = {
+    const context = {
       data: contextData,
       documentLoader: this.#documentLoader,
       getNodeInfoUri: (): URL => {
@@ -358,7 +361,11 @@ export class Federation<TContextData> {
         }
         return new URL(path, url);
       },
-      getObjectUri: (cls, values) => {
+      getObjectUri: (
+        // deno-lint-ignore no-explicit-any
+        cls: (new (...args: any[]) => any) & { typeId: URL },
+        values: Record<string, string>,
+      ) => {
         const callbacks = this.#objectCallbacks[cls.typeId.href];
         if (callbacks == null) {
           throw new RouterError("No object dispatcher registered.");
@@ -431,7 +438,7 @@ export class Federation<TContextData> {
       getDocumentLoader,
       sendActivity: async (
         sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
-        recipients: Recipient | Recipient[],
+        recipients: Recipient | Recipient[] | "followers",
         activity: Activity,
         options: SendActivityOptions = {},
       ): Promise<void> => {
@@ -439,11 +446,34 @@ export class Federation<TContextData> {
           "handle" in sender
             ? await getKeyPairFromHandle(sender.handle)
             : sender;
+        const opts: SendActivityInternalOptions = { ...options };
+        let expandedRecipients: Recipient[];
+        if (Array.isArray(recipients)) {
+          expandedRecipients = recipients;
+        } else if (recipients === "followers") {
+          if (!("handle" in sender)) {
+            throw new Error(
+              "If recipients is 'followers', sender must be an actor handle.",
+            );
+          }
+          expandedRecipients = [];
+          for await (
+            const recipient of this.#getFollowers(reqCtx, sender.handle)
+          ) {
+            expandedRecipients.push(recipient);
+          }
+          const collectionId = this.#router.build("followers", sender);
+          opts.collectionSync = collectionId == null
+            ? undefined
+            : new URL(collectionId, url).href;
+        } else {
+          expandedRecipients = [recipients];
+        }
         return await this.sendActivity(
           senderPair,
-          recipients,
+          expandedRecipients,
           activity,
-          options,
+          opts,
         );
       },
     };
@@ -789,8 +819,8 @@ export class Federation<TContextData> {
    */
   setOutboxDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Activity, TContextData>,
-  ): CollectionCallbackSetters<TContextData> {
+    dispatcher: CollectionDispatcher<Activity, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void> {
     if (this.#router.has("outbox")) {
       throw new RouterError("Outbox dispatcher already set.");
     }
@@ -800,20 +830,20 @@ export class Federation<TContextData> {
         "Path for outbox dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: CollectionCallbacks<Activity, TContextData> = {
+    const callbacks: CollectionCallbacks<Activity, TContextData, void> = {
       dispatcher,
     };
     this.#outboxCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData> = {
-      setCounter(counter: CollectionCounter<TContextData>) {
+    const setters: CollectionCallbackSetters<TContextData, void> = {
+      setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData>) {
+      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData>) {
+      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -838,8 +868,8 @@ export class Federation<TContextData> {
    */
   setFollowingDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Actor | URL, TContextData>,
-  ): CollectionCallbackSetters<TContextData> {
+    dispatcher: CollectionDispatcher<Actor | URL, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void> {
     if (this.#router.has("following")) {
       throw new RouterError("Following collection dispatcher already set.");
     }
@@ -849,20 +879,20 @@ export class Federation<TContextData> {
         "Path for following collection dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: CollectionCallbacks<Actor | URL, TContextData> = {
+    const callbacks: CollectionCallbacks<Actor | URL, TContextData, void> = {
       dispatcher,
     };
     this.#followingCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData> = {
-      setCounter(counter: CollectionCounter<TContextData>) {
+    const setters: CollectionCallbackSetters<TContextData, void> = {
+      setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData>) {
+      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData>) {
+      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -887,8 +917,12 @@ export class Federation<TContextData> {
    */
   setFollowersDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Actor | URL, TContextData>,
-  ): CollectionCallbackSetters<TContextData> {
+    dispatcher: CollectionDispatcher<
+      Recipient,
+      TContextData,
+      URL
+    >,
+  ): CollectionCallbackSetters<TContextData, URL> {
     if (this.#router.has("followers")) {
       throw new RouterError("Followers collection dispatcher already set.");
     }
@@ -898,20 +932,24 @@ export class Federation<TContextData> {
         "Path for followers collection dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: CollectionCallbacks<Actor | URL, TContextData> = {
+    const callbacks: CollectionCallbacks<
+      Recipient,
+      TContextData,
+      URL
+    > = {
       dispatcher,
     };
     this.#followersCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData> = {
-      setCounter(counter: CollectionCounter<TContextData>) {
+    const setters: CollectionCallbackSetters<TContextData, URL> = {
+      setCounter(counter: CollectionCounter<TContextData, URL>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData>) {
+      setFirstCursor(cursor: CollectionCursor<TContextData, URL>) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData>) {
+      setLastCursor(cursor: CollectionCursor<TContextData, URL>) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -921,6 +959,40 @@ export class Federation<TContextData> {
       },
     };
     return setters;
+  }
+
+  async *#getFollowers(
+    context: RequestContext<TContextData>,
+    handle: string,
+  ): AsyncIterable<Recipient> {
+    if (this.#followersCallbacks == null) {
+      throw new Error("No followers collection dispatcher registered.");
+    }
+    const result = await this.#followersCallbacks.dispatcher(
+      context,
+      handle,
+      null,
+    );
+    if (result != null) {
+      for (const recipient of result.items) yield recipient;
+      return;
+    }
+    if (this.#followersCallbacks.firstCursor == null) {
+      throw new Error(
+        "No first cursor dispatcher registered for followers collection.",
+      );
+    }
+    let cursor = await this.#followersCallbacks.firstCursor(context, handle);
+    while (cursor != null) {
+      const result = await this.#followersCallbacks.dispatcher(
+        context,
+        handle,
+        cursor,
+      );
+      if (result == null) break;
+      for (const recipient of result.items) yield recipient;
+      cursor = result.nextCursor ?? null;
+    }
   }
 
   /**
@@ -1010,7 +1082,8 @@ export class Federation<TContextData> {
     { keyId, privateKey }: { keyId: URL; privateKey: CryptoKey },
     recipients: Recipient | Recipient[],
     activity: Activity,
-    { preferSharedInbox, immediate }: SendActivityOptions = {},
+    { preferSharedInbox, immediate, collectionSync }:
+      SendActivityInternalOptions = {},
   ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
     if (activity.actorId == null) {
@@ -1034,7 +1107,7 @@ export class Federation<TContextData> {
       preferSharedInbox,
     });
     logger.debug("Sending activity {activityId} to inboxes:\n{inboxes}", {
-      inboxes: [...inboxes].map((u) => u.href),
+      inboxes: globalThis.Object.keys(inboxes),
       activityId: activity.id?.href,
       activity,
     });
@@ -1055,14 +1128,21 @@ export class Federation<TContextData> {
         );
       }
       const promises: Promise<void>[] = [];
-      for (const inbox of inboxes) {
+      for (const inbox in inboxes) {
         promises.push(
           sendActivity({
             keyId,
             privateKey,
             activity,
-            inbox,
+            inbox: new URL(inbox),
             documentLoader,
+            headers: collectionSync == null ? undefined : new Headers({
+              "Collection-Synchronization":
+                await buildCollectionSynchronizationHeader(
+                  collectionSync,
+                  inboxes[inbox],
+                ),
+            }),
           }),
         );
       }
@@ -1075,14 +1155,21 @@ export class Federation<TContextData> {
     );
     const privateKeyJwk = await exportJwk(privateKey);
     const activityJson = await activity.toJsonLd({ documentLoader });
-    for (const inbox of inboxes) {
+    for (const inbox in inboxes) {
       const message: OutboxMessage = {
         type: "outbox",
         keyId: keyId.href,
         privateKey: privateKeyJwk,
         activity: activityJson,
-        inbox: inbox.href,
+        inbox,
         trial: 0,
+        headers: collectionSync == null ? {} : {
+          "Collection-Synchronization":
+            await buildCollectionSynchronizationHeader(
+              collectionSync,
+              inboxes[inbox],
+            ),
+        },
       };
       this.#queue.enqueue(message);
     }
@@ -1180,6 +1267,7 @@ export class Federation<TContextData> {
       }
       case "outbox":
         return await handleCollection(request, {
+          name: "outbox",
           handle: route.values.handle,
           context,
           collectionCallbacks: this.#outboxCallbacks,
@@ -1208,6 +1296,7 @@ export class Federation<TContextData> {
         });
       case "following":
         return await handleCollection(request, {
+          name: "following",
           handle: route.values.handle,
           context,
           collectionCallbacks: this.#followingCallbacks,
@@ -1215,15 +1304,29 @@ export class Federation<TContextData> {
           onNotFound,
           onNotAcceptable,
         });
-      case "followers":
+      case "followers": {
+        let baseUrl = url.searchParams.get("base-url");
+        if (baseUrl != null) {
+          const u = new URL(baseUrl);
+          baseUrl = `${u.origin}/`;
+        }
         return await handleCollection(request, {
+          name: "followers",
           handle: route.values.handle,
           context,
+          filter: baseUrl != null ? new URL(baseUrl) : undefined,
+          filterPredicate: baseUrl != null
+            ? ((i) =>
+              (i instanceof URL ? i.href : i.id?.href ?? "").startsWith(
+                baseUrl!,
+              ))
+            : undefined,
           collectionCallbacks: this.#followersCallbacks,
           onUnauthorized,
           onNotFound,
           onNotAcceptable,
         });
+      }
       default: {
         const response = onNotFound(request);
         return response instanceof Promise ? await response : response;
@@ -1337,16 +1440,19 @@ export interface ObjectCallbackSetters<
 
 /**
  * Additional settings for a collection dispatcher.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @typeParam TFilter The type of filter for the collection.
  */
-export interface CollectionCallbackSetters<TContextData> {
+export interface CollectionCallbackSetters<TContextData, TFilter> {
   /**
    * Sets the counter for the collection.
    * @param counter A callback that returns the number of items in the collection.
    * @returns The setters object so that settings can be chained.
    */
   setCounter(
-    counter: CollectionCounter<TContextData>,
-  ): CollectionCallbackSetters<TContextData>;
+    counter: CollectionCounter<TContextData, TFilter>,
+  ): CollectionCallbackSetters<TContextData, TFilter>;
 
   /**
    * Sets the first cursor for the collection.
@@ -1354,8 +1460,8 @@ export interface CollectionCallbackSetters<TContextData> {
    * @returns The setters object so that settings can be chained.
    */
   setFirstCursor(
-    cursor: CollectionCursor<TContextData>,
-  ): CollectionCallbackSetters<TContextData>;
+    cursor: CollectionCursor<TContextData, TFilter>,
+  ): CollectionCallbackSetters<TContextData, TFilter>;
 
   /**
    * Sets the last cursor for the collection.
@@ -1363,8 +1469,8 @@ export interface CollectionCallbackSetters<TContextData> {
    * @returns The setters object so that settings can be chained.
    */
   setLastCursor(
-    cursor: CollectionCursor<TContextData>,
-  ): CollectionCallbackSetters<TContextData>;
+    cursor: CollectionCursor<TContextData, TFilter>,
+  ): CollectionCallbackSetters<TContextData, TFilter>;
 
   /**
    * Specifies the conditions under which requests are authorized.
@@ -1374,7 +1480,7 @@ export interface CollectionCallbackSetters<TContextData> {
    */
   authorize(
     predicate: AuthorizePredicate<TContextData>,
-  ): CollectionCallbackSetters<TContextData>;
+  ): CollectionCallbackSetters<TContextData, TFilter>;
 }
 
 /**
@@ -1404,6 +1510,10 @@ export interface InboxListenerSetter<TContextData> {
   onError(
     handler: InboxErrorHandler<TContextData>,
   ): InboxListenerSetter<TContextData>;
+}
+
+interface SendActivityInternalOptions extends SendActivityOptions {
+  collectionSync?: string;
 }
 
 function notFound(_request: Request): Response {

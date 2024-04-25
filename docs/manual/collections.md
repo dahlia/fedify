@@ -354,26 +354,84 @@ Followers
 
 The followers collection is very similar to the following collection, but it's
 a collection of actors that are following the actor.  The followers collection
-also can consist of `Actor` objects or `URL` objects that represent the actors.
+has to consist of `Recipient` objects that represent the actors.
 
 The below example shows how to construct a followers collection:
 
 ~~~~ typescript
 federation
-  .setFollowersDispatcher("/users/{handle}/followers", async (ctx, handle, cursor) => {
-    // If a whole collection is requested, returns nothing as we prefer
-    // collection pages over the whole collection:
-    if (cursor == null) return null;
-    // Work with the database to find the actors that are following the actor
-    // (the below `getFollowersByUserHandle` is a hypothetical function):
-    const { users, nextCursor, last } = await getFollowersByUserHandle(
-      handle,
-      cursor === "" ? { limit: 10 } : { cursor, limit: 10 }
-    );
-    // Turn the users into `URL` objects:
-    const items = users.map(actor => actor.uri);
-    return { items, nextCursor: last ? null : nextCursor }
-  })
+  .setFollowersDispatcher(
+    "/users/{handle}/followers",
+    async (ctx, handle, cursor) => {
+      // If a whole collection is requested, returns nothing as we prefer
+      // collection pages over the whole collection:
+      if (cursor == null) return null;
+      // Work with the database to find the actors that are following the actor
+      // (the below `getFollowersByUserHandle` is a hypothetical function):
+      const { users, nextCursor, last } = await getFollowersByUserHandle(
+        handle,
+        cursor === "" ? { limit: 10 } : { cursor, limit: 10 }
+      );
+      // Turn the users into `Recipient` objects:
+      const items = users.map(actor => ({
+        id: new URL(actor.uri),
+        inboxId: new URL(actor.inboxUri),
+      }));
+      return { items, nextCursor: last ? null : nextCursor };
+    }
+  )
   // The first cursor is an empty string:
   .setFirstCursor(async (ctx, handle) => "");
 ~~~~
+
+> [!TIP]
+>
+> Every `Actor` object is also a `Recipient` object, so you can use the `Actor`
+> object as the `Recipient` object.
+
+### Filtering by server
+
+*This API is available since Fedify 0.8.0.*
+
+The followers collection can be filtered by the base URI of the actor URIs.
+It can be useful to filter by a remote server to synchronize the followers
+collection with it.
+
+> [!TIP]
+> However, the filtering is optional, and you can skip it if you don't need
+> [followers collection synchronization](./send.md#followers-collection-synchronization).
+
+In order to filter the followers collection by the server, you need to let
+your followers collection dispatcher be aware of the fourth argument:
+the base URI of the actor URIs to filter in.  The base URI consists of
+the protocol, the authority (the host and the port), and the root path of
+the actor URIs.  When the base URI is not `null`, the dispatcher should
+return only the actors whose URIs start with the base URI.  If the base URI
+is `null`, the dispatcher should return all the actors.
+
+The following example shows how to filter the followers collection by the
+server:
+
+~~~~ typescript {8-11}
+federation
+  .setFollowersDispatcher(
+    "/users/{handle}/followers",
+    async (ctx, handle, cursor, baseUri) => {
+      // Work with the database to find the actors that are following the actor
+      // (the below `getFollowersByUserHandle` is a hypothetical function):
+      let users = await getFollowersByUserHandle(handle);
+      // Filter the actors by the base URI:
+      if (baseUri != null) {
+        users = users.filter(actor => actor.uri.href.startsWith(baseUri.href));
+      }
+      // Turn the users into `URL` objects:
+      const items = users.map(actor => actor.uri);
+      return { items };
+    }
+  );
+~~~~
+
+> [!NOTE]
+> In the above example, we filter the actors in memory, but in the real
+> world, you should filter the actors in the database query to improve the
+> performance.

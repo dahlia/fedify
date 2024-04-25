@@ -5,4 +5,5 @@ export interface OutboxMessage {
   activity: unknown;
   inbox: string;
   trial: number;
+  headers: Record<string, string>;
 }

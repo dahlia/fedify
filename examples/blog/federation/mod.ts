@@ -24,6 +24,7 @@ import {
   countFollowers,
   getFollowers,
   removeFollower,
+  toRecipient,
 } from "../models/follower.ts";
 import { countPosts, getPost, getPosts, toArticle } from "../models/post.ts";
 import { openKv } from "../models/kv.ts";
@@ -281,7 +282,7 @@ federation
         cursor === "" ? undefined : cursor,
       );
       return {
-        items: followers.map((f) => new URL(f.id)),
+        items: followers.map(toRecipient),
         nextCursor,
       };
     },

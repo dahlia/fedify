@@ -61,5 +61,8 @@ export function createRequestContext<TContextData>(
     getObject: args.getObject ?? (() => Promise.resolve(null)),
     getSignedKey: args.getSignedKey ?? (() => Promise.resolve(null)),
     getSignedKeyOwner: args.getSignedKeyOwner ?? (() => Promise.resolve(null)),
+    sendActivity: args.sendActivity ?? ((_params) => {
+      throw new Error("Not implemented");
+    }),
   };
 }

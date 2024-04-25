@@ -89,8 +89,8 @@ The `configure()` function takes an object with three properties:
 
 `loggers.level` (optional)
 :   The `level` property is a string that specifies the log level.  The log
-    level can be one of the following: `"trace"`, `"debug"`, `"info"`,
-    `"warning"`, `"error"`, or `"fatal"`.
+    level can be one of the following: `"debug"`, `"info"`, `"warning"`,
+    `"error"`, or `"fatal"`.
 
 
 Categories
@@ -116,6 +116,11 @@ The `"fedify"` category is used for everything related to the Fedify library.
 
 The `["fedify", "federation"]` category is used for logging federation-related
 messages.
+
+### `["fedify", "federation", "collection"]`
+
+The `["fedify", "federation", "collection"]` category is used for logging
+messages related to collections (e.g., outbox, followers, following).
 
 ### `["fedify", "federation", "inbox"]`
 

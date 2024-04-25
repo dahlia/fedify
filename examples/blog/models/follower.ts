@@ -1,9 +1,4 @@
-import {
-  Actor,
-  ActorTypeName,
-  Endpoints,
-  getActorClassByTypeName,
-} from "@fedify/fedify/vocab";
+import { ActorTypeName, Recipient } from "@fedify/fedify/vocab";
 import { openKv } from "./kv.ts";
 
 export interface Follower {
@@ -66,21 +61,12 @@ export async function countFollowers(): Promise<bigint> {
   return (record?.value as bigint | null) ?? 0n;
 }
 
-export async function getFollowersAsActors(): Promise<Actor[]> {
-  const kv = await openKv();
-  const actors: Actor[] = [];
-  for await (const f of kv.list<Follower>({ prefix: ["follower"] })) {
-    const cls = getActorClassByTypeName(f.value.typeName);
-    const actor = new cls({
-      id: new URL(f.value.id),
-      inbox: new URL(f.value.inbox),
-      endpoints: new Endpoints({
-        sharedInbox: f.value.sharedInbox
-          ? new URL(f.value.sharedInbox)
-          : undefined,
-      }),
-    });
-    actors.push(actor);
-  }
-  return actors;
+export function toRecipient(follower: Follower): Recipient {
+  return {
+    id: new URL(follower.id),
+    inboxId: new URL(follower.inbox),
+    endpoints: {
+      sharedInbox: follower.sharedInbox ? new URL(follower.sharedInbox) : null,
+    },
+  };
 }

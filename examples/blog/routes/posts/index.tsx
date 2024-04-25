@@ -1,11 +1,11 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { Handlers, PageProps } from "$fresh/server.ts";
-import { Create } from "@fedify/fedify/vocab";
+import { Create, PUBLIC_COLLECTION } from "@fedify/fedify/vocab";
 import { PostFormProps } from "../../components/PostForm.tsx";
 import PostList from "../../components/PostList.tsx";
 import { federation } from "../../federation/mod.ts";
 import { Blog, getBlog, verifyPassword } from "../../models/blog.ts";
-import { countFollowers, getFollowersAsActors } from "../../models/follower.ts";
+import { countFollowers } from "../../models/follower.ts";
 import {
   addPost,
   countPosts,
@@ -86,13 +86,15 @@ export const handler: Handlers<PostsData> = {
     // Enqueues a `Create` activity to the outbox:
     await fedCtx.sendActivity(
       { handle: blog.handle },
-      await getFollowersAsActors(),
+      "followers",
       new Create({
         id: new URL(`/posts/${post.uuid}#activity`, req.url),
         actor: fedCtx.getActorUri(blog.handle),
-        to: new URL("https://www.w3.org/ns/activitystreams#Public"),
+        to: PUBLIC_COLLECTION,
         object: toArticle(fedCtx, blog, post, []),
+        published: post.published,
       }),
+      { preferSharedInbox: true },
     );
 
     const { posts, nextCursor } = await getPosts();

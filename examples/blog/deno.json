@@ -29,6 +29,7 @@
     "jsxImportSource": "preact"
   },
   "unstable": [
+    "fs",
     "kv"
   ]
 }
