@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { RequestContext } from "@fedify/fedify/federation";
 import {
   Article,

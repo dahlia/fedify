@@ -35,7 +35,6 @@ instantiating a `Create` object:
 
 ~~~~ typescript
 import { Create, Note } from "@fedify/fedify";
-import { Temporal } from "@js-temporal/polyfill";
 
 const create = new Create({
   id: new URL("https://example.com/activities/123"),
@@ -161,7 +160,6 @@ property of a `Note` object:
 
 ~~~~ typescript{9-11}
 import { LanguageString, Note } from "@fedify/fedify";
-import { Temporal } from "@js-temporal/polyfill";
 
 const noteInEnglish = new Note({
   id: new URL("https://example.com/notes/123"),

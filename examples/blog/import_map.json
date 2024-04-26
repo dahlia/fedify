@@ -1,7 +1,6 @@
 {
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
-    "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.4.4",
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
     "@std/dotenv/load": "jsr:@std/dotenv@^0.224.0/load",

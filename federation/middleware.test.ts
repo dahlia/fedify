@@ -1,5 +1,4 @@
 import { lookupObject } from "@fedify/fedify/vocab";
-import { Temporal } from "@js-temporal/polyfill";
 import {
   assertEquals,
   assertRejects,

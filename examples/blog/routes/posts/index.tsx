@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { Handlers, PageProps } from "$fresh/server.ts";
 import { Create, PUBLIC_COLLECTION } from "@fedify/fedify/vocab";
 import { PostFormProps } from "../../components/PostForm.tsx";

@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
 import * as mf from "mock_fetch";
 import { MemoryKvStore } from "../federation/kv.ts";

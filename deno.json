@@ -28,7 +28,6 @@
     "@fedify/fedify/x/fresh": "./x/fresh.ts",
     "@fedify/fedify/x/hono": "./x/hono.ts",
     "@hongminhee/aitertools": "jsr:@hongminhee/aitertools@^0.6.0",
-    "@js-temporal/polyfill": "npm:@js-temporal/polyfill@^0.4.4",
     "@logtape/logtape": "jsr:@logtape/logtape@^0.2.2",
     "@phensley/language-tag": "npm:@phensley/language-tag@^1.8.0",
     "@std/assert": "jsr:@std/assert@^0.220.1",
@@ -37,6 +36,7 @@
     "@std/collections": "jsr:@std/collections@^0.220.1",
     "@std/encoding": "jsr:@std/encoding@^0.220.1",
     "@std/encoding/base64": "jsr:@std/encoding@^0.220.1/base64",
+    "@std/encoding/hex": "jsr:@std/encoding@^0.220.1/hex",
     "@std/fs": "jsr:@std/fs@^0.220.1",
     "@std/http/negotiation": "jsr:@std/http@^0.220.1/negotiation",
     "@std/json/common": "jsr:@std/json@^0.220.1/common",
@@ -76,7 +76,8 @@
     "hooks:pre-commit": "deno task check"
   },
   "unstable": [
-    "kv"
+    "kv",
+    "temporal"
   ],
   "lock": false
 }

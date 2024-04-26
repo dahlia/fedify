@@ -36,6 +36,10 @@ To be released.
         parameter became `CollectionDispatcher<Recipient, TContextData, URL>`
         (was `CollectionDispatcher<Actor | URL, TContextData>`).
 
+ -  Removed the dependency on *@js-temporal/polyfill* on Deno, and Fedify now
+    requires `--unstable-temporal` flag.  On other runtime, it still depends
+    on *@js-temporal/polyfill*.
+
 [FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
 
 

@@ -5,7 +5,6 @@ import {
   lookupObject,
   PropertyValue,
 } from "@fedify/fedify/vocab";
-import { Temporal } from "@js-temporal/polyfill";
 import { convert } from "npm:html-to-text@^9.0.5";
 
 export interface Actor {

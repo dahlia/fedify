@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { assertEquals } from "@std/assert";
 import { MemoryKvStore } from "./kv.ts";
 

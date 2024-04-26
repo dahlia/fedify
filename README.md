@@ -105,15 +105,20 @@ via the following command:
 deno add @fedify/fedify
 ~~~~
 
-~~~~ typescript
-import { Federation } from "@fedify/fedify";
+Since Fedify requires [`Temporal`] API, which is an unstable feature in Deno as
+of April 2024, you need to add the `"temporal"` to the `"unstable"` field of
+the *deno.json* file:
+
+~~~~ json
+{
+  "imports": {
+    "@fedify/fedify": "jsr:@fedify/fedify"
+  },
+  "unstable": ["temporal"]
+}
 ~~~~
 
-Or you can directly import it in your code using `jsr:` specifier:
-
-~~~~ typescript
-import { Federation } from "jsr:@fedify/fedify";
-~~~~
+[`Temporal`]: https://tc39.es/proposal-temporal/docs/
 
 ### Node.js
 
@@ -125,10 +130,6 @@ the following command:
 npm add @fedify/fedify
 ~~~~
 
-~~~~ typescript
-import { Federation } from "@fedify/fedify";
-~~~~
-
 ### Bun
 
 Fedify can also be used in Bun.  You can install it via the following
@@ -136,8 +137,4 @@ command:
 
 ~~~~ sh
 bun add @fedify/fedify
-~~~~
-
-~~~~ typescript
-import { Federation } from "@fedify/fedify";
 ~~~~

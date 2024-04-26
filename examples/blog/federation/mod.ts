@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { parse } from "@std/semver";
 import { dirname, join } from "@std/path";
 import { Federation } from "@fedify/fedify/federation";

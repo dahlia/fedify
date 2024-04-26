@@ -2,7 +2,6 @@ export const snapshot = {};
 
 snapshot[`generateClasses() 1`] = `
 "// deno-lint-ignore-file ban-unused-ignore
-import { Temporal } from \\"@js-temporal/polyfill\\";
 // @ts-ignore TS7016
 import jsonld from \\"jsonld\\";
 import { type LanguageTag, parseLanguageTag }

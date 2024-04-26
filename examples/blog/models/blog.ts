@@ -1,5 +1,4 @@
 /// <reference lib="deno.unstable" />
-import { Temporal } from "@js-temporal/polyfill";
 import {
   exportJwk,
   generateCryptoKeyPair,

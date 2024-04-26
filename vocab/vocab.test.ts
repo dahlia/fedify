@@ -1,6 +1,5 @@
 import { isDeno } from "@david/which-runtime";
 import { toArray } from "@hongminhee/aitertools";
-import { Temporal } from "@js-temporal/polyfill";
 import { parseLanguageTag } from "@phensley/language-tag";
 import {
   assertEquals,

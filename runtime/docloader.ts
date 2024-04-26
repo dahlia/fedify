@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import type { KvKey, KvStore } from "../federation/kv.ts";
 import { validateCryptoKey } from "../httpsig/key.ts";
 import { sign } from "../httpsig/mod.ts";

@@ -109,8 +109,23 @@ with the following content (formatted for readability):[^2]
 }
 ~~~~
 
+Since Fedify requires [`Temporal`] API, which is an unstable feature in Deno as
+of April 2024, you need to add the `"temporal"` to the `"unstable"` field of
+the *deno.json* file:
+
+~~~~ json{5}
+{
+  "imports": {
+    "@fedify/fedify": "jsr:@fedify/fedify@^0.4.0"
+  },
+  "unstable": ["temporal"]
+}
+~~~~
+
 [^2]: The actual version number may vary depending on the latest version of the
       Fedify framework as of reading this tutorial.
+
+[`Temporal`]: https://tc39.es/proposal-temporal/docs/
 
 
 Creating the server
@@ -564,7 +579,7 @@ store.
 > [!IMPORTANT]
 > In the above code, we use the `Deno.openKv()` function to open the key-value
 > store, which is persistent.  However, Deno KV is an unstable feature as of
-> March 2024, so you need to add the `"unstable": ["kv"]` field to the
+> March 2024, so you need to add the `"kv"` to `"unstable"` field of the
 > *deno.json* file:
 >
 > ~~~~ jsonc
@@ -572,7 +587,7 @@ store.
 >   "imports": {
 >     "@fedify/fedify": "jsr:@fedify/fedify@^0.4.0"
 >   },
->   "unstable": ["kv"] // [!code highlight]
+>   "unstable": ["temporal", "kv"] // [!code highlight]
 > }
 > ~~~~
 

@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { assert, assertEquals, assertFalse } from "@std/assert";
 import { doesActorOwnKey, getKeyOwner, sign, verify } from "../mod.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";

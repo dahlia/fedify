@@ -30,6 +30,7 @@
   },
   "unstable": [
     "fs",
-    "kv"
+    "kv",
+    "temporal"
   ]
 }

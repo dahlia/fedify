@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { getLogger } from "@logtape/logtape";
 import { accepts } from "@std/http/negotiation";
 import { doesActorOwnKey, verify } from "../httpsig/mod.ts";

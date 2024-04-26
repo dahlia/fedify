@@ -1,5 +1,6 @@
 {
   "importMap": "./import_map.g.json",
+  "unstable": ["temporal"],
   "tasks": {
     "generate-import-map": "deno run --allow-read --allow-write generate_import_map.ts",
     "codegen": "deno task generate-import-map",

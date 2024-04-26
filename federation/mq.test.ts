@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { assertEquals, assertGreater } from "@std/assert";
 import { delay } from "@std/async/delay";
 import { InProcessMessageQueue } from "./mq.ts";

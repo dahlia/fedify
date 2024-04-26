@@ -1,5 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
-
 /**
  * A key for a key-value store.  An array of one or more strings.
  *

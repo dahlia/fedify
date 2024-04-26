@@ -4,7 +4,6 @@
  *
  * @module
  */
-import { Temporal } from "@js-temporal/polyfill";
 import { equals } from "@std/bytes";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import type { DocumentLoader } from "../runtime/docloader.ts";

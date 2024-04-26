@@ -1,4 +1,3 @@
-import { Temporal } from "@js-temporal/polyfill";
 import { getLogger } from "@logtape/logtape";
 import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
 import { getKeyOwner, verify } from "../httpsig/mod.ts";

@@ -74,6 +74,18 @@ await build({
           },
         ],
       },
+      {
+        package: {
+          name: "@js-temporal/polyfill",
+          version: "^0.4.4",
+        },
+        globalNames: [
+          {
+            name: "Temporal",
+            exportName: "Temporal",
+          },
+        ],
+      },
     ],
     customDev: [
       {

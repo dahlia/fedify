@@ -1,5 +1,4 @@
 // deno-lint-ignore-file no-explicit-any
-import type { Temporal } from "@js-temporal/polyfill";
 
 /**
  * Additional options for enqueuing a message in a queue.
