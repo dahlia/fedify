@@ -1,6 +1,5 @@
 import { getFieldName } from "./field.ts";
 import type { TypeSchema } from "./schema.ts";
-import { areAllScalarTypes } from "./type.ts";
 
 export async function* generateInspector(
   typeUri: string,
@@ -33,25 +32,23 @@ export async function* generateInspector(
   for (const property of type.properties) {
     const fieldName = await getFieldName(property.uri);
     const localName = await getFieldName(property.uri, "");
-    if (areAllScalarTypes(property.range, types)) {
-      yield `const ${localName} = this.${fieldName};`;
-    } else {
-      yield `
-      const ${localName} = this.${fieldName}.map(v => v instanceof URL
-        ? {
-            [Symbol.for("Deno.customInspect")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => "URL " + inspect(v.href, options),
-            [Symbol.for("nodejs.util.inspect.custom")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => "URL " + inspect(v.href, options),
-          }
-        : v);
-      `;
-    }
+    yield `
+      const ${localName} = this.${fieldName}
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for("Deno.customInspect")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => "URL " + inspect(v.href, options),
+              [Symbol.for("nodejs.util.inspect.custom")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => "URL " + inspect(v.href, options),
+            }
+          : v);
+    `;
     if (property.functional || property.singularAccessor) {
       yield `
       if (${localName}.length == 1) {

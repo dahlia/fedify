@@ -246,11 +246,43 @@ get value(): (string | LanguageString | null) {
         ): string => \\"URL \\" + inspect(this.id!.href, options),
       };
     }
-    const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+    
+      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length == 1) {
         proxy.name = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
       }
-      const _2cSy2magg4iZ7zLaG8U7DiJMoCkx = this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx;
+      
+      const _2cSy2magg4iZ7zLaG8U7DiJMoCkx = this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2cSy2magg4iZ7zLaG8U7DiJMoCkx.length == 1) {
         proxy.value = _2cSy2magg4iZ7zLaG8U7DiJMoCkx[0];
       }
@@ -572,24 +604,42 @@ get publicKey(): (CryptoKey | null) {
       };
     }
     
-      const _5UJq9NDh3ZHgswFwwdVxQvJxdx2 = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _5UJq9NDh3ZHgswFwwdVxQvJxdx2 = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_5UJq9NDh3ZHgswFwwdVxQvJxdx2.length == 1) {
         proxy.owner = _5UJq9NDh3ZHgswFwwdVxQvJxdx2[0];
       }
-      const _2fE2QMDdg6KFGqa4NEC3TmjApSAD = this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD;
+      
+      const _2fE2QMDdg6KFGqa4NEC3TmjApSAD = this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2fE2QMDdg6KFGqa4NEC3TmjApSAD.length == 1) {
         proxy.publicKey = _2fE2QMDdg6KFGqa4NEC3TmjApSAD[0];
       }
@@ -3688,40 +3738,44 @@ get sensitive(): (boolean | null) {
       };
     }
     
-      const _49BipA5dq9eoH8LX8xdsVumveTca = this.#_49BipA5dq9eoH8LX8xdsVumveTca.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _49BipA5dq9eoH8LX8xdsVumveTca = this.#_49BipA5dq9eoH8LX8xdsVumveTca
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_49BipA5dq9eoH8LX8xdsVumveTca.length > 1
           || !(\\"attachment\\" in proxy)
           && _49BipA5dq9eoH8LX8xdsVumveTca.length > 0) {
         proxy.attachments = _49BipA5dq9eoH8LX8xdsVumveTca;
       }
       
-      const _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py = this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py.length == 1) {
         proxy.attribution = _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py[0];
       }
@@ -3732,20 +3786,22 @@ get sensitive(): (boolean | null) {
         proxy.attributions = _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py;
       }
       
-      const _3ocC3VVi88cEd5sPWL8djkZsvTN6 = this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3ocC3VVi88cEd5sPWL8djkZsvTN6 = this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3ocC3VVi88cEd5sPWL8djkZsvTN6.length == 1) {
         proxy.audience = _3ocC3VVi88cEd5sPWL8djkZsvTN6[0];
       }
@@ -3755,7 +3811,23 @@ get sensitive(): (boolean | null) {
           && _3ocC3VVi88cEd5sPWL8djkZsvTN6.length > 0) {
         proxy.audiences = _3ocC3VVi88cEd5sPWL8djkZsvTN6;
       }
-      const _4HuuRSdSrXq8Jj2J9gcdYfoCzeuz = this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz;
+      
+      const _4HuuRSdSrXq8Jj2J9gcdYfoCzeuz = this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz.length == 1) {
         proxy.content = _4HuuRSdSrXq8Jj2J9gcdYfoCzeuz[0];
       }
@@ -3766,26 +3838,44 @@ get sensitive(): (boolean | null) {
         proxy.contents = _4HuuRSdSrXq8Jj2J9gcdYfoCzeuz;
       }
       
-      const _3mhZzGXSpQ431mBSz2kvych22v4e = this.#_3mhZzGXSpQ431mBSz2kvych22v4e.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3mhZzGXSpQ431mBSz2kvych22v4e = this.#_3mhZzGXSpQ431mBSz2kvych22v4e
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3mhZzGXSpQ431mBSz2kvych22v4e.length > 1
           || !(\\"context\\" in proxy)
           && _3mhZzGXSpQ431mBSz2kvych22v4e.length > 0) {
         proxy.contexts = _3mhZzGXSpQ431mBSz2kvych22v4e;
       }
-      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+      
+      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length == 1) {
         proxy.name = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
       }
@@ -3795,45 +3885,65 @@ get sensitive(): (boolean | null) {
           && _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length > 0) {
         proxy.names = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
       }
-      const _219RwDanjScTv5tYCjwGZVCM7KZ9 = this.#_219RwDanjScTv5tYCjwGZVCM7KZ9;
+      
+      const _219RwDanjScTv5tYCjwGZVCM7KZ9 = this.#_219RwDanjScTv5tYCjwGZVCM7KZ9
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_219RwDanjScTv5tYCjwGZVCM7KZ9.length == 1) {
         proxy.endTime = _219RwDanjScTv5tYCjwGZVCM7KZ9[0];
       }
       
-      const _86xFhmgBapoMvYqjbjRuDPayTrS = this.#_86xFhmgBapoMvYqjbjRuDPayTrS.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _86xFhmgBapoMvYqjbjRuDPayTrS = this.#_86xFhmgBapoMvYqjbjRuDPayTrS
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_86xFhmgBapoMvYqjbjRuDPayTrS.length > 1
           || !(\\"generator\\" in proxy)
           && _86xFhmgBapoMvYqjbjRuDPayTrS.length > 0) {
         proxy.generators = _86xFhmgBapoMvYqjbjRuDPayTrS;
       }
       
-      const _33CjRLy5ujtsUrwRSCrsggvGdKuR = this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _33CjRLy5ujtsUrwRSCrsggvGdKuR = this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_33CjRLy5ujtsUrwRSCrsggvGdKuR.length == 1) {
         proxy.icon = _33CjRLy5ujtsUrwRSCrsggvGdKuR[0];
       }
@@ -3844,20 +3954,22 @@ get sensitive(): (boolean | null) {
         proxy.icons = _33CjRLy5ujtsUrwRSCrsggvGdKuR;
       }
       
-      const _3dXrUdkARxwyJLtJcYi1AJ92H41U = this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3dXrUdkARxwyJLtJcYi1AJ92H41U = this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3dXrUdkARxwyJLtJcYi1AJ92H41U.length == 1) {
         proxy.image = _3dXrUdkARxwyJLtJcYi1AJ92H41U[0];
       }
@@ -3868,20 +3980,22 @@ get sensitive(): (boolean | null) {
         proxy.images = _3dXrUdkARxwyJLtJcYi1AJ92H41U;
       }
       
-      const _3fpbDrvZgf3Kq1a5V9aByFn8kx3s = this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3fpbDrvZgf3Kq1a5V9aByFn8kx3s = this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3fpbDrvZgf3Kq1a5V9aByFn8kx3s.length == 1) {
         proxy.replyTarget = _3fpbDrvZgf3Kq1a5V9aByFn8kx3s[0];
       }
@@ -3892,20 +4006,22 @@ get sensitive(): (boolean | null) {
         proxy.replyTargets = _3fpbDrvZgf3Kq1a5V9aByFn8kx3s;
       }
       
-      const _31k5MUZJsnsPNg8dQQJieWaXTFnR = this.#_31k5MUZJsnsPNg8dQQJieWaXTFnR.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _31k5MUZJsnsPNg8dQQJieWaXTFnR = this.#_31k5MUZJsnsPNg8dQQJieWaXTFnR
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_31k5MUZJsnsPNg8dQQJieWaXTFnR.length == 1) {
         proxy.location = _31k5MUZJsnsPNg8dQQJieWaXTFnR[0];
       }
@@ -3916,20 +4032,22 @@ get sensitive(): (boolean | null) {
         proxy.locations = _31k5MUZJsnsPNg8dQQJieWaXTFnR;
       }
       
-      const _gCVTegXxWWCw6wWRxa1QF65zusg = this.#_gCVTegXxWWCw6wWRxa1QF65zusg.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _gCVTegXxWWCw6wWRxa1QF65zusg = this.#_gCVTegXxWWCw6wWRxa1QF65zusg
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_gCVTegXxWWCw6wWRxa1QF65zusg.length == 1) {
         proxy.preview = _gCVTegXxWWCw6wWRxa1QF65zusg[0];
       }
@@ -3939,33 +4057,83 @@ get sensitive(): (boolean | null) {
           && _gCVTegXxWWCw6wWRxa1QF65zusg.length > 0) {
         proxy.previews = _gCVTegXxWWCw6wWRxa1QF65zusg;
       }
-      const _5e258TDXtuhaFRPZiGoDfEpjdMr = this.#_5e258TDXtuhaFRPZiGoDfEpjdMr;
+      
+      const _5e258TDXtuhaFRPZiGoDfEpjdMr = this.#_5e258TDXtuhaFRPZiGoDfEpjdMr
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_5e258TDXtuhaFRPZiGoDfEpjdMr.length == 1) {
         proxy.published = _5e258TDXtuhaFRPZiGoDfEpjdMr[0];
       }
       
-      const _7UpwM3JWcXhADcscukEehBorf6k = this.#_7UpwM3JWcXhADcscukEehBorf6k.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _7UpwM3JWcXhADcscukEehBorf6k = this.#_7UpwM3JWcXhADcscukEehBorf6k
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_7UpwM3JWcXhADcscukEehBorf6k.length == 1) {
         proxy.replies = _7UpwM3JWcXhADcscukEehBorf6k[0];
       }
-      const _2w3Jmue4up8iVDUA51WZqomEF438 = this.#_2w3Jmue4up8iVDUA51WZqomEF438;
+      
+      const _2w3Jmue4up8iVDUA51WZqomEF438 = this.#_2w3Jmue4up8iVDUA51WZqomEF438
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2w3Jmue4up8iVDUA51WZqomEF438.length == 1) {
         proxy.startTime = _2w3Jmue4up8iVDUA51WZqomEF438[0];
       }
-      const _4LqirZspQbFWWQEbFcXAxm7tTDN1 = this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1;
+      
+      const _4LqirZspQbFWWQEbFcXAxm7tTDN1 = this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_4LqirZspQbFWWQEbFcXAxm7tTDN1.length == 1) {
         proxy.summary = _4LqirZspQbFWWQEbFcXAxm7tTDN1[0];
       }
@@ -3976,30 +4144,64 @@ get sensitive(): (boolean | null) {
         proxy.summaries = _4LqirZspQbFWWQEbFcXAxm7tTDN1;
       }
       
-      const _5chuqj6s95p5gg2sk1HntGfarRf = this.#_5chuqj6s95p5gg2sk1HntGfarRf.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _5chuqj6s95p5gg2sk1HntGfarRf = this.#_5chuqj6s95p5gg2sk1HntGfarRf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_5chuqj6s95p5gg2sk1HntGfarRf.length > 1
           || !(\\"tag\\" in proxy)
           && _5chuqj6s95p5gg2sk1HntGfarRf.length > 0) {
         proxy.tags = _5chuqj6s95p5gg2sk1HntGfarRf;
       }
-      const _385aB7ySixcf5Un6z3VsWmThgCzQ = this.#_385aB7ySixcf5Un6z3VsWmThgCzQ;
+      
+      const _385aB7ySixcf5Un6z3VsWmThgCzQ = this.#_385aB7ySixcf5Un6z3VsWmThgCzQ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_385aB7ySixcf5Un6z3VsWmThgCzQ.length == 1) {
         proxy.updated = _385aB7ySixcf5Un6z3VsWmThgCzQ[0];
       }
-      const _2oPEH9MQ3aj8JVwyYuWkqoVwV865 = this.#_2oPEH9MQ3aj8JVwyYuWkqoVwV865;
+      
+      const _2oPEH9MQ3aj8JVwyYuWkqoVwV865 = this.#_2oPEH9MQ3aj8JVwyYuWkqoVwV865
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2oPEH9MQ3aj8JVwyYuWkqoVwV865.length == 1) {
         proxy.url = _2oPEH9MQ3aj8JVwyYuWkqoVwV865[0];
       }
@@ -4010,20 +4212,22 @@ get sensitive(): (boolean | null) {
         proxy.urls = _2oPEH9MQ3aj8JVwyYuWkqoVwV865;
       }
       
-      const _3hFbw7DTpHhq3cvVhkY8njhcsXbd = this.#_3hFbw7DTpHhq3cvVhkY8njhcsXbd.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3hFbw7DTpHhq3cvVhkY8njhcsXbd = this.#_3hFbw7DTpHhq3cvVhkY8njhcsXbd
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3hFbw7DTpHhq3cvVhkY8njhcsXbd.length == 1) {
         proxy.to = _3hFbw7DTpHhq3cvVhkY8njhcsXbd[0];
       }
@@ -4034,20 +4238,22 @@ get sensitive(): (boolean | null) {
         proxy.tos = _3hFbw7DTpHhq3cvVhkY8njhcsXbd;
       }
       
-      const _aLZupjwL8XB7tzdLgCMXdjZ6qej = this.#_aLZupjwL8XB7tzdLgCMXdjZ6qej.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _aLZupjwL8XB7tzdLgCMXdjZ6qej = this.#_aLZupjwL8XB7tzdLgCMXdjZ6qej
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_aLZupjwL8XB7tzdLgCMXdjZ6qej.length == 1) {
         proxy.bto = _aLZupjwL8XB7tzdLgCMXdjZ6qej[0];
       }
@@ -4058,20 +4264,22 @@ get sensitive(): (boolean | null) {
         proxy.btos = _aLZupjwL8XB7tzdLgCMXdjZ6qej;
       }
       
-      const _42a1SvBs24QSLzKcfjCyNTjW5a1g = this.#_42a1SvBs24QSLzKcfjCyNTjW5a1g.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _42a1SvBs24QSLzKcfjCyNTjW5a1g = this.#_42a1SvBs24QSLzKcfjCyNTjW5a1g
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_42a1SvBs24QSLzKcfjCyNTjW5a1g.length == 1) {
         proxy.cc = _42a1SvBs24QSLzKcfjCyNTjW5a1g[0];
       }
@@ -4082,20 +4290,22 @@ get sensitive(): (boolean | null) {
         proxy.ccs = _42a1SvBs24QSLzKcfjCyNTjW5a1g;
       }
       
-      const _3qvegKUB8YLgTXRpEf8E6JZSkz2H = this.#_3qvegKUB8YLgTXRpEf8E6JZSkz2H.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3qvegKUB8YLgTXRpEf8E6JZSkz2H = this.#_3qvegKUB8YLgTXRpEf8E6JZSkz2H
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3qvegKUB8YLgTXRpEf8E6JZSkz2H.length == 1) {
         proxy.bcc = _3qvegKUB8YLgTXRpEf8E6JZSkz2H[0];
       }
@@ -4105,15 +4315,63 @@ get sensitive(): (boolean | null) {
           && _3qvegKUB8YLgTXRpEf8E6JZSkz2H.length > 0) {
         proxy.bccs = _3qvegKUB8YLgTXRpEf8E6JZSkz2H;
       }
-      const _3BLrzmscsjHCw8TF5BHRW9WkPnX8 = this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8;
+      
+      const _3BLrzmscsjHCw8TF5BHRW9WkPnX8 = this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3BLrzmscsjHCw8TF5BHRW9WkPnX8.length == 1) {
         proxy.mediaType = _3BLrzmscsjHCw8TF5BHRW9WkPnX8[0];
       }
-      const _3bNvLMBN1bCJETiTihM3wvi1B2JX = this.#_3bNvLMBN1bCJETiTihM3wvi1B2JX;
+      
+      const _3bNvLMBN1bCJETiTihM3wvi1B2JX = this.#_3bNvLMBN1bCJETiTihM3wvi1B2JX
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3bNvLMBN1bCJETiTihM3wvi1B2JX.length == 1) {
         proxy.duration = _3bNvLMBN1bCJETiTihM3wvi1B2JX[0];
       }
-      const _u8gdcDTtChQ4tbSQMXc4cYWyum7 = this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7;
+      
+      const _u8gdcDTtChQ4tbSQMXc4cYWyum7 = this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_u8gdcDTtChQ4tbSQMXc4cYWyum7.length == 1) {
         proxy.sensitive = _u8gdcDTtChQ4tbSQMXc4cYWyum7[0];
       }
@@ -4707,20 +4965,22 @@ objects?: (Object | URL)[];}
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
   const proxy: Record<string, unknown> = super._getCustomInspectProxy();
-      const _2DjTTboo3CNHU2a2JQqUSE2dbv9D = this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _2DjTTboo3CNHU2a2JQqUSE2dbv9D = this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2DjTTboo3CNHU2a2JQqUSE2dbv9D.length == 1) {
         proxy.actor = _2DjTTboo3CNHU2a2JQqUSE2dbv9D[0];
       }
@@ -4731,20 +4991,22 @@ objects?: (Object | URL)[];}
         proxy.actors = _2DjTTboo3CNHU2a2JQqUSE2dbv9D;
       }
       
-      const _2MH19yxjn1wnHsNfa5n4JBhJzxyc = this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _2MH19yxjn1wnHsNfa5n4JBhJzxyc = this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2MH19yxjn1wnHsNfa5n4JBhJzxyc.length == 1) {
         proxy.object = _2MH19yxjn1wnHsNfa5n4JBhJzxyc[0];
       }
@@ -6422,7 +6684,23 @@ get indexable(): (boolean | null) {
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
-  const proxy: Record<string, unknown> = super._getCustomInspectProxy();const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3isuDgRAKSntq9XdbjiNxjwyPZAf.length == 1) {
         proxy.preferredUsername = _3isuDgRAKSntq9XdbjiNxjwyPZAf[0];
       }
@@ -6433,20 +6711,22 @@ get indexable(): (boolean | null) {
         proxy.preferredUsernames = _3isuDgRAKSntq9XdbjiNxjwyPZAf;
       }
       
-      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_axq166E2eZADq34V4MYUc8KMZdC.length == 1) {
         proxy.publicKey = _axq166E2eZADq34V4MYUc8KMZdC[0];
       }
@@ -6456,137 +6736,245 @@ get indexable(): (boolean | null) {
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
       }
-      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
+      
+      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_36QNc9MxfkKf6h8sEUQSHnV9NZA.length == 1) {
         proxy.manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA[0];
       }
       
-      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length == 1) {
         proxy.inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0];
       }
       
-      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_41QwhqJouoLg3h8dRPKat21brynC.length == 1) {
         proxy.outbox = _41QwhqJouoLg3h8dRPKat21brynC[0];
       }
       
-      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length == 1) {
         proxy.following = _3yAv8jymNfNuJUDuBzJ1NQhdbAee[0];
       }
       
-      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_BBCTgfphhsFzpVfKTykGSpBNwoA.length == 1) {
         proxy.followers = _BBCTgfphhsFzpVfKTykGSpBNwoA[0];
       }
       
-      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
-      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 1
           || !(\\"stream\\" in proxy)
           && _3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 0) {
         proxy.streams = _3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
       }
-      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+      
+      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
-      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
         proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
       }
-      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
         proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
       }
-      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
         proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
       }
-      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
@@ -8141,79 +8529,103 @@ get totalItems(): (number | null) {
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
-  const proxy: Record<string, unknown> = super._getCustomInspectProxy();const _XDbmNDuWHmrhqH712zqtecdbv1V = this.#_XDbmNDuWHmrhqH712zqtecdbv1V;
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _XDbmNDuWHmrhqH712zqtecdbv1V = this.#_XDbmNDuWHmrhqH712zqtecdbv1V
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_XDbmNDuWHmrhqH712zqtecdbv1V.length == 1) {
         proxy.totalItems = _XDbmNDuWHmrhqH712zqtecdbv1V[0];
       }
       
-      const _3UyUdxnyn6cDn53QKrh4MBiearma = this.#_3UyUdxnyn6cDn53QKrh4MBiearma.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3UyUdxnyn6cDn53QKrh4MBiearma = this.#_3UyUdxnyn6cDn53QKrh4MBiearma
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3UyUdxnyn6cDn53QKrh4MBiearma.length == 1) {
         proxy.current = _3UyUdxnyn6cDn53QKrh4MBiearma[0];
       }
       
-      const _J52RqweMe6hhv7RnLJMC8BExTE5 = this.#_J52RqweMe6hhv7RnLJMC8BExTE5.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _J52RqweMe6hhv7RnLJMC8BExTE5 = this.#_J52RqweMe6hhv7RnLJMC8BExTE5
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_J52RqweMe6hhv7RnLJMC8BExTE5.length == 1) {
         proxy.first = _J52RqweMe6hhv7RnLJMC8BExTE5[0];
       }
       
-      const _gyJJnyEFnuNVi1HFZKfAn3Hfn26 = this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _gyJJnyEFnuNVi1HFZKfAn3Hfn26 = this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_gyJJnyEFnuNVi1HFZKfAn3Hfn26.length == 1) {
         proxy.last = _gyJJnyEFnuNVi1HFZKfAn3Hfn26[0];
       }
       
-      const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.length > 1
           || !(\\"item\\" in proxy)
           && _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.length > 0) {
@@ -8693,56 +9105,62 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
   const proxy: Record<string, unknown> = super._getCustomInspectProxy();
-      const _2kWgBhQKjEauxx8C6qF3ZQamK4Le = this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _2kWgBhQKjEauxx8C6qF3ZQamK4Le = this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2kWgBhQKjEauxx8C6qF3ZQamK4Le.length == 1) {
         proxy.partOf = _2kWgBhQKjEauxx8C6qF3ZQamK4Le[0];
       }
       
-      const _3BT4kQLcXhHx7TAWaNDKh8nFn9eY = this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3BT4kQLcXhHx7TAWaNDKh8nFn9eY = this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3BT4kQLcXhHx7TAWaNDKh8nFn9eY.length == 1) {
         proxy.next = _3BT4kQLcXhHx7TAWaNDKh8nFn9eY[0];
       }
       
-      const _3b8yG8tDNzQFFEnWhCc13G8eHooA = this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3b8yG8tDNzQFFEnWhCc13G8eHooA = this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3b8yG8tDNzQFFEnWhCc13G8eHooA.length == 1) {
         proxy.prev = _3b8yG8tDNzQFFEnWhCc13G8eHooA[0];
       }
@@ -9675,27 +10093,123 @@ get sharedInbox(): (URL | null) {
         ): string => \\"URL \\" + inspect(this.id!.href, options),
       };
     }
-    const _2JCYDbSxEHCCLdBYed33cCETfGyR = this.#_2JCYDbSxEHCCLdBYed33cCETfGyR;
+    
+      const _2JCYDbSxEHCCLdBYed33cCETfGyR = this.#_2JCYDbSxEHCCLdBYed33cCETfGyR
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2JCYDbSxEHCCLdBYed33cCETfGyR.length == 1) {
         proxy.proxyUrl = _2JCYDbSxEHCCLdBYed33cCETfGyR[0];
       }
-      const _25S6UmgzDead8hxL5sQFezZTAusd = this.#_25S6UmgzDead8hxL5sQFezZTAusd;
+      
+      const _25S6UmgzDead8hxL5sQFezZTAusd = this.#_25S6UmgzDead8hxL5sQFezZTAusd
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_25S6UmgzDead8hxL5sQFezZTAusd.length == 1) {
         proxy.oauthAuthorizationEndpoint = _25S6UmgzDead8hxL5sQFezZTAusd[0];
       }
-      const _iAMxqrSba7yBCRB1FZ5kEVdKEZ3 = this.#_iAMxqrSba7yBCRB1FZ5kEVdKEZ3;
+      
+      const _iAMxqrSba7yBCRB1FZ5kEVdKEZ3 = this.#_iAMxqrSba7yBCRB1FZ5kEVdKEZ3
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_iAMxqrSba7yBCRB1FZ5kEVdKEZ3.length == 1) {
         proxy.oauthTokenEndpoint = _iAMxqrSba7yBCRB1FZ5kEVdKEZ3[0];
       }
-      const _8Bx9qN8oU7Bpt2xi6khaxWp1gMr = this.#_8Bx9qN8oU7Bpt2xi6khaxWp1gMr;
+      
+      const _8Bx9qN8oU7Bpt2xi6khaxWp1gMr = this.#_8Bx9qN8oU7Bpt2xi6khaxWp1gMr
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_8Bx9qN8oU7Bpt2xi6khaxWp1gMr.length == 1) {
         proxy.provideClientKey = _8Bx9qN8oU7Bpt2xi6khaxWp1gMr[0];
       }
-      const _3dU7PMVQZJpsCpo2F4RQXxBXdPmS = this.#_3dU7PMVQZJpsCpo2F4RQXxBXdPmS;
+      
+      const _3dU7PMVQZJpsCpo2F4RQXxBXdPmS = this.#_3dU7PMVQZJpsCpo2F4RQXxBXdPmS
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3dU7PMVQZJpsCpo2F4RQXxBXdPmS.length == 1) {
         proxy.signClientKey = _3dU7PMVQZJpsCpo2F4RQXxBXdPmS[0];
       }
-      const _3JprUSDLVqqX4dwHRi37qGZZCRCc = this.#_3JprUSDLVqqX4dwHRi37qGZZCRCc;
+      
+      const _3JprUSDLVqqX4dwHRi37qGZZCRCc = this.#_3JprUSDLVqqX4dwHRi37qGZZCRCc
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3JprUSDLVqqX4dwHRi37qGZZCRCc.length == 1) {
         proxy.sharedInbox = _3JprUSDLVqqX4dwHRi37qGZZCRCc[0];
       }
@@ -11360,7 +11874,23 @@ get indexable(): (boolean | null) {
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
-  const proxy: Record<string, unknown> = super._getCustomInspectProxy();const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3isuDgRAKSntq9XdbjiNxjwyPZAf.length == 1) {
         proxy.preferredUsername = _3isuDgRAKSntq9XdbjiNxjwyPZAf[0];
       }
@@ -11371,20 +11901,22 @@ get indexable(): (boolean | null) {
         proxy.preferredUsernames = _3isuDgRAKSntq9XdbjiNxjwyPZAf;
       }
       
-      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_axq166E2eZADq34V4MYUc8KMZdC.length == 1) {
         proxy.publicKey = _axq166E2eZADq34V4MYUc8KMZdC[0];
       }
@@ -11394,137 +11926,245 @@ get indexable(): (boolean | null) {
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
       }
-      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
+      
+      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_36QNc9MxfkKf6h8sEUQSHnV9NZA.length == 1) {
         proxy.manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA[0];
       }
       
-      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length == 1) {
         proxy.inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0];
       }
       
-      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_41QwhqJouoLg3h8dRPKat21brynC.length == 1) {
         proxy.outbox = _41QwhqJouoLg3h8dRPKat21brynC[0];
       }
       
-      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length == 1) {
         proxy.following = _3yAv8jymNfNuJUDuBzJ1NQhdbAee[0];
       }
       
-      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_BBCTgfphhsFzpVfKTykGSpBNwoA.length == 1) {
         proxy.followers = _BBCTgfphhsFzpVfKTykGSpBNwoA[0];
       }
       
-      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
-      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 1
           || !(\\"stream\\" in proxy)
           && _3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 0) {
         proxy.streams = _3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
       }
-      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+      
+      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
-      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
         proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
       }
-      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
         proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
       }
-      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
         proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
       }
-      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
@@ -12683,11 +13323,43 @@ get width(): (number | null) {
         ): string => \\"URL \\" + inspect(this.id!.href, options),
       };
     }
-    const _pVjLsybKQdmkjuU7MHjiVmNnuj7 = this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7;
+    
+      const _pVjLsybKQdmkjuU7MHjiVmNnuj7 = this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_pVjLsybKQdmkjuU7MHjiVmNnuj7.length == 1) {
         proxy.href = _pVjLsybKQdmkjuU7MHjiVmNnuj7[0];
       }
-      const _2a1c5GkfkQsnyyLybF8UXBQfFuHZ = this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
+      
+      const _2a1c5GkfkQsnyyLybF8UXBQfFuHZ = this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length == 1) {
         proxy.rel = _2a1c5GkfkQsnyyLybF8UXBQfFuHZ[0];
       }
@@ -12697,11 +13369,43 @@ get width(): (number | null) {
           && _2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length > 0) {
         proxy.rels = _2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
       }
-      const _3BLrzmscsjHCw8TF5BHRW9WkPnX8 = this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8;
+      
+      const _3BLrzmscsjHCw8TF5BHRW9WkPnX8 = this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3BLrzmscsjHCw8TF5BHRW9WkPnX8.length == 1) {
         proxy.mediaType = _3BLrzmscsjHCw8TF5BHRW9WkPnX8[0];
       }
-      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+      
+      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length == 1) {
         proxy.name = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
       }
@@ -12711,33 +13415,83 @@ get width(): (number | null) {
           && _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length > 0) {
         proxy.names = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
       }
-      const _f57HKWCp1YRBbTJE8PF12RbDJGf = this.#_f57HKWCp1YRBbTJE8PF12RbDJGf;
+      
+      const _f57HKWCp1YRBbTJE8PF12RbDJGf = this.#_f57HKWCp1YRBbTJE8PF12RbDJGf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_f57HKWCp1YRBbTJE8PF12RbDJGf.length == 1) {
         proxy.language = _f57HKWCp1YRBbTJE8PF12RbDJGf[0];
       }
-      const _2cGKFeFJMmiNpGZFEF75mCwFQsKb = this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb;
+      
+      const _2cGKFeFJMmiNpGZFEF75mCwFQsKb = this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2cGKFeFJMmiNpGZFEF75mCwFQsKb.length == 1) {
         proxy.height = _2cGKFeFJMmiNpGZFEF75mCwFQsKb[0];
       }
-      const _2e9AP7WdHBJYAgXG6GEyq7nSkNMe = this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe;
+      
+      const _2e9AP7WdHBJYAgXG6GEyq7nSkNMe = this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2e9AP7WdHBJYAgXG6GEyq7nSkNMe.length == 1) {
         proxy.width = _2e9AP7WdHBJYAgXG6GEyq7nSkNMe[0];
       }
       
-      const _gCVTegXxWWCw6wWRxa1QF65zusg = this.#_gCVTegXxWWCw6wWRxa1QF65zusg.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _gCVTegXxWWCw6wWRxa1QF65zusg = this.#_gCVTegXxWWCw6wWRxa1QF65zusg
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_gCVTegXxWWCw6wWRxa1QF65zusg.length > 1
           || !(\\"preview\\" in proxy)
           && _gCVTegXxWWCw6wWRxa1QF65zusg.length > 0) {
@@ -13468,7 +14222,23 @@ get startIndex(): (number | null) {
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
-  const proxy: Record<string, unknown> = super._getCustomInspectProxy();const _2W4yinFwqmpneu2h4m1mZ3pcLADd = this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd;
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _2W4yinFwqmpneu2h4m1mZ3pcLADd = this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2W4yinFwqmpneu2h4m1mZ3pcLADd.length == 1) {
         proxy.startIndex = _2W4yinFwqmpneu2h4m1mZ3pcLADd[0];
       }
@@ -14587,7 +15357,23 @@ get indexable(): (boolean | null) {
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
-  const proxy: Record<string, unknown> = super._getCustomInspectProxy();const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3isuDgRAKSntq9XdbjiNxjwyPZAf.length == 1) {
         proxy.preferredUsername = _3isuDgRAKSntq9XdbjiNxjwyPZAf[0];
       }
@@ -14598,20 +15384,22 @@ get indexable(): (boolean | null) {
         proxy.preferredUsernames = _3isuDgRAKSntq9XdbjiNxjwyPZAf;
       }
       
-      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_axq166E2eZADq34V4MYUc8KMZdC.length == 1) {
         proxy.publicKey = _axq166E2eZADq34V4MYUc8KMZdC[0];
       }
@@ -14621,137 +15409,245 @@ get indexable(): (boolean | null) {
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
       }
-      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
+      
+      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_36QNc9MxfkKf6h8sEUQSHnV9NZA.length == 1) {
         proxy.manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA[0];
       }
       
-      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length == 1) {
         proxy.inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0];
       }
       
-      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_41QwhqJouoLg3h8dRPKat21brynC.length == 1) {
         proxy.outbox = _41QwhqJouoLg3h8dRPKat21brynC[0];
       }
       
-      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length == 1) {
         proxy.following = _3yAv8jymNfNuJUDuBzJ1NQhdbAee[0];
       }
       
-      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_BBCTgfphhsFzpVfKTykGSpBNwoA.length == 1) {
         proxy.followers = _BBCTgfphhsFzpVfKTykGSpBNwoA[0];
       }
       
-      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
-      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 1
           || !(\\"stream\\" in proxy)
           && _3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 0) {
         proxy.streams = _3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
       }
-      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+      
+      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
-      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
         proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
       }
-      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
         proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
       }
-      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
         proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
       }
-      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
@@ -16047,7 +16943,23 @@ get indexable(): (boolean | null) {
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
-  const proxy: Record<string, unknown> = super._getCustomInspectProxy();const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3isuDgRAKSntq9XdbjiNxjwyPZAf.length == 1) {
         proxy.preferredUsername = _3isuDgRAKSntq9XdbjiNxjwyPZAf[0];
       }
@@ -16058,20 +16970,22 @@ get indexable(): (boolean | null) {
         proxy.preferredUsernames = _3isuDgRAKSntq9XdbjiNxjwyPZAf;
       }
       
-      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_axq166E2eZADq34V4MYUc8KMZdC.length == 1) {
         proxy.publicKey = _axq166E2eZADq34V4MYUc8KMZdC[0];
       }
@@ -16081,137 +16995,245 @@ get indexable(): (boolean | null) {
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
       }
-      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
+      
+      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_36QNc9MxfkKf6h8sEUQSHnV9NZA.length == 1) {
         proxy.manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA[0];
       }
       
-      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length == 1) {
         proxy.inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0];
       }
       
-      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_41QwhqJouoLg3h8dRPKat21brynC.length == 1) {
         proxy.outbox = _41QwhqJouoLg3h8dRPKat21brynC[0];
       }
       
-      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length == 1) {
         proxy.following = _3yAv8jymNfNuJUDuBzJ1NQhdbAee[0];
       }
       
-      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_BBCTgfphhsFzpVfKTykGSpBNwoA.length == 1) {
         proxy.followers = _BBCTgfphhsFzpVfKTykGSpBNwoA[0];
       }
       
-      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
-      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 1
           || !(\\"stream\\" in proxy)
           && _3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 0) {
         proxy.streams = _3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
       }
-      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+      
+      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
-      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
         proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
       }
-      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
         proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
       }
-      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
         proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
       }
-      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
@@ -16616,27 +17638,123 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
-  const proxy: Record<string, unknown> = super._getCustomInspectProxy();const _3UCsHnBHvDAXJnBuzw3zw1VVs3Ne = this.#_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne;
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _3UCsHnBHvDAXJnBuzw3zw1VVs3Ne = this.#_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne.length == 1) {
         proxy.accuracy = _3UCsHnBHvDAXJnBuzw3zw1VVs3Ne[0];
       }
-      const _3Q6KDcFQUJRRaBux1BL2yp5QWiBi = this.#_3Q6KDcFQUJRRaBux1BL2yp5QWiBi;
+      
+      const _3Q6KDcFQUJRRaBux1BL2yp5QWiBi = this.#_3Q6KDcFQUJRRaBux1BL2yp5QWiBi
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3Q6KDcFQUJRRaBux1BL2yp5QWiBi.length == 1) {
         proxy.altitude = _3Q6KDcFQUJRRaBux1BL2yp5QWiBi[0];
       }
-      const _3g85RoKRnaNjP7DFyLSvsWDg7HGM = this.#_3g85RoKRnaNjP7DFyLSvsWDg7HGM;
+      
+      const _3g85RoKRnaNjP7DFyLSvsWDg7HGM = this.#_3g85RoKRnaNjP7DFyLSvsWDg7HGM
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3g85RoKRnaNjP7DFyLSvsWDg7HGM.length == 1) {
         proxy.latitude = _3g85RoKRnaNjP7DFyLSvsWDg7HGM[0];
       }
-      const _B2GEYdS9yBAF3ho1pm1rcRg7cSf = this.#_B2GEYdS9yBAF3ho1pm1rcRg7cSf;
+      
+      const _B2GEYdS9yBAF3ho1pm1rcRg7cSf = this.#_B2GEYdS9yBAF3ho1pm1rcRg7cSf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_B2GEYdS9yBAF3ho1pm1rcRg7cSf.length == 1) {
         proxy.longitude = _B2GEYdS9yBAF3ho1pm1rcRg7cSf[0];
       }
-      const _3ga86BKHUtRkGx5PHBjRiUXXzwnw = this.#_3ga86BKHUtRkGx5PHBjRiUXXzwnw;
+      
+      const _3ga86BKHUtRkGx5PHBjRiUXXzwnw = this.#_3ga86BKHUtRkGx5PHBjRiUXXzwnw
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3ga86BKHUtRkGx5PHBjRiUXXzwnw.length == 1) {
         proxy.radius = _3ga86BKHUtRkGx5PHBjRiUXXzwnw[0];
       }
-      const _oKrwxU4V8wiKhMW1QEYQibcJh8c = this.#_oKrwxU4V8wiKhMW1QEYQibcJh8c;
+      
+      const _oKrwxU4V8wiKhMW1QEYQibcJh8c = this.#_oKrwxU4V8wiKhMW1QEYQibcJh8c
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_oKrwxU4V8wiKhMW1QEYQibcJh8c.length == 1) {
         proxy.units = _oKrwxU4V8wiKhMW1QEYQibcJh8c[0];
       }
@@ -16903,20 +18021,22 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
   const proxy: Record<string, unknown> = super._getCustomInspectProxy();
-      const _3CLQ1PLSXrhSQbTGGHuxNyaEFKM1 = this.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3CLQ1PLSXrhSQbTGGHuxNyaEFKM1 = this.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1.length == 1) {
         proxy.describes = _3CLQ1PLSXrhSQbTGGHuxNyaEFKM1[0];
       }
@@ -17654,38 +18774,42 @@ relationships?: (Object | URL)[];}
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
   const proxy: Record<string, unknown> = super._getCustomInspectProxy();
-      const _2Zqdmi46ZnDQsECS6mzwhrv3rUKq = this.#_2Zqdmi46ZnDQsECS6mzwhrv3rUKq.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _2Zqdmi46ZnDQsECS6mzwhrv3rUKq = this.#_2Zqdmi46ZnDQsECS6mzwhrv3rUKq
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2Zqdmi46ZnDQsECS6mzwhrv3rUKq.length == 1) {
         proxy.subject = _2Zqdmi46ZnDQsECS6mzwhrv3rUKq[0];
       }
       
-      const _2MH19yxjn1wnHsNfa5n4JBhJzxyc = this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _2MH19yxjn1wnHsNfa5n4JBhJzxyc = this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2MH19yxjn1wnHsNfa5n4JBhJzxyc.length == 1) {
         proxy.object = _2MH19yxjn1wnHsNfa5n4JBhJzxyc[0];
       }
@@ -17696,20 +18820,22 @@ relationships?: (Object | URL)[];}
         proxy.objects = _2MH19yxjn1wnHsNfa5n4JBhJzxyc;
       }
       
-      const _4Lzz89F9qipAQSGkWyX9DGWiUojG = this.#_4Lzz89F9qipAQSGkWyX9DGWiUojG.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _4Lzz89F9qipAQSGkWyX9DGWiUojG = this.#_4Lzz89F9qipAQSGkWyX9DGWiUojG
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_4Lzz89F9qipAQSGkWyX9DGWiUojG.length == 1) {
         proxy.relationship = _4Lzz89F9qipAQSGkWyX9DGWiUojG[0];
       }
@@ -19017,7 +20143,23 @@ get indexable(): (boolean | null) {
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
-  const proxy: Record<string, unknown> = super._getCustomInspectProxy();const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf;
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _3isuDgRAKSntq9XdbjiNxjwyPZAf = this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3isuDgRAKSntq9XdbjiNxjwyPZAf.length == 1) {
         proxy.preferredUsername = _3isuDgRAKSntq9XdbjiNxjwyPZAf[0];
       }
@@ -19028,20 +20170,22 @@ get indexable(): (boolean | null) {
         proxy.preferredUsernames = _3isuDgRAKSntq9XdbjiNxjwyPZAf;
       }
       
-      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _axq166E2eZADq34V4MYUc8KMZdC = this.#_axq166E2eZADq34V4MYUc8KMZdC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_axq166E2eZADq34V4MYUc8KMZdC.length == 1) {
         proxy.publicKey = _axq166E2eZADq34V4MYUc8KMZdC[0];
       }
@@ -19051,137 +20195,245 @@ get indexable(): (boolean | null) {
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
       }
-      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
+      
+      const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_36QNc9MxfkKf6h8sEUQSHnV9NZA.length == 1) {
         proxy.manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA[0];
       }
       
-      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length == 1) {
         proxy.inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0];
       }
       
-      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _41QwhqJouoLg3h8dRPKat21brynC = this.#_41QwhqJouoLg3h8dRPKat21brynC
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_41QwhqJouoLg3h8dRPKat21brynC.length == 1) {
         proxy.outbox = _41QwhqJouoLg3h8dRPKat21brynC[0];
       }
       
-      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3yAv8jymNfNuJUDuBzJ1NQhdbAee = this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length == 1) {
         proxy.following = _3yAv8jymNfNuJUDuBzJ1NQhdbAee[0];
       }
       
-      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _BBCTgfphhsFzpVfKTykGSpBNwoA = this.#_BBCTgfphhsFzpVfKTykGSpBNwoA
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_BBCTgfphhsFzpVfKTykGSpBNwoA.length == 1) {
         proxy.followers = _BBCTgfphhsFzpVfKTykGSpBNwoA[0];
       }
       
-      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
-      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.map(v => v instanceof URL
-        ? {
-            [Symbol.for(\\"Deno.customInspect\\")]: (
-              inspect: typeof Deno.inspect,
-              options: Deno.InspectOptions,
-            ): string => \\"URL \\" + inspect(v.href, options),
-            [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-              _depth: number,
-              options: unknown,
-              inspect: (value: unknown, options: unknown) => string,
-            ): string => \\"URL \\" + inspect(v.href, options),
-          }
-        : v);
-      
+      const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 1
           || !(\\"stream\\" in proxy)
           && _3sG2Hdwn9qzKGu9mpYkqakAMUkH9.length > 0) {
         proxy.streams = _3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
       }
-      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG;
+      
+      const _sEoQwUbfk4hEfugzNQ2ZiDcLMkG = this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_sEoQwUbfk4hEfugzNQ2ZiDcLMkG.length == 1) {
         proxy.endpoints = _sEoQwUbfk4hEfugzNQ2ZiDcLMkG[0];
       }
-      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH;
+      
+      const _gAJzg1QDc4rcefFsUzGSYmyXvNH = this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_gAJzg1QDc4rcefFsUzGSYmyXvNH.length == 1) {
         proxy.discoverable = _gAJzg1QDc4rcefFsUzGSYmyXvNH[0];
       }
-      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7;
+      
+      const _2kGKkJtoFWg8c18PaVSqj9NKP4t7 = this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2kGKkJtoFWg8c18PaVSqj9NKP4t7.length == 1) {
         proxy.suspended = _2kGKkJtoFWg8c18PaVSqj9NKP4t7[0];
       }
-      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ;
+      
+      const _79S8K4f5J9MWUgCxziRyUe6PTHZ = this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_79S8K4f5J9MWUgCxziRyUe6PTHZ.length == 1) {
         proxy.memorial = _79S8K4f5J9MWUgCxziRyUe6PTHZ[0];
       }
-      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk;
+      
+      const _2diCorzqPGQQqftp6e4SrCEwEnyk = this.#_2diCorzqPGQQqftp6e4SrCEwEnyk
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
