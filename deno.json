@@ -15,6 +15,7 @@
   },
   "imports": {
     "@cfworker/json-schema": "npm:@cfworker/json-schema@^1.12.8",
+    "@cliffy/command": "https://deno.land/x/cliffy@v1.0.0-rc.4/command/mod.ts",
     "@david/which-runtime": "jsr:@david/which-runtime@^0.2.0",
     "@deno/dnt": "jsr:@deno/dnt@^0.41.1",
     "@fedify/fedify": "./mod.ts",
@@ -46,6 +47,7 @@
     "@std/text": "jsr:@std/text@^0.220.1",
     "@std/url": "jsr:@std/url@^0.220.1",
     "@std/yaml": "jsr:@std/yaml@^0.220.1",
+    "cli-highlight": "npm:cli-highlight@^2.1.11",
     "fast-check": "npm:fast-check@^3.17.0",
     "jsonld": "npm:jsonld@^8.3.2",
     "mock_fetch": "https://deno.land/x/mock_fetch@0.3.0/mod.ts",
@@ -66,6 +68,7 @@
     "cache": "deno task codegen && deno cache mod.ts",
     "check": "deno task codegen && deno fmt --check && deno lint && deno check */*.ts",
     "codegen": "deno run --allow-read --allow-write --check codegen/main.ts vocab/ ../runtime/ > vocab/vocab.ts && deno fmt vocab/vocab.ts && deno cache vocab/vocab.ts && deno check vocab/vocab.ts",
+    "cli": "deno task codegen && deno run --allow-read --allow-net --allow-env cli/mod.ts",
     "test-without-codegen": "deno test --check --doc --allow-read --allow-write --unstable-kv --trace-leaks",
     "test": "deno task codegen && deno task test-without-codegen",
     "coverage": "rm -rf coverage/ && deno task test --coverage && deno coverage --html coverage",
