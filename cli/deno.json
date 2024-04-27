@@ -7,6 +7,11 @@
     ".vscode",
     "scripts"
   ],
+  "unstable": [
+    "fs",
+    "kv",
+    "temporal"
+  ],
   "tasks": {
     "fedify-codegen": "cat ../vocab/vocab.ts > /dev/null || (deno run --allow-read --allow-write --check ../codegen/main.ts ../vocab/ ../runtime/ > ../vocab/vocab.ts && deno fmt ../vocab/vocab.ts && deno cache ../vocab/vocab.ts && deno check ../vocab/vocab.ts)",
     "generate-import-map": "deno run --allow-read --allow-write scripts/generate_import_map.ts",

@@ -1,4 +1,4 @@
-import { Command, HelpCommand } from "@cliffy/command";
+import { Command, CompletionsCommand, HelpCommand } from "@cliffy/command";
 import { configure, getConsoleSink } from "@logtape/logtape";
 import { DEFAULT_CACHE_DIR, setCacheDir } from "./cache.ts";
 import metadata from "./deno.json" with { type: "json" };
@@ -35,6 +35,7 @@ const command = new Command()
   })
   .default("help")
   .command("lookup", lookup)
+  .command("completions", new CompletionsCommand())
   .command("help", new HelpCommand().global());
 
 if (import.meta.main) {
