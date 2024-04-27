@@ -1,6 +1,9 @@
+import { getLogger } from "@logtape/logtape";
 import type { KvKey, KvStore } from "../federation/kv.ts";
 import { validateCryptoKey } from "../httpsig/key.ts";
 import { sign } from "../httpsig/mod.ts";
+
+const logger = getLogger(["fedify", "runtime", "docloader"]);
 
 /**
  * A remote JSON-LD document and its context fetched by
@@ -63,17 +66,44 @@ function createRequest(url: string): Request {
   });
 }
 
+function logRequest(request: Request) {
+  logger.debug(
+    "Fetching document: {method} {url} {headers}",
+    {
+      method: request.method,
+      url: request.url,
+      headers: Object.fromEntries(request.headers.entries()),
+    },
+  );
+}
+
 async function getRemoteDocument(
   url: string,
   response: Response,
 ): Promise<RemoteDocument> {
   const documentUrl = response.url === "" ? url : response.url;
   if (!response.ok) {
+    logger.error(
+      "Failed to fetch document: {status} {url} {headers}",
+      {
+        status: response.status,
+        url: documentUrl,
+        headers: Object.fromEntries(response.headers.entries()),
+      },
+    );
     throw new FetchError(
       documentUrl,
       `HTTP ${response.status}: ${documentUrl}`,
     );
   }
+  logger.error(
+    "Fetched document: {status} {url} {headers}",
+    {
+      status: response.status,
+      url: documentUrl,
+      headers: Object.fromEntries(response.headers.entries()),
+    },
+  );
   return {
     contextUrl: null,
     document: await response.json(),
@@ -89,7 +119,9 @@ async function getRemoteDocument(
 export async function fetchDocumentLoader(
   url: string,
 ): Promise<RemoteDocument> {
-  const response = await fetch(createRequest(url));
+  const request = createRequest(url);
+  logRequest(request);
+  const response = await fetch(request);
   return getRemoteDocument(url, response);
 }
 
@@ -110,6 +142,7 @@ export function getAuthenticatedDocumentLoader(
   return async (url: string): Promise<RemoteDocument> => {
     let request = createRequest(url);
     request = await sign(request, identity.privateKey, identity.keyId);
+    logRequest(request);
     const response = await fetch(request);
     return getRemoteDocument(url, response);
   };

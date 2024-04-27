@@ -119,6 +119,8 @@ messages.
 
 ### `["fedify", "federation", "collection"]`
 
+*This category is available since Fedify 0.8.0.*
+
 The `["fedify", "federation", "collection"]` category is used for logging
 messages related to collections (e.g., outbox, followers, following).
 
@@ -133,6 +135,15 @@ check the log messages in this category with the `"debug"` level.
 The `["fedify", "federation", "outbox"]` category is used for logging messages
 related to outgoing activities.  When you cannot send an activity, you can
 check the log messages in this category with the `"debug"` level.
+
+### `["fedify", "runtime", "docloader"]`
+
+*This category is available since Fedify 0.8.0.*
+
+The `["fedify", "runtime", "docloader"]` category is used for logging messages
+related to the document loader.  When you are curious about what specific
+requests are made by the document loader, you can check the log messages in
+this category with the `"debug"` level.
 
 ### `["fedify", "x", "fresh"]`
 

@@ -40,6 +40,12 @@ To be released.
     requires `--unstable-temporal` flag.  On other runtime, it still depends
     on *@js-temporal/polyfill*.
 
+ -  Added more log messages using the [LogTape] library.  Currently the below
+    logger categories are used:
+
+     -  `["fedify", "federation", "collection"]`
+     -  `["fedify", "runtime", "docloader"]`
+
 [FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
 
 
