@@ -11,6 +11,7 @@ import {
 } from "@fedify/fedify";
 import { highlight } from "cli-highlight";
 import ora from "ora";
+import { getDocumentLoader } from "./docloader.ts";
 import { spawnTemporaryServer, type TemporaryServer } from "./tempserver.ts";
 
 export const command = new Command()
@@ -33,7 +34,8 @@ export const command = new Command()
       discardStdin: false,
     }).start();
     let server: TemporaryServer | undefined = undefined;
-    let loader: DocumentLoader | undefined = undefined;
+    const documentLoader = await getDocumentLoader();
+    let authLoader: DocumentLoader | undefined = undefined;
     if (options.authorizedFetch) {
       spinner.text = "Generating a one-time key pair...";
       const key = await generateCryptoKeyPair();
@@ -68,20 +70,24 @@ export const command = new Command()
             inbox: new URL("/inbox", server?.url),
             outbox: new URL("/outbox", server?.url),
           }),
+          { documentLoader },
         );
       });
-      loader = getAuthenticatedDocumentLoader({
+      authLoader = getAuthenticatedDocumentLoader({
         keyId: new URL("#main-key", server.url),
         privateKey: key.privateKey,
       });
     }
     try {
       spinner.text = "Looking up the object...";
-      const object = await lookupObject(url, { documentLoader: loader });
+      const object = await lookupObject(
+        url,
+        { documentLoader: authLoader ?? documentLoader },
+      );
       spinner.succeed();
       if (object == null) {
         console.error("Failed to fetch the object.");
-        if (loader == null) {
+        if (authLoader == null) {
           console.error(
             "It may be a private object.  Try with -a/--authorized-fetch.",
           );
@@ -89,9 +95,9 @@ export const command = new Command()
         Deno.exit(1);
       }
       if (options.compact) {
-        printJson(await object.toJsonLd());
+        printJson(await object.toJsonLd({ documentLoader }));
       } else if (options.expand) {
-        printJson(await object.toJsonLd({ expand: true }));
+        printJson(await object.toJsonLd({ expand: true, documentLoader }));
       } else {
         console.log(object);
       }

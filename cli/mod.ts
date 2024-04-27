@@ -1,6 +1,7 @@
 import { Command, HelpCommand } from "@cliffy/command";
 import { configure, getConsoleSink } from "@logtape/logtape";
 import metadata from "../deno.json" with { type: "json" };
+import { DEFAULT_CACHE_DIR, setCacheDir } from "./cache.ts";
 import { command as lookup } from "./lookup.ts";
 
 const command = new Command()
@@ -24,6 +25,12 @@ const command = new Command()
           },
         ],
       });
+    },
+  })
+  .globalOption("-c, --cache-dir=<dir:file>", "Set the cache directory.", {
+    default: DEFAULT_CACHE_DIR,
+    async action(options) {
+      await setCacheDir(options.cacheDir);
     },
   })
   .default("help")
