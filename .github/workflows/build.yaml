@@ -50,7 +50,7 @@ jobs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: v1.x
-    - run: deno task check
+    - run: deno task hooks:pre-commit
     - run: deno task check
       working-directory: ${{ github.workspace }}/examples/blog/
 
@@ -71,6 +71,8 @@ jobs:
     - run: deno task dnt
     - run: npm publish --dry-run
       working-directory: ${{ github.workspace }}/npm/
+    - run: deno task publish-dry-run
+      working-directory: ${{ github.workspace }}/cli/
 
   publish:
     needs: [test, lint, release-test]
@@ -129,6 +131,11 @@ jobs:
         github.event_name == 'push' &&
         github.ref_type == 'tag' || github.ref == 'refs/heads/main'
       run: deno task publish --allow-dirty
+    - if: |
+        github.event_name == 'push' &&
+        github.ref_type == 'tag' || github.ref == 'refs/heads/main'
+      run: deno task publish --allow-dirty
+      working-directory: ${{ github.workspace }}/cli/
     - if: |
         github.event_name == 'push' &&
         github.ref_type == 'tag' || github.ref == 'refs/heads/main'

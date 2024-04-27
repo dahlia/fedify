@@ -1,0 +1,16 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "cli"
+    },
+    {
+      "path": "examples/blog"
+    },
+    {
+      "path": "examples/hono-example"
+    }
+  ]
+}

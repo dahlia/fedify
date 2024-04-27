@@ -8,6 +8,9 @@ Version 0.8.0
 
 To be released.
 
+ -  The CLI toolchain is now available on JSR: [@fedify/cli].  You can install
+    it with `deno install -A -n fedify jsr:@fedify/cli`.
+
  -  Implemented [followers collection synchronization mechanism][FEP-8fcf].
 
      -  Added `RequestContext.sendActivity()` overload that takes `"followers"`
@@ -21,7 +24,7 @@ To be released.
      -  Added the second type parameter to `CollectionCursor` type.
      -  Added the third parameter to `CollectionCursor` type.
 
- -  Relaxed the required type for activity recipients. 
+ -  Relaxed the required type for activity recipients.
 
      -  Added `Recipient` interface.
      -  The type of the second parameter of `Context.sendActivity()` method
@@ -46,6 +49,7 @@ To be released.
      -  `["fedify", "federation", "collection"]`
      -  `["fedify", "runtime", "docloader"]`
 
+[@fedify/cli]: https://jsr.io/@fedify/cli
 [FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
 
 

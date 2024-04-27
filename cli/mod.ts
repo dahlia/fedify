@@ -1,7 +1,7 @@
 import { Command, HelpCommand } from "@cliffy/command";
 import { configure, getConsoleSink } from "@logtape/logtape";
-import metadata from "../deno.json" with { type: "json" };
 import { DEFAULT_CACHE_DIR, setCacheDir } from "./cache.ts";
+import metadata from "./deno.json" with { type: "json" };
 import { command as lookup } from "./lookup.ts";
 
 const command = new Command()
