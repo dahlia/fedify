@@ -2,9 +2,6 @@
 description: >-
   The Federation object is the main entry point of the Fedify library.
   This section explains the key features of the Federation object.
-prev:
-  text: Manual
-  link: ../manual.md
 next:
   text: Context
   link: ./context.md

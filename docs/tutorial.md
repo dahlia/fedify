@@ -6,9 +6,6 @@ description: >-
 prev:
   text: Installation
   link: ./install.md
-next:
-  text: Manual
-  link: ./manual.md
 ---
 
 Tutorial
