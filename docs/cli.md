@@ -37,9 +37,25 @@ irm https://deno.land/install.ps1 | iex
 
 After installing Deno, you can install `fedify` by running the below command:
 
-~~~~ sh
-deno install -A -n fedify jsr:@fedify/cli
+::: code-group
+
+~~~~ sh [Linux/macOS]
+deno install \
+  -A \
+  --unstable-fs --unstable-kv --unstable-temporal \
+  -n fedify \
+  jsr:@fedify/cli
 ~~~~
+
+~~~~ powershell [Windows]
+deno install `
+  -A `
+  --unstable-fs --unstable-kv --unstable-temporal `
+  -n fedify `
+  jsr:@fedify/cli
+~~~~
+
+:::
 
 [Deno]: https://deno.com/
 [Deno installation]: https://docs.deno.com/runtime/manual/getting_started/installation
