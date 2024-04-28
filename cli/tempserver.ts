@@ -12,11 +12,10 @@ export function spawnTemporaryServer(
   handler: Deno.ServeHandler,
 ): Promise<TemporaryServer> {
   return new Promise((resolve) => {
-    const ac = new AbortController();
     const server = Deno.serve({
       handler,
       port: 0,
-      signal: ac.signal,
+      hostname: "::",
       onListen({ port }) {
         logger.debug("Temporary server is listening on port {port}.", { port });
         openTunnel({ port }).then((tun) => {

@@ -17,7 +17,7 @@
     "generate-import-map": "deno run --allow-read --allow-write scripts/generate_import_map.ts",
     "sync-version": "deno run --allow-read=deno.json --allow-write=deno.json scripts/sync_version.ts",
     "codegen": "deno task fedify-codegen && deno task generate-import-map && deno task sync-version",
-    "run": "deno task codegen && deno run --allow-read --allow-write --allow-net --allow-env --allow-run mod.ts",
+    "run": "deno task codegen && deno run --allow-all mod.ts",
     "publish": "deno task codegen && deno task generate-import-map --release && deno publish",
     "publish-dry-run": "deno task codegen && deno publish --dry-run --allow-dirty"
   }

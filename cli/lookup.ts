@@ -41,14 +41,15 @@ export const command = new Command()
       const key = await generateCryptoKeyPair();
       spinner.text = "Spinning up a temporary ActivityPub server...";
       server = await spawnTemporaryServer((req) => {
+        const serverUrl = server?.url ?? new URL("http://localhost/");
         if (new URL(req.url).pathname == "/.well-known/webfinger") {
           const jrd: ResourceDescriptor = {
-            subject: `acct:${server!.url.hostname}@${server!.url.hostname}`,
-            aliases: [server!.url.href],
+            subject: `acct:${serverUrl.hostname}@${serverUrl.hostname}`,
+            aliases: [serverUrl.href],
             links: [
               {
                 rel: "self",
-                href: server!.url.href,
+                href: serverUrl.href,
                 type: "application/activity+json",
               },
             ],
@@ -59,16 +60,16 @@ export const command = new Command()
         }
         return respondWithObject(
           new Application({
-            id: server?.url,
-            preferredUsername: server?.url?.hostname,
+            id: serverUrl,
+            preferredUsername: serverUrl?.hostname,
             publicKey: new CryptographicKey({
-              id: new URL("#main-key", server?.url),
-              owner: server?.url,
+              id: new URL("#main-key", serverUrl),
+              owner: serverUrl,
               publicKey: key.publicKey,
             }),
             manuallyApprovesFollowers: true,
-            inbox: new URL("/inbox", server?.url),
-            outbox: new URL("/outbox", server?.url),
+            inbox: new URL("/inbox", serverUrl),
+            outbox: new URL("/outbox", serverUrl),
           }),
           { documentLoader },
         );

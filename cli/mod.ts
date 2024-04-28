@@ -19,6 +19,11 @@ const command = new Command()
             sinks: ["console"],
           },
           {
+            category: "localtunnel",
+            level: "debug",
+            sinks: ["console"],
+          },
+          {
             category: ["logtape", "meta"],
             level: "warning",
             sinks: ["console"],
