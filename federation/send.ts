@@ -111,7 +111,12 @@ export async function sendActivity(
   request = await sign(request, privateKey, keyId);
   const response = await fetch(request);
   if (!response.ok) {
-    const error = await response.text();
+    let error;
+    try {
+      error = await response.text();
+    } catch (_) {
+      error = "";
+    }
     logger.error(
       "Failed to send activity {activityId} to {inbox} ({status} " +
         "{statusText}):\n{error}",

@@ -24,6 +24,13 @@
       "source.sortImports": "always"
     }
   },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "denoland.vscode-deno",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.sortImports": "always"
+    }
+  },
   "cSpell.words": [
     "codegen",
     "Deno",
@@ -31,11 +38,14 @@
     "docloader",
     "fedify",
     "fediverse",
+    "highligher",
     "hongminhee",
     "hono",
     "httpsig",
     "logtape",
     "nodeinfo",
+    "poppanator",
+    "shiki",
     "tempserver",
     "webfinger"
   ]

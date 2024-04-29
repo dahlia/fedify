@@ -2,6 +2,8 @@ import { Command, CompletionsCommand, HelpCommand } from "@cliffy/command";
 import { configure, getConsoleSink } from "@logtape/logtape";
 import { DEFAULT_CACHE_DIR, setCacheDir } from "./cache.ts";
 import metadata from "./deno.json" with { type: "json" };
+import { command as inbox } from "./inbox.tsx";
+import { recordingSink } from "./log.ts";
 import { command as lookup } from "./lookup.ts";
 
 const command = new Command()
@@ -10,13 +12,13 @@ const command = new Command()
   .globalOption("-d, --debug", "Enable debug mode.", {
     async action() {
       await configure({
-        sinks: { console: getConsoleSink() },
+        sinks: { console: getConsoleSink(), recording: recordingSink },
         filters: {},
         loggers: [
           {
             category: "fedify",
             level: "debug",
-            sinks: ["console"],
+            sinks: ["console", "recording"],
           },
           {
             category: "localtunnel",
@@ -29,6 +31,7 @@ const command = new Command()
             sinks: ["console"],
           },
         ],
+        reset: true,
       });
     },
   })
@@ -40,6 +43,7 @@ const command = new Command()
   })
   .default("help")
   .command("lookup", lookup)
+  .command("inbox", inbox)
   .command("completions", new CompletionsCommand())
   .command("help", new HelpCommand().global());
 

@@ -3,6 +3,10 @@
   "version": "0.8.0",
   "exports": "./mod.ts",
   "importMap": "import_map.g.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx"
+  },
   "exclude": [
     ".vscode",
     "scripts"

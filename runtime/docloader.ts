@@ -96,7 +96,7 @@ async function getRemoteDocument(
       `HTTP ${response.status}: ${documentUrl}`,
     );
   }
-  logger.error(
+  logger.debug(
     "Fetched document: {status} {url} {headers}",
     {
       status: response.status,

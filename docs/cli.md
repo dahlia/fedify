@@ -419,6 +419,63 @@ Person {
 }
 ~~~~
 
+
+`fedify inbox`: Ephemeral inbox server
+--------------------------------------
+
+The `fedify inbox` command is used to spin up an ephemeral inbox server that
+serves the ActivityPub inbox with an one-time actor.  This is useful when you
+want to test and debug the outgoing activities of your server.  To start
+an ephemeral inbox server, run the below command:
+
+~~~~ sh
+fedify inbox
+~~~~
+
+If it goes well, you will see the output like the below (without termination;
+press <kbd>^C</kbd> to stop the server):
+
+~~~~
+✔ The ephemeral ActivityPub server is up and running: https://12a4fea81cbcf6.lhr.life/
+✔ Followed @bibelus_vasariol@activitypub.academy
+╭───────────────┬─────────────────────────────────────────╮
+│ Actor handle: │ i@12a4fea81cbcf6.lhr.life               │
+├───────────────┼─────────────────────────────────────────┤
+│    Actor URI: │ https://12a4fea81cbcf6.lhr.life/i       │
+├───────────────┼─────────────────────────────────────────┤
+│  Actor inbox: │ https://12a4fea81cbcf6.lhr.life/i/inbox │
+├───────────────┼─────────────────────────────────────────┤
+│ Shared inbox: │ https://12a4fea81cbcf6.lhr.life/inbox   │
+╰───────────────┴─────────────────────────────────────────╯
+~~~~
+
+Although the given URIs and handle are short-lived, they are anyway publicly
+dereferenceable until the server is terminated.  You can use these URIs and
+handle to test and debug the outgoing activities of your server.
+
+If any incoming activities are received, the server will log them to the
+console:
+
+~~~~
+╭────────────────┬────────────────────────────────────╮
+│     Request #: │ 3                                  │
+├────────────────┼────────────────────────────────────┤
+│ Activity type: │ Create                             │
+├────────────────┼────────────────────────────────────┤
+│  HTTP request: │ POST /inbox                        │
+├────────────────┼────────────────────────────────────┤
+│ HTTP response: │ 202                                │
+├────────────────┼────────────────────────────────────┤
+│        Details │ http://12a4fea81cbcf6.lhr.life/r/3 │
+╰────────────────┴────────────────────────────────────╯
+~~~~
+
+You can also see the details of the incoming activities by visiting the
+`/r/:id` endpoint of the server in your browser:
+
+![The details of the incoming activities](cli/fedify-inbox-web.png)
+
+
 Shell completions
 -----------------
 
