@@ -60,6 +60,14 @@ export const command = new Command()
         colors.green(server.url.href)
       }`,
     );
+    Deno.addSignalListener("SIGINT", () => {
+      spinner.stop();
+      spinner.start("Stopping server...");
+      server.close().then(() => {
+        spinner.succeed("Server stopped.");
+        Deno.exit(0);
+      });
+    });
     spinner.start();
     const fedCtx = federation.createContext(server.url, -1);
     if (options.follow != null && options.follow.length > 0) {

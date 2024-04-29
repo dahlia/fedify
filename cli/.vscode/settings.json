@@ -9,6 +9,7 @@
   },
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
+  "git.openRepositoryInParentFolders": "never",
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features",
     "editor.formatOnSave": true
