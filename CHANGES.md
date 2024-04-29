@@ -47,6 +47,7 @@ To be released.
     logger categories are used:
 
      -  `["fedify", "federation", "collection"]`
+     -  `["fedify", "httpsig", "verify"]`
      -  `["fedify", "runtime", "docloader"]`
 
 [@fedify/cli]: https://jsr.io/@fedify/cli

@@ -4,6 +4,7 @@
  *
  * @module
  */
+import { getLogger } from "@logtape/logtape";
 import { equals } from "@std/bytes";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import type { DocumentLoader } from "../runtime/docloader.ts";
@@ -95,16 +96,33 @@ export async function verify(
   documentLoader: DocumentLoader,
   currentTime?: Temporal.Instant,
 ): Promise<CryptographicKey | null> {
+  const logger = getLogger(["fedify", "httpsig", "verify"]);
   request = request.clone();
   const dateHeader = request.headers.get("Date");
-  if (dateHeader == null) return null;
+  if (dateHeader == null) {
+    logger.debug(
+      "Failed to verify; no Date header found.",
+      { headers: Object.fromEntries(request.headers.entries()) },
+    );
+    return null;
+  }
   const sigHeader = request.headers.get("Signature");
-  if (sigHeader == null) return null;
+  if (sigHeader == null) {
+    logger.debug(
+      "Failed to verify; no Signature header found.",
+      { headers: Object.fromEntries(request.headers.entries()) },
+    );
+    return null;
+  }
   const digestHeader = request.headers.get("Digest");
   if (
     request.method !== "GET" && request.method !== "HEAD" &&
     digestHeader == null
   ) {
+    logger.debug(
+      "Failed to verify; no Digest header found.",
+      { headers: Object.fromEntries(request.headers.entries()) },
+    );
     return null;
   }
   let body: ArrayBuffer | null = null;
@@ -122,20 +140,47 @@ export async function verify(
         supportedHashAlgorithms[algo],
         body,
       );
-      if (!equals(digest, new Uint8Array(expectedDigest))) return null;
+      if (!equals(digest, new Uint8Array(expectedDigest))) {
+        logger.debug(
+          "Failed to verify; digest mismatch ({algorithm}): " +
+            "{digest} != {expectedDigest}.",
+          {
+            algorithm: algo,
+            digest: digestBase64,
+            expectedDigest: encodeBase64(expectedDigest),
+          },
+        );
+        return null;
+      }
       matched = true;
     }
-    if (!matched) return null;
+    if (!matched) {
+      logger.debug(
+        "Failed to verify; no supported digest algorithm found.  " +
+          "Supported: {supportedAlgorithms}; found: {algorithms}.",
+        {
+          supportedAlgorithms: Object.keys(supportedHashAlgorithms),
+          algorithms: digests.map(([algo]) => algo),
+        },
+      );
+      return null;
+    }
   }
   const date = Temporal.Instant.from(new Date(dateHeader).toISOString());
   const now = currentTime ?? Temporal.Now.instant();
   if (Temporal.Instant.compare(date, now.add({ seconds: 30 })) > 0) {
-    // Too far in the future
+    logger.debug(
+      "Failed to verify; Date is too far in the future.",
+      { date: date.toString(), now: now.toString() },
+    );
     return null;
   } else if (
     Temporal.Instant.compare(date, now.subtract({ seconds: 30 })) < 0
   ) {
-    // Too far in the past
+    logger.debug(
+      "Failed to verify; Date is too far in the past.",
+      { date: date.toString(), now: now.toString() },
+    );
     return null;
   }
   const sigValues = Object.fromEntries(
@@ -143,14 +188,35 @@ export async function verify(
       pair.match(/^\s*([A-Za-z]+)="([^"]*)"\s*$/)
     ).filter((m) => m != null).map((m) => m!.slice(1, 3) as [string, string]),
   );
-  if (
-    !("keyId" in sigValues && "headers" in sigValues &&
-      "signature" in sigValues)
-  ) {
+  if (!("keyId" in sigValues)) {
+    logger.debug(
+      "Failed to verify; no keyId field found in the Signature header.",
+      { signature: sigHeader },
+    );
+    return null;
+  } else if (!("headers" in sigValues)) {
+    logger.debug(
+      "Failed to verify; no headers field found in the Signature header.",
+      { signature: sigHeader },
+    );
+    return null;
+  } else if (!("signature" in sigValues)) {
+    logger.debug(
+      "Failed to verify; no signature field found in the Signature header.",
+      { signature: sigHeader },
+    );
     return null;
   }
   const { keyId, headers, signature } = sigValues;
-  const { document } = await documentLoader(keyId);
+  logger.debug("Fetching key {keyId} to verify signature...", { keyId });
+  let document: unknown;
+  try {
+    const remoteDocument = await documentLoader(keyId);
+    document = remoteDocument.document;
+  } catch (_) {
+    logger.debug("Failed to fetch key {keyId}.", { keyId });
+    return null;
+  }
   let object: ASObject | CryptographicKey;
   try {
     object = await ASObject.fromJsonLd(document, { documentLoader });
@@ -159,7 +225,13 @@ export async function verify(
     try {
       object = await CryptographicKey.fromJsonLd(document, { documentLoader });
     } catch (e) {
-      if (e instanceof TypeError) return null;
+      if (e instanceof TypeError) {
+        logger.debug(
+          "Failed to verify; key {keyId} returned an invalid object.",
+          { keyId },
+        );
+        return null;
+      }
       throw e;
     }
   }
@@ -172,16 +244,47 @@ export async function verify(
         break;
       }
     }
-    if (key == null) return null;
-  } else return null;
-  if (key.publicKey == null) return null;
+    if (key == null) {
+      logger.debug(
+        "Failed to verify; object {keyId} returned an {actorType}, " +
+          "but has no key matching {keyId}.",
+        { keyId, actorType: object.constructor.name },
+      );
+      return null;
+    }
+  } else {
+    logger.debug(
+      "Failed to verify; key {keyId} returned an invalid object.",
+      { keyId },
+    );
+    return null;
+  }
+  if (key.publicKey == null) {
+    logger.debug(
+      "Failed to verify; key {keyId} has no publicKeyPem field.",
+      { keyId },
+    );
+    return null;
+  }
   const headerNames = headers.split(/\s+/g);
   if (
     !headerNames.includes("(request-target)") || !headerNames.includes("date")
   ) {
+    logger.debug(
+      "Failed to verify; required headers missing in the Signature header: " +
+        "{headers}.",
+      { headers },
+    );
     return null;
   }
-  if (body != null && !headerNames.includes("digest")) return null;
+  if (body != null && !headerNames.includes("digest")) {
+    logger.debug(
+      "Failed to verify; required headers missing in the Signature header: " +
+        "{headers}.",
+      { headers },
+    );
+    return null;
+  }
   const message = headerNames.map((name) =>
     `${name}: ` +
     (name == "(request-target)"
@@ -198,7 +301,16 @@ export async function verify(
     sig,
     new TextEncoder().encode(message),
   );
-  return verified ? key : null;
+  if (!verified) {
+    logger.debug(
+      "Failed to verify; signature {signature} is invalid.  " +
+        "Check if the key is correct or if the signed message is correct.  " +
+        "The message to sign is:\n{message}",
+      { signature, message },
+    );
+    return null;
+  }
+  return key;
 }
 
 /**

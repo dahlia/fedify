@@ -136,6 +136,15 @@ The `["fedify", "federation", "outbox"]` category is used for logging messages
 related to outgoing activities.  When you cannot send an activity, you can
 check the log messages in this category with the `"debug"` level.
 
+### `["fedify", "httpsig", "verify"]`
+
+*This category is available since Fedify 0.8.0.*
+
+The `["fedify", "httpsig", "verify"]` category is used for logging messages
+related to the verification of HTTP Signatures.  When you are curious about
+the verification process, you can check the log messages in this category with
+the `"debug"` level.
+
 ### `["fedify", "runtime", "docloader"]`
 
 *This category is available since Fedify 0.8.0.*
