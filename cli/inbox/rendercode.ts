@@ -3,6 +3,7 @@ import { getStatusText } from "@poppanator/http-constants";
 import { getDocumentLoader } from "../docloader.ts";
 
 export async function renderRequest(request: Request): Promise<string> {
+  request = request.clone();
   const url = new URL(request.url);
   let code = `${request.method} ${url.pathname + url.search}\n`;
   for (const [key, value] of request.headers.entries()) {
@@ -19,6 +20,7 @@ export async function renderRequest(request: Request): Promise<string> {
 }
 
 export async function renderResponse(response: Response): Promise<string> {
+  response = response.clone();
   let code = `${response.status} ${
     response.statusText === ""
       ? getStatusText(response.status)

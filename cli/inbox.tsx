@@ -290,7 +290,7 @@ async function fetch(request: Request): Promise<Response> {
   });
   if (inboxRequest) {
     recordingSink.stopRecording();
-    activities[idx].response = response;
+    activities[idx].response = response.clone();
     activities[idx].logs = recordingSink.getRecords();
     printActivityEntry(idx, activities[idx]);
   }
