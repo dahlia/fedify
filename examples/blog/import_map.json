@@ -1,8 +1,8 @@
 {
   "imports": {
     "$fresh/": "https://deno.land/x/fresh@1.6.8/",
-    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
-    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.3",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.6.0",
     "@std/dotenv/load": "jsr:@std/dotenv@^0.224.0/load",
     "@std/encoding/hex": "jsr:@std/encoding@^0.224.0/hex",
     "@std/path": "jsr:@std/path@^0.224.0",
@@ -15,11 +15,11 @@
     "@fedify/fedify/webfinger": "../../webfinger/mod.ts",
     "@fedify/fedify/x/fresh": "../../x/fresh.ts",
     "@fedify/fedify/x/denokv": "../../x/denokv.ts",
-    "markdown-it": "npm:markdown-it@^14.0.0",
-    "preact": "https://esm.sh/preact@10.19.6",
-    "preact/": "https://esm.sh/preact@10.19.6/",
-    "scrypt": "https://deno.land/x/scrypt@v4.3.1/mod.ts",
-    "sanitize-html": "npm:sanitize-html@^2.12.1",
+    "markdown-it": "npm:markdown-it@^14.1.0",
+    "preact": "https://esm.sh/preact@10.20.2",
+    "preact/": "https://esm.sh/preact@10.20.2/",
+    "scrypt": "jsr:@denorg/scrypt@4.4.4",
+    "sanitize-html": "npm:sanitize-html@^2.13.0",
     "uuidv7": "npm:uuidv7@^0.6.3"
   }
 }
