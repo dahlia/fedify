@@ -39,7 +39,8 @@ resources:
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 
 If you have any questions, suggestions, or feedback, please feel free to
-join our [Matrix chat space][Matrix] or [GitHub Discussions].
+join our [Matrix chat space][Matrix] or [GitHub Discussions].  Or tag
+[#Fedify] in the fediverse!
 
 [^1]: You may already know some of the networks in the fediverse, such as
       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
@@ -62,6 +63,7 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].
 [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
 [NodeInfo]: https://nodeinfo.diaspora.software/
 [GitHub Discussions]: https://github.com/dahlia/fedify/discussions
+[#Fedify]: https://elk.zone/mastodon.social/tags/fedify
 [Mastodon]: https://joinmastodon.org/
 [Lemmy]: https://join-lemmy.org/
 [Pixelfed]: https://pixelfed.org/
