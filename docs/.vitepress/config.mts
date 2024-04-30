@@ -75,6 +75,7 @@ export default defineConfig({
       { text: "Home", link: "/" },
       { text: "Installation", link: "/install.md" },
       { text: "Tutorial", link: "/tutorial.md" },
+      { text: "CLI", link: "/cli.md" },
       MANUAL,
       { text: "API reference", link: "https://jsr.io/@fedify/fedify" },
       ...extraNav,

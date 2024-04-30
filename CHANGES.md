@@ -8,8 +8,9 @@ Version 0.8.0
 
 To be released.
 
- -  The CLI toolchain is now available on JSR: [@fedify/cli].  You can install
-    it with `deno install -A -n fedify jsr:@fedify/cli`.
+ -  The CLI toolchain for testing and debugging is now available on JSR:
+    [@fedify/cli].  You can install it with
+    `deno install -A -n fedify jsr:@fedify/cli`.
 
  -  Implemented [followers collection synchronization mechanism][FEP-8fcf].
 
