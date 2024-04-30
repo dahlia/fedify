@@ -66,6 +66,8 @@ that help you do that:
 Inspecting ActivityPub messages
 -------------------------------
 
+### ActivityPub.Academy
+
 [ActivityPub.Academy] is a special Mastodon instance that is designed for
 debugging and testing ActivityPub peers.  You can create an account on it and
 use it for testing your federated server app.  Its best feature is that it
@@ -77,3 +79,10 @@ received activities are displayed on the web interface in real-time.
 > certain period of inactivity.
 
 [ActivityPub.Academy]: https://activitypub.academy/
+
+### `fedify inbox` command
+
+Fedify provides a [CLI toolchain](../cli.md) for testing and debugging.
+The [`fedify inbox` command](../cli.md#fedify-inbox-ephemeral-inbox-server) is
+a simple tool for spinning up an ephemeral inbox server that receives and
+displays incoming ActivityPub messages.

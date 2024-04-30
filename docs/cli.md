@@ -8,9 +8,9 @@ description: >-
 `fedify`: CLI toolchain
 =======================
 
-The `fedify` is a CLI toolchain for debugging ActivityPub-enabled federated
-server apps.  Although it is primarily designed for developers who use Fedify,
-it can be used with any ActivityPub-enabled server.
+The `fedify` command is a CLI toolchain for debugging ActivityPub-enabled
+federated server apps.  Although it is primarily designed for developers who
+use Fedify, it can be used with any ActivityPub-enabled server.
 
 
 Installation
