@@ -436,7 +436,7 @@ import { Federation, Follow, Person, MemoryKvStore } from "@fedify/fedify";
 
 Then, we register an inbox listener for the `Follow` activity:
 
-~~~~ typescript
+~~~~ typescript{3-11}
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -596,7 +596,7 @@ store.
 Restart the server and make an HTTP request to the actor *me* using `curl`.
 Now you should see the actor *me* with the public key in the response:
 
-~~~~ json
+~~~~ json {16-21}
 {
   "@context": [
     "https://www.w3.org/ns/activitystreams",
