@@ -35,8 +35,6 @@ If you want to know more about the project, please take a look at the following
 resources:
 
  -  [Tutorial](https://fedify.dev/tutorial)
- -  [Manual](https://fedify.dev/manual)
-    ([Unstable](https://unstable.fedify.dev/manual))
  -  [API reference][JSR]
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 

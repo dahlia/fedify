@@ -25,8 +25,6 @@
  *
  * - [GitHub](https://github.com/dahlia/fedify)
  * - [Tutorial](https://fedify.dev/tutorial)
- * - [Manual](https://fedify.dev/manual)
- *   ([Unstable](https://unstable.fedify.dev/manual))
  * - [Examples](https://github.com/dahlia/fedify/tree/main/examples)
  *
  * [ActivityPub]: https://www.w3.org/TR/activitypub/
