@@ -3,10 +3,17 @@
 `fedify`: the CLI toolchain for debugging fediverse apps
 ========================================================
 
+[![JSR][JSR badge]][JSR]
+[![GitHub Releases][GitHub Releases badge]][GitHub Releases]
+
 The `fedify` is a CLI toolchain for debugging ActivityPub-enabled federated
 server apps.  Although it is primarily designed for developers who use [Fedify],
 it can be used with any ActivityPub-enabled server.
 
+[JSR]: https://jsr.io/@fedify/cli
+[JSR badge]: https://jsr.io/badges/@fedify/cli
+[GitHub Releases]: https://github.com/dahlia/fedify/releases
+[GitHub Releases badge]: https://img.shields.io/github/v/release/dahlia/fedify?sort=semver&logo=github
 [Fedify]: https://fedify.dev/
 
 
