@@ -108,6 +108,8 @@ jobs:
     - run: 'deno task dnt "$(jq -r .version deno.json)"'
     - run: npm pack
       working-directory: ${{ github.workspace }}/npm/
+    - run: deno task pack
+      working-directory: ${{ github.workspace }}/cli/
     - id: extract-changelog
       uses: dahlia/submark@5a5ff0a58382fb812616a5801402f5aef00f90ce
       with:
@@ -124,7 +126,9 @@ jobs:
       with:
         body_path: ${{ steps.extract-changelog.outputs.output-file }}
         name: Fedify ${{ github.ref_name }}
-        files: npm/*.tgz
+        files:
+          npm/*.tgz
+          cli/fedify-cli-*
         generate_release_notes: false
         discussion_category_name: Announcements
     - if: |

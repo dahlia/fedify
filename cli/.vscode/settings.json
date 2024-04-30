@@ -33,6 +33,7 @@
     }
   },
   "cSpell.words": [
+    "aarch64",
     "codegen",
     "Deno",
     "denokv",
@@ -44,6 +45,7 @@
     "hono",
     "httpsig",
     "logtape",
+    "msvc",
     "nodeinfo",
     "poppanator",
     "shiki",

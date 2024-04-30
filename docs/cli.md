@@ -16,26 +16,10 @@ it can be used with any ActivityPub-enabled server.
 Installation
 ------------
 
-To install `fedify`, you need to have [Deno] installed on your system.  You can
-install Deno by running the following command:
+### Using Deno
 
-::: code-group
-
-~~~~ sh [Linux/macOS]
-curl -fsSL https://deno.land/install.sh | sh
-~~~~
-
-~~~~ powershell [Windows]
-irm https://deno.land/install.ps1 | iex
-~~~~
-
-:::
-
-> [!TIP]
-> If you are doubtful about running scripts from the internet, there are
-> additional installation options available on the [Deno installation] docs.
-
-After installing Deno, you can install `fedify` by running the below command:
+If you have [Deno] installed, you can install `fedify` by running the following
+command:
 
 ::: code-group
 
@@ -58,7 +42,13 @@ deno install `
 :::
 
 [Deno]: https://deno.com/
-[Deno installation]: https://docs.deno.com/runtime/manual/getting_started/installation
+
+### Downloading the executable
+
+You can download the pre-built executables from the [releases] page.  Download
+the appropriate executable for your platform and put it in your `PATH`.
+
+[releases]: https://github.com/dahlia/fedify/releases
 
 
 `fedify lookup`: Looking up an ActivityPub object
