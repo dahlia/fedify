@@ -413,10 +413,11 @@ Person {
 `fedify inbox`: Ephemeral inbox server
 --------------------------------------
 
-The `fedify inbox` command is used to spin up an ephemeral inbox server that
-serves the ActivityPub inbox with an one-time actor.  This is useful when you
-want to test and debug the outgoing activities of your server.  To start
-an ephemeral inbox server, run the below command:
+The `fedify inbox` command is used to spin up an ephemeral server that serves
+the ActivityPub inbox with an one-time actor, through a short-lived public DNS
+with HTTPS. This is useful when you want to test and debug the outgoing
+activities of your server.  To start an ephemeral inbox server,
+run the below command:
 
 ~~~~ sh
 fedify inbox
@@ -464,6 +465,71 @@ You can also see the details of the incoming activities by visiting the
 `/r/:id` endpoint of the server in your browser:
 
 ![The details of the incoming activities](cli/fedify-inbox-web.png)
+
+### `-f`/`--follow`: Follow an actor
+
+The `-f`/`--follow` option is used to follow an actor.  You can specify the
+actor handle or URI to follow.  For example, to follow the actor with the
+handle *@john@doe.com* and *@jane@doe.com*, run the below command:
+
+~~~~ sh
+fedify inbox -f @john@doe.com -f @jane@doe.com
+~~~~
+
+> [!NOTE]
+> Although `-f`/`--follow` option sends `Follow` activities to the specified
+> actors, it does not guarantee that they will accept the follow requests.
+> If the actors accept the follow requests, you will receive the `Accept`
+> activities in the inbox server, and the server will log them to the console:
+>
+> ~~~~
+> ╭────────────────┬─────────────────────────────────────╮
+> │     Request #: │ 0                                   │
+> ├────────────────┼─────────────────────────────────────┤
+> │ Activity type: │ Accept                              │
+> ├────────────────┼─────────────────────────────────────┤
+> │  HTTP request: │ POST /i/inbox                       │
+> ├────────────────┼─────────────────────────────────────┤
+> │ HTTP response: │ 202                                 │
+> ├────────────────┼─────────────────────────────────────┤
+> │        Details │ https://876f71397f5c31.lhr.life/r/0 │
+> ╰────────────────┴─────────────────────────────────────╯
+> ~~~~
+
+### `-a`/`--accept-follow`: Accept follow requests
+
+The `-a`/`--accept-follow` option is used to accept follow requests from
+actors.  You can specify the actor handle or URI to accept follow requests.
+Or you can accept all follow requests by specifying the wildcard `*`.
+For example, to accept follow requests from the actor with the handle
+*@john@doe.com* and *@jane@doe.com*, run the below command:
+
+~~~~ sh
+fedify inbox -a @john@doe.com -a @jane@doe.com
+~~~~
+
+When the follow requests are received from the specified actors, the server
+will immediately send the `Accept` activities to them.  Otherwise, the server
+will just log the `Follow` activities to the console without sending the
+`Accept` activities.
+
+### `-T`/`--no-tunnel`: Local server without tunneling
+
+The `-T`/`--no-tunnel` option is used to disable the tunneling feature of the
+inbox server.  By default, the inbox server tunnels the local server to the
+public internet, so that the server is accessible from the outside.  If you
+want to disable the tunneling feature, run the below command:
+
+~~~~ sh
+fedify inbox --no-tunnel
+~~~~
+
+It would be useful when you want to test the server locally but are worried
+about the security implications of exposing the server to the public internet.
+
+> [!NOTE]
+> If you disable the tunneling feature, the ephemeral ActivityPub instance will
+> be served via HTTP instead of HTTPS.
 
 
 Shell completions

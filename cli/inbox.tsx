@@ -32,7 +32,8 @@ const logger = getLogger(["fedify", "cli", "inbox"]);
 
 export const command = new Command()
   .description(
-    "Spins up an ephemeral ActivityPub server and receives activities.  " +
+    "Spins up an ephemeral server that serves the ActivityPub inbox with " +
+      "an one-time actor, through a short-lived public DNS with HTTPS.  " +
       "You can monitor the incoming activities in real-time.",
   )
   .option(
@@ -49,15 +50,23 @@ export const command = new Command()
       "requests will be accepted.",
     { collect: true },
   )
+  .option(
+    "-T, --no-tunnel",
+    "Do not tunnel the ephemeral ActivityPub server to the public Internet.",
+  )
   .action(async (options) => {
     const spinner = ora({
       text: "Spinning up an ephemeral ActivityPub server...",
       discardStdin: false,
     }).start();
-    const server = await spawnTemporaryServer(fetch);
+    const server = await spawnTemporaryServer(fetch, {
+      noTunnel: !options.tunnel,
+    });
     spinner.succeed(
       `The ephemeral ActivityPub server is up and running: ${
-        colors.green(server.url.href)
+        colors.green(
+          server.url.href,
+        )
       }`,
     );
     Deno.addSignalListener("SIGINT", () => {
@@ -90,7 +99,7 @@ export const command = new Command()
             object: actor.id,
           }),
         );
-        spinner.succeed(`Followed ${colors.green(uri)}`);
+        spinner.succeed(`Sent follow request to ${colors.green(uri)}.`);
         spinner.start();
       }
     }
@@ -101,7 +110,6 @@ export const command = new Command()
 const federation = new Federation<number>({
   kv: new MemoryKvStore(),
   queue: new InProcessMessageQueue(),
-  treatHttps: true,
   documentLoader: await getDocumentLoader(),
 });
 
@@ -167,16 +175,14 @@ federation
       if (!isActor(follower)) return;
       const accepts = await acceptsFollowFrom(follower);
       if (!accepts) {
-        logger.debug(
-          "Does not accept follow from {actor}.",
-          { actor: follower.id?.href },
-        );
+        logger.debug("Does not accept follow from {actor}.", {
+          actor: follower.id?.href,
+        });
         return;
       }
-      logger.debug(
-        "Accepting follow from {actor}.",
-        { actor: follower.id?.href },
-      );
+      logger.debug("Accepting follow from {actor}.", {
+        actor: follower.id?.href,
+      });
       await ctx.sendActivity(
         { handle },
         follower,
@@ -192,7 +198,7 @@ function printServerInfo(fedCtx: Context<number>): void {
   new Table(
     [
       new Cell("Actor handle:").align("right"),
-      colors.green(`i@${fedCtx.getActorUri("i").hostname}`),
+      colors.green(`i@${fedCtx.getActorUri("i").host}`),
     ],
     [
       new Cell("Actor URI:").align("right"),
@@ -206,22 +212,19 @@ function printServerInfo(fedCtx: Context<number>): void {
       new Cell("Shared inbox:").align("right"),
       colors.green(fedCtx.getInboxUri().href),
     ],
-  ).chars(tableStyle).border().render();
+  )
+    .chars(tableStyle)
+    .border()
+    .render();
 }
 
-function printActivityEntry(
-  idx: number,
-  entry: ActivityEntry,
-): void {
+function printActivityEntry(idx: number, entry: ActivityEntry): void {
   const request = entry.request.clone();
   const response = entry.response?.clone();
   const url = new URL(request.url);
   const activity = entry.activity;
   new Table(
-    [
-      new Cell("Request #:").align("right"),
-      colors.bold(idx.toString()),
-    ],
+    [new Cell("Request #:").align("right"), colors.bold(idx.toString())],
     [
       new Cell("Activity type:").align("right"),
       activity == null
@@ -236,42 +239,36 @@ function printActivityEntry(
           : colors.red(request.method)
       } ${url.pathname + url.search}`,
     ],
-    ...(response == null ? [] : [[
-      new Cell("HTTP response:").align("right"),
-      `${
-        response.ok
-          ? colors.green(response.status.toString())
-          : colors.red(response.status.toString())
-      } ${response.statusText}`,
-    ]]),
-    [
-      new Cell("Details").align("right"),
-      new URL(`/r/${idx}`, url).href,
-    ],
-  ).chars(tableStyle).border().render();
+    ...(response == null ? [] : [
+      [
+        new Cell("HTTP response:").align("right"),
+        `${
+          response.ok
+            ? colors.green(response.status.toString())
+            : colors.red(response.status.toString())
+        } ${response.statusText}`,
+      ],
+    ]),
+    [new Cell("Details").align("right"), new URL(`/r/${idx}`, url).href],
+  )
+    .chars(tableStyle)
+    .border()
+    .render();
 }
 
 const app = new Hono();
 
 app.get("/", (c) => c.redirect("/r"));
 
-app.get("/r", (c) =>
-  c.html(
-    <ActivityListPage entries={activities} />,
-  ));
+app.get("/r", (c) => c.html(<ActivityListPage entries={activities} />));
 
-app.get(
-  "/r/:idx{[0-9]+}",
-  (c) => {
-    const idx = parseInt(c.req.param("idx"));
-    const tab = c.req.query("tab") ?? "request";
-    const activity = activities[idx];
-    if (activity == null) return c.notFound();
-    return c.html(
-      <ActivityEntryPage idx={idx} entry={activity} tabPage={tab} />,
-    );
-  },
-);
+app.get("/r/:idx{[0-9]+}", (c) => {
+  const idx = parseInt(c.req.param("idx"));
+  const tab = c.req.query("tab") ?? "request";
+  const activity = activities[idx];
+  if (activity == null) return c.notFound();
+  return c.html(<ActivityEntryPage idx={idx} entry={activity} tabPage={tab} />);
+});
 
 async function fetch(request: Request): Promise<Response> {
   const timestamp = Temporal.Now.instant();
