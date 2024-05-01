@@ -62,7 +62,7 @@ function createRequest(url: string): Request {
     headers: {
       Accept: "application/activity+json, application/ld+json",
     },
-    redirect: "follow",
+    redirect: "manual",
   });
 }
 
@@ -122,6 +122,13 @@ export async function fetchDocumentLoader(
   const request = createRequest(url);
   logRequest(request);
   const response = await fetch(request);
+  // Follow redirects manually to get the final URL:
+  if (
+    response.status >= 300 && response.status < 400 &&
+    response.headers.has("Location")
+  ) {
+    return fetchDocumentLoader(response.headers.get("Location")!);
+  }
   return getRemoteDocument(url, response);
 }
 
@@ -139,13 +146,21 @@ export function getAuthenticatedDocumentLoader(
   identity: { keyId: URL; privateKey: CryptoKey },
 ): DocumentLoader {
   validateCryptoKey(identity.privateKey);
-  return async (url: string): Promise<RemoteDocument> => {
+  async function load(url: string): Promise<RemoteDocument> {
     let request = createRequest(url);
     request = await sign(request, identity.privateKey, identity.keyId);
     logRequest(request);
     const response = await fetch(request);
+    // Follow redirects manually to get the final URL:
+    if (
+      response.status >= 300 && response.status < 400 &&
+      response.headers.has("Location")
+    ) {
+      return load(response.headers.get("Location")!);
+    }
     return getRemoteDocument(url, response);
-  };
+  }
+  return load;
 }
 
 /**
