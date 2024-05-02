@@ -100,7 +100,7 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 {
   "dependencies": {
     "@deno/kv": "^0.8.0",
-    "@fedify/fedify": "^0.7.0"
+    "@fedify/fedify": "^0.8.0"
   }
 }
 ~~~
