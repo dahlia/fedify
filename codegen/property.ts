@@ -33,10 +33,15 @@ async function* generateProperty(
     yield `
     async #fetch${toPascalCase(property.singularName)}(
       url: URL,
-      options: { documentLoader?: DocumentLoader } = {}
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
     ): Promise<${getTypeNames(property.range, types)}> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
       const { document } = await documentLoader(url.href);
     `;
     for (const range of property.range) {
@@ -44,7 +49,10 @@ async function* generateProperty(
       const rangeType = types[range];
       yield `
       try {
-        return await ${rangeType.name}.fromJsonLd(document, { documentLoader });
+        return await ${rangeType.name}.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
       } catch (e) {
         if (!(e instanceof TypeError)) throw e;
       }
@@ -72,7 +80,10 @@ async function* generateProperty(
       yield doc;
       yield `
       async get${toPascalCase(property.singularName)}(
-        options: { documentLoader?: DocumentLoader } = {}
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
       ): Promise<${getTypeNames(property.range, types)} | null> {
         if (this.${await getFieldName(property.uri)}.length < 1) return null;
         const v = this.${await getFieldName(property.uri)}[0];
@@ -102,7 +113,10 @@ async function* generateProperty(
       yield doc;
       yield `
       async* get${toPascalCase(property.pluralName)}(
-        options: { documentLoader?: DocumentLoader } = {}
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
       ): AsyncIterable<${getTypeNames(property.range, types)}> {
         const vs = this.${await getFieldName(property.uri)};
         for (let i = 0; i < vs.length; i++) {

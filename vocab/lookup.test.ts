@@ -35,6 +35,7 @@ Deno.test("lookupObject()", async (t) => {
 
   const options = {
     documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
   };
 
   await t.step("actor", async () => {

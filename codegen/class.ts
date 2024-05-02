@@ -48,10 +48,15 @@ async function* generateClass(
   if (type.extends == null) {
     yield `
     readonly #documentLoader?: DocumentLoader;
+    readonly #contextLoader?: DocumentLoader;
     readonly id: URL | null;
 
     protected get _documentLoader(): DocumentLoader | undefined {
       return this.#documentLoader;
+    }
+
+    protected get _contextLoader(): DocumentLoader | undefined {
+      return this.#contextLoader;
     }
     `;
   }

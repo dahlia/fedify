@@ -74,6 +74,13 @@ export interface FederationParameters {
   documentLoader?: DocumentLoader;
 
   /**
+   * A custom JSON-LD context loader.  By default, this uses the same loader
+   * as the document loader.
+   * @since 0.8.0
+   */
+  contextLoader?: DocumentLoader;
+
+  /**
    * A factory function that creates an authenticated document loader for a
    * given identity.  This is used for fetching documents that require
    * authentication.
@@ -148,6 +155,7 @@ export class Federation<TContextData> {
   >;
   #inboxErrorHandler?: InboxErrorHandler<TContextData>;
   #documentLoader: DocumentLoader;
+  #contextLoader: DocumentLoader;
   #authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   #treatHttps: boolean;
   #onOutboxError?: OutboxErrorHandler;
@@ -163,6 +171,7 @@ export class Federation<TContextData> {
       kvPrefixes,
       queue,
       documentLoader,
+      contextLoader,
       authenticatedDocumentLoaderFactory,
       treatHttps,
       onOutboxError,
@@ -189,6 +198,7 @@ export class Federation<TContextData> {
       kv: kv,
       prefix: this.#kvPrefixes.remoteDocument,
     });
+    this.#contextLoader = contextLoader ?? this.#documentLoader;
     this.#authenticatedDocumentLoaderFactory =
       authenticatedDocumentLoaderFactory ??
         getAuthenticatedDocumentLoader;
@@ -230,13 +240,14 @@ export class Federation<TContextData> {
       );
       activity = await Activity.fromJsonLd(message.activity, {
         documentLoader,
+        contextLoader: this.#contextLoader,
       });
       await sendActivity({
         keyId,
         privateKey,
         activity,
         inbox: new URL(message.inbox),
-        documentLoader,
+        contextLoader: this.#contextLoader,
         headers: new Headers(message.headers),
       });
     } catch (error) {
@@ -346,6 +357,7 @@ export class Federation<TContextData> {
     const context = {
       data: contextData,
       documentLoader: this.#documentLoader,
+      contextLoader: this.#contextLoader,
       getNodeInfoUri: (): URL => {
         const path = this.#router.build("nodeInfo", {});
         if (path == null) {
@@ -542,13 +554,17 @@ export class Federation<TContextData> {
       },
       async getSignedKey() {
         if (signedKey !== undefined) return signedKey;
-        return signedKey = await verify(request, context.documentLoader);
+        return signedKey = await verify(
+          request,
+          context.documentLoader,
+          context.contextLoader,
+        );
       },
       async getSignedKeyOwner() {
         if (signedKeyOwner !== undefined) return signedKeyOwner;
         const key = await this.getSignedKey();
         if (key == null) return signedKeyOwner = null;
-        return signedKeyOwner = await getKeyOwner(key, context.documentLoader);
+        return signedKeyOwner = await getKeyOwner(key, context);
       },
     };
     return reqCtx;
@@ -1110,9 +1126,6 @@ export class Federation<TContextData> {
       activityId: activity.id?.href,
       activity,
     });
-    const documentLoader = this.#authenticatedDocumentLoaderFactory(
-      { keyId, privateKey },
-    );
     if (immediate || this.#queue == null) {
       if (immediate) {
         logger.debug(
@@ -1134,7 +1147,7 @@ export class Federation<TContextData> {
             privateKey,
             activity,
             inbox: new URL(inbox),
-            documentLoader,
+            contextLoader: this.#contextLoader,
             headers: collectionSync == null ? undefined : new Headers({
               "Collection-Synchronization":
                 await buildCollectionSynchronizationHeader(
@@ -1153,7 +1166,9 @@ export class Federation<TContextData> {
       { activityId: activity.id?.href, activity },
     );
     const privateKeyJwk = await exportJwk(privateKey);
-    const activityJson = await activity.toJsonLd({ documentLoader });
+    const activityJson = await activity.toJsonLd({
+      contextLoader: this.#contextLoader,
+    });
     for (const inbox in inboxes) {
       const message: OutboxMessage = {
         type: "outbox",

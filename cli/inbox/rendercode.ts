@@ -1,6 +1,6 @@
 import type { Activity } from "@fedify/fedify";
 import { getStatusText } from "@poppanator/http-constants";
-import { getDocumentLoader } from "../docloader.ts";
+import { getContextLoader, getDocumentLoader } from "../docloader.ts";
 
 export async function renderRequest(request: Request): Promise<string> {
   request = request.clone();
@@ -43,8 +43,8 @@ export async function renderActivity(
   activity: Activity,
   expand: boolean = false,
 ): Promise<string> {
-  const documentLoader = await getDocumentLoader();
-  const jsonLd = await activity.toJsonLd({ documentLoader, expand });
+  const contextLoader = await getContextLoader();
+  const jsonLd = await activity.toJsonLd({ contextLoader, expand });
   return JSON.stringify(jsonLd, null, 2);
 }
 

@@ -34,17 +34,27 @@ Deno.test("Federation.createContext()", async (t) => {
   mf.install();
 
   mf.mock("GET@/object", async (req) => {
-    const v = await verify(req, mockDocumentLoader, Temporal.Now.instant());
+    const v = await verify(
+      req,
+      mockDocumentLoader,
+      mockDocumentLoader,
+      Temporal.Now.instant(),
+    );
     return new Response(JSON.stringify(v != null), {
       headers: { "Content-Type": "application/json" },
     });
   });
 
   await t.step("Context", async () => {
-    const federation = new Federation<number>({ kv, documentLoader });
+    const federation = new Federation<number>({
+      kv,
+      documentLoader,
+      contextLoader: mockDocumentLoader,
+    });
     const ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(ctx.data, 123);
     assertStrictEquals(ctx.documentLoader, documentLoader);
+    assertStrictEquals(ctx.contextLoader, mockDocumentLoader);
     assertThrows(() => ctx.getNodeInfoUri(), RouterError);
     assertThrows(() => ctx.getActorUri("handle"), RouterError);
     assertThrows(
@@ -247,7 +257,7 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(await signedCtx2.getSignedKey(), publicKey3);
     const expectedOwner = await lookupObject(
       "https://example.com/person2",
-      { documentLoader: mockDocumentLoader },
+      { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
     );
     assertEquals(await signedCtx2.getSignedKeyOwner(), expectedOwner);
     // Multiple calls should return the same result:
@@ -297,7 +307,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
   mf.mock("GET@/key2", async () => {
     return new Response(
       JSON.stringify(
-        await publicKey2.toJsonLd({ documentLoader: mockDocumentLoader }),
+        await publicKey2.toJsonLd({ contextLoader: mockDocumentLoader }),
       ),
       { headers: { "Content-Type": "application/activity+json" } },
     );
@@ -383,7 +393,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
       method: "POST",
       headers: { "Content-Type": "application/activity+json" },
       body: JSON.stringify(
-        await activity.toJsonLd({ documentLoader: mockDocumentLoader }),
+        await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
       ),
     });
     request = await sign(
@@ -408,7 +418,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
       method: "POST",
       headers: { "Content-Type": "application/activity+json" },
       body: JSON.stringify(
-        await activity.toJsonLd({ documentLoader: mockDocumentLoader }),
+        await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
       ),
     });
     request = await sign(
@@ -465,7 +475,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
       method: "POST",
       headers: { "Content-Type": "application/activity+json" },
       body: JSON.stringify(
-        await activity.toJsonLd({ documentLoader: mockDocumentLoader }),
+        await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
       ),
     });
     request = await sign(

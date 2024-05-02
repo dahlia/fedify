@@ -6,6 +6,7 @@ export function createContext<TContextData>(
   {
     data,
     documentLoader,
+    contextLoader,
     getNodeInfoUri,
     getActorUri,
     getObjectUri,
@@ -25,6 +26,7 @@ export function createContext<TContextData>(
   return {
     data,
     documentLoader: documentLoader ?? mockDocumentLoader,
+    contextLoader: contextLoader ?? mockDocumentLoader,
     getNodeInfoUri: getNodeInfoUri ?? throwRouteError,
     getActorUri: getActorUri ?? throwRouteError,
     getObjectUri: getObjectUri ?? throwRouteError,

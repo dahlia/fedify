@@ -67,9 +67,10 @@ export interface SendActivityParameters {
   inbox: URL;
 
   /**
-   * The document loader to use for JSON-LD context retrieval.
+   * The context loader to use for JSON-LD context retrieval.
+   * @since 0.8.0
    */
-  documentLoader?: DocumentLoader;
+  contextLoader?: DocumentLoader;
 
   /**
    * Additional headers to include in the request.
@@ -90,7 +91,7 @@ export async function sendActivity(
     privateKey,
     keyId,
     inbox,
-    documentLoader,
+    contextLoader,
     headers,
   }: SendActivityParameters,
 ): Promise<void> {
@@ -100,7 +101,7 @@ export async function sendActivity(
       "The activity to send must have at least one actor property.",
     );
   }
-  const jsonLd = await activity.toJsonLd({ documentLoader });
+  const jsonLd = await activity.toJsonLd({ contextLoader });
   headers = new Headers(headers);
   headers.set("Content-Type", "application/activity+json");
   let request = new Request(inbox, {

@@ -66,7 +66,12 @@ Deno.test("getAuthenticatedDocumentLoader()", async (t) => {
   mf.install();
 
   mf.mock("GET@/object", async (req) => {
-    const v = await verify(req, mockDocumentLoader, Temporal.Now.instant());
+    const v = await verify(
+      req,
+      mockDocumentLoader,
+      mockDocumentLoader,
+      Temporal.Now.instant(),
+    );
     return new Response(JSON.stringify(v != null), {
       headers: { "Content-Type": "application/json" },
     });

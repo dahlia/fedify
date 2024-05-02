@@ -842,7 +842,7 @@ Deno.test("respondWithObject()", async () => {
       id: new URL("https://example.com/notes/1"),
       content: "Hello, world!",
     }),
-    { documentLoader: mockDocumentLoader },
+    { contextLoader: mockDocumentLoader },
   );
   assert(response.ok);
   assertEquals(
@@ -867,7 +867,7 @@ Deno.test("respondWithObjectIfAcceptable", async () => {
       content: "Hello, world!",
     }),
     request,
-    { documentLoader: mockDocumentLoader },
+    { contextLoader: mockDocumentLoader },
   );
   assert(response != null);
   assert(response.ok);
@@ -891,7 +891,7 @@ Deno.test("respondWithObjectIfAcceptable", async () => {
       content: "Hello, world!",
     }),
     request,
-    { documentLoader: mockDocumentLoader },
+    { contextLoader: mockDocumentLoader },
   );
   assertEquals(response, null);
 });

@@ -61,7 +61,7 @@ Deno.test("Object.fromJsonLd()", async () => {
       "en": "Hello",
       "zh": "你好",
     },
-  }, { documentLoader: mockDocumentLoader });
+  }, { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader });
   assertInstanceOf(obj, Object);
   assertEquals(obj.name, "Test");
   assertEquals(obj.contents, [
@@ -81,7 +81,7 @@ Deno.test("Object.fromJsonLd()", async () => {
       "type": "Note",
       "content": "Content",
     },
-  }, { documentLoader: mockDocumentLoader });
+  }, { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader });
   assertInstanceOf(create, Create);
   assertEquals(create.name, "Test");
   assertEquals(create.contents, [
@@ -116,7 +116,7 @@ Deno.test("Object.toJsonLd()", async () => {
     ],
   });
   assertEquals(
-    await obj.toJsonLd({ expand: true, documentLoader: mockDocumentLoader }),
+    await obj.toJsonLd({ expand: true, contextLoader: mockDocumentLoader }),
     [
       {
         "@type": [
@@ -132,7 +132,7 @@ Deno.test("Object.toJsonLd()", async () => {
       },
     ],
   );
-  assertEquals(await obj.toJsonLd({ documentLoader: mockDocumentLoader }), {
+  assertEquals(await obj.toJsonLd({ contextLoader: mockDocumentLoader }), {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       { sensitive: "as:sensitive" },
@@ -147,13 +147,16 @@ Deno.test("Object.toJsonLd()", async () => {
 });
 
 Deno.test("Activity.fromJsonLd()", async () => {
-  const follow = await Activity.fromJsonLd({
-    "@context": "https://www.w3.org/ns/activitystreams",
-    id: "https://activitypub.academy/80c50305-7405-4e38-809f-697647a1f679",
-    type: "Follow",
-    actor: "https://activitypub.academy/users/egulia_anbeiss",
-    object: "https://example.com/users/hongminhee",
-  }, { documentLoader: mockDocumentLoader });
+  const follow = await Activity.fromJsonLd(
+    {
+      "@context": "https://www.w3.org/ns/activitystreams",
+      id: "https://activitypub.academy/80c50305-7405-4e38-809f-697647a1f679",
+      type: "Follow",
+      actor: "https://activitypub.academy/users/egulia_anbeiss",
+      object: "https://example.com/users/hongminhee",
+    },
+    { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
+  );
   assertInstanceOf(follow, Follow);
   assertEquals(
     follow.id,
@@ -175,6 +178,7 @@ Deno.test("Activity.getObject()", async () => {
   });
   const announce = await activity.getObject({
     documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
   });
   assertInstanceOf(announce, Announce);
   assertEquals(announce.id, new URL("https://example.com/announce"));
@@ -195,7 +199,10 @@ Deno.test("Activity.getObjects()", async () => {
     ],
   });
   const objects = await toArray(
-    activity.getObjects({ documentLoader: mockDocumentLoader }),
+    activity.getObjects({
+      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
+    }),
   );
   assertEquals(objects.length, 2);
   assertInstanceOf(objects[0], Object);
@@ -293,7 +300,7 @@ Deno.test("Person.fromJsonLd()", async () => {
         "-----END PUBLIC KEY-----\n",
       // cSpell: enable
     },
-  }, { documentLoader: mockDocumentLoader });
+  }, { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader });
   assertEquals(
     person.publicKeyId,
     new URL("https://todon.eu/users/hongminhee#main-key"),
@@ -332,7 +339,7 @@ Deno.test("Key.publicKey", async () => {
       ["verify"],
     ),
   });
-  const jsonLd = await key.toJsonLd({ documentLoader: mockDocumentLoader });
+  const jsonLd = await key.toJsonLd({ contextLoader: mockDocumentLoader });
   assertEquals(jsonLd, {
     "@context": "https://w3id.org/security/v1",
     publicKeyPem: "-----BEGIN PUBLIC KEY-----\n" +
@@ -350,6 +357,7 @@ Deno.test("Key.publicKey", async () => {
   });
   const loadedKey = await CryptographicKey.fromJsonLd(jsonLd, {
     documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
   });
   assertNotEquals(loadedKey.publicKey, null);
   assertEquals(await crypto.subtle.exportKey("jwk", loadedKey.publicKey!), jwk);
@@ -364,7 +372,7 @@ Deno.test("Place.fromJsonLd()", async () => {
     longitude: 119.7667,
     radius: 15,
     units: "miles",
-  }, { documentLoader: mockDocumentLoader });
+  }, { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader });
   assertInstanceOf(place, Place);
   assertEquals(place.name, "Fresno Area");
   assertEquals(place.latitude, 36.75);
@@ -372,7 +380,7 @@ Deno.test("Place.fromJsonLd()", async () => {
   assertEquals(place.radius, 15);
   assertEquals(place.units, "miles");
 
-  const jsonLd = await place.toJsonLd({ documentLoader: mockDocumentLoader });
+  const jsonLd = await place.toJsonLd({ contextLoader: mockDocumentLoader });
   assertEquals(jsonLd, {
     "@context": "https://www.w3.org/ns/activitystreams",
     type: "Place",
@@ -593,7 +601,7 @@ for (const typeUri in types) {
         documentUrl: url,
         contextUrl: null,
         document: sampleValues[property.range[0]].toJsonLd({
-          documentLoader: mockDocumentLoader,
+          contextLoader: mockDocumentLoader,
         }),
       };
     };
@@ -654,14 +662,17 @@ for (const typeUri in types) {
   }
 
   Deno.test(`${type.name}.fromJsonLd() [auto]`, async () => {
-    const instance = await cls.fromJsonLd({
-      "@id": "https://example.com/",
-      "@type": typeUri,
-    }, { documentLoader: mockDocumentLoader });
+    const instance = await cls.fromJsonLd(
+      {
+        "@id": "https://example.com/",
+        "@type": typeUri,
+      },
+      { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
+    );
     assertInstanceOf(instance, cls);
     assertEquals(instance.id, new URL("https://example.com/"));
     assertEquals(
-      await instance.toJsonLd({ documentLoader: mockDocumentLoader }),
+      await instance.toJsonLd({ contextLoader: mockDocumentLoader }),
       {
         "@context": type.defaultContext,
         "id": "https://example.com/",
@@ -687,21 +698,23 @@ for (const typeUri in types) {
       ...initValues,
     });
     const jsonLd = await instance.toJsonLd({
-      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
     });
     assertEquals(jsonLd["@context"], type.defaultContext);
     assertEquals(jsonLd.id, "https://example.com/");
     const restored = await cls.fromJsonLd(jsonLd, {
       documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
     });
     assertEquals(restored, instance);
 
     const expanded = await instance.toJsonLd({
-      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
       expand: true,
     });
     const restored2 = await cls.fromJsonLd(expanded, {
       documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
     });
     assertEquals(restored2, instance);
 
@@ -718,10 +731,11 @@ for (const typeUri in types) {
       ),
     });
     const jsonLd2 = await instance2.toJsonLd({
-      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
     });
     const restored3 = await cls.fromJsonLd(jsonLd2, {
       documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
     });
     assertEquals(restored3, instance2);
   });

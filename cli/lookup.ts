@@ -11,7 +11,7 @@ import {
 } from "@fedify/fedify";
 import { highlight } from "cli-highlight";
 import ora from "ora";
-import { getDocumentLoader } from "./docloader.ts";
+import { getContextLoader, getDocumentLoader } from "./docloader.ts";
 import { spawnTemporaryServer, type TemporaryServer } from "./tempserver.ts";
 
 export const command = new Command()
@@ -35,6 +35,7 @@ export const command = new Command()
     }).start();
     let server: TemporaryServer | undefined = undefined;
     const documentLoader = await getDocumentLoader();
+    const contextLoader = await getContextLoader();
     let authLoader: DocumentLoader | undefined = undefined;
     if (options.authorizedFetch) {
       spinner.text = "Generating a one-time key pair...";
@@ -71,7 +72,7 @@ export const command = new Command()
             inbox: new URL("/inbox", serverUrl),
             outbox: new URL("/outbox", serverUrl),
           }),
-          { documentLoader },
+          { contextLoader },
         );
       });
       authLoader = getAuthenticatedDocumentLoader({
@@ -83,7 +84,7 @@ export const command = new Command()
       spinner.text = "Looking up the object...";
       const object = await lookupObject(
         url,
-        { documentLoader: authLoader ?? documentLoader },
+        { documentLoader: authLoader ?? documentLoader, contextLoader },
       );
       spinner.succeed();
       if (object == null) {
@@ -96,9 +97,9 @@ export const command = new Command()
         Deno.exit(1);
       }
       if (options.compact) {
-        printJson(await object.toJsonLd({ documentLoader }));
+        printJson(await object.toJsonLd({ contextLoader }));
       } else if (options.expand) {
-        printJson(await object.toJsonLd({ expand: true, documentLoader }));
+        printJson(await object.toJsonLd({ expand: true, contextLoader }));
       } else {
         console.log(object);
       }

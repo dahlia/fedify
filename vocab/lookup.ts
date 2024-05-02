@@ -11,7 +11,16 @@ import { Object } from "./vocab.ts";
  * @since 0.2.0
  */
 export interface LookupObjectOptions {
+  /**
+   * The document loader for loading remote JSON-LD documents.
+   */
   documentLoader?: DocumentLoader;
+
+  /**
+   * The context loader for loading remote JSON-LD contexts.
+   * @since 0.8.0
+   */
+  contextLoader?: DocumentLoader;
 }
 
 const handleRegexp =
@@ -85,7 +94,10 @@ export async function lookupObject(
   }
   if (document == null) return null;
   try {
-    return await Object.fromJsonLd(document, { documentLoader });
+    return await Object.fromJsonLd(document, {
+      documentLoader,
+      contextLoader: options.contextLoader,
+    });
   } catch (e) {
     if (e instanceof TypeError) return null;
     throw e;

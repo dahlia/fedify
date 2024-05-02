@@ -7,7 +7,10 @@
 import { getLogger } from "@logtape/logtape";
 import { equals } from "@std/bytes";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
-import type { DocumentLoader } from "../runtime/docloader.ts";
+import {
+  type DocumentLoader,
+  fetchDocumentLoader,
+} from "../runtime/docloader.ts";
 import { type Actor, isActor } from "../vocab/actor.ts";
 import {
   type Activity,
@@ -86,6 +89,7 @@ const supportedHashAlgorithms: Record<string, string> = {
  * under the hood.
  * @param request The request to verify.
  * @param documentLoader The document loader to use for fetching the public key.
+ * @param contextLoader The context loader to use for JSON-LD context retrieval.
  * @param currentTime The current time.  If not specified, the current time is
  *                    used.  This is useful for testing.
  * @returns The public key of the verified signature, or `null` if the signature
@@ -94,6 +98,7 @@ const supportedHashAlgorithms: Record<string, string> = {
 export async function verify(
   request: Request,
   documentLoader: DocumentLoader,
+  contextLoader: DocumentLoader,
   currentTime?: Temporal.Instant,
 ): Promise<CryptographicKey | null> {
   const logger = getLogger(["fedify", "httpsig", "verify"]);
@@ -219,11 +224,17 @@ export async function verify(
   }
   let object: ASObject | CryptographicKey;
   try {
-    object = await ASObject.fromJsonLd(document, { documentLoader });
+    object = await ASObject.fromJsonLd(document, {
+      documentLoader,
+      contextLoader,
+    });
   } catch (e) {
     if (!(e instanceof TypeError)) throw e;
     try {
-      object = await CryptographicKey.fromJsonLd(document, { documentLoader });
+      object = await CryptographicKey.fromJsonLd(document, {
+        documentLoader,
+        contextLoader,
+      });
     } catch (e) {
       if (e instanceof TypeError) {
         logger.debug(
@@ -238,7 +249,9 @@ export async function verify(
   let key: CryptographicKey | null = null;
   if (object instanceof CryptographicKey) key = object;
   else if (isActor(object)) {
-    for await (const k of object.getPublicKeys({ documentLoader })) {
+    for await (
+      const k of object.getPublicKeys({ documentLoader, contextLoader })
+    ) {
       if (k.id?.href === keyId) {
         key = k;
         break;
@@ -314,21 +327,37 @@ export async function verify(
 }
 
 /**
+ * Options for {@link doesActorOwnKey}.
+ * @since 0.8.0
+ */
+export interface DoesActorOwnKeyOptions {
+  /**
+   * The document loader to use for fetching the actor.
+   */
+  documentLoader?: DocumentLoader;
+
+  /**
+   * The context loader to use for JSON-LD context retrieval.
+   */
+  contextLoader?: DocumentLoader;
+}
+
+/**
  * Checks if the actor of the given activity owns the specified key.
  * @param activity The activity to check.
  * @param key The public key to check.
- * @param documentLoader The document loader to use for fetching the actor.
+ * @param options Options for checking the key ownership.
  * @returns Whether the actor is the owner of the key.
  */
 export async function doesActorOwnKey(
   activity: Activity,
   key: CryptographicKey,
-  documentLoader: DocumentLoader,
+  options: DoesActorOwnKeyOptions,
 ): Promise<boolean> {
   if (key.ownerId != null) {
     return key.ownerId.href === activity.actorId?.href;
   }
-  const actor = await activity.getActor({ documentLoader });
+  const actor = await activity.getActor(options);
   if (actor == null || !isActor(actor)) return false;
   for (const publicKeyId of actor.publicKeyIds) {
     if (key.id != null && publicKeyId.href === key.id.href) return true;
@@ -337,17 +366,37 @@ export async function doesActorOwnKey(
 }
 
 /**
- * Gets the actor that owns the specified key.  Returns `null` if the key has no known owner.
+ * Options for {@link getKeyOwner}.
+ * @since 0.8.0
+ */
+export interface GetKeyOwnerOptions {
+  /**
+   * The document loader to use for fetching the key and its owner.
+   */
+  documentLoader?: DocumentLoader;
+
+  /**
+   * The context loader to use for JSON-LD context retrieval.
+   */
+  contextLoader?: DocumentLoader;
+}
+
+/**
+ * Gets the actor that owns the specified key.  Returns `null` if the key has no
+ * known owner.
  *
  * @param keyId The ID of the key to check, or the key itself.
- * @param documentLoader The document loader to use for fetching the key and its owner.
- * @returns The actor that owns the key, or `null` if the key has no known owner.
+ * @param options Options for getting the key owner.
+ * @returns The actor that owns the key, or `null` if the key has no known
+ *          owner.
  * @since 0.7.0
  */
 export async function getKeyOwner(
   keyId: URL | CryptographicKey,
-  documentLoader: DocumentLoader,
+  options: GetKeyOwnerOptions,
 ): Promise<Actor | null> {
+  const documentLoader = options.documentLoader ?? fetchDocumentLoader;
+  const contextLoader = options.contextLoader ?? fetchDocumentLoader;
   let object: ASObject | CryptographicKey;
   if (keyId instanceof CryptographicKey) {
     object = keyId;
@@ -362,11 +411,17 @@ export async function getKeyOwner(
       return null;
     }
     try {
-      object = await ASObject.fromJsonLd(keyDoc, { documentLoader });
+      object = await ASObject.fromJsonLd(keyDoc, {
+        documentLoader,
+        contextLoader,
+      });
     } catch (e) {
       if (!(e instanceof TypeError)) throw e;
       try {
-        object = await CryptographicKey.fromJsonLd(keyDoc, { documentLoader });
+        object = await CryptographicKey.fromJsonLd(keyDoc, {
+          documentLoader,
+          contextLoader,
+        });
       } catch (e) {
         if (e instanceof TypeError) return null;
         throw e;
@@ -376,7 +431,7 @@ export async function getKeyOwner(
   let owner: Actor | null = null;
   if (object instanceof CryptographicKey) {
     if (object.ownerId == null) return null;
-    owner = await object.getOwner({ documentLoader });
+    owner = await object.getOwner({ documentLoader, contextLoader });
   } else if (isActor(object)) {
     owner = object;
   } else {

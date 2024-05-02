@@ -46,6 +46,26 @@ To be released.
         parameter became `CollectionDispatcher<Recipient, TContextData, URL>`
         (was `CollectionDispatcher<Actor | URL, TContextData>`).
 
+ -  Some of the responsibility of a document loader was separated to a context
+    loader and a document loader.
+
+     -  Added `contextLoader` option to constructors, `fromJsonLd()` static
+        methods, `clone()` methods, and all non-scalar accessors (`get*()`) of
+        Activity Vocabulary classes.
+     -  Renamed `documentLoader` option to `contextLoader` in `toJsonLd()`
+        methods of Activity Vocabulary objects.
+     -  Added `contextLoader` option to `LookupObjectOptions` interface.
+     -  Added `contextLoader` property to `Context` interface.
+     -  Added `contextLoader` option to `FederationParameters` interface.
+     -  Renamed `documentLoader` option to `contextLoader` in
+        `RespondWithObjectOptions` interface.
+     -  Added `GetKeyOwnerOptions` interface.
+     -  The type of the second parameter of `getKeyOwner()` function became
+        `GetKeyOwnerOptions` (was `DocumentLoader`).
+     -  Added `DoesActorOwnKeyOptions` interface.
+     -  The type of the third parameter of `doesActorOwnKey()` function became
+        `DoesActorOwnKeyOptions` (was `DocumentLoader`).
+
  -  Removed the dependency on *@js-temporal/polyfill* on Deno, and Fedify now
     requires `--unstable-temporal` flag.  On other runtime, it still depends
     on *@js-temporal/polyfill*.

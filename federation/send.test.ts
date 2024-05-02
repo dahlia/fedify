@@ -101,13 +101,13 @@ Deno.test("sendActivity()", async (t) => {
   let request: Request | null = null;
   mf.mock("POST@/inbox", async (req) => {
     request = req;
-    const key = await verify(req, mockDocumentLoader);
-    const activity = await Activity.fromJsonLd(await req.json(), {
+    const key = await verify(req, mockDocumentLoader, mockDocumentLoader);
+    const options = {
       documentLoader: mockDocumentLoader,
-    });
-    if (
-      key != null && await doesActorOwnKey(activity, key, mockDocumentLoader)
-    ) {
+      contextLoader: mockDocumentLoader,
+    };
+    const activity = await Activity.fromJsonLd(await req.json(), options);
+    if (key != null && await doesActorOwnKey(activity, key, options)) {
       verified = true;
       return new Response("", { status: 202 });
     }
@@ -124,7 +124,7 @@ Deno.test("sendActivity()", async (t) => {
       privateKey: privateKey2,
       keyId: publicKey2.id!,
       inbox: new URL("https://example.com/inbox"),
-      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
       headers: new Headers({
         "X-Test": "test",
       }),
@@ -159,7 +159,7 @@ Deno.test("sendActivity()", async (t) => {
           privateKey: privateKey2,
           keyId: publicKey2.id!,
           inbox: new URL("https://example.com/inbox2"),
-          documentLoader: mockDocumentLoader,
+          contextLoader: mockDocumentLoader,
         }),
       Error,
       "Failed to send activity https://example.com/activity to " +
@@ -175,7 +175,7 @@ Deno.test("sendActivity()", async (t) => {
           privateKey: privateKey2,
           keyId: publicKey2.id!,
           inbox: new URL("https://example.com/inbox2"),
-          documentLoader: mockDocumentLoader,
+          contextLoader: mockDocumentLoader,
         }),
       TypeError,
       "The activity to send must have at least one actor property.",

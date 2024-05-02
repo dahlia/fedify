@@ -178,7 +178,7 @@ Getting a `DocumentLoader`
 
 The `Context.documentLoader` property carries a `DocumentLoader` object that
 is specified in the `Federation` constructor.  It is used to load remote
-document in the JSON-LD format.  There are a few methods to take
+documents and contexts in the JSON-LD format.  There are a few methods to take
 a `DocumentLoader` as an option in vocabulary API:
 
  -  [`fromJsonLd()` static method](./vocab.md#json-ld)
@@ -187,8 +187,9 @@ a `DocumentLoader` as an option in vocabulary API:
  -  [`lookupObject()` function](./vocab.md#looking-up-remote-objects)
 
 All of those methods take options in the form of
-`{ documentLoader: DocumentLoader }` which is compatible with `Context`.
-So you can just pass a `Context` object to those methods:
+`{ documentLoader?: DocumentLoader, contextLoader?: DocumentLoader }` which is
+compatible with `Context`.  So you can just pass a `Context` object to those
+methods:
 
 ~~~~ typescript
 const object = await Object.fromJsonLd(jsonLd, ctx);
@@ -225,3 +226,20 @@ the `getFollowing()` method returns the following collection.
 >
 > See the [*`Context.documentLoader` on an inbox listener*
 > section](./inbox.md#context.documentloader-on-an-inbox-listener) for details.
+
+
+Document loader vs. context loader
+----------------------------------
+
+Both a document loader and a context loader are represented by `DocumentLoader`
+type, but they are used for different purposes:
+
+ -  A <dfn>document loader</dfn> is used to load remote documents,
+    such as an actor's profile document, an object document, and so on.
+
+ -  A <dfn>context loader</dfn> is used to load remote contexts,
+    such as the ActivityStreams context, the W3C security context, and so on.
+
+Sometimes a document loader needs to be authenticated to load a remote document
+which requires authorization, but a context loader mostly needs to be highly
+cached and doesn't require authorization.

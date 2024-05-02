@@ -125,6 +125,14 @@ store.
 See the [*Getting an authenticated `DocumentLoader`*
 section](./context.md#getting-an-authenticated-documentloader) for details.
 
+### `contextLoader`
+
+A JSON-LD context loader function that the `Federation` object uses to
+load remote JSON-LD contexts.  The type of the function is the same as the
+`documentLoader` function, but their purposes are different (see also
+[*Document loader vs. context loader*
+section](./context.md#document-loader-vs-context-loader)).
+
 ### `treatHttps`
 
 Whether to treat HTTP requests as HTTPS.  This affects how URLs are generated

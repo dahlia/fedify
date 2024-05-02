@@ -17,6 +17,11 @@ export interface Context<TContextData> {
   readonly documentLoader: DocumentLoader;
 
   /**
+   * The context loader for loading remote JSON-LD contexts.
+   */
+  readonly contextLoader: DocumentLoader;
+
+  /**
    * Builds the URI of the NodeInfo document.
    * @returns The NodeInfo URI.
    * @throws {RouterError} If no NodeInfo dispatcher is available.

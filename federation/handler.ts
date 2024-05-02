@@ -341,7 +341,11 @@ export async function handleInbox<TContextData>(
       return await onNotFound(request);
     }
   }
-  const key = await verify(request, context.documentLoader);
+  const key = await verify(
+    request,
+    context.documentLoader,
+    context.contextLoader,
+  );
   if (key == null) {
     logger.error("Failed to verify the request signature.", { handle });
     const response = new Response("Failed to verify the request signature.", {
@@ -399,7 +403,7 @@ export async function handleInbox<TContextData>(
     });
     return response;
   }
-  if (!await doesActorOwnKey(activity, key, context.documentLoader)) {
+  if (!await doesActorOwnKey(activity, key, context)) {
     logger.error(
       "The signer ({keyId}) and the actor ({actorId}) do not match.",
       { activity: json, keyId: key.id?.href, actorId: activity.actorId.href },
@@ -463,8 +467,9 @@ export async function handleInbox<TContextData>(
 export interface RespondWithObjectOptions {
   /**
    * The document loader to use for compacting JSON-LD.
+   * @since 0.8.0
    */
-  documentLoader: DocumentLoader;
+  contextLoader: DocumentLoader;
 }
 
 /**

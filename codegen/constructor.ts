@@ -74,16 +74,23 @@ export async function* generateConstructor(
   `;
   for await (const code of generateParametersType(typeUri, types)) yield code;
   yield `,
-    { documentLoader }: { documentLoader?: DocumentLoader } = {},
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
   ) {
   `;
   if (type.extends == null) {
     yield `
     this.#documentLoader = documentLoader;
+    this.#contextLoader = contextLoader;
     this.id = values.id ?? null;
     `;
   } else {
-    yield "super(values, { documentLoader });";
+    yield "super(values, { documentLoader, contextLoader });";
   }
   for (const property of type.properties) {
     const fieldName = await getFieldName(property.uri);
@@ -138,7 +145,10 @@ export async function* generateCloner(
   for await (const code of generateParametersType(typeUri, types)) yield code;
   yield `
     = {},
-    options: { documentLoader?: DocumentLoader } = {}
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
   ): ${type.name} {
   `;
   if (type.extends == null) {

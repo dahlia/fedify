@@ -20,11 +20,11 @@ export async function* generateEncoder(
    */
   async toJsonLd(options: {
     expand?: boolean,
-    documentLoader?: DocumentLoader
+    contextLoader?: DocumentLoader,
   } = {}): Promise<unknown> {
     options = {
       ...options,
-      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
@@ -62,12 +62,15 @@ export async function* generateEncoder(
     values["@type"] = [${JSON.stringify(type.uri)}];
     if (this.id) values["@id"] = this.id.href;
     if (options.expand) {
-      return await jsonld.expand(values, options);
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
     }
     return await jsonld.compact(
       values,
       ${JSON.stringify(type.defaultContext)},
-      options
+      { documentLoader: options.contextLoader },
     );
   }
   `;
@@ -87,7 +90,10 @@ export async function* generateDecoder(
    */
   static async fromJsonLd(
     json: unknown,
-    options: { documentLoader?: DocumentLoader } = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
   ): Promise<${type.name}> {
     if (typeof json === "undefined") {
       throw new TypeError("Invalid JSON-LD: undefined.");
@@ -96,6 +102,7 @@ export async function* generateDecoder(
     options = {
       ...options,
       documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
     // deno-lint-ignore no-explicit-any
     let values: Record<string, any[]> & { "@id"?: string };
@@ -103,7 +110,7 @@ export async function* generateDecoder(
       values = {};
     } else {
       const expanded = await jsonld.expand(json, {
-        ...options,
+        documentLoader: options.contextLoader,
         keepFreeFloatingNodes: true,
       });
       values =
@@ -131,7 +138,7 @@ export async function* generateDecoder(
     yield `
     const instance = new this(
       { id: "@id" in values ? new URL(values["@id"] as string) : undefined },
-      { documentLoader: options?.documentLoader },
+      options,
     );
     `;
   } else {

@@ -20,7 +20,7 @@ Deno.test("sign()", async () => {
     new URL("https://example.com/key2"),
   );
   assertEquals(
-    await verify(signed, mockDocumentLoader),
+    await verify(signed, mockDocumentLoader, mockDocumentLoader),
     publicKey2,
   );
 });
@@ -48,6 +48,7 @@ Deno.test("verify()", async () => {
   const key = await verify(
     request,
     mockDocumentLoader,
+    mockDocumentLoader,
     Temporal.Instant.from("2024-03-05T07:49:44Z"),
   );
   assertEquals(
@@ -59,6 +60,7 @@ Deno.test("verify()", async () => {
     await verify(
       new Request("https://example.com/"),
       mockDocumentLoader,
+      mockDocumentLoader,
     ),
     null,
   );
@@ -67,6 +69,7 @@ Deno.test("verify()", async () => {
       new Request("https://example.com/", {
         headers: { Date: "Tue, 05 Mar 2024 07:49:44 GMT" },
       }),
+      mockDocumentLoader,
       mockDocumentLoader,
     ),
     null,
@@ -80,6 +83,7 @@ Deno.test("verify()", async () => {
           Signature: "asdf",
         },
       }),
+      mockDocumentLoader,
       mockDocumentLoader,
     ),
     null,
@@ -96,6 +100,7 @@ Deno.test("verify()", async () => {
         body: "",
       }),
       mockDocumentLoader,
+      mockDocumentLoader,
     ),
     null,
   );
@@ -111,12 +116,14 @@ Deno.test("verify()", async () => {
         body: "",
       }),
       mockDocumentLoader,
+      mockDocumentLoader,
     ),
     null,
   );
   assertEquals(
     await verify(
       request,
+      mockDocumentLoader,
       mockDocumentLoader,
       Temporal.Instant.from("2024-03-05T07:49:13.9999Z"),
     ),
@@ -126,6 +133,7 @@ Deno.test("verify()", async () => {
     await verify(
       request,
       mockDocumentLoader,
+      mockDocumentLoader,
       Temporal.Instant.from("2024-03-05T07:50:14.0001Z"),
     ),
     null,
@@ -133,52 +141,56 @@ Deno.test("verify()", async () => {
 });
 
 Deno.test("doesActorOwnKey()", async () => {
+  const options = {
+    documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
+  };
   const activity = new Create({ actor: new URL("https://example.com/person") });
-  assert(await doesActorOwnKey(activity, publicKey1, mockDocumentLoader));
-  assert(await doesActorOwnKey(activity, publicKey2, mockDocumentLoader));
+  assert(await doesActorOwnKey(activity, publicKey1, options));
+  assert(await doesActorOwnKey(activity, publicKey2, options));
 
   const activity2 = new Create({
     actor: new URL("https://example.com/hong-gildong"),
   });
-  assertFalse(await doesActorOwnKey(activity2, publicKey1, mockDocumentLoader));
-  assertFalse(await doesActorOwnKey(activity2, publicKey2, mockDocumentLoader));
+  assertFalse(await doesActorOwnKey(activity2, publicKey1, options));
+  assertFalse(await doesActorOwnKey(activity2, publicKey2, options));
 });
 
 Deno.test("getKeyOwner()", async () => {
+  const options = {
+    documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
+  };
   const owner = await getKeyOwner(
     new URL("https://example.com/users/handle#main-key"),
-    mockDocumentLoader,
+    options,
   );
   assertEquals(
     owner,
-    await lookupObject("https://example.com/users/handle", {
-      documentLoader: mockDocumentLoader,
-    }),
+    await lookupObject("https://example.com/users/handle", options),
   );
 
   const owner2 = await getKeyOwner(
     new URL("https://example.com/key"),
-    mockDocumentLoader,
+    options,
   );
   assertEquals(
     owner2,
-    await lookupObject("https://example.com/person", {
-      documentLoader: mockDocumentLoader,
-    }),
+    await lookupObject("https://example.com/person", options),
   );
 
-  const owner3 = await getKeyOwner(publicKey1, mockDocumentLoader);
+  const owner3 = await getKeyOwner(publicKey1, options);
   assertEquals(owner3, owner2);
 
   const noOwner = await getKeyOwner(
     new URL("https://example.com/key2"),
-    mockDocumentLoader,
+    options,
   );
   assertEquals(noOwner, null);
 
   const noOwner2 = await getKeyOwner(
     new URL("https://example.com/object"),
-    mockDocumentLoader,
+    options,
   );
   assertEquals(noOwner2, null);
 });
