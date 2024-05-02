@@ -1016,7 +1016,6 @@ sending and receiving activities, and the inbox.
 
 In this tutorial, we have covered the following topics:
 
- -  Setting up Deno
  -  Creating a new project
  -  Creating the server
  -  `Federation` object
