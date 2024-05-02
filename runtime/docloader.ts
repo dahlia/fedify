@@ -121,7 +121,12 @@ export async function fetchDocumentLoader(
 ): Promise<RemoteDocument> {
   const request = createRequest(url);
   logRequest(request);
-  const response = await fetch(request);
+  const response = await fetch(request, {
+    // Since Bun has a bug that ignores the `Request.redirect` option,
+    // to work around it we specify `redirect: "manual"` here too:
+    // https://github.com/oven-sh/bun/issues/10754
+    redirect: "manual",
+  });
   // Follow redirects manually to get the final URL:
   if (
     response.status >= 300 && response.status < 400 &&
@@ -150,7 +155,12 @@ export function getAuthenticatedDocumentLoader(
     let request = createRequest(url);
     request = await sign(request, identity.privateKey, identity.keyId);
     logRequest(request);
-    const response = await fetch(request);
+    const response = await fetch(request, {
+      // Since Bun has a bug that ignores the `Request.redirect` option,
+      // to work around it we specify `redirect: "manual"` here too:
+      // https://github.com/oven-sh/bun/issues/10754
+      redirect: "manual",
+    });
     // Follow redirects manually to get the final URL:
     if (
       response.status >= 300 && response.status < 400 &&
