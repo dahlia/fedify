@@ -17,22 +17,9 @@ ActivityPub protocol and the Fedify framework, such as actors, sending and
 receiving activities, and the inbox.
 
 As prerequisite knowledge, you should have a basic understanding of
-JavaScript/TypeScript, command-line interfaces, and minimum experience with
-building web server apps.  However, it's perfectly fine if you're not familiar
-with the ActivityPub protocol or the [Deno] runtime; we will explain them as
-we go.
-
-> [!NOTE]
-> The [Deno] runtime is a secure runtime for JavaScript and TypeScript.  It is
-> similar to Node.js but has a few differences, such as a built-in
-> TypeScript compiler and a secure-by-default design.  If you are already
-> familiar with Node.js, you can think of Deno as a more modern version of
-> Node.js created by the same person, Ryan Dahl.
->
-> Although this tutorial is written for Deno, you can use the Fedify framework
-> in Node.js as well.  The API is the same in both Deno and Node.js.
-
-[Deno]: https://deno.com/
+JavaScript, command-line interfaces, and minimum experience with building
+web server apps.  However, it's perfectly fine if you're not familiar with
+the ActivityPub protocol or TypeScript; we will explain them as we go.
 
 
 What we will build
@@ -45,84 +32,87 @@ send an accept activity back to the sender.  The home page of the server will
 list the actor's followers.
 
 
-Setting up Deno
----------------
+Creating a new project
+----------------------
 
 > [!TIP]
-> If you are already familiar with Deno, you can skip to the [*`Federation`
-> object* section](#federation-object).
+> We recommend using [Deno] or [Bun] (which are TypeScript-first) for the best
+> experience, but you can use [Node.js] if you prefer.
 
-First, you need to install the [Deno] runtime.  Please run the following command
-in your terminal:
+Let's create a new project directory and initialize a new project:
 
 ::: code-group
 
-~~~~ sh [Linux/macOS]
-curl -fsSL https://deno.land/install.sh | sh
+~~~~ sh [Deno]
+mkdir follow-server
+cd follow-server/
+echo '{ "unstable": ["kv", "temporal"] }' > deno.json
+deno add @fedify/fedify
 ~~~~
 
-~~~~ powershell [Windows]
-irm https://deno.land/install.ps1 | iex
+~~~~ sh [Node.js]
+mkdir follow-server
+cd follow-server/
+echo '{ "type": "module" }' > package.json
+npm add -D typescript tsx @types/node
+npm add @deno/kv @fedify/fedify @hono/node-server
+~~~~
+
+~~~~ sh [Bun]
+mkdir follow-server
+cd follow-server/
+bun add @deno/kv @fedify/fedify
 ~~~~
 
 :::
 
-> [!TIP]
-> If you are doubtful about running scripts from the internet, there are
-> additional installation options available on the [Deno installation] docs.
+The above commands will create a *deno.json* (in case of Deno) or *package.json*
+(in case of Node.js or Bun) in the project directory with the following content
+(formatted for readability):[^2]
 
-After installing Deno, you can verify the installation by running the following
-command:
+::: code-group
 
-~~~~ sh
-deno --version
-~~~~
-
-Your Deno installation must be at least version 1.41.0.  If you see the version
-number, you are ready to go.
-
-[Deno installation]: https://docs.deno.com/runtime/manual/getting_started/installation
-
-
-Creating a new project
-----------------------
-
-Let's create a new project directory and initialize a new Deno project:
-
-~~~~ sh
-mkdir follow-server
-cd follow-server/
-deno add @fedify/fedify
-~~~~
-
-The `deno add` command will create a *deno.json* file in the project directory
-with the following content (formatted for readability):[^2]
-
-~~~~ json
+~~~~ json [Deno]
 {
+  "unstable": ["kv", "temporal"],
   "imports": {
-    "@fedify/fedify": "jsr:@fedify/fedify@^0.4.0"
+    "@fedify/fedify": "jsr:@fedify/fedify@^0.8.0"
   }
 }
 ~~~~
 
-Since Fedify requires [`Temporal`] API, which is an unstable feature in Deno as
-of April 2024, you need to add the `"temporal"` to the `"unstable"` field of
-the *deno.json* file:
-
-~~~~ json{5}
+~~~ json [Node.js]
 {
-  "imports": {
-    "@fedify/fedify": "jsr:@fedify/fedify@^0.4.0"
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^20.12.7",
+    "tsx": "^4.8.2",
+    "typescript": "^5.4.5"
   },
-  "unstable": ["temporal"]
+  "dependencies": {
+    "@fedify/fedify": "^0.8.0",
+    "@hono/node-server": "^1.11.1"
+  }
 }
-~~~~
+~~~
+
+~~~ json [Bun]
+{
+  "dependencies": {
+    "@deno/kv": "^0.8.0",
+    "@fedify/fedify": "^0.7.0"
+  }
+}
+~~~
+
+:::
 
 [^2]: The actual version number may vary depending on the latest version of the
       Fedify framework as of reading this tutorial.
 
-[`Temporal`]: https://tc39.es/proposal-temporal/docs/
+[Deno]: https://deno.com/
+[Bun]: https://bun.sh/
+[Node.js]: https://nodejs.org/
 
 
 Creating the server
@@ -131,7 +121,9 @@ Creating the server
 Now, let's create the server script.  Create a new file named *server.ts* in the
 project directory and write the following code:
 
-~~~~ typescript
+::: code-group
+
+~~~~ typescript [Deno]
 Deno.serve(request =>
   new Response("Hello, world", {
     headers: { "Content-Type": "text/plain" }
@@ -139,24 +131,65 @@ Deno.serve(request =>
 );
 ~~~~
 
+~~~~ typescript [Node.js]
+import { serve } from "@hono/node-server";
+
+serve({
+  port: 8000,
+  fetch(request) {
+    return new Response("Hello, world", {
+      headers: { "Content-Type": "text/plain" }
+    });
+  }
+});
+~~~~
+
+~~~~ typescript [Bun]
+Bun.serve({
+  port: 8000,
+  fetch(request) {
+    return new Response("Hello, world", {
+      headers: { "Content-Type": "text/plain" }
+    });
+  }
+});
+~~~~
+
+:::
+
 It's a simple HTTP server that responds with <q>Hello, world</q> to any incoming
 request.  You can run the server by executing the following command:
 
-~~~~ sh
+::: code-group
+
+~~~~ sh [Deno]
 deno run -A server.ts
 ~~~~
+
+~~~~ sh [Node.js]
+node --import tsx server.ts
+~~~~
+
+~~~~ sh [Bun]
+bun server.ts
+~~~~
+
+::::
 
 Now, open your web browser and navigate to <http://localhost:8000/>.  You should
 see the <q>Hello, world</q> message.
 
-As you can guess, [`Deno.serve()`] is a function to create an HTTP server.
-It takes a callback function that receives a [`Request`] object and returns
-a [`Response`] object.  The `Response` object is sent back to the client.
+As you can guess, [`Deno.serve()`] (in case of Deno), [`serve()`] (in case of
+Node.js), and [`Bun.serve()`] (in case of Bun) are a function to create an HTTP
+server.  They take a callback function that receives a [`Request`] object and
+returns a [`Response`] object. The `Response` object is sent back to the client.
 
 This server is not federated yet, but it's a good starting point to build a
 federated server.
 
 [`Deno.serve()`]: https://deno.land/api?s=Deno.serve
+[`serve()`]: https://github.com/honojs/node-server?tab=readme-ov-file#usage
+[`Bun.serve()`]: https://bun.sh/docs/api/http#bun-serve
 [`Request`]: https://developer.mozilla.org/en-US/docs/Web/API/Request
 [`Response`]: https://developer.mozilla.org/en-US/docs/Web/API/Response
 
@@ -190,11 +223,35 @@ a key-value store.
 
 Then, we pass the incoming `Request` to the `Federation.fetch()` method:
 
-~~~~ typescript
+::: code-group
+
+~~~~ typescript{2} [Deno]
 Deno.serve(
   request => federation.fetch(request, { contextData: undefined })
 );
 ~~~~
+
+~~~~ typescript{6} [Node.js]
+import { serve } from "@hono/node-server";
+
+serve({
+  port: 8000,
+  fetch(request) {
+    return federation.fetch(request, { contextData: undefined });
+  }
+});
+~~~~
+
+~~~~ typescript{4} [Bun]
+Bun.serve({
+  port: 8000,
+  fetch(request) {
+    return federation.fetch(request, { contextData: undefined });
+  }
+});
+~~~~
+
+:::
 
 The `Federation.fetch()` method takes the incoming `Request` and few options.
 In this case, we pass `undefined` as the `contextData` because we don't
@@ -230,7 +287,9 @@ like).
 
 Let's create an actor dispatcher for our server:
 
-~~~~ typescript{7-16}
+::: code-group
+
+~~~~ typescript{7-16} [Deno]
 import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
 
 const federation = new Federation<void>({
@@ -253,6 +312,61 @@ Deno.serve(
 );
 ~~~~
 
+~~~~ typescript{8-17} [Node.js]
+import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
+import { serve } from "@hono/node-server";
+
+const federation = new Federation<void>({
+  kv: new MemoryKvStore(),
+});
+
+federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  if (handle !== "me") return null;  // Other than "me" is not found.
+  return new Person({
+    id: ctx.getActorUri(handle),
+    name: "Me",  // Display name
+    summary: "This is me!",  // Bio
+    preferredUsername: handle,  // Bare handle
+    url: new URL("/", ctx.url),
+  });
+});
+
+serve({
+  port: 8000,
+  fetch(request) {
+    return federation.fetch(request, { contextData: undefined });
+  }
+});
+~~~~
+
+~~~~ typescript{7-16} [Bun]
+import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
+
+const federation = new Federation<void>({
+  kv: new MemoryKvStore(),
+});
+
+federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  if (handle !== "me") return null;  // Other than "me" is not found.
+  return new Person({
+    id: ctx.getActorUri(handle),
+    name: "Me",  // Display name
+    summary: "This is me!",  // Bio
+    preferredUsername: handle,  // Bare handle
+    url: new URL("/", ctx.url),
+  });
+});
+
+Bun.serve({
+  port: 8000,
+  fetch(request) {
+    return federation.fetch(request, { contextData: undefined });
+  }
+});
+~~~~
+
+:::
+
 In the above code, we use the `Federation.setActorDispatcher()` method to set
 an actor dispatcher for the server.  The first argument is the path pattern
 for the actor, and the second argument is a callback function that takes
@@ -263,9 +377,21 @@ a `Person` object for the actor *me*.
 Alright, we have an actor on the server.  Let's see if it works by querying
 WebFinger for the actor.  Run the server by executing the following command:
 
-~~~~ sh
+::: code-group
+
+~~~~ sh [Deno]
 deno run -A server.ts
 ~~~~
+
+~~~~ sh [Node.js]
+node --import tsx server.ts
+~~~~
+
+~~~~ sh [Bun]
+bun server.ts
+~~~~
+
+:::
 
 Now, open a new terminal session and run the following command to query the
 actor:[^3]
@@ -364,7 +490,7 @@ the ngrok website][ngrok quickstart] (you only need to follow until the step 2).
 
 After installing ngrok, you can expose your server to the public internet by
 running the following command (note that you need to run this command in a new
-terminal session so that the server is still running): 
+terminal session so that the server is still running):
 
 ~~~~ sh
 ngrok http 8000
@@ -393,9 +519,21 @@ const federation = new Federation<void>({
 To restart the server, you need to stop the server by pressing <kbd>^C</kbd> and
 then run the server again:
 
-~~~~ sh
+::: code-group
+
+~~~~ sh [Deno]
 deno run -A server.ts
 ~~~~
+
+~~~~ sh [Node.js]
+node --import tsx server.ts
+~~~~
+
+~~~~ sh [Bun]
+bun server.ts
+~~~~
+
+:::
 
 Let's query the actor *me* again, but this time with the public URL (change
 the domain name to the one ngrok provides you):
@@ -524,7 +662,9 @@ called when the key pair of an actor is needed.  Let's set a key pair dispatcher
 for the actor *me*.  `~ActorCallbackSetters.setKeyPairDispatcher()` method
 should be chained after the `Federation.setActorDispatcher()` method:
 
-~~~~ typescript{13-14,17-37}
+::: code-group
+
+~~~~ typescript{13-14,17-37} [Deno]
 const kv = await Deno.openKv();  // Open the key-value store
 
 federation
@@ -564,6 +704,94 @@ federation
   });
 ~~~~
 
+~~~~ typescript{15-16,19-39} [Node.js]
+import { openKv } from "@deno/kv";
+
+const kv = await openKv("kv.db");  // Open the key-value store
+
+federation
+  .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+    if (handle !== "me") return null;
+    return new Person({
+      id: ctx.getActorUri(handle),
+      name: "Me",
+      summary: "This is me!",
+      preferredUsername: handle,
+      url: new URL("/", ctx.url),
+      inbox: ctx.getInboxUri(handle),
+      publicKey: key,  // The public key of the actor; it's provided by the key
+                       // pair dispatcher we define below
+    });
+  })
+  .setKeyPairDispatcher(async (ctx, handle) => {
+    if (handle != "me") return null;  // Other than "me" is not found.
+    const entry = await kv.get<{ privateKey: unknown, publicKey: unknown }>(["key"]);
+    if (entry == null || entry.value == null) {
+      // Generate a new key pair at the first time:
+      const { privateKey, publicKey } = await generateCryptoKeyPair();
+      // Store the generated key pair to the Deno KV database in JWK format:
+      await kv.set(
+        ["key"],
+        {
+          privateKey: await exportJwk(privateKey),
+          publicKey: await exportJwk(publicKey),
+        }
+      );
+      return { privateKey, publicKey };
+    }
+    // Load the key pair from the Deno KV database:
+    const privateKey = await importJwk(entry.value.privateKey, "private");
+    const publicKey =  await importJwk(entry.value.publicKey, "public");
+    return { privateKey, publicKey };
+  });
+~~~~
+
+~~~~ typescript{15-16,19-39} [Bun]
+import { serialize as encodeV8, deserialize as decodeV8 } from "node:v8";
+import { openKv } from "@deno/kv";
+
+// Open the key-value store:
+const kv = await openKv("kv.db", { encodeV8, decodeV8 });
+
+federation
+  .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+    if (handle !== "me") return null;
+    return new Person({
+      id: ctx.getActorUri(handle),
+      name: "Me",
+      summary: "This is me!",
+      preferredUsername: handle,
+      url: new URL("/", ctx.url),
+      inbox: ctx.getInboxUri(handle),
+      publicKey: key,  // The public key of the actor; it's provided by the key
+                       // pair dispatcher we define below
+    });
+  })
+  .setKeyPairDispatcher(async (ctx, handle) => {
+    if (handle != "me") return null;  // Other than "me" is not found.
+    const entry = await kv.get<{ privateKey: unknown, publicKey: unknown }>(["key"]);
+    if (entry == null || entry.value == null) {
+      // Generate a new key pair at the first time:
+      const { privateKey, publicKey } = await generateCryptoKeyPair();
+      // Store the generated key pair to the Deno KV database in JWK format:
+      await kv.set(
+        ["key"],
+        {
+          privateKey: await exportJwk(privateKey),
+          publicKey: await exportJwk(publicKey),
+        }
+      );
+      return { privateKey, publicKey };
+    }
+    // Load the key pair from the Deno KV database:
+    const privateKey = await importJwk(entry.value.privateKey, "private");
+    const publicKey =  await importJwk(entry.value.publicKey, "public");
+    return { privateKey, publicKey };
+  });
+~~~~
+
+:::
+
 In the above code, we use the `~ActorCallbackSetters.setKeyPairDispatcher()`
 method to set a key pair dispatcher for the actor *me*.  The key pair dispatcher
 is a function that is called when the key pair of an actor is needed.
@@ -572,21 +800,6 @@ and the public key of the actor.  In this case, we generate a new key pair
 at the first time and store it in the key-value store.  When the actor *me* is
 dispatched again, the key pair dispatcher loads the key pair from the key-value
 store.
-
-> [!IMPORTANT]
-> In the above code, we use the `Deno.openKv()` function to open the key-value
-> store, which is persistent.  However, Deno KV is an unstable feature as of
-> March 2024, so you need to add the `"kv"` to `"unstable"` field of the
-> *deno.json* file:
->
-> ~~~~ jsonc
-> {
->   "imports": {
->     "@fedify/fedify": "jsr:@fedify/fedify@^0.4.0"
->   },
->   "unstable": ["temporal", "kv"] // [!code highlight]
-> }
-> ~~~~
 
 > [!NOTE]
 > Although we use the Deno KV database in this tutorial, you can use any
@@ -704,9 +917,11 @@ federation
 ~~~~
 
 Now, we need to make the home page to show the actor's followers.  Let's modify
-the script inside the callback function passed to the `Deno.serve()`:
+the script inside the fetch function:
 
-~~~~ typescript{2-16}
+::: code-group
+
+~~~~ typescript{2-16} [Deno]
 Deno.serve(async (request) => {
   const url = new URL(request.url);
   // The home page:
@@ -725,9 +940,63 @@ Deno.serve(async (request) => {
   }
 
   // The federation-related requests are handled by the Federation object:
-  return await federation.handle(request, { contextData: undefined });
+  return await federation.fetch(request, { contextData: undefined });
 });
 ~~~~
+
+~~~~ typescript{4-18} [Node.js]
+serve({
+  port: 8000,
+  async fetch(request) {
+    const url = new URL(request.url);
+    // The home page:
+    if (url.pathname === "/") {
+      const followers: string[] = [];
+      for await (const entry of kv.list<string>({ prefix: ["followers"] })) {
+        if (followers.includes(entry.value)) continue;
+        followers.push(entry.value);
+      }
+      return new Response(
+        `<ul>${followers.map((f) => `<li>${f}</li>`)}</ul>`,
+        {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        },
+      );
+    }
+
+    // The federation-related requests are handled by the Federation object:
+    return await federation.fetch(request, { contextData: undefined });
+  }
+});
+~~~~
+
+~~~~ typescript{4-18} [Bun]
+Bun.serve({
+  port: 8000,
+  async fetch(request) {
+    const url = new URL(request.url);
+    // The home page:
+    if (url.pathname === "/") {
+      const followers: string[] = [];
+      for await (const entry of kv.list<string>({ prefix: ["followers"] })) {
+        if (followers.includes(entry.value)) continue;
+        followers.push(entry.value);
+      }
+      return new Response(
+        `<ul>${followers.map((f) => `<li>${f}</li>`)}</ul>`,
+        {
+          headers: { "Content-Type": "text/html; charset=utf-8" },
+        },
+      );
+    }
+
+    // The federation-related requests are handled by the Federation object:
+    return await federation.fetch(request, { contextData: undefined });
+  }
+});
+~~~~
+
+:::
 
 The above code lists the actor's followers on the home page.  The followers are
 stored in the key-value store, and we retrieve the followers from the key-value
@@ -783,7 +1052,7 @@ Exercises
     the home page inside the callback function passed to the `Deno.serve()`.
     Instead, you can use a web framework like [Fresh] to utilize the proper
     routing system and [JSX] templates to produce HTML.
-    
+
     See also the [*Integration* section](./manual/integration.md) in
     the manual for more details.
 

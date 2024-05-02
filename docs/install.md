@@ -11,16 +11,10 @@ Installation
 ============
 
 Fedify is available on [JSR] for [Deno] and on [npm] for [Node.js] and [Bun].
-Although Fedify can be used in Node.js and Bun, it's primarily designed for
-Deno.  We recommend using Deno for the best experience, but you can use Node.js 
-or Bun if you prefer.
 
 > [!TIP]
-> If you are new to Deno, but already familiar with Node.js, you can think of
-> Deno as a more modern version of Node.js created by the same person, Ryan
-> Dahl.  Deno has a lot of improvements over Node.js, such as better security,
-> better TypeScript support, better ES module support, and built-in key-value
-> store and message queue.
+> We recommend using Deno or Bun (which are TypeScript-first) for the best
+> experience, but you can use Node.js if you prefer.
 
 [JSR]: https://jsr.io/@fedify/fedify
 [Deno]: https://deno.com/
@@ -41,7 +35,7 @@ deno add @fedify/fedify
 ~~~~
 
 Since Fedify requires [`Temporal`] API, which is an unstable feature in Deno as
-of April 2024, you need to add the `"temporal"` to the `"unstable"` field of
+of May 2024, you need to add the `"temporal"` to the `"unstable"` field of
 the *deno.json* file:
 
 ~~~~ json{5}
@@ -65,6 +59,18 @@ the following command:
 
 ~~~~ sh
 npm add @fedify/fedify
+~~~~
+
+Fedify is an ESM-only package, so you need to add `"type": "module"` to the
+*package.json* file:
+
+~~~~ json{2}
+{
+  "type": "module",
+  "dependencies": {
+    "@fedify/fedify": "^0.8.0"
+  }
+}
 ~~~~
 
 

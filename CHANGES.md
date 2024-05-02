@@ -51,6 +51,9 @@ To be released.
      -  `["fedify", "httpsig", "verify"]`
      -  `["fedify", "runtime", "docloader"]`
 
+ -  Fixed a bug where the authenticated document loader had thrown `InvalidUrl`
+    error when the URL redirection was involved in Bun.
+
 [@fedify/cli]: https://jsr.io/@fedify/cli
 [FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
 
