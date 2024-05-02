@@ -57,11 +57,17 @@
   ],
   "exclude": [
     ".git/",
+    ".github/",
+    ".vscode/",
+    ".zed/",
     "apidoc/",
     "cli/",
     "docs/",
     "examples/",
-    "npm/"
+    "logo.svg",
+    "npm/",
+    "vocab/*.yaml",
+    "!vocab/vocab.ts"
   ],
   "tasks": {
     "cache": "deno task codegen && deno cache mod.ts",
