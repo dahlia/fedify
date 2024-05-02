@@ -10,7 +10,13 @@ To be released.
 
  -  The CLI toolchain for testing and debugging is now available on JSR:
     [@fedify/cli].  You can install it with
-    `deno install -A -n fedify jsr:@fedify/cli`.
+    `deno install -A --unstable-fs --unstable-kv --unstable-temporal -n fedify
+    jsr:@fedify/cli`, or download a standalone exectuable from the [releases]
+    page.
+
+     -  Added `fedify` command.
+     -  Added `fedify lookup` subcommand.
+     -  Added `fedify inbox` subcommand.
 
  -  Implemented [followers collection synchronization mechanism][FEP-8fcf].
 
@@ -55,6 +61,7 @@ To be released.
     error when the URL redirection was involved in Bun.
 
 [@fedify/cli]: https://jsr.io/@fedify/cli
+[releases]: https://github.com/dahlia/fedify/releases
 [FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
 
 
