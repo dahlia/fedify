@@ -80,6 +80,11 @@ To be released.
  -  Fixed a bug where the authenticated document loader had thrown `InvalidUrl`
     error when the URL redirection was involved in Bun.
 
+ -  Fixed a bug of `lookupObject()` that it had failed to look up the actor
+    object when WebFinger response had no links with
+    `"type": "application/activity+json"` but had `"type":
+    "application/ld+json; profile=\"https://www.w3.org/ns/activitystreams\""`.
+
 [@fedify/cli]: https://jsr.io/@fedify/cli
 [releases]: https://github.com/dahlia/fedify/releases
 [FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md

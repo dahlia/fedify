@@ -81,7 +81,12 @@ export async function lookupObject(
     const jrd = await lookupWebFinger(identifier);
     if (jrd?.links == null) return null;
     for (const l of jrd.links) {
-      if (l.type !== "application/activity+json" || l.rel !== "self") continue;
+      if (
+        l.type !== "application/activity+json" &&
+          !l.type?.match(
+            /application\/ld\+json;\s*profile="https:\/\/www.w3.org\/ns\/activitystreams"/,
+          ) || l.rel !== "self"
+      ) continue;
       try {
         const remoteDoc = await documentLoader(l.href);
         document = remoteDoc.document;
