@@ -126,7 +126,7 @@ jobs:
       with:
         body_path: ${{ steps.extract-changelog.outputs.output-file }}
         name: Fedify ${{ github.ref_name }}
-        files:
+        files: |
           npm/*.tgz
           cli/fedify-cli-*
         generate_release_notes: false
