@@ -7736,7 +7736,9 @@ export class Document extends Object {
     static get typeId(): URL {
       return new URL(\\"https://www.w3.org/ns/activitystreams#Document\\");
     }
-  
+  #_2e9AP7WdHBJYAgXG6GEyq7nSkNMe: number[] = [];
+#_2cGKFeFJMmiNpGZFEF75mCwFQsKb: number[] = [];
+
   /**
    * Constructs a new instance of Document with the given values.
    * @param values The values to initialize the instance with.
@@ -7761,7 +7763,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -7771,7 +7773,15 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       contextLoader?: DocumentLoader,
     } = {},
   ) {
-  super(values, { documentLoader, contextLoader });}
+  super(values, { documentLoader, contextLoader });
+        if (\\"width\\" in values &&             values.width != null) {
+          this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = [values.width];
+        }
+      
+        if (\\"height\\" in values &&             values.height != null) {
+          this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = [values.height];
+        }
+      }
 
   /**
    * Clones this instance, optionally updating it with the given values.
@@ -7798,7 +7808,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -7806,10 +7816,36 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       contextLoader?: DocumentLoader,
     } = {}
   ): Document {
-  const clone = super.clone(values, options) as unknown as Document;
+  const clone = super.clone(values, options) as unknown as Document;clone.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe;
+        if (\\"width\\" in values &&             values.width != null) {
+          clone.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = [values.width];
+        }
+      clone.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb;
+        if (\\"height\\" in values &&             values.height != null) {
+          clone.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = [values.height];
+        }
+      
     return clone;
   }
   
+/** Specifies a hint as to the rendering width in
+ * device-independent pixels of the linked resource.
+ * 
+ */
+get width(): (number | null) {
+        if (this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe.length < 1) return null;
+        return this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe[0];
+      }
+      
+/** Specifies a hint as to the rendering height in
+ * device-independent pixels of the linked resource. 
+ * 
+ */
+get height(): (number | null) {
+        if (this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb.length < 1) return null;
+        return this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -7830,6 +7866,28 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       expand: true,
     }) as unknown[];
     const values = baseValues[0] as Record<string, unknown[] | string>;
+    
+    array = [];
+    for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
+      array.push(
+    {
+        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
+        \\"@value\\": v,
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#width\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
+      array.push(
+    {
+        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
+        \\"@value\\": v,
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#height\\"] = array;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Document\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -7912,12 +7970,66 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     if (!(instance instanceof Document)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
     }
+    const _2e9AP7WdHBJYAgXG6GEyq7nSkNMe: number[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#width\\"] ?? []) {
+      if (v == null) continue;
+    _2e9AP7WdHBJYAgXG6GEyq7nSkNMe.push(v[\\"@value\\"])
+    }
+    instance.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = _2e9AP7WdHBJYAgXG6GEyq7nSkNMe;
+    const _2cGKFeFJMmiNpGZFEF75mCwFQsKb: number[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#height\\"] ?? []) {
+      if (v == null) continue;
+    _2cGKFeFJMmiNpGZFEF75mCwFQsKb.push(v[\\"@value\\"])
+    }
+    instance.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = _2cGKFeFJMmiNpGZFEF75mCwFQsKb;
     
     return instance;
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
   const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _2e9AP7WdHBJYAgXG6GEyq7nSkNMe = this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2e9AP7WdHBJYAgXG6GEyq7nSkNMe.length == 1) {
+        proxy.width = _2e9AP7WdHBJYAgXG6GEyq7nSkNMe[0];
+      }
+      
+      const _2cGKFeFJMmiNpGZFEF75mCwFQsKb = this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2cGKFeFJMmiNpGZFEF75mCwFQsKb.length == 1) {
+        proxy.height = _2cGKFeFJMmiNpGZFEF75mCwFQsKb[0];
+      }
+      
     return proxy;
   }
 
@@ -7974,7 +8086,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -8011,7 +8123,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -13182,7 +13294,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -13219,7 +13331,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -16909,7 +17021,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -16946,7 +17058,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -22439,7 +22551,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -22476,7 +22588,7 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
 
     = {},
     options: {

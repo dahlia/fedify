@@ -66,6 +66,16 @@ To be released.
      -  The type of the third parameter of `doesActorOwnKey()` function became
         `DoesActorOwnKeyOptions` (was `DocumentLoader`).
 
+ -  Added `width` and `height` properties to `Document` class for better
+    compatibility with Mastodon.  [[#47]]
+
+     -  Added `Document.width` property.
+     -  Added `Document.height` property.
+     -  `new Document()` constructor now accepts `width` option.
+     -  `new Document()` constructor now accepts `height` option.
+     -  `Document.clone()` method now accepts `width` option.
+     -  `Document.clone()` method now accepts `height` option.
+
  -  Removed the dependency on *@js-temporal/polyfill* on Deno, and Fedify now
     requires `--unstable-temporal` flag.  On other runtime, it still depends
     on *@js-temporal/polyfill*.
@@ -88,6 +98,7 @@ To be released.
 [@fedify/cli]: https://jsr.io/@fedify/cli
 [releases]: https://github.com/dahlia/fedify/releases
 [FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
+[#47]: https://github.com/dahlia/fedify/issues/47
 
 
 Version 0.7.0

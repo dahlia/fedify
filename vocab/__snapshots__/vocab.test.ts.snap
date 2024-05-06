@@ -735,7 +735,9 @@ snapshot[`Deno.inspect(Audio) [auto] 1`] = `
   bcc: Object {},
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -767,7 +769,9 @@ snapshot[`Deno.inspect(Audio) [auto] 2`] = `
   bcc: URL "https://example.com/",
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -799,7 +803,9 @@ snapshot[`Deno.inspect(Audio) [auto] 3`] = `
   bccs: [ Object {}, Object {} ],
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -1477,7 +1483,9 @@ snapshot[`Deno.inspect(Document) [auto] 1`] = `
   bcc: Object {},
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -1509,7 +1517,9 @@ snapshot[`Deno.inspect(Document) [auto] 2`] = `
   bcc: URL "https://example.com/",
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -1541,7 +1551,9 @@ snapshot[`Deno.inspect(Document) [auto] 3`] = `
   bccs: [ Object {}, Object {} ],
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -2153,7 +2165,9 @@ snapshot[`Deno.inspect(Image) [auto] 1`] = `
   bcc: Object {},
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -2185,7 +2199,9 @@ snapshot[`Deno.inspect(Image) [auto] 2`] = `
   bcc: URL "https://example.com/",
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -2217,7 +2233,9 @@ snapshot[`Deno.inspect(Image) [auto] 3`] = `
   bccs: [ Object {}, Object {} ],
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -3141,7 +3159,9 @@ snapshot[`Deno.inspect(Page) [auto] 1`] = `
   bcc: Object {},
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -3173,7 +3193,9 @@ snapshot[`Deno.inspect(Page) [auto] 2`] = `
   bcc: URL "https://example.com/",
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -3205,7 +3227,9 @@ snapshot[`Deno.inspect(Page) [auto] 3`] = `
   bccs: [ Object {}, Object {} ],
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -4249,7 +4273,9 @@ snapshot[`Deno.inspect(Video) [auto] 1`] = `
   bcc: Object {},
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -4281,7 +4307,9 @@ snapshot[`Deno.inspect(Video) [auto] 2`] = `
   bcc: URL "https://example.com/",
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
 
@@ -4313,6 +4341,8 @@ snapshot[`Deno.inspect(Video) [auto] 3`] = `
   bccs: [ Object {}, Object {} ],
   mediaType: "hello",
   duration: PT1H,
-  sensitive: true
+  sensitive: true,
+  width: 123,
+  height: 123
 }'
 `;
