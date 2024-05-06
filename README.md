@@ -46,7 +46,7 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].  Or tag
       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
 
 [JSR]: https://jsr.io/@fedify/fedify
-[JSR badge]: https://jsr.io/badges/@fedify/fedify?v=0.6.0
+[JSR badge]: https://jsr.io/badges/@fedify/fedify
 [npm]: https://www.npmjs.com/package/@fedify/fedify
 [npm badge]: https://img.shields.io/npm/v/@fedify/fedify?logo=npm
 [GitHub Actions]: https://github.com/dahlia/fedify/actions/workflows/build.yaml

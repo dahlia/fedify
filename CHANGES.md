@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.8.0
 -------------
 
-To be released.
+Released on May 6, 2024.
 
  -  The CLI toolchain for testing and debugging is now available on JSR:
     [@fedify/cli].  You can install it with
