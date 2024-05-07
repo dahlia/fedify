@@ -42,10 +42,7 @@ bun add @logtape/logtape
 
 :::
 
-[JSR]: https://jsr.io/@logtape/logtape
-[npm]: https://www.npmjs.com/package/@logtape/logtape
-
-Then, you can `configure()` the logger in the entry point of your app:
+Then, you can [`configure()`] the logger in the entry point of your app:
 
 ~~~~ typescript
 import { configure, getConsoleSink } from "@logtape/logtape";
@@ -91,6 +88,10 @@ The `configure()` function takes an object with three properties:
 :   The `level` property is a string that specifies the log level.  The log
     level can be one of the following: `"debug"`, `"info"`, `"warning"`,
     `"error"`, or `"fatal"`.
+
+[JSR]: https://jsr.io/@logtape/logtape
+[npm]: https://www.npmjs.com/package/@logtape/logtape
+[`configure()`]: https://jsr.io/@logtape/logtape/doc/~/configure
 
 
 Categories

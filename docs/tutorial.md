@@ -271,7 +271,45 @@ need to share any context data here.
 The `Federation` object is now ready to handle incoming requests.  Let's move on
 to the next step.
 
+> [!TIP]
+> Although it's not mandatory, we highly recommend to set up loggers to see
+> what's going on in the server.  To set up loggers, you need to install
+> [LogTape] first:
+>
+> ::: code-group
+>
+> ~~~~ sh [Deno]
+> deno add @logtape/logtape
+> ~~~~
+>
+> ~~~~ sh [Node.js]
+> npm add @logtape/logtape
+> ~~~~
+>
+> ~~~~ sh [Bun]
+> bun add @logtape/logtape
+> ~~~~
+>
+> :::
+>
+> Then, you can set up loggers by calling [`configure()`] function at the
+> top of the *server.ts* file:
+>
+> ~~~~ typescript
+> import { configure, getConsoleSink } from "@logtape/logtape";
+>
+> await configure({
+>   sinks: { console: getConsoleSink() },
+>   filters: {},
+>   loggers: [
+>     { category: "fedify",  sinks: ["console"], level: "info" },
+>   ],
+> });
+> ~~~~
+
 [`Deno.openKv()`]: https://deno.land/api?s=Deno.openKv
+[LogTape]: https://github.com/dahlia/logtape
+[`configure()`]: https://jsr.io/@logtape/logtape/doc/~/configure
 
 
 Actor dispatcher
