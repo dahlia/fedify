@@ -8,6 +8,11 @@ Version 0.9.0
 
 To be released.
 
+ -  Added more log messages using the [LogTape] library.  Currently the below
+    logger categories are used:
+
+     -  `["fedify", "federation", "actor"]`
+
 
 Version 0.8.0
 -------------

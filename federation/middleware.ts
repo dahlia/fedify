@@ -634,7 +634,103 @@ export class Federation<TContextData> {
         "Path for actor dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: ActorCallbacks<TContextData> = { dispatcher };
+    const callbacks: ActorCallbacks<TContextData> = {
+      dispatcher: async (context, handle, key) => {
+        const actor = await dispatcher(context, handle, key);
+        const logger = getLogger(["fedify", "federation", "actor"]);
+        if (
+          this.#followingCallbacks != null &&
+          this.#followingCallbacks.dispatcher != null
+        ) {
+          if (actor?.followingId == null) {
+            logger.warn(
+              "You configured a following collection dispatcher, but the " +
+                "actor does not have a following property.  Set the property " +
+                "with Context.getFollowingUri(handle).",
+            );
+          } else if (
+            actor.followingId.href != context.getFollowingUri(handle).href
+          ) {
+            logger.warn(
+              "You configured a following collection dispatcher, but the " +
+                "actor's following property does not match the following " +
+                "collection URI.  Set the property with " +
+                "Context.getFollowingUri(handle).",
+            );
+          }
+        }
+        if (
+          this.#followersCallbacks != null &&
+          this.#followersCallbacks.dispatcher != null
+        ) {
+          if (actor?.followersId == null) {
+            logger.warn(
+              "You configured a followers collection dispatcher, but the " +
+                "actor does not have a followers property.  Set the property " +
+                "with Context.getFollowersUri(handle).",
+            );
+          } else if (
+            actor.followersId.href != context.getFollowersUri(handle).href
+          ) {
+            logger.warn(
+              "You configured a followers collection dispatcher, but the " +
+                "actor's followers property does not match the followers " +
+                "collection URI.  Set the property with " +
+                "Context.getFollowersUri(handle).",
+            );
+          }
+        }
+        if (
+          this.#outboxCallbacks != null &&
+          this.#outboxCallbacks.dispatcher != null
+        ) {
+          if (actor?.outboxId == null) {
+            logger.warn(
+              "You configured an outbox collection dispatcher, but the " +
+                "actor does not have an outbox property.  Set the property " +
+                "with Context.getOutboxUri(handle).",
+            );
+          } else if (actor.outboxId.href != context.getOutboxUri(handle).href) {
+            logger.warn(
+              "You configured an outbox collection dispatcher, but the " +
+                "actor's outbox property does not match the outbox collection " +
+                "URI.  Set the property with Context.getOutboxUri(handle).",
+            );
+          }
+        }
+        if (this.#router.has("inbox")) {
+          if (actor?.inboxId == null) {
+            logger.warn(
+              "You configured inbox listeners, but the actor does not " +
+                "have an inbox property.  Set the property with " +
+                "Context.getInboxUri(handle).",
+            );
+          } else if (actor.inboxId.href != context.getInboxUri(handle).href) {
+            logger.warn(
+              "You configured inbox listeners, but the actor's inbox " +
+                "property does not match the inbox URI.  Set the property " +
+                "with Context.getInboxUri(handle).",
+            );
+          }
+          if (actor?.endpoints == null || actor.endpoints.sharedInbox == null) {
+            logger.warn(
+              "You configured inbox listeners, but the actor does not have " +
+                "a endpoints.sharedInbox property.  Set the property with " +
+                "Context.getInboxUri().",
+            );
+          } else if (
+            actor.endpoints.sharedInbox.href != context.getInboxUri().href
+          ) {
+            logger.warn(
+              "You configured inbox listeners, but the actor's " +
+                "endpoints.sharedInbox property does not match the shared inbox " +
+                "URI.  Set the property with Context.getInboxUri().",
+            );
+          }
+        }
+        return actor;
+      },
+    };
     this.#actorCallbacks = callbacks;
     const setters: ActorCallbackSetters<TContextData> = {
       setKeyPairDispatcher(dispatcher: ActorKeyPairDispatcher<TContextData>) {
