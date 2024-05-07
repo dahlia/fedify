@@ -12,6 +12,7 @@ To be released.
     logger categories are used:
 
      -  `["fedify", "federation", "actor"]`
+     -  `["fedify", "federation", "http"]`
 
 
 Version 0.8.0

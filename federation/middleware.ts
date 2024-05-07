@@ -1321,6 +1321,26 @@ export class Federation<TContextData> {
    */
   async fetch(
     request: Request,
+    options: FederationFetchOptions<TContextData>,
+  ): Promise<Response> {
+    const response = await this.#fetch(request, options);
+    const logger = getLogger(["fedify", "federation", "http"]);
+    const url = new URL(request.url);
+    const logTpl = "{method} {path}: {status}";
+    const values = {
+      method: request.method,
+      path: `${url.pathname}${url.search}`,
+      url: request.url,
+      status: response.status,
+    };
+    if (response.status >= 500) logger.error(logTpl, values);
+    else if (response.status >= 400) logger.warn(logTpl, values);
+    else logger.info(logTpl, values);
+    return response;
+  }
+
+  async #fetch(
+    request: Request,
     {
       onNotFound,
       onNotAcceptable,

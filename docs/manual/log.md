@@ -118,12 +118,28 @@ The `"fedify"` category is used for everything related to the Fedify library.
 The `["fedify", "federation"]` category is used for logging federation-related
 messages.
 
+### `["fedify", "federation", "actor"]`
+
+*This category is available since Fedify 0.9.0.*
+
+The `["fedify", "federation", "actor"]` category is used for logging messages
+related to actor dispatcher.
+
 ### `["fedify", "federation", "collection"]`
 
 *This category is available since Fedify 0.8.0.*
 
 The `["fedify", "federation", "collection"]` category is used for logging
 messages related to collections (e.g., outbox, followers, following).
+
+### `["fedify", "federation", "http"]`
+
+*This category is available since Fedify 0.9.0.*
+
+The `["fedify", "federation", "http"]` category is used for logging messages
+related to HTTP requests and responses.  When you are curious about the
+HTTP requests and responses, you can check the log messages in this category
+with the `"info"` level.
 
 ### `["fedify", "federation", "inbox"]`
 
