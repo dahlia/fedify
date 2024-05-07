@@ -3634,7 +3634,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"http://schema.org#PropertyValue\\") ? await PropertyValue.fromJsonLd(
@@ -3720,7 +3720,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -3768,7 +3768,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -3821,7 +3821,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -3846,7 +3846,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -3868,7 +3868,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
@@ -3940,7 +3940,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -3964,7 +3964,7 @@ get sensitive(): (boolean | null) {
       const decoded =
       typeof v === \\"object\\" && \\"@id\\" in v
         && typeof v[\\"@id\\"] === \\"string\\" ? new URL(v[\\"@id\\"]) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -5950,7 +5950,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -7648,7 +7648,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9237,7 +9237,7 @@ get totalItems(): (number | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -9262,7 +9262,7 @@ get totalItems(): (number | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -9287,7 +9287,7 @@ get totalItems(): (number | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -9312,7 +9312,7 @@ get totalItems(): (number | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -9892,7 +9892,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].some(
@@ -9920,7 +9920,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -9945,7 +9945,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
       ;
@@ -10160,7 +10160,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -13259,6 +13259,1002 @@ get indexable(): (boolean | null) {
   }
   }
 
+/** A Link is an indirect, qualified reference to a resource identified by a URL.
+ * The fundamental model for links is established by RFC 5988. Many of the
+ * properties defined by the Activity Vocabulary allow values that are either
+ * instances of {@link Object} or {@link Link}. When a {@link Link} is used,
+ * it establishes a qualified relation connecting the subject (the containing
+ * object) to the resource identified by the \`href\`. Properties of
+ * the {@link Link} are properties of the reference as opposed to properties of
+ * the resource.
+ * 
+ */
+export class Link {
+
+    readonly #documentLoader?: DocumentLoader;
+    readonly #contextLoader?: DocumentLoader;
+    readonly id: URL | null;
+
+    protected get _documentLoader(): DocumentLoader | undefined {
+      return this.#documentLoader;
+    }
+
+    protected get _contextLoader(): DocumentLoader | undefined {
+      return this.#contextLoader;
+    }
+    
+    /**
+     * The type URI of {@link Link}: \`https://www.w3.org/ns/activitystreams#Link\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Link\\");
+    }
+  #_pVjLsybKQdmkjuU7MHjiVmNnuj7: URL[] = [];
+#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ: string[] = [];
+#_3BLrzmscsjHCw8TF5BHRW9WkPnX8: string[] = [];
+#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
+#_f57HKWCp1YRBbTJE8PF12RbDJGf: LanguageTag[] = [];
+#_2cGKFeFJMmiNpGZFEF75mCwFQsKb: number[] = [];
+#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe: number[] = [];
+#_gCVTegXxWWCw6wWRxa1QF65zusg: (Link | Object | URL)[] = [];
+
+  /**
+   * Constructs a new instance of Link with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+href?: URL | null;rel?: string | null;
+rels?: string[];mediaType?: string | null;name?: string | LanguageString | null;
+names?: (string | LanguageString)[];language?: LanguageTag | null;height?: number | null;width?: number | null;previews?: (Link | Object | URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  
+    this.#documentLoader = documentLoader;
+    this.#contextLoader = contextLoader;
+    this.id = values.id ?? null;
+    
+        if (\\"href\\" in values &&             values.href != null) {
+          this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = [values.href];
+        }
+      
+        if (\\"rel\\" in values &&             values.rel != null) {
+          this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = [values.rel];
+        }
+      
+        if (\\"rels\\" in values &&             values.rels != null) {
+      
+          if (\\"rel\\" in values &&
+              values.rel != null) {
+            throw new TypeError(
+              \\"Cannot initialize both rel and \\" +
+                \\"rels at the same time.\\",
+            );
+          }
+        
+          this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = values.rels;
+        }
+      
+        if (\\"mediaType\\" in values &&             values.mediaType != null) {
+          this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8 = [values.mediaType];
+        }
+      
+        if (\\"name\\" in values &&             values.name != null) {
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
+        }
+      
+        if (\\"names\\" in values &&             values.names != null) {
+      
+          if (\\"name\\" in values &&
+              values.name != null) {
+            throw new TypeError(
+              \\"Cannot initialize both name and \\" +
+                \\"names at the same time.\\",
+            );
+          }
+        
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = values.names;
+        }
+      
+        if (\\"language\\" in values &&             values.language != null) {
+          this.#_f57HKWCp1YRBbTJE8PF12RbDJGf = [values.language];
+        }
+      
+        if (\\"height\\" in values &&             values.height != null) {
+          this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = [values.height];
+        }
+      
+        if (\\"width\\" in values &&             values.width != null) {
+          this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = [values.width];
+        }
+      
+        if (\\"previews\\" in values &&             values.previews != null) {
+      
+          this.#_gCVTegXxWWCw6wWRxa1QF65zusg = values.previews;
+        }
+      }
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+href?: URL | null;rel?: string | null;
+rels?: string[];mediaType?: string | null;name?: string | LanguageString | null;
+names?: (string | LanguageString)[];language?: LanguageTag | null;height?: number | null;width?: number | null;previews?: (Link | Object | URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Link {
+  
+    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
+    const clone: Link = new this.constructor({ id: values.id }, options);
+    clone.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7;
+        if (\\"href\\" in values &&             values.href != null) {
+          clone.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = [values.href];
+        }
+      clone.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
+        if (\\"rel\\" in values &&             values.rel != null) {
+          clone.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = [values.rel];
+        }
+      
+        if (\\"rels\\" in values &&             values.rels != null) {
+      
+          if (\\"rel\\" in values &&
+              values.rel != null) {
+            throw new TypeError(
+              \\"Cannot update both rel and \\" +
+                \\"rels at the same time.\\",
+            );
+          }
+        
+          clone.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = values.rels;
+        }
+      clone.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8 = this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8;
+        if (\\"mediaType\\" in values &&             values.mediaType != null) {
+          clone.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8 = [values.mediaType];
+        }
+      clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+        if (\\"name\\" in values &&             values.name != null) {
+          clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
+        }
+      
+        if (\\"names\\" in values &&             values.names != null) {
+      
+          if (\\"name\\" in values &&
+              values.name != null) {
+            throw new TypeError(
+              \\"Cannot update both name and \\" +
+                \\"names at the same time.\\",
+            );
+          }
+        
+          clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = values.names;
+        }
+      clone.#_f57HKWCp1YRBbTJE8PF12RbDJGf = this.#_f57HKWCp1YRBbTJE8PF12RbDJGf;
+        if (\\"language\\" in values &&             values.language != null) {
+          clone.#_f57HKWCp1YRBbTJE8PF12RbDJGf = [values.language];
+        }
+      clone.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb;
+        if (\\"height\\" in values &&             values.height != null) {
+          clone.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = [values.height];
+        }
+      clone.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe;
+        if (\\"width\\" in values &&             values.width != null) {
+          clone.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = [values.width];
+        }
+      clone.#_gCVTegXxWWCw6wWRxa1QF65zusg = this.#_gCVTegXxWWCw6wWRxa1QF65zusg;
+        if (\\"previews\\" in values &&             values.previews != null) {
+      
+          clone.#_gCVTegXxWWCw6wWRxa1QF65zusg = values.previews;
+        }
+      
+    return clone;
+  }
+  
+/** The target resource pointed to by a {@link Link}.
+ */
+get href(): (URL | null) {
+        if (this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7.length < 1) return null;
+        return this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7[0];
+      }
+      
+/** A link relation associated with a {@link Link}. The value MUST conform to
+ * both the HTML5 and RFC 5988 \\"link relation\\" definitions.
+ * 
+ * In the HTML5, any string not containing the space (U+0020), tab (U+0009),
+ * LF (U+000A), FF (U+000C), CR (U+000D) or comma (U+002C) characters can
+ * be used as a valid link relation.
+ * 
+ */
+get rel(): (string | null) {
+        if (this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length < 1) return null;
+        return this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ[0];
+      }
+      
+/** A link relation associated with a {@link Link}. The value MUST conform to
+ * both the HTML5 and RFC 5988 \\"link relation\\" definitions.
+ * 
+ * In the HTML5, any string not containing the space (U+0020), tab (U+0009),
+ * LF (U+000A), FF (U+000C), CR (U+000D) or comma (U+002C) characters can
+ * be used as a valid link relation.
+ * 
+ */
+get rels(): string[] {
+        return this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
+      }
+      
+/** When used on a {@link Link}, identifies the MIME media type of the
+ * referenced resource.
+ * 
+ */
+get mediaType(): (string | null) {
+        if (this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8.length < 1) return null;
+        return this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8[0];
+      }
+      
+/** A simple, human-readable, plain-text name for the object. HTML markup MUST
+ * NOT be included. The name MAY be expressed using multiple language-tagged
+ * values.
+ * 
+ */
+get name(): (string | LanguageString | null) {
+        if (this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length < 1) return null;
+        return this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
+      }
+      
+/** A simple, human-readable, plain-text name for the object. HTML markup MUST
+ * NOT be included. The name MAY be expressed using multiple language-tagged
+ * values.
+ * 
+ */
+get names(): (string | LanguageString)[] {
+        return this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+      }
+      
+/** Hints as to the language used by the target resource.
+ * Value MUST be a BCP 47 Language-Tag.
+ * 
+ */
+get language(): (LanguageTag | null) {
+        if (this.#_f57HKWCp1YRBbTJE8PF12RbDJGf.length < 1) return null;
+        return this.#_f57HKWCp1YRBbTJE8PF12RbDJGf[0];
+      }
+      
+/** On a {@link Link}, specifies a hint as to the rendering height in
+ * device-independent pixels of the linked resource. 
+ * 
+ */
+get height(): (number | null) {
+        if (this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb.length < 1) return null;
+        return this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb[0];
+      }
+      
+/** On a {@link Link}, specifies a hint as to the rendering width in
+ * device-independent pixels of the linked resource.
+ * 
+ */
+get width(): (number | null) {
+        if (this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe.length < 1) return null;
+        return this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe[0];
+      }
+      
+    async #fetchPreview(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Link | Object> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Link.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Object.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Link.getPreviews},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get previewIds(): URL[] {
+        return this.#_gCVTegXxWWCw6wWRxa1QF65zusg.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Identifies an entity that provides a preview of this object.
+ */
+
+      async* getPreviews(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): AsyncIterable<Link | Object> {
+        const vs = this.#_gCVTegXxWWCw6wWRxa1QF65zusg;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchPreview(
+                v, options);
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  const values: Record<string, unknown[] | string> = {};
+    array = [];
+    for (const v of this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7) {
+      array.push(
+    { \\"@id\\": v.href }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#href\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#rel\\"] = array;
+    
+    array = [];
+    for (const v of this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] = array;
+    
+    array = [];
+    for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
+      array.push(
+    typeof v === \\"string\\" ? { \\"@value\\": v } : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
+    
+    array = [];
+    for (const v of this.#_f57HKWCp1YRBbTJE8PF12RbDJGf) {
+      array.push(
+    { \\"@value\\": v.compact() }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#hreflang\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
+      array.push(
+    {
+        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
+        \\"@value\\": v,
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#height\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
+      array.push(
+    {
+        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
+        \\"@value\\": v,
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#width\\"] = array;
+    
+    array = [];
+    for (const v of this.#_gCVTegXxWWCw6wWRxa1QF65zusg) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Link ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preview\\"] = array;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Link\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    return await jsonld.compact(
+      values,
+      \\"https://www.w3.org/ns/activitystreams\\",
+      { documentLoader: options.contextLoader },
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Link> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Hashtag\\")) {
+      delete values[\\"@type\\"];
+      return await Hashtag.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Mention\\")) {
+      delete values[\\"@type\\"];
+      return await Mention.fromJsonLd(values, options);
+    }
+    
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Link\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = new this(
+      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
+      options,
+    );
+    const _pVjLsybKQdmkjuU7MHjiVmNnuj7: URL[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#href\\"] ?? []) {
+      if (v == null) continue;
+    _pVjLsybKQdmkjuU7MHjiVmNnuj7.push(new URL(v[\\"@id\\"]))
+    }
+    instance.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = _pVjLsybKQdmkjuU7MHjiVmNnuj7;
+    const _2a1c5GkfkQsnyyLybF8UXBQfFuHZ: string[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#rel\\"] ?? []) {
+      if (v == null) continue;
+    _2a1c5GkfkQsnyyLybF8UXBQfFuHZ.push(v[\\"@value\\"])
+    }
+    instance.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = _2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
+    const _3BLrzmscsjHCw8TF5BHRW9WkPnX8: string[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] ?? []) {
+      if (v == null) continue;
+    _3BLrzmscsjHCw8TF5BHRW9WkPnX8.push(v[\\"@value\\"])
+    }
+    instance.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8 = _3BLrzmscsjHCw8TF5BHRW9WkPnX8;
+    const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#name\\"] ?? []) {
+      if (v == null) continue;
+    
+      const decoded =
+      typeof v === \\"object\\" && \\"@value\\" in v
+        && typeof v[\\"@value\\"] === \\"string\\" && !(\\"@language\\" in v) ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@language\\" in v && \\"@value\\" in v
+        && typeof v[\\"@language\\"] === \\"string\\"
+        && typeof v[\\"@value\\"] === \\"string\\" ? new LanguageString(v[\\"@value\\"], v[\\"@language\\"]) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.push(decoded);
+      
+    }
+    instance.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+    const _f57HKWCp1YRBbTJE8PF12RbDJGf: LanguageTag[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#hreflang\\"] ?? []) {
+      if (v == null) continue;
+    _f57HKWCp1YRBbTJE8PF12RbDJGf.push(parseLanguageTag(v[\\"@value\\"]))
+    }
+    instance.#_f57HKWCp1YRBbTJE8PF12RbDJGf = _f57HKWCp1YRBbTJE8PF12RbDJGf;
+    const _2cGKFeFJMmiNpGZFEF75mCwFQsKb: number[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#height\\"] ?? []) {
+      if (v == null) continue;
+    _2cGKFeFJMmiNpGZFEF75mCwFQsKb.push(v[\\"@value\\"])
+    }
+    instance.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = _2cGKFeFJMmiNpGZFEF75mCwFQsKb;
+    const _2e9AP7WdHBJYAgXG6GEyq7nSkNMe: number[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#width\\"] ?? []) {
+      if (v == null) continue;
+    _2e9AP7WdHBJYAgXG6GEyq7nSkNMe.push(v[\\"@value\\"])
+    }
+    instance.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = _2e9AP7WdHBJYAgXG6GEyq7nSkNMe;
+    const _gCVTegXxWWCw6wWRxa1QF65zusg: (Link | Object | URL)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#preview\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _gCVTegXxWWCw6wWRxa1QF65zusg.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+            t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _gCVTegXxWWCw6wWRxa1QF65zusg.push(decoded);
+      
+    }
+    instance.#_gCVTegXxWWCw6wWRxa1QF65zusg = _gCVTegXxWWCw6wWRxa1QF65zusg;
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  
+    const proxy: Record<string, unknown> = {};
+    if (this.id != null) {
+      proxy.id = {
+        [Symbol.for(\\"Deno.customInspect\\")]: (
+          inspect: typeof Deno.inspect,
+          options: Deno.InspectOptions,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+      };
+    }
+    
+      const _pVjLsybKQdmkjuU7MHjiVmNnuj7 = this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_pVjLsybKQdmkjuU7MHjiVmNnuj7.length == 1) {
+        proxy.href = _pVjLsybKQdmkjuU7MHjiVmNnuj7[0];
+      }
+      
+      const _2a1c5GkfkQsnyyLybF8UXBQfFuHZ = this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length == 1) {
+        proxy.rel = _2a1c5GkfkQsnyyLybF8UXBQfFuHZ[0];
+      }
+      
+      if (_2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length > 1
+          || !(\\"rel\\" in proxy)
+          && _2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length > 0) {
+        proxy.rels = _2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
+      }
+      
+      const _3BLrzmscsjHCw8TF5BHRW9WkPnX8 = this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3BLrzmscsjHCw8TF5BHRW9WkPnX8.length == 1) {
+        proxy.mediaType = _3BLrzmscsjHCw8TF5BHRW9WkPnX8[0];
+      }
+      
+      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length == 1) {
+        proxy.name = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
+      }
+      
+      if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length > 1
+          || !(\\"name\\" in proxy)
+          && _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length > 0) {
+        proxy.names = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+      }
+      
+      const _f57HKWCp1YRBbTJE8PF12RbDJGf = this.#_f57HKWCp1YRBbTJE8PF12RbDJGf
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_f57HKWCp1YRBbTJE8PF12RbDJGf.length == 1) {
+        proxy.language = _f57HKWCp1YRBbTJE8PF12RbDJGf[0];
+      }
+      
+      const _2cGKFeFJMmiNpGZFEF75mCwFQsKb = this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2cGKFeFJMmiNpGZFEF75mCwFQsKb.length == 1) {
+        proxy.height = _2cGKFeFJMmiNpGZFEF75mCwFQsKb[0];
+      }
+      
+      const _2e9AP7WdHBJYAgXG6GEyq7nSkNMe = this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2e9AP7WdHBJYAgXG6GEyq7nSkNMe.length == 1) {
+        proxy.width = _2e9AP7WdHBJYAgXG6GEyq7nSkNMe[0];
+      }
+      
+      const _gCVTegXxWWCw6wWRxa1QF65zusg = this.#_gCVTegXxWWCw6wWRxa1QF65zusg
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_gCVTegXxWWCw6wWRxa1QF65zusg.length > 1
+          || !(\\"preview\\" in proxy)
+          && _gCVTegXxWWCw6wWRxa1QF65zusg.length > 0) {
+        proxy.previews = _gCVTegXxWWCw6wWRxa1QF65zusg;
+      }
+      
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Link \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Link \\" + inspect(proxy, options);
+  }
+  }
+
+/** A specialized {@link Link} that represents an #hashtag.
+ * 
+ * See also <https://swicg.github.io/miscellany/#Hashtag>.
+ * 
+ */
+export class Hashtag extends Link {
+
+    /**
+     * The type URI of {@link Hashtag}: \`https://www.w3.org/ns/activitystreams#Hashtag\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Hashtag\\");
+    }
+  
+  /**
+   * Constructs a new instance of Hashtag with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+href?: URL | null;rel?: string | null;
+rels?: string[];mediaType?: string | null;name?: string | LanguageString | null;
+names?: (string | LanguageString)[];language?: LanguageTag | null;height?: number | null;width?: number | null;previews?: (Link | Object | URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+href?: URL | null;rel?: string | null;
+rels?: string[];mediaType?: string | null;name?: string | LanguageString | null;
+names?: (string | LanguageString)[];language?: LanguageTag | null;height?: number | null;width?: number | null;previews?: (Link | Object | URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Hashtag {
+  const clone = super.clone(values, options) as unknown as Hashtag;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<string, unknown[] | string>;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Hashtag\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    return await jsonld.compact(
+      values,
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"Hashtag\\":\\"as:Hashtag\\"}],
+      { documentLoader: options.contextLoader },
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Hashtag> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Hashtag\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof Hashtag)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Hashtag \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Hashtag \\" + inspect(proxy, options);
+  }
+  }
+
 /** An image document of any kind.
  */
 export class Image extends Document {
@@ -13851,827 +14847,6 @@ objects?: (Object | URL)[];}
   }
   }
 
-/** A Link is an indirect, qualified reference to a resource identified by a URL.
- * The fundamental model for links is established by RFC 5988. Many of the
- * properties defined by the Activity Vocabulary allow values that are either
- * instances of {@link Object} or {@link Link}. When a {@link Link} is used,
- * it establishes a qualified relation connecting the subject (the containing
- * object) to the resource identified by the \`href\`. Properties of
- * the {@link Link} are properties of the reference as opposed to properties of
- * the resource.
- * 
- */
-export class Link {
-
-    readonly #documentLoader?: DocumentLoader;
-    readonly #contextLoader?: DocumentLoader;
-    readonly id: URL | null;
-
-    protected get _documentLoader(): DocumentLoader | undefined {
-      return this.#documentLoader;
-    }
-
-    protected get _contextLoader(): DocumentLoader | undefined {
-      return this.#contextLoader;
-    }
-    
-    /**
-     * The type URI of {@link Link}: \`https://www.w3.org/ns/activitystreams#Link\`.
-     */
-    static get typeId(): URL {
-      return new URL(\\"https://www.w3.org/ns/activitystreams#Link\\");
-    }
-  #_pVjLsybKQdmkjuU7MHjiVmNnuj7: URL[] = [];
-#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ: string[] = [];
-#_3BLrzmscsjHCw8TF5BHRW9WkPnX8: string[] = [];
-#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
-#_f57HKWCp1YRBbTJE8PF12RbDJGf: LanguageTag[] = [];
-#_2cGKFeFJMmiNpGZFEF75mCwFQsKb: number[] = [];
-#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe: number[] = [];
-#_gCVTegXxWWCw6wWRxa1QF65zusg: (Link | Object | URL)[] = [];
-
-  /**
-   * Constructs a new instance of Link with the given values.
-   * @param values The values to initialize the instance with.
-   * @param options The options to use for initialization.
-   */
-  constructor(
-    values:
-  {
-id?: URL | null;
-href?: URL | null;rel?: string | null;
-rels?: string[];mediaType?: string | null;name?: string | LanguageString | null;
-names?: (string | LanguageString)[];language?: LanguageTag | null;height?: number | null;width?: number | null;previews?: (Link | Object | URL)[];}
-,
-    {
-      documentLoader,
-      contextLoader,
-    }: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {},
-  ) {
-  
-    this.#documentLoader = documentLoader;
-    this.#contextLoader = contextLoader;
-    this.id = values.id ?? null;
-    
-        if (\\"href\\" in values &&             values.href != null) {
-          this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = [values.href];
-        }
-      
-        if (\\"rel\\" in values &&             values.rel != null) {
-          this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = [values.rel];
-        }
-      
-        if (\\"rels\\" in values &&             values.rels != null) {
-      
-          if (\\"rel\\" in values &&
-              values.rel != null) {
-            throw new TypeError(
-              \\"Cannot initialize both rel and \\" +
-                \\"rels at the same time.\\",
-            );
-          }
-        
-          this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = values.rels;
-        }
-      
-        if (\\"mediaType\\" in values &&             values.mediaType != null) {
-          this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8 = [values.mediaType];
-        }
-      
-        if (\\"name\\" in values &&             values.name != null) {
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
-        }
-      
-        if (\\"names\\" in values &&             values.names != null) {
-      
-          if (\\"name\\" in values &&
-              values.name != null) {
-            throw new TypeError(
-              \\"Cannot initialize both name and \\" +
-                \\"names at the same time.\\",
-            );
-          }
-        
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = values.names;
-        }
-      
-        if (\\"language\\" in values &&             values.language != null) {
-          this.#_f57HKWCp1YRBbTJE8PF12RbDJGf = [values.language];
-        }
-      
-        if (\\"height\\" in values &&             values.height != null) {
-          this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = [values.height];
-        }
-      
-        if (\\"width\\" in values &&             values.width != null) {
-          this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = [values.width];
-        }
-      
-        if (\\"previews\\" in values &&             values.previews != null) {
-      
-          this.#_gCVTegXxWWCw6wWRxa1QF65zusg = values.previews;
-        }
-      }
-
-  /**
-   * Clones this instance, optionally updating it with the given values.
-   * @param values The values to update the clone with.
-   * @options The options to use for cloning.
-   * @returns The cloned instance.
-   */
-  clone(
-    values:
-  {
-id?: URL | null;
-href?: URL | null;rel?: string | null;
-rels?: string[];mediaType?: string | null;name?: string | LanguageString | null;
-names?: (string | LanguageString)[];language?: LanguageTag | null;height?: number | null;width?: number | null;previews?: (Link | Object | URL)[];}
-
-    = {},
-    options: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {}
-  ): Link {
-  
-    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: Link = new this.constructor({ id: values.id }, options);
-    clone.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7;
-        if (\\"href\\" in values &&             values.href != null) {
-          clone.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = [values.href];
-        }
-      clone.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
-        if (\\"rel\\" in values &&             values.rel != null) {
-          clone.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = [values.rel];
-        }
-      
-        if (\\"rels\\" in values &&             values.rels != null) {
-      
-          if (\\"rel\\" in values &&
-              values.rel != null) {
-            throw new TypeError(
-              \\"Cannot update both rel and \\" +
-                \\"rels at the same time.\\",
-            );
-          }
-        
-          clone.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = values.rels;
-        }
-      clone.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8 = this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8;
-        if (\\"mediaType\\" in values &&             values.mediaType != null) {
-          clone.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8 = [values.mediaType];
-        }
-      clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
-        if (\\"name\\" in values &&             values.name != null) {
-          clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
-        }
-      
-        if (\\"names\\" in values &&             values.names != null) {
-      
-          if (\\"name\\" in values &&
-              values.name != null) {
-            throw new TypeError(
-              \\"Cannot update both name and \\" +
-                \\"names at the same time.\\",
-            );
-          }
-        
-          clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = values.names;
-        }
-      clone.#_f57HKWCp1YRBbTJE8PF12RbDJGf = this.#_f57HKWCp1YRBbTJE8PF12RbDJGf;
-        if (\\"language\\" in values &&             values.language != null) {
-          clone.#_f57HKWCp1YRBbTJE8PF12RbDJGf = [values.language];
-        }
-      clone.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb;
-        if (\\"height\\" in values &&             values.height != null) {
-          clone.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = [values.height];
-        }
-      clone.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe;
-        if (\\"width\\" in values &&             values.width != null) {
-          clone.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = [values.width];
-        }
-      clone.#_gCVTegXxWWCw6wWRxa1QF65zusg = this.#_gCVTegXxWWCw6wWRxa1QF65zusg;
-        if (\\"previews\\" in values &&             values.previews != null) {
-      
-          clone.#_gCVTegXxWWCw6wWRxa1QF65zusg = values.previews;
-        }
-      
-    return clone;
-  }
-  
-/** The target resource pointed to by a {@link Link}.
- */
-get href(): (URL | null) {
-        if (this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7.length < 1) return null;
-        return this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7[0];
-      }
-      
-/** A link relation associated with a {@link Link}. The value MUST conform to
- * both the HTML5 and RFC 5988 \\"link relation\\" definitions.
- * 
- * In the HTML5, any string not containing the space (U+0020), tab (U+0009),
- * LF (U+000A), FF (U+000C), CR (U+000D) or comma (U+002C) characters can
- * be used as a valid link relation.
- * 
- */
-get rel(): (string | null) {
-        if (this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length < 1) return null;
-        return this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ[0];
-      }
-      
-/** A link relation associated with a {@link Link}. The value MUST conform to
- * both the HTML5 and RFC 5988 \\"link relation\\" definitions.
- * 
- * In the HTML5, any string not containing the space (U+0020), tab (U+0009),
- * LF (U+000A), FF (U+000C), CR (U+000D) or comma (U+002C) characters can
- * be used as a valid link relation.
- * 
- */
-get rels(): string[] {
-        return this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
-      }
-      
-/** When used on a {@link Link}, identifies the MIME media type of the
- * referenced resource.
- * 
- */
-get mediaType(): (string | null) {
-        if (this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8.length < 1) return null;
-        return this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8[0];
-      }
-      
-/** A simple, human-readable, plain-text name for the object. HTML markup MUST
- * NOT be included. The name MAY be expressed using multiple language-tagged
- * values.
- * 
- */
-get name(): (string | LanguageString | null) {
-        if (this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length < 1) return null;
-        return this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
-      }
-      
-/** A simple, human-readable, plain-text name for the object. HTML markup MUST
- * NOT be included. The name MAY be expressed using multiple language-tagged
- * values.
- * 
- */
-get names(): (string | LanguageString)[] {
-        return this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
-      }
-      
-/** Hints as to the language used by the target resource.
- * Value MUST be a BCP 47 Language-Tag.
- * 
- */
-get language(): (LanguageTag | null) {
-        if (this.#_f57HKWCp1YRBbTJE8PF12RbDJGf.length < 1) return null;
-        return this.#_f57HKWCp1YRBbTJE8PF12RbDJGf[0];
-      }
-      
-/** On a {@link Link}, specifies a hint as to the rendering height in
- * device-independent pixels of the linked resource. 
- * 
- */
-get height(): (number | null) {
-        if (this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb.length < 1) return null;
-        return this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb[0];
-      }
-      
-/** On a {@link Link}, specifies a hint as to the rendering width in
- * device-independent pixels of the linked resource.
- * 
- */
-get width(): (number | null) {
-        if (this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe.length < 1) return null;
-        return this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe[0];
-      }
-      
-    async #fetchPreview(
-      url: URL,
-      options: {
-        documentLoader?: DocumentLoader,
-        contextLoader?: DocumentLoader,
-      } = {}
-    ): Promise<Link | Object> {
-      const documentLoader =
-        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
-      const contextLoader =
-        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
-    
-      try {
-        return await Link.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
-      try {
-        return await Object.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
-      throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
-    }
-    
-      /**
-       * Similar to
-       * {@link Link.getPreviews},
-       * but returns their \`@id\`s instead of the objects themselves.
-       */
-      get previewIds(): URL[] {
-        return this.#_gCVTegXxWWCw6wWRxa1QF65zusg.map((v) =>
-          v instanceof URL ? v : v.id!
-        ).filter(id => id !== null);
-      }
-      
-/** Identifies an entity that provides a preview of this object.
- */
-
-      async* getPreviews(
-        options: {
-          documentLoader?: DocumentLoader,
-          contextLoader?: DocumentLoader,
-        } = {}
-      ): AsyncIterable<Link | Object> {
-        const vs = this.#_gCVTegXxWWCw6wWRxa1QF65zusg;
-        for (let i = 0; i < vs.length; i++) {
-          const v = vs[i];
-          if (v instanceof URL) {
-            const fetched =
-              await this.#fetchPreview(
-                v, options);
-            vs[i] = fetched;
-            yield fetched;
-            continue;
-          }
-          yield v;
-        }
-      }
-      
-  /**
-   * Converts this object to a JSON-LD structure.
-   * @returns The JSON-LD representation of this object.
-   */
-  async toJsonLd(options: {
-    expand?: boolean,
-    contextLoader?: DocumentLoader,
-  } = {}): Promise<unknown> {
-    options = {
-      ...options,
-      contextLoader: options.contextLoader ?? fetchDocumentLoader,
-    };
-    // deno-lint-ignore no-unused-vars prefer-const
-    let array: unknown[];
-  const values: Record<string, unknown[] | string> = {};
-    array = [];
-    for (const v of this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7) {
-      array.push(
-    { \\"@id\\": v.href }
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#href\\"] = array;
-    
-    array = [];
-    for (const v of this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ) {
-      array.push(
-    { \\"@value\\": v }
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#rel\\"] = array;
-    
-    array = [];
-    for (const v of this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8) {
-      array.push(
-    { \\"@value\\": v }
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] = array;
-    
-    array = [];
-    for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
-      array.push(
-    typeof v === \\"string\\" ? { \\"@value\\": v } : {
-        \\"@value\\": v.toString(),
-        \\"@language\\": v.language.compact(),
-      }
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
-    
-    array = [];
-    for (const v of this.#_f57HKWCp1YRBbTJE8PF12RbDJGf) {
-      array.push(
-    { \\"@value\\": v.compact() }
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#hreflang\\"] = array;
-    
-    array = [];
-    for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
-      array.push(
-    {
-        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
-        \\"@value\\": v,
-      }
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#height\\"] = array;
-    
-    array = [];
-    for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
-      array.push(
-    {
-        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
-        \\"@value\\": v,
-      }
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#width\\"] = array;
-    
-    array = [];
-    for (const v of this.#_gCVTegXxWWCw6wWRxa1QF65zusg) {
-      array.push(
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Link ? await v.toJsonLd(options) : await v.toJsonLd(options)
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preview\\"] = array;
-    
-    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Link\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
-    if (options.expand) {
-      return await jsonld.expand(
-        values,
-        { documentLoader: options.contextLoader },
-      );
-    }
-    return await jsonld.compact(
-      values,
-      \\"https://www.w3.org/ns/activitystreams\\",
-      { documentLoader: options.contextLoader },
-    );
-  }
-  
-  /**
-   * Converts a JSON-LD structure to an object of this type.
-   * @param json The JSON-LD structure to convert.
-   * @returns The object of this type.
-   * @throws {TypeError} If the given \`json\` is invalid.
-   */
-  static async fromJsonLd(
-    json: unknown,
-    options: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {},
-  ): Promise<Link> {
-    if (typeof json === \\"undefined\\") {
-      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
-    }
-    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
-    options = {
-      ...options,
-      documentLoader: options.documentLoader ?? fetchDocumentLoader,
-      contextLoader: options.contextLoader ?? fetchDocumentLoader,
-    };
-    // deno-lint-ignore no-explicit-any
-    let values: Record<string, any[]> & { \\"@id\\"?: string };
-    if (globalThis.Object.keys(json).length == 0) {
-      values = {};
-    } else {
-      const expanded = await jsonld.expand(json, {
-        documentLoader: options.contextLoader,
-        keepFreeFloatingNodes: true,
-      });
-      values =
-        // deno-lint-ignore no-explicit-any
-        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
-    }
-  if (\\"@type\\" in values) {
-
-    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Mention\\")) {
-      delete values[\\"@type\\"];
-      return await Mention.fromJsonLd(values, options);
-    }
-    
-    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Link\\")) {
-      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-    }
-  }
-  
-    const instance = new this(
-      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
-      options,
-    );
-    const _pVjLsybKQdmkjuU7MHjiVmNnuj7: URL[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#href\\"] ?? []) {
-      if (v == null) continue;
-    _pVjLsybKQdmkjuU7MHjiVmNnuj7.push(new URL(v[\\"@id\\"]))
-    }
-    instance.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = _pVjLsybKQdmkjuU7MHjiVmNnuj7;
-    const _2a1c5GkfkQsnyyLybF8UXBQfFuHZ: string[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#rel\\"] ?? []) {
-      if (v == null) continue;
-    _2a1c5GkfkQsnyyLybF8UXBQfFuHZ.push(v[\\"@value\\"])
-    }
-    instance.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ = _2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
-    const _3BLrzmscsjHCw8TF5BHRW9WkPnX8: string[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] ?? []) {
-      if (v == null) continue;
-    _3BLrzmscsjHCw8TF5BHRW9WkPnX8.push(v[\\"@value\\"])
-    }
-    instance.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8 = _3BLrzmscsjHCw8TF5BHRW9WkPnX8;
-    const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#name\\"] ?? []) {
-      if (v == null) continue;
-    
-      const decoded =
-      typeof v === \\"object\\" && \\"@value\\" in v
-        && typeof v[\\"@value\\"] === \\"string\\" && !(\\"@language\\" in v) ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@language\\" in v && \\"@value\\" in v
-        && typeof v[\\"@language\\"] === \\"string\\"
-        && typeof v[\\"@value\\"] === \\"string\\" ? new LanguageString(v[\\"@value\\"], v[\\"@language\\"]) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.push(decoded);
-      
-    }
-    instance.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
-    const _f57HKWCp1YRBbTJE8PF12RbDJGf: LanguageTag[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#hreflang\\"] ?? []) {
-      if (v == null) continue;
-    _f57HKWCp1YRBbTJE8PF12RbDJGf.push(parseLanguageTag(v[\\"@value\\"]))
-    }
-    instance.#_f57HKWCp1YRBbTJE8PF12RbDJGf = _f57HKWCp1YRBbTJE8PF12RbDJGf;
-    const _2cGKFeFJMmiNpGZFEF75mCwFQsKb: number[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#height\\"] ?? []) {
-      if (v == null) continue;
-    _2cGKFeFJMmiNpGZFEF75mCwFQsKb.push(v[\\"@value\\"])
-    }
-    instance.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb = _2cGKFeFJMmiNpGZFEF75mCwFQsKb;
-    const _2e9AP7WdHBJYAgXG6GEyq7nSkNMe: number[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#width\\"] ?? []) {
-      if (v == null) continue;
-    _2e9AP7WdHBJYAgXG6GEyq7nSkNMe.push(v[\\"@value\\"])
-    }
-    instance.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe = _2e9AP7WdHBJYAgXG6GEyq7nSkNMe;
-    const _gCVTegXxWWCw6wWRxa1QF65zusg: (Link | Object | URL)[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#preview\\"] ?? []) {
-      if (v == null) continue;
-    
-      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
-          && globalThis.Object.keys(v).length === 1) {
-        _gCVTegXxWWCw6wWRxa1QF65zusg.push(new URL(v[\\"@id\\"]));
-        continue;
-      }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _gCVTegXxWWCw6wWRxa1QF65zusg.push(decoded);
-      
-    }
-    instance.#_gCVTegXxWWCw6wWRxa1QF65zusg = _gCVTegXxWWCw6wWRxa1QF65zusg;
-    
-    return instance;
-  }
-  
-  protected _getCustomInspectProxy(): Record<string, unknown> {
-  
-    const proxy: Record<string, unknown> = {};
-    if (this.id != null) {
-      proxy.id = {
-        [Symbol.for(\\"Deno.customInspect\\")]: (
-          inspect: typeof Deno.inspect,
-          options: Deno.InspectOptions,
-        ): string => \\"URL \\" + inspect(this.id!.href, options),
-        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-          _depth: number,
-          options: unknown,
-          inspect: (value: unknown, options: unknown) => string,
-        ): string => \\"URL \\" + inspect(this.id!.href, options),
-      };
-    }
-    
-      const _pVjLsybKQdmkjuU7MHjiVmNnuj7 = this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_pVjLsybKQdmkjuU7MHjiVmNnuj7.length == 1) {
-        proxy.href = _pVjLsybKQdmkjuU7MHjiVmNnuj7[0];
-      }
-      
-      const _2a1c5GkfkQsnyyLybF8UXBQfFuHZ = this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length == 1) {
-        proxy.rel = _2a1c5GkfkQsnyyLybF8UXBQfFuHZ[0];
-      }
-      
-      if (_2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length > 1
-          || !(\\"rel\\" in proxy)
-          && _2a1c5GkfkQsnyyLybF8UXBQfFuHZ.length > 0) {
-        proxy.rels = _2a1c5GkfkQsnyyLybF8UXBQfFuHZ;
-      }
-      
-      const _3BLrzmscsjHCw8TF5BHRW9WkPnX8 = this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_3BLrzmscsjHCw8TF5BHRW9WkPnX8.length == 1) {
-        proxy.mediaType = _3BLrzmscsjHCw8TF5BHRW9WkPnX8[0];
-      }
-      
-      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length == 1) {
-        proxy.name = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
-      }
-      
-      if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length > 1
-          || !(\\"name\\" in proxy)
-          && _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length > 0) {
-        proxy.names = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
-      }
-      
-      const _f57HKWCp1YRBbTJE8PF12RbDJGf = this.#_f57HKWCp1YRBbTJE8PF12RbDJGf
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_f57HKWCp1YRBbTJE8PF12RbDJGf.length == 1) {
-        proxy.language = _f57HKWCp1YRBbTJE8PF12RbDJGf[0];
-      }
-      
-      const _2cGKFeFJMmiNpGZFEF75mCwFQsKb = this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_2cGKFeFJMmiNpGZFEF75mCwFQsKb.length == 1) {
-        proxy.height = _2cGKFeFJMmiNpGZFEF75mCwFQsKb[0];
-      }
-      
-      const _2e9AP7WdHBJYAgXG6GEyq7nSkNMe = this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_2e9AP7WdHBJYAgXG6GEyq7nSkNMe.length == 1) {
-        proxy.width = _2e9AP7WdHBJYAgXG6GEyq7nSkNMe[0];
-      }
-      
-      const _gCVTegXxWWCw6wWRxa1QF65zusg = this.#_gCVTegXxWWCw6wWRxa1QF65zusg
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_gCVTegXxWWCw6wWRxa1QF65zusg.length > 1
-          || !(\\"preview\\" in proxy)
-          && _gCVTegXxWWCw6wWRxa1QF65zusg.length > 0) {
-        proxy.previews = _gCVTegXxWWCw6wWRxa1QF65zusg;
-      }
-      
-    return proxy;
-  }
-
-  [Symbol.for(\\"Deno.customInspect\\")](
-    inspect: typeof Deno.inspect,
-    options: Deno.InspectOptions,
-  ): string {
-    const proxy = this._getCustomInspectProxy();
-    return \\"Link \\" + inspect(proxy, options);
-  }
-
-  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
-    _depth: number,
-    options: unknown,
-    inspect: (value: unknown, options: unknown) => string,
-  ): string {
-    const proxy = this._getCustomInspectProxy();
-    return \\"Link \\" + inspect(proxy, options);
-  }
-  }
-
 /** A specialized {@link Link} that represents an @mention.
  */
 export class Mention extends Link {
@@ -14956,7 +15131,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -22438,7 +22613,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }

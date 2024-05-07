@@ -394,7 +394,13 @@ Deno.test("handleObject()", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      {
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+      },
+    ],
     id: "https://example.com/users/someone/notes/123",
     summary: "Hello, world!",
     type: "Note",
@@ -480,7 +486,13 @@ Deno.test("handleObject()", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      {
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+      },
+    ],
     id: "https://example.com/users/someone/notes/123",
     summary: "Hello, world!",
     type: "Note",
@@ -850,7 +862,13 @@ Deno.test("respondWithObject()", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      {
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+      },
+    ],
     id: "https://example.com/notes/1",
     type: "Note",
     content: "Hello, world!",
@@ -876,7 +894,13 @@ Deno.test("respondWithObjectIfAcceptable", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      {
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+      },
+    ],
     id: "https://example.com/notes/1",
     type: "Note",
     content: "Hello, world!",

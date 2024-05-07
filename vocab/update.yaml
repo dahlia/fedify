@@ -9,5 +9,8 @@ description: |
   set of modifications made to `object`.
 
   The `target` and `origin` typically have no defined meaning.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- sensitive: "as:sensitive"
+  Hashtag: "as:Hashtag"
 properties: []

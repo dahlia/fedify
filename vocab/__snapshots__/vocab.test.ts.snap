@@ -2033,6 +2033,64 @@ snapshot[`Deno.inspect(Group) [auto] 3`] = `
 }'
 `;
 
+snapshot[`Deno.inspect(Hashtag) [auto] 1`] = `
+'Hashtag {
+  id: URL "https://example.com/",
+  href: URL "https://example.com/",
+  rel: "hello",
+  mediaType: "hello",
+  names: [ "hello", <en> "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ Link {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(Hashtag) [auto] 2`] = `
+'Hashtag {
+  href: URL "https://example.com/",
+  rel: "hello",
+  mediaType: "hello",
+  names: [ "hello", <en> "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ URL "https://example.com/" ]
+}'
+`;
+
+snapshot[`Deno.inspect(Hashtag) [auto] 3`] = `
+'Hashtag {
+  href: URL "https://example.com/",
+  rels: [ "hello", "hello" ],
+  mediaType: "hello",
+  names: [ "hello", "hello" ],
+  language: LanguageTag {
+    core: [ "en", undefined, undefined, undefined ],
+    _extensions: {},
+    _privateUse: "",
+    _extlangs: [],
+    _compact: "en"
+  },
+  height: 123,
+  width: 123,
+  previews: [ Link {}, Link {} ]
+}'
+`;
+
 snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
 'Ignore {
   id: URL "https://example.com/",

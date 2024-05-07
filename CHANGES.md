@@ -8,11 +8,15 @@ Version 0.9.0
 
 To be released.
 
+ -  Added `Hashtag` class to Activity Vocabulary API.  [[#48]]
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
      -  `["fedify", "federation", "actor"]`
      -  `["fedify", "federation", "http"]`
+
+[#48]: https://github.com/dahlia/fedify/issues/48
 
 
 Version 0.8.0

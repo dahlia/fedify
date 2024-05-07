@@ -6,5 +6,8 @@ entity: true
 description: |
   Represents a short written work typically less than a single paragraph in
   length.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- sensitive: "as:sensitive"
+  Hashtag: "as:Hashtag"
 properties: []

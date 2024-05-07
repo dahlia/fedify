@@ -4,5 +4,8 @@ uri: "https://www.w3.org/ns/activitystreams#Create"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true
 description: Indicates that the `actor` has created the `object`.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- sensitive: "as:sensitive"
+  Hashtag: "as:Hashtag"
 properties: []

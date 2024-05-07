@@ -7,5 +7,8 @@ description: |
   Indicates that the `actor` is calling the `target`'s attention the `object`.
 
   The `origin` typically has no defined meaning.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- sensitive: "as:sensitive"
+  Hashtag: "as:Hashtag"
 properties: []
