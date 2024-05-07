@@ -7,7 +7,7 @@
     "@cross/dir": "jsr:@cross/dir@^1.1.0",
     "@david/dax": "jsr:@david/dax@^0.40.1",
     "@hongminhee/localtunnel": "jsr:@hongminhee/localtunnel@^0.2.0",
-    "@logtape/logtape": "jsr:@logtape/logtape@^0.2.2",
+    "@logtape/logtape": "jsr:@logtape/logtape@^0.4.0",
     "@poppanator/http-constants": "npm:@poppanator/http-constants@^1.1.1",
     "@std/fs": "jsr:@std/fs@^0.220.1",
     "@std/path": "jsr:@std/path@^0.220.1",
