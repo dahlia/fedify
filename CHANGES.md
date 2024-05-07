@@ -22,7 +22,7 @@ Released on May 6, 2024.
  -  The CLI toolchain for testing and debugging is now available on JSR:
     [@fedify/cli].  You can install it with
     `deno install -A --unstable-fs --unstable-kv --unstable-temporal -n fedify
-    jsr:@fedify/cli`, or download a standalone exectuable from the [releases]
+    jsr:@fedify/cli`, or download a standalone executable from the [releases]
     page.
 
      -  Added `fedify` command.
