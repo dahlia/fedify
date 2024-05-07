@@ -328,11 +328,17 @@ federation.setNodeInfoDispatcher("/nodeinfo/2.1", async (_ctx) => {
       users: {
         total: 1,
         activeMonth: recentPost == null ||
-            recentPost.published < now.subtract({ hours: 24 * 30 })
+            Temporal.Instant.compare(
+                recentPost.published,
+                now.subtract({ hours: 24 * 30 }),
+              ) < 0
           ? 0
           : 1,
         activeHalfyear: recentPost == null ||
-            recentPost.published < now.subtract({ hours: 24 * 30 * 6 })
+            Temporal.Instant.compare(
+                recentPost.published,
+                now.subtract({ hours: 24 * 30 * 6 }),
+              ) < 0
           ? 0
           : 1,
       },
