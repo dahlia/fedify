@@ -397,8 +397,10 @@ Deno.test("handleObject()", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       {
+        Emoji: "toot:Emoji",
         Hashtag: "as:Hashtag",
         sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
       },
     ],
     id: "https://example.com/users/someone/notes/123",
@@ -489,8 +491,10 @@ Deno.test("handleObject()", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       {
+        Emoji: "toot:Emoji",
         Hashtag: "as:Hashtag",
         sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
       },
     ],
     id: "https://example.com/users/someone/notes/123",
@@ -865,8 +869,10 @@ Deno.test("respondWithObject()", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       {
+        Emoji: "toot:Emoji",
         Hashtag: "as:Hashtag",
         sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
       },
     ],
     id: "https://example.com/notes/1",
@@ -897,8 +903,10 @@ Deno.test("respondWithObjectIfAcceptable", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       {
+        Emoji: "toot:Emoji",
         Hashtag: "as:Hashtag",
         sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
       },
     ],
     id: "https://example.com/notes/1",

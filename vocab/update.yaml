@@ -11,6 +11,8 @@ description: |
   The `target` and `origin` typically have no defined meaning.
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
-- sensitive: "as:sensitive"
+- toot: "http://joinmastodon.org/ns#"
+  sensitive: "as:sensitive"
+  Emoji: "toot:Emoji"
   Hashtag: "as:Hashtag"
 properties: []

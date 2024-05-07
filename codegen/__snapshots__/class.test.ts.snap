@@ -12,725 +12,6 @@ import { exportSpki, importSpki } from \\"../runtime/key.ts\\";
 import { LanguageString } from \\"../runtime/langstr.ts\\";
 
 
-/** A pair of property name and value.
- */
-export class PropertyValue {
-
-    readonly #documentLoader?: DocumentLoader;
-    readonly #contextLoader?: DocumentLoader;
-    readonly id: URL | null;
-
-    protected get _documentLoader(): DocumentLoader | undefined {
-      return this.#documentLoader;
-    }
-
-    protected get _contextLoader(): DocumentLoader | undefined {
-      return this.#contextLoader;
-    }
-    
-    /**
-     * The type URI of {@link PropertyValue}: \`http://schema.org#PropertyValue\`.
-     */
-    static get typeId(): URL {
-      return new URL(\\"http://schema.org#PropertyValue\\");
-    }
-  #_4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
-#_2cSy2magg4iZ7zLaG8U7DiJMoCkx: (string | LanguageString)[] = [];
-
-  /**
-   * Constructs a new instance of PropertyValue with the given values.
-   * @param values The values to initialize the instance with.
-   * @param options The options to use for initialization.
-   */
-  constructor(
-    values:
-  {
-id?: URL | null;
-name?: string | LanguageString | null;value?: string | LanguageString | null;}
-,
-    {
-      documentLoader,
-      contextLoader,
-    }: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {},
-  ) {
-  
-    this.#documentLoader = documentLoader;
-    this.#contextLoader = contextLoader;
-    this.id = values.id ?? null;
-    
-        if (\\"name\\" in values &&             values.name != null) {
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
-        }
-      
-        if (\\"value\\" in values &&             values.value != null) {
-          this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = [values.value];
-        }
-      }
-
-  /**
-   * Clones this instance, optionally updating it with the given values.
-   * @param values The values to update the clone with.
-   * @options The options to use for cloning.
-   * @returns The cloned instance.
-   */
-  clone(
-    values:
-  {
-id?: URL | null;
-name?: string | LanguageString | null;value?: string | LanguageString | null;}
-
-    = {},
-    options: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {}
-  ): PropertyValue {
-  
-    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: PropertyValue = new this.constructor({ id: values.id }, options);
-    clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
-        if (\\"name\\" in values &&             values.name != null) {
-          clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
-        }
-      clone.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx;
-        if (\\"value\\" in values &&             values.value != null) {
-          clone.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = [values.value];
-        }
-      
-    return clone;
-  }
-  
-/** The name of a property.
- */
-get name(): (string | LanguageString | null) {
-        if (this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length < 1) return null;
-        return this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
-      }
-      
-/** The value of a property.
- */
-get value(): (string | LanguageString | null) {
-        if (this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx.length < 1) return null;
-        return this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx[0];
-      }
-      
-  /**
-   * Converts this object to a JSON-LD structure.
-   * @returns The JSON-LD representation of this object.
-   */
-  async toJsonLd(options: {
-    expand?: boolean,
-    contextLoader?: DocumentLoader,
-  } = {}): Promise<unknown> {
-    options = {
-      ...options,
-      contextLoader: options.contextLoader ?? fetchDocumentLoader,
-    };
-    // deno-lint-ignore no-unused-vars prefer-const
-    let array: unknown[];
-  const values: Record<string, unknown[] | string> = {};
-    array = [];
-    for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
-      array.push(
-    typeof v === \\"string\\" ? { \\"@value\\": v } : {
-        \\"@value\\": v.toString(),
-        \\"@language\\": v.language.compact(),
-      }
-      );
-    }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
-    
-    array = [];
-    for (const v of this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx) {
-      array.push(
-    typeof v === \\"string\\" ? { \\"@value\\": v } : {
-        \\"@value\\": v.toString(),
-        \\"@language\\": v.language.compact(),
-      }
-      );
-    }
-    if (array.length > 0) values[\\"http://schema.org#value\\"] = array;
-    
-    values[\\"@type\\"] = [\\"http://schema.org#PropertyValue\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
-    if (options.expand) {
-      return await jsonld.expand(
-        values,
-        { documentLoader: options.contextLoader },
-      );
-    }
-    return await jsonld.compact(
-      values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
-      { documentLoader: options.contextLoader },
-    );
-  }
-  
-  /**
-   * Converts a JSON-LD structure to an object of this type.
-   * @param json The JSON-LD structure to convert.
-   * @returns The object of this type.
-   * @throws {TypeError} If the given \`json\` is invalid.
-   */
-  static async fromJsonLd(
-    json: unknown,
-    options: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {},
-  ): Promise<PropertyValue> {
-    if (typeof json === \\"undefined\\") {
-      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
-    }
-    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
-    options = {
-      ...options,
-      documentLoader: options.documentLoader ?? fetchDocumentLoader,
-      contextLoader: options.contextLoader ?? fetchDocumentLoader,
-    };
-    // deno-lint-ignore no-explicit-any
-    let values: Record<string, any[]> & { \\"@id\\"?: string };
-    if (globalThis.Object.keys(json).length == 0) {
-      values = {};
-    } else {
-      const expanded = await jsonld.expand(json, {
-        documentLoader: options.contextLoader,
-        keepFreeFloatingNodes: true,
-      });
-      values =
-        // deno-lint-ignore no-explicit-any
-        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
-    }
-  if (\\"@type\\" in values) {
-
-    if (!values[\\"@type\\"].includes(\\"http://schema.org#PropertyValue\\")) {
-      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-    }
-  }
-  
-    const instance = new this(
-      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
-      options,
-    );
-    const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
-
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#name\\"] ?? []) {
-      if (v == null) continue;
-    
-      const decoded =
-      typeof v === \\"object\\" && \\"@value\\" in v
-        && typeof v[\\"@value\\"] === \\"string\\" && !(\\"@language\\" in v) ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@language\\" in v && \\"@value\\" in v
-        && typeof v[\\"@language\\"] === \\"string\\"
-        && typeof v[\\"@value\\"] === \\"string\\" ? new LanguageString(v[\\"@value\\"], v[\\"@language\\"]) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.push(decoded);
-      
-    }
-    instance.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
-    const _2cSy2magg4iZ7zLaG8U7DiJMoCkx: (string | LanguageString)[] = [];
-
-    for (const v of values[\\"http://schema.org#value\\"] ?? []) {
-      if (v == null) continue;
-    
-      const decoded =
-      typeof v === \\"object\\" && \\"@value\\" in v
-        && typeof v[\\"@value\\"] === \\"string\\" && !(\\"@language\\" in v) ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@language\\" in v && \\"@value\\" in v
-        && typeof v[\\"@language\\"] === \\"string\\"
-        && typeof v[\\"@value\\"] === \\"string\\" ? new LanguageString(v[\\"@value\\"], v[\\"@language\\"]) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _2cSy2magg4iZ7zLaG8U7DiJMoCkx.push(decoded);
-      
-    }
-    instance.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = _2cSy2magg4iZ7zLaG8U7DiJMoCkx;
-    
-    return instance;
-  }
-  
-  protected _getCustomInspectProxy(): Record<string, unknown> {
-  
-    const proxy: Record<string, unknown> = {};
-    if (this.id != null) {
-      proxy.id = {
-        [Symbol.for(\\"Deno.customInspect\\")]: (
-          inspect: typeof Deno.inspect,
-          options: Deno.InspectOptions,
-        ): string => \\"URL \\" + inspect(this.id!.href, options),
-        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-          _depth: number,
-          options: unknown,
-          inspect: (value: unknown, options: unknown) => string,
-        ): string => \\"URL \\" + inspect(this.id!.href, options),
-      };
-    }
-    
-      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length == 1) {
-        proxy.name = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
-      }
-      
-      const _2cSy2magg4iZ7zLaG8U7DiJMoCkx = this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_2cSy2magg4iZ7zLaG8U7DiJMoCkx.length == 1) {
-        proxy.value = _2cSy2magg4iZ7zLaG8U7DiJMoCkx[0];
-      }
-      
-    return proxy;
-  }
-
-  [Symbol.for(\\"Deno.customInspect\\")](
-    inspect: typeof Deno.inspect,
-    options: Deno.InspectOptions,
-  ): string {
-    const proxy = this._getCustomInspectProxy();
-    return \\"PropertyValue \\" + inspect(proxy, options);
-  }
-
-  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
-    _depth: number,
-    options: unknown,
-    inspect: (value: unknown, options: unknown) => string,
-  ): string {
-    const proxy = this._getCustomInspectProxy();
-    return \\"PropertyValue \\" + inspect(proxy, options);
-  }
-  }
-
-/** A key owned by an actor.
- */
-export class CryptographicKey {
-
-    readonly #documentLoader?: DocumentLoader;
-    readonly #contextLoader?: DocumentLoader;
-    readonly id: URL | null;
-
-    protected get _documentLoader(): DocumentLoader | undefined {
-      return this.#documentLoader;
-    }
-
-    protected get _contextLoader(): DocumentLoader | undefined {
-      return this.#contextLoader;
-    }
-    
-    /**
-     * The type URI of {@link CryptographicKey}: \`https://w3id.org/security#Key\`.
-     */
-    static get typeId(): URL {
-      return new URL(\\"https://w3id.org/security#Key\\");
-    }
-  #_5UJq9NDh3ZHgswFwwdVxQvJxdx2: (Application | Group | Organization | Person | Service | URL)[] = [];
-#_2fE2QMDdg6KFGqa4NEC3TmjApSAD: CryptoKey[] = [];
-
-  /**
-   * Constructs a new instance of CryptographicKey with the given values.
-   * @param values The values to initialize the instance with.
-   * @param options The options to use for initialization.
-   */
-  constructor(
-    values:
-  {
-id?: URL | null;
-owner?: Application | Group | Organization | Person | Service | URL | null;publicKey?: CryptoKey | null;}
-,
-    {
-      documentLoader,
-      contextLoader,
-    }: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {},
-  ) {
-  
-    this.#documentLoader = documentLoader;
-    this.#contextLoader = contextLoader;
-    this.id = values.id ?? null;
-    
-        if (\\"owner\\" in values &&             values.owner != null) {
-          this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = [values.owner];
-        }
-      
-        if (\\"publicKey\\" in values &&             values.publicKey != null) {
-          this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = [values.publicKey];
-        }
-      }
-
-  /**
-   * Clones this instance, optionally updating it with the given values.
-   * @param values The values to update the clone with.
-   * @options The options to use for cloning.
-   * @returns The cloned instance.
-   */
-  clone(
-    values:
-  {
-id?: URL | null;
-owner?: Application | Group | Organization | Person | Service | URL | null;publicKey?: CryptoKey | null;}
-
-    = {},
-    options: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {}
-  ): CryptographicKey {
-  
-    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: CryptographicKey = new this.constructor({ id: values.id }, options);
-    clone.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2;
-        if (\\"owner\\" in values &&             values.owner != null) {
-          clone.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = [values.owner];
-        }
-      clone.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD;
-        if (\\"publicKey\\" in values &&             values.publicKey != null) {
-          clone.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = [values.publicKey];
-        }
-      
-    return clone;
-  }
-  
-    async #fetchOwner(
-      url: URL,
-      options: {
-        documentLoader?: DocumentLoader,
-        contextLoader?: DocumentLoader,
-      } = {}
-    ): Promise<Application | Group | Organization | Person | Service> {
-      const documentLoader =
-        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
-      const contextLoader =
-        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
-    
-      try {
-        return await Application.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
-      try {
-        return await Group.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
-      try {
-        return await Organization.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
-      try {
-        return await Person.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
-      try {
-        return await Service.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
-      throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].join(\\", \\"));
-    }
-    
-      /**
-       * Similar to
-       * {@link CryptographicKey.getOwner},
-       * but returns its \`@id\` URL instead of the object itself.
-       */
-      get ownerId(): URL | null {
-        if (this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2.length < 1) return null;
-        const v = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2[0];
-        if (v instanceof URL) return v;
-        return v.id;
-      }
-      
-/** An actor who owns this key.
- */
-
-      async getOwner(
-        options: {
-          documentLoader?: DocumentLoader,
-          contextLoader?: DocumentLoader,
-        } = {}
-      ): Promise<Application | Group | Organization | Person | Service | null> {
-        if (this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2.length < 1) return null;
-        const v = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2[0];
-        if (v instanceof URL) {
-          const fetched =
-            await this.#fetchOwner(v, options);
-          this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2[0] = fetched;
-          return fetched;
-        }
-        return v;
-      }
-      
-/** A PEM-encoded public key.
- */
-get publicKey(): (CryptoKey | null) {
-        if (this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD.length < 1) return null;
-        return this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD[0];
-      }
-      
-  /**
-   * Converts this object to a JSON-LD structure.
-   * @returns The JSON-LD representation of this object.
-   */
-  async toJsonLd(options: {
-    expand?: boolean,
-    contextLoader?: DocumentLoader,
-  } = {}): Promise<unknown> {
-    options = {
-      ...options,
-      contextLoader: options.contextLoader ?? fetchDocumentLoader,
-    };
-    // deno-lint-ignore no-unused-vars prefer-const
-    let array: unknown[];
-  const values: Record<string, unknown[] | string> = {};
-    array = [];
-    for (const v of this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2) {
-      array.push(
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
-      );
-    }
-    if (array.length > 0) values[\\"https://w3id.org/security#owner\\"] = array;
-    
-    array = [];
-    for (const v of this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD) {
-      array.push(
-    { \\"@value\\": await exportSpki(v) }
-      );
-    }
-    if (array.length > 0) values[\\"https://w3id.org/security#publicKeyPem\\"] = array;
-    
-    values[\\"@type\\"] = [\\"https://w3id.org/security#Key\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
-    if (options.expand) {
-      return await jsonld.expand(
-        values,
-        { documentLoader: options.contextLoader },
-      );
-    }
-    return await jsonld.compact(
-      values,
-      \\"https://w3id.org/security/v1\\",
-      { documentLoader: options.contextLoader },
-    );
-  }
-  
-  /**
-   * Converts a JSON-LD structure to an object of this type.
-   * @param json The JSON-LD structure to convert.
-   * @returns The object of this type.
-   * @throws {TypeError} If the given \`json\` is invalid.
-   */
-  static async fromJsonLd(
-    json: unknown,
-    options: {
-      documentLoader?: DocumentLoader,
-      contextLoader?: DocumentLoader,
-    } = {},
-  ): Promise<CryptographicKey> {
-    if (typeof json === \\"undefined\\") {
-      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
-    }
-    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
-    options = {
-      ...options,
-      documentLoader: options.documentLoader ?? fetchDocumentLoader,
-      contextLoader: options.contextLoader ?? fetchDocumentLoader,
-    };
-    // deno-lint-ignore no-explicit-any
-    let values: Record<string, any[]> & { \\"@id\\"?: string };
-    if (globalThis.Object.keys(json).length == 0) {
-      values = {};
-    } else {
-      const expanded = await jsonld.expand(json, {
-        documentLoader: options.contextLoader,
-        keepFreeFloatingNodes: true,
-      });
-      values =
-        // deno-lint-ignore no-explicit-any
-        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
-    }
-  if (\\"@type\\" in values) {
-
-    if (!values[\\"@type\\"].includes(\\"https://w3id.org/security#Key\\")) {
-      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
-    }
-  }
-  
-    const instance = new this(
-      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
-      options,
-    );
-    const _5UJq9NDh3ZHgswFwwdVxQvJxdx2: (Application | Group | Organization | Person | Service | URL)[] = [];
-
-    for (const v of values[\\"https://w3id.org/security#owner\\"] ?? []) {
-      if (v == null) continue;
-    
-      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
-          && globalThis.Object.keys(v).length === 1) {
-        _5UJq9NDh3ZHgswFwwdVxQvJxdx2.push(new URL(v[\\"@id\\"]));
-        continue;
-      }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\") ? await Application.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\") ? await Group.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\") ? await Organization.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\") ? await Person.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\") ? await Service.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _5UJq9NDh3ZHgswFwwdVxQvJxdx2.push(decoded);
-      
-    }
-    instance.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = _5UJq9NDh3ZHgswFwwdVxQvJxdx2;
-    const _2fE2QMDdg6KFGqa4NEC3TmjApSAD: CryptoKey[] = [];
-
-    for (const v of values[\\"https://w3id.org/security#publicKeyPem\\"] ?? []) {
-      if (v == null) continue;
-    _2fE2QMDdg6KFGqa4NEC3TmjApSAD.push(await importSpki(v[\\"@value\\"]))
-    }
-    instance.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = _2fE2QMDdg6KFGqa4NEC3TmjApSAD;
-    
-    return instance;
-  }
-  
-  protected _getCustomInspectProxy(): Record<string, unknown> {
-  
-    const proxy: Record<string, unknown> = {};
-    if (this.id != null) {
-      proxy.id = {
-        [Symbol.for(\\"Deno.customInspect\\")]: (
-          inspect: typeof Deno.inspect,
-          options: Deno.InspectOptions,
-        ): string => \\"URL \\" + inspect(this.id!.href, options),
-        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-          _depth: number,
-          options: unknown,
-          inspect: (value: unknown, options: unknown) => string,
-        ): string => \\"URL \\" + inspect(this.id!.href, options),
-      };
-    }
-    
-      const _5UJq9NDh3ZHgswFwwdVxQvJxdx2 = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_5UJq9NDh3ZHgswFwwdVxQvJxdx2.length == 1) {
-        proxy.owner = _5UJq9NDh3ZHgswFwwdVxQvJxdx2[0];
-      }
-      
-      const _2fE2QMDdg6KFGqa4NEC3TmjApSAD = this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD
-        // deno-lint-ignore no-explicit-any
-        .map((v: any) => v instanceof URL
-          ? {
-              [Symbol.for(\\"Deno.customInspect\\")]: (
-                inspect: typeof Deno.inspect,
-                options: Deno.InspectOptions,
-              ): string => \\"URL \\" + inspect(v.href, options),
-              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
-                _depth: number,
-                options: unknown,
-                inspect: (value: unknown, options: unknown) => string,
-              ): string => \\"URL \\" + inspect(v.href, options),
-            }
-          : v);
-    
-      if (_2fE2QMDdg6KFGqa4NEC3TmjApSAD.length == 1) {
-        proxy.publicKey = _2fE2QMDdg6KFGqa4NEC3TmjApSAD[0];
-      }
-      
-    return proxy;
-  }
-
-  [Symbol.for(\\"Deno.customInspect\\")](
-    inspect: typeof Deno.inspect,
-    options: Deno.InspectOptions,
-  ): string {
-    const proxy = this._getCustomInspectProxy();
-    return \\"CryptographicKey \\" + inspect(proxy, options);
-  }
-
-  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
-    _depth: number,
-    options: unknown,
-    inspect: (value: unknown, options: unknown) => string,
-  ): string {
-    const proxy = this._getCustomInspectProxy();
-    return \\"CryptographicKey \\" + inspect(proxy, options);
-  }
-  }
-
 /** Describes an object of any kind. The Object type serves as the base type for
  * most of the other kinds of objects defined in the Activity Vocabulary,
  * including other Core types such as {@link Activity},
@@ -3424,6 +2705,11 @@ get sensitive(): (boolean | null) {
     }
   if (\\"@type\\" in values) {
 
+    if (values[\\"@type\\"].includes(\\"http://joinmastodon.org/ns#Emoji\\")) {
+      delete values[\\"@type\\"];
+      return await Emoji.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Activity\\")) {
       delete values[\\"@type\\"];
       return await Activity.fromJsonLd(values, options);
@@ -3631,7 +2917,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3717,7 +3003,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3765,7 +3051,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3818,7 +3104,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3843,7 +3129,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3871,7 +3157,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : undefined
       ;
@@ -3937,7 +3223,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -4727,6 +4013,918 @@ get sensitive(): (boolean | null) {
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Object \\" + inspect(proxy, options);
+  }
+  }
+
+/** Represents a custom emoji.
+ */
+export class Emoji extends Object {
+
+    /**
+     * The type URI of {@link Emoji}: \`http://joinmastodon.org/ns#Emoji\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"http://joinmastodon.org/ns#Emoji\\");
+    }
+  
+  /**
+   * Constructs a new instance of Emoji with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: (string | LanguageString)[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: (URL | Link)[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: (string | LanguageString)[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: (URL | Link)[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Emoji {
+  const clone = super.clone(values, options) as unknown as Emoji;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<string, unknown[] | string>;
+    
+    values[\\"@type\\"] = [\\"http://joinmastodon.org/ns#Emoji\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    return await jsonld.compact(
+      values,
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"Emoji\\":\\"toot:Emoji\\"}],
+      { documentLoader: options.contextLoader },
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Emoji> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"http://joinmastodon.org/ns#Emoji\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof Emoji)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Emoji \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Emoji \\" + inspect(proxy, options);
+  }
+  }
+
+/** A pair of property name and value.
+ */
+export class PropertyValue {
+
+    readonly #documentLoader?: DocumentLoader;
+    readonly #contextLoader?: DocumentLoader;
+    readonly id: URL | null;
+
+    protected get _documentLoader(): DocumentLoader | undefined {
+      return this.#documentLoader;
+    }
+
+    protected get _contextLoader(): DocumentLoader | undefined {
+      return this.#contextLoader;
+    }
+    
+    /**
+     * The type URI of {@link PropertyValue}: \`http://schema.org#PropertyValue\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"http://schema.org#PropertyValue\\");
+    }
+  #_4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
+#_2cSy2magg4iZ7zLaG8U7DiJMoCkx: (string | LanguageString)[] = [];
+
+  /**
+   * Constructs a new instance of PropertyValue with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+name?: string | LanguageString | null;value?: string | LanguageString | null;}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  
+    this.#documentLoader = documentLoader;
+    this.#contextLoader = contextLoader;
+    this.id = values.id ?? null;
+    
+        if (\\"name\\" in values &&             values.name != null) {
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
+        }
+      
+        if (\\"value\\" in values &&             values.value != null) {
+          this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = [values.value];
+        }
+      }
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+name?: string | LanguageString | null;value?: string | LanguageString | null;}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): PropertyValue {
+  
+    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
+    const clone: PropertyValue = new this.constructor({ id: values.id }, options);
+    clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+        if (\\"name\\" in values &&             values.name != null) {
+          clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
+        }
+      clone.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx;
+        if (\\"value\\" in values &&             values.value != null) {
+          clone.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = [values.value];
+        }
+      
+    return clone;
+  }
+  
+/** The name of a property.
+ */
+get name(): (string | LanguageString | null) {
+        if (this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length < 1) return null;
+        return this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
+      }
+      
+/** The value of a property.
+ */
+get value(): (string | LanguageString | null) {
+        if (this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx.length < 1) return null;
+        return this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx[0];
+      }
+      
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  const values: Record<string, unknown[] | string> = {};
+    array = [];
+    for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
+      array.push(
+    typeof v === \\"string\\" ? { \\"@value\\": v } : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx) {
+      array.push(
+    typeof v === \\"string\\" ? { \\"@value\\": v } : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"http://schema.org#value\\"] = array;
+    
+    values[\\"@type\\"] = [\\"http://schema.org#PropertyValue\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    return await jsonld.compact(
+      values,
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      { documentLoader: options.contextLoader },
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<PropertyValue> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"http://schema.org#PropertyValue\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = new this(
+      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
+      options,
+    );
+    const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav: (string | LanguageString)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#name\\"] ?? []) {
+      if (v == null) continue;
+    
+      const decoded =
+      typeof v === \\"object\\" && \\"@value\\" in v
+        && typeof v[\\"@value\\"] === \\"string\\" && !(\\"@language\\" in v) ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@language\\" in v && \\"@value\\" in v
+        && typeof v[\\"@language\\"] === \\"string\\"
+        && typeof v[\\"@value\\"] === \\"string\\" ? new LanguageString(v[\\"@value\\"], v[\\"@language\\"]) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _4ZHbBuK7PrsvGgrjM8wgc6KMWjav.push(decoded);
+      
+    }
+    instance.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
+    const _2cSy2magg4iZ7zLaG8U7DiJMoCkx: (string | LanguageString)[] = [];
+
+    for (const v of values[\\"http://schema.org#value\\"] ?? []) {
+      if (v == null) continue;
+    
+      const decoded =
+      typeof v === \\"object\\" && \\"@value\\" in v
+        && typeof v[\\"@value\\"] === \\"string\\" && !(\\"@language\\" in v) ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@language\\" in v && \\"@value\\" in v
+        && typeof v[\\"@language\\"] === \\"string\\"
+        && typeof v[\\"@value\\"] === \\"string\\" ? new LanguageString(v[\\"@value\\"], v[\\"@language\\"]) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _2cSy2magg4iZ7zLaG8U7DiJMoCkx.push(decoded);
+      
+    }
+    instance.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx = _2cSy2magg4iZ7zLaG8U7DiJMoCkx;
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  
+    const proxy: Record<string, unknown> = {};
+    if (this.id != null) {
+      proxy.id = {
+        [Symbol.for(\\"Deno.customInspect\\")]: (
+          inspect: typeof Deno.inspect,
+          options: Deno.InspectOptions,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+      };
+    }
+    
+      const _4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length == 1) {
+        proxy.name = _4ZHbBuK7PrsvGgrjM8wgc6KMWjav[0];
+      }
+      
+      const _2cSy2magg4iZ7zLaG8U7DiJMoCkx = this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2cSy2magg4iZ7zLaG8U7DiJMoCkx.length == 1) {
+        proxy.value = _2cSy2magg4iZ7zLaG8U7DiJMoCkx[0];
+      }
+      
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"PropertyValue \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"PropertyValue \\" + inspect(proxy, options);
+  }
+  }
+
+/** A key owned by an actor.
+ */
+export class CryptographicKey {
+
+    readonly #documentLoader?: DocumentLoader;
+    readonly #contextLoader?: DocumentLoader;
+    readonly id: URL | null;
+
+    protected get _documentLoader(): DocumentLoader | undefined {
+      return this.#documentLoader;
+    }
+
+    protected get _contextLoader(): DocumentLoader | undefined {
+      return this.#contextLoader;
+    }
+    
+    /**
+     * The type URI of {@link CryptographicKey}: \`https://w3id.org/security#Key\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://w3id.org/security#Key\\");
+    }
+  #_5UJq9NDh3ZHgswFwwdVxQvJxdx2: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_2fE2QMDdg6KFGqa4NEC3TmjApSAD: CryptoKey[] = [];
+
+  /**
+   * Constructs a new instance of CryptographicKey with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+owner?: Application | Group | Organization | Person | Service | URL | null;publicKey?: CryptoKey | null;}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  
+    this.#documentLoader = documentLoader;
+    this.#contextLoader = contextLoader;
+    this.id = values.id ?? null;
+    
+        if (\\"owner\\" in values &&             values.owner != null) {
+          this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = [values.owner];
+        }
+      
+        if (\\"publicKey\\" in values &&             values.publicKey != null) {
+          this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = [values.publicKey];
+        }
+      }
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+owner?: Application | Group | Organization | Person | Service | URL | null;publicKey?: CryptoKey | null;}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): CryptographicKey {
+  
+    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
+    const clone: CryptographicKey = new this.constructor({ id: values.id }, options);
+    clone.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2;
+        if (\\"owner\\" in values &&             values.owner != null) {
+          clone.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = [values.owner];
+        }
+      clone.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD;
+        if (\\"publicKey\\" in values &&             values.publicKey != null) {
+          clone.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = [values.publicKey];
+        }
+      
+    return clone;
+  }
+  
+    async #fetchOwner(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Application | Group | Organization | Person | Service> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Application.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Group.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Organization.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Person.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Service.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link CryptographicKey.getOwner},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get ownerId(): URL | null {
+        if (this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2.length < 1) return null;
+        const v = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** An actor who owns this key.
+ */
+
+      async getOwner(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<Application | Group | Organization | Person | Service | null> {
+        if (this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2.length < 1) return null;
+        const v = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchOwner(v, options);
+          this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+/** A PEM-encoded public key.
+ */
+get publicKey(): (CryptoKey | null) {
+        if (this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD.length < 1) return null;
+        return this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD[0];
+      }
+      
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  const values: Record<string, unknown[] | string> = {};
+    array = [];
+    for (const v of this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#owner\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD) {
+      array.push(
+    { \\"@value\\": await exportSpki(v) }
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#publicKeyPem\\"] = array;
+    
+    values[\\"@type\\"] = [\\"https://w3id.org/security#Key\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    return await jsonld.compact(
+      values,
+      \\"https://w3id.org/security/v1\\",
+      { documentLoader: options.contextLoader },
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<CryptographicKey> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://w3id.org/security#Key\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = new this(
+      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
+      options,
+    );
+    const _5UJq9NDh3ZHgswFwwdVxQvJxdx2: (Application | Group | Organization | Person | Service | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#owner\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _5UJq9NDh3ZHgswFwwdVxQvJxdx2.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\") ? await Application.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\") ? await Group.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\") ? await Organization.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\") ? await Person.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\") ? await Service.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _5UJq9NDh3ZHgswFwwdVxQvJxdx2.push(decoded);
+      
+    }
+    instance.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = _5UJq9NDh3ZHgswFwwdVxQvJxdx2;
+    const _2fE2QMDdg6KFGqa4NEC3TmjApSAD: CryptoKey[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#publicKeyPem\\"] ?? []) {
+      if (v == null) continue;
+    _2fE2QMDdg6KFGqa4NEC3TmjApSAD.push(await importSpki(v[\\"@value\\"]))
+    }
+    instance.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD = _2fE2QMDdg6KFGqa4NEC3TmjApSAD;
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  
+    const proxy: Record<string, unknown> = {};
+    if (this.id != null) {
+      proxy.id = {
+        [Symbol.for(\\"Deno.customInspect\\")]: (
+          inspect: typeof Deno.inspect,
+          options: Deno.InspectOptions,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+      };
+    }
+    
+      const _5UJq9NDh3ZHgswFwwdVxQvJxdx2 = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_5UJq9NDh3ZHgswFwwdVxQvJxdx2.length == 1) {
+        proxy.owner = _5UJq9NDh3ZHgswFwwdVxQvJxdx2[0];
+      }
+      
+      const _2fE2QMDdg6KFGqa4NEC3TmjApSAD = this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2fE2QMDdg6KFGqa4NEC3TmjApSAD.length == 1) {
+        proxy.publicKey = _2fE2QMDdg6KFGqa4NEC3TmjApSAD[0];
+      }
+      
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"CryptographicKey \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"CryptographicKey \\" + inspect(proxy, options);
   }
   }
 
@@ -5950,7 +6148,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -7648,7 +7846,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9309,7 +9507,7 @@ get totalItems(): (number | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -10160,7 +10358,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -13860,7 +14058,7 @@ get width(): (number | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : undefined
       ;
@@ -15131,7 +15329,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -22613,7 +22811,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }

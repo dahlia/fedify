@@ -10,6 +10,8 @@ To be released.
 
  -  Added `Hashtag` class to Activity Vocabulary API.  [[#48]]
 
+ -  Added `Emoji` class to Activity Vocabulary API.  [[#48]]
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
