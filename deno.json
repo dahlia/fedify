@@ -80,6 +80,8 @@
     "check-version": "deno run cli/scripts/check_version.ts",
     "publish": "deno task codegen && deno publish",
     "dnt": "deno task codegen && deno run -A dnt.ts",
+    "update": "deno run --allow-env --allow-read --allow-write=. --allow-run=git,deno --allow-net=jsr.io,registry.npmjs.org jsr:@molt/cli ./*.ts",
+    "update:commit": "deno task -q update --commit --pre-commit=fmt,lint",
     "hooks:install": "deno run --allow-read=deno.json,.git/hooks/ --allow-write=.git/hooks/ jsr:@hongminhee/deno-task-hooks",
     "hooks:pre-commit": "deno task check && deno task check-version"
   },
