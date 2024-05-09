@@ -1,3 +1,4 @@
+import { toASCII, toUnicode } from "node:punycode";
 import { lookupWebFinger } from "../webfinger/lookup.ts";
 import { Application, Group, Organization, Person, Service } from "./vocab.ts";
 
@@ -92,15 +93,18 @@ export function getActorClassByTypeName(
  * ```
  *
  * @param actor The actor or actor URI to get the handle from.
+ * @param options The options for normalizing the actor handle.
  * @returns The actor handle.  It starts with `@` and is followed by the
- *          username and domain, separated by `@`.
+ *          username and domain, separated by `@` by default (it can be
+ *          customized with the options).
  * @throws {TypeError} If the actor does not have enough information to get the
  *                     handle.
  * @since 0.4.0
  */
 export async function getActorHandle(
   actor: Actor | URL,
-): Promise<`@${string}@${string}`> {
+  options: NormalizeActorHandleOptions = {},
+): Promise<`@${string}@${string}` | `${string}@${string}`> {
   const actorId = actor instanceof URL ? actor : actor.id;
   if (actorId != null) {
     const result = await lookupWebFinger(actorId);
@@ -109,7 +113,9 @@ export async function getActorHandle(
       if (result.subject != null) aliases.unshift(result.subject);
       for (const alias of aliases) {
         const match = alias.match(/^acct:([^@]+)@([^@]+)$/);
-        if (match != null) return `@${match[1]}@${match[2]}`;
+        if (match != null) {
+          return normalizeActorHandle(`@${match[1]}@${match[2]}`, options);
+        }
       }
     }
   }
@@ -117,11 +123,57 @@ export async function getActorHandle(
     !(actor instanceof URL) && actor.preferredUsername != null &&
     actor.id != null
   ) {
-    return `@${actor.preferredUsername}@${actor.id.host}`;
+    return normalizeActorHandle(
+      `@${actor.preferredUsername}@${actor.id.host}`,
+      options,
+    );
   }
   throw new TypeError(
     "Actor does not have enough information to get the handle.",
   );
+}
+
+/**
+ * Options for {@link normalizeActorHandle}.
+ * @since 0.9.0
+ */
+export interface NormalizeActorHandleOptions {
+  /**
+   * Whether to trim the leading `@` from the actor handle.  Turned off by
+   * default.
+   */
+  trimLeadingAt?: boolean;
+
+  /**
+   * Whether to convert the domain part of the actor handle to punycode, if it
+   * is an internationalized domain name.  Turned off by default.
+   */
+  punycode?: boolean;
+}
+
+/**
+ * Normalizes the given actor handle.
+ * @param handle The full handle of the actor to normalize.
+ * @param options The options for normalizing the actor handle.
+ * @returns The normalized actor handle.
+ * @throws {TypeError} If the actor handle is invalid.
+ */
+export function normalizeActorHandle(
+  handle: string,
+  options: NormalizeActorHandleOptions = {},
+): `@${string}@${string}` | `${string}@${string}` {
+  handle = handle.replace(/^@/, "");
+  const atPos = handle.indexOf("@");
+  if (atPos < 1) throw new TypeError("Invalid actor handle.");
+  let domain = handle.substring(atPos + 1);
+  if (domain.length < 1 || domain.includes("@")) {
+    throw new TypeError("Invalid actor handle.");
+  }
+  domain = domain.toLowerCase();
+  domain = options.punycode ? toASCII(domain) : toUnicode(domain);
+  domain = domain.toLowerCase();
+  const user = handle.substring(0, atPos);
+  return options.trimLeadingAt ? `${user}@${domain}` : `@${user}@${domain}`;
 }
 
 /**

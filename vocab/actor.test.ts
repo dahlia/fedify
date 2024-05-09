@@ -4,6 +4,7 @@ import {
   assertFalse,
   assertRejects,
   assertStrictEquals,
+  assertThrows,
 } from "@std/assert";
 import * as fc from "fast-check";
 import * as mf from "mock_fetch";
@@ -13,6 +14,7 @@ import {
   getActorHandle,
   getActorTypeName,
   isActor,
+  normalizeActorHandle,
 } from "./actor.ts";
 import { Application, Group, Organization, Person, Service } from "./vocab.ts";
 
@@ -110,7 +112,15 @@ Deno.test("getActorHandle()", async (t) => {
 
   await t.step("WebFinger subject", async () => {
     assertEquals(await getActorHandle(actor), "@john@example.com");
+    assertEquals(
+      await getActorHandle(actor, { trimLeadingAt: true }),
+      "john@example.com",
+    );
     assertEquals(await getActorHandle(actorId), "@john@example.com");
+    assertEquals(
+      await getActorHandle(actorId, { trimLeadingAt: true }),
+      "john@example.com",
+    );
   });
 
   mf.mock(
@@ -127,7 +137,15 @@ Deno.test("getActorHandle()", async (t) => {
 
   await t.step("WebFinger aliases", async () => {
     assertEquals(await getActorHandle(actor), "@john@bar.example.com");
+    assertEquals(
+      await getActorHandle(actor, { trimLeadingAt: true }),
+      "john@bar.example.com",
+    );
     assertEquals(await getActorHandle(actorId), "@john@bar.example.com");
+    assertEquals(
+      await getActorHandle(actorId, { trimLeadingAt: true }),
+      "john@bar.example.com",
+    );
   });
 
   mf.mock(
@@ -142,3 +160,73 @@ Deno.test("getActorHandle()", async (t) => {
 
   mf.uninstall();
 });
+
+Deno.test("normalizeActorHandle()", () => {
+  assertEquals(normalizeActorHandle("@foo@BAR.COM"), "@foo@bar.com");
+  assertEquals(normalizeActorHandle("@BAZ@☃-⌘.com"), "@BAZ@☃-⌘.com");
+  assertEquals(
+    normalizeActorHandle("@qux@xn--maana-pta.com"),
+    "@qux@mañana.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@quux@XN--MAANA-PTA.COM"),
+    "@quux@mañana.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@quux@MAÑANA.COM"),
+    "@quux@mañana.com",
+  );
+
+  assertEquals(
+    normalizeActorHandle("@foo@BAR.COM", { trimLeadingAt: true }),
+    "foo@bar.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@BAZ@☃-⌘.com", { trimLeadingAt: true }),
+    "BAZ@☃-⌘.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@qux@xn--maana-pta.com", { trimLeadingAt: true }),
+    "qux@mañana.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@quux@XN--MAANA-PTA.COM", { trimLeadingAt: true }),
+    "quux@mañana.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@quux@MAÑANA.COM", { trimLeadingAt: true }),
+    "quux@mañana.com",
+  );
+
+  assertEquals(
+    normalizeActorHandle("@foo@BAR.COM", { punycode: true }),
+    "@foo@bar.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@BAZ@☃-⌘.com", { punycode: true }),
+    "@BAZ@xn----dqo34k.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@qux@xn--maana-pta.com", { punycode: true }),
+    "@qux@xn--maana-pta.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@quux@XN--MAANA-PTA.COM", { punycode: true }),
+    "@quux@xn--maana-pta.com",
+  );
+  assertEquals(
+    normalizeActorHandle("@quux@MAÑANA.COM", { punycode: true }),
+    "@quux@xn--maana-pta.com",
+  );
+
+  assertThrows(() => normalizeActorHandle(""));
+  assertThrows(() => normalizeActorHandle("@"));
+  assertThrows(() => normalizeActorHandle("foo"));
+  assertThrows(() => normalizeActorHandle("@foo"));
+  assertThrows(() => normalizeActorHandle("@@foo.com"));
+  assertThrows(() => normalizeActorHandle("@foo@"));
+  assertThrows(() => normalizeActorHandle("foo@bar.com@baz.com"));
+  assertThrows(() => normalizeActorHandle("@foo@bar.com@baz.com"));
+});
+
+// cSpell: ignore maana

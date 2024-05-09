@@ -12,6 +12,17 @@ To be released.
 
  -  Added `Emoji` class to Activity Vocabulary API.  [[#48]]
 
+ -  Added an actor handle normalization function.
+
+     -  Added `normalizeActorHandle()` function.
+     -  Added `NormalizeActorHandleOptions` interface.
+     -  The `getActorHandle()` function now guarantees that the returned
+        actor handle is normalized.
+     -  Added the second optional parameter to `getActorHandle()` function.
+     -  The return type of `getActorHandle()` function became
+        ``Promise<`@${string}@${string}` | `${string}@${string}`>``
+        (was ``Promise<`@${string}@${string}`>``).
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
