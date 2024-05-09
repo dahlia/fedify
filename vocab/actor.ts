@@ -157,6 +157,7 @@ export interface NormalizeActorHandleOptions {
  * @param options The options for normalizing the actor handle.
  * @returns The normalized actor handle.
  * @throws {TypeError} If the actor handle is invalid.
+ * @since 0.9.0
  */
 export function normalizeActorHandle(
   handle: string,
