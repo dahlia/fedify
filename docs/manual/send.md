@@ -231,6 +231,34 @@ the digest of the followers collection in the payload.
 [FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
 
 
+Excluding same-server recipients
+--------------------------------
+
+*This API is available since Fedify 0.9.0.*
+
+In most cases, you will not want to deliver activities via ActivityPub to
+recipients on the same server with the sender.  To exclude same-server
+recipients, you can pass the `excludeBaseUris` option to the
+`~Context.sendActivity()` method:
+
+~~~~ typescript
+await ctx.sendActivity(
+  { handle: senderHandle },
+  "followers",
+  activity,
+  { excludeBaseUris: [ctx.getInboxUri()] },  // [!code highlight]
+);
+~~~~
+
+Excluded recipients do not receive the activity, even if they are included in
+the recipients parameter.
+
+> [!NOTE]
+> Only the `origin` parts of the specified URIs are compared with the
+> inbox URLs of the recipients.  Even if they have `pathname` or `query` parts,
+> they are ignored when comparing the URIs.
+
+
 Error handling
 --------------
 

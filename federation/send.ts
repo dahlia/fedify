@@ -18,6 +18,16 @@ export interface ExtractInboxesParameters {
    * Defaults to `false`.
    */
   preferSharedInbox?: boolean;
+
+  /**
+   * The base URIs to exclude from the recipients' inboxes.  It is useful
+   * for excluding the recipients having the same shared inbox with the sender.
+   *
+   * Note that the only `origin` parts of the `URL`s are compared.
+   *
+   * @since 0.9.0
+   */
+  excludeBaseUris?: URL[];
 }
 
 /**
@@ -27,7 +37,7 @@ export interface ExtractInboxesParameters {
  * @returns The inboxes as a map of inbox URL to actor URIs.
  */
 export function extractInboxes(
-  { recipients, preferSharedInbox }: ExtractInboxesParameters,
+  { recipients, preferSharedInbox, excludeBaseUris }: ExtractInboxesParameters,
 ): Record<string, Set<string>> {
   const inboxes: Record<string, Set<string>> = {};
   for (const recipient of recipients) {
@@ -35,6 +45,12 @@ export function extractInboxes(
       ? recipient.endpoints?.sharedInbox ?? recipient.inboxId
       : recipient.inboxId;
     if (inbox != null && recipient.id != null) {
+      if (
+        excludeBaseUris != null &&
+        excludeBaseUris.some((u) => u.origin == inbox.origin)
+      ) {
+        continue;
+      }
       inboxes[inbox.href] ??= new Set();
       inboxes[inbox.href].add(recipient.id.href);
     }

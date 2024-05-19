@@ -23,6 +23,12 @@ To be released.
         ``Promise<`@${string}@${string}` | `${string}@${string}`>``
         (was ``Promise<`@${string}@${string}`>``).
 
+ -  Added `excludeBaseUris` option to `Context.sendActivity()` and
+    `Federation.sendActivity()` methods.
+
+     -  Added `SendActivityOptions.excludeBaseUris` property.
+     -  Added `ExtractInboxesParameters.excludeBaseUris` property.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 

@@ -73,6 +73,46 @@ Deno.test("extractInboxes()", () => {
       "https://example.net/inbox": new Set(["https://example.net/service"]),
     },
   );
+  inboxes = extractInboxes({
+    recipients,
+    excludeBaseUris: [new URL("https://foo.bar/")],
+  });
+  assertEquals(
+    inboxes,
+    {
+      "https://example.com/alice/inbox": new Set(["https://example.com/alice"]),
+      "https://example.com/app/inbox": new Set(["https://example.com/app"]),
+      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
+      "https://example.net/service/inbox": new Set([
+        "https://example.net/service",
+      ]),
+    },
+  );
+  inboxes = extractInboxes({
+    recipients,
+    excludeBaseUris: [new URL("https://example.com/")],
+  });
+  assertEquals(
+    inboxes,
+    {
+      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
+      "https://example.net/service/inbox": new Set([
+        "https://example.net/service",
+      ]),
+    },
+  );
+  inboxes = extractInboxes({
+    recipients,
+    preferSharedInbox: true,
+    excludeBaseUris: [new URL("https://example.com/")],
+  });
+  assertEquals(
+    inboxes,
+    {
+      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
+      "https://example.net/inbox": new Set(["https://example.net/service"]),
+    },
+  );
 });
 
 Deno.test("sendActivity()", async (t) => {

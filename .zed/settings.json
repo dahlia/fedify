@@ -4,14 +4,27 @@
   },
   "ensure_final_newline_on_save": true,
   "format_on_save": "on",
-  "formatter": {
-    "external": {
-      "command": "deno",
-      "arguments": [
-        "fmt",
-        "-"
+  "formatter": "language_server",
+  "languages": {
+    "TypeScript": {
+      "language_servers": [
+        "deno",
+        "!typescript-language-server",
+        "!eslint",
+        "..."
+      ]
+    },
+    "TSX": {
+      "language_servers": [
+        "deno",
+        "!typescript-language-server",
+        "!eslint",
+        "..."
       ]
     }
   },
-  "preferred_line_length": 80
+  "show_wrap_guides": true,
+  "wrap_guides": [
+    80
+  ]
 }

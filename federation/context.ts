@@ -260,6 +260,18 @@ export interface SendActivityOptions {
    * Whether to send the activity immediately, without enqueuing it.
    * If `true`, the activity will be sent immediately and the retrial
    * policy will not be applied.
+   *
+   * @since 0.3.0
    */
   immediate?: boolean;
+
+  /**
+   * The base URIs to exclude from the recipients' inboxes.  It is useful
+   * for excluding the recipients having the same shared inbox with the sender.
+   *
+   * Note that the only `origin` parts of the `URL`s are compared.
+   *
+   * @since 0.9.0
+   */
+  excludeBaseUris?: URL[];
 }

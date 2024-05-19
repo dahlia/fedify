@@ -1193,7 +1193,7 @@ export class Federation<TContextData> {
     { keyId, privateKey }: { keyId: URL; privateKey: CryptoKey },
     recipients: Recipient | Recipient[],
     activity: Activity,
-    { preferSharedInbox, immediate, collectionSync }:
+    { preferSharedInbox, immediate, excludeBaseUris, collectionSync }:
       SendActivityInternalOptions = {},
   ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
@@ -1216,6 +1216,7 @@ export class Federation<TContextData> {
     const inboxes = extractInboxes({
       recipients: Array.isArray(recipients) ? recipients : [recipients],
       preferSharedInbox,
+      excludeBaseUris,
     });
     logger.debug("Sending activity {activityId} to inboxes:\n{inboxes}", {
       inboxes: globalThis.Object.keys(inboxes),
