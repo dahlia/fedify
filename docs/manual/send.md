@@ -13,7 +13,7 @@ next:
 Sending activities
 ==================
 
-In ActivityPub, an actor can deliver an activity to another actor by [sending 
+In ActivityPub, an actor can deliver an activity to another actor by [sending
 an HTTP `POST` request to the recipient's inbox][1].  Fedify provides
 an abstracted way to send activities to other actors' inboxes.
 
@@ -255,7 +255,7 @@ the recipients parameter.
 
 > [!NOTE]
 > Only the `origin` parts of the specified URIs are compared with the
-> inbox URLs of the recipients.  Even if they have `pathname` or `query` parts,
+> inbox URLs of the recipients.  Even if they have `pathname` or `search` parts,
 > they are ignored when comparing the URIs.
 
 
