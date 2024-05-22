@@ -29,7 +29,7 @@ To be released.
      -  Added `SendActivityOptions.excludeBaseUris` property.
      -  Added `ExtractInboxesParameters.excludeBaseUris` property.
 
- -  The time window for signature verification is now configurable.
+ -  The time window for signature verification is now configurable.  [[#52]]
 
      -  The default time window for signature verification is now a minute (was
         30 seconds).
@@ -45,6 +45,7 @@ To be released.
      -  `["fedify", "federation", "http"]`
 
 [#48]: https://github.com/dahlia/fedify/issues/48
+[#52]: https://github.com/dahlia/fedify/issues/52
 
 
 Version 0.8.0
