@@ -619,8 +619,8 @@ federation
     if (follow.id == null || follow.actorId == null || follow.objectId == null) {
       return;
     }
-    const handle = ctx.getHandleFromActorUri(follow.objectId);
-    if (handle !== "me") return;
+    const parsed = ctx.parseUri(follow.objectId);
+    if (parsed?.type !== "actor" || parsed.handle !== "me") return;
     const follower = await follow.getActor(ctx);
     console.debug(follower);
   });
@@ -908,14 +908,14 @@ federation
     if (follow.id == null || follow.actorId == null || follow.objectId == null) {
       return;
     }
-    const handle = ctx.getHandleFromActorUri(follow.objectId);
-    if (handle !== "me") return;
+    const parsed = ctx.parseUri(follow.objectId);
+    if (parsed?.type !== "actor" || parsed.handle !== "me") return;
     const follower = await follow.getActor(ctx);
     // Note that if a server receives a `Follow` activity, it should reply
     // with either an `Accept` or a `Reject` activity.  In this case, the
     // server automatically accepts the follow request:
     await ctx.sendActivity(
-      { handle },
+      { handle: parsed.handle },
       follower,
       new Accept({ actor: follow.objectId, object: follow }),
     );
@@ -941,11 +941,11 @@ federation
     if (follow.id == null || follow.actorId == null || follow.objectId == null) {
       return;
     }
-    const handle = ctx.getHandleFromActorUri(follow.objectId);
-    if (handle !== "me") return;
+    const parsed = ctx.parseUri(follow.objectId);
+    if (parsed?.type !== "actor" || parsed.handle !== "me") return;
     const follower = await follow.getActor(ctx);
     await ctx.sendActivity(
-      { handle },
+      { handle: parsed.handle },
       follower,
       new Accept({ actor: follow.objectId, object: follow }),
     );

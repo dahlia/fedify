@@ -29,6 +29,13 @@ To be released.
      -  Added `SendActivityOptions.excludeBaseUris` property.
      -  Added `ExtractInboxesParameters.excludeBaseUris` property.
 
+ -  The `Context` now can parse URIs of objects, inboxes, and collections as
+    well as actors.
+
+     -  Added `Context.parseUri()` method.
+     -  Added `ParseUriResult` type.
+     -  Deprecated `Context.getHandleFromActorUri()` method.
+
  -  The time window for signature verification is now configurable.  [[#52]]
 
      -  The default time window for signature verification is now a minute (was

@@ -43,11 +43,11 @@ const federation = new Federation({
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
-    const handle = ctx.getHandleFromActorUri(follow.objectId);
-    if (handle == null) return;
+    const parsed = ctx.parseUri(follow.objectId);
+    if (parsed?.type !== "actor") return;
     const recipient = await follow.getActor(ctx);
     await ctx.sendActivity(
-      { handle },
+      { handle: parsed.handle },
       recipient,
       new Accept({ actor: follow.objectId, object: follow }),
     );

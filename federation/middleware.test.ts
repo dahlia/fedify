@@ -68,6 +68,7 @@ Deno.test("Federation.createContext()", async (t) => {
     assertThrows(() => ctx.getOutboxUri("handle"), RouterError);
     assertThrows(() => ctx.getFollowingUri("handle"), RouterError);
     assertThrows(() => ctx.getFollowersUri("handle"), RouterError);
+    assertEquals(ctx.parseUri(new URL("https://example.com/")), null);
     assertEquals(
       ctx.getHandleFromActorUri(new URL("https://example.com/")),
       null,
@@ -110,6 +111,11 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(
       ctx.getActorUri("handle"),
       new URL("https://example.com/users/handle"),
+    );
+    assertEquals(ctx.parseUri(new URL("https://example.com/")), null);
+    assertEquals(
+      ctx.parseUri(new URL("https://example.com/users/handle")),
+      { type: "actor", handle: "handle" },
     );
     assertEquals(
       ctx.getHandleFromActorUri(new URL("https://example.com/")),
@@ -167,12 +173,29 @@ Deno.test("Federation.createContext()", async (t) => {
       ctx.getObjectUri(Note, { handle: "john", id: "123" }),
       new URL("https://example.com/users/john/notes/123"),
     );
+    assertEquals(
+      ctx.parseUri(new URL("https://example.com/users/john/notes/123")),
+      {
+        type: "object",
+        class: Note,
+        typeId: new URL("https://www.w3.org/ns/activitystreams#Note"),
+        values: { handle: "john", id: "123" },
+      },
+    );
 
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
     assertEquals(ctx.getInboxUri(), new URL("https://example.com/inbox"));
     assertEquals(
       ctx.getInboxUri("handle"),
       new URL("https://example.com/users/handle/inbox"),
+    );
+    assertEquals(
+      ctx.parseUri(new URL("https://example.com/inbox")),
+      { type: "inbox" },
+    );
+    assertEquals(
+      ctx.parseUri(new URL("https://example.com/users/handle/inbox")),
+      { type: "inbox", handle: "handle" },
     );
 
     federation.setOutboxDispatcher(
@@ -183,6 +206,10 @@ Deno.test("Federation.createContext()", async (t) => {
       ctx.getOutboxUri("handle"),
       new URL("https://example.com/users/handle/outbox"),
     );
+    assertEquals(
+      ctx.parseUri(new URL("https://example.com/users/handle/outbox")),
+      { type: "outbox", handle: "handle" },
+    );
 
     federation.setFollowingDispatcher(
       "/users/{handle}/following",
@@ -192,6 +219,10 @@ Deno.test("Federation.createContext()", async (t) => {
       ctx.getFollowingUri("handle"),
       new URL("https://example.com/users/handle/following"),
     );
+    assertEquals(
+      ctx.parseUri(new URL("https://example.com/users/handle/following")),
+      { type: "following", handle: "handle" },
+    );
 
     federation.setFollowersDispatcher(
       "/users/{handle}/followers",
@@ -200,6 +231,10 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(
       ctx.getFollowersUri("handle"),
       new URL("https://example.com/users/handle/followers"),
+    );
+    assertEquals(
+      ctx.parseUri(new URL("https://example.com/users/handle/followers")),
+      { type: "followers", handle: "handle" },
     );
   });
 

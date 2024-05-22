@@ -29,6 +29,7 @@ import type {
 import { buildCollectionSynchronizationHeader } from "./collection.ts";
 import type {
   Context,
+  ParseUriResult,
   RequestContext,
   SendActivityOptions,
 } from "./context.ts";
@@ -155,6 +156,11 @@ export class Federation<TContextData> {
   #nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
   #actorCallbacks?: ActorCallbacks<TContextData>;
   #objectCallbacks: Record<string, ObjectCallbacks<TContextData, string>>;
+  #objectTypeIds: Record<
+    string,
+    // deno-lint-ignore no-explicit-any
+    (new (...args: any[]) => Object) & { typeId: URL }
+  >;
   #outboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
   #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData, void>;
   #followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
@@ -204,6 +210,7 @@ export class Federation<TContextData> {
     this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
     this.#inboxListeners = new Map();
     this.#objectCallbacks = {};
+    this.#objectTypeIds = {};
     this.#documentLoader = documentLoader ?? kvCache({
       loader: fetchDocumentLoader,
       kv: kv,
@@ -439,11 +446,41 @@ export class Federation<TContextData> {
         }
         return new URL(path, url);
       },
-      getHandleFromActorUri: (actorUri: URL) => {
-        if (actorUri.origin !== url.origin) return null;
-        const route = this.#router.route(actorUri.pathname);
-        if (route?.name !== "actor") return null;
-        return route.values.handle;
+      parseUri: (uri: URL): ParseUriResult | null => {
+        if (uri.origin !== url.origin) return null;
+        const route = this.#router.route(uri.pathname);
+        if (route == null) return null;
+        else if (route.name === "actor") {
+          return { type: "actor", handle: route.values.handle };
+        } else if (route.name.startsWith("object:")) {
+          const typeId = route.name.replace(/^object:/, "");
+          return {
+            type: "object",
+            class: this.#objectTypeIds[typeId],
+            typeId: new URL(typeId),
+            values: route.values,
+          };
+        } else if (route.name === "inbox") {
+          return { type: "inbox", handle: route.values.handle };
+        } else if (route.name === "sharedInbox") {
+          return { type: "inbox" };
+        } else if (route.name === "outbox") {
+          return { type: "outbox", handle: route.values.handle };
+        } else if (route.name === "following") {
+          return { type: "following", handle: route.values.handle };
+        } else if (route.name === "followers") {
+          return { type: "followers", handle: route.values.handle };
+        }
+        return null;
+      },
+      getHandleFromActorUri(actorUri: URL): string | null {
+        getLogger(["fedify", "federation"]).warn(
+          "Context.getHandleFromActorUri() is deprecated; " +
+            "use Context.parseUri() instead.",
+        );
+        const result = this.parseUri(actorUri);
+        if (result?.type === "actor") return result.handle;
+        return null;
       },
       getActorKey: async (handle: string): Promise<CryptographicKey | null> => {
         let keyPair = this.#actorCallbacks?.keyPairDispatcher?.(
@@ -905,6 +942,7 @@ export class Federation<TContextData> {
       parameters: variables as unknown as Set<TParam>,
     };
     this.#objectCallbacks[cls.typeId.href] = callbacks;
+    this.#objectTypeIds[cls.typeId.href] = cls;
     const setters: ObjectCallbackSetters<TContextData, TObject, TParam> = {
       authorize(predicate: ObjectAuthorizePredicate<TContextData, TParam>) {
         callbacks.authorizePredicate = predicate;

@@ -89,8 +89,9 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
 });
 ~~~~
 
-On the other way around, you can use the `~Context.getHandleFromActorUri()`
-method to get the bare handle from the actor URI.
+On the other way around, you can use the `~Context.parseUri()` method to
+determine the type of the URI and extract the handle or other values from
+the URI. 
 
 
 Enqueuing an outgoing activity
@@ -107,11 +108,11 @@ federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     // In order to send an activity, we need the bare handle of the sender:
-    const handle = ctx.getHandleFromActorUri(follow.objectId);
-    if (handle == null) return;
+    const parsed = ctx.parseUri(follow.objectId);
+    if (parsed?.type !== "actor") return;
     const recipient = await follow.getActor(ctx);
     await ctx.sendActivity(
-      { handle }, // sender
+      { handle: parsed.handle }, // sender
       recipient,
       new Accept({ actor: follow.objectId, object: follow }),
     );

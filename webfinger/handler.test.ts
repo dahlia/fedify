@@ -19,10 +19,10 @@ Deno.test("handleWebFinger()", async () => {
         }),
       );
     },
-    getHandleFromActorUri(uri) {
+    parseUri(uri) {
       if (uri.protocol === "acct:") return null;
       const paths = uri.pathname.split("/");
-      return paths[paths.length - 1];
+      return { type: "actor", handle: paths[paths.length - 1] };
     },
   });
   const actorDispatcher: ActorDispatcher<void> = (ctx, handle, _key) => {

@@ -92,9 +92,17 @@ export interface Context<TContextData> {
   getFollowersUri(handle: string): URL;
 
   /**
+   * Determines the type of the URI and extracts the associated data.
+   * @param uri The URI to parse.
+   * @since 0.9.0
+   */
+  parseUri(uri: URL): ParseUriResult | null;
+
+  /**
    * Extracts the actor's handle from an actor URI, if it is a valid actor URI.
    * @param actorUri The actor's URI.
    * @returns The actor's handle, or `null` if the URI is not a valid actor URI.
+   * @deprecated Use {@link parseUri} instead.
    */
   getHandleFromActorUri(actorUri: URL): string | null;
 
@@ -245,6 +253,42 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
     options?: SendActivityOptions,
   ): Promise<void>;
 }
+
+/**
+ * A result of parsing an URI.
+ */
+export type ParseUriResult =
+  /**
+   * The case of an actor URI.
+   */
+  | { type: "actor"; handle: string }
+  /**
+   * The case of an object URI.
+   */
+  | {
+    type: "object";
+    // deno-lint-ignore no-explicit-any
+    class: (new (...args: any[]) => Object) & { typeId: URL };
+    typeId: URL;
+    values: Record<string, string>;
+  }
+  /**
+   * The case of an inbox URI.  If `handle` is `undefined`,
+   * it is a shared inbox.
+   */
+  | { type: "inbox"; handle?: string }
+  /**
+   * The case of an outbox collection URI.
+   */
+  | { type: "outbox"; handle: string }
+  /**
+   * The case of a following collection URI.
+   */
+  | { type: "following"; handle: string }
+  /**
+   * The case of a followers collection URI.
+   */
+  | { type: "followers"; handle: string };
 
 /**
  * Options for {@link Context.sendActivity} method and

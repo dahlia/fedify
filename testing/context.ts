@@ -1,3 +1,4 @@
+import { getLogger } from "@logtape/logtape";
 import type { Context, RequestContext } from "../federation/context.ts";
 import { RouterError } from "../federation/router.ts";
 import { mockDocumentLoader } from "./docloader.ts";
@@ -14,7 +15,7 @@ export function createContext<TContextData>(
     getInboxUri,
     getFollowingUri,
     getFollowersUri,
-    getHandleFromActorUri,
+    parseUri,
     getActorKey,
     getDocumentLoader,
     sendActivity,
@@ -34,9 +35,18 @@ export function createContext<TContextData>(
     getInboxUri: getInboxUri ?? throwRouteError,
     getFollowingUri: getFollowingUri ?? throwRouteError,
     getFollowersUri: getFollowersUri ?? throwRouteError,
-    getHandleFromActorUri: getHandleFromActorUri ?? ((_uri) => {
+    parseUri: parseUri ?? ((_uri) => {
       throw new Error("Not implemented");
     }),
+    getHandleFromActorUri(actorUri: URL): string | null {
+      getLogger(["fedify", "federation"]).warn(
+        "Context.getHandleFromActorUri() is deprecated; " +
+          "use Context.parseUri() instead.",
+      );
+      const result = this.parseUri(actorUri);
+      if (result?.type === "actor") return result.handle;
+      return null;
+    },
     getDocumentLoader: getDocumentLoader ?? ((_params) => {
       throw new Error("Not implemented");
     }),

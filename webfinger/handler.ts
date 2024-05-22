@@ -55,14 +55,17 @@ export async function handleWebFinger<TContextData>(
     }
     throw new e();
   }
-  let handle: string | null = context.getHandleFromActorUri(resourceUrl);
-  if (handle == null) {
+  let handle: string | null;
+  const uriParsed = context.parseUri(resourceUrl);
+  if (uriParsed?.type != "actor") {
     const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
     if (match == null || match[2] != context.url.host) {
       const response = onNotFound(request);
       return response instanceof Promise ? await response : response;
     }
     handle = match[1];
+  } else {
+    handle = uriParsed.handle;
   }
   const key = await context.getActorKey(handle);
   const actor = await actorDispatcher(context, handle, key);

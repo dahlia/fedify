@@ -164,9 +164,8 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
     const blog = await getBlog();
     if (blog == null) return;
     if (follow.id == null || follow.objectId == null) return;
-    if (ctx.getHandleFromActorUri(follow.objectId) !== blog.handle) {
-      return;
-    }
+    const parsed = ctx.parseUri(follow.objectId);
+    if (parsed?.type !== "actor" || parsed.handle !== blog.handle) return;
     const recipient = await follow.getActor(ctx);
     if (
       recipient == null || recipient.id == null ||

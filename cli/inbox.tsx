@@ -169,8 +169,9 @@ federation
       if (acceptFollows.length < 1) return;
       const objectId = activity.objectId;
       if (objectId == null) return;
-      const handle = ctx.getHandleFromActorUri(objectId);
-      if (handle !== "i") return;
+      const parsed = ctx.parseUri(objectId);
+      if (parsed?.type !== "actor" || parsed.handle !== "i") return;
+      const { handle } = parsed;
       const follower = await activity.getActor();
       if (!isActor(follower)) return;
       const accepts = await acceptsFollowFrom(follower);
