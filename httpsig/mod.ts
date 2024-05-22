@@ -81,25 +81,52 @@ const supportedHashAlgorithms: Record<string, string> = {
 };
 
 /**
+ * Options for {@link verify}.
+ *
+ * @since 0.9.0
+ */
+export interface VerifyOptions {
+  /**
+   * The document loader to use for fetching the public key.
+   */
+  documentLoader?: DocumentLoader;
+
+  /**
+   * The context loader to use for JSON-LD context retrieval.
+   */
+  contextLoader?: DocumentLoader;
+
+  /**
+   * The time window to allow for the request date.  The actual time window is
+   * twice the value of this option, with the current time as the center.
+   * A minute by default.
+   */
+  timeWindow?: Temporal.DurationLike;
+
+  /**
+   * The current time.  If not specified, the current time is used.  This is
+   * useful for testing.
+   */
+  currentTime?: Temporal.Instant;
+}
+
+/**
  * Verifies the signature of a request.
  *
  * Note that this function consumes the request body, so it should not be used
  * if the request body is already consumed.  Consuming the request body after
  * calling this function is okay, since this function clones the request
  * under the hood.
+ *
  * @param request The request to verify.
- * @param documentLoader The document loader to use for fetching the public key.
- * @param contextLoader The context loader to use for JSON-LD context retrieval.
- * @param currentTime The current time.  If not specified, the current time is
- *                    used.  This is useful for testing.
+ * @param options Options for verifying the request.
  * @returns The public key of the verified signature, or `null` if the signature
  *          could not be verified.
  */
 export async function verify(
   request: Request,
-  documentLoader: DocumentLoader,
-  contextLoader: DocumentLoader,
-  currentTime?: Temporal.Instant,
+  { documentLoader, contextLoader, timeWindow, currentTime }: VerifyOptions =
+    {},
 ): Promise<CryptographicKey | null> {
   const logger = getLogger(["fedify", "httpsig", "verify"]);
   request = request.clone();
@@ -173,15 +200,14 @@ export async function verify(
   }
   const date = Temporal.Instant.from(new Date(dateHeader).toISOString());
   const now = currentTime ?? Temporal.Now.instant();
-  if (Temporal.Instant.compare(date, now.add({ seconds: 30 })) > 0) {
+  const tw: Temporal.DurationLike = timeWindow ?? { minutes: 1 };
+  if (Temporal.Instant.compare(date, now.add(tw)) > 0) {
     logger.debug(
       "Failed to verify; Date is too far in the future.",
       { date: date.toString(), now: now.toString() },
     );
     return null;
-  } else if (
-    Temporal.Instant.compare(date, now.subtract({ seconds: 30 })) < 0
-  ) {
+  } else if (Temporal.Instant.compare(date, now.subtract(tw)) < 0) {
     logger.debug(
       "Failed to verify; Date is too far in the past.",
       { date: date.toString(), now: now.toString() },
@@ -216,7 +242,7 @@ export async function verify(
   logger.debug("Fetching key {keyId} to verify signature...", { keyId });
   let document: unknown;
   try {
-    const remoteDocument = await documentLoader(keyId);
+    const remoteDocument = await (documentLoader ?? fetchDocumentLoader)(keyId);
     document = remoteDocument.document;
   } catch (_) {
     logger.debug("Failed to fetch key {keyId}.", { keyId });

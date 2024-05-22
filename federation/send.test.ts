@@ -141,11 +141,11 @@ Deno.test("sendActivity()", async (t) => {
   let request: Request | null = null;
   mf.mock("POST@/inbox", async (req) => {
     request = req;
-    const key = await verify(req, mockDocumentLoader, mockDocumentLoader);
     const options = {
       documentLoader: mockDocumentLoader,
       contextLoader: mockDocumentLoader,
     };
+    const key = await verify(req, options);
     const activity = await Activity.fromJsonLd(await req.json(), options);
     if (key != null && await doesActorOwnKey(activity, key, options)) {
       verified = true;

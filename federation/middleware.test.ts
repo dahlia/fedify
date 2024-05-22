@@ -36,9 +36,11 @@ Deno.test("Federation.createContext()", async (t) => {
   mf.mock("GET@/object", async (req) => {
     const v = await verify(
       req,
-      mockDocumentLoader,
-      mockDocumentLoader,
-      Temporal.Now.instant(),
+      {
+        contextLoader: mockDocumentLoader,
+        documentLoader: mockDocumentLoader,
+        currentTime: Temporal.Now.instant(),
+      },
     );
     return new Response(JSON.stringify(v != null), {
       headers: { "Content-Type": "application/json" },

@@ -29,6 +29,15 @@ To be released.
      -  Added `SendActivityOptions.excludeBaseUris` property.
      -  Added `ExtractInboxesParameters.excludeBaseUris` property.
 
+ -  The time window for signature verification is now configurable.
+
+     -  The default time window for signature verification is now a minute (was
+        30 seconds).
+     -  Added `signatureTimeWindow` option to `FederationParameters` interface.
+     -  Added `VerifyOptions` interface.
+     -  The signature of the `verify()` function is revamped; it now optionally
+        takes a `VerifyOptions` object as the second parameter.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 

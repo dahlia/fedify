@@ -108,6 +108,15 @@ export interface FederationParameters {
    */
   onOutboxError?: OutboxErrorHandler;
 
+  /**
+   * The time window for verifying the signature of incoming requests.  If the
+   * request is older or newer than this window, it is rejected.  By default,
+   * the window is a minute.
+   *
+   * @since 0.9.0
+   */
+  signatureTimeWindow?: Temporal.DurationLike;
+
   // TODO: The following option should be removed, and exponential backoff
   // should be used instead:
   backoffSchedule?: Temporal.Duration[];
@@ -159,6 +168,7 @@ export class Federation<TContextData> {
   #authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   #treatHttps: boolean;
   #onOutboxError?: OutboxErrorHandler;
+  #signatureTimeWindow: Temporal.DurationLike;
   #backoffSchedule: Temporal.Duration[];
 
   /**
@@ -175,6 +185,7 @@ export class Federation<TContextData> {
       authenticatedDocumentLoaderFactory,
       treatHttps,
       onOutboxError,
+      signatureTimeWindow,
       backoffSchedule,
     }: FederationParameters,
   ) {
@@ -204,6 +215,7 @@ export class Federation<TContextData> {
         getAuthenticatedDocumentLoader;
     this.#onOutboxError = onOutboxError;
     this.#treatHttps = treatHttps ?? false;
+    this.#signatureTimeWindow = signatureTimeWindow ?? { minutes: 1 };
     this.#backoffSchedule = backoffSchedule ?? [
       3_000,
       15_000,
@@ -491,6 +503,7 @@ export class Federation<TContextData> {
     if (request == null) return context;
     let signedKey: CryptographicKey | null | undefined = undefined;
     let signedKeyOwner: Actor | null | undefined = undefined;
+    const timeWindow = this.#signatureTimeWindow;
     const reqCtx: RequestContext<TContextData> = {
       ...context,
       request,
@@ -554,11 +567,7 @@ export class Federation<TContextData> {
       },
       async getSignedKey() {
         if (signedKey !== undefined) return signedKey;
-        return signedKey = await verify(
-          request,
-          context.documentLoader,
-          context.contextLoader,
-        );
+        return signedKey = await verify(request, { ...context, timeWindow });
       },
       async getSignedKeyOwner() {
         if (signedKeyOwner !== undefined) return signedKeyOwner;
@@ -1424,6 +1433,7 @@ export class Federation<TContextData> {
           inboxListeners: this.#inboxListeners,
           inboxErrorHandler: this.#inboxErrorHandler,
           onNotFound,
+          signatureTimeWindow: this.#signatureTimeWindow,
         });
       case "following":
         return await handleCollection(request, {

@@ -20,7 +20,10 @@ Deno.test("sign()", async () => {
     new URL("https://example.com/key2"),
   );
   assertEquals(
-    await verify(signed, mockDocumentLoader, mockDocumentLoader),
+    await verify(signed, {
+      contextLoader: mockDocumentLoader,
+      documentLoader: mockDocumentLoader,
+    }),
     publicKey2,
   );
 });
@@ -47,9 +50,11 @@ Deno.test("verify()", async () => {
   });
   const key = await verify(
     request,
-    mockDocumentLoader,
-    mockDocumentLoader,
-    Temporal.Instant.from("2024-03-05T07:49:44Z"),
+    {
+      contextLoader: mockDocumentLoader,
+      documentLoader: mockDocumentLoader,
+      currentTime: Temporal.Instant.from("2024-03-05T07:49:44Z"),
+    },
   );
   assertEquals(
     key,
@@ -59,8 +64,10 @@ Deno.test("verify()", async () => {
   assertEquals(
     await verify(
       new Request("https://example.com/"),
-      mockDocumentLoader,
-      mockDocumentLoader,
+      {
+        documentLoader: mockDocumentLoader,
+        contextLoader: mockDocumentLoader,
+      },
     ),
     null,
   );
@@ -69,8 +76,7 @@ Deno.test("verify()", async () => {
       new Request("https://example.com/", {
         headers: { Date: "Tue, 05 Mar 2024 07:49:44 GMT" },
       }),
-      mockDocumentLoader,
-      mockDocumentLoader,
+      { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
     ),
     null,
   );
@@ -83,8 +89,7 @@ Deno.test("verify()", async () => {
           Signature: "asdf",
         },
       }),
-      mockDocumentLoader,
-      mockDocumentLoader,
+      { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
     ),
     null,
   );
@@ -99,8 +104,7 @@ Deno.test("verify()", async () => {
         },
         body: "",
       }),
-      mockDocumentLoader,
-      mockDocumentLoader,
+      { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
     ),
     null,
   );
@@ -115,26 +119,53 @@ Deno.test("verify()", async () => {
         },
         body: "",
       }),
-      mockDocumentLoader,
-      mockDocumentLoader,
+      { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
     ),
     null,
   );
   assertEquals(
     await verify(
       request,
-      mockDocumentLoader,
-      mockDocumentLoader,
-      Temporal.Instant.from("2024-03-05T07:49:13.9999Z"),
+      {
+        documentLoader: mockDocumentLoader,
+        contextLoader: mockDocumentLoader,
+        currentTime: Temporal.Instant.from("2024-03-05T07:48:43.9999Z"),
+      },
     ),
     null,
   );
   assertEquals(
     await verify(
       request,
-      mockDocumentLoader,
-      mockDocumentLoader,
-      Temporal.Instant.from("2024-03-05T07:50:14.0001Z"),
+      {
+        documentLoader: mockDocumentLoader,
+        contextLoader: mockDocumentLoader,
+        currentTime: Temporal.Instant.from("2024-03-05T07:49:13.9999Z"),
+        timeWindow: { seconds: 30 },
+      },
+    ),
+    null,
+  );
+  assertEquals(
+    await verify(
+      request,
+      {
+        documentLoader: mockDocumentLoader,
+        contextLoader: mockDocumentLoader,
+        currentTime: Temporal.Instant.from("2024-03-05T07:50:44.0001Z"),
+      },
+    ),
+    null,
+  );
+  assertEquals(
+    await verify(
+      request,
+      {
+        documentLoader: mockDocumentLoader,
+        contextLoader: mockDocumentLoader,
+        currentTime: Temporal.Instant.from("2024-03-05T07:50:14.0001Z"),
+        timeWindow: { seconds: 30 },
+      },
     ),
     null,
   );

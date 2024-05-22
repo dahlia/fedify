@@ -314,6 +314,7 @@ export interface InboxHandlerParameters<TContextData> {
   >;
   inboxErrorHandler?: InboxErrorHandler<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
+  signatureTimeWindow: Temporal.DurationLike;
 }
 
 export async function handleInbox<TContextData>(
@@ -327,6 +328,7 @@ export async function handleInbox<TContextData>(
     inboxListeners,
     inboxErrorHandler,
     onNotFound,
+    signatureTimeWindow,
   }: InboxHandlerParameters<TContextData>,
 ): Promise<Response> {
   const logger = getLogger(["fedify", "federation", "inbox"]);
@@ -341,11 +343,10 @@ export async function handleInbox<TContextData>(
       return await onNotFound(request);
     }
   }
-  const key = await verify(
-    request,
-    context.documentLoader,
-    context.contextLoader,
-  );
+  const key = await verify(request, {
+    ...context,
+    timeWindow: signatureTimeWindow,
+  });
   if (key == null) {
     logger.error("Failed to verify the request signature.", { handle });
     const response = new Response("Failed to verify the request signature.", {
