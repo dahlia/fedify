@@ -683,12 +683,13 @@ export class Federation<TContextData> {
     const callbacks: ActorCallbacks<TContextData> = {
       dispatcher: async (context, handle, key) => {
         const actor = await dispatcher(context, handle, key);
+        if (actor == null) return null;
         const logger = getLogger(["fedify", "federation", "actor"]);
         if (
           this.#followingCallbacks != null &&
           this.#followingCallbacks.dispatcher != null
         ) {
-          if (actor?.followingId == null) {
+          if (actor.followingId == null) {
             logger.warn(
               "You configured a following collection dispatcher, but the " +
                 "actor does not have a following property.  Set the property " +
@@ -709,7 +710,7 @@ export class Federation<TContextData> {
           this.#followersCallbacks != null &&
           this.#followersCallbacks.dispatcher != null
         ) {
-          if (actor?.followersId == null) {
+          if (actor.followersId == null) {
             logger.warn(
               "You configured a followers collection dispatcher, but the " +
                 "actor does not have a followers property.  Set the property " +
@@ -745,7 +746,7 @@ export class Federation<TContextData> {
           }
         }
         if (this.#router.has("inbox")) {
-          if (actor?.inboxId == null) {
+          if (actor.inboxId == null) {
             logger.warn(
               "You configured inbox listeners, but the actor does not " +
                 "have an inbox property.  Set the property with " +
@@ -758,7 +759,7 @@ export class Federation<TContextData> {
                 "with Context.getInboxUri(handle).",
             );
           }
-          if (actor?.endpoints == null || actor.endpoints.sharedInbox == null) {
+          if (actor.endpoints == null || actor.endpoints.sharedInbox == null) {
             logger.warn(
               "You configured inbox listeners, but the actor does not have " +
                 "a endpoints.sharedInbox property.  Set the property with " +
