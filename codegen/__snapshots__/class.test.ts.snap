@@ -2895,6 +2895,11 @@ get sensitive(): (boolean | null) {
       return await Service.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Tombstone\\")) {
+      delete values[\\"@type\\"];
+      return await Tombstone.fromJsonLd(values, options);
+    }
+    
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Object\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -2917,7 +2922,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3003,7 +3008,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3051,7 +3056,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3104,7 +3109,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3129,7 +3134,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -3157,7 +3162,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : undefined
       ;
@@ -3223,7 +3228,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -9507,7 +9512,7 @@ get totalItems(): (number | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -14058,7 +14063,7 @@ get width(): (number | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : undefined
       ;
@@ -22480,6 +22485,258 @@ get indexable(): (boolean | null) {
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Service \\" + inspect(proxy, options);
+  }
+  }
+
+/** A \`Tombstone\` represents a content object that has been deleted.
+ * It can be used in {@link Collection}s to signify that there used to be
+ * an object at this position, but it has been deleted.
+ * 
+ */
+export class Tombstone extends Object {
+
+    /**
+     * The type URI of {@link Tombstone}: \`https://www.w3.org/ns/activitystreams#Tombstone\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Tombstone\\");
+    }
+  #_8g8g4LiVMhFTXskuDEqx4ascxUr: Temporal.Instant[] = [];
+
+  /**
+   * Constructs a new instance of Tombstone with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: (string | LanguageString)[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: (URL | Link)[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;deleted?: Temporal.Instant | null;}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });
+        if (\\"deleted\\" in values &&             values.deleted != null) {
+          this.#_8g8g4LiVMhFTXskuDEqx4ascxUr = [values.deleted];
+        }
+      }
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: (string | LanguageString)[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: (string | LanguageString)[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: (string | LanguageString)[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: (URL | Link)[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;deleted?: Temporal.Instant | null;}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Tombstone {
+  const clone = super.clone(values, options) as unknown as Tombstone;clone.#_8g8g4LiVMhFTXskuDEqx4ascxUr = this.#_8g8g4LiVMhFTXskuDEqx4ascxUr;
+        if (\\"deleted\\" in values &&             values.deleted != null) {
+          clone.#_8g8g4LiVMhFTXskuDEqx4ascxUr = [values.deleted];
+        }
+      
+    return clone;
+  }
+  
+/** On a \`Tombstone\` object, the \`deleted\` property is a timestamp for when
+ * the object was deleted.
+ * 
+ */
+get deleted(): (Temporal.Instant | null) {
+        if (this.#_8g8g4LiVMhFTXskuDEqx4ascxUr.length < 1) return null;
+        return this.#_8g8g4LiVMhFTXskuDEqx4ascxUr[0];
+      }
+      
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<string, unknown[] | string>;
+    
+    array = [];
+    for (const v of this.#_8g8g4LiVMhFTXskuDEqx4ascxUr) {
+      array.push(
+    {
+        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
+        \\"@value\\": v.toString(),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#deleted\\"] = array;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Tombstone\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    return await jsonld.compact(
+      values,
+      \\"https://www.w3.org/ns/activitystreams\\",
+      { documentLoader: options.contextLoader },
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Tombstone> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Tombstone\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof Tombstone)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    const _8g8g4LiVMhFTXskuDEqx4ascxUr: Temporal.Instant[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#deleted\\"] ?? []) {
+      if (v == null) continue;
+    _8g8g4LiVMhFTXskuDEqx4ascxUr.push(Temporal.Instant.from(v[\\"@value\\"]))
+    }
+    instance.#_8g8g4LiVMhFTXskuDEqx4ascxUr = _8g8g4LiVMhFTXskuDEqx4ascxUr;
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _8g8g4LiVMhFTXskuDEqx4ascxUr = this.#_8g8g4LiVMhFTXskuDEqx4ascxUr
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_8g8g4LiVMhFTXskuDEqx4ascxUr.length == 1) {
+        proxy.deleted = _8g8g4LiVMhFTXskuDEqx4ascxUr[0];
+      }
+      
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Tombstone \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Tombstone \\" + inspect(proxy, options);
   }
   }
 

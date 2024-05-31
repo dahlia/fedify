@@ -8,6 +8,8 @@ Version 0.9.0
 
 To be released.
 
+ -  Added `Tombstone` class to Activity Vocabulary API.
+
  -  Added `Hashtag` class to Activity Vocabulary API.  [[#48]]
 
  -  Added `Emoji` class to Activity Vocabulary API.  [[#48]]
