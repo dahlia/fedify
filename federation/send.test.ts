@@ -6,7 +6,8 @@ import {
   assertStrictEquals,
 } from "@std/assert";
 import * as mf from "mock_fetch";
-import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
+import { verifyRequest } from "../sig/http.ts";
+import { doesActorOwnKey } from "../sig/owner.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { privateKey2, publicKey2 } from "../testing/keys.ts";
 import type { Actor } from "../vocab/actor.ts";
@@ -145,7 +146,7 @@ Deno.test("sendActivity()", async (t) => {
       documentLoader: mockDocumentLoader,
       contextLoader: mockDocumentLoader,
     };
-    const key = await verify(req, options);
+    const key = await verifyRequest(req, options);
     const activity = await Activity.fromJsonLd(await req.json(), options);
     if (key != null && await doesActorOwnKey(activity, key, options)) {
       verified = true;

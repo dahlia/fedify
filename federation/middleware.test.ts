@@ -7,7 +7,7 @@ import {
 } from "@std/assert";
 import { dirname, join } from "@std/path";
 import * as mf from "mock_fetch";
-import { sign, verify } from "../httpsig/mod.ts";
+import { signRequest, verifyRequest } from "../sig/http.ts";
 import {
   FetchError,
   getAuthenticatedDocumentLoader,
@@ -34,7 +34,7 @@ Deno.test("Federation.createContext()", async (t) => {
   mf.install();
 
   mf.mock("GET@/object", async (req) => {
-    const v = await verify(
+    const v = await verifyRequest(
       req,
       {
         contextLoader: mockDocumentLoader,
@@ -267,7 +267,7 @@ Deno.test("Federation.createContext()", async (t) => {
       "No actor dispatcher registered",
     );
 
-    const signedReq = await sign(
+    const signedReq = await signRequest(
       new Request("https://example.com/"),
       privateKey2,
       publicKey2.id!,
@@ -282,7 +282,7 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(await signedCtx.getSignedKey(), publicKey2);
     assertEquals(await signedCtx.getSignedKeyOwner(), null);
 
-    const signedReq2 = await sign(
+    const signedReq2 = await signRequest(
       new Request("https://example.com/"),
       privateKey3,
       publicKey3.id!,
@@ -386,7 +386,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         inbox.push([ctx, create]);
       });
 
-    let response = await federation.handle(
+    let response = await federation.fetch(
       new Request("https://example.com/inbox", { method: "POST" }),
       { contextData: undefined },
     );
@@ -402,21 +402,21 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         privateKey: privateKey2,
         publicKey: publicKey2.publicKey!,
       }));
-    response = await federation.handle(
+    response = await federation.fetch(
       new Request("https://example.com/inbox", { method: "POST" }),
       { contextData: undefined },
     );
     assertEquals(inbox, []);
     assertEquals(response.status, 401);
 
-    response = await federation.handle(
+    response = await federation.fetch(
       new Request("https://example.com/users/no-one/inbox", { method: "POST" }),
       { contextData: undefined },
     );
     assertEquals(inbox, []);
     assertEquals(response.status, 404);
 
-    response = await federation.handle(
+    response = await federation.fetch(
       new Request("https://example.com/users/john/inbox", { method: "POST" }),
       { contextData: undefined },
     );
@@ -433,12 +433,12 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
       ),
     });
-    request = await sign(
+    request = await signRequest(
       request,
       privateKey2,
       new URL("https://example.com/key2"),
     );
-    response = await federation.handle(request, { contextData: undefined });
+    response = await federation.fetch(request, { contextData: undefined });
     assertEquals(inbox.length, 1);
     assertEquals(inbox[0][1], activity);
     assertEquals(response.status, 202);
@@ -458,12 +458,12 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
       ),
     });
-    request = await sign(
+    request = await signRequest(
       request,
       privateKey2,
       new URL("https://example.com/key2"),
     );
-    response = await federation.handle(request, { contextData: undefined });
+    response = await federation.fetch(request, { contextData: undefined });
     assertEquals(inbox.length, 1);
     assertEquals(inbox[0][1], activity);
     assertEquals(response.status, 202);
@@ -515,12 +515,12 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
       ),
     });
-    request = await sign(
+    request = await signRequest(
       request,
       privateKey2,
       new URL("https://example.com/key2"),
     );
-    const response = await federation.handle(request, {
+    const response = await federation.fetch(request, {
       contextData: undefined,
     });
     assertEquals(errors.length, 1);

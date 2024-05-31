@@ -1,5 +1,5 @@
 import { getLogger } from "@logtape/logtape";
-import { sign } from "../httpsig/mod.ts";
+import { signRequest } from "../sig/http.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Recipient } from "../vocab/actor.ts";
 import type { Activity } from "../vocab/mod.ts";
@@ -125,7 +125,7 @@ export async function sendActivity(
     headers,
     body: JSON.stringify(jsonLd),
   });
-  request = await sign(request, privateKey, keyId);
+  request = await signRequest(request, privateKey, keyId);
   const response = await fetch(request);
   if (!response.ok) {
     let error;

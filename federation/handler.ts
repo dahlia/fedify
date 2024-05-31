@@ -1,6 +1,7 @@
 import { getLogger } from "@logtape/logtape";
 import { accepts } from "@std/http/negotiation";
-import { doesActorOwnKey, verify } from "../httpsig/mod.ts";
+import { verifyRequest } from "../sig/http.ts";
+import { doesActorOwnKey } from "../sig/owner.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Recipient } from "../vocab/actor.ts";
 import {
@@ -343,7 +344,7 @@ export async function handleInbox<TContextData>(
       return await onNotFound(request);
     }
   }
-  const key = await verify(request, {
+  const key = await verifyRequest(request, {
     ...context,
     timeWindow: signatureTimeWindow,
   });

@@ -37,6 +37,7 @@
     "mock_fetch": "https://deno.land/x/mock_fetch@0.3.0/mod.ts",
     "uri-template-router": "npm:uri-template-router@^0.0.16",
     "url-template": "npm:url-template@^3.1.1",
+    "@fedify/fedify/sig": ".././sig/mod.ts",
     "@cliffy/ansi": "jsr:@cliffy/ansi@1.0.0-rc.4",
     "@cliffy/command": "jsr:@cliffy/command@1.0.0-rc.4",
     "@cliffy/prompt": "jsr:@cliffy/prompt@1.0.0-rc.4",

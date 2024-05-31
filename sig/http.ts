@@ -70,7 +70,7 @@ const supportedHashAlgorithms: Record<string, string> = {
 };
 
 /**
- * Options for {@link verify}.
+ * Options for {@link verifyRequest}.
  */
 export interface VerifyRequestOptions {
   /**

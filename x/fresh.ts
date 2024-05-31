@@ -29,7 +29,7 @@ interface FreshContext {
  * import { federation } from "federation.ts"; // Import the `Federation` object
  *
  * export async function handler(request: Request, context: FreshContext) {
- *   return await federation.handle(request, {
+ *   return await federation.fetch(request, {
  *     contextData: undefined,
  *     ...integrateHandlerOptions(context),
  *   })
@@ -37,7 +37,7 @@ interface FreshContext {
  * ```
  *
  * @param context A Fresh context.
- * @returns Options for the {@link Federation.handle} method.
+ * @returns Options for the {@link Federation.fetch} method.
  * @since 0.6.0
  */
 export function integrateFetchOptions(
