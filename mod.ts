@@ -37,8 +37,9 @@
  * @module
  */
 export * from "./federation/mod.ts";
-export * from "./httpsig/mod.ts";
+export { sign, verify, type VerifyOptions } from "./httpsig/mod.ts";
 export * from "./nodeinfo/mod.ts";
 export * from "./runtime/mod.ts";
+export * from "./sig/mod.ts";
 export * from "./vocab/mod.ts";
 export { lookupWebFinger, type ResourceDescriptor } from "./webfinger/mod.ts";
