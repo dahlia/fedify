@@ -35,7 +35,6 @@ export function validateCryptoKey(
 /**
  * Generates a key pair which is appropriate for Fedify.
  * @returns The generated key pair.
- * @since 0.3.0
  */
 export function generateCryptoKeyPair(): Promise<CryptoKeyPair> {
   return crypto.subtle.generateKey(
@@ -56,7 +55,6 @@ export function generateCryptoKeyPair(): Promise<CryptoKeyPair> {
  * @returns The exported key in JWK format.  The key is suitable for
  *          serialization and storage.
  * @throws {TypeError} If the key is invalid or unsupported.
- * @since 0.3.0
  */
 export async function exportJwk(key: CryptoKey): Promise<JsonWebKey> {
   validateCryptoKey(key);
@@ -69,7 +67,6 @@ export async function exportJwk(key: CryptoKey): Promise<JsonWebKey> {
  * @param type Which type of key to import, either `"public"`" or `"private"`".
  * @returns The imported key.
  * @throws {TypeError} If the key is invalid or unsupported.
- * @since 0.3.0
  */
 export async function importJwk(
   jwk: JsonWebKey,

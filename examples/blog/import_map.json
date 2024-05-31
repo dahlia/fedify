@@ -11,6 +11,7 @@
     "@fedify/fedify/federation": "../../federation/mod.ts",
     "@fedify/fedify/httpsig": "../../httpsig/mod.ts",
     "@fedify/fedify/runtime": "../../runtime/mod.ts",
+    "@fedify/fedify/sig": "../../sig/mod.ts",
     "@fedify/fedify/vocab": "../../vocab/mod.ts",
     "@fedify/fedify/webfinger": "../../webfinger/mod.ts",
     "@fedify/fedify/x/fresh": "../../x/fresh.ts",

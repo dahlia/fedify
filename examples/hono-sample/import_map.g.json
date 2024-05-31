@@ -37,6 +37,7 @@
     "mock_fetch": "https://deno.land/x/mock_fetch@0.3.0/mod.ts",
     "uri-template-router": "npm:uri-template-router@^0.0.16",
     "url-template": "npm:url-template@^3.1.1",
+    "@fedify/fedify/sig": "../../sig/mod.ts",
     "hono": "https://deno.land/x/hono@v4.1.7/mod.ts"
   }
 }

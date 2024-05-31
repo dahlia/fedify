@@ -1,6 +1,7 @@
 import { getLogger } from "@logtape/logtape";
-import { exportJwk, importJwk, validateCryptoKey } from "../httpsig/key.ts";
-import { getKeyOwner, verify } from "../httpsig/mod.ts";
+import { verifyRequest } from "../sig/http.ts";
+import { exportJwk, importJwk, validateCryptoKey } from "../sig/key.ts";
+import { getKeyOwner } from "../sig/owner.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
@@ -604,7 +605,10 @@ export class Federation<TContextData> {
       },
       async getSignedKey() {
         if (signedKey !== undefined) return signedKey;
-        return signedKey = await verify(request, { ...context, timeWindow });
+        return signedKey = await verifyRequest(request, {
+          ...context,
+          timeWindow,
+        });
       },
       async getSignedKeyOwner() {
         if (signedKeyOwner !== undefined) return signedKeyOwner;

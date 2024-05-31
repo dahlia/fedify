@@ -3,22 +3,27 @@
  * Signatures](https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures-12).
  *
  * @module
+ * @deprecated
  */
 import { getLogger } from "@logtape/logtape";
-import { equals } from "@std/bytes";
-import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import {
-  type DocumentLoader,
-  fetchDocumentLoader,
-} from "../runtime/docloader.ts";
-import { type Actor, isActor } from "../vocab/actor.ts";
+  signRequest,
+  verifyRequest,
+  type VerifyRequestOptions,
+} from "../sig/http.ts";
 import {
-  type Activity,
-  CryptographicKey,
-  Object as ASObject,
-} from "../vocab/vocab.ts";
-import { validateCryptoKey } from "./key.ts";
-export { exportJwk, generateCryptoKeyPair, importJwk } from "./key.ts";
+  exportJwk as newExportJwk,
+  generateCryptoKeyPair as newGenerateCryptoKeyPair,
+  importJwk as newImportJwk,
+} from "../sig/key.ts";
+import {
+  doesActorOwnKey as newDoesActorOwnKey,
+  type DoesActorOwnKeyOptions as NewDoesActorOwnKeyOptions,
+  getKeyOwner as newGetKeyOwner,
+  type GetKeyOwnerOptions as NewGetKeyOwnerOptions,
+} from "../sig/owner.ts";
+import type { Actor } from "../vocab/actor.ts";
+import type { Activity, CryptographicKey } from "../vocab/vocab.ts";
 
 /**
  * Signs a request using the given private key.
@@ -28,87 +33,26 @@ export { exportJwk, generateCryptoKeyPair, importJwk } from "./key.ts";
  *              verifier.
  * @returns The signed request.
  * @throws {TypeError} If the private key is invalid or unsupported.
+ * @deprecated
  */
-export async function sign(
+export function sign(
   request: Request,
   privateKey: CryptoKey,
   keyId: URL,
 ): Promise<Request> {
-  validateCryptoKey(privateKey, "private");
-  const url = new URL(request.url);
-  const body: ArrayBuffer | null =
-    request.method !== "GET" && request.method !== "HEAD"
-      ? await request.arrayBuffer()
-      : null;
-  const headers = new Headers(request.headers);
-  if (!headers.has("Host")) {
-    headers.set("Host", url.host);
-  }
-  if (!headers.has("Digest") && body != null) {
-    const digest = await crypto.subtle.digest("SHA-256", body);
-    headers.set("Digest", `sha-256=${encodeBase64(digest)}`);
-  }
-  if (!headers.has("Date")) {
-    headers.set("Date", new Date().toUTCString());
-  }
-  const serialized: [string, string][] = [
-    ["(request-target)", `${request.method.toLowerCase()} ${url.pathname}`],
-    ...headers,
-  ];
-  const headerNames: string[] = serialized.map(([name]) => name);
-  const message = serialized
-    .map(([name, value]) => `${name}: ${value.trim()}`).join("\n");
-  // TODO: support other than RSASSA-PKCS1-v1_5:
-  const signature = await crypto.subtle.sign(
-    "RSASSA-PKCS1-v1_5",
-    privateKey,
-    new TextEncoder().encode(message),
+  getLogger(["fedify", "httpsig", "sign"]).warn(
+    "The sign() function is deprecated.  Use signRequest() instead.",
   );
-  const sigHeader = `keyId="${keyId.href}",headers="${
-    headerNames.join(" ")
-  }",signature="${encodeBase64(signature)}"`;
-  headers.set("Signature", sigHeader);
-  return new Request(request, {
-    headers,
-    body,
-  });
+  return signRequest(request, privateKey, keyId);
 }
-
-const supportedHashAlgorithms: Record<string, string> = {
-  "sha": "SHA-1",
-  "sha-256": "SHA-256",
-  "sha-512": "SHA-512",
-};
 
 /**
  * Options for {@link verify}.
  *
  * @since 0.9.0
+ * @deprecated
  */
-export interface VerifyOptions {
-  /**
-   * The document loader to use for fetching the public key.
-   */
-  documentLoader?: DocumentLoader;
-
-  /**
-   * The context loader to use for JSON-LD context retrieval.
-   */
-  contextLoader?: DocumentLoader;
-
-  /**
-   * The time window to allow for the request date.  The actual time window is
-   * twice the value of this option, with the current time as the center.
-   * A minute by default.
-   */
-  timeWindow?: Temporal.DurationLike;
-
-  /**
-   * The current time.  If not specified, the current time is used.  This is
-   * useful for testing.
-   */
-  currentTime?: Temporal.Instant;
-}
+export type VerifyOptions = VerifyRequestOptions;
 
 /**
  * Verifies the signature of a request.
@@ -122,251 +66,24 @@ export interface VerifyOptions {
  * @param options Options for verifying the request.
  * @returns The public key of the verified signature, or `null` if the signature
  *          could not be verified.
+ * @deprecated
  */
-export async function verify(
+export function verify(
   request: Request,
-  { documentLoader, contextLoader, timeWindow, currentTime }: VerifyOptions =
-    {},
+  options: VerifyRequestOptions = {},
 ): Promise<CryptographicKey | null> {
-  const logger = getLogger(["fedify", "httpsig", "verify"]);
-  request = request.clone();
-  const dateHeader = request.headers.get("Date");
-  if (dateHeader == null) {
-    logger.debug(
-      "Failed to verify; no Date header found.",
-      { headers: Object.fromEntries(request.headers.entries()) },
-    );
-    return null;
-  }
-  const sigHeader = request.headers.get("Signature");
-  if (sigHeader == null) {
-    logger.debug(
-      "Failed to verify; no Signature header found.",
-      { headers: Object.fromEntries(request.headers.entries()) },
-    );
-    return null;
-  }
-  const digestHeader = request.headers.get("Digest");
-  if (
-    request.method !== "GET" && request.method !== "HEAD" &&
-    digestHeader == null
-  ) {
-    logger.debug(
-      "Failed to verify; no Digest header found.",
-      { headers: Object.fromEntries(request.headers.entries()) },
-    );
-    return null;
-  }
-  let body: ArrayBuffer | null = null;
-  if (digestHeader != null) {
-    body = await request.arrayBuffer();
-    const digests = digestHeader.split(",").map((pair) =>
-      pair.includes("=") ? pair.split("=", 2) as [string, string] : [pair, ""]
-    );
-    let matched = false;
-    for (let [algo, digestBase64] of digests) {
-      algo = algo.trim().toLowerCase();
-      if (!(algo in supportedHashAlgorithms)) continue;
-      const digest = decodeBase64(digestBase64);
-      const expectedDigest = await crypto.subtle.digest(
-        supportedHashAlgorithms[algo],
-        body,
-      );
-      if (!equals(digest, new Uint8Array(expectedDigest))) {
-        logger.debug(
-          "Failed to verify; digest mismatch ({algorithm}): " +
-            "{digest} != {expectedDigest}.",
-          {
-            algorithm: algo,
-            digest: digestBase64,
-            expectedDigest: encodeBase64(expectedDigest),
-          },
-        );
-        return null;
-      }
-      matched = true;
-    }
-    if (!matched) {
-      logger.debug(
-        "Failed to verify; no supported digest algorithm found.  " +
-          "Supported: {supportedAlgorithms}; found: {algorithms}.",
-        {
-          supportedAlgorithms: Object.keys(supportedHashAlgorithms),
-          algorithms: digests.map(([algo]) => algo),
-        },
-      );
-      return null;
-    }
-  }
-  const date = Temporal.Instant.from(new Date(dateHeader).toISOString());
-  const now = currentTime ?? Temporal.Now.instant();
-  const tw: Temporal.DurationLike = timeWindow ?? { minutes: 1 };
-  if (Temporal.Instant.compare(date, now.add(tw)) > 0) {
-    logger.debug(
-      "Failed to verify; Date is too far in the future.",
-      { date: date.toString(), now: now.toString() },
-    );
-    return null;
-  } else if (Temporal.Instant.compare(date, now.subtract(tw)) < 0) {
-    logger.debug(
-      "Failed to verify; Date is too far in the past.",
-      { date: date.toString(), now: now.toString() },
-    );
-    return null;
-  }
-  const sigValues = Object.fromEntries(
-    sigHeader.split(",").map((pair) =>
-      pair.match(/^\s*([A-Za-z]+)="([^"]*)"\s*$/)
-    ).filter((m) => m != null).map((m) => m!.slice(1, 3) as [string, string]),
+  getLogger(["fedify", "httpsig", "verify"]).warn(
+    "The verify() function is deprecated.  Use verifyRequest() instead.",
   );
-  if (!("keyId" in sigValues)) {
-    logger.debug(
-      "Failed to verify; no keyId field found in the Signature header.",
-      { signature: sigHeader },
-    );
-    return null;
-  } else if (!("headers" in sigValues)) {
-    logger.debug(
-      "Failed to verify; no headers field found in the Signature header.",
-      { signature: sigHeader },
-    );
-    return null;
-  } else if (!("signature" in sigValues)) {
-    logger.debug(
-      "Failed to verify; no signature field found in the Signature header.",
-      { signature: sigHeader },
-    );
-    return null;
-  }
-  const { keyId, headers, signature } = sigValues;
-  logger.debug("Fetching key {keyId} to verify signature...", { keyId });
-  let document: unknown;
-  try {
-    const remoteDocument = await (documentLoader ?? fetchDocumentLoader)(keyId);
-    document = remoteDocument.document;
-  } catch (_) {
-    logger.debug("Failed to fetch key {keyId}.", { keyId });
-    return null;
-  }
-  let object: ASObject | CryptographicKey;
-  try {
-    object = await ASObject.fromJsonLd(document, {
-      documentLoader,
-      contextLoader,
-    });
-  } catch (e) {
-    if (!(e instanceof TypeError)) throw e;
-    try {
-      object = await CryptographicKey.fromJsonLd(document, {
-        documentLoader,
-        contextLoader,
-      });
-    } catch (e) {
-      if (e instanceof TypeError) {
-        logger.debug(
-          "Failed to verify; key {keyId} returned an invalid object.",
-          { keyId },
-        );
-        return null;
-      }
-      throw e;
-    }
-  }
-  let key: CryptographicKey | null = null;
-  if (object instanceof CryptographicKey) key = object;
-  else if (isActor(object)) {
-    for await (
-      const k of object.getPublicKeys({ documentLoader, contextLoader })
-    ) {
-      if (k.id?.href === keyId) {
-        key = k;
-        break;
-      }
-    }
-    if (key == null) {
-      logger.debug(
-        "Failed to verify; object {keyId} returned an {actorType}, " +
-          "but has no key matching {keyId}.",
-        { keyId, actorType: object.constructor.name },
-      );
-      return null;
-    }
-  } else {
-    logger.debug(
-      "Failed to verify; key {keyId} returned an invalid object.",
-      { keyId },
-    );
-    return null;
-  }
-  if (key.publicKey == null) {
-    logger.debug(
-      "Failed to verify; key {keyId} has no publicKeyPem field.",
-      { keyId },
-    );
-    return null;
-  }
-  const headerNames = headers.split(/\s+/g);
-  if (
-    !headerNames.includes("(request-target)") || !headerNames.includes("date")
-  ) {
-    logger.debug(
-      "Failed to verify; required headers missing in the Signature header: " +
-        "{headers}.",
-      { headers },
-    );
-    return null;
-  }
-  if (body != null && !headerNames.includes("digest")) {
-    logger.debug(
-      "Failed to verify; required headers missing in the Signature header: " +
-        "{headers}.",
-      { headers },
-    );
-    return null;
-  }
-  const message = headerNames.map((name) =>
-    `${name}: ` +
-    (name == "(request-target)"
-      ? `${request.method.toLowerCase()} ${new URL(request.url).pathname}`
-      : name == "host"
-      ? request.headers.get("host") ?? new URL(request.url).host
-      : request.headers.get(name))
-  ).join("\n");
-  const sig = decodeBase64(signature);
-  // TODO: support other than RSASSA-PKCS1-v1_5:
-  const verified = await crypto.subtle.verify(
-    "RSASSA-PKCS1-v1_5",
-    key.publicKey,
-    sig,
-    new TextEncoder().encode(message),
-  );
-  if (!verified) {
-    logger.debug(
-      "Failed to verify; signature {signature} is invalid.  " +
-        "Check if the key is correct or if the signed message is correct.  " +
-        "The message to sign is:\n{message}",
-      { signature, message },
-    );
-    return null;
-  }
-  return key;
+  return verifyRequest(request, options);
 }
 
 /**
  * Options for {@link doesActorOwnKey}.
  * @since 0.8.0
+ * @deprecated
  */
-export interface DoesActorOwnKeyOptions {
-  /**
-   * The document loader to use for fetching the actor.
-   */
-  documentLoader?: DocumentLoader;
-
-  /**
-   * The context loader to use for JSON-LD context retrieval.
-   */
-  contextLoader?: DocumentLoader;
-}
+export type DoesActorOwnKeyOptions = NewDoesActorOwnKeyOptions;
 
 /**
  * Checks if the actor of the given activity owns the specified key.
@@ -374,38 +91,26 @@ export interface DoesActorOwnKeyOptions {
  * @param key The public key to check.
  * @param options Options for checking the key ownership.
  * @returns Whether the actor is the owner of the key.
+ * @deprecated
  */
-export async function doesActorOwnKey(
+export function doesActorOwnKey(
   activity: Activity,
   key: CryptographicKey,
-  options: DoesActorOwnKeyOptions,
+  options: NewDoesActorOwnKeyOptions,
 ): Promise<boolean> {
-  if (key.ownerId != null) {
-    return key.ownerId.href === activity.actorId?.href;
-  }
-  const actor = await activity.getActor(options);
-  if (actor == null || !isActor(actor)) return false;
-  for (const publicKeyId of actor.publicKeyIds) {
-    if (key.id != null && publicKeyId.href === key.id.href) return true;
-  }
-  return false;
+  getLogger(["fedify", "httpsig"]).warn(
+    "The doesActorOwnKey() function from @fedify/fedify/httpsig is deprecated.  " +
+      "Use doesActorOwnKey() from @fedify/fedify/sig instead.",
+  );
+  return newDoesActorOwnKey(activity, key, options);
 }
 
 /**
  * Options for {@link getKeyOwner}.
  * @since 0.8.0
+ * @deprecated
  */
-export interface GetKeyOwnerOptions {
-  /**
-   * The document loader to use for fetching the key and its owner.
-   */
-  documentLoader?: DocumentLoader;
-
-  /**
-   * The context loader to use for JSON-LD context retrieval.
-   */
-  contextLoader?: DocumentLoader;
-}
+export type GetKeyOwnerOptions = NewGetKeyOwnerOptions;
 
 /**
  * Gets the actor that owns the specified key.  Returns `null` if the key has no
@@ -416,56 +121,66 @@ export interface GetKeyOwnerOptions {
  * @returns The actor that owns the key, or `null` if the key has no known
  *          owner.
  * @since 0.7.0
+ * @deprecated
  */
-export async function getKeyOwner(
+export function getKeyOwner(
   keyId: URL | CryptographicKey,
-  options: GetKeyOwnerOptions,
+  options: NewGetKeyOwnerOptions,
 ): Promise<Actor | null> {
-  const documentLoader = options.documentLoader ?? fetchDocumentLoader;
-  const contextLoader = options.contextLoader ?? fetchDocumentLoader;
-  let object: ASObject | CryptographicKey;
-  if (keyId instanceof CryptographicKey) {
-    object = keyId;
-    if (object.id == null) return null;
-    keyId = object.id;
-  } else {
-    let keyDoc: unknown;
-    try {
-      const { document } = await documentLoader(keyId.href);
-      keyDoc = document;
-    } catch (_) {
-      return null;
-    }
-    try {
-      object = await ASObject.fromJsonLd(keyDoc, {
-        documentLoader,
-        contextLoader,
-      });
-    } catch (e) {
-      if (!(e instanceof TypeError)) throw e;
-      try {
-        object = await CryptographicKey.fromJsonLd(keyDoc, {
-          documentLoader,
-          contextLoader,
-        });
-      } catch (e) {
-        if (e instanceof TypeError) return null;
-        throw e;
-      }
-    }
-  }
-  let owner: Actor | null = null;
-  if (object instanceof CryptographicKey) {
-    if (object.ownerId == null) return null;
-    owner = await object.getOwner({ documentLoader, contextLoader });
-  } else if (isActor(object)) {
-    owner = object;
-  } else {
-    return null;
-  }
-  if (owner == null) return null;
-  for (const kid of owner.publicKeyIds) {
-    if (kid.href === keyId.href) return owner;
-  }
-  return null;
+  getLogger(["fedify", "httpsig"]).warn(
+    "The getKeyOwner() function from @fedify/fedify/httpsig is deprecated.  " +
+      "Use getKeyOwner() from @fedify/fedify/sig instead.",
+  );
+  return newGetKeyOwner(keyId, options);
+}
+
+/**
+ * Generates a key pair which is appropriate for Fedify.
+ * @returns The generated key pair.
+ * @since 0.3.0
+ * @deprecated
+ */
+export function generateCryptoKeyPair(): Promise<CryptoKeyPair> {
+  getLogger(["fedify", "httpsig", "key"]).warn(
+    "The generateCryptoKeyPair() from @fedify/fedify/httpsig is deprecated.  " +
+      "Please use generateKeyPair() from @fedify/fedify/sig instead.",
+  );
+  return newGenerateCryptoKeyPair();
+}
+
+/**
+ * Exports a key in JWK format.
+ * @param key The key to export.  Either public or private key.
+ * @returns The exported key in JWK format.  The key is suitable for
+ *          serialization and storage.
+ * @throws {TypeError} If the key is invalid or unsupported.
+ * @since 0.3.0
+ * @deprecated
+ */
+export function exportJwk(key: CryptoKey): Promise<JsonWebKey> {
+  getLogger(["fedify", "httpsig", "key"]).warn(
+    "The exportJwk() function from @fedify/fedify/httpsig is deprecated.  " +
+      "Please use exportJwk() from @fedify/fedify/sig instead.",
+  );
+  return newExportJwk(key);
+}
+
+/**
+ * Imports a key from JWK format.
+ * @param jwk The key in JWK format.
+ * @param type Which type of key to import, either `"public"`" or `"private"`".
+ * @returns The imported key.
+ * @throws {TypeError} If the key is invalid or unsupported.
+ * @since 0.3.0
+ * @deprecated
+ */
+export function importJwk(
+  jwk: JsonWebKey,
+  type: "public" | "private",
+): Promise<CryptoKey> {
+  getLogger(["fedify", "httpsig", "key"]).warn(
+    "The importJwk() function from @fedify/fedify/httpsig is deprecated.  " +
+      "Please use importJwk() from @fedify/fedify/sig instead.",
+  );
+  return newImportJwk(jwk, type);
 }

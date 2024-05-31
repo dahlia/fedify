@@ -7,6 +7,7 @@
     "./httpsig": "./httpsig/mod.ts",
     "./nodeinfo": "./nodeinfo/mod.ts",
     "./runtime": "./runtime/mod.ts",
+    "./sig": "./sig/mod.ts",
     "./vocab": "./vocab/mod.ts",
     "./webfinger": "./webfinger/mod.ts",
     "./x/denokv": "./x/denokv.ts",

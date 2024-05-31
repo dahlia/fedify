@@ -1,7 +1,7 @@
 import { getLogger } from "@logtape/logtape";
 import type { KvKey, KvStore } from "../federation/kv.ts";
-import { validateCryptoKey } from "../httpsig/key.ts";
-import { sign } from "../httpsig/mod.ts";
+import { signRequest } from "../sig/http.ts";
+import { validateCryptoKey } from "../sig/key.ts";
 
 const logger = getLogger(["fedify", "runtime", "docloader"]);
 
@@ -153,7 +153,7 @@ export function getAuthenticatedDocumentLoader(
   validateCryptoKey(identity.privateKey);
   async function load(url: string): Promise<RemoteDocument> {
     let request = createRequest(url);
-    request = await sign(request, identity.privateKey, identity.keyId);
+    request = await signRequest(request, identity.privateKey, identity.keyId);
     logRequest(request);
     const response = await fetch(request, {
       // Since Bun has a bug that ignores the `Request.redirect` option,

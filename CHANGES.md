@@ -47,11 +47,22 @@ To be released.
      -  The signature of the `verify()` function is revamped; it now optionally
         takes a `VerifyOptions` object as the second parameter.
 
+ -  Renamed the `@fedify/fedify/httpsig` module to `@fedify/fedify/sig`, and
+    also:
+
+     -  Deprecated `sign()` function.  Use `signRequest()` instead.
+     -  Deprecated `verify()` function.  Use `verifyRequest()` instead.
+     -  Deprecated `VerifyOptions` interface.  Use `VerifyRequestOptions`
+        instead.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
      -  `["fedify", "federation", "actor"]`
      -  `["fedify", "federation", "http"]`
+     -  `["fedify", "sig", "http"]`
+     -  `["fedify", "sig", "key"]`
+     -  `["fedify", "sig", "owner"]`
 
 [#48]: https://github.com/dahlia/fedify/issues/48
 [#52]: https://github.com/dahlia/fedify/issues/52

@@ -41,6 +41,7 @@
     "@preact/signals": "https://esm.sh/*@preact/signals@1.2.3",
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.6.0",
     "@std/dotenv/load": "jsr:@std/dotenv@^0.224.0/load",
+    "@fedify/fedify/sig": "../../sig/mod.ts",
     "markdown-it": "npm:markdown-it@^14.1.0",
     "preact": "https://esm.sh/preact@10.20.2",
     "preact/": "https://esm.sh/preact@10.20.2/",

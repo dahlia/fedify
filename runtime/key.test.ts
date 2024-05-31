@@ -1,5 +1,5 @@
 import { assertEquals } from "@std/assert";
-import { exportJwk, importJwk } from "../httpsig/key.ts";
+import { exportJwk, importJwk } from "../sig/key.ts";
 import { exportSpki, importSpki } from "./key.ts";
 
 // cSpell: disable
