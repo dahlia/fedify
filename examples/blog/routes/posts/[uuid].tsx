@@ -1,19 +1,13 @@
 import { Handler, PageProps } from "$fresh/server.ts";
 import { Head } from "$fresh/runtime.ts";
-import { respondWithObjectIfAcceptable } from "@fedify/fedify/federation";
 import Comment from "../../components/Comment.tsx";
 import Post from "../../components/Post.tsx";
-import { federation } from "../../federation/mod.ts";
 import { Blog, getBlog } from "../../models/blog.ts";
 import {
   type Comment as CommentModel,
   getComments,
 } from "../../models/comment.ts";
-import {
-  getPost,
-  type Post as PostModel,
-  toArticle,
-} from "../../models/post.ts";
+import { getPost, type Post as PostModel } from "../../models/post.ts";
 import { countFollowers } from "../../models/follower.ts";
 
 export interface PostPageData {
