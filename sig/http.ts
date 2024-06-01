@@ -53,7 +53,7 @@ export async function signRequest(
     privateKey,
     new TextEncoder().encode(message),
   );
-  const sigHeader = `keyId="${keyId.href}",headers="${
+  const sigHeader = `keyId="${keyId.href}",algorithm="rsa-sha256",headers="${
     headerNames.join(" ")
   }",signature="${encodeBase64(signature)}"`;
   headers.set("Signature", sigHeader);

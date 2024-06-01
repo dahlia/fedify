@@ -55,6 +55,10 @@ To be released.
      -  Deprecated `VerifyOptions` interface.  Use `VerifyRequestOptions`
         instead.
 
+ -  When signing an HTTP request, the `algorithm` parameter is now added to
+    the `Signature` header.  This change improves the compatibility with
+    Misskey and other implementations that require the `algorithm` parameter.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 

@@ -95,6 +95,7 @@ export const command = new Command()
           { handle: "i" },
           actor,
           new Follow({
+            id: new URL(`#follows/${actor.id?.href}`, fedCtx.getActorUri("i")),
             actor: fedCtx.getActorUri("i"),
             object: actor.id,
           }),
