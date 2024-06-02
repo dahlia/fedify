@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.9.0
 -------------
 
-To be released.
+Released on June 2, 2024.
 
  -  Added `Tombstone` class to Activity Vocabulary API.
 
