@@ -16,6 +16,7 @@
     "@fedify/fedify/webfinger": "../../webfinger/mod.ts",
     "@fedify/fedify/x/fresh": "../../x/fresh.ts",
     "@fedify/fedify/x/denokv": "../../x/denokv.ts",
+    "@hongminhee/x-forwarded-fetch": "jsr:@hongminhee/x-forwarded-fetch@^0.2.0",
     "markdown-it": "npm:markdown-it@^14.1.0",
     "preact": "https://esm.sh/preact@10.20.2",
     "preact/": "https://esm.sh/preact@10.20.2/",

@@ -3,7 +3,7 @@ import {
   exportJwk,
   generateCryptoKeyPair,
   importJwk,
-} from "@fedify/fedify/httpsig";
+} from "@fedify/fedify/sig";
 import { hash, verify } from "scrypt";
 import { openKv } from "./kv.ts";
 

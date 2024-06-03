@@ -35,7 +35,7 @@ Usage
 Start the project with the following command:
 
 ~~~~ sh
-deno task start
+deno task preview
 ~~~~
 
 The above command will start the server on port 8000.  You can access the blog

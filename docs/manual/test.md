@@ -41,23 +41,18 @@ that help you do that:
 > cannot recognize if it is behind a reverse proxy, and if the reverse proxy
 > is in HTTPS.  So the federation server will generate HTTP URLs in the
 > ActivityPub messages, which cause interoperability issues.[^1]  In this case,
-> you can use the [`treatHttps` option](./federation.md#treathttps) in
-> the `new Federation()` constructor to force the federation server to generate
-> HTTPS URLs:
+> you can use the [x-forwarded-fetch] middleware in front of
+> the `Federation.fetch()` method so that the `Federation` object recognizes
+> the proper domain name and protocol of the incoming HTTP requests.
 >
-> ~~~~ typescript
-> import { Federation } from "@fedify/fedify";
->
-> const federation = new Federation({
->   // ...
->   treatHttps: true,   // [!code highlight]
-> });
-> ~~~~
-
+> For more information, see [*How the <code>Federation</code> object recognizes
+> the domain name* section](./federation.md#how-the-federation-object-recognizes-the-domain-name)
+> in the *Federation* document.
 
 [^1]: According to the [*Object Identifiers* section][1] in the ActivityPub
       specification, the public dereferenceable URIs should use HTTPS URIs.
 
+[x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 [1]: https://www.w3.org/TR/activitypub/#obj-id
 
 <!-- cSpell: ignore serveo tailscale -->

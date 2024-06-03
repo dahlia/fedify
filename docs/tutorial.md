@@ -545,14 +545,59 @@ a public URL that you can use to access your server from the internet.
 However, since ngrok is a reverse proxy between the public internet and your
 server, the server still is not aware the fact that it is exposed to the public
 internet through HTTPS.  In order to make the server aware of it, you need to
-set the `treatHttps` property to `true` in the `Federation` object:
+place a [x-forwarded-fetch] middleware in front of the `Federation`.
 
-~~~~ typescript
-const federation = new Federation<void>({
-  kv: new MemoryKvStore(),
-  treatHttps: true,  // Treat HTTP requests as HTTPS // [!code highlight]
+To do this, you need to install the package:
+
+::: code-group
+
+~~~~ sh [Deno]
+deno add @hongminhee/x-forwarded-fetch
+~~~~
+
+~~~~ sh [Node.js]
+npm install x-forwarded-fetch
+~~~~
+
+~~~~ sh [Bun]
+bun add x-forwarded-fetch
+~~~~
+
+:::
+
+Then, import the package and place the `behindProxy()` middleware in front of
+the `Federation.fetch()` method:
+
+::: code-group
+
+~~~~ typescript{1,4} [Deno]
+import { behindProxy } from "@hongminhee/x-forwarded-fetch";
+
+Deno.serve(
+  behindProxy(request => federation.fetch(request, { contextData: undefined }))
+);
+~~~~
+
+~~~~ typescript{2,6} [Node.js]
+import { serve } from "@hono/node-server";
+import { behindProxy } from "x-forwarded-fetch";
+
+serve({
+  port: 8000,
+  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined }),
 });
 ~~~~
+
+~~~~ typescript{1,5} [Bun]
+import { behindProxy } from "x-forwarded-fetch";
+
+Bun.serve({
+  port: 8000,
+  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined })),
+});
+~~~~
+
+:::
 
 To restart the server, you need to stop the server by pressing <kbd>^C</kbd> and
 then run the server again:
@@ -574,7 +619,7 @@ bun server.ts
 :::
 
 Let's query the actor *me* again, but this time with the public URL (change
-the domain name to the one ngrok provides you):
+the domain name to the one ngrok provides you):[^3]
 
 ~~~~ sh
 curl https://79e8-125-129-0-52.ngrok-free.app/.well-known/webfinger?resource=acct:me@7d2d-125-129-0-52.ngrok-free.app
@@ -592,6 +637,7 @@ ActivityPub servers because our server doesn't accept follow requests yet.
 
 [ngrok]: https://ngrok.com/
 [ngrok quickstart]: https://ngrok.com/docs/getting-started/
+[x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 
 Inbox listener

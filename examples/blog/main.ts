@@ -6,8 +6,18 @@
 
 import "@std/dotenv/load";
 
-import { start } from "$fresh/server.ts";
+import { ServerContext } from "$fresh/server.ts";
 import manifest from "./fresh.gen.ts";
 import config from "./fresh.config.ts";
+import { behindProxy } from "@hongminhee/x-forwarded-fetch";
 
-await start(manifest, config);
+const ctx = await ServerContext.fromManifest(manifest, {
+  ...config,
+  dev: false,
+});
+const handler = behindProxy(ctx.handler());
+
+Deno.serve({
+  handler,
+  ...config.server,
+});

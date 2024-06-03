@@ -42,6 +42,7 @@
     "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.6.0",
     "@std/dotenv/load": "jsr:@std/dotenv@^0.224.0/load",
     "@fedify/fedify/sig": "../../sig/mod.ts",
+    "@hongminhee/x-forwarded-fetch": "jsr:@hongminhee/x-forwarded-fetch@^0.2.0",
     "markdown-it": "npm:markdown-it@^14.1.0",
     "preact": "https://esm.sh/preact@10.20.2",
     "preact/": "https://esm.sh/preact@10.20.2/",

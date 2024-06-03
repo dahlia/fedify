@@ -133,23 +133,80 @@ load remote JSON-LD contexts.  The type of the function is the same as the
 [*Document loader vs. context loader*
 section](./context.md#document-loader-vs-context-loader)).
 
-### `treatHttps`
 
-Whether to treat HTTP requests as HTTPS.  This affects how URLs are generated
-as well.  According to the [*Object Identifiers* section][1] in the ActivityPub
-specification, the public dereferenceable URIs should use HTTPS URIs, so this
-option is useful for testing and local development, which is normally done
-over HTTP.
+How the `Federation` object recognizes the domain name
+------------------------------------------------------
 
-However, it should be disabled in production.  Turned off by default.
+The `Federation` object recognizes the domain name of the server by
+the [`Host`] header of the incoming HTTP requests.  The `Host` header is
+a standard HTTP header that contains the domain name of the server.
+
+However, the `Host` header is not always reliable because it can be
+bypassed by a reverse proxy or a load balancer.  If you use a reverse
+proxy or a load balancer, you should configure it to pass the original
+`Host` header to the server.
+
+Or you can make the `Federation` object recognize the domain name by looking
+at the [`X-Forwarded-Host`] header instead of the `Host` header using
+the [x-forwarded-fetch] middleware.  To use the `x-forwarded-fetch` middleware,
+install the package:
+
+::: code-group
+
+~~~~ sh [Deno]
+deno add @hongminhee/x-forwarded-fetch
+~~~~
+
+~~~~ sh [Node.js]
+npm install x-forwarded-fetch
+~~~~
+
+~~~~ sh [Bun]
+bun add x-forwarded-fetch
+~~~~
+
+:::
+
+Then, import the package and place the `behindProxy()` middleware in front of
+the `Federation.fetch()` method:
+
+::: code-group
+
+~~~~ typescript{1,4} [Deno]
+import { behindProxy } from "@hongminhee/x-forwarded-fetch";
+
+Deno.serve(
+  behindProxy(request => federation.fetch(request, { contextData: undefined }))
+);
+~~~~
+
+~~~~ typescript{2,5} [Node.js]
+import { serve } from "@hono/node-server";
+import { behindProxy } from "x-forwarded-fetch";
+
+serve({
+  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined }),
+});
+~~~~
+
+~~~~ typescript{1,4} [Bun]
+import { behindProxy } from "x-forwarded-fetch";
+
+Bun.serve({
+  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined })),
+});
+~~~~
+
+:::
 
 > [!TIP]
-> This option is usually used together with tunneling services like [ngrok]
-> in testing and local development.  See also the [*Exposing a local server
-> to the public* section](./test.md#exposing-a-local-server-to-the-public).
+> When your `Federation` object is integrated with a web framework, you should
+> place the `behindProxy()` middleware in front of the framework's `fetch()`
+> method, not the `Federation.fetch()` method.
 
-[1]: https://www.w3.org/TR/activitypub/#obj-id
-[ngrok]: https://ngrok.com/
+[`Host`]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Host
+[`X-Forwarded-Host`]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host
+[x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 
 Integrating with web frameworks

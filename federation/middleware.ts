@@ -95,6 +95,14 @@ export interface FederationParameters {
    * Whether to treat HTTP requests as HTTPS.  This is useful for testing and
    * local development.  However, it must be disabled in production.
    * Turned off by default.
+   *
+   * Note that this option is deprecated and will be removed in a future
+   * release.  Instead, use the [x-forwarded-fetch] library to recognize
+   * the `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
+   *
+   * [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
+   *
+   * @deprecated
    */
   treatHttps?: boolean;
 
@@ -223,6 +231,14 @@ export class Federation<TContextData> {
         getAuthenticatedDocumentLoader;
     this.#onOutboxError = onOutboxError;
     this.#treatHttps = treatHttps ?? false;
+    if (treatHttps) {
+      getLogger(["fedify", "federation"]).warn(
+        "The treatHttps option is deprecated and will be removed in " +
+          "a future release.  Instead, use the x-forwarded-fetch library" +
+          " to recognize the X-Forwarded-Host and X-Forwarded-Proto " +
+          "headers.  See also: <https://github.com/dahlia/x-forwarded-fetch>.",
+      );
+    }
     this.#signatureTimeWindow = signatureTimeWindow ?? { minutes: 1 };
     this.#backoffSchedule = backoffSchedule ?? [
       3_000,

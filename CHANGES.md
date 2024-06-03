@@ -8,6 +8,12 @@ Version 0.10.0
 
 To be released.
 
+ -  Deprecated `treatHttps` option in `FederationParameters` interface.
+    Instead, use the [x-forwarded-fetch] library to recognize the
+    `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
+
+[x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
+
 
 Version 0.9.0
 -------------

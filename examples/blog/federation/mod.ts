@@ -39,10 +39,6 @@ export const federation = new Federation<void>({
 
   // The following message queue is used for maintaining outgoing activities:
   queue: new DenoKvMessageQueue(await openKv()),
-
-  // The following option is useful for local development, as Fresh's dev
-  // server does not support HTTPS:
-  treatHttps: true,
 });
 
 // Registers the actor dispatcher, which is responsible for creating a
