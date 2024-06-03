@@ -1,6 +1,6 @@
 import type { Activity } from "@fedify/fedify";
 import { getStatusText } from "@poppanator/http-constants";
-import { getContextLoader, getDocumentLoader } from "../docloader.ts";
+import { getContextLoader } from "../docloader.ts";
 
 export async function renderRequest(request: Request): Promise<string> {
   request = request.clone();

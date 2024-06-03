@@ -12,6 +12,13 @@ To be released.
     Instead, use the [x-forwarded-fetch] library to recognize the
     `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
 
+ -  Ephemeral actors and inboxes that the `fedify inbox` command spawns are
+    now more interoperable with other ActivityPub implementations.
+
+     -  Ephemeral actors now have the following properties: `summary`,
+        `following`, `followers`, `outbox`, `manuallyApprovesFollowers`, and
+        `url`.
+
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 

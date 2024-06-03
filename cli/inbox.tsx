@@ -17,6 +17,7 @@ import {
   isActor,
   lookupObject,
   MemoryKvStore,
+  type Recipient,
 } from "@fedify/fedify";
 import { getLogger } from "@logtape/logtape";
 import { Hono } from "hono";
@@ -124,16 +125,22 @@ federation
       id: ctx.getActorUri(handle),
       preferredUsername: handle,
       name: "Fedify Ephemeral Inbox",
+      summary: "An ephemeral ActivityPub inbox for testing purposes.",
       inbox: ctx.getInboxUri(handle),
       endpoints: new Endpoints({
         sharedInbox: ctx.getInboxUri(),
       }),
+      followers: ctx.getFollowersUri(handle),
+      following: ctx.getFollowingUri(handle),
+      outbox: ctx.getOutboxUri(handle),
+      manuallyApprovesFollowers: true,
       published: time,
       icon: new Image({
         url: new URL("https://fedify.dev/logo.png"),
         mediaType: "image/png",
       }),
       publicKey: key,
+      url: ctx.getActorUri(handle),
     });
   })
   .setKeyPairDispatcher(async (_ctxData, handle) => {
@@ -162,6 +169,8 @@ async function acceptsFollowFrom(actor: Actor): Promise<boolean> {
   return false;
 }
 
+const followers: Record<string, Actor> = {};
+
 federation
   .setInboxListeners("/{handle}/inbox", "/inbox")
   .on(Activity, async (ctx, activity) => {
@@ -176,7 +185,7 @@ federation
       const follower = await activity.getActor();
       if (!isActor(follower)) return;
       const accepts = await acceptsFollowFrom(follower);
-      if (!accepts) {
+      if (!accepts || activity.id == null) {
         logger.debug("Does not accept follow from {actor}.", {
           actor: follower.id?.href,
         });
@@ -185,6 +194,7 @@ federation
       logger.debug("Accepting follow from {actor}.", {
         actor: follower.id?.href,
       });
+      followers[activity.id.href] = follower;
       await ctx.sendActivity(
         { handle },
         follower,
@@ -195,6 +205,29 @@ federation
       );
     }
   });
+
+federation
+  .setFollowersDispatcher("/{handle}/followers", (_ctx, handle) => {
+    if (handle !== "i") return null;
+    const items: Recipient[] = [];
+    for (const follower of Object.values(followers)) {
+      if (follower.id == null) continue;
+      items.push(follower);
+    }
+    return { items };
+  })
+  .setCounter((_ctx, handle) => {
+    if (handle !== "i") return null;
+    return Object.keys(followers).length;
+  });
+
+federation
+  .setFollowingDispatcher("/{handle}/following", (_ctx, _handle) => null)
+  .setCounter((_ctx, _handle) => 0);
+
+federation
+  .setOutboxDispatcher("/{handle}/outbox", (_ctx, _handle) => null)
+  .setCounter((_ctx, _handle) => 0);
 
 function printServerInfo(fedCtx: Context<number>): void {
   new Table(
