@@ -1,7 +1,11 @@
 import { assertEquals } from "@std/assert";
 import { signRequest, verifyRequest } from "./http.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { privateKey2, publicKey1, publicKey2 } from "../testing/keys.ts";
+import {
+  rsaPrivateKey2,
+  rsaPublicKey1,
+  rsaPublicKey2,
+} from "../testing/keys.ts";
 
 Deno.test("signRequest()", async () => {
   const request = new Request("https://example.com/", {
@@ -14,7 +18,7 @@ Deno.test("signRequest()", async () => {
   });
   const signed = await signRequest(
     request,
-    privateKey2,
+    rsaPrivateKey2,
     new URL("https://example.com/key2"),
   );
   assertEquals(
@@ -22,7 +26,7 @@ Deno.test("signRequest()", async () => {
       contextLoader: mockDocumentLoader,
       documentLoader: mockDocumentLoader,
     }),
-    publicKey2,
+    rsaPublicKey2,
   );
 });
 
@@ -56,7 +60,7 @@ Deno.test("verify()", async () => {
   );
   assertEquals(
     key,
-    publicKey1,
+    rsaPublicKey1,
   );
 
   assertEquals(

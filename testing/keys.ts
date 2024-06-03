@@ -1,6 +1,6 @@
 import { CryptographicKey } from "../vocab/vocab.ts";
 
-export const publicKey1 = new CryptographicKey({
+export const rsaPublicKey1 = new CryptographicKey({
   id: new URL("https://example.com/key"),
   owner: new URL("https://example.com/person"),
   publicKey: await crypto.subtle.importKey(
@@ -29,7 +29,7 @@ export const publicKey1 = new CryptographicKey({
   ),
 });
 
-export const privateKey2 = await crypto.subtle.importKey(
+export const rsaPrivateKey2 = await crypto.subtle.importKey(
   "jwk",
   {
     kty: "RSA",
@@ -72,7 +72,7 @@ export const privateKey2 = await crypto.subtle.importKey(
   ["sign"],
 );
 
-export const publicKey2 = new CryptographicKey({
+export const rsaPublicKey2 = new CryptographicKey({
   id: new URL("https://example.com/key2"),
   publicKey: await crypto.subtle.importKey(
     "jwk",
@@ -97,7 +97,7 @@ export const publicKey2 = new CryptographicKey({
   ),
 });
 
-export const privateKey3 = await crypto.subtle.importKey(
+export const rsaPrivateKey3 = await crypto.subtle.importKey(
   "jwk",
   {
     kty: "RSA",
@@ -160,7 +160,7 @@ export const privateKey3 = await crypto.subtle.importKey(
   ["sign"],
 );
 
-export const publicKey3 = new CryptographicKey({
+export const rsaPublicKey3 = new CryptographicKey({
   id: new URL("https://example.com/key3"),
   owner: new URL("https://example.com/person2"),
   publicKey: await crypto.subtle.importKey(
@@ -190,3 +190,36 @@ export const publicKey3 = new CryptographicKey({
     ["verify"],
   ),
 });
+
+export const ed25519PrivateKey = await crypto.subtle.importKey(
+  "jwk",
+  {
+    crv: "Ed25519",
+    ext: true,
+    key_ops: ["sign"],
+    kty: "OKP",
+    // cSpell: disable
+    d: "LledL195fP9TQGQrkE2l2Y2k48UvqCzYI9M1zXyh7zQ",
+    x: "LR8epAGDe-cVq5p2Tx49CCfphpk1rNhkNoY9i-XEUfg",
+    // cSpell: enable
+  },
+  "Ed25519",
+  true,
+  ["sign"],
+);
+
+export const ed25519PublicKey = await crypto.subtle.importKey(
+  "jwk",
+  {
+    crv: "Ed25519",
+    ext: true,
+    key_ops: ["verify"],
+    kty: "OKP",
+    // cSpell: disable
+    x: "LR8epAGDe-cVq5p2Tx49CCfphpk1rNhkNoY9i-XEUfg",
+    // cSpell: enable
+  },
+  "Ed25519",
+  true,
+  ["verify"],
+);

@@ -1,7 +1,7 @@
 import { assert, assertEquals, assertFalse } from "@std/assert";
 import { doesActorOwnKey, getKeyOwner } from "./owner.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { publicKey1, publicKey2 } from "../testing/keys.ts";
+import { rsaPublicKey1, rsaPublicKey2 } from "../testing/keys.ts";
 import { lookupObject } from "../vocab/lookup.ts";
 import { Create } from "../vocab/vocab.ts";
 
@@ -11,14 +11,14 @@ Deno.test("doesActorOwnKey()", async () => {
     contextLoader: mockDocumentLoader,
   };
   const activity = new Create({ actor: new URL("https://example.com/person") });
-  assert(await doesActorOwnKey(activity, publicKey1, options));
-  assert(await doesActorOwnKey(activity, publicKey2, options));
+  assert(await doesActorOwnKey(activity, rsaPublicKey1, options));
+  assert(await doesActorOwnKey(activity, rsaPublicKey2, options));
 
   const activity2 = new Create({
     actor: new URL("https://example.com/hong-gildong"),
   });
-  assertFalse(await doesActorOwnKey(activity2, publicKey1, options));
-  assertFalse(await doesActorOwnKey(activity2, publicKey2, options));
+  assertFalse(await doesActorOwnKey(activity2, rsaPublicKey1, options));
+  assertFalse(await doesActorOwnKey(activity2, rsaPublicKey2, options));
 });
 
 Deno.test("getKeyOwner()", async () => {
@@ -44,7 +44,7 @@ Deno.test("getKeyOwner()", async () => {
     await lookupObject("https://example.com/person", options),
   );
 
-  const owner3 = await getKeyOwner(publicKey1, options);
+  const owner3 = await getKeyOwner(rsaPublicKey1, options);
   assertEquals(owner3, owner2);
 
   const noOwner = await getKeyOwner(

@@ -14,10 +14,10 @@ import {
 } from "../runtime/docloader.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
-  privateKey2,
-  privateKey3,
-  publicKey2,
-  publicKey3,
+  rsaPrivateKey2,
+  rsaPrivateKey3,
+  rsaPublicKey2,
+  rsaPublicKey3,
 } from "../testing/keys.ts";
 import { Create, Note, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
@@ -105,8 +105,8 @@ Deno.test("Federation.createContext()", async (t) => {
     federation
       .setActorDispatcher("/users/{handle}", () => new Person({}))
       .setKeyPairDispatcher(() => ({
-        privateKey: privateKey2,
-        publicKey: publicKey2.publicKey!,
+        privateKey: rsaPrivateKey2,
+        publicKey: rsaPublicKey2.publicKey!,
       }));
     assertEquals(
       ctx.getActorUri("handle"),
@@ -127,7 +127,7 @@ Deno.test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       await ctx.getActorKey("handle"),
-      publicKey2.clone({
+      rsaPublicKey2.clone({
         id: new URL("https://example.com/users/handle#main-key"),
         owner: new URL("https://example.com/users/handle"),
       }),
@@ -140,7 +140,7 @@ Deno.test("Federation.createContext()", async (t) => {
     });
     const loader2 = ctx.getDocumentLoader({
       keyId: new URL("https://example.com/key2"),
-      privateKey: privateKey2,
+      privateKey: rsaPrivateKey2,
     });
     assertEquals(await loader2("https://example.com/object"), {
       contextUrl: null,
@@ -269,36 +269,36 @@ Deno.test("Federation.createContext()", async (t) => {
 
     const signedReq = await signRequest(
       new Request("https://example.com/"),
-      privateKey2,
-      publicKey2.id!,
+      rsaPrivateKey2,
+      rsaPublicKey2.id!,
     );
     const signedCtx = federation.createContext(signedReq, 456);
     assertEquals(signedCtx.request, signedReq);
     assertEquals(signedCtx.url, new URL("https://example.com/"));
     assertEquals(signedCtx.data, 456);
-    assertEquals(await signedCtx.getSignedKey(), publicKey2);
+    assertEquals(await signedCtx.getSignedKey(), rsaPublicKey2);
     assertEquals(await signedCtx.getSignedKeyOwner(), null);
     // Multiple calls should return the same result:
-    assertEquals(await signedCtx.getSignedKey(), publicKey2);
+    assertEquals(await signedCtx.getSignedKey(), rsaPublicKey2);
     assertEquals(await signedCtx.getSignedKeyOwner(), null);
 
     const signedReq2 = await signRequest(
       new Request("https://example.com/"),
-      privateKey3,
-      publicKey3.id!,
+      rsaPrivateKey3,
+      rsaPublicKey3.id!,
     );
     const signedCtx2 = federation.createContext(signedReq2, 456);
     assertEquals(signedCtx2.request, signedReq2);
     assertEquals(signedCtx2.url, new URL("https://example.com/"));
     assertEquals(signedCtx2.data, 456);
-    assertEquals(await signedCtx2.getSignedKey(), publicKey3);
+    assertEquals(await signedCtx2.getSignedKey(), rsaPublicKey3);
     const expectedOwner = await lookupObject(
       "https://example.com/person2",
       { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
     );
     assertEquals(await signedCtx2.getSignedKeyOwner(), expectedOwner);
     // Multiple calls should return the same result:
-    assertEquals(await signedCtx2.getSignedKey(), publicKey3);
+    assertEquals(await signedCtx2.getSignedKey(), rsaPublicKey3);
     assertEquals(await signedCtx2.getSignedKeyOwner(), expectedOwner);
 
     federation.setActorDispatcher(
@@ -344,7 +344,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
   mf.mock("GET@/key2", async () => {
     return new Response(
       JSON.stringify(
-        await publicKey2.toJsonLd({ contextLoader: mockDocumentLoader }),
+        await rsaPublicKey2.toJsonLd({ contextLoader: mockDocumentLoader }),
       ),
       { headers: { "Content-Type": "application/activity+json" } },
     );
@@ -399,8 +399,8 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         (_, handle) => handle === "john" ? new Person({}) : null,
       )
       .setKeyPairDispatcher(() => ({
-        privateKey: privateKey2,
-        publicKey: publicKey2.publicKey!,
+        privateKey: rsaPrivateKey2,
+        publicKey: rsaPublicKey2.publicKey!,
       }));
     response = await federation.fetch(
       new Request("https://example.com/inbox", { method: "POST" }),
@@ -435,7 +435,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     });
     request = await signRequest(
       request,
-      privateKey2,
+      rsaPrivateKey2,
       new URL("https://example.com/key2"),
     );
     response = await federation.fetch(request, { contextData: undefined });
@@ -460,7 +460,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     });
     request = await signRequest(
       request,
-      privateKey2,
+      rsaPrivateKey2,
       new URL("https://example.com/key2"),
     );
     response = await federation.fetch(request, { contextData: undefined });
@@ -493,8 +493,8 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         (_, handle) => handle === "john" ? new Person({}) : null,
       )
       .setKeyPairDispatcher(() => ({
-        privateKey: privateKey2,
-        publicKey: publicKey2.publicKey!,
+        privateKey: rsaPrivateKey2,
+        publicKey: rsaPublicKey2.publicKey!,
       }));
     const errors: unknown[] = [];
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
@@ -517,7 +517,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     });
     request = await signRequest(
       request,
-      privateKey2,
+      rsaPrivateKey2,
       new URL("https://example.com/key2"),
     );
     const response = await federation.fetch(request, {

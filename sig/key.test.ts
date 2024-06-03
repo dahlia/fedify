@@ -1,5 +1,5 @@
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
-import { privateKey2, publicKey2 } from "../testing/keys.ts";
+import { rsaPrivateKey2, rsaPublicKey2 } from "../testing/keys.ts";
 import {
   exportJwk,
   generateCryptoKeyPair,
@@ -23,6 +23,16 @@ Deno.test("validateCryptoKey()", async () => {
   validateCryptoKey(pkcs1v15.publicKey, "public");
   validateCryptoKey(pkcs1v15.publicKey);
 
+  const ed25519 = await crypto.subtle.generateKey(
+    "Ed25519",
+    true,
+    ["sign", "verify"],
+  ) as CryptoKeyPair;
+  validateCryptoKey(ed25519.privateKey, "private");
+  validateCryptoKey(ed25519.privateKey);
+  validateCryptoKey(ed25519.publicKey, "public");
+  validateCryptoKey(ed25519.publicKey);
+
   assertThrows(
     () => validateCryptoKey(pkcs1v15.privateKey, "public"),
     TypeError,
@@ -30,6 +40,16 @@ Deno.test("validateCryptoKey()", async () => {
   );
   assertThrows(
     () => validateCryptoKey(pkcs1v15.publicKey, "private"),
+    TypeError,
+    "The key is not a private key.",
+  );
+  assertThrows(
+    () => validateCryptoKey(ed25519.privateKey, "public"),
+    TypeError,
+    "The key is not a public key.",
+  );
+  assertThrows(
+    () => validateCryptoKey(ed25519.publicKey, "private"),
     TypeError,
     "The key is not a private key.",
   );
@@ -45,7 +65,7 @@ Deno.test("validateCryptoKey()", async () => {
   assertThrows(
     () => validateCryptoKey(ecdsa.publicKey),
     TypeError,
-    "only RSASSA-PKCS1-v1_5",
+    "only RSASSA-PKCS1-v1_5 and Ed25519",
   );
 
   const pkcs1v15Sha512 = await crypto.subtle.generateKey(
@@ -61,17 +81,48 @@ Deno.test("validateCryptoKey()", async () => {
   assertThrows(
     () => validateCryptoKey(pkcs1v15Sha512.privateKey),
     TypeError,
-    "hash algorithm must be SHA-256",
+    "hash algorithm for RSASSA-PKCS1-v1_5 keys must be SHA-256",
   );
 });
 
 Deno.test("generateCryptoKeyPair()", async () => {
-  const { privateKey, publicKey } = await generateCryptoKeyPair();
-  validateCryptoKey(privateKey, "private");
-  validateCryptoKey(publicKey, "public");
+  const rsaKeyPair = await generateCryptoKeyPair();
+  assertEquals(
+    rsaKeyPair.privateKey.algorithm as RsaHashedKeyAlgorithm,
+    {
+      name: "RSASSA-PKCS1-v1_5",
+      hash: {
+        name: "SHA-256",
+      },
+      modulusLength: 4096,
+      publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+    },
+  );
+  validateCryptoKey(rsaKeyPair.privateKey, "private");
+  validateCryptoKey(rsaKeyPair.publicKey, "public");
+
+  const rsaKeyPair2 = await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
+  assertEquals(
+    rsaKeyPair2.privateKey.algorithm as RsaHashedKeyAlgorithm,
+    {
+      name: "RSASSA-PKCS1-v1_5",
+      hash: {
+        name: "SHA-256",
+      },
+      modulusLength: 4096,
+      publicExponent: new Uint8Array([0x01, 0x00, 0x01]),
+    },
+  );
+  validateCryptoKey(rsaKeyPair2.privateKey, "private");
+  validateCryptoKey(rsaKeyPair2.publicKey, "public");
+
+  const ed25519KeyPair = await generateCryptoKeyPair("Ed25519");
+  assertEquals(ed25519KeyPair.privateKey.algorithm, { name: "Ed25519" });
+  validateCryptoKey(ed25519KeyPair.privateKey, "private");
+  validateCryptoKey(ed25519KeyPair.publicKey, "public");
 });
 
-const publicJwk: JsonWebKey = {
+const rsaPublicJwk: JsonWebKey = {
   alg: "RS256",
   kty: "RSA",
   // cSpell: disable
@@ -86,7 +137,7 @@ const publicJwk: JsonWebKey = {
   ext: true,
 };
 
-const privateJwk: JsonWebKey = {
+const rsaPrivateJwk: JsonWebKey = {
   alg: "RS256",
   kty: "RSA",
   // cSpell: disable
@@ -122,13 +173,16 @@ const privateJwk: JsonWebKey = {
 };
 
 Deno.test("exportJwk()", async () => {
-  assertEquals(await exportJwk(privateKey2), privateJwk);
-  assertEquals(await exportJwk(publicKey2.publicKey!), publicJwk);
+  assertEquals(await exportJwk(rsaPrivateKey2), rsaPrivateJwk);
+  assertEquals(await exportJwk(rsaPublicKey2.publicKey!), rsaPublicJwk);
 });
 
 Deno.test("importJwk()", async () => {
-  assertEquals(await importJwk(privateJwk, "private"), privateKey2);
-  assertEquals(await importJwk(publicJwk, "public"), publicKey2.publicKey!);
-  assertRejects(() => importJwk(publicJwk, "private"));
-  assertRejects(() => importJwk(privateJwk, "public"));
+  assertEquals(await importJwk(rsaPrivateJwk, "private"), rsaPrivateKey2);
+  assertEquals(
+    await importJwk(rsaPublicJwk, "public"),
+    rsaPublicKey2.publicKey!,
+  );
+  assertRejects(() => importJwk(rsaPublicJwk, "private"));
+  assertRejects(() => importJwk(rsaPrivateJwk, "public"));
 });

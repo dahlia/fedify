@@ -1,7 +1,7 @@
 import { assert, assertEquals, assertFalse } from "@std/assert";
 import { createRequestContext } from "../testing/context.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { publicKey2 } from "../testing/keys.ts";
+import { rsaPublicKey2 } from "../testing/keys.ts";
 import {
   type Activity,
   Create,
@@ -221,7 +221,7 @@ Deno.test("handleActor()", async () => {
   onUnauthorizedCalled = null;
   context = createRequestContext<void>({
     ...context,
-    getSignedKey: () => Promise.resolve(publicKey2),
+    getSignedKey: () => Promise.resolve(rsaPublicKey2),
     getSignedKeyOwner: () => Promise.resolve(new Person({})),
   });
   response = await handleActor(
@@ -466,7 +466,7 @@ Deno.test("handleObject()", async () => {
   onUnauthorizedCalled = null;
   context = createRequestContext<void>({
     ...context,
-    getSignedKey: () => Promise.resolve(publicKey2),
+    getSignedKey: () => Promise.resolve(rsaPublicKey2),
     getSignedKeyOwner: () => Promise.resolve(new Person({})),
   });
   response = await handleObject(
@@ -689,7 +689,7 @@ Deno.test("handleCollection()", async () => {
   onUnauthorizedCalled = null;
   context = createRequestContext<void>({
     ...context,
-    getSignedKey: () => Promise.resolve(publicKey2),
+    getSignedKey: () => Promise.resolve(rsaPublicKey2),
     getSignedKeyOwner: () => Promise.resolve(new Person({})),
   });
   response = await handleCollection(

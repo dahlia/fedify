@@ -8,6 +8,13 @@ Version 0.10.0
 
 To be released.
 
+ -  Besides RSA-PKCS#1-v1.5, Fedify now supports Ed25519 for signing and
+    verifying the activities.  [[#55]]
+
+     -  Added an optional parameter to `generateCryptoKeyPair()` function,
+        `algorithm`, which can be either `"RSASSA-PKCS1-v1_5"` or `"Ed25519"`.
+     -  The `importJwk()` function now accepts Ed25519 keys.
+
  -  Deprecated `treatHttps` option in `FederationParameters` interface.
     Instead, use the [x-forwarded-fetch] library to recognize the
     `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
@@ -19,6 +26,7 @@ To be released.
         `following`, `followers`, `outbox`, `manuallyApprovesFollowers`, and
         `url`.
 
+[#55]: https://github.com/dahlia/fedify/issues/55
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 

@@ -3,7 +3,7 @@ import * as mf from "mock_fetch";
 import { MemoryKvStore } from "../federation/kv.ts";
 import { verify } from "../httpsig/mod.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { privateKey2 } from "../testing/keys.ts";
+import { rsaPrivateKey2 } from "../testing/keys.ts";
 import {
   fetchDocumentLoader,
   FetchError,
@@ -82,7 +82,7 @@ Deno.test("getAuthenticatedDocumentLoader()", async (t) => {
   await t.step("test", async () => {
     const loader = await getAuthenticatedDocumentLoader({
       keyId: new URL("https://example.com/key2"),
-      privateKey: privateKey2,
+      privateKey: rsaPrivateKey2,
     });
     assertEquals(await loader("https://example.com/object"), {
       contextUrl: null,

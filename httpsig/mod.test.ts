@@ -9,7 +9,11 @@ import {
   verify,
 } from "./mod.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { privateKey2, publicKey1, publicKey2 } from "../testing/keys.ts";
+import {
+  rsaPrivateKey2,
+  rsaPublicKey1,
+  rsaPublicKey2,
+} from "../testing/keys.ts";
 import { lookupObject } from "../vocab/lookup.ts";
 import { Create } from "../vocab/vocab.ts";
 import { validateCryptoKey } from "../sig/key.ts";
@@ -25,7 +29,7 @@ Deno.test("sign()", async () => {
   });
   const signed = await sign(
     request,
-    privateKey2,
+    rsaPrivateKey2,
     new URL("https://example.com/key2"),
   );
   assertEquals(
@@ -33,7 +37,7 @@ Deno.test("sign()", async () => {
       contextLoader: mockDocumentLoader,
       documentLoader: mockDocumentLoader,
     }),
-    publicKey2,
+    rsaPublicKey2,
   );
 });
 
@@ -67,7 +71,7 @@ Deno.test("verify()", async () => {
   );
   assertEquals(
     key,
-    publicKey1,
+    rsaPublicKey1,
   );
 
   assertEquals(
@@ -186,14 +190,14 @@ Deno.test("doesActorOwnKey()", async () => {
     contextLoader: mockDocumentLoader,
   };
   const activity = new Create({ actor: new URL("https://example.com/person") });
-  assert(await doesActorOwnKey(activity, publicKey1, options));
-  assert(await doesActorOwnKey(activity, publicKey2, options));
+  assert(await doesActorOwnKey(activity, rsaPublicKey1, options));
+  assert(await doesActorOwnKey(activity, rsaPublicKey2, options));
 
   const activity2 = new Create({
     actor: new URL("https://example.com/hong-gildong"),
   });
-  assertFalse(await doesActorOwnKey(activity2, publicKey1, options));
-  assertFalse(await doesActorOwnKey(activity2, publicKey2, options));
+  assertFalse(await doesActorOwnKey(activity2, rsaPublicKey1, options));
+  assertFalse(await doesActorOwnKey(activity2, rsaPublicKey2, options));
 });
 
 Deno.test("getKeyOwner()", async () => {
@@ -219,7 +223,7 @@ Deno.test("getKeyOwner()", async () => {
     await lookupObject("https://example.com/person", options),
   );
 
-  const owner3 = await getKeyOwner(publicKey1, options);
+  const owner3 = await getKeyOwner(rsaPublicKey1, options);
   assertEquals(owner3, owner2);
 
   const noOwner = await getKeyOwner(
@@ -292,13 +296,13 @@ const privateJwk: JsonWebKey = {
 };
 
 Deno.test("exportJwk()", async () => {
-  assertEquals(await exportJwk(privateKey2), privateJwk);
-  assertEquals(await exportJwk(publicKey2.publicKey!), publicJwk);
+  assertEquals(await exportJwk(rsaPrivateKey2), privateJwk);
+  assertEquals(await exportJwk(rsaPublicKey2.publicKey!), publicJwk);
 });
 
 Deno.test("importJwk()", async () => {
-  assertEquals(await importJwk(privateJwk, "private"), privateKey2);
-  assertEquals(await importJwk(publicJwk, "public"), publicKey2.publicKey!);
+  assertEquals(await importJwk(privateJwk, "private"), rsaPrivateKey2);
+  assertEquals(await importJwk(publicJwk, "public"), rsaPublicKey2.publicKey!);
   assertRejects(() => importJwk(publicJwk, "private"));
   assertRejects(() => importJwk(privateJwk, "public"));
 });

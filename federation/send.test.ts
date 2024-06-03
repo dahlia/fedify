@@ -9,7 +9,7 @@ import * as mf from "mock_fetch";
 import { verifyRequest } from "../sig/http.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { privateKey2, publicKey2 } from "../testing/keys.ts";
+import { rsaPrivateKey2, rsaPublicKey2 } from "../testing/keys.ts";
 import type { Actor } from "../vocab/actor.ts";
 import {
   Activity,
@@ -162,8 +162,8 @@ Deno.test("sendActivity()", async (t) => {
     });
     await sendActivity({
       activity,
-      privateKey: privateKey2,
-      keyId: publicKey2.id!,
+      privateKey: rsaPrivateKey2,
+      keyId: rsaPublicKey2.id!,
       inbox: new URL("https://example.com/inbox"),
       contextLoader: mockDocumentLoader,
       headers: new Headers({
@@ -197,8 +197,8 @@ Deno.test("sendActivity()", async (t) => {
       () =>
         sendActivity({
           activity,
-          privateKey: privateKey2,
-          keyId: publicKey2.id!,
+          privateKey: rsaPrivateKey2,
+          keyId: rsaPublicKey2.id!,
           inbox: new URL("https://example.com/inbox2"),
           contextLoader: mockDocumentLoader,
         }),
@@ -213,8 +213,8 @@ Deno.test("sendActivity()", async (t) => {
       () =>
         sendActivity({
           activity,
-          privateKey: privateKey2,
-          keyId: publicKey2.id!,
+          privateKey: rsaPrivateKey2,
+          keyId: rsaPublicKey2.id!,
           inbox: new URL("https://example.com/inbox2"),
           contextLoader: mockDocumentLoader,
         }),
