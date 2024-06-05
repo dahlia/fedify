@@ -21,12 +21,17 @@ export interface Blog extends BlogBase {
   passwordHash: string;
   privateKey: CryptoKey;
   publicKey: CryptoKey;
+  ed25519PrivateKey: CryptoKey;
+  ed25519PublicKey: CryptoKey;
   published: Temporal.Instant;
 }
 
 export async function setBlog(blog: BlogInput): Promise<void> {
   const kv = await openKv();
-  const { privateKey, publicKey } = await generateCryptoKeyPair();
+  const { privateKey, publicKey } = await generateCryptoKeyPair(
+    "RSASSA-PKCS1-v1_5",
+  );
+  const ed25519KeyPair = await generateCryptoKeyPair("Ed25519");
   await kv.set(["blog"], {
     handle: blog.handle,
     title: blog.title,
@@ -35,6 +40,8 @@ export async function setBlog(blog: BlogInput): Promise<void> {
     passwordHash: hash(blog.password, undefined, "scrypt"),
     privateKey: await exportJwk(privateKey),
     publicKey: await exportJwk(publicKey),
+    ed25519PrivateKey: await exportJwk(ed25519KeyPair.privateKey),
+    ed25519PublicKey: await exportJwk(ed25519KeyPair.publicKey),
   });
 }
 
@@ -42,6 +49,8 @@ export interface BlogInternal extends BlogBase {
   passwordHash: string;
   privateKey: Record<string, unknown>;
   publicKey: Record<string, unknown>;
+  ed25519PrivateKey?: Record<string, unknown>;
+  ed25519PublicKey?: Record<string, unknown>;
   published: string;
 }
 
@@ -49,11 +58,28 @@ export async function getBlog(): Promise<Blog | null> {
   const kv = await openKv();
   const entry = await kv.get<BlogInternal>(["blog"]);
   if (entry == null || entry.value == null) return null;
+  const { value } = entry;
+  let ed25519KeyPair: CryptoKeyPair;
+  if (value.ed25519PrivateKey == null || value.ed25519PublicKey == null) {
+    ed25519KeyPair = await generateCryptoKeyPair("Ed25519");
+    await kv.set(["blog"], {
+      ...value,
+      ed25519PrivateKey: await exportJwk(ed25519KeyPair.privateKey),
+      ed25519PublicKey: await exportJwk(ed25519KeyPair.publicKey),
+    });
+  } else {
+    ed25519KeyPair = {
+      privateKey: await importJwk(value.ed25519PrivateKey, "private"),
+      publicKey: await importJwk(value.ed25519PublicKey, "public"),
+    };
+  }
   return {
-    ...entry.value,
-    privateKey: await importJwk(entry.value.privateKey, "private"),
-    publicKey: await importJwk(entry.value.publicKey, "public"),
-    published: Temporal.Instant.from(entry.value.published),
+    ...value,
+    privateKey: await importJwk(value.privateKey, "private"),
+    publicKey: await importJwk(value.publicKey, "public"),
+    ed25519PrivateKey: ed25519KeyPair.privateKey,
+    ed25519PublicKey: ed25519KeyPair.publicKey,
+    published: Temporal.Instant.from(value.published),
   };
 }
 

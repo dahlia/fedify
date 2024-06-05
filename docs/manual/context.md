@@ -91,7 +91,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
 
 On the other way around, you can use the `~Context.parseUri()` method to
 determine the type of the URI and extract the handle or other values from
-the URI. 
+the URI.
 
 
 Enqueuing an outgoing activity
@@ -123,8 +123,8 @@ For more information about this topic, see the [*Sending activities*
 section](./send.md).
 
 > [!NOTE]
-> The `~Context.sendActivity()` method works only if the [key pair dispatcher]
-> is registered to the `Federation` object.  If the key pair dispatcher is not
+> The `~Context.sendActivity()` method works only if the [key pairs dispatcher]
+> is registered to the `Federation` object.  If the key pairs dispatcher is not
 > registered, the `~Context.sendActivity()` method throws an error.
 
 > [!TIP]
@@ -138,7 +138,7 @@ section](./send.md).
 > Fedify handles the delivery failure by enqueuing the outgoing
 > activity to the actor's outbox and retrying the delivery on failure.
 
-[key pair dispatcher]: ./actor.md#public-key-of-an-actor
+[key pairs dispatcher]: ./actor.md#public-keys-of-an-actor
 
 
 Dispatching objects

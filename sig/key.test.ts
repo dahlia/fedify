@@ -88,7 +88,7 @@ Deno.test("validateCryptoKey()", async () => {
 Deno.test("generateCryptoKeyPair()", async () => {
   const rsaKeyPair = await generateCryptoKeyPair();
   assertEquals(
-    rsaKeyPair.privateKey.algorithm as RsaHashedKeyAlgorithm,
+    rsaKeyPair.privateKey.algorithm as unknown,
     {
       name: "RSASSA-PKCS1-v1_5",
       hash: {
@@ -103,7 +103,7 @@ Deno.test("generateCryptoKeyPair()", async () => {
 
   const rsaKeyPair2 = await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
   assertEquals(
-    rsaKeyPair2.privateKey.algorithm as RsaHashedKeyAlgorithm,
+    rsaKeyPair2.privateKey.algorithm as unknown,
     {
       name: "RSASSA-PKCS1-v1_5",
       hash: {

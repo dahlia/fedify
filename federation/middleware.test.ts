@@ -14,6 +14,8 @@ import {
 } from "../runtime/docloader.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
+  ed25519PrivateKey,
+  ed25519PublicKey,
   rsaPrivateKey2,
   rsaPrivateKey3,
   rsaPublicKey2,
@@ -73,16 +75,17 @@ Deno.test("Federation.createContext()", async (t) => {
       ctx.getHandleFromActorUri(new URL("https://example.com/")),
       null,
     );
+    assertEquals(await ctx.getActorKeyPairs("handle"), []);
     assertEquals(await ctx.getActorKey("handle"), null);
     assertRejects(
       () => ctx.getDocumentLoader({ handle: "handle" }),
       Error,
-      "No actor key pair dispatcher registered",
+      "No actor key pairs dispatcher registered",
     );
     assertRejects(
       () => ctx.sendActivity({ handle: "handle" }, [], new Create({})),
       Error,
-      "No actor key pair dispatcher registered",
+      "No actor key pairs dispatcher registered",
     );
 
     federation.setNodeInfoDispatcher("/nodeinfo/2.1", () => ({
@@ -104,10 +107,16 @@ Deno.test("Federation.createContext()", async (t) => {
 
     federation
       .setActorDispatcher("/users/{handle}", () => new Person({}))
-      .setKeyPairDispatcher(() => ({
-        privateKey: rsaPrivateKey2,
-        publicKey: rsaPublicKey2.publicKey!,
-      }));
+      .setKeyPairsDispatcher(() => [
+        {
+          privateKey: rsaPrivateKey2,
+          publicKey: rsaPublicKey2.publicKey!,
+        },
+        {
+          privateKey: ed25519PrivateKey,
+          publicKey: ed25519PublicKey.publicKey!,
+        },
+      ]);
     assertEquals(
       ctx.getActorUri("handle"),
       new URL("https://example.com/users/handle"),
@@ -124,6 +133,29 @@ Deno.test("Federation.createContext()", async (t) => {
     assertEquals(
       ctx.getHandleFromActorUri(new URL("https://example.com/users/handle")),
       "handle",
+    );
+    assertEquals(
+      await ctx.getActorKeyPairs("handle"),
+      [
+        {
+          keyId: new URL("https://example.com/users/handle#main-key"),
+          privateKey: rsaPrivateKey2,
+          publicKey: rsaPublicKey2.publicKey!,
+          cryptographicKey: rsaPublicKey2.clone({
+            id: new URL("https://example.com/users/handle#main-key"),
+            owner: new URL("https://example.com/users/handle"),
+          }),
+        },
+        {
+          keyId: new URL("https://example.com/users/handle#key-2"),
+          privateKey: ed25519PrivateKey,
+          publicKey: ed25519PublicKey.publicKey!,
+          cryptographicKey: ed25519PublicKey.clone({
+            id: new URL("https://example.com/users/handle#key-2"),
+            owner: new URL("https://example.com/users/handle"),
+          }),
+        },
+      ],
     );
     assertEquals(
       await ctx.getActorKey("handle"),

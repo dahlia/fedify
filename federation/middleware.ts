@@ -16,6 +16,7 @@ import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
   ActorDispatcher,
   ActorKeyPairDispatcher,
+  ActorKeyPairsDispatcher,
   AuthorizePredicate,
   CollectionCounter,
   CollectionCursor,
@@ -29,6 +30,7 @@ import type {
 } from "./callback.ts";
 import { buildCollectionSynchronizationHeader } from "./collection.ts";
 import type {
+  ActorKeyPair,
   Context,
   ParseUriResult,
   RequestContext,
@@ -320,6 +322,43 @@ export class Federation<TContextData> {
     );
   }
 
+  async #getKeyPairsFromHandle(
+    url: URL | string,
+    contextData: TContextData,
+    handle: string,
+  ): Promise<(CryptoKeyPair & { keyId: URL })[]> {
+    const logger = getLogger(["fedify", "federation", "actor"]);
+    if (this.#actorCallbacks?.keyPairsDispatcher == null) {
+      throw new Error("No actor key pairs dispatcher registered.");
+    }
+    const path = this.#router.build("actor", { handle });
+    if (path == null) {
+      logger.warn("No actor dispatcher registered.");
+      return [];
+    }
+    const actorUri = new URL(path, url);
+    const keyPairs = await this.#actorCallbacks?.keyPairsDispatcher(
+      contextData,
+      handle,
+    );
+    if (keyPairs.length < 1) {
+      logger.warn("No key pairs found for actor {handle}.", { handle });
+    }
+    let i = 0;
+    const result = [];
+    for (const keyPair of keyPairs) {
+      result.push({
+        ...keyPair,
+        keyId: new URL(
+          i == 0 ? `#main-key` : `#key-${i + 1}`,
+          actorUri,
+        ),
+      });
+      i++;
+    }
+    return result;
+  }
+
   /**
    * Create a new context.
    * @param baseUrl The base URL of the server.  The `pathname` remains root,
@@ -354,27 +393,32 @@ export class Federation<TContextData> {
       url.search = "";
     }
     if (this.#treatHttps) url.protocol = "https:";
-    const getKeyPairFromHandle = async (handle: string) => {
-      if (this.#actorCallbacks?.keyPairDispatcher == null) {
-        throw new Error("No actor key pair dispatcher registered.");
-      }
-      let keyPair = this.#actorCallbacks?.keyPairDispatcher(
+    const getRsaKeyPairFromHandle = async (handle: string) => {
+      const keyPairs = await this.#getKeyPairsFromHandle(
+        url,
         contextData,
         handle,
       );
-      if (keyPair instanceof Promise) keyPair = await keyPair;
-      if (keyPair == null) {
-        throw new Error(
-          `No key pair found for actor ${JSON.stringify(handle)}`,
-        );
+      for (const keyPair of keyPairs) {
+        const { privateKey } = keyPair;
+        if (
+          privateKey.algorithm.name === "RSASSA-PKCS1-v1_5" &&
+          (privateKey.algorithm as unknown as { hash: { name: string } }).hash
+              .name ===
+            "SHA-256"
+        ) {
+          return keyPair;
+        }
       }
-      return {
-        keyId: new URL(`${context.getActorUri(handle)}#main-key`),
-        privateKey: keyPair.privateKey,
-      };
+      getLogger(["fedify", "federation", "actor"]).warn(
+        "No RSA-PKCS#1-v1.5 SHA-256 key found for actor {handle}.",
+        { handle },
+      );
+      return null;
     };
     const getAuthenticatedDocumentLoader =
       this.#authenticatedDocumentLoaderFactory;
+    const documentLoader = this.#documentLoader;
     function getDocumentLoader(
       identity: { handle: string },
     ): Promise<DocumentLoader>;
@@ -385,8 +429,11 @@ export class Federation<TContextData> {
       identity: { keyId: URL; privateKey: CryptoKey } | { handle: string },
     ): DocumentLoader | Promise<DocumentLoader> {
       if ("handle" in identity) {
-        const keyPair = getKeyPairFromHandle(identity.handle);
-        return keyPair.then((pair) => getAuthenticatedDocumentLoader(pair));
+        const keyPair = getRsaKeyPairFromHandle(identity.handle);
+        if (keyPair == null) return documentLoader;
+        return keyPair.then((pair) =>
+          pair == null ? documentLoader : getAuthenticatedDocumentLoader(pair)
+        );
       }
       return getAuthenticatedDocumentLoader(identity);
     }
@@ -499,15 +546,48 @@ export class Federation<TContextData> {
         if (result?.type === "actor") return result.handle;
         return null;
       },
+      getActorKeyPairs: async (handle: string) => {
+        let keyPairs: (CryptoKeyPair & { keyId: URL })[];
+        try {
+          keyPairs = await this.#getKeyPairsFromHandle(
+            url,
+            contextData,
+            handle,
+          );
+        } catch (_) {
+          getLogger(["fedify", "federation", "actor"])
+            .warn("No actor key pairs dispatcher registered.");
+          return [];
+        }
+        const owner = context.getActorUri(handle);
+        const result = [];
+        for (const keyPair of keyPairs) {
+          const newPair: ActorKeyPair = {
+            ...keyPair,
+            cryptographicKey: new CryptographicKey({
+              id: keyPair.keyId,
+              owner,
+              publicKey: keyPair.publicKey,
+            }),
+          };
+          result.push(newPair);
+        }
+        return result;
+      },
       getActorKey: async (handle: string): Promise<CryptographicKey | null> => {
-        let keyPair = this.#actorCallbacks?.keyPairDispatcher?.(
-          contextData,
-          handle,
+        getLogger(["fedify", "federation", "actor"]).warn(
+          "Context.getActorKey() method is deprecated; " +
+            "use Context.getActorKeyPairs() method instead.",
         );
-        if (keyPair instanceof Promise) keyPair = await keyPair;
+        let keyPair: CryptoKeyPair & { keyId: URL } | null;
+        try {
+          keyPair = await getRsaKeyPairFromHandle(handle);
+        } catch (_) {
+          return null;
+        }
         if (keyPair == null) return null;
         return new CryptographicKey({
-          id: new URL(`${context.getActorUri(handle)}#main-key`),
+          id: keyPair.keyId,
           owner: context.getActorUri(handle),
           publicKey: keyPair.publicKey,
         });
@@ -519,10 +599,16 @@ export class Federation<TContextData> {
         activity: Activity,
         options: SendActivityOptions = {},
       ): Promise<void> => {
-        const senderPair: { keyId: URL; privateKey: CryptoKey } =
-          "handle" in sender
-            ? await getKeyPairFromHandle(sender.handle)
-            : sender;
+        let senderPair: { keyId: URL; privateKey: CryptoKey };
+        if ("handle" in sender) {
+          const keyPair = await getRsaKeyPairFromHandle(sender.handle);
+          if (keyPair == null) {
+            throw new Error(`No key pair found for actor ${sender.handle}`);
+          }
+          senderPair = keyPair;
+        } else {
+          senderPair = sender;
+        }
         const opts: SendActivityInternalOptions = { ...options };
         let expandedRecipients: Recipient[];
         if (Array.isArray(recipients)) {
@@ -569,6 +655,12 @@ export class Federation<TContextData> {
         ) {
           throw new Error("No actor dispatcher registered.");
         }
+        let rsaKey: CryptoKeyPair & { keyId: URL } | null;
+        try {
+          rsaKey = await getRsaKeyPairFromHandle(handle);
+        } catch (_) {
+          rsaKey = null;
+        }
         return await this.#actorCallbacks.dispatcher(
           {
             ...reqCtx,
@@ -583,7 +675,11 @@ export class Federation<TContextData> {
             },
           },
           handle,
-          await context.getActorKey(handle),
+          rsaKey == null ? null : new CryptographicKey({
+            id: rsaKey.keyId,
+            owner: context.getActorUri(handle),
+            publicKey: rsaKey.publicKey,
+          }),
         );
       },
       getObject: async (cls, values) => {
@@ -669,7 +765,7 @@ export class Federation<TContextData> {
    * ``` typescript
    * federation.setActorDispatcher(
    *   "/users/{handle}",
-   *   async (ctx, handle, key) => {
+   *   async (ctx, handle) => {
    *     return new Person({
    *       id: ctx.getActorUri(handle),
    *       preferredUsername: handle,
@@ -800,8 +896,21 @@ export class Federation<TContextData> {
     };
     this.#actorCallbacks = callbacks;
     const setters: ActorCallbackSetters<TContextData> = {
+      setKeyPairsDispatcher(dispatcher: ActorKeyPairsDispatcher<TContextData>) {
+        callbacks.keyPairsDispatcher = dispatcher;
+        return setters;
+      },
       setKeyPairDispatcher(dispatcher: ActorKeyPairDispatcher<TContextData>) {
-        callbacks.keyPairDispatcher = dispatcher;
+        getLogger(["fedify", "federation", "actor"]).warn(
+          "The ActorCallbackSetters.setKeyPairDispatcher() method is " +
+            "deprecated.  Use the ActorCallbackSetters.setKeyPairsDispatcher() " +
+            "instead.",
+        );
+        callbacks.keyPairsDispatcher = async (ctxData, handle) => {
+          const key = await dispatcher(ctxData, handle);
+          if (key == null) return [];
+          return [key];
+        };
         return setters;
       },
       authorize(predicate: AuthorizePredicate<TContextData>) {
@@ -1575,7 +1684,7 @@ export interface FederationFetchOptions<TContextData> {
 
 interface ActorCallbacks<TContextData> {
   dispatcher?: ActorDispatcher<TContextData>;
-  keyPairDispatcher?: ActorKeyPairDispatcher<TContextData>;
+  keyPairsDispatcher?: ActorKeyPairsDispatcher<TContextData>;
   authorizePredicate?: AuthorizePredicate<TContextData>;
 }
 
@@ -1587,16 +1696,29 @@ interface ActorCallbacks<TContextData> {
  * federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
  *   ...
  * })
- *   .setKeyPairDispatcher(async (ctxData, handle) => {
+ *   .setKeyPairsDispatcher(async (ctxData, handle) => {
  *     ...
  *   });
  * ```
  */
 export interface ActorCallbackSetters<TContextData> {
   /**
-   * Sets the key pair dispatcher for actors.
+   * Sets the key pairs dispatcher for actors.
+   * @param dispatcher A callback that returns the key pairs for an actor.
+   * @returns The setters object so that settings can be chained.
+   * @since 0.10.0
+   */
+  setKeyPairsDispatcher(
+    dispatcher: ActorKeyPairsDispatcher<TContextData>,
+  ): ActorCallbackSetters<TContextData>;
+
+  /**
+   * Sets the RSA-PKCS#1-v1.5 key pair dispatcher for actors.
+   *
+   * Use {@link ActorCallbackSetters.setKeyPairsDispatcher} instead.
    * @param dispatcher A callback that returns the key pair for an actor.
    * @returns The setters object so that settings can be chained.
+   * @deprecated
    */
   setKeyPairDispatcher(
     dispatcher: ActorKeyPairDispatcher<TContextData>,

@@ -130,55 +130,58 @@ The `following` property is the URI of the actor's following collection.
 You can use the `Context.getFollowingUri()` method to generate the URI of
 the actor's following collection.
 
-### `publicKey`
+### `publicKeys`
 
-The `publicKey` property is the public key of the actor.  It is an instance
-of `CryptographicKey` class.
+The `publicKeys` property contains the public keys of the actor.  It is
+an array of `CryptographicKey` instances.
 
-See the [next section](#public-key-of-an-actor) for details.
+See the [next section](#public-keys-of-an-actor) for details.
 
 
-Public key of an `Actor`
-------------------------
+Public keys of an `Actor`
+-------------------------
 
-In order to sign and verify the activities, you need to set the `publicKey`
-property of the actor.  The `publicKey` property is an instance of the
-`CryptographicKey` class, and usually you don't have to create it manually.
-Instead, you can register a key pair dispatcher through
-the `~ActorCallbackSetters.setKeyPairDispatcher()` method so that Fedify can
-dispatch an appropriate key pair by the actor's bare handle:
+In order to sign and verify the activities, you need to set the `publicKeys`
+property of the actor.  The `publicKeys` property contains an array of
+`CryptographicKey` instances, and usually you don't have to create it manually.
+Instead, you can register a key pairs dispatcher through
+the `~ActorCallbackSetters.setKeyPairsDispatcher()` method so that Fedify can
+dispatch appropriate key pairs by the actor's bare handle:
 
 ~~~~ typescript{7-9,12-17}
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   // Work with the database to find the actor by the handle.
   if (user == null) return null;  // Return null if the actor is not found.
   return new Person({
     id: ctx.getActorUri(handle),
     preferredUsername: handle,
-    // The third parameter of the actor dispatcher is the public key, if any.
-    publicKey: key,
+    // Context.getActorKeyPairs() method dispatches the key pairs of an actor
+    // by the handle, and returns an array of key pairs in various formats.
+    // In this example, we only use the CryptographicKey instances.
+    publicKey: (await ctx.getActorKeyPairs(handle))
+      .map(keyPair => keyPair.cryptographicKey),
     // Many more properties; see the previous section for details.
   });
 })
-  .setKeyPairDispatcher(async (ctxData, handle) => {
+  .setKeyPairsDispatcher(async (ctxData, handle) => {
     // Work with the database to find the key pair by the handle.
-    if (user == null) return null;  // Return null if the key pair is not found.
+    if (user == null) return [];  // Return null if the key pair is not found.
     // Return the loaded key pair.  See the below example for details.
-    return { publicKey, privateKey };
+    return [{ publicKey, privateKey }];
   });
 ~~~~
 
-In the above example, the `~ActorCallbackSetters.setKeyPairDispatcher()` method
-registers a key pair dispatcher.  The key pair dispatcher is a callback function
-that takes context data and a bare handle, and returns a [`CryptoKeyPair`]
-object which is defined in the Web Cryptography API.
+In the above example, the `~ActorCallbackSetters.setKeyPairsDispatcher()` method
+registers a key pairs dispatcher.  The key pairs dispatcher is a callback
+function that takes context data and a bare handle, and returns an array of
+[`CryptoKeyPair`] object which is defined in the Web Cryptography API.
 
-Usually, you need to generate a key pair for each actor when the actor is
+Usually, you need to generate key pairs for each actor when the actor is
 created (i.e., when a new user is signed up), and securely store an actor's key
-pair in the database.  The key pair dispatcher should load the key pair from
-the database and return it.
+pairs in the database.  The key pairs dispatcher should load the key pairs from
+the database and return them.
 
-How to generate a key pair and store it in the database is out of the scope of
+How to generate key pairs and store them in the database is out of the scope of
 this document, but here's a simple example of how to generate a key pair and
 store it in a [Deno KV] database in form of JWK:
 
@@ -186,19 +189,13 @@ store it in a [Deno KV] database in form of JWK:
 import { generateCryptoKeyPair, exportJwk } from "@fedify/fedify";
 
 const kv = await Deno.openKv();
-const { privateKey, publicKey } = await generateCryptoKeyPair();
+const { privateKey, publicKey } =
+  await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
 await kv.set(["keypair", handle], {
   privateKey: await exportJwk(privateKey),
   publicKey: await exportJwk(publicKey),
 });
 ~~~~
-
-> [!NOTE]
-> As of March 2024, Fedify only supports RSA-PKCS#1-v1.5 algorithm with SHA-256
-> hash function for signing and verifying the activities.  This limitation
-> is due to the fact that Mastodon, the most popular ActivityPub implementation,
-> [only supports it][1].  In the future, Fedify will support more algorithms
-> and hash functions.
 
 Here's an example of how to load a key pair from the database too:
 
@@ -206,22 +203,23 @@ Here's an example of how to load a key pair from the database too:
 import { importJwk } from "@fedify/fedify";
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // Omitted for brevity; see the previous example for details.
   })
-  .setKeyPairDispatcher(async (ctxData, handle) => {
+  .setKeyPairsDispatcher(async (ctxData, handle) => {
     const kv = await Deno.openKv();
     const entry = await kv.get<{ privateKey: JsonWebKey; publicKey: JsonWebKey }>(
       ["keypair", handle],
     );
-    if (entry == null || entry.value == null) return null;
-    return {
-      privateKey: await importJwk(entry.value.privateKey, "private"),
-      publicKey: await importJwk(entry.value.publicKey, "public"),
-    };
+    if (entry == null || entry.value == null) return [];
+    return [
+      {
+        privateKey: await importJwk(entry.value.privateKey, "private"),
+        publicKey: await importJwk(entry.value.publicKey, "public"),
+      }
+    ];
   });
 ~~~~
 
 [`CryptoKeyPair`]: https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair
 [Deno KV]: https://deno.com/kv
-[1]: https://github.com/mastodon/mastodon/issues/21429

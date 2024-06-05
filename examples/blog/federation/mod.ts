@@ -45,7 +45,7 @@ export const federation = new Federation<void>({
 // `Actor` object (`Person` in this case) for a given actor URI.
 // The actor dispatch is not only used for the actor URI, but also for
 // the WebFinger resource:
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   const blog = await getBlog();
   if (blog == null) return null;
   else if (blog.handle !== handle) return null;
@@ -74,17 +74,24 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
     // for the HTTP Signatures.  Note that the `key` object is not a
     // `CryptoKey` instance, but a `CryptographicKey` instance which is
     // used for ActivityPub:
-    publicKey: key,
+    publicKeys: (await ctx.getActorKeyPairs(handle))
+      .map((keyPair) => keyPair.cryptographicKey),
   });
 })
-  .setKeyPairDispatcher(async (_ctxData, handle) => {
+  .setKeyPairsDispatcher(async (_ctxData, handle) => {
     const blog = await getBlog();
-    if (blog == null) return null;
-    else if (blog.handle !== handle) return null;
-    return {
-      publicKey: blog.publicKey,
-      privateKey: blog.privateKey,
-    };
+    if (blog == null) return [];
+    else if (blog.handle !== handle) return [];
+    return [
+      {
+        publicKey: blog.publicKey,
+        privateKey: blog.privateKey,
+      },
+      {
+        publicKey: blog.ed25519PublicKey,
+        privateKey: blog.ed25519PrivateKey,
+      },
+    ];
   });
 
 // Registers the object dispatcher, which is responsible for creating an

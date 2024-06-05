@@ -20,16 +20,16 @@ an abstracted way to send activities to other actors' inboxes.
 [1]: https://www.w3.org/TR/activitypub/#delivery
 
 
-Prerequisite: actor key pair
-----------------------------
+Prerequisite: actor key pairs
+-----------------------------
 
 Before sending an activity to another actor, you need to have the sender's
-key pair.  The key pair is used to sign the activity so that the recipient can
-verify the sender's identity.  The key pair can be registered by calling
-`~ActorCallbackSetters.setKeyPairDispatcher()` method.
+key pairs.  The key pairs are used to sign the activity so that the recipient
+can verify the sender's identity.  The key pairs can be registered by calling
+`~ActorCallbackSetters.setKeyPairsDispatcher()` method.
 
-For more information about this topic, see [*Public key of an `Actor`*
-section](./actor.md#public-key-of-an-actor) in the *Actor dispatcher* section.
+For more information about this topic, see [*Public keys of an `Actor`*
+section](./actor.md#public-keys-of-an-actor) in the *Actor dispatcher* section.
 
 
 Sending an activity

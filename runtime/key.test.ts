@@ -3,7 +3,7 @@ import { exportJwk, importJwk } from "../sig/key.ts";
 import { exportSpki, importSpki } from "./key.ts";
 
 // cSpell: disable
-const pem = "-----BEGIN PUBLIC KEY-----\n" +
+const rsaPem = "-----BEGIN PUBLIC KEY-----\n" +
   "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxsRuvCkgJtflBTl4OVsm\n" +
   "nt/J1mQfZasfJtN33dcZ3d1lJroxmgmMu69zjGEAwkNbMQaWNLqC4eogkJaeJ4RR\n" +
   "5MHYXkL9nNilVoTkjX5BVit3puzs7XJ7WQnKQgQMI+ezn24GHsZ/v1JIo77lerX5\n" +
@@ -14,7 +14,7 @@ const pem = "-----BEGIN PUBLIC KEY-----\n" +
   "-----END PUBLIC KEY-----\n";
 // cSpell: enable
 
-const jwk = {
+const rsaJwk = {
   alg: "RS256",
   // cSpell: disable
   e: "AQAB",
@@ -31,13 +31,36 @@ const jwk = {
   // cSpell: enable
 };
 
+// cSpell: disable
+const ed25519Pem = "-----BEGIN PUBLIC KEY-----\n" +
+  "MCowBQYDK2VwAyEAvrabdlLgVI5jWl7GpF+fLFJVF4ccI8D7h+v5ulBCYwo=\n" +
+  "-----END PUBLIC KEY-----\n";
+// cSpell: enable
+
+const ed25519Jwk = {
+  kty: "OKP",
+  crv: "Ed25519",
+  // cSpell: disable
+  x: "vrabdlLgVI5jWl7GpF-fLFJVF4ccI8D7h-v5ulBCYwo",
+  // cSpell: enable
+  key_ops: ["verify"],
+  ext: true,
+};
+
 Deno.test("importSpki()", async () => {
-  const key = await importSpki(pem);
-  assertEquals(await exportJwk(key), jwk);
+  const rsaKey = await importSpki(rsaPem);
+  assertEquals(await exportJwk(rsaKey), rsaJwk);
+
+  const ed25519Key = await importSpki(ed25519Pem);
+  assertEquals(await exportJwk(ed25519Key), ed25519Jwk);
 });
 
 Deno.test("exportSpki()", async () => {
-  const key = await importJwk(jwk, "public");
-  const spki = await exportSpki(key);
-  assertEquals(spki, pem);
+  const rsaKey = await importJwk(rsaJwk, "public");
+  const rsaSpki = await exportSpki(rsaKey);
+  assertEquals(rsaSpki, rsaPem);
+
+  const ed25519Key = await importJwk(ed25519Jwk, "public");
+  const ed25519Spki = await exportSpki(ed25519Key);
+  assertEquals(ed25519Spki, ed25519Pem);
 });

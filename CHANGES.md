@@ -14,6 +14,22 @@ To be released.
      -  Added an optional parameter to `generateCryptoKeyPair()` function,
         `algorithm`, which can be either `"RSASSA-PKCS1-v1_5"` or `"Ed25519"`.
      -  The `importJwk()` function now accepts Ed25519 keys.
+     -  The `exportJwk()` function now exports Ed25519 keys.
+     -  The `importSpki()` function now accepts Ed25519 keys.
+     -  The `exportJwk()` function now exports Ed25519 keys.
+
+ -  Now multiple key pairs can be registered for an actor.
+
+     -  Added `Context.getActorKeyPairs()` method.
+     -  Deprecated `Context.getActorKey()` method.
+        Use `Context.getActorKeyPairs()` method instead.
+     -  Added `ActorKeyPair` interface.
+     -  Added `ActorCallbackSetters.setKeyPairsDispatcher()` method.
+     -  Added `ActorKeyPairsDispatcher` type.
+     -  Deprecated `ActorCallbackSetters.setKeyPairDispatcher()` method.
+     -  Deprecated `ActorKeyPairDispatcher` type.
+     -  Deprecated the third parameter of the `ActorDispatcher` callback type.
+        Use `Context.getActorKeyPairs()` method instead.
 
  -  Deprecated `treatHttps` option in `FederationParameters` interface.
     Instead, use the [x-forwarded-fetch] library to recognize the

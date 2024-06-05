@@ -740,11 +740,11 @@ a key pair when the actor is created.  In our case, we generate a key pair when
 the actor *me* is dispatched for the first time.  Then, we store the key pair
 in the key-value store so that the server can use the key pair later.
 
-The `~ActorCallbackSetters.setKeyPairDispatcher()` method is used to set a key
-pair dispatcher for the actor.  The key pair dispatcher is a function that is
-called when the key pair of an actor is needed.  Let's set a key pair dispatcher
-for the actor *me*.  `~ActorCallbackSetters.setKeyPairDispatcher()` method
-should be chained after the `Federation.setActorDispatcher()` method:
+The `~ActorCallbackSetters.setKeyPairsDispatcher()` method is used to set a key
+pairs dispatcher for the actor.  The key pairs dispatcher is a function that is
+called when the key pairs of an actor is needed.  Let's set a key pairs
+dispatcher for the actor *me*.  `~ActorCallbackSetters.setKeyPairsDispatcher()`
+method should be chained after the `Federation.setActorDispatcher()` method:
 
 ::: code-group
 
@@ -752,7 +752,7 @@ should be chained after the `Federation.setActorDispatcher()` method:
 const kv = await Deno.openKv();  // Open the key-value store
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     if (handle !== "me") return null;
     return new Person({
       id: ctx.getActorUri(handle),
@@ -761,16 +761,19 @@ federation
       preferredUsername: handle,
       url: new URL("/", ctx.url),
       inbox: ctx.getInboxUri(handle),
-      publicKey: key,  // The public key of the actor; it's provided by the key
-                       // pair dispatcher we define below
+      // The public keys of the actor; they are provided by the key pairs
+      // dispatcher we define below:
+      publicKeys: (await ctx.getActorKeyPairs(handle))
+        .map(keyPair => keyPair.cryptographicKey),
     });
   })
-  .setKeyPairDispatcher(async (ctx, handle) => {
-    if (handle != "me") return null;  // Other than "me" is not found.
+  .setKeyPairsDispatcher(async (ctx, handle) => {
+    if (handle != "me") return [];  // Other than "me" is not found.
     const entry = await kv.get<{ privateKey: unknown, publicKey: unknown }>(["key"]);
     if (entry == null || entry.value == null) {
       // Generate a new key pair at the first time:
-      const { privateKey, publicKey } = await generateCryptoKeyPair();
+      const { privateKey, publicKey } =
+        await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
       // Store the generated key pair to the Deno KV database in JWK format:
       await kv.set(
         ["key"],
@@ -779,12 +782,12 @@ federation
           publicKey: await exportJwk(publicKey),
         }
       );
-      return { privateKey, publicKey };
+      return [{ privateKey, publicKey }];
     }
     // Load the key pair from the Deno KV database:
     const privateKey = await importJwk(entry.value.privateKey, "private");
     const publicKey =  await importJwk(entry.value.publicKey, "public");
-    return { privateKey, publicKey };
+    return [{ privateKey, publicKey }];
   });
 ~~~~
 
@@ -803,16 +806,19 @@ federation
       preferredUsername: handle,
       url: new URL("/", ctx.url),
       inbox: ctx.getInboxUri(handle),
-      publicKey: key,  // The public key of the actor; it's provided by the key
-                       // pair dispatcher we define below
+      // The public keys of the actor; they are provided by the key pairs
+      // dispatcher we define below:
+      publicKeys: (await ctx.getActorKeyPairs(handle))
+        .map(keyPair => keyPair.cryptographicKey),
     });
   })
-  .setKeyPairDispatcher(async (ctx, handle) => {
-    if (handle != "me") return null;  // Other than "me" is not found.
+  .setKeyPairsDispatcher(async (ctx, handle) => {
+    if (handle != "me") return [];  // Other than "me" is not found.
     const entry = await kv.get<{ privateKey: unknown, publicKey: unknown }>(["key"]);
     if (entry == null || entry.value == null) {
       // Generate a new key pair at the first time:
-      const { privateKey, publicKey } = await generateCryptoKeyPair();
+      const { privateKey, publicKey } =
+        await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
       // Store the generated key pair to the Deno KV database in JWK format:
       await kv.set(
         ["key"],
@@ -821,12 +827,12 @@ federation
           publicKey: await exportJwk(publicKey),
         }
       );
-      return { privateKey, publicKey };
+      return [{ privateKey, publicKey }];
     }
     // Load the key pair from the Deno KV database:
     const privateKey = await importJwk(entry.value.privateKey, "private");
     const publicKey =  await importJwk(entry.value.publicKey, "public");
-    return { privateKey, publicKey };
+    return [{ privateKey, publicKey }];
   });
 ~~~~
 
@@ -847,16 +853,19 @@ federation
       preferredUsername: handle,
       url: new URL("/", ctx.url),
       inbox: ctx.getInboxUri(handle),
-      publicKey: key,  // The public key of the actor; it's provided by the key
-                       // pair dispatcher we define below
+      // The public keys of the actor; they are provided by the key pairs
+      // dispatcher we define below:
+      publicKeys: (await ctx.getActorKeyPairs(handle))
+        .map(keyPair => keyPair.cryptographicKey),
     });
   })
-  .setKeyPairDispatcher(async (ctx, handle) => {
-    if (handle != "me") return null;  // Other than "me" is not found.
+  .setKeyPairsDispatcher(async (ctx, handle) => {
+    if (handle != "me") return [];  // Other than "me" is not found.
     const entry = await kv.get<{ privateKey: unknown, publicKey: unknown }>(["key"]);
     if (entry == null || entry.value == null) {
       // Generate a new key pair at the first time:
-      const { privateKey, publicKey } = await generateCryptoKeyPair();
+      const { privateKey, publicKey } =
+        await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
       // Store the generated key pair to the Deno KV database in JWK format:
       await kv.set(
         ["key"],
@@ -865,24 +874,24 @@ federation
           publicKey: await exportJwk(publicKey),
         }
       );
-      return { privateKey, publicKey };
+      return [{ privateKey, publicKey }];
     }
     // Load the key pair from the Deno KV database:
     const privateKey = await importJwk(entry.value.privateKey, "private");
     const publicKey =  await importJwk(entry.value.publicKey, "public");
-    return { privateKey, publicKey };
+    return [{ privateKey, publicKey }];
   });
 ~~~~
 
 :::
 
-In the above code, we use the `~ActorCallbackSetters.setKeyPairDispatcher()`
-method to set a key pair dispatcher for the actor *me*.  The key pair dispatcher
-is a function that is called when the key pair of an actor is needed.
-The key pair dispatcher should return an object that contains the private key
+In the above code, we use the `~ActorCallbackSetters.setKeyPairsDispatcher()`
+method to set a key pairs dispatcher for the actor *me*.  The key pairs
+dispatcher is called when the key pairs of an actor is needed. The key pairs
+dispatcher should return an array of objects that contain the private key
 and the public key of the actor.  In this case, we generate a new key pair
 at the first time and store it in the key-value store.  When the actor *me* is
-dispatched again, the key pair dispatcher loads the key pair from the key-value
+dispatched again, the key pairs dispatcher loads the key pair from the key-value
 store.
 
 > [!NOTE]

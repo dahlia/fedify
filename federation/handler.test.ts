@@ -101,6 +101,12 @@ Deno.test("handleActor()", async () => {
   assertEquals(onUnauthorizedCalled, null);
 
   onNotFoundCalled = null;
+  context = createRequestContext<void>({
+    ...context,
+    getActor(handle) {
+      return Promise.resolve(actorDispatcher(context, handle, null));
+    },
+  });
   response = await handleActor(
     context.request,
     {

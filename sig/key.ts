@@ -30,7 +30,7 @@ export function validateCryptoKey(
   if (key.algorithm.name === "RSASSA-PKCS1-v1_5") {
     // @ts-ignore TS2304
     const algorithm = key.algorithm as unknown as RsaHashedKeyAlgorithm;
-    if (algorithm.hash.name != "SHA-256") {
+    if (algorithm.hash.name !== "SHA-256") {
       throw new TypeError(
         "For compatibility with the existing Fediverse software " +
           "(e.g., Mastodon), hash algorithm for RSASSA-PKCS1-v1_5 keys " +

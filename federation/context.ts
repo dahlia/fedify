@@ -102,14 +102,24 @@ export interface Context<TContextData> {
    * Extracts the actor's handle from an actor URI, if it is a valid actor URI.
    * @param actorUri The actor's URI.
    * @returns The actor's handle, or `null` if the URI is not a valid actor URI.
-   * @deprecated Use {@link parseUri} instead.
+   * @deprecated Use {@link Context.parseUri} instead.
    */
   getHandleFromActorUri(actorUri: URL): string | null;
 
   /**
-   * Gets a public {@link CryptographicKey} for an actor, if any exists.
+   * Gets the key pairs for an actor.
+   * @param handle The actor's handle.
+   * @returns An async iterable of the actor's key pairs.  It can be empty.
+   * @since 0.10.0
+   */
+  getActorKeyPairs(handle: string): Promise<ActorKeyPair[]>;
+
+  /**
+   * Gets a public RSA-PKCS#1-v1.5 {@link CryptographicKey} for an actor,
+   * if any exists.
    * @param handle The actor's handle.
    * @returns The actor's public key, or `null` if the actor has no key.
+   * @deprecated Use {@link Context.getActorKeyPairs} instead.
    */
   getActorKey(handle: string): Promise<CryptographicKey | null>;
 
@@ -318,4 +328,19 @@ export interface SendActivityOptions {
    * @since 0.9.0
    */
   excludeBaseUris?: URL[];
+}
+
+/**
+ * A pair of a public key and a private key in various formats.
+ */
+export interface ActorKeyPair extends CryptoKeyPair {
+  /**
+   * The URI of the public key, which is used for verifying HTTP Signatures.
+   */
+  keyId: URL;
+
+  /**
+   * A {@link CryptographicKey} instance of the public key.
+   */
+  cryptographicKey: CryptographicKey;
 }

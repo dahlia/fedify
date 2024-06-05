@@ -208,18 +208,22 @@ export const ed25519PrivateKey = await crypto.subtle.importKey(
   ["sign"],
 );
 
-export const ed25519PublicKey = await crypto.subtle.importKey(
-  "jwk",
-  {
-    crv: "Ed25519",
-    ext: true,
-    key_ops: ["verify"],
-    kty: "OKP",
-    // cSpell: disable
-    x: "LR8epAGDe-cVq5p2Tx49CCfphpk1rNhkNoY9i-XEUfg",
-    // cSpell: enable
-  },
-  "Ed25519",
-  true,
-  ["verify"],
-);
+export const ed25519PublicKey = new CryptographicKey({
+  id: new URL("https://example.com/key4"),
+  owner: new URL("https://example.com/person2"),
+  publicKey: await crypto.subtle.importKey(
+    "jwk",
+    {
+      crv: "Ed25519",
+      ext: true,
+      key_ops: ["verify"],
+      kty: "OKP",
+      // cSpell: disable
+      x: "LR8epAGDe-cVq5p2Tx49CCfphpk1rNhkNoY9i-XEUfg",
+      // cSpell: enable
+    },
+    "Ed25519",
+    true,
+    ["verify"],
+  ),
+});

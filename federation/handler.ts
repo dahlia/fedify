@@ -59,8 +59,7 @@ export async function handleActor<TContextData>(
   }: ActorHandlerParameters<TContextData>,
 ): Promise<Response> {
   if (actorDispatcher == null) return await onNotFound(request);
-  const key = await context.getActorKey(handle);
-  const actor = await actorDispatcher(context, handle, key);
+  const actor = await context.getActor(handle);
   if (actor == null) return await onNotFound(request);
   if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
   if (authorizePredicate != null) {
@@ -337,8 +336,7 @@ export async function handleInbox<TContextData>(
     logger.error("Actor dispatcher is not set.", { handle });
     return await onNotFound(request);
   } else if (handle != null) {
-    const key = await context.getActorKey(handle);
-    const actor = await actorDispatcher(context, handle, key);
+    const actor = await context.getActor(handle);
     if (actor == null) {
       logger.error("Actor {handle} not found.", { handle });
       return await onNotFound(request);
