@@ -192,7 +192,11 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
     await ctx.sendActivity(
       { handle: blog.handle },
       recipient,
-      new Accept({ actor: follow.objectId, object: follow }),
+      new Accept({
+        id: new URL(`#accept/${handle}`, ctx.getActorUri(blog.handle)),
+        actor: follow.objectId,
+        object: follow,
+      }),
     );
   })
   // The `Create` activity is handled by adding a comment to the post:
@@ -238,21 +242,14 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Undo, async (ctx, undo) => {
     const activity = await undo.getObject(ctx); // An `Activity` to undo
     if (activity instanceof Follow) {
-      if (activity.id == null) return;
-      await removeFollower(activity.id.href);
+      if (activity.id == null || activity.actorId == null) return;
+      await removeFollower(activity.id.href, activity.actorId.href);
     } else {
       logger.getChild("inbox").warn(
         "Unsupported object type ({type}) for Undo activity: {object}",
         { type: activity?.constructor.name, object: activity },
       );
     }
-  })
-  .onError((_ctx, error) => {
-    logger.getChild("inbox").error(
-      "An error occurred while processing an activity in the inbox handler:\n" +
-        "{error}",
-      { error },
-    );
   });
 
 // Since the blog does not follow anyone, the following dispatcher is

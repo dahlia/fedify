@@ -23,14 +23,32 @@ export async function addFollower(follower: Follower): Promise<Follower> {
   return follower;
 }
 
-export async function removeFollower(activityId: string): Promise<void> {
+export async function removeFollower(
+  activityId: string,
+  actorId: string,
+): Promise<void> {
   const kv = await openKv();
   const follower = await kv.get<Follower>(["follower", activityId]);
   const followers = await kv.get<bigint>(["followers"]);
   if (
     follower == null || follower.value == null || followers == null ||
     followers.value == null
-  ) return;
+  ) {
+    // Sometimes Follow.id and Undo<Follow>.object.id do not match...
+    // (e.g., Misskey)
+    for await (const entry of kv.list<Follower>({ prefix: ["follower"] })) {
+      if (entry.value.id === actorId) {
+        const followers = await kv.get<bigint>(["followers"]);
+        if (followers == null || followers.value == null) continue;
+        await kv.atomic()
+          .check(follower)
+          .check(followers)
+          .delete(entry.key)
+          .set(["followers"], followers.value - 1n)
+          .commit();
+      }
+    }
+  }
   await kv.atomic()
     .check(follower)
     .check(followers)
