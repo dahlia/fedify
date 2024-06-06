@@ -48,6 +48,7 @@ export async function removeFollower(
           .commit();
       }
     }
+    return;
   }
   await kv.atomic()
     .check(follower)
