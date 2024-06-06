@@ -322,43 +322,6 @@ export class Federation<TContextData> {
     );
   }
 
-  async #getKeyPairsFromHandle(
-    url: URL | string,
-    contextData: TContextData,
-    handle: string,
-  ): Promise<(CryptoKeyPair & { keyId: URL })[]> {
-    const logger = getLogger(["fedify", "federation", "actor"]);
-    if (this.#actorCallbacks?.keyPairsDispatcher == null) {
-      throw new Error("No actor key pairs dispatcher registered.");
-    }
-    const path = this.#router.build("actor", { handle });
-    if (path == null) {
-      logger.warn("No actor dispatcher registered.");
-      return [];
-    }
-    const actorUri = new URL(path, url);
-    const keyPairs = await this.#actorCallbacks?.keyPairsDispatcher(
-      contextData,
-      handle,
-    );
-    if (keyPairs.length < 1) {
-      logger.warn("No key pairs found for actor {handle}.", { handle });
-    }
-    let i = 0;
-    const result = [];
-    for (const keyPair of keyPairs) {
-      result.push({
-        ...keyPair,
-        keyId: new URL(
-          i == 0 ? `#main-key` : `#key-${i + 1}`,
-          actorUri,
-        ),
-      });
-      i++;
-    }
-    return result;
-  }
-
   /**
    * Create a new context.
    * @param baseUrl The base URL of the server.  The `pathname` remains root,
@@ -383,6 +346,43 @@ export class Federation<TContextData> {
     urlOrRequest: Request | URL,
     contextData: TContextData,
   ): Context<TContextData> {
+    return urlOrRequest instanceof Request
+      ? this.#createContext(urlOrRequest, contextData)
+      : this.#createContext(urlOrRequest, contextData);
+  }
+
+  #createContext(
+    baseUrl: URL,
+    contextData: TContextData,
+  ): ContextImpl<TContextData>;
+
+  #createContext(
+    request: Request,
+    contextData: TContextData,
+    opts?: {
+      documentLoader?: DocumentLoader;
+      invokedFromActorDispatcher?: { handle: string };
+      invokedFromObjectDispatcher?: {
+        // deno-lint-ignore no-explicit-any
+        cls: (new (...args: any[]) => Object) & { typeId: URL };
+        values: Record<string, string>;
+      };
+    },
+  ): RequestContextImpl<TContextData>;
+
+  #createContext(
+    urlOrRequest: Request | URL,
+    contextData: TContextData,
+    opts: {
+      documentLoader?: DocumentLoader;
+      invokedFromActorDispatcher?: { handle: string };
+      invokedFromObjectDispatcher?: {
+        // deno-lint-ignore no-explicit-any
+        cls: (new (...args: any[]) => Object) & { typeId: URL };
+        values: Record<string, string>;
+      };
+    } = {},
+  ): ContextImpl<TContextData> | RequestContextImpl<TContextData> {
     const request = urlOrRequest instanceof Request ? urlOrRequest : null;
     const url = urlOrRequest instanceof URL
       ? new URL(urlOrRequest)
@@ -393,343 +393,28 @@ export class Federation<TContextData> {
       url.search = "";
     }
     if (this.#treatHttps) url.protocol = "https:";
-    const getRsaKeyPairFromHandle = async (handle: string) => {
-      const keyPairs = await this.#getKeyPairsFromHandle(
-        url,
-        contextData,
-        handle,
-      );
-      for (const keyPair of keyPairs) {
-        const { privateKey } = keyPair;
-        if (
-          privateKey.algorithm.name === "RSASSA-PKCS1-v1_5" &&
-          (privateKey.algorithm as unknown as { hash: { name: string } }).hash
-              .name ===
-            "SHA-256"
-        ) {
-          return keyPair;
-        }
-      }
-      getLogger(["fedify", "federation", "actor"]).warn(
-        "No RSA-PKCS#1-v1.5 SHA-256 key found for actor {handle}.",
-        { handle },
-      );
-      return null;
-    };
-    const getAuthenticatedDocumentLoader =
-      this.#authenticatedDocumentLoaderFactory;
-    const documentLoader = this.#documentLoader;
-    function getDocumentLoader(
-      identity: { handle: string },
-    ): Promise<DocumentLoader>;
-    function getDocumentLoader(
-      identity: { keyId: URL; privateKey: CryptoKey },
-    ): DocumentLoader;
-    function getDocumentLoader(
-      identity: { keyId: URL; privateKey: CryptoKey } | { handle: string },
-    ): DocumentLoader | Promise<DocumentLoader> {
-      if ("handle" in identity) {
-        const keyPair = getRsaKeyPairFromHandle(identity.handle);
-        if (keyPair == null) return documentLoader;
-        return keyPair.then((pair) =>
-          pair == null ? documentLoader : getAuthenticatedDocumentLoader(pair)
-        );
-      }
-      return getAuthenticatedDocumentLoader(identity);
-    }
-    const context = {
-      data: contextData,
-      documentLoader: this.#documentLoader,
-      contextLoader: this.#contextLoader,
-      getNodeInfoUri: (): URL => {
-        const path = this.#router.build("nodeInfo", {});
-        if (path == null) {
-          throw new RouterError("No NodeInfo dispatcher registered.");
-        }
-        return new URL(path, url);
-      },
-      getActorUri: (handle: string): URL => {
-        const path = this.#router.build("actor", { handle });
-        if (path == null) {
-          throw new RouterError("No actor dispatcher registered.");
-        }
-        return new URL(path, url);
-      },
-      getObjectUri: (
-        // deno-lint-ignore no-explicit-any
-        cls: (new (...args: any[]) => any) & { typeId: URL },
-        values: Record<string, string>,
-      ) => {
-        const callbacks = this.#objectCallbacks[cls.typeId.href];
-        if (callbacks == null) {
-          throw new RouterError("No object dispatcher registered.");
-        }
-        for (const param of callbacks.parameters) {
-          if (!(param in values)) {
-            throw new TypeError(`Missing parameter: ${param}`);
-          }
-        }
-        const path = this.#router.build(`object:${cls.typeId.href}`, values);
-        if (path == null) {
-          throw new RouterError("No object dispatcher registered.");
-        }
-        return new URL(path, url);
-      },
-      getOutboxUri: (handle: string): URL => {
-        const path = this.#router.build("outbox", { handle });
-        if (path == null) {
-          throw new RouterError("No outbox dispatcher registered.");
-        }
-        return new URL(path, url);
-      },
-      getInboxUri: (handle?: string): URL => {
-        if (handle == null) {
-          const path = this.#router.build("sharedInbox", {});
-          if (path == null) {
-            throw new RouterError("No shared inbox path registered.");
-          }
-          return new URL(path, url);
-        }
-        const path = this.#router.build("inbox", { handle });
-        if (path == null) {
-          throw new RouterError("No inbox path registered.");
-        }
-        return new URL(path, url);
-      },
-      getFollowingUri: (handle: string): URL => {
-        const path = this.#router.build("following", { handle });
-        if (path == null) {
-          throw new RouterError("No following collection path registered.");
-        }
-        return new URL(path, url);
-      },
-      getFollowersUri: (handle: string): URL => {
-        const path = this.#router.build("followers", { handle });
-        if (path == null) {
-          throw new RouterError("No followers collection path registered.");
-        }
-        return new URL(path, url);
-      },
-      parseUri: (uri: URL): ParseUriResult | null => {
-        if (uri.origin !== url.origin) return null;
-        const route = this.#router.route(uri.pathname);
-        if (route == null) return null;
-        else if (route.name === "actor") {
-          return { type: "actor", handle: route.values.handle };
-        } else if (route.name.startsWith("object:")) {
-          const typeId = route.name.replace(/^object:/, "");
-          return {
-            type: "object",
-            class: this.#objectTypeIds[typeId],
-            typeId: new URL(typeId),
-            values: route.values,
-          };
-        } else if (route.name === "inbox") {
-          return { type: "inbox", handle: route.values.handle };
-        } else if (route.name === "sharedInbox") {
-          return { type: "inbox" };
-        } else if (route.name === "outbox") {
-          return { type: "outbox", handle: route.values.handle };
-        } else if (route.name === "following") {
-          return { type: "following", handle: route.values.handle };
-        } else if (route.name === "followers") {
-          return { type: "followers", handle: route.values.handle };
-        }
-        return null;
-      },
-      getHandleFromActorUri(actorUri: URL): string | null {
-        getLogger(["fedify", "federation"]).warn(
-          "Context.getHandleFromActorUri() is deprecated; " +
-            "use Context.parseUri() instead.",
-        );
-        const result = this.parseUri(actorUri);
-        if (result?.type === "actor") return result.handle;
-        return null;
-      },
-      getActorKeyPairs: async (handle: string) => {
-        let keyPairs: (CryptoKeyPair & { keyId: URL })[];
-        try {
-          keyPairs = await this.#getKeyPairsFromHandle(
-            url,
-            contextData,
-            handle,
-          );
-        } catch (_) {
-          getLogger(["fedify", "federation", "actor"])
-            .warn("No actor key pairs dispatcher registered.");
-          return [];
-        }
-        const owner = context.getActorUri(handle);
-        const result = [];
-        for (const keyPair of keyPairs) {
-          const newPair: ActorKeyPair = {
-            ...keyPair,
-            cryptographicKey: new CryptographicKey({
-              id: keyPair.keyId,
-              owner,
-              publicKey: keyPair.publicKey,
-            }),
-          };
-          result.push(newPair);
-        }
-        return result;
-      },
-      getActorKey: async (handle: string): Promise<CryptographicKey | null> => {
-        getLogger(["fedify", "federation", "actor"]).warn(
-          "Context.getActorKey() method is deprecated; " +
-            "use Context.getActorKeyPairs() method instead.",
-        );
-        let keyPair: CryptoKeyPair & { keyId: URL } | null;
-        try {
-          keyPair = await getRsaKeyPairFromHandle(handle);
-        } catch (_) {
-          return null;
-        }
-        if (keyPair == null) return null;
-        return new CryptographicKey({
-          id: keyPair.keyId,
-          owner: context.getActorUri(handle),
-          publicKey: keyPair.publicKey,
-        });
-      },
-      getDocumentLoader,
-      sendActivity: async (
-        sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
-        recipients: Recipient | Recipient[] | "followers",
-        activity: Activity,
-        options: SendActivityOptions = {},
-      ): Promise<void> => {
-        let senderPair: { keyId: URL; privateKey: CryptoKey };
-        if ("handle" in sender) {
-          const keyPair = await getRsaKeyPairFromHandle(sender.handle);
-          if (keyPair == null) {
-            throw new Error(`No key pair found for actor ${sender.handle}`);
-          }
-          senderPair = keyPair;
-        } else {
-          senderPair = sender;
-        }
-        const opts: SendActivityInternalOptions = { ...options };
-        let expandedRecipients: Recipient[];
-        if (Array.isArray(recipients)) {
-          expandedRecipients = recipients;
-        } else if (recipients === "followers") {
-          if (!("handle" in sender)) {
-            throw new Error(
-              "If recipients is 'followers', sender must be an actor handle.",
-            );
-          }
-          expandedRecipients = [];
-          for await (
-            const recipient of this.#getFollowers(reqCtx, sender.handle)
-          ) {
-            expandedRecipients.push(recipient);
-          }
-          const collectionId = this.#router.build("followers", sender);
-          opts.collectionSync = collectionId == null
-            ? undefined
-            : new URL(collectionId, url).href;
-        } else {
-          expandedRecipients = [recipients];
-        }
-        return await this.sendActivity(
-          senderPair,
-          expandedRecipients,
-          activity,
-          opts,
-        );
-      },
-    };
-    if (request == null) return context;
-    let signedKey: CryptographicKey | null | undefined = undefined;
-    let signedKeyOwner: Actor | null | undefined = undefined;
-    const timeWindow = this.#signatureTimeWindow;
-    const reqCtx: RequestContext<TContextData> = {
-      ...context,
-      request,
+    const ctxOptions: ContextOptions<TContextData> = {
       url,
-      getActor: async (handle: string) => {
-        if (
-          this.#actorCallbacks == null ||
-          this.#actorCallbacks.dispatcher == null
-        ) {
-          throw new Error("No actor dispatcher registered.");
-        }
-        let rsaKey: CryptoKeyPair & { keyId: URL } | null;
-        try {
-          rsaKey = await getRsaKeyPairFromHandle(handle);
-        } catch (_) {
-          rsaKey = null;
-        }
-        return await this.#actorCallbacks.dispatcher(
-          {
-            ...reqCtx,
-            getActor(handle2: string) {
-              getLogger(["fedify", "federation"]).warn(
-                "RequestContext.getActor({getActorHandle}) is invoked from " +
-                  "the actor dispatcher ({actorDispatcherHandle}); " +
-                  "this may cause an infinite loop.",
-                { getActorHandle: handle2, actorDispatcherHandle: handle },
-              );
-              return reqCtx.getActor(handle2);
-            },
-          },
-          handle,
-          rsaKey == null ? null : new CryptographicKey({
-            id: rsaKey.keyId,
-            owner: context.getActorUri(handle),
-            publicKey: rsaKey.publicKey,
-          }),
-        );
-      },
-      getObject: async (cls, values) => {
-        const callbacks = this.#objectCallbacks[cls.typeId.href];
-        if (callbacks == null) {
-          throw new Error("No object dispatcher registered.");
-        }
-        for (const param of callbacks.parameters) {
-          if (!(param in values)) {
-            throw new TypeError(`Missing parameter: ${param}`);
-          }
-        }
-        return await callbacks.dispatcher(
-          {
-            ...reqCtx,
-            getObject(cls2, values2) {
-              getLogger(["fedify", "federation"]).warn(
-                "RequestContext.getObject({getObjectClass}, " +
-                  "{getObjectValues}) is invoked from the object dispatcher " +
-                  "({actorDispatcherClass}, {actorDispatcherValues}); " +
-                  "this may cause an infinite loop.",
-                {
-                  getObjectClass: cls2.name,
-                  getObjectValues: values2,
-                  actorDispatcherClass: cls.name,
-                  actorDispatcherValues: values,
-                },
-              );
-              return reqCtx.getObject(cls2, values2);
-            },
-          },
-          values,
-          // deno-lint-ignore no-explicit-any
-        ) as any;
-      },
-      async getSignedKey() {
-        if (signedKey !== undefined) return signedKey;
-        return signedKey = await verifyRequest(request, {
-          ...context,
-          timeWindow,
-        });
-      },
-      async getSignedKeyOwner() {
-        if (signedKeyOwner !== undefined) return signedKeyOwner;
-        const key = await this.getSignedKey();
-        if (key == null) return signedKeyOwner = null;
-        return signedKeyOwner = await getKeyOwner(key, context);
-      },
+      federation: this,
+      router: this.#router,
+      objectTypeIds: this.#objectTypeIds,
+      objectCallbacks: this.#objectCallbacks,
+      actorCallbacks: this.#actorCallbacks,
+      data: contextData,
+      documentLoader: opts.documentLoader ?? this.#documentLoader,
+      contextLoader: this.#contextLoader,
+      authenticatedDocumentLoaderFactory:
+        this.#authenticatedDocumentLoaderFactory,
     };
-    return reqCtx;
+    if (request == null) return new ContextImpl(ctxOptions);
+    return new RequestContextImpl({
+      ...ctxOptions,
+      request,
+      signatureTimeWindow: this.#signatureTimeWindow,
+      followersCallbacks: this.#followersCallbacks,
+      invokedFromActorDispatcher: opts.invokedFromActorDispatcher,
+      invokedFromObjectDispatcher: opts.invokedFromObjectDispatcher,
+    });
   }
 
   /**
@@ -1249,40 +934,6 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  async *#getFollowers(
-    context: RequestContext<TContextData>,
-    handle: string,
-  ): AsyncIterable<Recipient> {
-    if (this.#followersCallbacks == null) {
-      throw new Error("No followers collection dispatcher registered.");
-    }
-    const result = await this.#followersCallbacks.dispatcher(
-      context,
-      handle,
-      null,
-    );
-    if (result != null) {
-      for (const recipient of result.items) yield recipient;
-      return;
-    }
-    if (this.#followersCallbacks.firstCursor == null) {
-      throw new Error(
-        "No first cursor dispatcher registered for followers collection.",
-      );
-    }
-    let cursor = await this.#followersCallbacks.firstCursor(context, handle);
-    while (cursor != null) {
-      const result = await this.#followersCallbacks.dispatcher(
-        context,
-        handle,
-        cursor,
-      );
-      if (result == null) break;
-      for (const recipient of result.items) yield recipient;
-      cursor = result.nextCursor ?? null;
-    }
-  }
-
   /**
    * Assigns the URL path for the inbox and starts setting inbox listeners.
    *
@@ -1535,7 +1186,7 @@ export class Federation<TContextData> {
       const response = onNotFound(request);
       return response instanceof Promise ? await response : response;
     }
-    let context = this.createContext(request, contextData);
+    let context = this.#createContext(request, contextData);
     switch (route.name.replace(/:.*$/, "")) {
       case "webfinger":
         return await handleWebFinger(request, {
@@ -1551,6 +1202,9 @@ export class Federation<TContextData> {
           nodeInfoDispatcher: this.#nodeInfoDispatcher!,
         });
       case "actor":
+        context = this.#createContext(request, contextData, {
+          invokedFromActorDispatcher: { handle: route.values.handle },
+        });
         return await handleActor(request, {
           handle: route.values.handle,
           context,
@@ -1563,6 +1217,10 @@ export class Federation<TContextData> {
       case "object": {
         const typeId = route.name.replace(/^object:/, "");
         const callbacks = this.#objectCallbacks[typeId];
+        const cls = this.#objectTypeIds[typeId];
+        context = this.#createContext(request, contextData, {
+          invokedFromObjectDispatcher: { cls, values: route.values },
+        });
         return await handleObject(request, {
           values: route.values,
           context,
@@ -1584,12 +1242,15 @@ export class Federation<TContextData> {
           onNotAcceptable,
         });
       case "inbox":
-        context = {
-          ...context,
-          documentLoader: await context.getDocumentLoader({
-            handle: route.values.handle,
-          }),
-        };
+        context = this.#createContext(
+          request,
+          contextData,
+          {
+            documentLoader: await context.getDocumentLoader({
+              handle: route.values.handle,
+            }),
+          },
+        );
         // falls through
       case "sharedInbox":
         return await handleInbox(request, {
@@ -1641,6 +1302,540 @@ export class Federation<TContextData> {
         return response instanceof Promise ? await response : response;
       }
     }
+  }
+}
+
+interface ContextOptions<TContextData> {
+  url: URL;
+  federation: Federation<TContextData>;
+  router: Router;
+  objectTypeIds: Record<
+    string,
+    // deno-lint-ignore no-explicit-any
+    (new (...args: any[]) => Object) & { typeId: URL }
+  >;
+  objectCallbacks: Record<string, ObjectCallbacks<TContextData, string>>;
+  actorCallbacks?: ActorCallbacks<TContextData>;
+  data: TContextData;
+  documentLoader: DocumentLoader;
+  contextLoader: DocumentLoader;
+  authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
+}
+
+class ContextImpl<TContextData> implements Context<TContextData> {
+  readonly #url: URL;
+  readonly #federation: Federation<TContextData>;
+  readonly #router: Router;
+  readonly #objectTypeIds: Record<
+    string,
+    // deno-lint-ignore no-explicit-any
+    (new (...args: any[]) => Object) & { typeId: URL }
+  >;
+  protected readonly objectCallbacks: Record<
+    string,
+    ObjectCallbacks<TContextData, string>
+  >;
+  protected readonly actorCallbacks?: ActorCallbacks<TContextData>;
+  readonly data: TContextData;
+  readonly documentLoader: DocumentLoader;
+  readonly contextLoader: DocumentLoader;
+  readonly #authenticatedDocumentLoaderFactory:
+    AuthenticatedDocumentLoaderFactory;
+
+  constructor(
+    {
+      url,
+      federation,
+      router,
+      objectTypeIds,
+      objectCallbacks,
+      actorCallbacks,
+      data,
+      documentLoader,
+      contextLoader,
+      authenticatedDocumentLoaderFactory,
+    }: ContextOptions<TContextData>,
+  ) {
+    this.#url = url;
+    this.#federation = federation;
+    this.#router = router;
+    this.#objectTypeIds = objectTypeIds;
+    this.objectCallbacks = objectCallbacks;
+    this.actorCallbacks = actorCallbacks;
+    this.data = data;
+    this.documentLoader = documentLoader;
+    this.contextLoader = contextLoader;
+    this.#authenticatedDocumentLoaderFactory =
+      authenticatedDocumentLoaderFactory;
+  }
+
+  getNodeInfoUri(): URL {
+    const path = this.#router.build("nodeInfo", {});
+    if (path == null) {
+      throw new RouterError("No NodeInfo dispatcher registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
+  getActorUri(handle: string): URL {
+    const path = this.#router.build("actor", { handle });
+    if (path == null) {
+      throw new RouterError("No actor dispatcher registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
+  getObjectUri<TObject extends Object>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    values: Record<string, string>,
+  ): URL {
+    const callbacks = this.objectCallbacks[cls.typeId.href];
+    if (callbacks == null) {
+      throw new RouterError("No object dispatcher registered.");
+    }
+    for (const param of callbacks.parameters) {
+      if (!(param in values)) {
+        throw new TypeError(`Missing parameter: ${param}`);
+      }
+    }
+    const path = this.#router.build(`object:${cls.typeId.href}`, values);
+    if (path == null) {
+      throw new RouterError("No object dispatcher registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
+  getOutboxUri(handle: string): URL {
+    const path = this.#router.build("outbox", { handle });
+    if (path == null) {
+      throw new RouterError("No outbox dispatcher registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
+  getInboxUri(): URL;
+  getInboxUri(handle: string): URL;
+  getInboxUri(handle?: string): URL {
+    if (handle == null) {
+      const path = this.#router.build("sharedInbox", {});
+      if (path == null) {
+        throw new RouterError("No shared inbox path registered.");
+      }
+      return new URL(path, this.#url);
+    }
+    const path = this.#router.build("inbox", { handle });
+    if (path == null) {
+      throw new RouterError("No inbox path registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
+  getFollowingUri(handle: string): URL {
+    const path = this.#router.build("following", { handle });
+    if (path == null) {
+      throw new RouterError("No following collection path registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
+  getFollowersUri(handle: string): URL {
+    const path = this.#router.build("followers", { handle });
+    if (path == null) {
+      throw new RouterError("No followers collection path registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
+  parseUri(uri: URL): ParseUriResult | null {
+    if (uri.origin !== this.#url.origin) return null;
+    const route = this.#router.route(uri.pathname);
+    if (route == null) return null;
+    else if (route.name === "actor") {
+      return { type: "actor", handle: route.values.handle };
+    } else if (route.name.startsWith("object:")) {
+      const typeId = route.name.replace(/^object:/, "");
+      return {
+        type: "object",
+        class: this.#objectTypeIds[typeId],
+        typeId: new URL(typeId),
+        values: route.values,
+      };
+    } else if (route.name === "inbox") {
+      return { type: "inbox", handle: route.values.handle };
+    } else if (route.name === "sharedInbox") {
+      return { type: "inbox" };
+    } else if (route.name === "outbox") {
+      return { type: "outbox", handle: route.values.handle };
+    } else if (route.name === "following") {
+      return { type: "following", handle: route.values.handle };
+    } else if (route.name === "followers") {
+      return { type: "followers", handle: route.values.handle };
+    }
+    return null;
+  }
+
+  getHandleFromActorUri(actorUri: URL): string | null {
+    getLogger(["fedify", "federation"]).warn(
+      "Context.getHandleFromActorUri() is deprecated; " +
+        "use Context.parseUri() instead.",
+    );
+    const result = this.parseUri(actorUri);
+    if (result?.type === "actor") return result.handle;
+    return null;
+  }
+
+  async getActorKeyPairs(handle: string): Promise<ActorKeyPair[]> {
+    let keyPairs: (CryptoKeyPair & { keyId: URL })[];
+    try {
+      keyPairs = await this.getKeyPairsFromHandle(
+        this.#url,
+        this.data,
+        handle,
+      );
+    } catch (_) {
+      getLogger(["fedify", "federation", "actor"])
+        .warn("No actor key pairs dispatcher registered.");
+      return [];
+    }
+    const owner = this.getActorUri(handle);
+    const result = [];
+    for (const keyPair of keyPairs) {
+      const newPair: ActorKeyPair = {
+        ...keyPair,
+        cryptographicKey: new CryptographicKey({
+          id: keyPair.keyId,
+          owner,
+          publicKey: keyPair.publicKey,
+        }),
+      };
+      result.push(newPair);
+    }
+    return result;
+  }
+
+  protected async getKeyPairsFromHandle(
+    url: URL | string,
+    contextData: TContextData,
+    handle: string,
+  ): Promise<(CryptoKeyPair & { keyId: URL })[]> {
+    const logger = getLogger(["fedify", "federation", "actor"]);
+    if (this.actorCallbacks?.keyPairsDispatcher == null) {
+      throw new Error("No actor key pairs dispatcher registered.");
+    }
+    const path = this.#router.build("actor", { handle });
+    if (path == null) {
+      logger.warn("No actor dispatcher registered.");
+      return [];
+    }
+    const actorUri = new URL(path, url);
+    const keyPairs = await this.actorCallbacks?.keyPairsDispatcher(
+      contextData,
+      handle,
+    );
+    if (keyPairs.length < 1) {
+      logger.warn("No key pairs found for actor {handle}.", { handle });
+    }
+    let i = 0;
+    const result = [];
+    for (const keyPair of keyPairs) {
+      result.push({
+        ...keyPair,
+        keyId: new URL(
+          // For backwards compatibility, the first key is always the #main-key:
+          i == 0 ? `#main-key` : `#key-${i + 1}`,
+          actorUri,
+        ),
+      });
+      i++;
+    }
+    return result;
+  }
+
+  async getActorKey(handle: string): Promise<CryptographicKey | null> {
+    getLogger(["fedify", "federation", "actor"]).warn(
+      "Context.getActorKey() method is deprecated; " +
+        "use Context.getActorKeyPairs() method instead.",
+    );
+    let keyPair: CryptoKeyPair & { keyId: URL } | null;
+    try {
+      keyPair = await this.getRsaKeyPairFromHandle(handle);
+    } catch (_) {
+      return null;
+    }
+    if (keyPair == null) return null;
+    return new CryptographicKey({
+      id: keyPair.keyId,
+      owner: this.getActorUri(handle),
+      publicKey: keyPair.publicKey,
+    });
+  }
+
+  protected async getRsaKeyPairFromHandle(
+    handle: string,
+  ): Promise<CryptoKeyPair & { keyId: URL } | null> {
+    const keyPairs = await this.getKeyPairsFromHandle(
+      this.#url,
+      this.data,
+      handle,
+    );
+    for (const keyPair of keyPairs) {
+      const { privateKey } = keyPair;
+      if (
+        privateKey.algorithm.name === "RSASSA-PKCS1-v1_5" &&
+        (privateKey.algorithm as unknown as { hash: { name: string } }).hash
+            .name ===
+          "SHA-256"
+      ) {
+        return keyPair;
+      }
+    }
+    getLogger(["fedify", "federation", "actor"]).warn(
+      "No RSA-PKCS#1-v1.5 SHA-256 key found for actor {handle}.",
+      { handle },
+    );
+    return null;
+  }
+
+  getDocumentLoader(identity: { handle: string }): Promise<DocumentLoader>;
+  getDocumentLoader(
+    identity: { keyId: URL; privateKey: CryptoKey },
+  ): DocumentLoader;
+  getDocumentLoader(
+    identity: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+  ): DocumentLoader | Promise<DocumentLoader> {
+    if ("handle" in identity) {
+      const keyPair = this.getRsaKeyPairFromHandle(identity.handle);
+      return keyPair.then((pair) =>
+        pair == null
+          ? this.documentLoader
+          : this.#authenticatedDocumentLoaderFactory(pair)
+      );
+    }
+    return this.#authenticatedDocumentLoaderFactory(identity);
+  }
+
+  async sendActivity(
+    sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+    recipients: Recipient | Recipient[] | "followers",
+    activity: Activity,
+    options: SendActivityOptions = {},
+  ): Promise<void> {
+    let senderPair: { keyId: URL; privateKey: CryptoKey };
+    if ("handle" in sender) {
+      const keyPair = await this.getRsaKeyPairFromHandle(sender.handle);
+      if (keyPair == null) {
+        throw new Error(`No key pair found for actor ${sender.handle}`);
+      }
+      senderPair = keyPair;
+    } else {
+      senderPair = sender;
+    }
+    const opts: SendActivityInternalOptions = { ...options };
+    let expandedRecipients: Recipient[];
+    if (Array.isArray(recipients)) {
+      expandedRecipients = recipients;
+    } else if (recipients === "followers") {
+      if (!("handle" in sender)) {
+        throw new Error(
+          "If recipients is 'followers', sender must be an actor handle.",
+        );
+      }
+      expandedRecipients = [];
+      for await (
+        const recipient of this.getFollowers(sender.handle)
+      ) {
+        expandedRecipients.push(recipient);
+      }
+      const collectionId = this.#router.build("followers", sender);
+      opts.collectionSync = collectionId == null
+        ? undefined
+        : new URL(collectionId, this.#url).href;
+    } else {
+      expandedRecipients = [recipients];
+    }
+    return await this.#federation.sendActivity(
+      senderPair,
+      expandedRecipients,
+      activity,
+      opts,
+    );
+  }
+
+  protected getFollowers(_handle: string): AsyncIterable<Recipient> {
+    throw new Error(
+      '"followers" recipients are not supported in Context.  ' +
+        "Use RequestContext instead.",
+    );
+  }
+}
+
+interface RequestContextOptions<TContextData>
+  extends ContextOptions<TContextData> {
+  request: Request;
+  signatureTimeWindow?: Temporal.DurationLike;
+  followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
+  invokedFromActorDispatcher?: { handle: string };
+  invokedFromObjectDispatcher?: {
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => Object) & { typeId: URL };
+    values: Record<string, string>;
+  };
+}
+
+class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
+  implements RequestContext<TContextData> {
+  readonly #options: RequestContextOptions<TContextData>;
+  readonly #followersCallbacks?: CollectionCallbacks<
+    Recipient,
+    TContextData,
+    URL
+  >;
+  readonly #signatureTimeWindow?: Temporal.DurationLike;
+  readonly #invokedFromActorDispatcher?: { handle: string };
+  readonly #invokedFromObjectDispatcher?: {
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => Object) & { typeId: URL };
+    values: Record<string, string>;
+  };
+  readonly request: Request;
+  readonly url: URL;
+
+  constructor(options: RequestContextOptions<TContextData>) {
+    super(options);
+    this.#options = options;
+    this.#followersCallbacks = options.followersCallbacks;
+    this.#signatureTimeWindow = options.signatureTimeWindow;
+    this.#invokedFromActorDispatcher = options.invokedFromActorDispatcher;
+    this.#invokedFromObjectDispatcher = options.invokedFromObjectDispatcher;
+    this.request = options.request;
+    this.url = options.url;
+  }
+
+  protected async *getFollowers(handle: string): AsyncIterable<Recipient> {
+    if (this.#followersCallbacks == null) {
+      throw new Error("No followers collection dispatcher registered.");
+    }
+    const result = await this.#followersCallbacks.dispatcher(
+      this,
+      handle,
+      null,
+    );
+    if (result != null) {
+      for (const recipient of result.items) yield recipient;
+      return;
+    }
+    if (this.#followersCallbacks.firstCursor == null) {
+      throw new Error(
+        "No first cursor dispatcher registered for followers collection.",
+      );
+    }
+    let cursor = await this.#followersCallbacks.firstCursor(this, handle);
+    while (cursor != null) {
+      const result = await this.#followersCallbacks.dispatcher(
+        this,
+        handle,
+        cursor,
+      );
+      if (result == null) break;
+      for (const recipient of result.items) yield recipient;
+      cursor = result.nextCursor ?? null;
+    }
+  }
+
+  async getActor(handle: string): Promise<Actor | null> {
+    if (
+      this.actorCallbacks == null ||
+      this.actorCallbacks.dispatcher == null
+    ) {
+      throw new Error("No actor dispatcher registered.");
+    }
+    if (this.#invokedFromActorDispatcher != null) {
+      getLogger(["fedify", "federation"]).warn(
+        "RequestContext.getActor({getActorHandle}) is invoked from " +
+          "the actor dispatcher ({actorDispatcherHandle}); " +
+          "this may cause an infinite loop.",
+        {
+          getActorHandle: handle,
+          actorDispatcherHandle: this.#invokedFromActorDispatcher.handle,
+        },
+      );
+    }
+    let rsaKey: CryptoKeyPair & { keyId: URL } | null;
+    try {
+      rsaKey = await this.getRsaKeyPairFromHandle(handle);
+    } catch (_) {
+      rsaKey = null;
+    }
+    return await this.actorCallbacks.dispatcher(
+      new RequestContextImpl({
+        ...this.#options,
+        invokedFromActorDispatcher: { handle },
+      }),
+      handle,
+      rsaKey == null ? null : new CryptographicKey({
+        id: rsaKey.keyId,
+        owner: this.getActorUri(handle),
+        publicKey: rsaKey.publicKey,
+      }),
+    );
+  }
+
+  async getObject<TObject extends Object>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    values: Record<string, string>,
+  ): Promise<TObject | null> {
+    const callbacks = this.objectCallbacks[cls.typeId.href];
+    if (callbacks == null) {
+      throw new Error("No object dispatcher registered.");
+    }
+    for (const param of callbacks.parameters) {
+      if (!(param in values)) {
+        throw new TypeError(`Missing parameter: ${param}`);
+      }
+    }
+    if (this.#invokedFromObjectDispatcher != null) {
+      getLogger(["fedify", "federation"]).warn(
+        "RequestContext.getObject({getObjectClass}, " +
+          "{getObjectValues}) is invoked from the object dispatcher " +
+          "({actorDispatcherClass}, {actorDispatcherValues}); " +
+          "this may cause an infinite loop.",
+        {
+          getObjectClass: cls.name,
+          getObjectValues: values,
+          actorDispatcherClass: this.#invokedFromObjectDispatcher.cls.name,
+          actorDispatcherValues: this.#invokedFromObjectDispatcher.values,
+        },
+      );
+    }
+    return await callbacks.dispatcher(
+      new RequestContextImpl({
+        ...this.#options,
+        invokedFromObjectDispatcher: { cls, values },
+      }),
+      values,
+      // deno-lint-ignore no-explicit-any
+    ) as any;
+  }
+
+  #signedKey: CryptographicKey | null | undefined = undefined;
+
+  async getSignedKey(): Promise<CryptographicKey | null> {
+    if (this.#signedKey !== undefined) return this.#signedKey;
+    return this.#signedKey = await verifyRequest(this.request, {
+      ...this,
+      timeWindow: this.#signatureTimeWindow,
+    });
+  }
+
+  #signedKeyOwner: Actor | null | undefined = undefined;
+
+  async getSignedKeyOwner(): Promise<Actor | null> {
+    if (this.#signedKeyOwner !== undefined) return this.#signedKeyOwner;
+    const key = await this.getSignedKey();
+    if (key == null) return this.#signedKeyOwner = null;
+    return this.#signedKeyOwner = await getKeyOwner(key, this);
   }
 }
 

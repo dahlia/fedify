@@ -55,7 +55,7 @@ Deno.test("Federation.createContext()", async (t) => {
       documentLoader,
       contextLoader: mockDocumentLoader,
     });
-    const ctx = federation.createContext(new URL("https://example.com/"), 123);
+    let ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(ctx.data, 123);
     assertStrictEquals(ctx.documentLoader, documentLoader);
     assertStrictEquals(ctx.contextLoader, mockDocumentLoader);
@@ -100,6 +100,7 @@ Deno.test("Federation.createContext()", async (t) => {
         localComments: 456,
       },
     }));
+    ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(
       ctx.getNodeInfoUri(),
       new URL("https://example.com/nodeinfo/2.1"),
@@ -117,6 +118,7 @@ Deno.test("Federation.createContext()", async (t) => {
           publicKey: ed25519PublicKey.publicKey!,
         },
       ]);
+    ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(
       ctx.getActorUri("handle"),
       new URL("https://example.com/users/handle"),
@@ -201,6 +203,7 @@ Deno.test("Federation.createContext()", async (t) => {
         });
       },
     );
+    ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(
       ctx.getObjectUri(Note, { handle: "john", id: "123" }),
       new URL("https://example.com/users/john/notes/123"),
@@ -216,6 +219,7 @@ Deno.test("Federation.createContext()", async (t) => {
     );
 
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
+    ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(ctx.getInboxUri(), new URL("https://example.com/inbox"));
     assertEquals(
       ctx.getInboxUri("handle"),
@@ -234,6 +238,7 @@ Deno.test("Federation.createContext()", async (t) => {
       "/users/{handle}/outbox",
       () => ({ items: [] }),
     );
+    ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(
       ctx.getOutboxUri("handle"),
       new URL("https://example.com/users/handle/outbox"),
@@ -247,6 +252,7 @@ Deno.test("Federation.createContext()", async (t) => {
       "/users/{handle}/following",
       () => ({ items: [] }),
     );
+    ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(
       ctx.getFollowingUri("handle"),
       new URL("https://example.com/users/handle/following"),
@@ -260,6 +266,7 @@ Deno.test("Federation.createContext()", async (t) => {
       "/users/{handle}/followers",
       () => ({ items: [] }),
     );
+    ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(
       ctx.getFollowersUri("handle"),
       new URL("https://example.com/users/handle/followers"),
@@ -430,10 +437,10 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         "/users/{handle}",
         (_, handle) => handle === "john" ? new Person({}) : null,
       )
-      .setKeyPairDispatcher(() => ({
+      .setKeyPairsDispatcher(() => [{
         privateKey: rsaPrivateKey2,
         publicKey: rsaPublicKey2.publicKey!,
-      }));
+      }]);
     response = await federation.fetch(
       new Request("https://example.com/inbox", { method: "POST" }),
       { contextData: undefined },
