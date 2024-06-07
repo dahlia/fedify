@@ -1,6 +1,11 @@
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
-import type { Activity, CryptographicKey, Object } from "../vocab/mod.ts";
+import type {
+  Activity,
+  CryptographicKey,
+  Multikey,
+  Object,
+} from "../vocab/mod.ts";
 
 /**
  * A context.
@@ -332,6 +337,7 @@ export interface SendActivityOptions {
 
 /**
  * A pair of a public key and a private key in various formats.
+ * @since 0.10.0
  */
 export interface ActorKeyPair extends CryptoKeyPair {
   /**
@@ -343,4 +349,9 @@ export interface ActorKeyPair extends CryptoKeyPair {
    * A {@link CryptographicKey} instance of the public key.
    */
   cryptographicKey: CryptographicKey;
+
+  /**
+   * A {@link Multikey} instance of the public key.
+   */
+  multikey: Multikey;
 }

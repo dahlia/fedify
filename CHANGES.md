@@ -18,7 +18,7 @@ To be released.
      -  The `importSpki()` function now accepts Ed25519 keys.
      -  The `exportJwk()` function now exports Ed25519 keys.
 
- -  Now multiple key pairs can be registered for an actor.  [[#55]]
+ -  Now multiple key pairs can be registered for an actor.  [[FEP-521a], [#55]]
 
      -  Added `Context.getActorKeyPairs()` method.
      -  Deprecated `Context.getActorKey()` method.
@@ -31,10 +31,44 @@ To be released.
      -  Deprecated the third parameter of the `ActorDispatcher` callback type.
         Use `Context.getActorKeyPairs()` method instead.
 
- -  Added `Multikey` class to Activity Vocabulary API.  [[#55]]
+ -  Added `Multikey` class to Activity Vocabulary API.  [[FEP-521a], [#55]]
 
      -  Added `importMultibaseKey()` function.
      -  Added `exportMultibaseKey()` function.
+
+ -  Added `assertionMethod` property to the `Actor` types in the Activity
+    Vocabulary API.  [[FEP-521a], [#55]]
+
+     -  Added `Application.getAssertionMethod()` method.
+     -  Added `Application.getAssertionMethods()` method.
+     -  `new Application()` constructor now accepts `assertionMethod` option.
+     -  `new Application()` constructor now accepts `assertionMethods` option.
+     -  `Application.clone()` method now accepts `assertionMethod` option.
+     -  `Application.clone()` method now accepts `assertionMethods` option.
+     -  Added `Group.getAssertionMethod()` method.
+     -  Added `Group.getAssertionMethods()` method.
+     -  `new Group()` constructor now accepts `assertionMethod` option.
+     -  `new Group()` constructor now accepts `assertionMethods` option.
+     -  `Group.clone()` method now accepts `assertionMethod` option.
+     -  `Group.clone()` method now accepts `assertionMethods` option.
+     -  Added `Organization.getAssertionMethod()` method.
+     -  Added `Organization.getAssertionMethods()` method.
+     -  `new Organization()` constructor now accepts `assertionMethod` option.
+     -  `new Organization()` constructor now accepts `assertionMethods` option.
+     -  `Organization.clone()` method now accepts `assertionMethod` option.
+     -  `Organization.clone()` method now accepts `assertionMethods` option.
+     -  Added `Person.getAssertionMethod()` method.
+     -  Added `Person.getAssertionMethods()` method.
+     -  `new Person()` constructor now accepts `assertionMethod` option.
+     -  `new Person()` constructor now accepts `assertionMethods` option.
+     -  `Person.clone()` method now accepts `assertionMethod` option.
+     -  `Person.clone()` method now accepts `assertionMethods` option.
+     -  Added `Service.getAssertionMethod()` method.
+     -  Added `Service.getAssertionMethods()` method.
+     -  `new Service()` constructor now accepts `assertionMethod` option.
+     -  `new Service()` constructor now accepts `assertionMethods` option.
+     -  `Service.clone()` method now accepts `assertionMethod` option.
+     -  `Service.clone()` method now accepts `assertionMethods` option.
 
  -  Deprecated `treatHttps` option in `FederationParameters` interface.
     Instead, use the [x-forwarded-fetch] library to recognize the
@@ -48,6 +82,7 @@ To be released.
         `url`.
 
 [#55]: https://github.com/dahlia/fedify/issues/55
+[FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 

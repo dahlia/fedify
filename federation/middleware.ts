@@ -11,7 +11,12 @@ import {
   kvCache,
 } from "../runtime/docloader.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
-import { Activity, CryptographicKey, type Object } from "../vocab/mod.ts";
+import {
+  Activity,
+  CryptographicKey,
+  Multikey,
+  type Object,
+} from "../vocab/mod.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
   ActorDispatcher,
@@ -573,6 +578,22 @@ export class Federation<TContextData> {
               "You configured inbox listeners, but the actor's " +
                 "endpoints.sharedInbox property does not match the shared inbox " +
                 "URI.  Set the property with Context.getInboxUri().",
+            );
+          }
+        }
+        if (callbacks.keyPairsDispatcher != null) {
+          if (actor.publicKeyId == null) {
+            logger.warn(
+              "You configured a key pairs dispatcher, but the actor does " +
+                "not have a publicKey property.  Set the property with " +
+                "Context.getActorKeyPairs(handle).",
+            );
+          }
+          if (actor.assertionMethodId == null) {
+            logger.warn(
+              "You configured a key pairs dispatcher, but the actor does " +
+                "not have an assertionMethod property.  Set the property " +
+                "with Context.getActorKeyPairs(handle).",
             );
           }
         }
@@ -1506,6 +1527,11 @@ class ContextImpl<TContextData> implements Context<TContextData> {
         cryptographicKey: new CryptographicKey({
           id: keyPair.keyId,
           owner,
+          publicKey: keyPair.publicKey,
+        }),
+        multikey: new Multikey({
+          id: keyPair.keyId,
+          controller: owner,
           publicKey: keyPair.publicKey,
         }),
       };

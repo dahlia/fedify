@@ -7,6 +7,8 @@ description: Represents a service of any kind.
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
 - "https://w3id.org/security/v1"
+- "https://www.w3.org/ns/did/v1"
+- "https://w3id.org/security/multikey/v1"
 - manuallyApprovesFollowers: "as:manuallyApprovesFollowers"
   toot: "http://joinmastodon.org/ns#"
   discoverable: "toot:discoverable"
@@ -38,6 +40,18 @@ properties:
   range:
   - "https://w3id.org/security#Key"
 
+- pluralName: assertionMethods
+  singularName: assertionMethod
+  singularAccessor: true
+  uri: "https://w3id.org/security#assertionMethod"
+  description: |
+    Represents this actor's public keys.  It serves as equivalent to
+    the `publicKeys` property, but is used for [FEP-521a] compliance.
+
+    [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+  range:
+  - "https://w3id.org/security#Multikey"
+
 - singularName: manuallyApprovesFollowers
   functional: true
   uri: "https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers"
@@ -67,7 +81,7 @@ properties:
     followers, and a specific actor who also follows the recipient actor,
     and the server has failed to de-duplicate the recipients list.
     Such deduplication MUST be performed by comparing the `id` of the activities
-    and dropping any activities already seen. 
+    and dropping any activities already seen.
   range:
   - "https://www.w3.org/ns/activitystreams#OrderedCollection"
 

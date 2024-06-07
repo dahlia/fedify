@@ -6661,6 +6661,7 @@ export class Application extends Object {
     }
   #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
+#_4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
 #_41QwhqJouoLg3h8dRPKat21brynC: (OrderedCollection | URL)[] = [];
@@ -6700,7 +6701,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -6743,6 +6745,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           this.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot initialize both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -6822,7 +6841,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -6863,6 +6883,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           clone.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot update both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       clone.#_36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -7027,6 +7064,107 @@ get preferredUsernames(): (string | LanguageString)[] {
         }
       }
       
+    async #fetchAssertionMethod(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Multikey> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Multikey.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://w3id.org/security#Multikey\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Application.getAssertionMethod},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get assertionMethodId(): URL | null {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async getAssertionMethod(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<Multikey | null> {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAssertionMethod(v, options);
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Application.getAssertionMethods},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get assertionMethodIds(): URL[] {
+        return this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async* getAssertionMethods(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): AsyncIterable<Multikey> {
+        const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAssertionMethod(
+                v, options);
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** When \`true\`, conveys that for this actor, follow requests are not usually
  * automatically approved, but instead are examined by a person who may accept
  * or reject the request, at some time in the future.  Setting of \`false\`
@@ -7090,7 +7228,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * followers, and a specific actor who also follows the recipient actor,
  * and the server has failed to de-duplicate the recipients list.
  * Such deduplication MUST be performed by comparing the \`id\` of the activities
- * and dropping any activities already seen. 
+ * and dropping any activities already seen.
  * 
  */
 
@@ -7520,6 +7658,14 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
+    for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    
+    array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
       array.push(
     { \\"@value\\": v }
@@ -7625,7 +7771,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -7706,6 +7852,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_axq166E2eZADq34V4MYUc8KMZdC = _axq166E2eZADq34V4MYUc8KMZdC;
+    const _4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#assertionMethod\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(await Multikey.fromJsonLd(
+      v, options))
+    }
+    instance.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
     const _36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] ?? []) {
@@ -7889,6 +8049,32 @@ get indexable(): (boolean | null) {
           || !(\\"publicKey\\" in proxy)
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
+      }
+      
+      const _4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length == 1) {
+        proxy.assertionMethod = _4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+      }
+      
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 1
+          || !(\\"assertionMethod\\" in proxy)
+          && _4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 0) {
+        proxy.assertionMethods = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
       }
       
       const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
@@ -12387,6 +12573,7 @@ export class Group extends Object {
     }
   #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
+#_4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
 #_41QwhqJouoLg3h8dRPKat21brynC: (OrderedCollection | URL)[] = [];
@@ -12426,7 +12613,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -12469,6 +12657,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           this.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot initialize both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -12548,7 +12753,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -12589,6 +12795,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           clone.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot update both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       clone.#_36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -12753,6 +12976,107 @@ get preferredUsernames(): (string | LanguageString)[] {
         }
       }
       
+    async #fetchAssertionMethod(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Multikey> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Multikey.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://w3id.org/security#Multikey\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Group.getAssertionMethod},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get assertionMethodId(): URL | null {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async getAssertionMethod(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<Multikey | null> {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAssertionMethod(v, options);
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Group.getAssertionMethods},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get assertionMethodIds(): URL[] {
+        return this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async* getAssertionMethods(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): AsyncIterable<Multikey> {
+        const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAssertionMethod(
+                v, options);
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** When \`true\`, conveys that for this actor, follow requests are not usually
  * automatically approved, but instead are examined by a person who may accept
  * or reject the request, at some time in the future.  Setting of \`false\`
@@ -12816,7 +13140,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * followers, and a specific actor who also follows the recipient actor,
  * and the server has failed to de-duplicate the recipients list.
  * Such deduplication MUST be performed by comparing the \`id\` of the activities
- * and dropping any activities already seen. 
+ * and dropping any activities already seen.
  * 
  */
 
@@ -13246,6 +13570,14 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
+    for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    
+    array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
       array.push(
     { \\"@value\\": v }
@@ -13351,7 +13683,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -13432,6 +13764,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_axq166E2eZADq34V4MYUc8KMZdC = _axq166E2eZADq34V4MYUc8KMZdC;
+    const _4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#assertionMethod\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(await Multikey.fromJsonLd(
+      v, options))
+    }
+    instance.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
     const _36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] ?? []) {
@@ -13615,6 +13961,32 @@ get indexable(): (boolean | null) {
           || !(\\"publicKey\\" in proxy)
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
+      }
+      
+      const _4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length == 1) {
+        proxy.assertionMethod = _4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+      }
+      
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 1
+          || !(\\"assertionMethod\\" in proxy)
+          && _4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 0) {
+        proxy.assertionMethods = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
       }
       
       const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
@@ -16289,6 +16661,7 @@ export class Organization extends Object {
     }
   #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
+#_4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
 #_41QwhqJouoLg3h8dRPKat21brynC: (OrderedCollection | URL)[] = [];
@@ -16328,7 +16701,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -16371,6 +16745,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           this.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot initialize both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -16450,7 +16841,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -16491,6 +16883,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           clone.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot update both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       clone.#_36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -16655,6 +17064,107 @@ get preferredUsernames(): (string | LanguageString)[] {
         }
       }
       
+    async #fetchAssertionMethod(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Multikey> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Multikey.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://w3id.org/security#Multikey\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Organization.getAssertionMethod},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get assertionMethodId(): URL | null {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async getAssertionMethod(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<Multikey | null> {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAssertionMethod(v, options);
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Organization.getAssertionMethods},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get assertionMethodIds(): URL[] {
+        return this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async* getAssertionMethods(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): AsyncIterable<Multikey> {
+        const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAssertionMethod(
+                v, options);
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** When \`true\`, conveys that for this actor, follow requests are not usually
  * automatically approved, but instead are examined by a person who may accept
  * or reject the request, at some time in the future.  Setting of \`false\`
@@ -16718,7 +17228,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * followers, and a specific actor who also follows the recipient actor,
  * and the server has failed to de-duplicate the recipients list.
  * Such deduplication MUST be performed by comparing the \`id\` of the activities
- * and dropping any activities already seen. 
+ * and dropping any activities already seen.
  * 
  */
 
@@ -17148,6 +17658,14 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
+    for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    
+    array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
       array.push(
     { \\"@value\\": v }
@@ -17253,7 +17771,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -17334,6 +17852,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_axq166E2eZADq34V4MYUc8KMZdC = _axq166E2eZADq34V4MYUc8KMZdC;
+    const _4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#assertionMethod\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(await Multikey.fromJsonLd(
+      v, options))
+    }
+    instance.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
     const _36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] ?? []) {
@@ -17517,6 +18049,32 @@ get indexable(): (boolean | null) {
           || !(\\"publicKey\\" in proxy)
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
+      }
+      
+      const _4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length == 1) {
+        proxy.assertionMethod = _4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+      }
+      
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 1
+          || !(\\"assertionMethod\\" in proxy)
+          && _4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 0) {
+        proxy.assertionMethods = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
       }
       
       const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
@@ -17987,6 +18545,7 @@ export class Person extends Object {
     }
   #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
+#_4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
 #_41QwhqJouoLg3h8dRPKat21brynC: (OrderedCollection | URL)[] = [];
@@ -18026,7 +18585,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -18069,6 +18629,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           this.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot initialize both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -18148,7 +18725,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -18189,6 +18767,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           clone.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot update both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       clone.#_36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -18353,6 +18948,107 @@ get preferredUsernames(): (string | LanguageString)[] {
         }
       }
       
+    async #fetchAssertionMethod(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Multikey> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Multikey.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://w3id.org/security#Multikey\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Person.getAssertionMethod},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get assertionMethodId(): URL | null {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async getAssertionMethod(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<Multikey | null> {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAssertionMethod(v, options);
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Person.getAssertionMethods},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get assertionMethodIds(): URL[] {
+        return this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async* getAssertionMethods(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): AsyncIterable<Multikey> {
+        const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAssertionMethod(
+                v, options);
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** When \`true\`, conveys that for this actor, follow requests are not usually
  * automatically approved, but instead are examined by a person who may accept
  * or reject the request, at some time in the future.  Setting of \`false\`
@@ -18416,7 +19112,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * followers, and a specific actor who also follows the recipient actor,
  * and the server has failed to de-duplicate the recipients list.
  * Such deduplication MUST be performed by comparing the \`id\` of the activities
- * and dropping any activities already seen. 
+ * and dropping any activities already seen.
  * 
  */
 
@@ -18846,6 +19542,14 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
+    for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    
+    array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
       array.push(
     { \\"@value\\": v }
@@ -18951,7 +19655,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -19032,6 +19736,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_axq166E2eZADq34V4MYUc8KMZdC = _axq166E2eZADq34V4MYUc8KMZdC;
+    const _4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#assertionMethod\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(await Multikey.fromJsonLd(
+      v, options))
+    }
+    instance.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
     const _36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] ?? []) {
@@ -19215,6 +19933,32 @@ get indexable(): (boolean | null) {
           || !(\\"publicKey\\" in proxy)
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
+      }
+      
+      const _4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length == 1) {
+        proxy.assertionMethod = _4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+      }
+      
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 1
+          || !(\\"assertionMethod\\" in proxy)
+          && _4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 0) {
+        proxy.assertionMethods = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
       }
       
       const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA
@@ -21413,6 +22157,7 @@ export class Service extends Object {
     }
   #_3isuDgRAKSntq9XdbjiNxjwyPZAf: (string | LanguageString)[] = [];
 #_axq166E2eZADq34V4MYUc8KMZdC: (CryptographicKey | URL)[] = [];
+#_4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 #_3ghX3VfZXXbLvhCRH7QJqpzLrXjB: (OrderedCollection | URL)[] = [];
 #_41QwhqJouoLg3h8dRPKat21brynC: (OrderedCollection | URL)[] = [];
@@ -21452,7 +22197,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -21495,6 +22241,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           this.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot initialize both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -21574,7 +22337,8 @@ btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
-publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -21615,6 +22379,23 @@ publicKeys?: (CryptographicKey | URL)[];manuallyApprovesFollowers?: boolean | nu
           }
         
           clone.#_axq166E2eZADq34V4MYUc8KMZdC = values.publicKeys;
+        }
+      clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        if (\\"assertionMethod\\" in values &&             values.assertionMethod != null) {
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = [values.assertionMethod];
+        }
+      
+        if (\\"assertionMethods\\" in values &&             values.assertionMethods != null) {
+      
+          if (\\"assertionMethod\\" in values &&
+              values.assertionMethod != null) {
+            throw new TypeError(
+              \\"Cannot update both assertionMethod and \\" +
+                \\"assertionMethods at the same time.\\",
+            );
+          }
+        
+          clone.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = values.assertionMethods;
         }
       clone.#_36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA;
         if (\\"manuallyApprovesFollowers\\" in values &&             values.manuallyApprovesFollowers != null) {
@@ -21779,6 +22560,107 @@ get preferredUsernames(): (string | LanguageString)[] {
         }
       }
       
+    async #fetchAssertionMethod(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Multikey> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Multikey.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://w3id.org/security#Multikey\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Service.getAssertionMethod},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get assertionMethodId(): URL | null {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async getAssertionMethod(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<Multikey | null> {
+        if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
+        const v = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAssertionMethod(v, options);
+          this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Service.getAssertionMethods},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get assertionMethodIds(): URL[] {
+        return this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Represents this actor's public keys.  It serves as equivalent to
+ * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
+ * 
+ * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async* getAssertionMethods(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): AsyncIterable<Multikey> {
+        const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAssertionMethod(
+                v, options);
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** When \`true\`, conveys that for this actor, follow requests are not usually
  * automatically approved, but instead are examined by a person who may accept
  * or reject the request, at some time in the future.  Setting of \`false\`
@@ -21842,7 +22724,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * followers, and a specific actor who also follows the recipient actor,
  * and the server has failed to de-duplicate the recipients list.
  * Such deduplication MUST be performed by comparing the \`id\` of the activities
- * and dropping any activities already seen. 
+ * and dropping any activities already seen.
  * 
  */
 
@@ -22272,6 +23154,14 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
+    for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    
+    array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
       array.push(
     { \\"@value\\": v }
@@ -22377,7 +23267,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -22458,6 +23348,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_axq166E2eZADq34V4MYUc8KMZdC = _axq166E2eZADq34V4MYUc8KMZdC;
+    const _4EHQFWZSz1k1d4LmPrQiMba2GbP3: (Multikey | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#assertionMethod\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4EHQFWZSz1k1d4LmPrQiMba2GbP3.push(await Multikey.fromJsonLd(
+      v, options))
+    }
+    instance.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3 = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
     const _36QNc9MxfkKf6h8sEUQSHnV9NZA: boolean[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] ?? []) {
@@ -22641,6 +23545,32 @@ get indexable(): (boolean | null) {
           || !(\\"publicKey\\" in proxy)
           && _axq166E2eZADq34V4MYUc8KMZdC.length > 0) {
         proxy.publicKeys = _axq166E2eZADq34V4MYUc8KMZdC;
+      }
+      
+      const _4EHQFWZSz1k1d4LmPrQiMba2GbP3 = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length == 1) {
+        proxy.assertionMethod = _4EHQFWZSz1k1d4LmPrQiMba2GbP3[0];
+      }
+      
+      if (_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 1
+          || !(\\"assertionMethod\\" in proxy)
+          && _4EHQFWZSz1k1d4LmPrQiMba2GbP3.length > 0) {
+        proxy.assertionMethods = _4EHQFWZSz1k1d4LmPrQiMba2GbP3;
       }
       
       const _36QNc9MxfkKf6h8sEUQSHnV9NZA = this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA

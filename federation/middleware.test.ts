@@ -21,7 +21,7 @@ import {
   rsaPublicKey2,
   rsaPublicKey3,
 } from "../testing/keys.ts";
-import { Create, Note, Person } from "../vocab/vocab.ts";
+import { Create, Multikey, Note, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
 import { Federation } from "./middleware.ts";
@@ -147,6 +147,11 @@ Deno.test("Federation.createContext()", async (t) => {
             id: new URL("https://example.com/users/handle#main-key"),
             owner: new URL("https://example.com/users/handle"),
           }),
+          multikey: new Multikey({
+            id: new URL("https://example.com/users/handle#main-key"),
+            controller: new URL("https://example.com/users/handle"),
+            publicKey: rsaPublicKey2.publicKey!,
+          }),
         },
         {
           keyId: new URL("https://example.com/users/handle#key-2"),
@@ -155,6 +160,11 @@ Deno.test("Federation.createContext()", async (t) => {
           cryptographicKey: ed25519PublicKey.clone({
             id: new URL("https://example.com/users/handle#key-2"),
             owner: new URL("https://example.com/users/handle"),
+          }),
+          multikey: new Multikey({
+            id: new URL("https://example.com/users/handle#key-2"),
+            controller: new URL("https://example.com/users/handle"),
+            publicKey: ed25519PublicKey.publicKey!,
           }),
         },
       ],

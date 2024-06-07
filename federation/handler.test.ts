@@ -169,6 +169,8 @@ Deno.test("handleActor()", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/v1",
+      "https://www.w3.org/ns/did/v1",
+      "https://w3id.org/security/multikey/v1",
       {
         manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
         discoverable: "toot:discoverable",
@@ -252,6 +254,8 @@ Deno.test("handleActor()", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/v1",
+      "https://www.w3.org/ns/did/v1",
+      "https://w3id.org/security/multikey/v1",
       {
         manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
         discoverable: "toot:discoverable",

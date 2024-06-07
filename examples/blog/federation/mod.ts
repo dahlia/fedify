@@ -49,6 +49,10 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   const blog = await getBlog();
   if (blog == null) return null;
   else if (blog.handle !== handle) return null;
+  // A `Context<TContextData>` object has several purposes, and one of
+  // them is to provide a way to get the key pairs for the actor in various
+  // formats:
+  const keyPairs = await ctx.getActorKeyPairs(handle);
   return new Person({
     id: ctx.getActorUri(handle),
     name: blog.title,
@@ -70,12 +74,10 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     }),
     following: ctx.getFollowingUri(handle),
     followers: ctx.getFollowersUri(handle),
-    // The `key` parameter is the public key of the actor, which is used
-    // for the HTTP Signatures.  Note that the `key` object is not a
-    // `CryptoKey` instance, but a `CryptographicKey` instance which is
-    // used for ActivityPub:
-    publicKeys: (await ctx.getActorKeyPairs(handle))
-      .map((keyPair) => keyPair.cryptographicKey),
+    // The `publicKey` and `assertionMethods` are used by peer servers
+    // to verify the signature of the actor:
+    publicKey: keyPairs[0].cryptographicKey,
+    assertionMethods: keyPairs.map((keyPair) => keyPair.multikey),
   });
 })
   .setKeyPairsDispatcher(async (_ctxData, handle) => {

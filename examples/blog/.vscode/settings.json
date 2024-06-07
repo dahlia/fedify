@@ -41,6 +41,7 @@
     "httpsig",
     "logtape",
     "Misskey",
+    "multikey",
     "nodeinfo",
     "preact",
     "unfollow",
