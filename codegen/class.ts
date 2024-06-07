@@ -95,7 +95,12 @@ export async function* generateClasses(
     from "@phensley/language-tag";\n`;
   yield `import { type DocumentLoader, fetchDocumentLoader }
     from "${runtimePath}/docloader.ts";\n`;
-  yield `import { exportSpki, importSpki } from "${runtimePath}/key.ts";\n`;
+  yield `import {
+    exportSpki,
+    exportMultibaseKey,
+    importSpki,
+    importMultibaseKey,
+  } from "${runtimePath}/key.ts";\n`;
   yield `import { LanguageString } from "${runtimePath}/langstr.ts";\n`;
   yield "\n\n";
   const sorted = sortTopologically(types);

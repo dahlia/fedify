@@ -19,7 +19,7 @@ import {
 import { areAllScalarTypes } from "../codegen/type.ts";
 import { LanguageString } from "../runtime/langstr.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { rsaPublicKey1 } from "../testing/keys.ts";
+import { ed25519PublicKey, rsaPublicKey1 } from "../testing/keys.ts";
 import * as vocab from "./vocab.ts";
 import {
   Activity,
@@ -423,6 +423,7 @@ const sampleValues: Record<string, any> = {
   }),
   "fedify:langTag": parseLanguageTag("en"),
   "fedify:publicKey": rsaPublicKey1.publicKey,
+  "fedify:multibaseKey": ed25519PublicKey.publicKey,
   "fedify:units": "m",
 };
 

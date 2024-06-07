@@ -18,7 +18,7 @@ To be released.
      -  The `importSpki()` function now accepts Ed25519 keys.
      -  The `exportJwk()` function now exports Ed25519 keys.
 
- -  Now multiple key pairs can be registered for an actor.
+ -  Now multiple key pairs can be registered for an actor.  [[#55]]
 
      -  Added `Context.getActorKeyPairs()` method.
      -  Deprecated `Context.getActorKey()` method.
@@ -30,6 +30,11 @@ To be released.
      -  Deprecated `ActorKeyPairDispatcher` type.
      -  Deprecated the third parameter of the `ActorDispatcher` callback type.
         Use `Context.getActorKeyPairs()` method instead.
+
+ -  Added `Multikey` class to Activity Vocabulary API.  [[#55]]
+
+     -  Added `importMultibaseKey()` function.
+     -  Added `exportMultibaseKey()` function.
 
  -  Deprecated `treatHttps` option in `FederationParameters` interface.
     Instead, use the [x-forwarded-fetch] library to recognize the

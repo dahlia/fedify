@@ -155,6 +155,43 @@ snapshot[`Deno.inspect(CryptographicKey) [auto] 3`] = `
 }'
 `;
 
+snapshot[`Deno.inspect(Multikey) [auto] 1`] = `
+'Multikey {
+  id: URL "https://example.com/",
+  controller: Application {},
+  publicKey: CryptoKey {
+    type: "public",
+    extractable: true,
+    algorithm: { name: "Ed25519" },
+    usages: [ "verify" ]
+  }
+}'
+`;
+
+snapshot[`Deno.inspect(Multikey) [auto] 2`] = `
+'Multikey {
+  controller: URL "https://example.com/",
+  publicKey: CryptoKey {
+    type: "public",
+    extractable: true,
+    algorithm: { name: "Ed25519" },
+    usages: [ "verify" ]
+  }
+}'
+`;
+
+snapshot[`Deno.inspect(Multikey) [auto] 3`] = `
+'Multikey {
+  controller: Application {},
+  publicKey: CryptoKey {
+    type: "public",
+    extractable: true,
+    algorithm: { name: "Ed25519" },
+    usages: [ "verify" ]
+  }
+}'
+`;
+
 snapshot[`Deno.inspect(Accept) [auto] 1`] = `
 'Accept {
   id: URL "https://example.com/",

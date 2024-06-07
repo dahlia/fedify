@@ -209,6 +209,25 @@ const scalarTypes: Record<string, ScalarType> = {
       return `await importSpki(${v}["@value"])`;
     },
   },
+  "fedify:multibaseKey": {
+    name: "CryptoKey",
+    typeGuard(v) {
+      return `${v} instanceof CryptoKey`;
+    },
+    encoder(v) {
+      return `{
+        "@type": "https://w3id.org/security#multibase",
+        "@value": await exportMultibaseKey(${v}),
+      }`;
+    },
+    dataCheck(v) {
+      return `typeof ${v} === "object" && "@value" in ${v}
+        && typeof ${v}["@value"] === "string"`;
+    },
+    decoder(v) {
+      return `await importMultibaseKey(${v}["@value"])`;
+    },
+  },
   "fedify:units": {
     name: '"cm" | "feet" | "inches" | "km" | "m" | "miles"',
     typeGuard(v) {

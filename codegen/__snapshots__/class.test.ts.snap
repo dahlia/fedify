@@ -8,7 +8,12 @@ import { type LanguageTag, parseLanguageTag }
     from \\"@phensley/language-tag\\";
 import { type DocumentLoader, fetchDocumentLoader }
     from \\"../runtime/docloader.ts\\";
-import { exportSpki, importSpki } from \\"../runtime/key.ts\\";
+import {
+    exportSpki,
+    exportMultibaseKey,
+    importSpki,
+    importMultibaseKey,
+  } from \\"../runtime/key.ts\\";
 import { LanguageString } from \\"../runtime/langstr.ts\\";
 
 
@@ -4930,6 +4935,419 @@ get publicKey(): (CryptoKey | null) {
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"CryptographicKey \\" + inspect(proxy, options);
+  }
+  }
+
+/** Represents a key owned by an actor according to [FEP-521a: Representing
+ * actor's public keys.][1]
+ * 
+ * [1]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+export class Multikey {
+
+    readonly #documentLoader?: DocumentLoader;
+    readonly #contextLoader?: DocumentLoader;
+    readonly id: URL | null;
+
+    protected get _documentLoader(): DocumentLoader | undefined {
+      return this.#documentLoader;
+    }
+
+    protected get _contextLoader(): DocumentLoader | undefined {
+      return this.#contextLoader;
+    }
+    
+    /**
+     * The type URI of {@link Multikey}: \`https://w3id.org/security#Multikey\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://w3id.org/security#Multikey\\");
+    }
+  #_2yr3eUBTP6cNcyaxKzAXWjFsnGzN: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_4XLHbsR2gLVWU3NpEqKt9wANzn4F: CryptoKey[] = [];
+
+  /**
+   * Constructs a new instance of Multikey with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+controller?: Application | Group | Organization | Person | Service | URL | null;publicKey?: CryptoKey | null;}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  
+    this.#documentLoader = documentLoader;
+    this.#contextLoader = contextLoader;
+    this.id = values.id ?? null;
+    
+        if (\\"controller\\" in values &&             values.controller != null) {
+          this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN = [values.controller];
+        }
+      
+        if (\\"publicKey\\" in values &&             values.publicKey != null) {
+          this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F = [values.publicKey];
+        }
+      }
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+controller?: Application | Group | Organization | Person | Service | URL | null;publicKey?: CryptoKey | null;}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Multikey {
+  
+    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
+    const clone: Multikey = new this.constructor({ id: values.id }, options);
+    clone.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN = this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN;
+        if (\\"controller\\" in values &&             values.controller != null) {
+          clone.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN = [values.controller];
+        }
+      clone.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F = this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F;
+        if (\\"publicKey\\" in values &&             values.publicKey != null) {
+          clone.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F = [values.publicKey];
+        }
+      
+    return clone;
+  }
+  
+    async #fetchController(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Application | Group | Organization | Person | Service> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Application.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Group.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Organization.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Person.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Service.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Multikey.getController},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get controllerId(): URL | null {
+        if (this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN.length < 1) return null;
+        const v = this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** An actor who owns this key.
+ */
+
+      async getController(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<Application | Group | Organization | Person | Service | null> {
+        if (this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN.length < 1) return null;
+        const v = this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchController(v, options);
+          this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+/** A [Multibase]-encoded value of a [Multicodec] prefix and the key.
+ * 
+ * [Multibase]: https://www.w3.org/TR/vc-data-integrity/#multibase-0
+ * [Multicodec]: https://github.com/multiformats/multicodec/
+ * 
+ */
+get publicKey(): (CryptoKey | null) {
+        if (this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F.length < 1) return null;
+        return this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F[0];
+      }
+      
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  const values: Record<string, unknown[] | string> = {};
+    array = [];
+    for (const v of this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#controller\\"] = array;
+    
+    array = [];
+    for (const v of this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F) {
+      array.push(
+    {
+        \\"@type\\": \\"https://w3id.org/security#multibase\\",
+        \\"@value\\": await exportMultibaseKey(v),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#publicKeyMultibase\\"] = array;
+    
+    values[\\"@type\\"] = [\\"https://w3id.org/security#Multikey\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    return await jsonld.compact(
+      values,
+      \\"https://w3id.org/security/multikey/v1\\",
+      { documentLoader: options.contextLoader },
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Multikey> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://w3id.org/security#Multikey\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = new this(
+      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
+      options,
+    );
+    const _2yr3eUBTP6cNcyaxKzAXWjFsnGzN: (Application | Group | Organization | Person | Service | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#controller\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _2yr3eUBTP6cNcyaxKzAXWjFsnGzN.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\") ? await Application.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\") ? await Group.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\") ? await Organization.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\") ? await Person.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\") ? await Service.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _2yr3eUBTP6cNcyaxKzAXWjFsnGzN.push(decoded);
+      
+    }
+    instance.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN = _2yr3eUBTP6cNcyaxKzAXWjFsnGzN;
+    const _4XLHbsR2gLVWU3NpEqKt9wANzn4F: CryptoKey[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#publicKeyMultibase\\"] ?? []) {
+      if (v == null) continue;
+    _4XLHbsR2gLVWU3NpEqKt9wANzn4F.push(await importMultibaseKey(v[\\"@value\\"]))
+    }
+    instance.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F = _4XLHbsR2gLVWU3NpEqKt9wANzn4F;
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  
+    const proxy: Record<string, unknown> = {};
+    if (this.id != null) {
+      proxy.id = {
+        [Symbol.for(\\"Deno.customInspect\\")]: (
+          inspect: typeof Deno.inspect,
+          options: Deno.InspectOptions,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+      };
+    }
+    
+      const _2yr3eUBTP6cNcyaxKzAXWjFsnGzN = this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2yr3eUBTP6cNcyaxKzAXWjFsnGzN.length == 1) {
+        proxy.controller = _2yr3eUBTP6cNcyaxKzAXWjFsnGzN[0];
+      }
+      
+      const _4XLHbsR2gLVWU3NpEqKt9wANzn4F = this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4XLHbsR2gLVWU3NpEqKt9wANzn4F.length == 1) {
+        proxy.publicKey = _4XLHbsR2gLVWU3NpEqKt9wANzn4F[0];
+      }
+      
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Multikey \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Multikey \\" + inspect(proxy, options);
   }
   }
 

@@ -1,6 +1,11 @@
 import { assertEquals } from "@std/assert";
 import { exportJwk, importJwk } from "../sig/key.ts";
-import { exportSpki, importSpki } from "./key.ts";
+import {
+  exportMultibaseKey,
+  exportSpki,
+  importMultibaseKey,
+  importSpki,
+} from "./key.ts";
 
 // cSpell: disable
 const rsaPem = "-----BEGIN PUBLIC KEY-----\n" +
@@ -31,6 +36,15 @@ const rsaJwk = {
   // cSpell: enable
 };
 
+const rsaMultibase =
+  // cSpell: diable
+  "z4MXj1wBzi9jUstyPqYMn6Gum79JtbKFiHTibtPRoPeufjdimA24Kg8Q5N7E2eMpgVUtD61kUv" +
+  "my4FaT5D5G8XU3ktxeduwEw5FHTtiLCzaruadf6rit1AUPL34UtcPuHh6GxBzTxgFKMMuzcHiU" +
+  "zG9wvbxn7toS4H2gbmUn1r91836ET2EVgmSdzju614Wu67ukyBGivcboncdfxPSR5JXwURBaL8" +
+  "K2P6yhKn3NyprFV8s6QpN4zgQMAD3Q6fjAsEvGNwXaQTZmEN2yd1NQ7uBE3RJ2XywZnehmfLQT" +
+  "EqD7Ad5XM3qfLLd9CtdzJGBkRfunHhkH1kz8dHL7hXwtk5EMXktY4QF5gZ1uisUV5mpPjEgqz7uDz";
+// cSpell: enable
+
 // cSpell: disable
 const ed25519Pem = "-----BEGIN PUBLIC KEY-----\n" +
   "MCowBQYDK2VwAyEAvrabdlLgVI5jWl7GpF+fLFJVF4ccI8D7h+v5ulBCYwo=\n" +
@@ -46,6 +60,10 @@ const ed25519Jwk = {
   key_ops: ["verify"],
   ext: true,
 };
+
+// cSpell: disable
+const ed25519Multibase = "z6MksHj1MJnidCtDiyYW9ugNFftoX9fLK4bornTxmMZ6X7vq";
+// cSpell: enable
 
 Deno.test("importSpki()", async () => {
   const rsaKey = await importSpki(rsaPem);
@@ -63,4 +81,22 @@ Deno.test("exportSpki()", async () => {
   const ed25519Key = await importJwk(ed25519Jwk, "public");
   const ed25519Spki = await exportSpki(ed25519Key);
   assertEquals(ed25519Spki, ed25519Pem);
+});
+
+Deno.test("importMultibase()", async () => {
+  const rsaKey = await importMultibaseKey(rsaMultibase);
+  assertEquals(await exportJwk(rsaKey), rsaJwk);
+
+  const ed25519Key = await importMultibaseKey(ed25519Multibase);
+  assertEquals(await exportJwk(ed25519Key), ed25519Jwk);
+});
+
+Deno.test("exportMultibaseKey()", async () => {
+  const rsaKey = await importJwk(rsaJwk, "public");
+  const rsaMb = await exportMultibaseKey(rsaKey);
+  assertEquals(rsaMb, rsaMultibase);
+
+  const ed25519Key = await importJwk(ed25519Jwk, "public");
+  const ed25519Mb = await exportMultibaseKey(ed25519Key);
+  assertEquals(ed25519Mb, ed25519Multibase);
 });
