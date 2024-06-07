@@ -99,4 +99,49 @@ Deno.test("exportMultibaseKey()", async () => {
   const ed25519Key = await importJwk(ed25519Jwk, "public");
   const ed25519Mb = await exportMultibaseKey(ed25519Key);
   assertEquals(ed25519Mb, ed25519Multibase);
+
+  // Test vectors from <https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.feature>:
+  const rsaKey2 = await importJwk({
+    alg: "RS256",
+    ext: true,
+    key_ops: ["verify"],
+    // cSpell: disable
+    e: "AQAB",
+    kty: "RSA",
+    n: "sbX82NTV6IylxCh7MfV4hlyvaniCajuP97GyOqSvTmoEdBOflFvZ06kR_9D6ctt45Fk6h" +
+      "skfnag2GG69NALVH2o4RCR6tQiLRpKcMRtDYE_thEmfBvDzm_VVkOIYfxu-Ipuo9J_S5XD" +
+      "NDjczx2v-3oDh5-CIHkU46hvFeCvpUS-L8TJSbgX0kjVk_m4eIb9wh63rtmD6Uz_KBtCo5" +
+      "mmR4TEtcLZKYdqMp3wCjN-TlgHiz_4oVXWbHUefCEe8rFnX1iQnpDHU49_SaXQoud1jCae" +
+      "xFn25n-Aa8f8bc5Vm-5SeRwidHa6ErvEhTvf1dz6GoNPp2iRvm-wJ1gxwWJEYPQ",
+    // cSpell: enable
+  }, "public");
+  const rsaMb2 = await exportMultibaseKey(rsaKey2);
+  assertEquals(
+    rsaMb2,
+    // cSpell: disable
+    "z4MXj1wBzi9jUstyPMS4jQqB6KdJaiatPkAtVtGc6bQEQEEsKTic4G7Rou3iBf9vPmT5dbkm" +
+      "9qsZsuVNjq8HCuW1w24nhBFGkRE4cd2Uf2tfrB3N7h4mnyPp1BF3ZttHTYv3DLUPi1zMdk" +
+      "ULiow3M1GfXkoC6DoxDUm1jmN6GBj22SjVsr6dxezRVQc7aj9TxE7JLbMH1wh5X3kA58H3" +
+      "DFW8rnYMakFGbca5CB2Jf6CnGQZmL7o5uJAdTwXfy2iiiyPxXEGerMhHwhjTA1mKYobyk2" +
+      "CpeEcmvynADfNZ5MBvcCS7m3XkFCMNUYBS9NQ3fze6vMSUPsNa6GVYmKx2x6JrdEjCk3qR" +
+      "MMmyjnjCMfR4pXbRMZa3i",
+    // cSpell: enable
+  );
+
+  const ed25519Key2 = await importJwk({
+    crv: "Ed25519",
+    ext: true,
+    key_ops: ["verify"],
+    kty: "OKP",
+    // cSpell: disable
+    x: "Lm_M42cB3HkUiODQsXRcweM6TByfzEHGO9ND274JcOY",
+    // cSpell: enable
+  }, "public");
+  const ed25519Mb2 = await exportMultibaseKey(ed25519Key2);
+  assertEquals(
+    ed25519Mb2,
+    // cSpell: disable
+    "z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+    // cSpell: enable
+  );
 });
