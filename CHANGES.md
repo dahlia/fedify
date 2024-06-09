@@ -73,6 +73,16 @@ To be released.
  -  Added `DataIntegrityProof` class to Activity Vocabulary API.
     [[FEP-8b32], [#54]]
 
+ -  Added `proof` property to the `Object` class in the Activity
+    Vocabulary API.   [[FEP-8b32], [#54]]
+
+     -  Added `Object.getProof()` method.
+     -  Added `Object.getProofs()` method.
+     -  `new Object()` constructor now accepts `proof` option.
+     -  `new Object()` constructor now accepts `proofs` option.
+     -  `Object.clone()` method now accepts `proof` option.
+     -  `Object.clone()` method now accepts `proofs` option.
+
  -  Deprecated `treatHttps` option in `FederationParameters` interface.
     Instead, use the [x-forwarded-fetch] library to recognize the
     `X-Forwarded-Host` and `X-Forwarded-Proto` headers.

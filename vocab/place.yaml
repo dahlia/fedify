@@ -7,7 +7,9 @@ description: |
   Represents a logical or physical location.  See [5.3 Representing
   Places](https://www.w3.org/TR/activitystreams-vocabulary/#places)
   for additional information.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 
 properties:
 - singularName: accuracy

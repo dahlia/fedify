@@ -11,7 +11,9 @@ description: |
   See [5.2 Representing Relationships Between
   Entities](https://www.w3.org/TR/activitystreams-vocabulary/#connections)
   for additional information.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 
 properties:
 - singularName: subject

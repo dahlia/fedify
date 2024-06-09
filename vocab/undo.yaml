@@ -10,6 +10,8 @@ description: |
   for whatever reason, might choose to undo that like at some later point in
   time).
 
-  The `target` and `origin` typically have no defined meaning. 
-defaultContext: "https://www.w3.org/ns/activitystreams"
+  The `target` and `origin` typically have no defined meaning.
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 properties: []

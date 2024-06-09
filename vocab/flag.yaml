@@ -7,5 +7,7 @@ description: |
   Indicates that the `actor` is "flagging" the `object`.  Flagging is defined
   in the sense common to many social platforms as reporting content as being
   inappropriate for any number of reasons.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 properties: []

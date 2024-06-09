@@ -4,5 +4,7 @@ uri: "https://www.w3.org/ns/activitystreams#Dislike"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true
 description: Indicates that the `actor` dislikes the `object`.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 properties: []

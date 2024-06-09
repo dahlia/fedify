@@ -6,6 +6,7 @@ entity: true
 description: Indicates that the `actor` has created the `object`.
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 - toot: "http://joinmastodon.org/ns#"
   sensitive: "as:sensitive"
   Emoji: "toot:Emoji"

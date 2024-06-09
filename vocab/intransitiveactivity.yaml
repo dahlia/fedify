@@ -7,5 +7,7 @@ description: |
   Instances of `IntransitiveActivity` are a subtype of {@link Activity}
   representing intransitive actions.  The `object` property is therefore
   inappropriate for these activities.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 properties: []

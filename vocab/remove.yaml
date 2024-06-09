@@ -6,5 +6,7 @@ entity: true
 description: |
   Indicates that the `actor` is removing the `object`.  If specified,
   the `origin` indicates the context from which the `object` is being removed.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 properties: []

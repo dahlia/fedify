@@ -7,7 +7,9 @@ description: |
   A `Tombstone` represents a content object that has been deleted.
   It can be used in {@link Collection}s to signify that there used to be
   an object at this position, but it has been deleted.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 
 properties:
 - singularName: deleted

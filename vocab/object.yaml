@@ -10,6 +10,7 @@ description: |
   {@link OrderedCollection}.
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 - sensitive: "as:sensitive"
 
 properties:
@@ -300,3 +301,12 @@ properties:
   description: Whether it contains any sensitive contents.
   range:
   - "http://www.w3.org/2001/XMLSchema#boolean"
+
+- singularName: proof
+  pluralName: proofs
+  singularAccessor: true
+  uri: "https://w3id.org/security#proof"
+  description: |
+    A cryptographic proof that can be used to verify the integrity of an object.
+  range:
+  - "https://w3id.org/security#DataIntegrityProof"

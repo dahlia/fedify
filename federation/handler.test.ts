@@ -169,6 +169,7 @@ Deno.test("handleActor()", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/v1",
+      "https://w3id.org/security/data-integrity/v1",
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/security/multikey/v1",
       {
@@ -254,6 +255,7 @@ Deno.test("handleActor()", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/v1",
+      "https://w3id.org/security/data-integrity/v1",
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/security/multikey/v1",
       {
@@ -406,6 +408,7 @@ Deno.test("handleObject()", async () => {
   assertEquals(await response.json(), {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
       {
         Emoji: "toot:Emoji",
         Hashtag: "as:Hashtag",
@@ -500,6 +503,7 @@ Deno.test("handleObject()", async () => {
   assertEquals(await response.json(), {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
       {
         Emoji: "toot:Emoji",
         Hashtag: "as:Hashtag",
@@ -878,6 +882,7 @@ Deno.test("respondWithObject()", async () => {
   assertEquals(await response.json(), {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
       {
         Emoji: "toot:Emoji",
         Hashtag: "as:Hashtag",
@@ -912,6 +917,7 @@ Deno.test("respondWithObjectIfAcceptable", async () => {
   assertEquals(await response.json(), {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
       {
         Emoji: "toot:Emoji",
         Hashtag: "as:Hashtag",

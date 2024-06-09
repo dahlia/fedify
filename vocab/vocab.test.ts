@@ -135,6 +135,7 @@ Deno.test("Object.toJsonLd()", async () => {
   assertEquals(await obj.toJsonLd({ contextLoader: mockDocumentLoader }), {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
       { sensitive: "as:sensitive" },
     ],
     type: "Object",
@@ -382,7 +383,10 @@ Deno.test("Place.fromJsonLd()", async () => {
 
   const jsonLd = await place.toJsonLd({ contextLoader: mockDocumentLoader });
   assertEquals(jsonLd, {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
+    ],
     type: "Place",
     name: "Fresno Area",
     latitude: 36.75,

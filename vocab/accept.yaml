@@ -7,5 +7,7 @@ description: |
   Indicates that the `actor` accepts the `object`.  The `target` property can be
   used in certain circumstances to indicate the context into which the `object`
   has been accepted.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 properties: []

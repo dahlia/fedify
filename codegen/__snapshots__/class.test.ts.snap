@@ -72,6 +72,7 @@ export class Object {
 #_3BLrzmscsjHCw8TF5BHRW9WkPnX8: string[] = [];
 #_3bNvLMBN1bCJETiTihM3wvi1B2JX: Temporal.Duration[] = [];
 #_u8gdcDTtChQ4tbSQMXc4cYWyum7: boolean[] = [];
+#_42rPnotok1ivQ2RNCKNbeFJgx8b8: (DataIntegrityProof | URL)[] = [];
 
   /**
    * Constructs a new instance of Object with the given values.
@@ -97,7 +98,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 ,
     {
       documentLoader,
@@ -418,6 +420,23 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
         if (\\"sensitive\\" in values &&             values.sensitive != null) {
           this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7 = [values.sensitive];
         }
+      
+        if (\\"proof\\" in values &&             values.proof != null) {
+          this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8 = [values.proof];
+        }
+      
+        if (\\"proofs\\" in values &&             values.proofs != null) {
+      
+          if (\\"proof\\" in values &&
+              values.proof != null) {
+            throw new TypeError(
+              \\"Cannot initialize both proof and \\" +
+                \\"proofs at the same time.\\",
+            );
+          }
+        
+          this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8 = values.proofs;
+        }
       }
 
   /**
@@ -445,7 +464,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 
     = {},
     options: {
@@ -762,6 +782,23 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
       clone.#_u8gdcDTtChQ4tbSQMXc4cYWyum7 = this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7;
         if (\\"sensitive\\" in values &&             values.sensitive != null) {
           clone.#_u8gdcDTtChQ4tbSQMXc4cYWyum7 = [values.sensitive];
+        }
+      clone.#_42rPnotok1ivQ2RNCKNbeFJgx8b8 = this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8;
+        if (\\"proof\\" in values &&             values.proof != null) {
+          clone.#_42rPnotok1ivQ2RNCKNbeFJgx8b8 = [values.proof];
+        }
+      
+        if (\\"proofs\\" in values &&             values.proofs != null) {
+      
+          if (\\"proof\\" in values &&
+              values.proof != null) {
+            throw new TypeError(
+              \\"Cannot update both proof and \\" +
+                \\"proofs at the same time.\\",
+            );
+          }
+        
+          clone.#_42rPnotok1ivQ2RNCKNbeFJgx8b8 = values.proofs;
         }
       
     return clone;
@@ -2404,6 +2441,101 @@ get sensitive(): (boolean | null) {
         return this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7[0];
       }
       
+    async #fetchProof(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<DataIntegrityProof> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await DataIntegrityProof.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://w3id.org/security#DataIntegrityProof\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Object.getProof},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get proofId(): URL | null {
+        if (this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8.length < 1) return null;
+        const v = this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** A cryptographic proof that can be used to verify the integrity of an object.
+ * 
+ */
+
+      async getProof(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<DataIntegrityProof | null> {
+        if (this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8.length < 1) return null;
+        const v = this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchProof(v, options);
+          this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Object.getProofs},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get proofIds(): URL[] {
+        return this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** A cryptographic proof that can be used to verify the integrity of an object.
+ * 
+ */
+
+      async* getProofs(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): AsyncIterable<DataIntegrityProof> {
+        const vs = this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchProof(
+                v, options);
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -2659,6 +2791,14 @@ get sensitive(): (boolean | null) {
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#sensitive\\"] = array;
     
+    array = [];
+    for (const v of this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#proof\\"] = array;
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Object\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
     if (options.expand) {
@@ -2669,7 +2809,7 @@ get sensitive(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"sensitive\\":\\"as:sensitive\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"sensitive\\":\\"as:sensitive\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -3347,6 +3487,20 @@ get sensitive(): (boolean | null) {
     _u8gdcDTtChQ4tbSQMXc4cYWyum7.push(v[\\"@value\\"])
     }
     instance.#_u8gdcDTtChQ4tbSQMXc4cYWyum7 = _u8gdcDTtChQ4tbSQMXc4cYWyum7;
+    const _42rPnotok1ivQ2RNCKNbeFJgx8b8: (DataIntegrityProof | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#proof\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _42rPnotok1ivQ2RNCKNbeFJgx8b8.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _42rPnotok1ivQ2RNCKNbeFJgx8b8.push(await DataIntegrityProof.fromJsonLd(
+      v, options))
+    }
+    instance.#_42rPnotok1ivQ2RNCKNbeFJgx8b8 = _42rPnotok1ivQ2RNCKNbeFJgx8b8;
     
     return instance;
   }
@@ -4006,6 +4160,32 @@ get sensitive(): (boolean | null) {
         proxy.sensitive = _u8gdcDTtChQ4tbSQMXc4cYWyum7[0];
       }
       
+      const _42rPnotok1ivQ2RNCKNbeFJgx8b8 = this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_42rPnotok1ivQ2RNCKNbeFJgx8b8.length == 1) {
+        proxy.proof = _42rPnotok1ivQ2RNCKNbeFJgx8b8[0];
+      }
+      
+      if (_42rPnotok1ivQ2RNCKNbeFJgx8b8.length > 1
+          || !(\\"proof\\" in proxy)
+          && _42rPnotok1ivQ2RNCKNbeFJgx8b8.length > 0) {
+        proxy.proofs = _42rPnotok1ivQ2RNCKNbeFJgx8b8;
+      }
+      
     return proxy;
   }
 
@@ -4062,7 +4242,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 ,
     {
       documentLoader,
@@ -4099,7 +4280,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 
     = {},
     options: {
@@ -5925,7 +6107,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -5998,7 +6181,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -6327,7 +6511,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\"],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -6618,7 +6802,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -6657,7 +6842,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -6702,7 +6888,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -6819,7 +7005,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -6858,7 +7045,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -6903,7 +7091,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -7019,7 +7207,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -7058,7 +7247,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -7103,7 +7293,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -7231,7 +7421,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -7371,7 +7562,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -8303,7 +8495,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -8907,7 +9099,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 ,
     {
       documentLoader,
@@ -8944,7 +9137,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 
     = {},
     options: {
@@ -8987,7 +9181,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9102,7 +9296,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -9147,7 +9342,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -9177,7 +9373,7 @@ get width(): (number | null) {
       }
       
 /** Specifies a hint as to the rendering height in
- * device-independent pixels of the linked resource. 
+ * device-independent pixels of the linked resource.
  * 
  */
 get height(): (number | null) {
@@ -9238,7 +9434,7 @@ get height(): (number | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9425,7 +9621,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -9462,7 +9659,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -9505,7 +9703,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9620,7 +9818,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -9659,7 +9858,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -9704,7 +9904,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9826,7 +10026,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -9865,7 +10066,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -9910,7 +10112,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -10033,7 +10235,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
 ,
     {
       documentLoader,
@@ -10091,7 +10294,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
 
     = {},
     options: {
@@ -10830,7 +11034,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
 ,
     {
       documentLoader,
@@ -10879,7 +11084,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
 
     = {},
     options: {
@@ -11415,7 +11621,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -11454,7 +11661,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -11499,7 +11707,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -11614,7 +11822,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -11653,7 +11862,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -11698,7 +11908,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -11811,7 +12021,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -11850,7 +12061,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -11895,7 +12107,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -12534,7 +12746,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 ,
     {
       documentLoader,
@@ -12571,7 +12784,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 
     = {},
     options: {
@@ -12614,7 +12828,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -12730,7 +12944,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -12769,7 +12984,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -12814,7 +13030,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -12931,7 +13147,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -12970,7 +13187,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -13015,7 +13233,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -13143,7 +13361,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -13283,7 +13502,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -14215,7 +14435,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -15815,7 +16035,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -15852,7 +16073,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -16011,7 +16233,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -16050,7 +16273,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -16095,7 +16319,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -16210,7 +16434,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -16249,7 +16474,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -16294,7 +16520,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -16576,7 +16802,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 ,
     {
       documentLoader,
@@ -16613,7 +16840,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];}
 
     = {},
     options: {
@@ -16656,7 +16884,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -16771,7 +16999,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
 ,
     {
       documentLoader,
@@ -16808,7 +17037,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
 
     = {},
     options: {
@@ -16968,7 +17198,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
 ,
     {
       documentLoader,
@@ -17009,7 +17240,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
 
     = {},
     options: {
@@ -17231,7 +17463,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -17371,7 +17604,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -18303,7 +18537,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -18907,7 +19141,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -18944,7 +19179,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -18987,7 +19223,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -19115,7 +19351,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -19255,7 +19492,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -20187,7 +20425,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -20800,7 +21038,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;accuracy?: number | null;altitude?: number | null;latitude?: number | null;longitude?: number | null;radius?: number | null;units?: \\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"miles\\" | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];accuracy?: number | null;altitude?: number | null;latitude?: number | null;longitude?: number | null;radius?: number | null;units?: \\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"miles\\" | URL | null;}
 ,
     {
       documentLoader,
@@ -20861,7 +21100,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;accuracy?: number | null;altitude?: number | null;latitude?: number | null;longitude?: number | null;radius?: number | null;units?: \\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"miles\\" | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];accuracy?: number | null;altitude?: number | null;latitude?: number | null;longitude?: number | null;radius?: number | null;units?: \\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"miles\\" | URL | null;}
 
     = {},
     options: {
@@ -21045,7 +21285,7 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -21334,7 +21574,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;describes?: Object | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
 ,
     {
       documentLoader,
@@ -21375,7 +21616,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;describes?: Object | URL | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
 
     = {},
     options: {
@@ -21490,7 +21732,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -21639,7 +21881,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -21678,7 +21921,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -21723,7 +21967,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -21846,7 +22090,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;subject?: Object | URL | null;object?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];subject?: Object | URL | null;object?: Object | URL | null;
 objects?: (Object | URL)[];relationship?: Object | URL | null;
 relationships?: (Object | URL)[];}
 ,
@@ -21923,7 +22168,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;subject?: Object | URL | null;object?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];subject?: Object | URL | null;object?: Object | URL | null;
 objects?: (Object | URL)[];relationship?: Object | URL | null;
 relationships?: (Object | URL)[];}
 
@@ -22286,7 +22532,7 @@ relationships?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -22515,7 +22761,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -22554,7 +22801,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -22599,7 +22847,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -22727,7 +22975,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -22867,7 +23116,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;preferredUsername?: string | LanguageString | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: (string | LanguageString)[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
@@ -23799,7 +24049,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -24407,7 +24657,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;deleted?: Temporal.Instant | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];deleted?: Temporal.Instant | null;}
 ,
     {
       documentLoader,
@@ -24448,7 +24699,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;deleted?: Temporal.Instant | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];deleted?: Temporal.Instant | null;}
 
     = {},
     options: {
@@ -24515,7 +24767,7 @@ get deleted(): (Temporal.Instant | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -24626,7 +24878,7 @@ get deleted(): (Temporal.Instant | null) {
  * for whatever reason, might choose to undo that like at some later point in
  * time).
  * 
- * The \`target\` and \`origin\` typically have no defined meaning. 
+ * The \`target\` and \`origin\` typically have no defined meaning.
  * 
  */
 export class Undo extends Activity {
@@ -24662,7 +24914,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -24701,7 +24954,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -24746,7 +25000,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -24864,7 +25118,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 ,
@@ -24903,7 +25158,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;actor?: Application | Group | Organization | Person | Service | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
 objects?: (Object | URL)[];}
 
@@ -24948,7 +25204,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -25061,7 +25317,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 ,
     {
       documentLoader,
@@ -25098,7 +25355,8 @@ urls?: (URL | Link)[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
-bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;width?: number | null;height?: number | null;}
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | null;}
 
     = {},
     options: {
@@ -25141,7 +25399,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }

@@ -9,7 +9,9 @@ description: |
   Type](https://www.w3.org/TR/activitystreams-vocabulary/#actor-types) objects.
   The {@link Profile.describes} property is used to reference the object being
   described by the profile.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
 
 properties:
 - singularName: describes
