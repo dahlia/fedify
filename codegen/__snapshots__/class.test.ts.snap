@@ -6,7 +6,8 @@ snapshot[`generateClasses() 1`] = `
 import jsonld from \\"jsonld\\";
 import { type LanguageTag, parseLanguageTag }
     from \\"@phensley/language-tag\\";
-import { type DocumentLoader, fetchDocumentLoader }
+import { decode as decodeMultibase, encode as encodeMultibase }
+    from \\"multibase\\";import { type DocumentLoader, fetchDocumentLoader }
     from \\"../runtime/docloader.ts\\";
 import {
     exportSpki,
@@ -4533,6 +4534,537 @@ get value(): (string | LanguageString | null) {
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"PropertyValue \\" + inspect(proxy, options);
+  }
+  }
+
+/** A proof that can be added to any activity or object, allowing recipients to
+ * verify the identity of the actor and the integrity of the data.
+ * 
+ */
+export class DataIntegrityProof {
+
+    readonly #documentLoader?: DocumentLoader;
+    readonly #contextLoader?: DocumentLoader;
+    readonly id: URL | null;
+
+    protected get _documentLoader(): DocumentLoader | undefined {
+      return this.#documentLoader;
+    }
+
+    protected get _contextLoader(): DocumentLoader | undefined {
+      return this.#contextLoader;
+    }
+    
+    /**
+     * The type URI of {@link DataIntegrityProof}: \`https://w3id.org/security#DataIntegrityProof\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://w3id.org/security#DataIntegrityProof\\");
+    }
+  #_3RurJsa7tnptyqMFR5hDGcP9pMs5: \\"eddsa-jcs-2022\\"[] = [];
+#_2mHVKxqA7zncjveJrDEo3pWpMZqg: (Multikey | URL)[] = [];
+#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb: (\\"assertionMethod\\" | \\"authentication\\" | \\"capabilityInvocation\\" |
+      \\"capabilityDelegation\\" | \\"keyAgreement\\")[] = [];
+#_3CjFK5vfKpX4HQuNh2b18TykoVLq: Uint8Array[] = [];
+#_5e258TDXtuhaFRPZiGoDfEpjdMr: Temporal.Instant[] = [];
+
+  /**
+   * Constructs a new instance of DataIntegrityProof with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+cryptosuite?: \\"eddsa-jcs-2022\\" | null;verificationMethod?: Multikey | URL | null;proofPurpose?: (\\"assertionMethod\\" | \\"authentication\\" | \\"capabilityInvocation\\" |
+      \\"capabilityDelegation\\" | \\"keyAgreement\\") | null;proofValue?: Uint8Array | null;created?: Temporal.Instant | null;}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  
+    this.#documentLoader = documentLoader;
+    this.#contextLoader = contextLoader;
+    this.id = values.id ?? null;
+    
+        if (\\"cryptosuite\\" in values &&             values.cryptosuite != null) {
+          this.#_3RurJsa7tnptyqMFR5hDGcP9pMs5 = [values.cryptosuite];
+        }
+      
+        if (\\"verificationMethod\\" in values &&             values.verificationMethod != null) {
+          this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg = [values.verificationMethod];
+        }
+      
+        if (\\"proofPurpose\\" in values &&             values.proofPurpose != null) {
+          this.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb = [values.proofPurpose];
+        }
+      
+        if (\\"proofValue\\" in values &&             values.proofValue != null) {
+          this.#_3CjFK5vfKpX4HQuNh2b18TykoVLq = [values.proofValue];
+        }
+      
+        if (\\"created\\" in values &&             values.created != null) {
+          this.#_5e258TDXtuhaFRPZiGoDfEpjdMr = [values.created];
+        }
+      }
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+cryptosuite?: \\"eddsa-jcs-2022\\" | null;verificationMethod?: Multikey | URL | null;proofPurpose?: (\\"assertionMethod\\" | \\"authentication\\" | \\"capabilityInvocation\\" |
+      \\"capabilityDelegation\\" | \\"keyAgreement\\") | null;proofValue?: Uint8Array | null;created?: Temporal.Instant | null;}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): DataIntegrityProof {
+  
+    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
+    const clone: DataIntegrityProof = new this.constructor({ id: values.id }, options);
+    clone.#_3RurJsa7tnptyqMFR5hDGcP9pMs5 = this.#_3RurJsa7tnptyqMFR5hDGcP9pMs5;
+        if (\\"cryptosuite\\" in values &&             values.cryptosuite != null) {
+          clone.#_3RurJsa7tnptyqMFR5hDGcP9pMs5 = [values.cryptosuite];
+        }
+      clone.#_2mHVKxqA7zncjveJrDEo3pWpMZqg = this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg;
+        if (\\"verificationMethod\\" in values &&             values.verificationMethod != null) {
+          clone.#_2mHVKxqA7zncjveJrDEo3pWpMZqg = [values.verificationMethod];
+        }
+      clone.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb = this.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb;
+        if (\\"proofPurpose\\" in values &&             values.proofPurpose != null) {
+          clone.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb = [values.proofPurpose];
+        }
+      clone.#_3CjFK5vfKpX4HQuNh2b18TykoVLq = this.#_3CjFK5vfKpX4HQuNh2b18TykoVLq;
+        if (\\"proofValue\\" in values &&             values.proofValue != null) {
+          clone.#_3CjFK5vfKpX4HQuNh2b18TykoVLq = [values.proofValue];
+        }
+      clone.#_5e258TDXtuhaFRPZiGoDfEpjdMr = this.#_5e258TDXtuhaFRPZiGoDfEpjdMr;
+        if (\\"created\\" in values &&             values.created != null) {
+          clone.#_5e258TDXtuhaFRPZiGoDfEpjdMr = [values.created];
+        }
+      
+    return clone;
+  }
+  
+/** The cryptographic suite used to create the proof.
+ * 
+ */
+get cryptosuite(): (\\"eddsa-jcs-2022\\" | null) {
+        if (this.#_3RurJsa7tnptyqMFR5hDGcP9pMs5.length < 1) return null;
+        return this.#_3RurJsa7tnptyqMFR5hDGcP9pMs5[0];
+      }
+      
+    async #fetchVerificationMethod(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+      } = {}
+    ): Promise<Multikey> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      const { document } = await documentLoader(url.href);
+    
+      try {
+        return await Multikey.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://w3id.org/security#Multikey\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link DataIntegrityProof.getVerificationMethod},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get verificationMethodId(): URL | null {
+        if (this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg.length < 1) return null;
+        const v = this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** A key owned by an actor according to [FEP-521a: Representing actor's public
+ * keys][1].
+ * 
+ * [1]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * 
+ */
+
+      async getVerificationMethod(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+        } = {}
+      ): Promise<Multikey | null> {
+        if (this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg.length < 1) return null;
+        const v = this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchVerificationMethod(v, options);
+          this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+/** The reason the proof was created.
+ * 
+ * - \`\\"assertionMethod\\"\`
+ * - \`\\"authentication\\"\`
+ * - \`\\"capabilityInvocation\\"\`
+ * - \`\\"capabilityDelegation\\"\`
+ * - \`\\"keyAgreement\\"\`
+ * 
+ */
+get proofPurpose(): ((\\"assertionMethod\\" | \\"authentication\\" | \\"capabilityInvocation\\" |
+      \\"capabilityDelegation\\" | \\"keyAgreement\\") | null) {
+        if (this.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb.length < 1) return null;
+        return this.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb[0];
+      }
+      
+/** The proof value.
+ */
+get proofValue(): (Uint8Array | null) {
+        if (this.#_3CjFK5vfKpX4HQuNh2b18TykoVLq.length < 1) return null;
+        return this.#_3CjFK5vfKpX4HQuNh2b18TykoVLq[0];
+      }
+      
+/** The date and time the proof was created.
+ */
+get created(): (Temporal.Instant | null) {
+        if (this.#_5e258TDXtuhaFRPZiGoDfEpjdMr.length < 1) return null;
+        return this.#_5e258TDXtuhaFRPZiGoDfEpjdMr[0];
+      }
+      
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  const values: Record<string, unknown[] | string> = {};
+    array = [];
+    for (const v of this.#_3RurJsa7tnptyqMFR5hDGcP9pMs5) {
+      array.push(
+    { \\"@value\\": v }
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#cryptosuite\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg) {
+      array.push(
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#verificationMethod\\"] = array;
+    
+    array = [];
+    for (const v of this.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb) {
+      array.push(
+    {
+        \\"@id\\": \\"https://w3id.org/security#\\" + v,
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#proofPurpose\\"] = array;
+    
+    array = [];
+    for (const v of this.#_3CjFK5vfKpX4HQuNh2b18TykoVLq) {
+      array.push(
+    {
+        \\"@type\\": \\"https://w3id.org/security#multibase\\",
+        \\"@value\\": new TextDecoder().decode(encodeMultibase(\\"base58btc\\", v)),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://w3id.org/security#proofValue\\"] = array;
+    
+    array = [];
+    for (const v of this.#_5e258TDXtuhaFRPZiGoDfEpjdMr) {
+      array.push(
+    {
+        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
+        \\"@value\\": v.toString(),
+      }
+      );
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#published\\"] = array;
+    
+    values[\\"@type\\"] = [\\"https://w3id.org/security#DataIntegrityProof\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    return await jsonld.compact(
+      values,
+      \\"https://w3id.org/security/data-integrity/v1\\",
+      { documentLoader: options.contextLoader },
+    );
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<DataIntegrityProof> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://w3id.org/security#DataIntegrityProof\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = new this(
+      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
+      options,
+    );
+    const _3RurJsa7tnptyqMFR5hDGcP9pMs5: \\"eddsa-jcs-2022\\"[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#cryptosuite\\"] ?? []) {
+      if (v == null) continue;
+    _3RurJsa7tnptyqMFR5hDGcP9pMs5.push(v[\\"@value\\"])
+    }
+    instance.#_3RurJsa7tnptyqMFR5hDGcP9pMs5 = _3RurJsa7tnptyqMFR5hDGcP9pMs5;
+    const _2mHVKxqA7zncjveJrDEo3pWpMZqg: (Multikey | URL)[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#verificationMethod\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _2mHVKxqA7zncjveJrDEo3pWpMZqg.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _2mHVKxqA7zncjveJrDEo3pWpMZqg.push(await Multikey.fromJsonLd(
+      v, options))
+    }
+    instance.#_2mHVKxqA7zncjveJrDEo3pWpMZqg = _2mHVKxqA7zncjveJrDEo3pWpMZqg;
+    const _2AeEnPcAvVrPEuKbpmn9ZKNmWHKb: (\\"assertionMethod\\" | \\"authentication\\" | \\"capabilityInvocation\\" |
+      \\"capabilityDelegation\\" | \\"keyAgreement\\")[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#proofPurpose\\"] ?? []) {
+      if (v == null) continue;
+    _2AeEnPcAvVrPEuKbpmn9ZKNmWHKb.push(v[\\"@id\\"].substring(26))
+    }
+    instance.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb = _2AeEnPcAvVrPEuKbpmn9ZKNmWHKb;
+    const _3CjFK5vfKpX4HQuNh2b18TykoVLq: Uint8Array[] = [];
+
+    for (const v of values[\\"https://w3id.org/security#proofValue\\"] ?? []) {
+      if (v == null) continue;
+    _3CjFK5vfKpX4HQuNh2b18TykoVLq.push(decodeMultibase(v[\\"@value\\"]))
+    }
+    instance.#_3CjFK5vfKpX4HQuNh2b18TykoVLq = _3CjFK5vfKpX4HQuNh2b18TykoVLq;
+    const _5e258TDXtuhaFRPZiGoDfEpjdMr: Temporal.Instant[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#published\\"] ?? []) {
+      if (v == null) continue;
+    _5e258TDXtuhaFRPZiGoDfEpjdMr.push(Temporal.Instant.from(v[\\"@value\\"]))
+    }
+    instance.#_5e258TDXtuhaFRPZiGoDfEpjdMr = _5e258TDXtuhaFRPZiGoDfEpjdMr;
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  
+    const proxy: Record<string, unknown> = {};
+    if (this.id != null) {
+      proxy.id = {
+        [Symbol.for(\\"Deno.customInspect\\")]: (
+          inspect: typeof Deno.inspect,
+          options: Deno.InspectOptions,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+      };
+    }
+    
+      const _3RurJsa7tnptyqMFR5hDGcP9pMs5 = this.#_3RurJsa7tnptyqMFR5hDGcP9pMs5
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3RurJsa7tnptyqMFR5hDGcP9pMs5.length == 1) {
+        proxy.cryptosuite = _3RurJsa7tnptyqMFR5hDGcP9pMs5[0];
+      }
+      
+      const _2mHVKxqA7zncjveJrDEo3pWpMZqg = this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2mHVKxqA7zncjveJrDEo3pWpMZqg.length == 1) {
+        proxy.verificationMethod = _2mHVKxqA7zncjveJrDEo3pWpMZqg[0];
+      }
+      
+      const _2AeEnPcAvVrPEuKbpmn9ZKNmWHKb = this.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb.length == 1) {
+        proxy.proofPurpose = _2AeEnPcAvVrPEuKbpmn9ZKNmWHKb[0];
+      }
+      
+      const _3CjFK5vfKpX4HQuNh2b18TykoVLq = this.#_3CjFK5vfKpX4HQuNh2b18TykoVLq
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3CjFK5vfKpX4HQuNh2b18TykoVLq.length == 1) {
+        proxy.proofValue = _3CjFK5vfKpX4HQuNh2b18TykoVLq[0];
+      }
+      
+      const _5e258TDXtuhaFRPZiGoDfEpjdMr = this.#_5e258TDXtuhaFRPZiGoDfEpjdMr
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_5e258TDXtuhaFRPZiGoDfEpjdMr.length == 1) {
+        proxy.created = _5e258TDXtuhaFRPZiGoDfEpjdMr[0];
+      }
+      
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"DataIntegrityProof \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"DataIntegrityProof \\" + inspect(proxy, options);
   }
   }
 

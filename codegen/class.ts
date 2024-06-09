@@ -93,6 +93,8 @@ export async function* generateClasses(
   yield 'import jsonld from "jsonld";\n';
   yield `import { type LanguageTag, parseLanguageTag }
     from "@phensley/language-tag";\n`;
+  yield `import { decode as decodeMultibase, encode as encodeMultibase }
+    from "multibase";`;
   yield `import { type DocumentLoader, fetchDocumentLoader }
     from "${runtimePath}/docloader.ts";\n`;
   yield `import {

@@ -70,6 +70,9 @@ To be released.
      -  `Service.clone()` method now accepts `assertionMethod` option.
      -  `Service.clone()` method now accepts `assertionMethods` option.
 
+ -  Added `DataIntegrityProof` class to Activity Vocabulary API.
+    [[FEP-8b32], [#54]]
+
  -  Deprecated `treatHttps` option in `FederationParameters` interface.
     Instead, use the [x-forwarded-fetch] library to recognize the
     `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
@@ -81,8 +84,10 @@ To be released.
         `following`, `followers`, `outbox`, `manuallyApprovesFollowers`, and
         `url`.
 
+[#54]: https://github.com/dahlia/fedify/issues/54
 [#55]: https://github.com/dahlia/fedify/issues/55
 [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+[FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 

@@ -103,6 +103,58 @@ snapshot[`Deno.inspect(PropertyValue) [auto] 2`] = `'PropertyValue { name: "hell
 
 snapshot[`Deno.inspect(PropertyValue) [auto] 3`] = `'PropertyValue { name: "hello", value: "hello" }'`;
 
+snapshot[`Deno.inspect(DataIntegrityProof) [auto] 1`] = `
+'DataIntegrityProof {
+  id: URL "https://example.com/",
+  cryptosuite: "eddsa-jcs-2022",
+  verificationMethod: Multikey {},
+  proofPurpose: "assertionMethod",
+  proofValue: Uint8Array(64) [
+    143, 155,  90, 201,  20,  23, 208, 209, 136, 190, 250,
+    133, 143, 116,  68, 152,  29, 200, 121, 218, 186,  80,
+    152,  60,  67, 235, 207, 114,  95,  56,  88,  17, 159,
+     35, 197, 191, 132,  35, 118, 162,  29,  83, 192, 190,
+     26, 170, 150, 110,  48, 101,  89, 118, 240, 176, 219,
+    120,  13, 245, 193, 173,  63, 189, 243,   7
+  ],
+  created: 2024-03-03T08:30:06.796196096Z
+}'
+`;
+
+snapshot[`Deno.inspect(DataIntegrityProof) [auto] 2`] = `
+'DataIntegrityProof {
+  cryptosuite: "eddsa-jcs-2022",
+  verificationMethod: URL "https://example.com/",
+  proofPurpose: "assertionMethod",
+  proofValue: Uint8Array(64) [
+    143, 155,  90, 201,  20,  23, 208, 209, 136, 190, 250,
+    133, 143, 116,  68, 152,  29, 200, 121, 218, 186,  80,
+    152,  60,  67, 235, 207, 114,  95,  56,  88,  17, 159,
+     35, 197, 191, 132,  35, 118, 162,  29,  83, 192, 190,
+     26, 170, 150, 110,  48, 101,  89, 118, 240, 176, 219,
+    120,  13, 245, 193, 173,  63, 189, 243,   7
+  ],
+  created: 2024-03-03T08:30:06.796196096Z
+}'
+`;
+
+snapshot[`Deno.inspect(DataIntegrityProof) [auto] 3`] = `
+'DataIntegrityProof {
+  cryptosuite: "eddsa-jcs-2022",
+  verificationMethod: Multikey {},
+  proofPurpose: "assertionMethod",
+  proofValue: Uint8Array(64) [
+    143, 155,  90, 201,  20,  23, 208, 209, 136, 190, 250,
+    133, 143, 116,  68, 152,  29, 200, 121, 218, 186,  80,
+    152,  60,  67, 235, 207, 114,  95,  56,  88,  17, 159,
+     35, 197, 191, 132,  35, 118, 162,  29,  83, 192, 190,
+     26, 170, 150, 110,  48, 101,  89, 118, 240, 176, 219,
+    120,  13, 245, 193, 173,  63, 189, 243,   7
+  ],
+  created: 2024-03-03T08:30:06.796196096Z
+}'
+`;
+
 snapshot[`Deno.inspect(CryptographicKey) [auto] 1`] = `
 'CryptographicKey {
   id: URL "https://example.com/",

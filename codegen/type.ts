@@ -177,6 +177,41 @@ const scalarTypes: Record<string, ScalarType> = {
       return `Temporal.Duration.from(${v}["@value"])`;
     },
   },
+  "https://w3id.org/security#cryptosuiteString": {
+    name: '"eddsa-jcs-2022"',
+    typeGuard(v) {
+      return `${v} == "eddsa-jcs-2022"`;
+    },
+    encoder(v) {
+      return `{ "@value": ${v} }`;
+    },
+    dataCheck(v) {
+      return `typeof ${v} === "object" && "@value" in ${v}
+        && !("@language" in ${v}) && ${v}["@value"] === "eddsa-jcs-2022"`;
+    },
+    decoder(v) {
+      return `${v}["@value"]`;
+    },
+  },
+  "https://w3id.org/security#multibase": {
+    name: "Uint8Array",
+    typeGuard(v) {
+      return `${v} instanceof Uint8Array`;
+    },
+    encoder(v) {
+      return `{
+        "@type": "https://w3id.org/security#multibase",
+        "@value": new TextDecoder().decode(encodeMultibase("base58btc", ${v})),
+      }`;
+    },
+    dataCheck(v) {
+      return `typeof ${v} === "object" && "@value" in ${v}
+        && typeof ${v}["@value"] === "string"`;
+    },
+    decoder(v) {
+      return `decodeMultibase(${v}["@value"])`;
+    },
+  },
   "fedify:langTag": {
     name: "LanguageTag",
     typeGuard(v) {
@@ -226,6 +261,32 @@ const scalarTypes: Record<string, ScalarType> = {
     },
     decoder(v) {
       return `await importMultibaseKey(${v}["@value"])`;
+    },
+  },
+  "fedify:proofPurpose": {
+    name: `("assertionMethod" | "authentication" | "capabilityInvocation" |
+      "capabilityDelegation" | "keyAgreement")`,
+    typeGuard(v) {
+      return `${v} === "assertionMethod" || ${v} === "authentication" ||
+        ${v} === "capabilityInvocation" || ${v} === "capabilityDelegation" ||
+        ${v} === "keyAgreement"`;
+    },
+    encoder(v) {
+      return `{
+        "@id": "https://w3id.org/security#" + ${v},
+      }`;
+    },
+    dataCheck(v) {
+      return `typeof ${v} === "object" && "@id" in ${v}
+        && typeof ${v}["@id"] === "string"
+        && ${v}["@id"].startsWith("https://w3id.org/security#")
+        && [
+          "assertionMethod", "authentication", "capabilityInvocation",
+          "capabilityDelegation", "keyAgreement",
+        ].includes(${v}["@id"].substring(26))`;
+    },
+    decoder(v) {
+      return `${v}["@id"].substring(26)`;
     },
   },
   "fedify:units": {
