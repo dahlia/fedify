@@ -21,6 +21,7 @@ export async function* generateEncoder(
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -69,7 +70,7 @@ export async function* generateEncoder(
     }
     return await jsonld.compact(
       values,
-      ${JSON.stringify(type.defaultContext)},
+      options.context ?? ${JSON.stringify(type.defaultContext)},
       { documentLoader: options.contextLoader },
     );
   }

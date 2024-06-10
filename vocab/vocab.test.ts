@@ -724,15 +724,27 @@ for (const typeUri in types) {
     });
     assertEquals(restored, instance);
 
-    const expanded = await instance.toJsonLd({
+    const jsonLd2 = await instance.toJsonLd({
       contextLoader: mockDocumentLoader,
-      expand: true,
+      context: "https://www.w3.org/ns/activitystreams",
     });
-    const restored2 = await cls.fromJsonLd(expanded, {
+    assertEquals(jsonLd2["@context"], "https://www.w3.org/ns/activitystreams");
+    assertEquals(jsonLd2.id, "https://example.com/");
+    const restored2 = await cls.fromJsonLd(jsonLd2, {
       documentLoader: mockDocumentLoader,
       contextLoader: mockDocumentLoader,
     });
     assertEquals(restored2, instance);
+
+    const expanded = await instance.toJsonLd({
+      contextLoader: mockDocumentLoader,
+      expand: true,
+    });
+    const restored3 = await cls.fromJsonLd(expanded, {
+      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
+    });
+    assertEquals(restored3, instance);
 
     const instance2 = new cls({
       id: new URL("https://example.com/"),
@@ -746,14 +758,14 @@ for (const typeUri in types) {
         ),
       ),
     });
-    const jsonLd2 = await instance2.toJsonLd({
+    const jsonLd3 = await instance2.toJsonLd({
       contextLoader: mockDocumentLoader,
     });
-    const restored3 = await cls.fromJsonLd(jsonLd2, {
+    const restored4 = await cls.fromJsonLd(jsonLd3, {
       documentLoader: mockDocumentLoader,
       contextLoader: mockDocumentLoader,
     });
-    assertEquals(restored3, instance2);
+    assertEquals(restored4, instance2);
   });
 
   if (isDeno) {

@@ -83,6 +83,9 @@ To be released.
      -  `Object.clone()` method now accepts `proof` option.
      -  `Object.clone()` method now accepts `proofs` option.
 
+ -  Added `context` option to `Object.toJsonLd()` method.  This applies to
+    any subclasses of the `Object` class too.
+
  -  Deprecated `treatHttps` option in `FederationParameters` interface.
     Instead, use the [x-forwarded-fetch] library to recognize the
     `X-Forwarded-Host` and `X-Forwarded-Proto` headers.

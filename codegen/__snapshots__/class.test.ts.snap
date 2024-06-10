@@ -2543,6 +2543,7 @@ get sensitive(): (boolean | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -2809,7 +2810,7 @@ get sensitive(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"sensitive\\":\\"as:sensitive\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"sensitive\\":\\"as:sensitive\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -4300,6 +4301,7 @@ proofs?: (DataIntegrityProof | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -4324,7 +4326,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"Emoji\\":\\"toot:Emoji\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"Emoji\\":\\"toot:Emoji\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -4514,6 +4516,7 @@ get value(): (string | LanguageString | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -4554,7 +4557,7 @@ get value(): (string | LanguageString | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",{\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -4948,6 +4951,7 @@ get created(): (Temporal.Instant | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -5014,7 +5018,7 @@ get created(): (Temporal.Instant | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://w3id.org/security/data-integrity/v1\\",
+      options.context ?? \\"https://w3id.org/security/data-integrity/v1\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -5449,6 +5453,7 @@ get publicKey(): (CryptoKey | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -5483,7 +5488,7 @@ get publicKey(): (CryptoKey | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://w3id.org/security/v1\\",
+      options.context ?? \\"https://w3id.org/security/v1\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -5859,6 +5864,7 @@ get publicKey(): (CryptoKey | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -5896,7 +5902,7 @@ get publicKey(): (CryptoKey | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://w3id.org/security/multikey/v1\\",
+      options.context ?? \\"https://w3id.org/security/multikey/v1\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -6471,6 +6477,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -6511,7 +6518,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -6864,6 +6871,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -6888,7 +6896,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -7067,6 +7075,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -7091,7 +7100,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -7269,6 +7278,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -7293,7 +7303,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -8348,6 +8358,7 @@ get indexable(): (boolean | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -8495,7 +8506,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9157,6 +9168,7 @@ proofs?: (DataIntegrityProof | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -9181,7 +9193,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9388,6 +9400,7 @@ get height(): (number | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -9434,7 +9447,7 @@ get height(): (number | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9679,6 +9692,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -9703,7 +9717,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -9880,6 +9894,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -9904,7 +9919,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -10088,6 +10103,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -10112,7 +10128,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -10624,6 +10640,7 @@ get totalItems(): (number | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -10691,7 +10708,7 @@ get totalItems(): (number | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -11320,6 +11337,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -11368,7 +11386,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -11683,6 +11701,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -11707,7 +11726,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -11884,6 +11903,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -11908,7 +11928,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -12083,6 +12103,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -12107,7 +12128,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -12390,6 +12411,7 @@ get sharedInbox(): (URL | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -12456,7 +12478,7 @@ get sharedInbox(): (URL | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -12804,6 +12826,7 @@ proofs?: (DataIntegrityProof | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -12828,7 +12851,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -13006,6 +13029,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -13030,7 +13054,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -13209,6 +13233,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -13233,7 +13258,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -14288,6 +14313,7 @@ get indexable(): (boolean | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -14435,7 +14461,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -15379,6 +15405,7 @@ get width(): (number | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -15470,7 +15497,7 @@ get width(): (number | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -15898,6 +15925,7 @@ names?: (string | LanguageString)[];language?: LanguageTag | null;height?: numbe
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -15922,7 +15950,7 @@ names?: (string | LanguageString)[];language?: LanguageTag | null;height?: numbe
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",{\\"Hashtag\\":\\"as:Hashtag\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",{\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -16093,6 +16121,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -16117,7 +16146,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -16295,6 +16324,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -16319,7 +16349,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -16496,6 +16526,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -16520,7 +16551,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -16663,6 +16694,7 @@ names?: (string | LanguageString)[];language?: LanguageTag | null;height?: numbe
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -16687,7 +16719,7 @@ names?: (string | LanguageString)[];language?: LanguageTag | null;height?: numbe
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -16860,6 +16892,7 @@ proofs?: (DataIntegrityProof | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -16884,7 +16917,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -17057,6 +17090,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -17081,7 +17115,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -17273,6 +17307,7 @@ get startIndex(): (number | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -17308,7 +17343,7 @@ get startIndex(): (number | null) {
     }
     return await jsonld.compact(
       values,
-      \\"https://www.w3.org/ns/activitystreams\\",
+      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
       { documentLoader: options.contextLoader },
     );
   }
@@ -18390,6 +18425,7 @@ get indexable(): (boolean | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -18537,7 +18573,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -19199,6 +19235,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -19223,7 +19260,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -20278,6 +20315,7 @@ get indexable(): (boolean | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -20425,7 +20463,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -21198,6 +21236,7 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -21285,7 +21324,7 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -21700,6 +21739,7 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -21732,7 +21772,7 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -21943,6 +21983,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -21967,7 +22008,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -22484,6 +22525,7 @@ relationships?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -22532,7 +22574,7 @@ relationships?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -22823,6 +22865,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -22847,7 +22890,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -23902,6 +23945,7 @@ get indexable(): (boolean | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -24049,7 +24093,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -24732,6 +24776,7 @@ get deleted(): (Temporal.Instant | null) {
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -24767,7 +24812,7 @@ get deleted(): (Temporal.Instant | null) {
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -24976,6 +25021,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -25000,7 +25046,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
@@ -25180,6 +25226,7 @@ objects?: (Object | URL)[];}
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -25204,7 +25251,7 @@ objects?: (Object | URL)[];}
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -25375,6 +25422,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
   async toJsonLd(options: {
     expand?: boolean,
     contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
     options = {
       ...options,
@@ -25399,7 +25447,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     }
     return await jsonld.compact(
       values,
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
       { documentLoader: options.contextLoader },
     );
   }
