@@ -1,23 +1,40 @@
 {
   "@context": [
     "https://www.w3.org/ns/activitystreams",
-    "https://w3id.org/security/v1"
+    "https://w3id.org/security/v1",
+    "https://w3id.org/security/multikey/v1",
+    "https://w3id.org/security/data-integrity/v1",
+    "https://www.w3.org/ns/did/v1"
   ],
   "id": "https://example.com/person2",
   "type": "Person",
   "name": "Jane Doe",
   "publicKey": [
     {
-      "id": "https://example.com/key3",
+      "id": "https://example.com/person2#key3",
       "type": "CryptographicKey",
       "owner": "https://example.com/person2",
       "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA4GUqWgdiYlN3Su5Gr4l6\ni+xRS8gDDVKZ718vpGk6eIpvqs33q430nRbHIzbHRXRaAhc/1++rUBcK0V4/kjZl\nCSzVtRgGU6HMkmjcD+uE56a8XbTczfltbEDj7afoEuB2F3UhQEWrSz+QJ29DPXaL\nMIa1Yv61NR2vxGqNbdtoMjDORMBYtg77CYbcFkiJHw65PDa7+f/yjLxuCRPye5L7\nhncN0UZuuFoRJmHNRLSg5omBad9WTvQXmSyXEhEdk9fHwlI022AqAzlWbT79hldc\nDSKGGLLbQIs1c3JZIG8G5i6Uh5Vy0Z7tSNBcxbhqoI9i9je4f/x/OPIVc19f04BE\n1LgWuHsftZzRgW9Sdqz53W83XxVdxlyHeywXOnstSWT11f8dkLyQUcHKTH+E6urb\nH+aiPLiRpYK8W7D9KTQA9kZ5JXaEuveBd5vJX7wakhbzAn8pWJU7GYIHNY38Ycok\nmivkU5pY8S2cKFMwY0b7ade3MComlir5P3ZYSjF+n6gRVsT96P+9mNfCu9gXt/f8\nXCyjKlH89kGwuJ7HhR8CuVdm0l+jYozVt6GsDy0hHYyn79NCCAEzP7ZbhBMR0T5V\nrkl+TIGXoJH9WFiz4VxO+NnglF6dNQjDS5IzYLoFRXIK1f3cmQiEB4FZmL70l9HL\nrgwR+Xys83xia79OqFDRezMCAwEAAQ==\n-----END PUBLIC KEY-----\n"
     },
     {
-      "id": "https://example.com/key4",
+      "id": "https://example.com/person2#key4",
       "type": "CryptographicKey",
       "owner": "https://example.com/person2",
       "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEALR8epAGDe+cVq5p2Tx49CCfphpk1rNhkNoY9i+XEUfg=\n-----END PUBLIC KEY-----\n"
+    }
+  ],
+  "assertionMethod": [
+    {
+      "id": "https://example.com/peson2#key3",
+      "type": "Multikey",
+      "controller": "https://example.com/person2",
+      "publicKeyMultibase": "zgghBUVkqmWS8e1j4aN2yowLAEkJC6wowB9wWmLRACYCok7UzstWcTBp3waKiDUM7wqL9bbBD9W9FvNaXEK2KPCZ9ffhvd5dxChJL9bdPQSrMwa28FEYMGDtcF1uocrYNmZm2dBBMaWrCu8U3s4PpVVhn4hsWDL8GLuE466pkJs9Hy8xmECoaaVgAZLiYDw2gwrjHDiX2i7aDHKfE7aSZWUWmC8nAGNZ7DX5pXoyXK3pxuaCWxNxXwPmaFwgKDyy9uhtBJ8znp9NZXkXHBTQe5uAi8GFwHY5asvqCmYPrAGWxcT6pdbZaJHdWkM7nw6apBHfakKs42oMqdBoJ2WkkresoT1qHrX2GW7gNP9PLtveF4vfEd6cwgHKQCdYgayG3muGfZiPvML75cyfkNrjkctvuQUfMxY9umbd2TG3V3mPnLrvQnqHpuRMZYtCn3nX1qfZaqFhTwT4NFPqVNLqvgR6k9vcuGXn6Ndaumhd5xtTK64jk3e2gPBit9iq6MrFUSoxNsbTty4kqcHAodtkK8CMSxUxbFP1kK3nyy8ZfeMgDCts1KboBcT2m5FMpQpYxKtNBfvhTuyeDDC34uhbY8itmTAnDwSr5mKrniwwDUGPZFejda51TYs1N9D9Ejzaw5Mvr8qN6wahHmsDBWTbWwV6YKVMD1MjAhJBUopWJWB5x6mEBAX25MssKfAEhJyDtqYWjq63uQHUJCsPJp"
+    },
+    {
+      "id": "https://example.com/person2#key4",
+      "type": "Multikey",
+      "controller": "https://example.com/person2",
+      "publicKeyMultibase": "z6MkhVPuyvgG1RkMv67azDqDCDERPXVrUg1i3qchXY5EACE3"
     }
   ]
 }

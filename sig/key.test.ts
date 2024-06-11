@@ -1,11 +1,21 @@
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
-import { rsaPrivateKey2, rsaPublicKey2 } from "../testing/keys.ts";
+import {
+  ed25519Multikey,
+  rsaPrivateKey2,
+  rsaPublicKey1,
+  rsaPublicKey2,
+  rsaPublicKey3,
+} from "../testing/keys.ts";
+import { CryptographicKey, Multikey } from "../vocab/vocab.ts";
 import {
   exportJwk,
+  fetchKey,
+  type FetchKeyOptions,
   generateCryptoKeyPair,
   importJwk,
   validateCryptoKey,
 } from "./key.ts";
+import { mockDocumentLoader } from "../testing/docloader.ts";
 
 Deno.test("validateCryptoKey()", async () => {
   const pkcs1v15 = await crypto.subtle.generateKey(
@@ -185,4 +195,47 @@ Deno.test("importJwk()", async () => {
   );
   assertRejects(() => importJwk(rsaPublicJwk, "private"));
   assertRejects(() => importJwk(rsaPrivateJwk, "public"));
+});
+
+Deno.test("fetchKey()", async () => {
+  const options: FetchKeyOptions = {
+    documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
+  };
+  assertEquals(
+    await fetchKey("https://example.com/nothing", CryptographicKey, options),
+    null,
+  );
+  assertEquals(
+    await fetchKey("https://example.com/object", CryptographicKey, options),
+    null,
+  );
+  assertEquals(
+    await fetchKey("https://example.com/key", CryptographicKey, options),
+    rsaPublicKey1,
+  );
+  assertEquals(
+    await fetchKey(
+      "https://example.com/person#no-key",
+      CryptographicKey,
+      options,
+    ),
+    null,
+  );
+  assertEquals(
+    await fetchKey(
+      "https://example.com/person2#key3",
+      CryptographicKey,
+      options,
+    ),
+    rsaPublicKey3,
+  );
+  assertEquals(
+    await fetchKey(
+      "https://example.com/person2#key4",
+      Multikey,
+      options,
+    ),
+    ed25519Multikey,
+  );
 });

@@ -1,4 +1,10 @@
 import { getLogger } from "@logtape/logtape";
+import {
+  type DocumentLoader,
+  fetchDocumentLoader,
+} from "../runtime/docloader.ts";
+import { isActor } from "../vocab/actor.ts";
+import { CryptographicKey, type Multikey, Object } from "../vocab/vocab.ts";
 
 /**
  * Checks if the given key is valid and supported.  No-op if the key is valid,
@@ -123,4 +129,120 @@ export async function importJwk(
   }
   validateCryptoKey(key, type);
   return key;
+}
+
+/**
+ * Options for {@link fetchKey}.
+ * @since 0.10.0
+ */
+export interface FetchKeyOptions {
+  /**
+   * The document loader for loading remote JSON-LD documents.
+   */
+  documentLoader?: DocumentLoader;
+
+  /**
+   * The context loader for loading remote JSON-LD contexts.
+   */
+  contextLoader?: DocumentLoader;
+}
+
+/**
+ * Fetches a {@link CryptographicKey} or {@link Multikey} from the given URL.
+ * If the given URL contains an {@link Actor} object, it tries to find
+ * the corresponding key in the `publicKey` or `assertionMethod` property.
+ * @typeParam T The type of the key to fetch.  Either {@link CryptographicKey}
+ *              or {@link Multikey}.
+ * @param keyId The URL of the key.
+ * @param cls The class of the key to fetch.  Either {@link CryptographicKey}
+ *            or {@link Multikey}.
+ * @param options Options for fetching the key.  See {@link FetchKeyOptions}.
+ * @returns The fetched key or `null` if the key is not found.
+ * @since 0.10.0
+ */
+export async function fetchKey<T extends CryptographicKey | Multikey>(
+  keyId: URL | string,
+  // deno-lint-ignore no-explicit-any
+  cls: (new (...args: any[]) => T) & {
+    fromJsonLd(
+      jsonLd: unknown,
+      options: {
+        documentLoader?: DocumentLoader;
+        contextLoader?: DocumentLoader;
+      },
+    ): Promise<T>;
+  },
+  { documentLoader, contextLoader }: FetchKeyOptions = {},
+): Promise<T & { publicKey: CryptoKey } | null> {
+  const logger = getLogger(["fedify", "sig", "key"]);
+  keyId = typeof keyId === "string" ? keyId : keyId.href;
+  logger.debug("Fetching key {keyId} to verify signature...", { keyId });
+  let document: unknown;
+  try {
+    const remoteDocument = await (documentLoader ?? fetchDocumentLoader)(keyId);
+    document = remoteDocument.document;
+  } catch (_) {
+    logger.debug("Failed to fetch key {keyId}.", { keyId });
+    return null;
+  }
+  let object: Object | T;
+  try {
+    object = await Object.fromJsonLd(document, {
+      documentLoader,
+      contextLoader,
+    });
+  } catch (e) {
+    if (!(e instanceof TypeError)) throw e;
+    try {
+      object = await cls.fromJsonLd(document, {
+        documentLoader,
+        contextLoader,
+      });
+    } catch (e) {
+      if (e instanceof TypeError) {
+        logger.debug(
+          "Failed to verify; key {keyId} returned an invalid object.",
+          { keyId },
+        );
+        return null;
+      }
+      throw e;
+    }
+  }
+  let key: T | null = null;
+  if (object instanceof cls) key = object;
+  else if (isActor(object)) {
+    // @ts-ignore: cls is either CryptographicKey or Multikey
+    const keys = cls === CryptographicKey
+      ? object.getPublicKeys({ documentLoader, contextLoader })
+      : object.getAssertionMethods({ documentLoader, contextLoader });
+    for await (const k of keys) {
+      if (k.id?.href === keyId) {
+        key = k as T;
+        break;
+      }
+    }
+    if (key == null) {
+      logger.debug(
+        "Failed to verify; object {keyId} returned an {actorType}, " +
+          "but has no key matching {keyId}.",
+        { keyId, actorType: object.constructor.name },
+      );
+      return null;
+    }
+  } else {
+    logger.debug(
+      "Failed to verify; key {keyId} returned an invalid object.",
+      { keyId },
+    );
+    return null;
+  }
+  if (key.publicKey == null) {
+    logger.debug(
+      "Failed to verify; key {keyId} has no publicKeyPem field.",
+      { keyId },
+    );
+    return null;
+  }
+  return key as T & { publicKey: CryptoKey };
 }

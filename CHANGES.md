@@ -74,7 +74,7 @@ To be released.
     [[FEP-8b32], [#54]]
 
  -  Added `proof` property to the `Object` class in the Activity
-    Vocabulary API.   [[FEP-8b32], [#54]]
+    Vocabulary API.  [[FEP-8b32], [#54]]
 
      -  Added `Object.getProof()` method.
      -  Added `Object.getProofs()` method.
@@ -82,6 +82,11 @@ To be released.
      -  `new Object()` constructor now accepts `proofs` option.
      -  `Object.clone()` method now accepts `proof` option.
      -  `Object.clone()` method now accepts `proofs` option.
+
+ -  Implemented Object Integrity Proofs.  [[FEP-8b32], [#54]]
+
+     -  Added `fetchKey()` function.
+     -  Added `FetchKeyOptions` interface.
 
  -  Added `context` option to `Object.toJsonLd()` method.  This applies to
     any subclasses of the `Object` class too.
@@ -96,6 +101,11 @@ To be released.
      -  Ephemeral actors now have the following properties: `summary`,
         `following`, `followers`, `outbox`, `manuallyApprovesFollowers`, and
         `url`.
+
+ -  Added more log messages using the [LogTape] library.  Currently the below
+    logger categories are used:
+
+     -  `["fedify", "sig", "key"]`
 
 [#54]: https://github.com/dahlia/fedify/issues/54
 [#55]: https://github.com/dahlia/fedify/issues/55

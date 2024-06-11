@@ -102,7 +102,7 @@ export async function importMultibaseKey(key: string): Promise<CryptoKey> {
       ["verify"],
     );
   } else {
-    throw new TypeError("Unsupported key type: " + code);
+    throw new TypeError("Unsupported key type: 0x" + code.toString(16));
   }
 }
 

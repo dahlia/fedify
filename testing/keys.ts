@@ -1,3 +1,4 @@
+import { Multikey } from "@fedify/fedify/vocab";
 import { CryptographicKey } from "../vocab/vocab.ts";
 
 export const rsaPublicKey1 = new CryptographicKey({
@@ -161,7 +162,7 @@ export const rsaPrivateKey3 = await crypto.subtle.importKey(
 );
 
 export const rsaPublicKey3 = new CryptographicKey({
-  id: new URL("https://example.com/key3"),
+  id: new URL("https://example.com/person2#key3"),
   owner: new URL("https://example.com/person2"),
   publicKey: await crypto.subtle.importKey(
     "jwk",
@@ -191,6 +192,12 @@ export const rsaPublicKey3 = new CryptographicKey({
   ),
 });
 
+export const rsaMultikey4 = new Multikey({
+  id: new URL("https://example.com/person2#key3"),
+  controller: new URL("https://example.com/person2"),
+  publicKey: rsaPublicKey3.publicKey,
+});
+
 export const ed25519PrivateKey = await crypto.subtle.importKey(
   "jwk",
   {
@@ -209,7 +216,7 @@ export const ed25519PrivateKey = await crypto.subtle.importKey(
 );
 
 export const ed25519PublicKey = new CryptographicKey({
-  id: new URL("https://example.com/key4"),
+  id: new URL("https://example.com/person2#key4"),
   owner: new URL("https://example.com/person2"),
   publicKey: await crypto.subtle.importKey(
     "jwk",
@@ -226,4 +233,10 @@ export const ed25519PublicKey = new CryptographicKey({
     true,
     ["verify"],
   ),
+});
+
+export const ed25519Multikey = new Multikey({
+  id: new URL("https://example.com/person2#key4"),
+  controller: new URL("https://example.com/person2"),
+  publicKey: ed25519PublicKey.publicKey,
 });

@@ -1,13 +1,9 @@
 import { getLogger } from "@logtape/logtape";
 import { equals } from "@std/bytes";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
-import {
-  type DocumentLoader,
-  fetchDocumentLoader,
-} from "../runtime/docloader.ts";
-import { isActor } from "../vocab/actor.ts";
-import { CryptographicKey, Object as ASObject } from "../vocab/vocab.ts";
-import { validateCryptoKey } from "./key.ts";
+import type { DocumentLoader } from "../runtime/docloader.ts";
+import { CryptographicKey } from "../vocab/vocab.ts";
+import { fetchKey, validateCryptoKey } from "./key.ts";
 
 /**
  * Signs a request using the given private key.
@@ -24,6 +20,9 @@ export async function signRequest(
   keyId: URL,
 ): Promise<Request> {
   validateCryptoKey(privateKey, "private");
+  if (privateKey.algorithm.name !== "RSASSA-PKCS1-v1_5") {
+    throw new TypeError("Unsupported algorithm: " + privateKey.algorithm.name);
+  }
   const url = new URL(request.url);
   const body: ArrayBuffer | null =
     request.method !== "GET" && request.method !== "HEAD"
@@ -226,72 +225,11 @@ export async function verifyRequest(
     return null;
   }
   const { keyId, headers, signature } = sigValues;
-  logger.debug("Fetching key {keyId} to verify signature...", { keyId });
-  let document: unknown;
-  try {
-    const remoteDocument = await (documentLoader ?? fetchDocumentLoader)(keyId);
-    document = remoteDocument.document;
-  } catch (_) {
-    logger.debug("Failed to fetch key {keyId}.", { keyId });
-    return null;
-  }
-  let object: ASObject | CryptographicKey;
-  try {
-    object = await ASObject.fromJsonLd(document, {
-      documentLoader,
-      contextLoader,
-    });
-  } catch (e) {
-    if (!(e instanceof TypeError)) throw e;
-    try {
-      object = await CryptographicKey.fromJsonLd(document, {
-        documentLoader,
-        contextLoader,
-      });
-    } catch (e) {
-      if (e instanceof TypeError) {
-        logger.debug(
-          "Failed to verify; key {keyId} returned an invalid object.",
-          { keyId },
-        );
-        return null;
-      }
-      throw e;
-    }
-  }
-  let key: CryptographicKey | null = null;
-  if (object instanceof CryptographicKey) key = object;
-  else if (isActor(object)) {
-    for await (
-      const k of object.getPublicKeys({ documentLoader, contextLoader })
-    ) {
-      if (k.id?.href === keyId) {
-        key = k;
-        break;
-      }
-    }
-    if (key == null) {
-      logger.debug(
-        "Failed to verify; object {keyId} returned an {actorType}, " +
-          "but has no key matching {keyId}.",
-        { keyId, actorType: object.constructor.name },
-      );
-      return null;
-    }
-  } else {
-    logger.debug(
-      "Failed to verify; key {keyId} returned an invalid object.",
-      { keyId },
-    );
-    return null;
-  }
-  if (key.publicKey == null) {
-    logger.debug(
-      "Failed to verify; key {keyId} has no publicKeyPem field.",
-      { keyId },
-    );
-    return null;
-  }
+  const key = await fetchKey(new URL(keyId), CryptographicKey, {
+    documentLoader,
+    contextLoader,
+  });
+  if (key == null) return null;
   const headerNames = headers.split(/\s+/g);
   if (
     !headerNames.includes("(request-target)") || !headerNames.includes("date")
