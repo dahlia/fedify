@@ -45,7 +45,7 @@ export async function* generateEncoder(
     yield `
     array = [];
     for (const v of this.${await getFieldName(property.uri)}) {
-      array.push(
+      const element = (
     `;
     if (!areAllScalarTypes(property.range, types)) {
       yield 'v instanceof URL ? { "@id": v.href } : ';
@@ -55,6 +55,13 @@ export async function* generateEncoder(
     }
     yield `
       );
+    `;
+    if (!property.functional && property.container === "graph") {
+      yield `array.push({ "@graph": element });`;
+    } else {
+      yield `array.push(element);`;
+    }
+    yield `;
     }
     if (array.length > 0) values[${JSON.stringify(property.uri)}] = array;
     `;

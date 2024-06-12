@@ -50,7 +50,7 @@ properties:
 
 - singularName: created
   functional: true
-  uri: "https://www.w3.org/ns/activitystreams#published"
+  uri: "http://purl.org/dc/terms/created"
   description: The date and time the proof was created.
   range:
   - "http://www.w3.org/2001/XMLSchema#dateTime"

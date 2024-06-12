@@ -85,6 +85,14 @@ To be released.
 
  -  Implemented Object Integrity Proofs.  [[FEP-8b32], [#54]]
 
+     -  Added `signObject()` function.
+     -  Added `SignObjectOptions` interface.
+     -  Added `createProof()` function.
+     -  Added `CreateProofOptions` interface.
+     -  Added `verifyObject()` function.
+     -  Added `VerifyObjectOptions` interface.
+     -  Added `verifyProof()` function.
+     -  Added `VerifyProofOptions` interface.
      -  Added `fetchKey()` function.
      -  Added `FetchKeyOptions` interface.
 
@@ -105,6 +113,7 @@ To be released.
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
+     -  `["fedify", "sig", "proof"]`
      -  `["fedify", "sig", "key"]`
 
 [#54]: https://github.com/dahlia/fedify/issues/54

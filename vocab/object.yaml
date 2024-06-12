@@ -306,6 +306,7 @@ properties:
   pluralName: proofs
   singularAccessor: true
   uri: "https://w3id.org/security#proof"
+  container: graph
   description: |
     A cryptographic proof that can be used to verify the integrity of an object.
   range:

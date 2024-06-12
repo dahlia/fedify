@@ -1,0 +1,20 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    "https://w3id.org/security/data-integrity/v1",
+    "https://w3id.org/security/multikey/v1",
+    "https://www.w3.org/ns/did/v1"
+  ],
+  "type": "Person",
+  "id": "https://server.example/users/alice",
+  "inbox": "https://server.example/users/alice/inbox",
+  "outbox": "https://server.example/users/alice/outbox",
+  "assertionMethod": [
+    {
+      "id": "https://server.example/users/alice#ed25519-key",
+      "type": "Multikey",
+      "controller": "https://server.example/users/alice",
+      "publicKeyMultibase": "z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2"
+    }
+  ]
+}

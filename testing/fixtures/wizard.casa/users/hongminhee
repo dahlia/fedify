@@ -1,0 +1,69 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/v1",
+    "https://w3id.org/security/data-integrity/v1",
+    "https://w3id.org/security/multikey/v1",
+    {
+      "MitraJcsEip191Signature2022": "mitra:MitraJcsEip191Signature2022",
+      "PropertyValue": "schema:PropertyValue",
+      "VerifiableIdentityStatement": "mitra:VerifiableIdentityStatement",
+      "featured": "toot:featured",
+      "gateways": "mitra:gateways",
+      "manuallyApprovesFollowers": "as:manuallyApprovesFollowers",
+      "mitra": "http://jsonld.mitra.social#",
+      "proofPurpose": "sec:proofPurpose",
+      "proofValue": "sec:proofValue",
+      "schema": "http://schema.org/",
+      "subscribers": "mitra:subscribers",
+      "toot": "http://joinmastodon.org/ns#",
+      "value": "schema:value"
+    }
+  ],
+  "assertionMethod": [
+    {
+      "controller": "https://wizard.casa/users/hongminhee",
+      "id": "https://wizard.casa/users/hongminhee#main-key",
+      "publicKeyMultibase": "z4MXj1wBzi9jUstyPzDJGKjQPQWMi9NPMz1xNE4MeJjMpUcPYR7LfniZmXoXhfQ6motM7AAgWw9nHbFmhnNvAfaZMdQgBo2j1ptQNRogJPGzesYi7Yf81T2Kqju3CTCEJje5brBDdhKMpq56h6SwFAtcbPZBykN527ocN2JfvmiqVYNTqPVwoKGuVGKXNx6h87jVGq1kxzj7Q9LBFQnMHbCnMeUJ3KtqJQcPdGwbMw7LWjz4jpHpi6wb7KXBdVnSyKMwB7KyNJFJYqzauPi1UgtTKRzEMNUdCjAFsYff7v93Rr7Yzy4siE4cRVCdMNSQp3KphqczgLNejPKLjMMT9UC7XLitDdd2t3xaEzuamHVBNrFVBFEJ4",
+      "type": "Multikey"
+    },
+    {
+      "controller": "https://wizard.casa/users/hongminhee",
+      "id": "https://wizard.casa/users/hongminhee#ed25519-key",
+      "publicKeyMultibase": "z6MkweqJajqa5jRAJTBVxxu47oCdB7HzmYbBKN8VGbFJmKkC",
+      "type": "Multikey"
+    }
+  ],
+  "authentication": [
+    {
+      "controller": "https://wizard.casa/users/hongminhee",
+      "id": "https://wizard.casa/users/hongminhee#main-key",
+      "publicKeyMultibase": "z4MXj1wBzi9jUstyPzDJGKjQPQWMi9NPMz1xNE4MeJjMpUcPYR7LfniZmXoXhfQ6motM7AAgWw9nHbFmhnNvAfaZMdQgBo2j1ptQNRogJPGzesYi7Yf81T2Kqju3CTCEJje5brBDdhKMpq56h6SwFAtcbPZBykN527ocN2JfvmiqVYNTqPVwoKGuVGKXNx6h87jVGq1kxzj7Q9LBFQnMHbCnMeUJ3KtqJQcPdGwbMw7LWjz4jpHpi6wb7KXBdVnSyKMwB7KyNJFJYqzauPi1UgtTKRzEMNUdCjAFsYff7v93Rr7Yzy4siE4cRVCdMNSQp3KphqczgLNejPKLjMMT9UC7XLitDdd2t3xaEzuamHVBNrFVBFEJ4",
+      "type": "Multikey"
+    },
+    {
+      "controller": "https://wizard.casa/users/hongminhee",
+      "id": "https://wizard.casa/users/hongminhee#ed25519-key",
+      "publicKeyMultibase": "z6MkweqJajqa5jRAJTBVxxu47oCdB7HzmYbBKN8VGbFJmKkC",
+      "type": "Multikey"
+    }
+  ],
+  "featured": "https://wizard.casa/users/hongminhee/collections/featured",
+  "followers": "https://wizard.casa/users/hongminhee/followers",
+  "following": "https://wizard.casa/users/hongminhee/following",
+  "id": "https://wizard.casa/users/hongminhee",
+  "inbox": "https://wizard.casa/users/hongminhee/inbox",
+  "manuallyApprovesFollowers": true,
+  "name": "洪 民憙 (Hong Minhee)",
+  "outbox": "https://wizard.casa/users/hongminhee/outbox",
+  "preferredUsername": "hongminhee",
+  "publicKey": {
+    "id": "https://wizard.casa/users/hongminhee#main-key",
+    "owner": "https://wizard.casa/users/hongminhee",
+    "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAzUNdOf1fXnMDtcw/elvC\nLlw3TbZUAHSQMCD5su7UzYtHsRsSkErPemkJVUvRGvJnHUEVmb700lyNqcz2l3V0\nj35CAOFK77DY95rr1x7/SSJnOLwCDPA0Vff+RBInwck+8jzGigfkea+Z0/BhmfQE\nqhOSnYOsgQ+jWEJMIQBPA1boDW/636GAgbvfvSPkOPnvwMplCvT/ZUrmzcvGT8by\ntRT4QKrW7zjrYv0VaCHVF9aj+LLyOnCWgUKUHm4oKnq49P8UNen7sCsFRq2NRejK\nf9ymm77inWxrS0mNT4bm9J8/+u2mZjvQaiPiNcLUn4a3fvDnBelD4iKogUKaAQ2F\nzwIDAQAB\n-----END PUBLIC KEY-----\n"
+  },
+  "subscribers": "https://wizard.casa/users/hongminhee/subscribers",
+  "type": "Person",
+  "url": "https://wizard.casa/users/hongminhee"
+}

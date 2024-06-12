@@ -32,6 +32,8 @@ import {
   Person,
   Place,
 } from "./vocab.ts";
+import type { DataIntegrityProof } from "@fedify/fedify";
+import { decode } from "multibase";
 
 Deno.test("new Object()", () => {
   const obj = new Object({
@@ -170,6 +172,50 @@ Deno.test("Activity.fromJsonLd()", async () => {
   assertEquals(
     follow.objectId,
     new URL("https://example.com/users/hongminhee"),
+  );
+
+  const create = await Activity.fromJsonLd(
+    {
+      "@context": [
+        "https://www.w3.org/ns/activitystreams",
+        "https://w3id.org/security/data-integrity/v1",
+      ],
+      type: "Create",
+      actor: "https://server.example/users/alice",
+      object: {
+        type: "Note",
+        content: "Hello world",
+      },
+      proof: {
+        type: "DataIntegrityProof",
+        cryptosuite: "eddsa-jcs-2022",
+        verificationMethod: "https://server.example/users/alice#ed25519-key",
+        proofPurpose: "assertionMethod",
+        proofValue:
+          "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+        created: "2023-02-24T23:36:38Z",
+      },
+    },
+    { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
+  );
+  const proofs: DataIntegrityProof[] = [];
+  for await (const proof of create.getProofs()) proofs.push(proof);
+  assertEquals(proofs.length, 1);
+  assertEquals(proofs[0].cryptosuite, "eddsa-jcs-2022");
+  assertEquals(
+    proofs[0].verificationMethodId,
+    new URL("https://server.example/users/alice#ed25519-key"),
+  );
+  assertEquals(proofs[0].proofPurpose, "assertionMethod");
+  assertEquals(
+    proofs[0].proofValue,
+    decode(
+      "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+    ),
+  );
+  assertEquals(
+    proofs[0].created,
+    Temporal.Instant.from("2023-02-24T23:36:38Z"),
   );
 });
 
@@ -723,6 +769,10 @@ for (const typeUri in types) {
       contextLoader: mockDocumentLoader,
     });
     assertEquals(restored, instance);
+    assertEquals(
+      await restored.toJsonLd({ contextLoader: mockDocumentLoader }),
+      jsonLd,
+    );
 
     const jsonLd2 = await instance.toJsonLd({
       contextLoader: mockDocumentLoader,

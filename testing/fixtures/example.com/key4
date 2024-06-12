@@ -1,7 +1,0 @@
-{
-  "@context": "https://w3id.org/security/v1",
-  "id": "https://example.com/key4",
-  "type": "CryptographicKey",
-  "owner": "https://example.com/person2",
-  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEALR8epAGDe+cVq5p2Tx49CCfphpk1rNhkNoY9i+XEUfg=\n-----END PUBLIC KEY-----\n"
-}

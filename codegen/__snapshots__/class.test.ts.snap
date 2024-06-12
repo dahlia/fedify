@@ -2554,249 +2554,277 @@ get sensitive(): (boolean | null) {
   const values: Record<string, unknown[] | string> = {};
     array = [];
     for (const v of this.#_49BipA5dq9eoH8LX8xdsVumveTca) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : v instanceof Link ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#attachment\\"] = array;
     
     array = [];
     for (const v of this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#attributedTo\\"] = array;
     
     array = [];
     for (const v of this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#audience\\"] = array;
     
     array = [];
     for (const v of this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#content\\"] = array;
     
     array = [];
     for (const v of this.#_3mhZzGXSpQ431mBSz2kvych22v4e) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#context\\"] = array;
     
     array = [];
     for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
     
     array = [];
     for (const v of this.#_219RwDanjScTv5tYCjwGZVCM7KZ9) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
         \\"@value\\": v.toString(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endTime\\"] = array;
     
     array = [];
     for (const v of this.#_86xFhmgBapoMvYqjbjRuDPayTrS) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#generator\\"] = array;
     
     array = [];
     for (const v of this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#icon\\"] = array;
     
     array = [];
     for (const v of this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#image\\"] = array;
     
     array = [];
     for (const v of this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#inReplyTo\\"] = array;
     
     array = [];
     for (const v of this.#_31k5MUZJsnsPNg8dQQJieWaXTFnR) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#location\\"] = array;
     
     array = [];
     for (const v of this.#_gCVTegXxWWCw6wWRxa1QF65zusg) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Link ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preview\\"] = array;
     
     array = [];
     for (const v of this.#_5e258TDXtuhaFRPZiGoDfEpjdMr) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
         \\"@value\\": v.toString(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#published\\"] = array;
     
     array = [];
     for (const v of this.#_7UpwM3JWcXhADcscukEehBorf6k) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#replies\\"] = array;
     
     array = [];
     for (const v of this.#_2w3Jmue4up8iVDUA51WZqomEF438) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
         \\"@value\\": v.toString(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#startTime\\"] = array;
     
     array = [];
     for (const v of this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#summary\\"] = array;
     
     array = [];
     for (const v of this.#_5chuqj6s95p5gg2sk1HntGfarRf) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#tag\\"] = array;
     
     array = [];
     for (const v of this.#_385aB7ySixcf5Un6z3VsWmThgCzQ) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
         \\"@value\\": v.toString(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#updated\\"] = array;
     
     array = [];
     for (const v of this.#_2oPEH9MQ3aj8JVwyYuWkqoVwV865) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#url\\"] = array;
     
     array = [];
     for (const v of this.#_3hFbw7DTpHhq3cvVhkY8njhcsXbd) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#to\\"] = array;
     
     array = [];
     for (const v of this.#_aLZupjwL8XB7tzdLgCMXdjZ6qej) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#bto\\"] = array;
     
     array = [];
     for (const v of this.#_42a1SvBs24QSLzKcfjCyNTjW5a1g) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#cc\\"] = array;
     
     array = [];
     for (const v of this.#_3qvegKUB8YLgTXRpEf8E6JZSkz2H) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#bcc\\"] = array;
     
     array = [];
     for (const v of this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] = array;
     
     array = [];
     for (const v of this.#_3bNvLMBN1bCJETiTihM3wvi1B2JX) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#duration\\",
         \\"@value\\": v.toString(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#duration\\"] = array;
     
     array = [];
     for (const v of this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#sensitive\\"] = array;
     
     array = [];
     for (const v of this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push({ \\"@graph\\": element });;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#proof\\"] = array;
     
@@ -4527,23 +4555,25 @@ get value(): (string | LanguageString | null) {
   const values: Record<string, unknown[] | string> = {};
     array = [];
     for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
     
     array = [];
     for (const v of this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://schema.org#value\\"] = array;
     
@@ -4751,7 +4781,7 @@ export class DataIntegrityProof {
 #_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb: (\\"assertionMethod\\" | \\"authentication\\" | \\"capabilityInvocation\\" |
       \\"capabilityDelegation\\" | \\"keyAgreement\\")[] = [];
 #_3CjFK5vfKpX4HQuNh2b18TykoVLq: Uint8Array[] = [];
-#_5e258TDXtuhaFRPZiGoDfEpjdMr: Temporal.Instant[] = [];
+#_3qzP3ukEZoUziK5FEiA1RhU4aqac: Temporal.Instant[] = [];
 
   /**
    * Constructs a new instance of DataIntegrityProof with the given values.
@@ -4795,7 +4825,7 @@ cryptosuite?: \\"eddsa-jcs-2022\\" | null;verificationMethod?: Multikey | URL | 
         }
       
         if (\\"created\\" in values &&             values.created != null) {
-          this.#_5e258TDXtuhaFRPZiGoDfEpjdMr = [values.created];
+          this.#_3qzP3ukEZoUziK5FEiA1RhU4aqac = [values.created];
         }
       }
 
@@ -4837,9 +4867,9 @@ cryptosuite?: \\"eddsa-jcs-2022\\" | null;verificationMethod?: Multikey | URL | 
         if (\\"proofValue\\" in values &&             values.proofValue != null) {
           clone.#_3CjFK5vfKpX4HQuNh2b18TykoVLq = [values.proofValue];
         }
-      clone.#_5e258TDXtuhaFRPZiGoDfEpjdMr = this.#_5e258TDXtuhaFRPZiGoDfEpjdMr;
+      clone.#_3qzP3ukEZoUziK5FEiA1RhU4aqac = this.#_3qzP3ukEZoUziK5FEiA1RhU4aqac;
         if (\\"created\\" in values &&             values.created != null) {
-          clone.#_5e258TDXtuhaFRPZiGoDfEpjdMr = [values.created];
+          clone.#_3qzP3ukEZoUziK5FEiA1RhU4aqac = [values.created];
         }
       
     return clone;
@@ -4940,8 +4970,8 @@ get proofValue(): (Uint8Array | null) {
 /** The date and time the proof was created.
  */
 get created(): (Temporal.Instant | null) {
-        if (this.#_5e258TDXtuhaFRPZiGoDfEpjdMr.length < 1) return null;
-        return this.#_5e258TDXtuhaFRPZiGoDfEpjdMr[0];
+        if (this.#_3qzP3ukEZoUziK5FEiA1RhU4aqac.length < 1) return null;
+        return this.#_3qzP3ukEZoUziK5FEiA1RhU4aqac[0];
       }
       
   /**
@@ -4962,51 +4992,56 @@ get created(): (Temporal.Instant | null) {
   const values: Record<string, unknown[] | string> = {};
     array = [];
     for (const v of this.#_3RurJsa7tnptyqMFR5hDGcP9pMs5) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#cryptosuite\\"] = array;
     
     array = [];
     for (const v of this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#verificationMethod\\"] = array;
     
     array = [];
     for (const v of this.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb) {
-      array.push(
+      const element = (
     {
         \\"@id\\": \\"https://w3id.org/security#\\" + v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#proofPurpose\\"] = array;
     
     array = [];
     for (const v of this.#_3CjFK5vfKpX4HQuNh2b18TykoVLq) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"https://w3id.org/security#multibase\\",
         \\"@value\\": new TextDecoder().decode(encodeMultibase(\\"base58btc\\", v)),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#proofValue\\"] = array;
     
     array = [];
-    for (const v of this.#_5e258TDXtuhaFRPZiGoDfEpjdMr) {
-      array.push(
+    for (const v of this.#_3qzP3ukEZoUziK5FEiA1RhU4aqac) {
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
         \\"@value\\": v.toString(),
       }
       );
+    array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#published\\"] = array;
+    if (array.length > 0) values[\\"http://purl.org/dc/terms/created\\"] = array;
     
     values[\\"@type\\"] = [\\"https://w3id.org/security#DataIntegrityProof\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -5105,13 +5140,13 @@ get created(): (Temporal.Instant | null) {
     _3CjFK5vfKpX4HQuNh2b18TykoVLq.push(decodeMultibase(v[\\"@value\\"]))
     }
     instance.#_3CjFK5vfKpX4HQuNh2b18TykoVLq = _3CjFK5vfKpX4HQuNh2b18TykoVLq;
-    const _5e258TDXtuhaFRPZiGoDfEpjdMr: Temporal.Instant[] = [];
+    const _3qzP3ukEZoUziK5FEiA1RhU4aqac: Temporal.Instant[] = [];
 
-    for (const v of values[\\"https://www.w3.org/ns/activitystreams#published\\"] ?? []) {
+    for (const v of values[\\"http://purl.org/dc/terms/created\\"] ?? []) {
       if (v == null) continue;
-    _5e258TDXtuhaFRPZiGoDfEpjdMr.push(Temporal.Instant.from(v[\\"@value\\"]))
+    _3qzP3ukEZoUziK5FEiA1RhU4aqac.push(Temporal.Instant.from(v[\\"@value\\"]))
     }
-    instance.#_5e258TDXtuhaFRPZiGoDfEpjdMr = _5e258TDXtuhaFRPZiGoDfEpjdMr;
+    instance.#_3qzP3ukEZoUziK5FEiA1RhU4aqac = _3qzP3ukEZoUziK5FEiA1RhU4aqac;
     
     return instance;
   }
@@ -5213,7 +5248,7 @@ get created(): (Temporal.Instant | null) {
         proxy.proofValue = _3CjFK5vfKpX4HQuNh2b18TykoVLq[0];
       }
       
-      const _5e258TDXtuhaFRPZiGoDfEpjdMr = this.#_5e258TDXtuhaFRPZiGoDfEpjdMr
+      const _3qzP3ukEZoUziK5FEiA1RhU4aqac = this.#_3qzP3ukEZoUziK5FEiA1RhU4aqac
         // deno-lint-ignore no-explicit-any
         .map((v: any) => v instanceof URL
           ? {
@@ -5229,8 +5264,8 @@ get created(): (Temporal.Instant | null) {
             }
           : v);
     
-      if (_5e258TDXtuhaFRPZiGoDfEpjdMr.length == 1) {
-        proxy.created = _5e258TDXtuhaFRPZiGoDfEpjdMr[0];
+      if (_3qzP3ukEZoUziK5FEiA1RhU4aqac.length == 1) {
+        proxy.created = _3qzP3ukEZoUziK5FEiA1RhU4aqac[0];
       }
       
     return proxy;
@@ -5464,17 +5499,19 @@ get publicKey(): (CryptoKey | null) {
   const values: Record<string, unknown[] | string> = {};
     array = [];
     for (const v of this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#owner\\"] = array;
     
     array = [];
     for (const v of this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD) {
-      array.push(
+      const element = (
     { \\"@value\\": await exportSpki(v) }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#publicKeyPem\\"] = array;
     
@@ -5875,20 +5912,22 @@ get publicKey(): (CryptoKey | null) {
   const values: Record<string, unknown[] | string> = {};
     array = [];
     for (const v of this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#controller\\"] = array;
     
     array = [];
     for (const v of this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"https://w3id.org/security#multibase\\",
         \\"@value\\": await exportMultibaseKey(v),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#publicKeyMultibase\\"] = array;
     
@@ -6494,17 +6533,19 @@ objects?: (Object | URL)[];}
     
     array = [];
     for (const v of this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#actor\\"] = array;
     
     array = [];
     for (const v of this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#object\\"] = array;
     
@@ -8375,124 +8416,139 @@ get indexable(): (boolean | null) {
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
-      array.push(
+      const element = (
     await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
     
@@ -9417,23 +9473,25 @@ get height(): (number | null) {
     
     array = [];
     for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#width\\"] = array;
     
     array = [];
     for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#height\\"] = array;
     
@@ -10657,44 +10715,49 @@ get totalItems(): (number | null) {
     
     array = [];
     for (const v of this.#_XDbmNDuWHmrhqH712zqtecdbv1V) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#totalItems\\"] = array;
     
     array = [];
     for (const v of this.#_3UyUdxnyn6cDn53QKrh4MBiearma) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#current\\"] = array;
     
     array = [];
     for (const v of this.#_J52RqweMe6hhv7RnLJMC8BExTE5) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#first\\"] = array;
     
     array = [];
     for (const v of this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#last\\"] = array;
     
     array = [];
     for (const v of this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#items\\"] = array;
     
@@ -11354,25 +11417,28 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
     array = [];
     for (const v of this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Link ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#partOf\\"] = array;
     
     array = [];
     for (const v of this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#next\\"] = array;
     
     array = [];
     for (const v of this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#prev\\"] = array;
     
@@ -12422,49 +12488,55 @@ get sharedInbox(): (URL | null) {
   const values: Record<string, unknown[] | string> = {};
     array = [];
     for (const v of this.#_2JCYDbSxEHCCLdBYed33cCETfGyR) {
-      array.push(
+      const element = (
     { \\"@id\\": v.href }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#proxyUrl\\"] = array;
     
     array = [];
     for (const v of this.#_25S6UmgzDead8hxL5sQFezZTAusd) {
-      array.push(
+      const element = (
     { \\"@id\\": v.href }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#oauthAuthorizationEndpoint\\"] = array;
     
     array = [];
     for (const v of this.#_iAMxqrSba7yBCRB1FZ5kEVdKEZ3) {
-      array.push(
+      const element = (
     { \\"@id\\": v.href }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#oauthTokenEndpoint\\"] = array;
     
     array = [];
     for (const v of this.#_8Bx9qN8oU7Bpt2xi6khaxWp1gMr) {
-      array.push(
+      const element = (
     { \\"@id\\": v.href }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#provideClientKey\\"] = array;
     
     array = [];
     for (const v of this.#_3dU7PMVQZJpsCpo2F4RQXxBXdPmS) {
-      array.push(
+      const element = (
     { \\"@id\\": v.href }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#signClientKey\\"] = array;
     
     array = [];
     for (const v of this.#_3JprUSDLVqqX4dwHRi37qGZZCRCc) {
-      array.push(
+      const element = (
     { \\"@id\\": v.href }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#sharedInbox\\"] = array;
     
@@ -14330,124 +14402,139 @@ get indexable(): (boolean | null) {
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
-      array.push(
+      const element = (
     await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
     
@@ -15416,74 +15503,82 @@ get width(): (number | null) {
   const values: Record<string, unknown[] | string> = {};
     array = [];
     for (const v of this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7) {
-      array.push(
+      const element = (
     { \\"@id\\": v.href }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#href\\"] = array;
     
     array = [];
     for (const v of this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#rel\\"] = array;
     
     array = [];
     for (const v of this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] = array;
     
     array = [];
     for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
     
     array = [];
     for (const v of this.#_f57HKWCp1YRBbTJE8PF12RbDJGf) {
-      array.push(
+      const element = (
     { \\"@value\\": v.compact() }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#hreflang\\"] = array;
     
     array = [];
     for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#height\\"] = array;
     
     array = [];
     for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#width\\"] = array;
     
     array = [];
     for (const v of this.#_gCVTegXxWWCw6wWRxa1QF65zusg) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : v instanceof Link ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preview\\"] = array;
     
@@ -17324,12 +17419,13 @@ get startIndex(): (number | null) {
     
     array = [];
     for (const v of this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#startIndex\\"] = array;
     
@@ -18442,124 +18538,139 @@ get indexable(): (boolean | null) {
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
-      array.push(
+      const element = (
     await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
     
@@ -20332,124 +20443,139 @@ get indexable(): (boolean | null) {
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
-      array.push(
+      const element = (
     await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
     
@@ -21253,64 +21379,70 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
     
     array = [];
     for (const v of this.#_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#float\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#accuracy\\"] = array;
     
     array = [];
     for (const v of this.#_3Q6KDcFQUJRRaBux1BL2yp5QWiBi) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#float\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#altitude\\"] = array;
     
     array = [];
     for (const v of this.#_3g85RoKRnaNjP7DFyLSvsWDg7HGM) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#float\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#latitude\\"] = array;
     
     array = [];
     for (const v of this.#_B2GEYdS9yBAF3ho1pm1rcRg7cSf) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#float\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#longitude\\"] = array;
     
     array = [];
     for (const v of this.#_3ga86BKHUtRkGx5PHBjRiUXXzwnw) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#float\\",
         \\"@value\\": v,
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#radius\\"] = array;
     
     array = [];
     for (const v of this.#_oKrwxU4V8wiKhMW1QEYQibcJh8c) {
-      array.push(
+      const element = (
     v == \\"cm\\" || v == \\"feet\\" || v == \\"inches\\" || v == \\"km\\" || v == \\"m\\" || v == \\"miles\\" ? { \\"@value\\": v } : { \\"@id\\": v.href }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#units\\"] = array;
     
@@ -21756,9 +21888,10 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
     
     array = [];
     for (const v of this.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#describes\\"] = array;
     
@@ -22542,25 +22675,28 @@ relationships?: (Object | URL)[];}
     
     array = [];
     for (const v of this.#_2Zqdmi46ZnDQsECS6mzwhrv3rUKq) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#subject\\"] = array;
     
     array = [];
     for (const v of this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#object\\"] = array;
     
     array = [];
     for (const v of this.#_4Lzz89F9qipAQSGkWyX9DGWiUojG) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#relationship\\"] = array;
     
@@ -23962,124 +24098,139 @@ get indexable(): (boolean | null) {
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
-      array.push(
+      const element = (
     typeof v === \\"string\\" ? { \\"@value\\": v } : {
         \\"@value\\": v.toString(),
         \\"@language\\": v.language.compact(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
-      array.push(
+      const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
-      array.push(
+      const element = (
     await v.toJsonLd(options)
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
-      array.push(
+      const element = (
     { \\"@value\\": v }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
     
@@ -24793,12 +24944,13 @@ get deleted(): (Temporal.Instant | null) {
     
     array = [];
     for (const v of this.#_8g8g4LiVMhFTXskuDEqx4ascxUr) {
-      array.push(
+      const element = (
     {
         \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
         \\"@value\\": v.toString(),
       }
       );
+    array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#deleted\\"] = array;
     

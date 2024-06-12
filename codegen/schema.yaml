@@ -28,6 +28,11 @@ $defs:
               Whether to generate singular property accessors.  Regardless of
               this flag, plural property accessors are generated
               (unless functional is turned on).
+            type: boolean
+          container:
+            description: >-
+              The container type of the property values.  It can be unspecified.
+            const: "graph"
         required:
         - pluralName
     - allOf:
@@ -167,7 +172,7 @@ properties:
       Marks the type an entity type rather than a value type.  Turning on this
       flag will make property accessors for the type asynchronous, so that they
       can load the values of the properties from the remote server.
-      
+
       The extended subtypes must have the consistent value of this flag.
     type: boolean
   description:

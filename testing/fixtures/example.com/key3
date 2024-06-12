@@ -1,7 +1,0 @@
-{
-  "@context": "https://w3id.org/security/v1",
-  "id": "https://example.com/key3",
-  "type": "CryptographicKey",
-  "owner": "https://example.com/person2",
-  "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA4GUqWgdiYlN3Su5Gr4l6\ni+xRS8gDDVKZ718vpGk6eIpvqs33q430nRbHIzbHRXRaAhc/1++rUBcK0V4/kjZl\nCSzVtRgGU6HMkmjcD+uE56a8XbTczfltbEDj7afoEuB2F3UhQEWrSz+QJ29DPXaL\nMIa1Yv61NR2vxGqNbdtoMjDORMBYtg77CYbcFkiJHw65PDa7+f/yjLxuCRPye5L7\nhncN0UZuuFoRJmHNRLSg5omBad9WTvQXmSyXEhEdk9fHwlI022AqAzlWbT79hldc\nDSKGGLLbQIs1c3JZIG8G5i6Uh5Vy0Z7tSNBcxbhqoI9i9je4f/x/OPIVc19f04BE\n1LgWuHsftZzRgW9Sdqz53W83XxVdxlyHeywXOnstSWT11f8dkLyQUcHKTH+E6urb\nH+aiPLiRpYK8W7D9KTQA9kZ5JXaEuveBd5vJX7wakhbzAn8pWJU7GYIHNY38Ycok\nmivkU5pY8S2cKFMwY0b7ade3MComlir5P3ZYSjF+n6gRVsT96P+9mNfCu9gXt/f8\nXCyjKlH89kGwuJ7HhR8CuVdm0l+jYozVt6GsDy0hHYyn79NCCAEzP7ZbhBMR0T5V\nrkl+TIGXoJH9WFiz4VxO+NnglF6dNQjDS5IzYLoFRXIK1f3cmQiEB4FZmL70l9HL\nrgwR+Xys83xia79OqFDRezMCAwEAAQ==\n-----END PUBLIC KEY-----\n"
-}

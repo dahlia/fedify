@@ -132,6 +132,11 @@ export type PropertySchema =
      * turned on).
      */
     singularAccessor?: boolean;
+
+    /**
+     * The container type of the property values.  It can be unspecified.
+     */
+    container?: "graph";
   }
   | PropertySchemaBase & PropertySchemaTyping & {
     /**
