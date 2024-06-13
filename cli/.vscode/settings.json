@@ -46,6 +46,7 @@
     "httpsig",
     "logtape",
     "msvc",
+    "multikey",
     "nodeinfo",
     "poppanator",
     "shiki",

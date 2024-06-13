@@ -116,10 +116,10 @@ const federation = new Federation<number>({
 });
 
 const time = Temporal.Now.instant();
-let actorKeyPair: CryptoKeyPair | undefined = undefined;
+let actorKeyPairs: CryptoKeyPair[] | undefined = undefined;
 
 federation
-  .setActorDispatcher("/{handle}", (ctx, handle, key) => {
+  .setActorDispatcher("/{handle}", async (ctx, handle) => {
     if (handle !== "i") return null;
     return new Application({
       id: ctx.getActorUri(handle),
@@ -139,14 +139,22 @@ federation
         url: new URL("https://fedify.dev/logo.png"),
         mediaType: "image/png",
       }),
-      publicKey: key,
+      publicKeys: (await ctx.getActorKeyPairs(handle))
+        .map((pair) => pair.cryptographicKey),
+      assertionMethods: (await ctx.getActorKeyPairs(handle))
+        .map((pair) => pair.multikey),
       url: ctx.getActorUri(handle),
     });
   })
-  .setKeyPairDispatcher(async (_ctxData, handle) => {
-    if (handle !== "i") return null;
-    if (actorKeyPair == null) actorKeyPair = await generateCryptoKeyPair();
-    return actorKeyPair;
+  .setKeyPairsDispatcher(async (_ctxData, handle) => {
+    if (handle !== "i") return [];
+    if (actorKeyPairs == null) {
+      actorKeyPairs = [
+        await generateCryptoKeyPair("RSASSA-PKCS1-v1_5"),
+        await generateCryptoKeyPair("Ed25519"),
+      ];
+    }
+    return actorKeyPairs;
   });
 
 const activities: ActivityEntry[] = [];
