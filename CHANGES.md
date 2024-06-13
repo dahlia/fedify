@@ -8,6 +8,9 @@ Version 0.9.1
 
 To be released.
 
+ -  Fixed a bug of Activity Vocabulary API that `clone()` method of Vocabulary
+    classes had not cloned the `id` property from the source object.
+
 
 Version 0.9.0
 -------------

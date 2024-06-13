@@ -35,6 +35,7 @@ snapshot[`Deno.inspect(Emoji) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Emoji) [auto] 2`] = `
 'Emoji {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -67,6 +68,7 @@ snapshot[`Deno.inspect(Emoji) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Emoji) [auto] 3`] = `
 'Emoji {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -99,9 +101,9 @@ snapshot[`Deno.inspect(Emoji) [auto] 3`] = `
 
 snapshot[`Deno.inspect(PropertyValue) [auto] 1`] = `'PropertyValue { id: URL "https://example.com/", name: "hello", value: "hello" }'`;
 
-snapshot[`Deno.inspect(PropertyValue) [auto] 2`] = `'PropertyValue { name: "hello", value: "hello" }'`;
+snapshot[`Deno.inspect(PropertyValue) [auto] 2`] = `'PropertyValue { id: URL "https://example.com/", name: "hello", value: "hello" }'`;
 
-snapshot[`Deno.inspect(PropertyValue) [auto] 3`] = `'PropertyValue { name: "hello", value: "hello" }'`;
+snapshot[`Deno.inspect(PropertyValue) [auto] 3`] = `'PropertyValue { id: URL "https://example.com/", name: "hello", value: "hello" }'`;
 
 snapshot[`Deno.inspect(CryptographicKey) [auto] 1`] = `
 'CryptographicKey {
@@ -123,6 +125,7 @@ snapshot[`Deno.inspect(CryptographicKey) [auto] 1`] = `
 
 snapshot[`Deno.inspect(CryptographicKey) [auto] 2`] = `
 'CryptographicKey {
+  id: URL "https://example.com/",
   owner: URL "https://example.com/",
   publicKey: CryptoKey {
     type: "public",
@@ -140,6 +143,7 @@ snapshot[`Deno.inspect(CryptographicKey) [auto] 2`] = `
 
 snapshot[`Deno.inspect(CryptographicKey) [auto] 3`] = `
 'CryptographicKey {
+  id: URL "https://example.com/",
   owner: Application {},
   publicKey: CryptoKey {
     type: "public",
@@ -192,6 +196,7 @@ snapshot[`Deno.inspect(Accept) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Accept) [auto] 2`] = `
 'Accept {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -226,6 +231,7 @@ snapshot[`Deno.inspect(Accept) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Accept) [auto] 3`] = `
 'Accept {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -295,6 +301,7 @@ snapshot[`Deno.inspect(Activity) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Activity) [auto] 2`] = `
 'Activity {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -329,6 +336,7 @@ snapshot[`Deno.inspect(Activity) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Activity) [auto] 3`] = `
 'Activity {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -398,6 +406,7 @@ snapshot[`Deno.inspect(Add) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Add) [auto] 2`] = `
 'Add {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -432,6 +441,7 @@ snapshot[`Deno.inspect(Add) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Add) [auto] 3`] = `
 'Add {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -501,6 +511,7 @@ snapshot[`Deno.inspect(Announce) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Announce) [auto] 2`] = `
 'Announce {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -535,6 +546,7 @@ snapshot[`Deno.inspect(Announce) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Announce) [auto] 3`] = `
 'Announce {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -616,6 +628,7 @@ snapshot[`Deno.inspect(Application) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Application) [auto] 2`] = `
 'Application {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -662,6 +675,7 @@ snapshot[`Deno.inspect(Application) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Application) [auto] 3`] = `
 'Application {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -741,6 +755,7 @@ snapshot[`Deno.inspect(Article) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Article) [auto] 2`] = `
 'Article {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -773,6 +788,7 @@ snapshot[`Deno.inspect(Article) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Article) [auto] 3`] = `
 'Article {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -840,6 +856,7 @@ snapshot[`Deno.inspect(Audio) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Audio) [auto] 2`] = `
 'Audio {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -874,6 +891,7 @@ snapshot[`Deno.inspect(Audio) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Audio) [auto] 3`] = `
 'Audio {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -943,6 +961,7 @@ snapshot[`Deno.inspect(Block) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Block) [auto] 2`] = `
 'Block {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -977,6 +996,7 @@ snapshot[`Deno.inspect(Block) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Block) [auto] 3`] = `
 'Block {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1049,6 +1069,7 @@ snapshot[`Deno.inspect(Collection) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Collection) [auto] 2`] = `
 'Collection {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1086,6 +1107,7 @@ snapshot[`Deno.inspect(Collection) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Collection) [auto] 3`] = `
 'Collection {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1164,6 +1186,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 1`] = `
 
 snapshot[`Deno.inspect(CollectionPage) [auto] 2`] = `
 'CollectionPage {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1204,6 +1227,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 2`] = `
 
 snapshot[`Deno.inspect(CollectionPage) [auto] 3`] = `
 'CollectionPage {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1279,6 +1303,7 @@ snapshot[`Deno.inspect(Create) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Create) [auto] 2`] = `
 'Create {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1313,6 +1338,7 @@ snapshot[`Deno.inspect(Create) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Create) [auto] 3`] = `
 'Create {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1382,6 +1408,7 @@ snapshot[`Deno.inspect(Delete) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Delete) [auto] 2`] = `
 'Delete {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1416,6 +1443,7 @@ snapshot[`Deno.inspect(Delete) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Delete) [auto] 3`] = `
 'Delete {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1485,6 +1513,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Dislike) [auto] 2`] = `
 'Dislike {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1519,6 +1548,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Dislike) [auto] 3`] = `
 'Dislike {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1588,6 +1618,7 @@ snapshot[`Deno.inspect(Document) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Document) [auto] 2`] = `
 'Document {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1622,6 +1653,7 @@ snapshot[`Deno.inspect(Document) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Document) [auto] 3`] = `
 'Document {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1668,6 +1700,7 @@ snapshot[`Deno.inspect(Endpoints) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Endpoints) [auto] 2`] = `
 'Endpoints {
+  id: URL "https://example.com/",
   proxyUrl: URL "https://example.com/",
   oauthAuthorizationEndpoint: URL "https://example.com/",
   oauthTokenEndpoint: URL "https://example.com/",
@@ -1679,6 +1712,7 @@ snapshot[`Deno.inspect(Endpoints) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Endpoints) [auto] 3`] = `
 'Endpoints {
+  id: URL "https://example.com/",
   proxyUrl: URL "https://example.com/",
   oauthAuthorizationEndpoint: URL "https://example.com/",
   oauthTokenEndpoint: URL "https://example.com/",
@@ -1723,6 +1757,7 @@ snapshot[`Deno.inspect(Event) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Event) [auto] 2`] = `
 'Event {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1755,6 +1790,7 @@ snapshot[`Deno.inspect(Event) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Event) [auto] 3`] = `
 'Event {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1822,6 +1858,7 @@ snapshot[`Deno.inspect(Flag) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Flag) [auto] 2`] = `
 'Flag {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1856,6 +1893,7 @@ snapshot[`Deno.inspect(Flag) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Flag) [auto] 3`] = `
 'Flag {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -1925,6 +1963,7 @@ snapshot[`Deno.inspect(Follow) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Follow) [auto] 2`] = `
 'Follow {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -1959,6 +1998,7 @@ snapshot[`Deno.inspect(Follow) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Follow) [auto] 3`] = `
 'Follow {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -2040,6 +2080,7 @@ snapshot[`Deno.inspect(Group) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Group) [auto] 2`] = `
 'Group {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -2086,6 +2127,7 @@ snapshot[`Deno.inspect(Group) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Group) [auto] 3`] = `
 'Group {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -2152,6 +2194,7 @@ snapshot[`Deno.inspect(Hashtag) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Hashtag) [auto] 2`] = `
 'Hashtag {
+  id: URL "https://example.com/",
   href: URL "https://example.com/",
   rel: "hello",
   mediaType: "hello",
@@ -2171,6 +2214,7 @@ snapshot[`Deno.inspect(Hashtag) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Hashtag) [auto] 3`] = `
 'Hashtag {
+  id: URL "https://example.com/",
   href: URL "https://example.com/",
   rels: [ "hello", "hello" ],
   mediaType: "hello",
@@ -2225,6 +2269,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Ignore) [auto] 2`] = `
 'Ignore {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -2259,6 +2304,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Ignore) [auto] 3`] = `
 'Ignore {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -2328,6 +2374,7 @@ snapshot[`Deno.inspect(Image) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Image) [auto] 2`] = `
 'Image {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -2362,6 +2409,7 @@ snapshot[`Deno.inspect(Image) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Image) [auto] 3`] = `
 'Image {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -2431,6 +2479,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
 
 snapshot[`Deno.inspect(IntransitiveActivity) [auto] 2`] = `
 'IntransitiveActivity {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -2465,6 +2514,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 2`] = `
 
 snapshot[`Deno.inspect(IntransitiveActivity) [auto] 3`] = `
 'IntransitiveActivity {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -2534,6 +2584,7 @@ snapshot[`Deno.inspect(Like) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Like) [auto] 2`] = `
 'Like {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -2568,6 +2619,7 @@ snapshot[`Deno.inspect(Like) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Like) [auto] 3`] = `
 'Like {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -2622,6 +2674,7 @@ snapshot[`Deno.inspect(Link) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Link) [auto] 2`] = `
 'Link {
+  id: URL "https://example.com/",
   href: URL "https://example.com/",
   rel: "hello",
   mediaType: "hello",
@@ -2641,6 +2694,7 @@ snapshot[`Deno.inspect(Link) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Link) [auto] 3`] = `
 'Link {
+  id: URL "https://example.com/",
   href: URL "https://example.com/",
   rels: [ "hello", "hello" ],
   mediaType: "hello",
@@ -2680,6 +2734,7 @@ snapshot[`Deno.inspect(Mention) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Mention) [auto] 2`] = `
 'Mention {
+  id: URL "https://example.com/",
   href: URL "https://example.com/",
   rel: "hello",
   mediaType: "hello",
@@ -2699,6 +2754,7 @@ snapshot[`Deno.inspect(Mention) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Mention) [auto] 3`] = `
 'Mention {
+  id: URL "https://example.com/",
   href: URL "https://example.com/",
   rels: [ "hello", "hello" ],
   mediaType: "hello",
@@ -2751,6 +2807,7 @@ snapshot[`Deno.inspect(Note) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Note) [auto] 2`] = `
 'Note {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -2783,6 +2840,7 @@ snapshot[`Deno.inspect(Note) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Note) [auto] 3`] = `
 'Note {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -2848,6 +2906,7 @@ snapshot[`Deno.inspect(Object) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Object) [auto] 2`] = `
 'Object {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -2880,6 +2939,7 @@ snapshot[`Deno.inspect(Object) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Object) [auto] 3`] = `
 'Object {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -2950,6 +3010,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 1`] = `
 
 snapshot[`Deno.inspect(OrderedCollection) [auto] 2`] = `
 'OrderedCollection {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -2987,6 +3048,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 2`] = `
 
 snapshot[`Deno.inspect(OrderedCollection) [auto] 3`] = `
 'OrderedCollection {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3066,6 +3128,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 1`] = `
 
 snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 2`] = `
 'OrderedCollectionPage {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -3107,6 +3170,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 2`] = `
 
 snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 3`] = `
 'OrderedCollectionPage {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3195,6 +3259,7 @@ snapshot[`Deno.inspect(Organization) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Organization) [auto] 2`] = `
 'Organization {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -3241,6 +3306,7 @@ snapshot[`Deno.inspect(Organization) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Organization) [auto] 3`] = `
 'Organization {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3322,6 +3388,7 @@ snapshot[`Deno.inspect(Page) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Page) [auto] 2`] = `
 'Page {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -3356,6 +3423,7 @@ snapshot[`Deno.inspect(Page) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Page) [auto] 3`] = `
 'Page {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3437,6 +3505,7 @@ snapshot[`Deno.inspect(Person) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Person) [auto] 2`] = `
 'Person {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -3483,6 +3552,7 @@ snapshot[`Deno.inspect(Person) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Person) [auto] 3`] = `
 'Person {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3568,6 +3638,7 @@ snapshot[`Deno.inspect(Place) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Place) [auto] 2`] = `
 'Place {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -3606,6 +3677,7 @@ snapshot[`Deno.inspect(Place) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Place) [auto] 3`] = `
 'Place {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3678,6 +3750,7 @@ snapshot[`Deno.inspect(Profile) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Profile) [auto] 2`] = `
 'Profile {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -3711,6 +3784,7 @@ snapshot[`Deno.inspect(Profile) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Profile) [auto] 3`] = `
 'Profile {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3779,6 +3853,7 @@ snapshot[`Deno.inspect(Reject) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Reject) [auto] 2`] = `
 'Reject {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -3813,6 +3888,7 @@ snapshot[`Deno.inspect(Reject) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Reject) [auto] 3`] = `
 'Reject {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3883,6 +3959,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Relationship) [auto] 2`] = `
 'Relationship {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -3918,6 +3995,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Relationship) [auto] 3`] = `
 'Relationship {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -3988,6 +4066,7 @@ snapshot[`Deno.inspect(Remove) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Remove) [auto] 2`] = `
 'Remove {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -4022,6 +4101,7 @@ snapshot[`Deno.inspect(Remove) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Remove) [auto] 3`] = `
 'Remove {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -4103,6 +4183,7 @@ snapshot[`Deno.inspect(Service) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Service) [auto] 2`] = `
 'Service {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -4149,6 +4230,7 @@ snapshot[`Deno.inspect(Service) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Service) [auto] 3`] = `
 'Service {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -4229,6 +4311,7 @@ snapshot[`Deno.inspect(Tombstone) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Tombstone) [auto] 2`] = `
 'Tombstone {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -4262,6 +4345,7 @@ snapshot[`Deno.inspect(Tombstone) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Tombstone) [auto] 3`] = `
 'Tombstone {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -4330,6 +4414,7 @@ snapshot[`Deno.inspect(Undo) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Undo) [auto] 2`] = `
 'Undo {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -4364,6 +4449,7 @@ snapshot[`Deno.inspect(Undo) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Undo) [auto] 3`] = `
 'Undo {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -4433,6 +4519,7 @@ snapshot[`Deno.inspect(Update) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Update) [auto] 2`] = `
 'Update {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -4467,6 +4554,7 @@ snapshot[`Deno.inspect(Update) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Update) [auto] 3`] = `
 'Update {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
@@ -4536,6 +4624,7 @@ snapshot[`Deno.inspect(Video) [auto] 1`] = `
 
 snapshot[`Deno.inspect(Video) [auto] 2`] = `
 'Video {
+  id: URL "https://example.com/",
   attachments: [ URL "https://example.com/" ],
   attribution: URL "https://example.com/",
   audience: URL "https://example.com/",
@@ -4570,6 +4659,7 @@ snapshot[`Deno.inspect(Video) [auto] 2`] = `
 
 snapshot[`Deno.inspect(Video) [auto] 3`] = `
 'Video {
+  id: URL "https://example.com/",
   attachments: [ Object {}, Object {} ],
   attributions: [ Application {}, Application {} ],
   audiences: [ Object {}, Object {} ],
