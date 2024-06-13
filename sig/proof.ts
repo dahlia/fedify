@@ -6,6 +6,8 @@ import { fetchKey, validateCryptoKey } from "./key.ts";
 import { Activity, Multikey } from "@fedify/fedify/vocab";
 import { getLogger } from "@logtape/logtape";
 
+const logger = getLogger(["fedify", "sig", "proof"]);
+
 /**
  * Options for {@link createProof}.
  * @since 0.10.0
@@ -200,13 +202,18 @@ export async function verifyProof(
   try {
     publicKey = await publicKeyPromise;
   } catch (error) {
-    getLogger(["sig", "proof"]).debug(
+    logger.debug(
       "Failed to get the key (verificationMethod) for the proof:\n{proof}",
       { proof, error },
     );
     return null;
   }
   if (publicKey == null || publicKey.publicKey.algorithm.name !== "Ed25519") {
+    logger.debug(
+      "The key (verificationMethod) for the proof is not a valid Ed25519 " +
+        "key:\n{keyId}",
+      { proof, keyId: proof.verificationMethodId.href },
+    );
     return null;
   }
   const verified = await crypto.subtle.verify(
@@ -215,7 +222,11 @@ export async function verifyProof(
     proof.proofValue,
     digest,
   );
-  return verified ? publicKey : null;
+  if (!verified) {
+    logger.debug("The proof's signature is invalid.", { proof });
+    return null;
+  }
+  return publicKey;
 }
 
 /**
@@ -241,6 +252,7 @@ export async function verifyObject(
   jsonLd: unknown,
   options: VerifyObjectOptions = {},
 ): Promise<Object | null> {
+  const logger = getLogger(["fedify", "sig", "proof"]);
   const object = await Object.fromJsonLd(jsonLd, options);
   const attributions = new Set(object.attributionIds.map((uri) => uri.href));
   if (object instanceof Activity) {
@@ -249,8 +261,21 @@ export async function verifyObject(
   for await (const proof of object.getProofs(options)) {
     const key = await verifyProof(jsonLd, proof, options);
     if (key === null) return null;
-    if (key.controllerId == null) continue;
+    if (key.controllerId == null) {
+      logger.debug(
+        "Key {keyId} does not have a controller.",
+        { keyId: key.id?.href },
+      );
+      continue;
+    }
     attributions.delete(key.controllerId.href);
   }
-  return attributions.size < 1 ? object : null;
+  if (attributions.size > 0) {
+    logger.debug(
+      "Some attributions are not authenticated by the proofs: {attributions}.",
+      { attributions: [...attributions] },
+    );
+    return null;
+  }
+  return object;
 }
