@@ -18,6 +18,12 @@ jobs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: v1.x
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
     - run: deno task cache
     - run: deno task test --coverage=.cov --junit-path=.test-report.xml
       env:
@@ -42,6 +48,9 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: .cov.lcov
+    - run: deno task dnt
+    - run: bun test_runner.js
+      working-directory: ${{ github.workspace }}/npm/
 
   lint:
     runs-on: ubuntu-latest

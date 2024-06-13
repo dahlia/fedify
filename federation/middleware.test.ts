@@ -604,10 +604,11 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         privateKey: rsaPrivateKey2,
         publicKey: rsaPublicKey2.publicKey!,
       }));
+    const error = new Error("test");
     const errors: unknown[] = [];
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
       .on(Create, () => {
-        throw new Error("test");
+        throw error;
       })
       .onError((_, e) => {
         errors.push(e);
@@ -632,7 +633,7 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
       contextData: undefined,
     });
     assertEquals(errors.length, 1);
-    assertEquals(errors[0], new Error("test"));
+    assertEquals(errors[0], error);
     assertEquals(response.status, 500);
   });
 
