@@ -95,6 +95,11 @@ To be released.
      -  Added `VerifyProofOptions` interface.
      -  Added `fetchKey()` function.
      -  Added `FetchKeyOptions` interface.
+     -  Added `SenderKeyPair` interface.
+     -  The type of `Federation.sendActivity()` method's first parameter became
+        `SenderKeyPair[]` (was `{ keyId: URL; privateKey: CryptoKey }`).
+     -  The `Context.sendActivity()` method's first parameter now accepts
+        `SenderKeyPair[]` as well.
 
  -  Added `context` option to `Object.toJsonLd()` method.  This applies to
     any subclasses of the `Object` class too.

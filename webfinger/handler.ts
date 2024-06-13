@@ -38,10 +38,7 @@ export async function handleWebFinger<TContextData>(
     onNotFound,
   }: WebFingerHandlerParameters<TContextData>,
 ): Promise<Response> {
-  if (actorDispatcher == null) {
-    const response = onNotFound(request);
-    return response instanceof Promise ? await response : response;
-  }
+  if (actorDispatcher == null) return await onNotFound(request);
   const resource = context.url.searchParams.get("resource");
   if (resource == null) {
     return new Response("Missing resource parameter.", { status: 400 });
@@ -60,19 +57,14 @@ export async function handleWebFinger<TContextData>(
   if (uriParsed?.type != "actor") {
     const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
     if (match == null || match[2] != context.url.host) {
-      const response = onNotFound(request);
-      return response instanceof Promise ? await response : response;
+      return await onNotFound(request);
     }
     handle = match[1];
   } else {
     handle = uriParsed.handle;
   }
-  const key = await context.getActorKey(handle);
-  const actor = await actorDispatcher(context, handle, key);
-  if (actor == null) {
-    const response = onNotFound(request);
-    return response instanceof Promise ? await response : response;
-  }
+  const actor = await context.getActor(handle);
+  if (actor == null) return await onNotFound(request);
   const links: Link[] = [
     {
       rel: "self",

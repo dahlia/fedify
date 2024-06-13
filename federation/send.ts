@@ -1,6 +1,8 @@
 import { getLogger } from "@logtape/logtape";
 import { signRequest } from "../sig/http.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
+import { validateCryptoKey } from "../sig/key.ts";
+import { signObject } from "../sig/proof.ts";
 import type { Recipient } from "../vocab/actor.ts";
 import type { Activity } from "../vocab/mod.ts";
 
@@ -59,14 +61,10 @@ export function extractInboxes(
 }
 
 /**
- * Parameters for {@link sendActivity}.
+ * A key pair for an actor who sends an activity.
+ * @since 0.10.0
  */
-export interface SendActivityParameters {
-  /**
-   * The activity to send.
-   */
-  activity: Activity;
-
+export interface SenderKeyPair {
   /**
    * The actor's private key to sign the request.
    */
@@ -76,6 +74,22 @@ export interface SendActivityParameters {
    * The public key ID that corresponds to the private key.
    */
   keyId: URL;
+}
+
+/**
+ * Parameters for {@link sendActivity}.
+ */
+export interface SendActivityParameters {
+  /**
+   * The activity to send.
+   */
+  activity: Activity;
+
+  /**
+   * The key pairs of the sender to sign the request.  It must not be empty.
+   * @since 0.10.0
+   */
+  keys: SenderKeyPair[];
 
   /**
    * The inbox URL to send the activity to.
@@ -87,6 +101,12 @@ export interface SendActivityParameters {
    * @since 0.8.0
    */
   contextLoader?: DocumentLoader;
+
+  /**
+   * The document loader for loading remote JSON-LD documents.
+   * @since 0.10.0
+   */
+  documentLoader?: DocumentLoader;
 
   /**
    * Additional headers to include in the request.
@@ -104,17 +124,48 @@ export interface SendActivityParameters {
 export async function sendActivity(
   {
     activity,
-    privateKey,
-    keyId,
+    keys,
     inbox,
     contextLoader,
+    documentLoader,
     headers,
   }: SendActivityParameters,
 ): Promise<void> {
   const logger = getLogger(["fedify", "federation", "outbox"]);
+  if (activity.id == null) {
+    throw new TypeError("The activity to send must have an id.");
+  }
   if (activity.actorId == null) {
     throw new TypeError(
       "The activity to send must have at least one actor property.",
+    );
+  } else if (keys.length < 1) {
+    throw new TypeError("The keys must not be empty.");
+  }
+  const activityId = activity.id.href;
+  let proofCreated = false;
+  for (const { keyId, privateKey } of keys) {
+    validateCryptoKey(privateKey, "private");
+    if (privateKey.algorithm.name === "Ed25519") {
+      activity = await signObject(activity, privateKey, keyId, {
+        documentLoader,
+        contextLoader,
+      });
+      proofCreated = true;
+    }
+  }
+  if (!proofCreated) {
+    logger.warn(
+      "No supported key found to create a proof for the activity {activityId}.  " +
+        "The activity will be sent without a proof.  " +
+        "In order to create a proof, at least one Ed25519 key must be provided.",
+      {
+        activityId,
+        keys: keys.map((pair) => ({
+          keyId: pair.keyId.href,
+          privateKey: pair.privateKey,
+        })),
+      },
     );
   }
   const jsonLd = await activity.toJsonLd({ contextLoader });
@@ -125,7 +176,29 @@ export async function sendActivity(
     headers,
     body: JSON.stringify(jsonLd),
   });
-  request = await signRequest(request, privateKey, keyId);
+  let requestSigned = false;
+  for (const { privateKey, keyId } of keys) {
+    if (privateKey.algorithm.name === "RSASSA-PKCS1-v1_5") {
+      request = await signRequest(request, privateKey, keyId);
+      requestSigned = true;
+      break;
+    }
+  }
+  if (!requestSigned) {
+    logger.warn(
+      "No supported key found to sign the request to {inbox}.  " +
+        "The request will be sent without a signature.  " +
+        "In order to sign the request, at least one RSASSA-PKCS1-v1_5 key " +
+        "must be provided.",
+      {
+        inbox: inbox.href,
+        keys: keys.map((pair) => ({
+          keyId: pair.keyId.href,
+          privateKey: pair.privateKey,
+        })),
+      },
+    );
+  }
   const response = await fetch(request);
   if (!response.ok) {
     let error;
@@ -138,7 +211,7 @@ export async function sendActivity(
       "Failed to send activity {activityId} to {inbox} ({status} " +
         "{statusText}):\n{error}",
       {
-        activityId: activity.id?.href,
+        activityId,
         inbox: inbox.href,
         status: response.status,
         statusText: response.statusText,
@@ -146,7 +219,7 @@ export async function sendActivity(
       },
     );
     throw new Error(
-      `Failed to send activity ${activity?.id?.href} to ${inbox.href} ` +
+      `Failed to send activity ${activityId} to ${inbox.href} ` +
         `(${response.status} ${response.statusText}):\n${error}`,
     );
   }

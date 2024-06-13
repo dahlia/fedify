@@ -6,6 +6,7 @@ import type {
   Multikey,
   Object,
 } from "../vocab/mod.ts";
+import type { SenderKeyPair } from "./send.ts";
 
 /**
  * A context.
@@ -157,13 +158,13 @@ export interface Context<TContextData> {
 
   /**
    * Sends an activity to recipients' inboxes.
-   * @param sender The sender's handle or the sender's key pair.
+   * @param sender The sender's handle or the sender's key pair(s).
    * @param recipients The recipients of the activity.
    * @param activity The activity to send.
    * @param options Options for sending the activity.
    */
   sendActivity(
-    sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+    sender: SenderKeyPair | SenderKeyPair[] | { handle: string },
     recipients: Recipient | Recipient[],
     activity: Activity,
     options?: SendActivityOptions,
@@ -240,13 +241,13 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
 
   /**
    * Sends an activity to recipients' inboxes.
-   * @param sender The sender's handle or the sender's key pair.
+   * @param sender The sender's handle or the sender's key pair(s).
    * @param recipients The recipients of the activity.
    * @param activity The activity to send.
    * @param options Options for sending the activity.
    */
   sendActivity(
-    sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+    sender: SenderKeyPair | SenderKeyPair[] | { handle: string },
     recipients: Recipient | Recipient[],
     activity: Activity,
     options?: SendActivityOptions,

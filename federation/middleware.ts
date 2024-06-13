@@ -50,9 +50,9 @@ import {
 } from "./handler.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
-import type { OutboxMessage } from "./queue.ts";
+import type { OutboxMessage, SenderKeyJwkPair } from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
-import { extractInboxes, sendActivity } from "./send.ts";
+import { extractInboxes, sendActivity, type SenderKeyPair } from "./send.ts";
 
 /**
  * Parameters for initializing a {@link Federation} instance.
@@ -268,7 +268,7 @@ export class Federation<TContextData> {
   async #listenQueue(message: OutboxMessage): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
     const logData = {
-      keyId: message.keyId,
+      keyIds: message.keys.map((pair) => pair.keyId),
       inbox: message.inbox,
       activity: message.activity,
       trial: message.trial,
@@ -276,18 +276,30 @@ export class Federation<TContextData> {
     };
     let activity: Activity | null = null;
     try {
-      const keyId = new URL(message.keyId);
-      const privateKey = await importJwk(message.privateKey, "private");
-      const documentLoader = this.#authenticatedDocumentLoaderFactory(
-        { keyId, privateKey },
-      );
+      const keys: SenderKeyPair[] = [];
+      let rsaKeyPair: SenderKeyPair | null = null;
+      for (const { keyId, privateKey } of message.keys) {
+        const pair: SenderKeyPair = {
+          keyId: new URL(keyId),
+          privateKey: await importJwk(privateKey, "private"),
+        };
+        if (
+          rsaKeyPair == null &&
+          pair.privateKey.algorithm.name === "RSASSA-PKCS1-v1_5"
+        ) {
+          rsaKeyPair = pair;
+        }
+        keys.push(pair);
+      }
+      const documentLoader = rsaKeyPair == null
+        ? this.#documentLoader
+        : this.#authenticatedDocumentLoaderFactory(rsaKeyPair);
       activity = await Activity.fromJsonLd(message.activity, {
         documentLoader,
         contextLoader: this.#contextLoader,
       });
       await sendActivity({
-        keyId,
-        privateKey,
+        keys,
         activity,
         inbox: new URL(message.inbox),
         contextLoader: this.#contextLoader,
@@ -1032,20 +1044,26 @@ export class Federation<TContextData> {
    * Sends an activity to recipients' inboxes.  You would typically use
    * {@link Context.sendActivity} instead of this method.
    *
-   * @param sender The sender's key pair.
+   * @param keys The sender's key pairs.
    * @param recipients The recipients of the activity.
    * @param activity The activity to send.
    * @param options Options for sending the activity.
    * @throws {TypeError} If the activity to send does not have an actor.
    */
   async sendActivity(
-    { keyId, privateKey }: { keyId: URL; privateKey: CryptoKey },
+    keys: SenderKeyPair[],
     recipients: Recipient | Recipient[],
     activity: Activity,
     { preferSharedInbox, immediate, excludeBaseUris, collectionSync }:
       SendActivityInternalOptions = {},
   ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
+    if (keys.length < 1) {
+      throw new TypeError("The sender's keys must not be empty.");
+    }
+    for (const { privateKey } of keys) {
+      validateCryptoKey(privateKey, "private");
+    }
     if (activity.actorId == null) {
       logger.error(
         "Activity {activityId} to send does not have an actor.",
@@ -1061,7 +1079,6 @@ export class Federation<TContextData> {
         id: new URL(`urn:uuid:${crypto.randomUUID()}`),
       });
     }
-    validateCryptoKey(privateKey, "private");
     const inboxes = extractInboxes({
       recipients: Array.isArray(recipients) ? recipients : [recipients],
       preferSharedInbox,
@@ -1089,8 +1106,7 @@ export class Federation<TContextData> {
       for (const inbox in inboxes) {
         promises.push(
           sendActivity({
-            keyId,
-            privateKey,
+            keys,
             activity,
             inbox: new URL(inbox),
             contextLoader: this.#contextLoader,
@@ -1111,15 +1127,18 @@ export class Federation<TContextData> {
       "Enqueuing activity {activityId} to send later.",
       { activityId: activity.id?.href, activity },
     );
-    const privateKeyJwk = await exportJwk(privateKey);
+    const keyJwkPairs: SenderKeyJwkPair[] = [];
+    for (const { keyId, privateKey } of keys) {
+      const privateKeyJwk = await exportJwk(privateKey);
+      keyJwkPairs.push({ keyId: keyId.href, privateKey: privateKeyJwk });
+    }
     const activityJson = await activity.toJsonLd({
       contextLoader: this.#contextLoader,
     });
     for (const inbox in inboxes) {
       const message: OutboxMessage = {
         type: "outbox",
-        keyId: keyId.href,
-        privateKey: privateKeyJwk,
+        keys: keyJwkPairs,
         activity: activityJson,
         inbox,
         trial: 0,
@@ -1642,20 +1661,30 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   }
 
   async sendActivity(
-    sender: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+    sender: SenderKeyPair | SenderKeyPair[] | { handle: string },
     recipients: Recipient | Recipient[] | "followers",
     activity: Activity,
     options: SendActivityOptions = {},
   ): Promise<void> {
-    let senderPair: { keyId: URL; privateKey: CryptoKey };
+    let keys: SenderKeyPair[];
     if ("handle" in sender) {
-      const keyPair = await this.getRsaKeyPairFromHandle(sender.handle);
-      if (keyPair == null) {
-        throw new Error(`No key pair found for actor ${sender.handle}`);
+      keys = await this.getKeyPairsFromHandle(
+        this.#url,
+        this.data,
+        sender.handle,
+      );
+      if (keys.length < 1) {
+        throw new Error(
+          `No key pair found for actor ${JSON.stringify(sender.handle)}.`,
+        );
       }
-      senderPair = keyPair;
+    } else if (Array.isArray(sender)) {
+      if (sender.length < 1) {
+        throw new Error("The sender's key pairs are empty.");
+      }
+      keys = sender;
     } else {
-      senderPair = sender;
+      keys = [sender];
     }
     const opts: SendActivityInternalOptions = { ...options };
     let expandedRecipients: Recipient[];
@@ -1681,7 +1710,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       expandedRecipients = [recipients];
     }
     return await this.#federation.sendActivity(
-      senderPair,
+      keys,
       expandedRecipients,
       activity,
       opts,

@@ -9,7 +9,12 @@ import * as mf from "mock_fetch";
 import { verifyRequest } from "../sig/http.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { rsaPrivateKey2, rsaPublicKey2 } from "../testing/keys.ts";
+import {
+  ed25519Multikey,
+  ed25519PrivateKey,
+  rsaPrivateKey2,
+  rsaPublicKey2,
+} from "../testing/keys.ts";
 import type { Actor } from "../vocab/actor.ts";
 import {
   Activity,
@@ -21,6 +26,7 @@ import {
   Service,
 } from "../vocab/vocab.ts";
 import { extractInboxes, sendActivity } from "./send.ts";
+import { verifyObject } from "../sig/proof.ts";
 
 Deno.test("extractInboxes()", () => {
   const recipients: Actor[] = [
@@ -131,6 +137,11 @@ Deno.test("sendActivity()", async (t) => {
         sinks: ["console"],
       },
       {
+        category: ["fedify", "sig"],
+        level: "debug",
+        sinks: ["console"],
+      },
+      {
         category: ["logtape", "meta"],
         level: "warning",
         sinks: ["console"],
@@ -138,18 +149,25 @@ Deno.test("sendActivity()", async (t) => {
     ],
   });
 
-  let verified: boolean | null = null;
+  let verified: "http-sig" | "proof" | false | null = null;
   let request: Request | null = null;
   mf.mock("POST@/inbox", async (req) => {
-    request = req;
+    request = req.clone();
     const options = {
       documentLoader: mockDocumentLoader,
       contextLoader: mockDocumentLoader,
     };
-    const key = await verifyRequest(req, options);
-    const activity = await Activity.fromJsonLd(await req.json(), options);
+    const reqClone = req.clone();
+    const jsonLd = await req.json();
+    const verifiedObject = await verifyObject(jsonLd, options);
+    if (verifiedObject != null) {
+      verified = "proof";
+      return new Response("", { status: 202 });
+    }
+    const key = await verifyRequest(reqClone, options);
+    const activity = await Activity.fromJsonLd(await reqClone.json(), options);
     if (key != null && await doesActorOwnKey(activity, key, options)) {
-      verified = true;
+      verified = "http-sig";
       return new Response("", { status: 202 });
     }
     verified = false;
@@ -158,19 +176,20 @@ Deno.test("sendActivity()", async (t) => {
 
   await t.step("success", async () => {
     const activity = new Create({
+      id: new URL("https://example.com/activity"),
       actor: new URL("https://example.com/person"),
     });
+
     await sendActivity({
       activity,
-      privateKey: rsaPrivateKey2,
-      keyId: rsaPublicKey2.id!,
+      keys: [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
       inbox: new URL("https://example.com/inbox"),
       contextLoader: mockDocumentLoader,
       headers: new Headers({
         "X-Test": "test",
       }),
     });
-    assertStrictEquals(verified, true);
+    assertStrictEquals(verified, "http-sig");
     assertNotEquals(request, null);
     assertEquals(request?.method, "POST");
     assertEquals(request?.url, "https://example.com/inbox");
@@ -179,6 +198,24 @@ Deno.test("sendActivity()", async (t) => {
       "application/activity+json",
     );
     assertEquals(request?.headers.get("X-Test"), "test");
+
+    verified = null;
+    await sendActivity({
+      activity: activity.clone({
+        actor: new URL("https://example.com/person2"),
+      }),
+      keys: [{ privateKey: ed25519PrivateKey, keyId: ed25519Multikey.id! }],
+      inbox: new URL("https://example.com/inbox"),
+      contextLoader: mockDocumentLoader,
+    });
+    assertStrictEquals(verified, "proof");
+    assertNotEquals(request, null);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
   });
 
   mf.mock("POST@/inbox2", (_req) => {
@@ -197,8 +234,7 @@ Deno.test("sendActivity()", async (t) => {
       () =>
         sendActivity({
           activity,
-          privateKey: rsaPrivateKey2,
-          keyId: rsaPublicKey2.id!,
+          keys: [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
           inbox: new URL("https://example.com/inbox2"),
           contextLoader: mockDocumentLoader,
         }),
@@ -213,8 +249,22 @@ Deno.test("sendActivity()", async (t) => {
       () =>
         sendActivity({
           activity,
-          privateKey: rsaPrivateKey2,
-          keyId: rsaPublicKey2.id!,
+          keys: [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
+          inbox: new URL("https://example.com/inbox2"),
+          contextLoader: mockDocumentLoader,
+        }),
+      TypeError,
+      "The activity to send must have an id.",
+    );
+
+    activity = new Create({
+      id: new URL("https://example.com/activity"),
+    });
+    await assertRejects(
+      () =>
+        sendActivity({
+          activity,
+          keys: [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
           inbox: new URL("https://example.com/inbox2"),
           contextLoader: mockDocumentLoader,
         }),

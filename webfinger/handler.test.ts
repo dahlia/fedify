@@ -1,6 +1,7 @@
 import { assertEquals } from "@std/assert";
 import type { ActorDispatcher } from "../federation/callback.ts";
 import { createRequestContext } from "../testing/context.ts";
+import type { Actor } from "../vocab/actor.ts";
 import { CryptographicKey, Link, Person } from "../vocab/vocab.ts";
 import { handleWebFinger } from "./handler.ts";
 
@@ -17,6 +18,13 @@ Deno.test("handleWebFinger()", async () => {
         new CryptographicKey({
           id: new URL("https://example.com/keys/someone"),
         }),
+      );
+    },
+    async getActor(handle): Promise<Actor | null> {
+      return await actorDispatcher(
+        context,
+        handle,
+        await context.getActorKey(handle),
       );
     },
     parseUri(uri) {
