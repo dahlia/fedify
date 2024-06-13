@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.9.1
 -------------
 
-To be released.
+Released on June 13, 2024.
 
  -  Fixed a bug of Activity Vocabulary API that `clone()` method of Vocabulary
     classes had not cloned the `id` property from the source object.
