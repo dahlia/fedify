@@ -159,7 +159,7 @@ Deno.test("sendActivity()", async (t) => {
     };
     const reqClone = req.clone();
     const jsonLd = await req.json();
-    const verifiedObject = await verifyObject(jsonLd, options);
+    const verifiedObject = await verifyObject(Activity, jsonLd, options);
     if (verifiedObject != null) {
       verified = "proof";
       return new Response("", { status: 202 });

@@ -1,7 +1,7 @@
 // @ts-ignore: json-canon is not typed
 import serialize from "json-canon";
 import type { DocumentLoader } from "../runtime/docloader.ts";
-import { DataIntegrityProof, Object } from "../vocab/vocab.ts";
+import { DataIntegrityProof, type Object } from "../vocab/vocab.ts";
 import { fetchKey, validateCryptoKey } from "./key.ts";
 import { Activity, Multikey } from "@fedify/fedify/vocab";
 import { getLogger } from "@logtape/logtape";
@@ -240,20 +240,26 @@ export interface VerifyObjectOptions extends VerifyProofOptions {
  * Verifies the given object.  It will verify all the proofs in the object,
  * and succeed only if all the proofs are valid and all attributions and
  * actors are authenticated by the proofs.
+ * @typeParam T The type of the object to verify.
+ * @param cls The class of the object to verify.  It must be a subclass of
+ *            the {@link Object}.
  * @param jsonLd The JSON-LD object to verify.  It's assumed that the object
- *               is a compacted JSON-LD representation of an {@link Object}
- *               with `@context`.
+ *               is a compacted JSON-LD representation of a `T` with `@context`.
  * @param options Additional options.  See also {@link VerifyObjectOptions}.
  * @returns The object if it's verified, or `null` if it's not.
  * @throws {TypeError} If the object is invalid or unsupported.
  * @since 0.10.0
  */
-export async function verifyObject(
+export async function verifyObject<T extends Object>(
+  // deno-lint-ignore no-explicit-any
+  cls: (new (...args: any[]) => T) & {
+    fromJsonLd(jsonLd: unknown, options: VerifyObjectOptions): Promise<T>;
+  },
   jsonLd: unknown,
   options: VerifyObjectOptions = {},
-): Promise<Object | null> {
+): Promise<T | null> {
   const logger = getLogger(["fedify", "sig", "proof"]);
-  const object = await Object.fromJsonLd(jsonLd, options);
+  const object = await cls.fromJsonLd(jsonLd, options);
   const attributions = new Set(object.attributionIds.map((uri) => uri.href));
   if (object instanceof Activity) {
     for (const uri of object.actorIds) attributions.add(uri.href);

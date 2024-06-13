@@ -2,10 +2,12 @@ import { getLogger } from "@logtape/logtape";
 import { accepts } from "@std/http/negotiation";
 import { verifyRequest } from "../sig/http.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
+import { verifyObject } from "../sig/proof.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Recipient } from "../vocab/actor.ts";
 import {
   Activity,
+  type CryptographicKey,
   Link,
   Object,
   OrderedCollection,
@@ -342,21 +344,9 @@ export async function handleInbox<TContextData>(
       return await onNotFound(request);
     }
   }
-  const key = await verifyRequest(request, {
-    ...context,
-    timeWindow: signatureTimeWindow,
-  });
-  if (key == null) {
-    logger.error("Failed to verify the request signature.", { handle });
-    const response = new Response("Failed to verify the request signature.", {
-      status: 401,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
-    return response;
-  }
   let json: unknown;
   try {
-    json = await request.json();
+    json = await request.clone().json();
   } catch (error) {
     logger.error("Failed to parse JSON:\n{error}", { handle, error });
     await inboxErrorHandler?.(context, error);
@@ -365,9 +355,9 @@ export async function handleInbox<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  let activity: Activity;
+  let activity: Activity | null;
   try {
-    activity = await Activity.fromJsonLd(json, context);
+    activity = await verifyObject(Activity, json, context);
   } catch (error) {
     logger.error("Failed to parse activity:\n{error}", { handle, json, error });
     await inboxErrorHandler?.(context, error);
@@ -375,6 +365,23 @@ export async function handleInbox<TContextData>(
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
+  }
+  let httpSigKey: CryptographicKey | null = null;
+  if (activity == null) {
+    const key = await verifyRequest(request, {
+      ...context,
+      timeWindow: signatureTimeWindow,
+    });
+    if (key == null) {
+      logger.error("Failed to verify the request signature.", { handle });
+      const response = new Response("Failed to verify the request signature.", {
+        status: 401,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+      return response;
+    }
+    httpSigKey = key;
+    activity = await Activity.fromJsonLd(json, context);
   }
   const cacheKey = activity.id == null
     ? null
@@ -403,10 +410,16 @@ export async function handleInbox<TContextData>(
     });
     return response;
   }
-  if (!await doesActorOwnKey(activity, key, context)) {
+  if (
+    httpSigKey != null && !await doesActorOwnKey(activity, httpSigKey, context)
+  ) {
     logger.error(
       "The signer ({keyId}) and the actor ({actorId}) do not match.",
-      { activity: json, keyId: key.id?.href, actorId: activity.actorId.href },
+      {
+        activity: json,
+        keyId: httpSigKey.id?.href,
+        actorId: activity.actorId.href,
+      },
     );
     const response = new Response("The signer and the actor do not match.", {
       status: 401,

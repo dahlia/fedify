@@ -14,6 +14,7 @@ import {
 } from "../runtime/docloader.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
+  ed25519Multikey,
   ed25519PrivateKey,
   ed25519PublicKey,
   rsaPrivateKey2,
@@ -26,6 +27,7 @@ import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
 import { Federation } from "./middleware.ts";
 import { RouterError } from "./router.ts";
+import { signObject } from "../sig/proof.ts";
 
 Deno.test("Federation.createContext()", async (t) => {
   const kv = new MemoryKvStore();
@@ -414,6 +416,21 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     );
   });
 
+  mf.mock("GET@/person2", async () => {
+    return new Response(
+      await Deno.readFile(
+        join(
+          dirname(import.meta.dirname!),
+          "testing",
+          "fixtures",
+          "example.com",
+          "person2",
+        ),
+      ),
+      { headers: { "Content-Type": "application/activity+json" } },
+    );
+  });
+
   await t.step("on()", async () => {
     const authenticatedRequests: [string, string][] = [];
     const federation = new Federation<void>({
@@ -451,8 +468,23 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
         privateKey: rsaPrivateKey2,
         publicKey: rsaPublicKey2.publicKey!,
       }]);
+    const options = {
+      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
+    };
+    const activity = () =>
+      new Create({
+        id: new URL("https://example.com/activities/" + crypto.randomUUID()),
+        actor: new URL("https://example.com/person2"),
+      });
     response = await federation.fetch(
-      new Request("https://example.com/inbox", { method: "POST" }),
+      new Request(
+        "https://example.com/inbox",
+        {
+          method: "POST",
+          body: JSON.stringify(await activity().toJsonLd(options)),
+        },
+      ),
       { contextData: undefined },
     );
     assertEquals(inbox, []);
@@ -466,30 +498,32 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
     assertEquals(response.status, 404);
 
     response = await federation.fetch(
-      new Request("https://example.com/users/john/inbox", { method: "POST" }),
+      new Request(
+        "https://example.com/users/john/inbox",
+        {
+          method: "POST",
+          body: JSON.stringify(await activity().toJsonLd(options)),
+        },
+      ),
       { contextData: undefined },
     );
     assertEquals(inbox, []);
     assertEquals(response.status, 401);
 
-    const activity = new Create({
-      actor: new URL("https://example.com/person"),
-    });
+    // Personal inbox + HTTP Signatures (RSA)
     let request = new Request("https://example.com/users/john/inbox", {
       method: "POST",
       headers: { "Content-Type": "application/activity+json" },
-      body: JSON.stringify(
-        await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
-      ),
+      body: JSON.stringify(await activity().toJsonLd(options)),
     });
     request = await signRequest(
       request,
-      rsaPrivateKey2,
-      new URL("https://example.com/key2"),
+      rsaPrivateKey3,
+      new URL("https://example.com/person2#key3"),
     );
     response = await federation.fetch(request, { contextData: undefined });
     assertEquals(inbox.length, 1);
-    assertEquals(inbox[0][1], activity);
+    assertEquals(inbox[0][1].actorId, new URL("https://example.com/person2"));
     assertEquals(response.status, 202);
 
     while (authenticatedRequests.length > 0) authenticatedRequests.shift();
@@ -499,28 +533,53 @@ Deno.test("Federation.setInboxListeners()", async (t) => {
       ["https://example.com/person", "https://example.com/users/john#main-key"],
     ]);
 
+    // Shared inbox + HTTP Signatures (RSA)
     inbox.shift();
     request = new Request("https://example.com/inbox", {
       method: "POST",
       headers: { "Content-Type": "application/activity+json" },
-      body: JSON.stringify(
-        await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
-      ),
+      body: JSON.stringify(await activity().toJsonLd(options)),
     });
     request = await signRequest(
       request,
-      rsaPrivateKey2,
-      new URL("https://example.com/key2"),
+      rsaPrivateKey3,
+      new URL("https://example.com/person2#key3"),
     );
     response = await federation.fetch(request, { contextData: undefined });
     assertEquals(inbox.length, 1);
-    assertEquals(inbox[0][1], activity);
+    assertEquals(inbox[0][1].actorId, new URL("https://example.com/person2"));
     assertEquals(response.status, 202);
 
     while (authenticatedRequests.length > 0) authenticatedRequests.shift();
     assertEquals(authenticatedRequests, []);
     await inbox[0][0].documentLoader("https://example.com/person");
     assertEquals(authenticatedRequests, []);
+
+    // Object Integrity Proofs (Ed25519)
+    inbox.shift();
+    request = new Request("https://example.com/users/john/inbox", {
+      method: "POST",
+      headers: { "Content-Type": "application/activity+json" },
+      body: JSON.stringify(
+        await (await signObject(
+          activity(),
+          ed25519PrivateKey,
+          ed25519Multikey.id!,
+          options,
+        )).toJsonLd(options),
+      ),
+    });
+    response = await federation.fetch(request, { contextData: undefined });
+    assertEquals(inbox.length, 1);
+    assertEquals(inbox[0][1].actorId, new URL("https://example.com/person2"));
+    assertEquals(response.status, 202);
+
+    while (authenticatedRequests.length > 0) authenticatedRequests.shift();
+    assertEquals(authenticatedRequests, []);
+    await inbox[0][0].documentLoader("https://example.com/person");
+    assertEquals(authenticatedRequests, [
+      ["https://example.com/person", "https://example.com/users/john#main-key"],
+    ]);
   });
 
   await t.step("onError()", async () => {

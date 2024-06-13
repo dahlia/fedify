@@ -85,6 +85,11 @@ To be released.
 
  -  Implemented Object Integrity Proofs.  [[FEP-8b32], [#54]]
 
+     -  If there are any Ed25519 key pairs, the `Context.sendActivity()` and
+        `Federation.sendActivity()` methods now make Object Integrity Proofs
+        for the activity to be sent.
+     -  If the incoming activity has Object Integrity Proofs, the inbox listener
+        now verifies them and ignores HTTP Signatures (if any).
      -  Added `signObject()` function.
      -  Added `SignObjectOptions` interface.
      -  Added `createProof()` function.

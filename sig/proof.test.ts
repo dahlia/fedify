@@ -309,7 +309,7 @@ Deno.test("verifyObject()", async () => {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
   };
-  const create = await verifyObject({
+  const create = await verifyObject(Create, {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/data-integrity/v1",
