@@ -123,6 +123,15 @@ To be released.
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 
+Version 0.9.1
+-------------
+
+Released on June 13, 2024.
+
+ -  Fixed a bug of Activity Vocabulary API that `clone()` method of Vocabulary
+    classes had not cloned the `id` property from the source object.
+
+
 Version 0.9.0
 -------------
 

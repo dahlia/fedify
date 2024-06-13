@@ -154,7 +154,10 @@ export async function* generateCloner(
   if (type.extends == null) {
     yield `
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: ${type.name} = new this.constructor({ id: values.id }, options);
+    const clone: ${type.name} = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
     `;
   } else {
     yield `const clone = super.clone(values, options) as unknown as ${type.name};`;

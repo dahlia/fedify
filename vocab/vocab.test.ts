@@ -54,6 +54,32 @@ Deno.test("new Object()", () => {
   );
 });
 
+Deno.test("Object.clone()", () => {
+  const obj = new Object({
+    id: new URL("https://example.com/"),
+    name: "Test",
+    contents: [
+      new LanguageString("Hello", "en"),
+      new LanguageString("你好", "zh"),
+    ],
+  });
+
+  const clone = obj.clone({ content: "Modified" });
+  assertInstanceOf(clone, Object);
+  assertEquals(clone.id, new URL("https://example.com/"));
+  assertEquals(clone.name, "Test");
+  assertEquals(clone.content, "Modified");
+
+  const cloned2 = obj.clone({ id: new URL("https://example.com/modified") });
+  assertInstanceOf(cloned2, Object);
+  assertEquals(cloned2.id, new URL("https://example.com/modified"));
+  assertEquals(cloned2.name, "Test");
+  assertEquals(cloned2.contents, [
+    new LanguageString("Hello", "en"),
+    new LanguageString("你好", "zh"),
+  ]);
+});
+
 Deno.test("Object.fromJsonLd()", async () => {
   const obj = await Object.fromJsonLd({
     "@context": "https://www.w3.org/ns/activitystreams",

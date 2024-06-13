@@ -475,7 +475,10 @@ proofs?: (DataIntegrityProof | URL)[];}
   ): Object {
   
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: Object = new this.constructor({ id: values.id }, options);
+    const clone: Object = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
     clone.#_49BipA5dq9eoH8LX8xdsVumveTca = this.#_49BipA5dq9eoH8LX8xdsVumveTca;
         if (\\"attachments\\" in values &&             values.attachments != null) {
       
@@ -4510,7 +4513,10 @@ name?: string | LanguageString | null;value?: string | LanguageString | null;}
   ): PropertyValue {
   
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: PropertyValue = new this.constructor({ id: values.id }, options);
+    const clone: PropertyValue = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
     clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav;
         if (\\"name\\" in values &&             values.name != null) {
           clone.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav = [values.name];
@@ -4850,7 +4856,10 @@ cryptosuite?: \\"eddsa-jcs-2022\\" | null;verificationMethod?: Multikey | URL | 
   ): DataIntegrityProof {
   
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: DataIntegrityProof = new this.constructor({ id: values.id }, options);
+    const clone: DataIntegrityProof = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
     clone.#_3RurJsa7tnptyqMFR5hDGcP9pMs5 = this.#_3RurJsa7tnptyqMFR5hDGcP9pMs5;
         if (\\"cryptosuite\\" in values &&             values.cryptosuite != null) {
           clone.#_3RurJsa7tnptyqMFR5hDGcP9pMs5 = [values.cryptosuite];
@@ -5367,7 +5376,10 @@ owner?: Application | Group | Organization | Person | Service | URL | null;publi
   ): CryptographicKey {
   
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: CryptographicKey = new this.constructor({ id: values.id }, options);
+    const clone: CryptographicKey = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
     clone.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2;
         if (\\"owner\\" in values &&             values.owner != null) {
           clone.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2 = [values.owner];
@@ -5776,7 +5788,10 @@ controller?: Application | Group | Organization | Person | Service | URL | null;
   ): Multikey {
   
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: Multikey = new this.constructor({ id: values.id }, options);
+    const clone: Multikey = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
     clone.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN = this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN;
         if (\\"controller\\" in values &&             values.controller != null) {
           clone.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN = [values.controller];
@@ -12370,7 +12385,10 @@ proxyUrl?: URL | null;oauthAuthorizationEndpoint?: URL | null;oauthTokenEndpoint
   ): Endpoints {
   
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: Endpoints = new this.constructor({ id: values.id }, options);
+    const clone: Endpoints = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
     clone.#_2JCYDbSxEHCCLdBYed33cCETfGyR = this.#_2JCYDbSxEHCCLdBYed33cCETfGyR;
         if (\\"proxyUrl\\" in values &&             values.proxyUrl != null) {
           clone.#_2JCYDbSxEHCCLdBYed33cCETfGyR = [values.proxyUrl];
@@ -15264,7 +15282,10 @@ names?: (string | LanguageString)[];language?: LanguageTag | null;height?: numbe
   ): Link {
   
     // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
-    const clone: Link = new this.constructor({ id: values.id }, options);
+    const clone: Link = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
     clone.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7;
         if (\\"href\\" in values &&             values.href != null) {
           clone.#_pVjLsybKQdmkjuU7MHjiVmNnuj7 = [values.href];
