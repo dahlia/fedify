@@ -84,6 +84,7 @@ const Tab: FC<TabProps> = (
   );
 };
 
+// deno-lint-ignore no-empty-interface
 interface TabListProps {
 }
 
@@ -120,7 +121,7 @@ interface LogProps {
 }
 
 const Log: FC<LogProps> = (
-  { log: { timestamp, category, level, message, properties } }: LogProps,
+  { log: { timestamp, category, level, message } }: LogProps,
 ) => {
   const listClass = level === "debug"
     ? "list-group-item-light"

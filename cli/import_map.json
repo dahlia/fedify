@@ -5,17 +5,17 @@
     "@cliffy/prompt": "jsr:@cliffy/prompt@1.0.0-rc.4",
     "@cliffy/table": "jsr:@cliffy/table@1.0.0-rc.4",
     "@cross/dir": "jsr:@cross/dir@^1.1.0",
-    "@david/dax": "jsr:@david/dax@^0.40.1",
+    "@david/dax": "jsr:@david/dax@^0.41.0",
     "@hongminhee/localtunnel": "jsr:@hongminhee/localtunnel@^0.2.0",
     "@logtape/logtape": "jsr:@logtape/logtape@^0.4.0",
     "@poppanator/http-constants": "npm:@poppanator/http-constants@^1.1.1",
-    "@std/fs": "jsr:@std/fs@^0.220.1",
-    "@std/path": "jsr:@std/path@^0.220.1",
+    "@std/fs": "jsr:@std/fs@^0.229.3",
+    "@std/path": "jsr:@std/path@^0.225.1",
     "cli-highlight": "npm:cli-highlight@^2.1.11",
-    "hono": "npm:hono@^4.2.8",
-    "hono/": "npm:/hono@^4.2.8/",
+    "hono": "jsr:@hono/hono@^4.4.6",
+    "hono/": "jsr:/@hono/hono@^4.4.6/",
     "json-preserve-indent": "npm:json-preserve-indent@^1.1.3",
     "ora": "npm:ora@^8.0.1",
-    "shiki": "npm:shiki@^1.3.0"
+    "shiki": "npm:shiki@^1.6.4"
   }
 }

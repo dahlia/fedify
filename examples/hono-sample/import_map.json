@@ -9,6 +9,6 @@
     "@fedify/fedify/webfinger": "../../webfinger/mod.ts",
     "@fedify/fedify/x/denokv": "../../x/denokv.ts",
     "@fedify/fedify/x/hono": "../../x/hono.ts",
-    "hono": "https://deno.land/x/hono@v4.1.7/mod.ts"
+    "hono": "jsr:@hono/hono@^4.4.6"
   }
 }
