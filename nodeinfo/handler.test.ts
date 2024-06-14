@@ -2,9 +2,10 @@ import { assertEquals } from "@std/assert";
 import { parse } from "@std/semver";
 import type { NodeInfoDispatcher } from "../federation/callback.ts";
 import { createRequestContext } from "../testing/context.ts";
+import { test } from "../testing/mod.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "./handler.ts";
 
-Deno.test("handleNodeInfo()", async () => {
+test("handleNodeInfo()", async () => {
   const request = new Request("https://example.com/nodeinfo/2.1");
   const context = createRequestContext<void>({
     data: undefined,
@@ -56,7 +57,7 @@ Deno.test("handleNodeInfo()", async () => {
   });
 });
 
-Deno.test("handleNodeInfoJrd()", async () => {
+test("handleNodeInfoJrd()", async () => {
   const request = new Request("https://example.com/.well-known/nodeinfo");
   let context = createRequestContext<void>({
     data: undefined,

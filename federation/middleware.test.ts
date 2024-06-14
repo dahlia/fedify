@@ -7,11 +7,12 @@ import {
 } from "@std/assert";
 import { dirname, join } from "@std/path";
 import * as mf from "mock_fetch";
-import { signRequest, verifyRequest } from "../sig/http.ts";
 import {
   FetchError,
   getAuthenticatedDocumentLoader,
 } from "../runtime/docloader.ts";
+import { signRequest, verifyRequest } from "../sig/http.ts";
+import { signObject } from "../sig/proof.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
   ed25519Multikey,
@@ -22,14 +23,14 @@ import {
   rsaPublicKey2,
   rsaPublicKey3,
 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
 import { Create, Multikey, Note, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
 import { Federation } from "./middleware.ts";
 import { RouterError } from "./router.ts";
-import { signObject } from "../sig/proof.ts";
 
-Deno.test("Federation.createContext()", async (t) => {
+test("Federation.createContext()", async (t) => {
   const kv = new MemoryKvStore();
   const documentLoader = (url: string) => {
     throw new FetchError(new URL(url), "Not found");
@@ -387,7 +388,7 @@ Deno.test("Federation.createContext()", async (t) => {
   mf.uninstall();
 });
 
-Deno.test("Federation.setInboxListeners()", async (t) => {
+test("Federation.setInboxListeners()", async (t) => {
   const kv = new MemoryKvStore();
 
   mf.install();

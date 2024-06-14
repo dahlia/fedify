@@ -1,4 +1,9 @@
+import { importMultibaseKey } from "@fedify/fedify/runtime";
+import { DataIntegrityProof, Multikey } from "@fedify/fedify/vocab";
 import { assertEquals, assertInstanceOf, assertRejects } from "@std/assert";
+import { decodeHex } from "@std/encoding/hex";
+import { decode } from "multibase";
+import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
   ed25519Multikey,
   ed25519PrivateKey,
@@ -6,6 +11,7 @@ import {
   rsaPrivateKey2,
   rsaPublicKey2,
 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
 import { Create, Note } from "../vocab/vocab.ts";
 import {
   createProof,
@@ -15,11 +21,6 @@ import {
   verifyProof,
   type VerifyProofOptions,
 } from "./proof.ts";
-import { mockDocumentLoader } from "../testing/docloader.ts";
-import { decodeHex } from "@std/encoding/hex";
-import { decode } from "multibase";
-import { DataIntegrityProof, Multikey } from "@fedify/fedify/vocab";
-import { importMultibaseKey } from "@fedify/fedify/runtime";
 
 // Test vector from <https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.feature>:
 const fep8b32TestVectorPrivateKey = await crypto.subtle.importKey(
@@ -48,7 +49,7 @@ const fep8b32TestVectorActivity = new Create({
   }),
 });
 
-Deno.test("createProof()", async () => {
+test("createProof()", async () => {
   const create = new Create({
     actor: new URL("https://example.com/person"),
     object: new Note({
@@ -102,7 +103,9 @@ Deno.test("createProof()", async () => {
   assertEquals(
     proof2.proofValue,
     decode(
+      // cSpell: disable
       "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+      // cSpell: enable
     ),
   );
   assertEquals(proof2.created, created);
@@ -118,7 +121,7 @@ Deno.test("createProof()", async () => {
   );
 });
 
-Deno.test("signObject()", async () => {
+test("signObject()", async () => {
   const options = {
     contextLoader: mockDocumentLoader,
     documentLoader: mockDocumentLoader,
@@ -153,7 +156,9 @@ Deno.test("signObject()", async () => {
         verificationMethod: "https://server.example/users/alice#ed25519-key",
         proofPurpose: "assertionMethod",
         proofValue:
+          // cSpell: disable
           "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+        // cSpell: enable
         created: "2023-02-24T23:36:38Z",
       },
     },
@@ -185,7 +190,9 @@ Deno.test("signObject()", async () => {
           verificationMethod: "https://server.example/users/alice#ed25519-key",
           proofPurpose: "assertionMethod",
           proofValue:
+            // cSpell: disable
             "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+          // cSpell: enable
           created: "2023-02-24T23:36:38Z",
         },
         {
@@ -193,7 +200,9 @@ Deno.test("signObject()", async () => {
           cryptosuite: "eddsa-jcs-2022",
           proofPurpose: "assertionMethod",
           proofValue:
+            // cSpell: disable
             "z4os7guLoXqReLCy135fZFVkEwvsEkUsg9jcEFQVuXM9L9H6CrqoDct8ZFuyruMDAQxaoV6S5bDKxoQUqNCLW7Tsh",
+          // cSpell: enable
           type: "DataIntegrityProof",
           verificationMethod: "https://example.com/person2#key4",
         },
@@ -212,7 +221,7 @@ Deno.test("signObject()", async () => {
   );
 });
 
-Deno.test("verifyProof()", async () => {
+test("verifyProof()", async () => {
   const options: VerifyProofOptions = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
@@ -282,7 +291,9 @@ Deno.test("verifyProof()", async () => {
     ),
     proofPurpose: "assertionMethod",
     proofValue: decode(
+      // cSpell: disable
       "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+      // cSpell: enable
     ),
     created: Temporal.Instant.from("2023-02-24T23:36:38Z"),
   });
@@ -304,7 +315,7 @@ Deno.test("verifyProof()", async () => {
   assertEquals(await verifyProof(jsonLd2, wrongProof, options), null);
 });
 
-Deno.test("verifyObject()", async () => {
+test("verifyObject()", async () => {
   const options: VerifyObjectOptions = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
@@ -327,7 +338,9 @@ Deno.test("verifyObject()", async () => {
         verificationMethod: "https://server.example/users/alice#ed25519-key",
         proofPurpose: "assertionMethod",
         proofValue:
+          // cSpell: disable
           "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+        // cSpell: enable
         created: "2023-02-24T23:36:38Z",
       },
       {
@@ -335,7 +348,9 @@ Deno.test("verifyObject()", async () => {
         cryptosuite: "eddsa-jcs-2022",
         proofPurpose: "assertionMethod",
         proofValue:
+          // cSpell: disable
           "z4os7guLoXqReLCy135fZFVkEwvsEkUsg9jcEFQVuXM9L9H6CrqoDct8ZFuyruMDAQxaoV6S5bDKxoQUqNCLW7Tsh",
+        // cSpell: enable
         type: "DataIntegrityProof",
         verificationMethod: "https://example.com/person2#key4",
       },

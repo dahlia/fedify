@@ -1,5 +1,6 @@
 import { assertEquals } from "@std/assert";
 import { exportJwk, importJwk } from "../sig/key.ts";
+import { test } from "../testing/mod.ts";
 import {
   exportMultibaseKey,
   exportSpki,
@@ -37,7 +38,7 @@ const rsaJwk = {
 };
 
 const rsaMultibase =
-  // cSpell: diable
+  // cSpell: disable
   "z4MXj1wBzi9jUstyPqYMn6Gum79JtbKFiHTibtPRoPeufjdimA24Kg8Q5N7E2eMpgVUtD61kUv" +
   "my4FaT5D5G8XU3ktxeduwEw5FHTtiLCzaruadf6rit1AUPL34UtcPuHh6GxBzTxgFKMMuzcHiU" +
   "zG9wvbxn7toS4H2gbmUn1r91836ET2EVgmSdzju614Wu67ukyBGivcboncdfxPSR5JXwURBaL8" +
@@ -65,7 +66,7 @@ const ed25519Jwk = {
 const ed25519Multibase = "z6MksHj1MJnidCtDiyYW9ugNFftoX9fLK4bornTxmMZ6X7vq";
 // cSpell: enable
 
-Deno.test("importSpki()", async () => {
+test("importSpki()", async () => {
   const rsaKey = await importSpki(rsaPem);
   assertEquals(await exportJwk(rsaKey), rsaJwk);
 
@@ -73,7 +74,7 @@ Deno.test("importSpki()", async () => {
   assertEquals(await exportJwk(ed25519Key), ed25519Jwk);
 });
 
-Deno.test("exportSpki()", async () => {
+test("exportSpki()", async () => {
   const rsaKey = await importJwk(rsaJwk, "public");
   const rsaSpki = await exportSpki(rsaKey);
   assertEquals(rsaSpki, rsaPem);
@@ -83,7 +84,7 @@ Deno.test("exportSpki()", async () => {
   assertEquals(ed25519Spki, ed25519Pem);
 });
 
-Deno.test("importMultibase()", async () => {
+test("importMultibase()", async () => {
   const rsaKey = await importMultibaseKey(rsaMultibase);
   assertEquals(await exportJwk(rsaKey), rsaJwk);
 
@@ -91,7 +92,7 @@ Deno.test("importMultibase()", async () => {
   assertEquals(await exportJwk(ed25519Key), ed25519Jwk);
 });
 
-Deno.test("exportMultibaseKey()", async () => {
+test("exportMultibaseKey()", async () => {
   const rsaKey = await importJwk(rsaJwk, "public");
   const rsaMb = await exportMultibaseKey(rsaKey);
   assertEquals(rsaMb, rsaMultibase);

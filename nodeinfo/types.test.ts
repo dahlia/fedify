@@ -1,7 +1,8 @@
 import { assertEquals, assertThrows } from "@std/assert";
+import { test } from "../testing/mod.ts";
 import { type NodeInfo, nodeInfoToJson } from "./types.ts";
 
-Deno.test("nodeInfoToJson()", () => {
+test("nodeInfoToJson()", () => {
   const validInfo: NodeInfo = {
     software: {
       name: "software-name",

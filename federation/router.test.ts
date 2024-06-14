@@ -1,4 +1,5 @@
 import { assertEquals, assertThrows } from "@std/assert";
+import { test } from "../testing/mod.ts";
 import { Router, RouterError } from "./router.ts";
 
 function setUp(): Router {
@@ -8,7 +9,7 @@ function setUp(): Router {
   return router;
 }
 
-Deno.test("Router.add()", () => {
+test("Router.add()", () => {
   const router = new Router();
   assertEquals(router.add("/users", "users"), new Set());
   assertEquals(router.add("/users/{name}", "user"), new Set(["name"]));
@@ -22,7 +23,7 @@ Deno.test("Router.add()", () => {
   assertThrows(() => router.add("foo", "name"), RouterError);
 });
 
-Deno.test("Router.route()", () => {
+test("Router.route()", () => {
   const router = setUp();
   assertEquals(router.route("/users/alice"), {
     name: "user",
@@ -34,7 +35,7 @@ Deno.test("Router.route()", () => {
   });
 });
 
-Deno.test("Router.build()", () => {
+test("Router.build()", () => {
   const router = setUp();
   assertEquals(router.build("user", { name: "alice" }), "/users/alice");
   assertEquals(

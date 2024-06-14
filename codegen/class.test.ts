@@ -1,10 +1,11 @@
 import { assertEquals } from "@std/assert";
 import { dirname, join } from "@std/path";
 import { assertSnapshot } from "@std/testing/snapshot";
+import { test } from "../testing/mod.ts";
 import { generateClasses, sortTopologically } from "./class.ts";
 import { loadSchemaFiles } from "./schema.ts";
 
-Deno.test("sortTopologically()", () => {
+test("sortTopologically()", () => {
   const sorted = sortTopologically({
     "https://example.com/quux": {
       uri: "https://example.com/quux",
@@ -63,7 +64,7 @@ Deno.test("sortTopologically()", () => {
   );
 });
 
-Deno.test("generateClasses()", async (t) => {
+test("generateClasses()", async (t) => {
   const schemaDir = join(dirname(import.meta.dirname!), "vocab");
   const runtimePath = "../runtime/";
   const types = await loadSchemaFiles(schemaDir);

@@ -1,11 +1,12 @@
 import { assert, assertEquals, assertFalse } from "@std/assert";
-import { doesActorOwnKey, getKeyOwner } from "./owner.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { rsaPublicKey1, rsaPublicKey2 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
 import { lookupObject } from "../vocab/lookup.ts";
 import { Create } from "../vocab/vocab.ts";
+import { doesActorOwnKey, getKeyOwner } from "./owner.ts";
 
-Deno.test("doesActorOwnKey()", async () => {
+test("doesActorOwnKey()", async () => {
   const options = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
@@ -21,7 +22,7 @@ Deno.test("doesActorOwnKey()", async () => {
   assertFalse(await doesActorOwnKey(activity2, rsaPublicKey2, options));
 });
 
-Deno.test("getKeyOwner()", async () => {
+test("getKeyOwner()", async () => {
   const options = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,

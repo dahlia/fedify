@@ -1,9 +1,10 @@
 import { toSet } from "@hongminhee/aitertools";
 import { assertEquals } from "@std/assert";
 import { join } from "@std/path";
+import { test } from "../testing/mod.ts";
 import { readDirRecursive } from "./fs.ts";
 
-Deno.test("readDirRecursive()", async () => {
+test("readDirRecursive()", async () => {
   // Create a temporary directory that has fixtures in it:
   const dir = await Deno.makeTempDir();
   await Deno.mkdir(join(dir, "a"));

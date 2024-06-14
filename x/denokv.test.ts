@@ -1,8 +1,9 @@
 import { assertEquals, assertGreater } from "@std/assert";
 import { delay } from "@std/async/delay";
+import { test } from "../testing/mod.ts";
 import { DenoKvMessageQueue, DenoKvStore } from "./denokv.ts";
 
-Deno.test("DenoKvStore", async (t) => {
+test("DenoKvStore", async (t) => {
   const kv = await Deno.openKv(":memory:");
   const store = new DenoKvStore(kv);
 
@@ -24,7 +25,7 @@ Deno.test("DenoKvStore", async (t) => {
   kv.close();
 });
 
-Deno.test("DenoKvMessageQueue", async (t) => {
+test("DenoKvMessageQueue", async (t) => {
   const kv = await Deno.openKv(":memory:");
   const mq = new DenoKvMessageQueue(kv);
 

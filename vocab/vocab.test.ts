@@ -1,4 +1,5 @@
 import { isDeno } from "@david/which-runtime";
+import type { DataIntegrityProof } from "@fedify/fedify";
 import { toArray } from "@hongminhee/aitertools";
 import { parseLanguageTag } from "@phensley/language-tag";
 import {
@@ -11,6 +12,7 @@ import {
 } from "@std/assert";
 import { assertSnapshot } from "@std/testing/snapshot";
 import { toPascalCase } from "@std/text";
+import { decode } from "multibase";
 import {
   loadSchemaFiles,
   type PropertySchema,
@@ -20,6 +22,7 @@ import { areAllScalarTypes } from "../codegen/type.ts";
 import { LanguageString } from "../runtime/langstr.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { ed25519PublicKey, rsaPublicKey1 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
 import * as vocab from "./vocab.ts";
 import {
   Activity,
@@ -32,10 +35,8 @@ import {
   Person,
   Place,
 } from "./vocab.ts";
-import type { DataIntegrityProof } from "@fedify/fedify";
-import { decode } from "multibase";
 
-Deno.test("new Object()", () => {
+test("new Object()", () => {
   const obj = new Object({
     name: "Test",
     contents: [
@@ -54,7 +55,7 @@ Deno.test("new Object()", () => {
   );
 });
 
-Deno.test("Object.clone()", () => {
+test("Object.clone()", () => {
   const obj = new Object({
     id: new URL("https://example.com/"),
     name: "Test",
@@ -80,7 +81,7 @@ Deno.test("Object.clone()", () => {
   ]);
 });
 
-Deno.test("Object.fromJsonLd()", async () => {
+test("Object.fromJsonLd()", async () => {
   const obj = await Object.fromJsonLd({
     "@context": "https://www.w3.org/ns/activitystreams",
     "type": "Object",
@@ -135,7 +136,7 @@ Deno.test("Object.fromJsonLd()", async () => {
   );
 });
 
-Deno.test("Object.toJsonLd()", async () => {
+test("Object.toJsonLd()", async () => {
   const obj = new Object({
     name: "Test",
     contents: [
@@ -175,7 +176,7 @@ Deno.test("Object.toJsonLd()", async () => {
   });
 });
 
-Deno.test("Activity.fromJsonLd()", async () => {
+test("Activity.fromJsonLd()", async () => {
   const follow = await Activity.fromJsonLd(
     {
       "@context": "https://www.w3.org/ns/activitystreams",
@@ -245,7 +246,7 @@ Deno.test("Activity.fromJsonLd()", async () => {
   );
 });
 
-Deno.test("Activity.getObject()", async () => {
+test("Activity.getObject()", async () => {
   const activity = new Activity({
     object: new URL("https://example.com/announce"),
   });
@@ -262,7 +263,7 @@ Deno.test("Activity.getObject()", async () => {
   assertEquals(object.name, "Fetched object");
 });
 
-Deno.test("Activity.getObjects()", async () => {
+test("Activity.getObjects()", async () => {
   const activity = new Activity({
     objects: [
       new URL("https://example.com/object"),
@@ -285,7 +286,7 @@ Deno.test("Activity.getObjects()", async () => {
   assertEquals(objects[1].name, "Second object");
 });
 
-Deno.test("Activity.clone()", async () => {
+test("Activity.clone()", async () => {
   const activity = new Activity({
     actor: new Person({
       name: "John Doe",
@@ -318,7 +319,7 @@ Deno.test("Activity.clone()", async () => {
   );
 });
 
-Deno.test("Deno.inspect(Object)", () => {
+test("Deno.inspect(Object)", () => {
   const obj = new Object({
     id: new URL("https://example.com/"),
     attribution: new URL("https://example.com/foo"),
@@ -352,7 +353,7 @@ Deno.test("Deno.inspect(Object)", () => {
   );
 });
 
-Deno.test("Person.fromJsonLd()", async () => {
+test("Person.fromJsonLd()", async () => {
   const person = await Person.fromJsonLd({
     "@context": [
       "https://www.w3.org/ns/activitystreams",
@@ -388,7 +389,7 @@ Deno.test("Person.fromJsonLd()", async () => {
   );
 });
 
-Deno.test("Key.publicKey", async () => {
+test("Key.publicKey", async () => {
   const jwk = {
     kty: "RSA",
     alg: "RS256",
@@ -436,7 +437,7 @@ Deno.test("Key.publicKey", async () => {
   assertEquals(await crypto.subtle.exportKey("jwk", loadedKey.publicKey!), jwk);
 });
 
-Deno.test("Place.fromJsonLd()", async () => {
+test("Place.fromJsonLd()", async () => {
   const place = await Place.fromJsonLd({
     "@context": "https://www.w3.org/ns/activitystreams",
     type: "Place",
@@ -538,7 +539,7 @@ for (const typeUri in types) {
     ),
   );
 
-  Deno.test(`new ${type.name}() [auto]`, async () => {
+  test(`new ${type.name}() [auto]`, async () => {
     const instance = new cls(initValues);
     for (const property of allProperties) {
       if (areAllScalarTypes(property.range, types)) {
@@ -664,7 +665,7 @@ for (const typeUri in types) {
     }
   });
 
-  Deno.test(`${type.name}.clone() [auto]`, () => {
+  test(`${type.name}.clone() [auto]`, () => {
     const instance = new cls({});
     for (const property of allProperties) {
       if (!property.functional && property.singularAccessor) {
@@ -695,7 +696,7 @@ for (const typeUri in types) {
     };
 
     if (property.functional || property.singularAccessor) {
-      Deno.test(`${type.name}.get${toPascalCase(property.singularName)}() [auto]`, async () => {
+      test(`${type.name}.get${toPascalCase(property.singularName)}() [auto]`, async () => {
         const instance = new cls({
           [property.singularName]: new URL("https://example.com/test"),
         });
@@ -721,7 +722,7 @@ for (const typeUri in types) {
       });
     }
     if (!property.functional) {
-      Deno.test(`${type.name}.get${toPascalCase(property.pluralName)}() [auto]`, async () => {
+      test(`${type.name}.get${toPascalCase(property.pluralName)}() [auto]`, async () => {
         const instance = new cls({
           [property.pluralName]: [new URL("https://example.com/test")],
         });
@@ -749,7 +750,7 @@ for (const typeUri in types) {
     }
   }
 
-  Deno.test(`${type.name}.fromJsonLd() [auto]`, async () => {
+  test(`${type.name}.fromJsonLd() [auto]`, async () => {
     const instance = await cls.fromJsonLd(
       {
         "@id": "https://example.com/",
@@ -780,7 +781,7 @@ for (const typeUri in types) {
     await assertRejects(() => cls.fromJsonLd(undefined), TypeError);
   });
 
-  Deno.test(`${type.name}.toJsonLd() [auto]`, async () => {
+  test(`${type.name}.toJsonLd() [auto]`, async () => {
     const instance = new cls({
       id: new URL("https://example.com/"),
       ...initValues,
@@ -845,7 +846,7 @@ for (const typeUri in types) {
   });
 
   if (isDeno) {
-    Deno.test(`Deno.inspect(${type.name}) [auto]`, async (t) => {
+    test(`Deno.inspect(${type.name}) [auto]`, async (t) => {
       const empty = new cls({});
       assertEquals(Deno.inspect(empty), `${type.name} {}`);
 
@@ -884,7 +885,7 @@ for (const typeUri in types) {
     });
   }
 
-  Deno.test(`${type.name}.typeId`, () => {
+  test(`${type.name}.typeId`, () => {
     assertEquals(cls.typeId, new URL(type.uri));
   });
 }

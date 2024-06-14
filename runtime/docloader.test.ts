@@ -1,9 +1,10 @@
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
 import * as mf from "mock_fetch";
 import { MemoryKvStore } from "../federation/kv.ts";
-import { verify } from "../httpsig/mod.ts";
+import { verifyRequest } from "../sig/http.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { rsaPrivateKey2 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
 import {
   fetchDocumentLoader,
   FetchError,
@@ -11,7 +12,7 @@ import {
   kvCache,
 } from "./docloader.ts";
 
-Deno.test("new FetchError()", () => {
+test("new FetchError()", () => {
   const e = new FetchError("https://example.com/", "An error message.");
   assertEquals(e.name, "FetchError");
   assertEquals(e.url, new URL("https://example.com/"));
@@ -22,7 +23,7 @@ Deno.test("new FetchError()", () => {
   assertEquals(e2.message, "https://example.org/");
 });
 
-Deno.test("fetchDocumentLoader()", async (t) => {
+test("fetchDocumentLoader()", async (t) => {
   mf.install();
 
   mf.mock("GET@/object", (_req) =>
@@ -62,11 +63,11 @@ Deno.test("fetchDocumentLoader()", async (t) => {
   mf.uninstall();
 });
 
-Deno.test("getAuthenticatedDocumentLoader()", async (t) => {
+test("getAuthenticatedDocumentLoader()", async (t) => {
   mf.install();
 
   mf.mock("GET@/object", async (req) => {
-    const v = await verify(
+    const v = await verifyRequest(
       req,
       {
         documentLoader: mockDocumentLoader,
@@ -94,7 +95,7 @@ Deno.test("getAuthenticatedDocumentLoader()", async (t) => {
   mf.uninstall();
 });
 
-Deno.test("kvCache()", async (t) => {
+test("kvCache()", async (t) => {
   const kv = new MemoryKvStore();
 
   await t.step("cached", async () => {

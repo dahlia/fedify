@@ -2,6 +2,7 @@ import { assert, assertEquals, assertFalse } from "@std/assert";
 import { createRequestContext } from "../testing/context.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { rsaPublicKey2 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
 import {
   type Activity,
   Create,
@@ -25,7 +26,7 @@ import {
   respondWithObjectIfAcceptable,
 } from "./handler.ts";
 
-Deno.test("acceptsJsonLd()", () => {
+test("acceptsJsonLd()", () => {
   assert(acceptsJsonLd(
     new Request("https://example.com/", {
       headers: { Accept: "application/activity+json" },
@@ -55,7 +56,7 @@ Deno.test("acceptsJsonLd()", () => {
   ));
 });
 
-Deno.test("handleActor()", async () => {
+test("handleActor()", async () => {
   let context = createRequestContext<void>({
     data: undefined,
     url: new URL("https://example.com/"),
@@ -279,7 +280,7 @@ Deno.test("handleActor()", async () => {
   assertEquals(onUnauthorizedCalled, null);
 });
 
-Deno.test("handleObject()", async () => {
+test("handleObject()", async () => {
   let context = createRequestContext<void>({
     data: undefined,
     url: new URL("https://example.com/"),
@@ -520,7 +521,7 @@ Deno.test("handleObject()", async () => {
   assertEquals(onUnauthorizedCalled, null);
 });
 
-Deno.test("handleCollection()", async () => {
+test("handleCollection()", async () => {
   let context = createRequestContext<void>({
     data: undefined,
     url: new URL("https://example.com/"),
@@ -866,7 +867,7 @@ Deno.test("handleCollection()", async () => {
   assertEquals(onUnauthorizedCalled, null);
 });
 
-Deno.test("respondWithObject()", async () => {
+test("respondWithObject()", async () => {
   const response = await respondWithObject(
     new Note({
       id: new URL("https://example.com/notes/1"),
@@ -896,7 +897,7 @@ Deno.test("respondWithObject()", async () => {
   });
 });
 
-Deno.test("respondWithObjectIfAcceptable", async () => {
+test("respondWithObjectIfAcceptable", async () => {
   let request = new Request("https://example.com/", {
     headers: { Accept: "application/activity+json" },
   });

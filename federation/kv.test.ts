@@ -1,7 +1,8 @@
 import { assertEquals } from "@std/assert";
+import { test } from "../testing/mod.ts";
 import { MemoryKvStore } from "./kv.ts";
 
-Deno.test("MemoryKvStore", async (t) => {
+test("MemoryKvStore", async (t) => {
   const store = new MemoryKvStore();
 
   await t.step("set() & get()", async () => {

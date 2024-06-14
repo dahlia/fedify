@@ -1,8 +1,9 @@
 import { assertEquals } from "@std/assert";
 import { decodeHex } from "@std/encoding/hex";
+import { test } from "../testing/mod.ts";
 import { buildCollectionSynchronizationHeader, digest } from "./collection.ts";
 
-Deno.test("digest()", async () => {
+test("digest()", async () => {
   // See also:
   // https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md#partial-follower-collection-digest
   const uris = [
@@ -19,7 +20,7 @@ Deno.test("digest()", async () => {
   );
 });
 
-Deno.test("buildCollectionSynchronizationHeader()", async () => {
+test("buildCollectionSynchronizationHeader()", async () => {
   const header = await buildCollectionSynchronizationHeader(
     "https://testing.example.org/users/1/followers",
     [

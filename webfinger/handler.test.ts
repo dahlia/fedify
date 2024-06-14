@@ -1,11 +1,12 @@
 import { assertEquals } from "@std/assert";
 import type { ActorDispatcher } from "../federation/callback.ts";
 import { createRequestContext } from "../testing/context.ts";
+import { test } from "../testing/mod.ts";
 import type { Actor } from "../vocab/actor.ts";
 import { CryptographicKey, Link, Person } from "../vocab/vocab.ts";
 import { handleWebFinger } from "./handler.ts";
 
-Deno.test("handleWebFinger()", async () => {
+test("handleWebFinger()", async () => {
   const url = new URL("https://example.com/.well-known/webfinger");
   const context = createRequestContext<void>({
     url,

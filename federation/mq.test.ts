@@ -1,8 +1,9 @@
 import { assertEquals, assertGreater } from "@std/assert";
 import { delay } from "@std/async/delay";
+import { test } from "../testing/mod.ts";
 import { InProcessMessageQueue } from "./mq.ts";
 
-Deno.test("InProcessMessageQueue", async (t) => {
+test("InProcessMessageQueue", async (t) => {
   const mq = new InProcessMessageQueue();
 
   const messages: string[] = [];

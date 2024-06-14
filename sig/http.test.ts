@@ -1,13 +1,14 @@
 import { assertEquals } from "@std/assert";
-import { signRequest, verifyRequest } from "./http.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
   rsaPrivateKey2,
   rsaPublicKey1,
   rsaPublicKey2,
 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
+import { signRequest, verifyRequest } from "./http.ts";
 
-Deno.test("signRequest()", async () => {
+test("signRequest()", async () => {
   const request = new Request("https://example.com/", {
     method: "POST",
     body: "Hello, world!",
@@ -30,7 +31,7 @@ Deno.test("signRequest()", async () => {
   );
 });
 
-Deno.test("verify()", async () => {
+test("verify()", async () => {
   const request = new Request("https://example.com/", {
     method: "POST",
     body: "Hello, world!",

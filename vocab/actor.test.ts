@@ -8,6 +8,7 @@ import {
 } from "@std/assert";
 import * as fc from "fast-check";
 import * as mf from "mock_fetch";
+import { test } from "../testing/mod.ts";
 import {
   type Actor,
   getActorClassByTypeName,
@@ -50,7 +51,7 @@ function actor(): fc.Arbitrary<Actor> {
   return actorClassAndInstance().map(([, instance]) => instance);
 }
 
-Deno.test("isActor()", () => {
+test("isActor()", () => {
   fc.assert(fc.property(actor(), (actor) => assert(isActor(actor))));
   fc.assert(
     fc.property(
@@ -70,7 +71,7 @@ Deno.test("isActor()", () => {
   );
 });
 
-Deno.test("getActorTypeName()", () => {
+test("getActorTypeName()", () => {
   fc.assert(
     fc.property(
       actorClassAndInstance(),
@@ -79,7 +80,7 @@ Deno.test("getActorTypeName()", () => {
   );
 });
 
-Deno.test("getActorClassByTypeName()", () => {
+test("getActorClassByTypeName()", () => {
   fc.assert(
     fc.property(
       actorClassAndInstance(),
@@ -92,7 +93,7 @@ Deno.test("getActorClassByTypeName()", () => {
   );
 });
 
-Deno.test("getActorHandle()", async (t) => {
+test("getActorHandle()", async (t) => {
   mf.install();
 
   mf.mock(
@@ -161,7 +162,7 @@ Deno.test("getActorHandle()", async (t) => {
   mf.uninstall();
 });
 
-Deno.test("normalizeActorHandle()", () => {
+test("normalizeActorHandle()", () => {
   assertEquals(normalizeActorHandle("@foo@BAR.COM"), "@foo@bar.com");
   assertEquals(normalizeActorHandle("@BAZ@☃-⌘.com"), "@BAZ@☃-⌘.com");
   assertEquals(

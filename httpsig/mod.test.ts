@@ -1,4 +1,14 @@
 import { assert, assertEquals, assertFalse, assertRejects } from "@std/assert";
+import { validateCryptoKey } from "../sig/key.ts";
+import { mockDocumentLoader } from "../testing/docloader.ts";
+import {
+  rsaPrivateKey2,
+  rsaPublicKey1,
+  rsaPublicKey2,
+} from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
+import { lookupObject } from "../vocab/lookup.ts";
+import { Create } from "../vocab/vocab.ts";
 import {
   doesActorOwnKey,
   exportJwk,
@@ -8,17 +18,8 @@ import {
   sign,
   verify,
 } from "./mod.ts";
-import { mockDocumentLoader } from "../testing/docloader.ts";
-import {
-  rsaPrivateKey2,
-  rsaPublicKey1,
-  rsaPublicKey2,
-} from "../testing/keys.ts";
-import { lookupObject } from "../vocab/lookup.ts";
-import { Create } from "../vocab/vocab.ts";
-import { validateCryptoKey } from "../sig/key.ts";
 
-Deno.test("sign()", async () => {
+test("sign()", async () => {
   const request = new Request("https://example.com/", {
     method: "POST",
     body: "Hello, world!",
@@ -41,7 +42,7 @@ Deno.test("sign()", async () => {
   );
 });
 
-Deno.test("verify()", async () => {
+test("verify()", async () => {
   const request = new Request("https://example.com/", {
     method: "POST",
     body: "Hello, world!",
@@ -184,7 +185,7 @@ Deno.test("verify()", async () => {
   );
 });
 
-Deno.test("doesActorOwnKey()", async () => {
+test("doesActorOwnKey()", async () => {
   const options = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
@@ -200,7 +201,7 @@ Deno.test("doesActorOwnKey()", async () => {
   assertFalse(await doesActorOwnKey(activity2, rsaPublicKey2, options));
 });
 
-Deno.test("getKeyOwner()", async () => {
+test("getKeyOwner()", async () => {
   const options = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
@@ -239,7 +240,7 @@ Deno.test("getKeyOwner()", async () => {
   assertEquals(noOwner2, null);
 });
 
-Deno.test("generateCryptoKeyPair()", async () => {
+test("generateCryptoKeyPair()", async () => {
   const { privateKey, publicKey } = await generateCryptoKeyPair();
   validateCryptoKey(privateKey, "private");
   validateCryptoKey(publicKey, "public");
@@ -295,12 +296,12 @@ const privateJwk: JsonWebKey = {
   ext: true,
 };
 
-Deno.test("exportJwk()", async () => {
+test("exportJwk()", async () => {
   assertEquals(await exportJwk(rsaPrivateKey2), privateJwk);
   assertEquals(await exportJwk(rsaPublicKey2.publicKey!), publicJwk);
 });
 
-Deno.test("importJwk()", async () => {
+test("importJwk()", async () => {
   assertEquals(await importJwk(privateJwk, "private"), rsaPrivateKey2);
   assertEquals(await importJwk(publicJwk, "public"), rsaPublicKey2.publicKey!);
   assertRejects(() => importJwk(publicJwk, "private"));

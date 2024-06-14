@@ -1,4 +1,3 @@
-import { configure, getConsoleSink, reset } from "@logtape/logtape";
 import {
   assertEquals,
   assertNotEquals,
@@ -8,6 +7,7 @@ import {
 import * as mf from "mock_fetch";
 import { verifyRequest } from "../sig/http.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
+import { verifyObject } from "../sig/proof.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
   ed25519Multikey,
@@ -15,6 +15,7 @@ import {
   rsaPrivateKey2,
   rsaPublicKey2,
 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
 import type { Actor } from "../vocab/actor.ts";
 import {
   Activity,
@@ -26,9 +27,8 @@ import {
   Service,
 } from "../vocab/vocab.ts";
 import { extractInboxes, sendActivity } from "./send.ts";
-import { verifyObject } from "../sig/proof.ts";
 
-Deno.test("extractInboxes()", () => {
+test("extractInboxes()", () => {
   const recipients: Actor[] = [
     new Person({
       id: new URL("https://example.com/alice"),
@@ -122,32 +122,8 @@ Deno.test("extractInboxes()", () => {
   );
 });
 
-Deno.test("sendActivity()", async (t) => {
+test("sendActivity()", async (t) => {
   mf.install();
-
-  await configure({
-    sinks: {
-      console: getConsoleSink(),
-    },
-    filters: {},
-    loggers: [
-      {
-        category: ["fedify", "federation", "outbox"],
-        level: "debug",
-        sinks: ["console"],
-      },
-      {
-        category: ["fedify", "sig"],
-        level: "debug",
-        sinks: ["console"],
-      },
-      {
-        category: ["logtape", "meta"],
-        level: "warning",
-        sinks: ["console"],
-      },
-    ],
-  });
 
   let verified: "http-sig" | "proof" | false | null = null;
   let request: Request | null = null;
@@ -273,6 +249,5 @@ Deno.test("sendActivity()", async (t) => {
     );
   });
 
-  await reset();
   mf.uninstall();
 });

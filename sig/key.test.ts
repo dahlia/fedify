@@ -1,4 +1,5 @@
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
+import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
   ed25519Multikey,
   rsaPrivateKey2,
@@ -6,6 +7,7 @@ import {
   rsaPublicKey2,
   rsaPublicKey3,
 } from "../testing/keys.ts";
+import { test } from "../testing/mod.ts";
 import { CryptographicKey, Multikey } from "../vocab/vocab.ts";
 import {
   exportJwk,
@@ -15,9 +17,8 @@ import {
   importJwk,
   validateCryptoKey,
 } from "./key.ts";
-import { mockDocumentLoader } from "../testing/docloader.ts";
 
-Deno.test("validateCryptoKey()", async () => {
+test("validateCryptoKey()", async () => {
   const pkcs1v15 = await crypto.subtle.generateKey(
     {
       name: "RSASSA-PKCS1-v1_5",
@@ -95,7 +96,7 @@ Deno.test("validateCryptoKey()", async () => {
   );
 });
 
-Deno.test("generateCryptoKeyPair()", async () => {
+test("generateCryptoKeyPair()", async () => {
   const rsaKeyPair = await generateCryptoKeyPair();
   assertEquals(
     rsaKeyPair.privateKey.algorithm as unknown,
@@ -182,12 +183,12 @@ const rsaPrivateJwk: JsonWebKey = {
   ext: true,
 };
 
-Deno.test("exportJwk()", async () => {
+test("exportJwk()", async () => {
   assertEquals(await exportJwk(rsaPrivateKey2), rsaPrivateJwk);
   assertEquals(await exportJwk(rsaPublicKey2.publicKey!), rsaPublicJwk);
 });
 
-Deno.test("importJwk()", async () => {
+test("importJwk()", async () => {
   assertEquals(await importJwk(rsaPrivateJwk, "private"), rsaPrivateKey2);
   assertEquals(
     await importJwk(rsaPublicJwk, "public"),
@@ -197,7 +198,7 @@ Deno.test("importJwk()", async () => {
   assertRejects(() => importJwk(rsaPrivateJwk, "public"));
 });
 
-Deno.test("fetchKey()", async () => {
+test("fetchKey()", async () => {
   const options: FetchKeyOptions = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
