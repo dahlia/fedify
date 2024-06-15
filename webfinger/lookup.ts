@@ -1,4 +1,7 @@
+import { getLogger } from "@logtape/logtape";
 import type { ResourceDescriptor } from "./jrd.ts";
+
+const logger = getLogger(["fedify", "webfinger", "lookup"]);
 
 /**
  * Looks up a WebFinger resource.
@@ -22,6 +25,10 @@ export async function lookupWebFinger(
   let url = new URL(`https://${server}/.well-known/webfinger`);
   url.searchParams.set("resource", resource.href);
   while (true) {
+    logger.debug(
+      "Fetching WebFinger resource descriptor from {url}...",
+      { url: url.href },
+    );
     const response = await fetch(url, {
       headers: { Accept: "application/jrd+json" },
       redirect: "manual",
@@ -33,11 +40,27 @@ export async function lookupWebFinger(
       url = new URL(response.headers.get("Location")!);
       continue;
     }
-    if (!response.ok) return null;
+    if (!response.ok) {
+      logger.debug(
+        "Failed to fetch WebFinger resource descriptor: {status} {statusText}.",
+        {
+          url: url.href,
+          status: response.status,
+          statusText: response.statusText,
+        },
+      );
+      return null;
+    }
     try {
       return await response.json() as ResourceDescriptor;
     } catch (e) {
-      if (e instanceof SyntaxError) return null;
+      if (e instanceof SyntaxError) {
+        logger.debug(
+          "Failed to parse WebFinger resource descriptor as JSON: {error}",
+          { error: e },
+        );
+        return null;
+      }
       throw e;
     }
   }

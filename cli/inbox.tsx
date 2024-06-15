@@ -141,8 +141,7 @@ federation
         url: new URL("https://fedify.dev/logo.png"),
         mediaType: "image/png",
       }),
-      publicKeys: (await ctx.getActorKeyPairs(handle))
-        .map((pair) => pair.cryptographicKey),
+      publicKey: (await ctx.getActorKeyPairs(handle))[0].cryptographicKey,
       assertionMethods: (await ctx.getActorKeyPairs(handle))
         .map((pair) => pair.multikey),
       url: ctx.getActorUri(handle),
@@ -209,6 +208,7 @@ federation
         { handle },
         follower,
         new Accept({
+          id: new URL(`#accepts/${follower.id?.href}`, ctx.getActorUri("i")),
           actor: ctx.getActorUri(handle),
           object: activity.id,
         }),

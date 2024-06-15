@@ -119,12 +119,16 @@ To be released.
      -  Ephemeral actors now have the following properties: `summary`,
         `following`, `followers`, `outbox`, `manuallyApprovesFollowers`, and
         `url`.
+     -  Improved the compatibility of the `fedify inbox` command with Misskey
+        and Mitra.
 
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
      -  `["fedify", "sig", "proof"]`
      -  `["fedify", "sig", "key"]`
+     -  `["fedify", "vocab", "lookup"]`
+     -  `["fedify", "webfinger", "lookup"]`
 
 [#54]: https://github.com/dahlia/fedify/issues/54
 [#55]: https://github.com/dahlia/fedify/issues/55

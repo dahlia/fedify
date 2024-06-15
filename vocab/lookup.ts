@@ -1,9 +1,12 @@
+import { getLogger } from "@logtape/logtape";
 import {
   type DocumentLoader,
   fetchDocumentLoader,
 } from "../runtime/docloader.ts";
 import { lookupWebFinger } from "../webfinger/lookup.ts";
 import { Object } from "./vocab.ts";
+
+const logger = getLogger(["fedify", "vocab", "lookup"]);
 
 /**
  * Options for the `lookupObject` function.
@@ -73,8 +76,8 @@ export async function lookupObject(
     try {
       const remoteDoc = await documentLoader(identifier.href);
       document = remoteDoc.document;
-    } catch (_) {
-      // Silently ignore errors.
+    } catch (error) {
+      logger.debug("Failed to fetch remote document:\n{error}", { error });
     }
   }
   if (document == null) {
@@ -91,8 +94,8 @@ export async function lookupObject(
         const remoteDoc = await documentLoader(l.href);
         document = remoteDoc.document;
         break;
-      } catch (_) {
-        // Silently ignore errors.
+      } catch (error) {
+        logger.debug("Failed to fetch remote document:\n{error}", { error });
         continue;
       }
     }
@@ -103,8 +106,11 @@ export async function lookupObject(
       documentLoader,
       contextLoader: options.contextLoader,
     });
-  } catch (e) {
-    if (e instanceof TypeError) return null;
-    throw e;
+  } catch (error) {
+    if (error instanceof TypeError) {
+      logger.debug("Failed to parse JSON-LD document:\n{error}", { error });
+      return null;
+    }
+    throw error;
   }
 }
