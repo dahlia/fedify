@@ -20,8 +20,10 @@ import {
   type Recipient,
 } from "@fedify/fedify";
 import { getLogger } from "@logtape/logtape";
+import { parse } from "@std/semver";
 import { Hono } from "hono";
 import ora from "ora";
+import metadata from "./deno.json" with { type: "json" };
 import { getDocumentLoader } from "./docloader.ts";
 import type { ActivityEntry } from "./inbox/entry.ts";
 import { ActivityEntryPage, ActivityListPage } from "./inbox/view.tsx";
@@ -236,6 +238,26 @@ federation
 federation
   .setOutboxDispatcher("/{handle}/outbox", (_ctx, _handle) => null)
   .setCounter((_ctx, _handle) => 0);
+
+federation.setNodeInfoDispatcher("/nodeinfo/2.1", (_ctx) => {
+  return {
+    software: {
+      name: "fedify-cli",
+      version: parse(metadata.version),
+      repository: new URL("https://github.com/dahlia/fedify"),
+    },
+    protocols: ["activitypub"],
+    usage: {
+      users: {
+        total: 1,
+        activeMonth: 1,
+        activeHalfyear: 1,
+      },
+      localComments: 0,
+      localPosts: 0,
+    },
+  };
+});
 
 function printServerInfo(fedCtx: Context<number>): void {
   new Table(

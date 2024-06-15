@@ -11,6 +11,7 @@
     "@poppanator/http-constants": "npm:@poppanator/http-constants@^1.1.1",
     "@std/fs": "jsr:@std/fs@^0.229.3",
     "@std/path": "jsr:@std/path@^0.225.1",
+    "@std/semver": "jsr:@std/semver@^0.224.3",
     "cli-highlight": "npm:cli-highlight@^2.1.11",
     "hono": "jsr:@hono/hono@^4.4.6",
     "hono/": "jsr:/@hono/hono@^4.4.6/",
