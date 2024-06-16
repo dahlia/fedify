@@ -289,3 +289,53 @@ const federation = new Federation({
 > The `onOutboxError` callback can be called multiple times for the same
 > activity, because the delivery is retried according to the backoff schedule
 > until it succeeds or reaches the maximum retry count.
+
+
+HTTP Signatures
+---------------
+
+[HTTP Signatures] is a de facto standard for signing ActivityPub activities.
+It is widely used in the fediverse to verify the sender's identity and
+the integrity of the activity.
+
+Fedify automatically signs activities with the sender's private key if
+the [actor keys dispatcher is set](./actor.md#public-keys-of-an-actor) and
+the actor has any RSA-PKCS#1-v1.5 key pair.  If there are multiple key pairs,
+Fedify selects the first RSA-PKCS#1-v1.5 key pair among them.
+
+[HTTP Signatures]: https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures
+
+
+Object Integrity Proofs
+-----------------------
+
+*This API is available since Fedify 0.10.0.*
+
+[Object Integrity Proofs][FEP-8b32] is a mechanism to ensure the integrity
+of ActivityPub objects (not only activities!) in the fediverse.  It shares
+the similar concept with [HTTP Signatures](#http-signatures), but it has more
+functionalities and is more flexible.  For example, it can be used for
+[forwarding from inbox] and [several other cases] that HTTP Signatures cannot
+handle.  However, as it is relatively new, it is not widely supported yet.
+
+Fedify automatically includes the integrity proof of activities by signing
+them with the sender's private key if the [actor keys dispatcher is
+set](./actor.md#public-keys-of-an-actor) and the actor has any Ed25519 key pair.
+If there are multiple key pairs, Fedify creates the number of integrity proofs
+equal to the number of Ed25519 key pairs.
+
+> [!TIP]
+> HTTPS Signatures and Object Integrity Proofs can coexist in an application.
+> If an activity is signed with HTTP Signatures and Object Integrity Proofs,
+> the recipient verifies the Object Integrity Proofs first when it is supported,
+> and ignores the HTTP Signatures if the Object Integrity Proofs are valid.
+> If the recipient does not support Object Integrity Proofs, it falls back to
+> verifying the HTTP Signatures.
+>
+> To support both HTTP Signatures and Object Integrity Proofs, you need to
+> generate both RSA-PKCS#1-v1.5 and Ed25519 key pairs for each actor, and
+> store them in the database.
+
+[FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
+[forwarding from inbox]: https://www.w3.org/TR/activitypub/#inbox-forwarding
+[several other cases]: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/79?u=hongminhee

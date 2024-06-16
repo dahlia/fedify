@@ -130,20 +130,53 @@ The `following` property is the URI of the actor's following collection.
 You can use the `Context.getFollowingUri()` method to generate the URI of
 the actor's following collection.
 
-### `publicKeys`
+### `endpoints`
 
-The `publicKeys` property contains the public keys of the actor.  It is
-an array of `CryptographicKey` instances.
+The `endpoints` property is an `Endpoints` instance, an object that contains
+the URIs of the actor's endpoints.  The most important endpoint is the `sharedInbox`.  You can use the `Context.getInboxUri()` method with no arguments
+to generate the URI of the actor's shared inbox:
+
+~~~~ typescript
+new Endpoints({ sharedInbox: ctx.getInboxUri() })
+~~~~
+
+### `publicKey`
+
+The `publicKey` property contains the public key of the actor.  It is
+a `CryptographicKey` instance.  This property is usually used for verifying
+[HTTP Signatures](./send.md#http-signatures).
 
 See the [next section](#public-keys-of-an-actor) for details.
+
+> [!TIP]
+> In theory, an actor has multiple `publicKeys`, but in practice, the most
+> implementations have trouble with multiple keys.  Therefore, it is recommended
+> to set only one key in the `publicKey` property.  Usually, it contains
+> the first RSA-PKCS#1-v1.5 public key of the actor.
+>
+> If you need to set multiple keys, you can use the `assertionMethods` property
+> instead.
+
+### `assertionMethods`
+
+*This API is available since Fedify 0.10.0.*
+
+The `assertionMethods` property contains the public keys of the actor.  It is
+an array of `Multikey` instances.  This property is usually used for verifying
+[Object Integrity Proofs](./send.md#object-integrity-proofs).
+
+> [!TIP]
+> Usually, the `assertionMethods` property contains the Ed25519 public keys of
+> the actor.  Although it is okay to include RSA-PKCS#1-v1.5 public keys too,
+> those RSA-PKCS#1-v1.5 keys are not used for verifying Object Integrity Proofs.
 
 
 Public keys of an `Actor`
 -------------------------
 
-In order to sign and verify the activities, you need to set the `publicKeys`
-property of the actor.  The `publicKeys` property contains an array of
-`CryptographicKey` instances, and usually you don't have to create it manually.
+In order to sign and verify the activities, you need to set the `publicKey`
+property of the actor.  The `publicKey` property contains a `CryptographicKey`
+instance, and usually you don't have to create it manually.
 Instead, you can register a key pairs dispatcher through
 the `~ActorCallbackSetters.setKeyPairsDispatcher()` method so that Fedify can
 dispatch appropriate key pairs by the actor's bare handle:
@@ -157,9 +190,8 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     preferredUsername: handle,
     // Context.getActorKeyPairs() method dispatches the key pairs of an actor
     // by the handle, and returns an array of key pairs in various formats.
-    // In this example, we only use the CryptographicKey instances.
-    publicKey: (await ctx.getActorKeyPairs(handle))
-      .map(keyPair => keyPair.cryptographicKey),
+    // In this example, we only use first CryptographicKey.
+    publicKey: (await ctx.getActorKeyPairs(handle))[0].cryptographicKey,
     // Many more properties; see the previous section for details.
   });
 })
@@ -197,6 +229,24 @@ await kv.set(["keypair", handle], {
 });
 ~~~~
 
+> [!TIP]
+> Fedify currently supports two key types:
+>
+>  -  RSA-PKCS#1-v1.5 (`"RSASSA-PKCS1-v1_5"`) is used for [HTTP
+>     Signatures](./send.md#http-signatures).
+>  -  Ed25519 (`"Ed25519"`) is used for [Object Integrity
+>     Proofs](./send.md#object-integrity-proofs).
+>
+> HTTP Signatures is a de facto standard for signing ActivityPub activities,
+> and Object Integrity Proofs is a new standard for verifying the integrity
+> of the objects in the fediverse.  While HTTP Signatures is widely supported
+> in the fediverse, it's limited to the RSA-PKCS#1-v1.5 algorithm,
+> and unusable for [forwarding from inbox][1] and [several other cases][2].
+>
+> If your federated app needs to support both HTTP Signatures and Object
+> Integrity Proofs, you need to generate both RSA-PKCS#1-v1.5 and Ed25519 key
+> pairs for each actor, and store them in the database.
+
 Here's an example of how to load a key pair from the database too:
 
 ~~~~ typescript{8-16}
@@ -221,5 +271,7 @@ federation
   });
 ~~~~
 
+[1]: https://www.w3.org/TR/activitypub/#inbox-forwarding
+[2]: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/79?u=hongminhee
 [`CryptoKeyPair`]: https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair
 [Deno KV]: https://deno.com/kv

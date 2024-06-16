@@ -74,6 +74,8 @@ that the `Federation` object uses:
 
 ### `queue`
 
+*This API is available since Fedify 0.5.0.*
+
 The `~FederationParameters.queue` property is a `MessageQueue` instance that
 the `Federation` object uses to maintain the queue of outgoing activities.
 If you don't provide this option, activities will not be queued and will
@@ -126,6 +128,8 @@ See the [*Getting an authenticated `DocumentLoader`*
 section](./context.md#getting-an-authenticated-documentloader) for details.
 
 ### `contextLoader`
+
+*This API is available since Fedify 0.8.0.*
 
 A JSON-LD context loader function that the `Federation` object uses to
 load remote JSON-LD contexts.  The type of the function is the same as the

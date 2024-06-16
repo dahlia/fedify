@@ -1,7 +1,4 @@
 import { getLogger } from "@logtape/logtape";
-import { verifyRequest } from "../sig/http.ts";
-import { exportJwk, importJwk, validateCryptoKey } from "../sig/key.ts";
-import { getKeyOwner } from "../sig/owner.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
@@ -10,6 +7,9 @@ import {
   getAuthenticatedDocumentLoader,
   kvCache,
 } from "../runtime/docloader.ts";
+import { verifyRequest } from "../sig/http.ts";
+import { exportJwk, importJwk, validateCryptoKey } from "../sig/key.ts";
+import { getKeyOwner } from "../sig/owner.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
 import {
   Activity,
@@ -73,6 +73,7 @@ export interface FederationParameters {
    * The message queue for sending activities to recipients' inboxes.
    * If not provided, activities will not be queued and will be sent
    * immediately.
+   * @since 0.5.0
    */
   queue?: MessageQueue;
 
