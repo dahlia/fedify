@@ -56,6 +56,7 @@ lists the activity types that Fedify provides:
  -  [`Follow`](https://jsr.io/@fedify/fedify/doc/vocab/~/Follow)
  -  [`Ignore`](https://jsr.io/@fedify/fedify/doc/vocab/~/Ignore)
  -  [`Like`](https://jsr.io/@fedify/fedify/doc/vocab/~/Like)
+ -  [`Question`](https://jsr.io/@fedify/fedify/doc/vocab/~/Question)
  -  [`Reject`](https://jsr.io/@fedify/fedify/doc/vocab/~/Reject)
  -  [`Remove`](https://jsr.io/@fedify/fedify/doc/vocab/~/Remove)
  -  [`Undo`](https://jsr.io/@fedify/fedify/doc/vocab/~/Undo)

@@ -1,0 +1,43 @@
+$schema: ../codegen/schema.yaml
+name: Question
+uri: "https://www.w3.org/ns/activitystreams#Question"
+extends: "https://www.w3.org/ns/activitystreams#IntransitiveActivity"
+entity: true
+description: |
+  Represents a question being asked.  Question objects are an extension of
+  {@link IntransitiveActivity}.  That is, the Question object is an Activity,
+  but the direct object is the question itself and therefore it would not
+  contain an `object` property.
+
+  Either of the `anyOf` and `oneOf` properties *may* be used to express possible
+  answers, but a Question object *must not* have both properties. 
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
+- toot: "http://joinmastodon.org/ns#"
+  sensitive: "as:sensitive"
+  Emoji: "toot:Emoji"
+  Hashtag: "as:Hashtag"
+
+properties:
+- pluralName: exclusiveOptions
+  singularName: exclusiveOption
+  singularAccessor: false
+  uri: "https://www.w3.org/ns/activitystreams#oneOf"
+  description: |
+    Identifies an exclusive option for a Question.  Use of `exclusiveOptions`
+    implies that the Question can have only a single answer.  To indicate that
+    a Question can have multiple answers, use `inclusiveOptions`. 
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"
+
+- pluralName: inclusiveOptions
+  singularName: inclusiveOption
+  singularAccessor: false
+  uri: "https://www.w3.org/ns/activitystreams#anyOf"
+  description: |
+    Identifies an inclusive option for a Question.  Use of `inclusiveOptions`
+    implies that the Question can have multiple answers.  To indicate that
+    a Question can have only one answer, use `exclusiveOptions`.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"

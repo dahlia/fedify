@@ -106,6 +106,8 @@ To be released.
      -  The `Context.sendActivity()` method's first parameter now accepts
         `SenderKeyPair[]` as well.
 
+ -  Added `Question` class to Activity Vocabulary API.
+
  -  Added `context` option to `Object.toJsonLd()` method.  This applies to
     any subclasses of the `Object` class too.
 
