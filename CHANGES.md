@@ -115,6 +115,12 @@ To be released.
     Instead, use the [x-forwarded-fetch] library to recognize the
     `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
 
+ -  Removed the `Federation.handle()` method which was deprecated in version
+    0.6.0.
+
+ -  Removed the `integrateHandlerOptions()` function from
+    `@fedify/fedify/x/fresh` which was deprecated in version 0.6.0.
+
  -  Ephemeral actors and inboxes that the `fedify inbox` command spawns are
     now more interoperable with other ActivityPub implementations.
 

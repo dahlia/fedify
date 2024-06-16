@@ -1165,28 +1165,6 @@ export class Federation<TContextData> {
    * @param request The request object.
    * @param parameters The parameters for handling the request.
    * @returns The response to the request.
-   * @deprecated Use {@link Federation.fetch} instead.
-   */
-  handle(
-    request: Request,
-    options: FederationFetchOptions<TContextData>,
-  ): Promise<Response> {
-    getLogger(["fedify", "federation"]).warn(
-      "Federation.handle() is deprecated.  Use Federation.fetch() instead.",
-    );
-    return this.fetch(request, options);
-  }
-
-  /**
-   * Handles a request related to federation.  If a request is not related to
-   * federation, the `onNotFound` or `onNotAcceptable` callback is called.
-   *
-   * Usually, this method is called from a server's request handler or
-   * a web framework's middleware.
-   *
-   * @param request The request object.
-   * @param parameters The parameters for handling the request.
-   * @returns The response to the request.
    * @since 0.6.0
    */
   async fetch(

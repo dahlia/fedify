@@ -55,7 +55,7 @@ an actor dispatcher for the `/users/{handle}` path.  This pattern syntax
 follows the [URI Template] specification.
 
 > [!TIP]
-> By registering the actor dispatcher, `Federation.handle()` automatically
+> By registering the actor dispatcher, `Federation.fetch()` automatically
 > deals with [WebFinger] requests for the actor.
 
 [actors]: https://www.w3.org/TR/activitystreams-core/#actors

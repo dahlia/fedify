@@ -77,7 +77,7 @@ see the [next section](#nodeinfo-schema).
 
 > [!NOTE]
 > Whether or not you expose a NodeInfo endpoint, */.well-known/nodeinfo* is
-> automatically handled by `Federation.handle()` method.  In case you don't
+> automatically handled by `Federation.fetch()` method.  In case you don't
 > register a NodeInfo dispatcher, Fedify will respond with an empty `links`
 > array, e.g.:
 >
