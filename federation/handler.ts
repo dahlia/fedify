@@ -1,9 +1,9 @@
 import { getLogger } from "@logtape/logtape";
 import { accepts } from "@std/http/negotiation";
+import type { DocumentLoader } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { verifyObject } from "../sig/proof.ts";
-import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Recipient } from "../vocab/actor.ts";
 import {
   Activity,
@@ -61,6 +61,9 @@ export async function handleActor<TContextData>(
   }: ActorHandlerParameters<TContextData>,
 ): Promise<Response> {
   if (actorDispatcher == null) return await onNotFound(request);
+  // FIXME: When the deprecated last parameter (key) of ActorDispatcher
+  //        is removed, replace the below line with a direct all to
+  //        actorDispatcher:
   const actor = await context.getActor(handle);
   if (actor == null) return await onNotFound(request);
   if (!acceptsJsonLd(request)) return await onNotAcceptable(request);

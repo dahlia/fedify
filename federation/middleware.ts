@@ -1243,9 +1243,11 @@ export class Federation<TContextData> {
           nodeInfoDispatcher: this.#nodeInfoDispatcher!,
         });
       case "actor":
-        context = this.#createContext(request, contextData, {
-          invokedFromActorDispatcher: { handle: route.values.handle },
-        });
+        // FIXME: When the deprecated last parameter (key) of ActorDispatcher
+        //        is removed, uncomment the following line.
+        // context = this.#createContext(request, contextData, {
+        //   invokedFromActorDispatcher: { handle: route.values.handle },
+        // });
         return await handleActor(request, {
           handle: route.values.handle,
           context,
