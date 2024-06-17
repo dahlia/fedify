@@ -106,6 +106,9 @@ To be released.
      -  The `Context.sendActivity()` method's first parameter now accepts
         `SenderKeyPair[]` as well.
 
+ -  Added `Arrive` class to Activity Vocabulary API.
+    [[#65], [#68] by Randy Wressell]
+
  -  Added `Question` class to Activity Vocabulary API.
 
  -  Added `context` option to `Object.toJsonLd()` method.  This applies to
@@ -140,6 +143,8 @@ To be released.
 
 [#54]: https://github.com/dahlia/fedify/issues/54
 [#55]: https://github.com/dahlia/fedify/issues/55
+[#65]: https://github.com/dahlia/fedify/issues/65
+[#68]: https://github.com/dahlia/fedify/pull/68
 [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
 [FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
