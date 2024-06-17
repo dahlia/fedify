@@ -48,6 +48,7 @@ lists the activity types that Fedify provides:
  -  [`Accept`](https://jsr.io/@fedify/fedify/doc/vocab/~/Accept)
  -  [`Add`](https://jsr.io/@fedify/fedify/doc/vocab/~/Add)
  -  [`Announce`](https://jsr.io/@fedify/fedify/doc/vocab/~/Announce)
+ -  [`Arrive`](https://jsr.io/@fedify/fedify/doc/vocab/~/Arrive)
  -  [`Block`](https://jsr.io/@fedify/fedify/doc/vocab/~/Block)
  -  [`Create`](https://jsr.io/@fedify/fedify/doc/vocab/~/Create)
  -  [`Delete`](https://jsr.io/@fedify/fedify/doc/vocab/~/Delete)
