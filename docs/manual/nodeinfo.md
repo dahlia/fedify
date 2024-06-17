@@ -43,9 +43,9 @@ To expose a NodeInfo endpoint, you need to register a NodeInfo dispatcher with
 a NodeInfo endpoint:
 
 ~~~~ typescript
-import { Federation } from "@fedify/fedify";
+import { createFederation } from "@fedify/fedify";
 
-const federation = new Federation({
+const federation = createFederation({
   // Omitted for brevity; see the related section for details.
 });
 

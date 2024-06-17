@@ -30,9 +30,9 @@ specified in the path pattern of the object dispatcher, e.g., `/notes/{id}`,
 The below example shows how to register an object dispatcher:
 
 ~~~~ typescript {7-19}
-import { Federation, Note } from "@fedify/fedify";
+import { createFederation, Note } from "@fedify/fedify";
 
-const federation = new Federation({
+const federation = createFederation({
   // Omitted for brevity; see the related section for details.
 });
 

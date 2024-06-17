@@ -55,9 +55,10 @@ import { Router, RouterError } from "./router.ts";
 import { extractInboxes, sendActivity, type SenderKeyPair } from "./send.ts";
 
 /**
- * Parameters for initializing a {@link Federation} instance.
+ * Options for {@link createFederation} function.
+ * @since 0.10.0
  */
-export interface FederationParameters {
+export interface CreateFederationOptions {
   /**
    * The key-value store used for caching, outbox queues, and inbox idempotence.
    */
@@ -73,7 +74,6 @@ export interface FederationParameters {
    * The message queue for sending activities to recipients' inboxes.
    * If not provided, activities will not be queued and will be sent
    * immediately.
-   * @since 0.5.0
    */
   queue?: MessageQueue;
 
@@ -82,6 +82,50 @@ export interface FederationParameters {
    * cache-backed loader that fetches remote documents over HTTP(S).
    */
   documentLoader?: DocumentLoader;
+
+  /**
+   * A custom JSON-LD context loader.  By default, this uses the same loader
+   * as the document loader.
+   */
+  contextLoader?: DocumentLoader;
+
+  /**
+   * A factory function that creates an authenticated document loader for a
+   * given identity.  This is used for fetching documents that require
+   * authentication.
+   */
+  authenticatedDocumentLoaderFactory?: AuthenticatedDocumentLoaderFactory;
+
+  /**
+   * A callback that handles errors during outbox processing.  Note that this
+   * callback can be called multiple times for the same activity, because
+   * the delivery is retried according to the backoff schedule until it
+   * succeeds or reaches the maximum retry count.
+   *
+   * If any errors are thrown in this callback, they are ignored.
+   */
+  onOutboxError?: OutboxErrorHandler;
+
+  /**
+   * The time window for verifying the signature of incoming requests.  If the
+   * request is older or newer than this window, it is rejected.  By default,
+   * the window is a minute.
+   */
+  signatureTimeWindow?: Temporal.DurationLike;
+}
+
+/**
+ * Parameters for initializing a {@link Federation} instance.
+ * @deprecated
+ */
+export interface FederationParameters extends CreateFederationOptions {
+  /**
+   * The message queue for sending activities to recipients' inboxes.
+   * If not provided, activities will not be queued and will be sent
+   * immediately.
+   * @since 0.5.0
+   */
+  queue?: MessageQueue;
 
   /**
    * A custom JSON-LD context loader.  By default, this uses the same loader
@@ -100,21 +144,6 @@ export interface FederationParameters {
   authenticatedDocumentLoaderFactory?: AuthenticatedDocumentLoaderFactory;
 
   /**
-   * Whether to treat HTTP requests as HTTPS.  This is useful for testing and
-   * local development.  However, it must be disabled in production.
-   * Turned off by default.
-   *
-   * Note that this option is deprecated and will be removed in a future
-   * release.  Instead, use the [x-forwarded-fetch] library to recognize
-   * the `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
-   *
-   * [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
-   *
-   * @deprecated
-   */
-  treatHttps?: boolean;
-
-  /**
    * A callback that handles errors during outbox processing.  Note that this
    * callback can be called multiple times for the same activity, because
    * the delivery is retried according to the backoff schedule until it
@@ -130,10 +159,23 @@ export interface FederationParameters {
    * The time window for verifying the signature of incoming requests.  If the
    * request is older or newer than this window, it is rejected.  By default,
    * the window is a minute.
-   *
-   * @since 0.9.0
    */
   signatureTimeWindow?: Temporal.DurationLike;
+
+  /**
+   * Whether to treat HTTP requests as HTTPS.  This is useful for testing and
+   * local development.  However, it must be disabled in production.
+   * Turned off by default.
+   *
+   * Note that this option is deprecated and will be removed in a future
+   * release.  Instead, use the [x-forwarded-fetch] library to recognize
+   * the `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
+   *
+   * [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
+   *
+   * @deprecated
+   */
+  treatHttps?: boolean;
 
   // TODO: The following option should be removed, and exponential backoff
   // should be used instead:
@@ -155,6 +197,24 @@ export interface FederationKvPrefixes {
    * `["_fedify", "remoteDocument"]` by default.
    */
   remoteDocument: KvKey;
+}
+
+const invokedByCreateFederation = Symbol("invokedByCreateFederation");
+
+/**
+ * Create a new {@link Federation} instance.
+ * @param parameters Parameters for initializing the instance.
+ * @returns A new {@link Federation} instance.
+ * @since 0.10.0
+ */
+export function createFederation<TContextData>(
+  options: CreateFederationOptions,
+): Federation<TContextData> {
+  return new Federation<TContextData>({
+    ...options,
+    // @ts-ignore: This is a private symbol.
+    [invokedByCreateFederation]: true,
+  });
 }
 
 /**
@@ -197,30 +257,26 @@ export class Federation<TContextData> {
   /**
    * Create a new {@link Federation} instance.
    * @param parameters Parameters for initializing the instance.
+   * @deprecated Use {@link createFederation} method instead.
    */
-  constructor(
-    {
-      kv,
-      kvPrefixes,
-      queue,
-      documentLoader,
-      contextLoader,
-      authenticatedDocumentLoaderFactory,
-      treatHttps,
-      onOutboxError,
-      signatureTimeWindow,
-      backoffSchedule,
-    }: FederationParameters,
-  ) {
-    this.#kv = kv;
+  constructor(options: FederationParameters) {
+    const logger = getLogger(["fedify", "federation"]);
+    // @ts-ignore: This is a private symbol.
+    if (!options[invokedByCreateFederation]) {
+      logger.warn(
+        "The Federation constructor is deprecated.  Use the createFederation()" +
+          "function instead.",
+      );
+    }
+    this.#kv = options.kv;
     this.#kvPrefixes = {
       ...({
         activityIdempotence: ["_fedify", "activityIdempotence"],
         remoteDocument: ["_fedify", "remoteDocument"],
       } satisfies FederationKvPrefixes),
-      ...(kvPrefixes ?? {}),
+      ...(options.kvPrefixes ?? {}),
     };
-    this.#queue = queue;
+    this.#queue = options.queue;
     this.#queueStarted = false;
     this.#router = new Router();
     this.#router.add("/.well-known/webfinger", "webfinger");
@@ -228,27 +284,27 @@ export class Federation<TContextData> {
     this.#inboxListeners = new Map();
     this.#objectCallbacks = {};
     this.#objectTypeIds = {};
-    this.#documentLoader = documentLoader ?? kvCache({
+    this.#documentLoader = options.documentLoader ?? kvCache({
       loader: fetchDocumentLoader,
-      kv: kv,
+      kv: options.kv,
       prefix: this.#kvPrefixes.remoteDocument,
     });
-    this.#contextLoader = contextLoader ?? this.#documentLoader;
+    this.#contextLoader = options.contextLoader ?? this.#documentLoader;
     this.#authenticatedDocumentLoaderFactory =
-      authenticatedDocumentLoaderFactory ??
+      options.authenticatedDocumentLoaderFactory ??
         getAuthenticatedDocumentLoader;
-    this.#onOutboxError = onOutboxError;
-    this.#treatHttps = treatHttps ?? false;
-    if (treatHttps) {
-      getLogger(["fedify", "federation"]).warn(
+    this.#onOutboxError = options.onOutboxError;
+    this.#treatHttps = options.treatHttps ?? false;
+    if (options.treatHttps) {
+      logger.warn(
         "The treatHttps option is deprecated and will be removed in " +
           "a future release.  Instead, use the x-forwarded-fetch library" +
           " to recognize the X-Forwarded-Host and X-Forwarded-Proto " +
           "headers.  See also: <https://github.com/dahlia/x-forwarded-fetch>.",
       );
     }
-    this.#signatureTimeWindow = signatureTimeWindow ?? { minutes: 1 };
-    this.#backoffSchedule = backoffSchedule ?? [
+    this.#signatureTimeWindow = options.signatureTimeWindow ?? { minutes: 1 };
+    this.#backoffSchedule = options.backoffSchedule ?? [
       3_000,
       15_000,
       60_000,
@@ -1923,7 +1979,7 @@ interface ActorCallbacks<TContextData> {
  * Additional settings for the actor dispatcher.
  *
  * ``` typescript
- * const federation = new Federation<void>({ ... });
+ * const federation = createFederation<void>({ ... });
  * federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
  *   ...
  * })

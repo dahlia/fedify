@@ -27,11 +27,11 @@ TypeScript.  Fedify has the `@fedify/fedify/x/hono` module that provides
 a middleware to integrate Fedify with Hono:
 
 ~~~~ typescript
-import { Federation } from "@fedify/fedify";
+import { createFederation } from "@fedify/fedify";
 import { federation } from "@fedify/fedify/x/hono";
 import { Hono } from "hono";
 
-const fedi = new Federation<string>({
+const fedi = createFederation<string>({
   // Omitted for brevity; see the related section for details.
 });
 
@@ -52,10 +52,10 @@ Fresh
 with Fresh.  Put the following code in your *routes/_middleware.ts* file:
 
 ~~~~ typescript{8-12}
-import { Federation } from "@fedify/fedify";
+import { createFederation } from "@fedify/fedify";
 import { integrateHandler } from "@fedify/fedify/x/fresh";
 
-const federation = new Federation<string>({
+const federation = createFederation<string>({
   // Omitted for brevity; see the related section for details.
 });
 

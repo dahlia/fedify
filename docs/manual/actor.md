@@ -33,9 +33,9 @@ the following:
 The below example shows how to register an actor dispatcher:
 
 ~~~~ typescript{7-15}
-import { Federation, Person } from "@fedify/fedify";
+import { createFederation, Person } from "@fedify/fedify";
 
-const federation = new Federation({
+const federation = createFederation({
   // Omitted for brevity; see the related section for details.
 });
 

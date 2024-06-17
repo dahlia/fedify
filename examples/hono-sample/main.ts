@@ -1,9 +1,9 @@
-import { Federation, MemoryKvStore } from "@fedify/fedify/federation";
+import { createFederation, MemoryKvStore } from "@fedify/fedify/federation";
 import { Person } from "@fedify/fedify/vocab";
 import { federation } from "@fedify/fedify/x/hono";
 import { Hono } from "hono";
 
-const fedi = new Federation<void>({
+const fedi = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 

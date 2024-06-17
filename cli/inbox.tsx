@@ -7,8 +7,8 @@ import {
   type Actor,
   Application,
   type Context,
+  createFederation,
   Endpoints,
-  Federation,
   Follow,
   generateCryptoKeyPair,
   getActorHandle,
@@ -111,7 +111,7 @@ export const command = new Command()
     printServerInfo(fedCtx);
   });
 
-const federation = new Federation<number>({
+const federation = createFederation<number>({
   kv: new MemoryKvStore(),
   queue: new InProcessMessageQueue(),
   documentLoader: await getDocumentLoader(),

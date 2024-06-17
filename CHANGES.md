@@ -106,6 +106,15 @@ To be released.
      -  The `Context.sendActivity()` method's first parameter now accepts
         `SenderKeyPair[]` as well.
 
+ -  In the future, `Federation` class will become an interface.
+    For the forward compatibility, the following changes are made:
+
+     -  Added `createFederation()` function.
+     -  Added `CreateFederationOptions` interface.
+     -  Deprecated `new Federation()` constructor.  Use `createFederation()`
+        function instead.
+     -  Deprecated `FederationParameters` interface.
+
  -  Added `Arrive` class to Activity Vocabulary API.
     [[#65], [#68] by Randy Wressell]
 
@@ -718,3 +727,5 @@ Version 0.1.0
 -------------
 
 Initial release.  Released on March 8, 2024.
+
+<!-- cSpell: ignore Wressell -->

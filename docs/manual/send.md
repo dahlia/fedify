@@ -74,9 +74,9 @@ the recipient's inbox if possible; the system retries the delivery on failure.
 This queueing mechanism is enabled only if `Federation` object has a `queue`:
 
 ~~~~ typescript
-import { Federation, InProcessMessageQueue } from "@fedify/fedify";
+import { createFederation, InProcessMessageQueue } from "@fedify/fedify";
 
-const federation = new Federation({
+const federation = createFederation({
   // Omitted for brevity; see the related section for details.
   queue: new InProcessMessageQueue(),  // [!code highlight]
 });
@@ -273,9 +273,9 @@ If you want to handle the delivery failure, you can register an error handler
 to the queue:
 
 ~~~~ typescript{6-9}
-import { Federation, InProcessMessageQueue } from "@fedify/fedify";
+import { createFederation, InProcessMessageQueue } from "@fedify/fedify";
 
-const federation = new Federation({
+const federation = createFederation({
   // Omitted for brevity; see the related section for details.
   queue: new InProcessMessageQueue(),
   onOutboxError: (error, activity) => {

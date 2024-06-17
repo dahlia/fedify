@@ -22,13 +22,13 @@ The key features of the `Federation` object are as follows:
  -  Maintaining a queue of [outgoing activities](./send.md)
  -  Registering a [NodeInfo dispatcher](./nodeinfo.md)
 
-You can create a `Federation` object by calling the constructor function
-with an optional configuration object:
+You can create a `Federation` object by calling `createFederation()` function
+with a configuration object:
 
 ~~~~ typescript
-import { Federation, MemoryKvStore } from "@fedify/fedify";
+import { createFederation, MemoryKvStore } from "@fedify/fedify";
 
-const federation = new Federation<void>({
+const federation = createFederation<void>({
   kv: new MemoryKvStore(),
   // Omitted for brevity; see the following sections for details.
 });

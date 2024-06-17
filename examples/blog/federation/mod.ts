@@ -1,6 +1,6 @@
 import { parse } from "@std/semver";
 import { dirname, join } from "@std/path";
-import { Federation } from "@fedify/fedify/federation";
+import { createFederation } from "@fedify/fedify/federation";
 import {
   Accept,
   Activity,
@@ -33,7 +33,7 @@ const logger = getLogger(["blog", "federation"]);
 
 // The `Federation<TContextData>` object is a registry that registers
 // federation-related callbacks:
-export const federation = new Federation<void>({
+export const federation = createFederation<void>({
   // The following key-value storage is used for internal cache:
   kv: new DenoKvStore(await openKv()),
 

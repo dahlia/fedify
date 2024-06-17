@@ -34,9 +34,9 @@ With Fedify, you can register an inbox listener for both types of inboxes at
 a time.  The following shows how to register an inbox listener:
 
 ~~~~ typescript{7-18}
-import { Federation, Follow } from "@fedify/fedify";
+import { createFederation, Follow } from "@fedify/fedify";
 
-const federation = new Federation({
+const federation = createFederation({
   // Omitted for brevity; see the related section for details.
 });
 
@@ -85,7 +85,7 @@ multiple inbox listeners for different activity types.
 The `Context.documentLoader` property carries a `DocumentLoader` object that
 you can use to fetch a remote document.  If a request is made to a shared inbox,
 the `Context.documentLoader` property is set to the default `documentLoader`
-that is specified in the `new Federation()` constructor.  However, if a request
+that is specified in the `createFederation()` function.  However, if a request
 is made to a personal inbox, the `Context.documentLoader` property is set to
 an authenticated `DocumentLoader` object that is identified by the inbox owner's
 key.

@@ -27,7 +27,7 @@ import { test } from "../testing/mod.ts";
 import { Create, Multikey, Note, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
-import { Federation } from "./middleware.ts";
+import { createFederation } from "./middleware.ts";
 import { RouterError } from "./router.ts";
 
 test("Federation.createContext()", async (t) => {
@@ -53,7 +53,7 @@ test("Federation.createContext()", async (t) => {
   });
 
   await t.step("Context", async () => {
-    const federation = new Federation<number>({
+    const federation = createFederation<number>({
       kv,
       documentLoader,
       contextLoader: mockDocumentLoader,
@@ -291,7 +291,7 @@ test("Federation.createContext()", async (t) => {
   });
 
   await t.step("RequestContext", async () => {
-    const federation = new Federation<number>({
+    const federation = createFederation<number>({
       kv,
       documentLoader: mockDocumentLoader,
     });
@@ -434,7 +434,7 @@ test("Federation.setInboxListeners()", async (t) => {
 
   await t.step("on()", async () => {
     const authenticatedRequests: [string, string][] = [];
-    const federation = new Federation<void>({
+    const federation = createFederation<void>({
       kv,
       documentLoader: mockDocumentLoader,
       authenticatedDocumentLoaderFactory(identity) {
@@ -584,7 +584,7 @@ test("Federation.setInboxListeners()", async (t) => {
   });
 
   await t.step("onError()", async () => {
-    const federation = new Federation<void>({
+    const federation = createFederation<void>({
       kv,
       documentLoader: mockDocumentLoader,
       authenticatedDocumentLoaderFactory(identity) {

@@ -203,16 +203,16 @@ ActivityPub activities and actors.  Let's modify the server script to use the
 `Federation` object:
 
 ~~~~ typescript
-import { Federation, MemoryKvStore } from "@fedify/fedify";
+import { createFederation, MemoryKvStore } from "@fedify/fedify";
 
-const federation = new Federation<void>({
+const federation = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 ~~~~
 
-In the above code, we import the `Federation` object from the Fedify framework
-and create a new `Federation` object.  We pass an object to the
-`new Federation()` constructor, which is the configuration object.
+In the above code, we import the `createFederation` function from the Fedify
+framework to create a new `Federation` object.  We pass an object to the
+`createFederation()` function, which is the configuration object.
 The `kv` property is a key-value store that is used to store several internal
 data of the `Federation` object.  We use the `MemoryKvStore` to open
 a key-value store.
@@ -330,7 +330,7 @@ Let's create an actor dispatcher for our server:
 ~~~~ typescript{7-16} [Deno]
 import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
 
-const federation = new Federation<void>({
+const federation = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 
@@ -354,7 +354,7 @@ Deno.serve(
 import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
 import { serve } from "@hono/node-server";
 
-const federation = new Federation<void>({
+const federation = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 
@@ -380,7 +380,7 @@ serve({
 ~~~~ typescript{7-16} [Bun]
 import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
 
-const federation = new Federation<void>({
+const federation = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 
