@@ -13,6 +13,10 @@ Logging
 
 *This API is available since Fedify 0.7.0.*
 
+> [!TIP]
+> We highly recommend enabling logging in your federated server app to debug
+> your app easily.
+
 Fedify uses the [LogTape] package to log message.  You can enable logging in
 your federated server app by installing the `@logtape/logtape` package and
 configuring it in the entry point of your app.
@@ -171,6 +175,42 @@ related to the document loader.  When you are curious about what specific
 requests are made by the document loader, you can check the log messages in
 this category with the `"debug"` level.
 
+### `["fedify", "sig", "proof"]`
+
+*This category is available since Fedify 0.10.0.*
+
+The `["fedify", "sig", "proof"]` category is used for logging messages related
+to Object Integrity Proofs.  When you are curious about the proof verification
+process, you can check the log messages in this category with the `"debug"`
+level.
+
+### `["fedify", "sig", "key"]`
+
+*This category is available since Fedify 0.10.0.*
+
+The `["fedify", "sig", "key"]` category is used for logging messages related
+to key generation and key retrieval.  When you are curious about these
+processes, you can check the log messages in this category with the `"debug"`
+level.
+
+### `["fedify", "vocab", "lookup"]`
+
+*This category is available since Fedify 0.10.0.*
+
+The `["fedify", "vocab", "lookup"]` category is used for logging messages
+related to looking up ActivityPub objects.  When you are curious about the
+lookup process, you can check the log messages in this category with the
+`"debug"` level.
+
+### `["fedify", "webfinger", "lookup"]`
+
+*This category is available since Fedify 0.10.0.*
+
+The `["fedify", "webfinger", "lookup"]` category is used for logging messages
+related to looking up WebFinger resources.  When you are curious about the
+lookup process, you can check the log messages in this category with the
+`"debug"` level.
+
 ### `["fedify", "x", "fresh"]`
 
 The `["fedify", "x", "fresh"]` category is used for logging messages related
@@ -199,3 +239,13 @@ For more information about sinks, see the [*Sinks* section] in the LogTape docs.
 [rotating file sink]: https://github.com/dahlia/logtape?tab=readme-ov-file#rotating-file-sink
 [`Sink`]: https://jsr.io/@logtape/logtape/doc/~/Sink
 [*Sinks* section]: https://github.com/dahlia/logtape?tab=readme-ov-file#sinks
+
+
+Deprecation warnings
+--------------------
+
+When you are using deprecated APIs, you can see deprecation warnings in the
+log messages.  The deprecation warnings are logged with the `"warning"` level
+in each category where the deprecated API is used.  If you want to see all
+deprecation warnings, you can set the log level to `"warning"` for the
+[`"fedify"` category](#fedify).
