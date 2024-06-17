@@ -47,21 +47,23 @@ features:
   details: >-
     <a href="https://datatracker.ietf.org/doc/html/rfc7033">WebFinger</a>
     client and server
-- icon: ✉️
+- icon: ✍️
   title: HTTPS Signatures
   details: >-
     Signing and verifying <a
     href="https://tools.ietf.org/html/draft-cavage-http-signatures-12">HTTP
     Signatures</a>
+  link: /manual/send.md#http-signatures
+- icon: 🪪
+  title: Object Integrity Proofs (FEP-8b32)
+  details: >-
+    Creating and verifying <a
+    href="https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md"
+    >Object Integrity Proofs</a>
+  link: /manual/send.md#object-integrity-proofs
 - icon: ℹ️
   title: NodeInfo
   details: >-
     <a href="https://nodeinfo.diaspora.software/">NodeInfo</a> server
   link: /manual/nodeinfo.md
-- icon: 🤝
-  title: Interoperability
-  details: >-
-    Special touch for interoperability with Mastodon and few other popular
-    fediverse software
-  link: /manual/pragmatics.md
 ---
