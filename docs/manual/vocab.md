@@ -340,13 +340,18 @@ corresponding TypeScript types:
 | `xsd:dateTime`           | [`Temporal.Instant`]                              |
 | `xsd:duration`           | [`Temporal.Duration`]                             |
 | `rdf:langString`         | `LanguageString`                                  |
+| `w3id:cryptosuiteString` | `"eddsa-jcs-2022"`                                |
+| `w3id:multibase`         | [`Uint8Array`]                                    |
 | Language tag ([BCP 47])  | [`LanguageTag`]                                   |
 | Public key PEM           | [`CryptoKey`]                                     |
+| Public key Multibase     | [`CryptoKey`]                                     |
+| Proof purpose            | `"assertionMethod" \| "authentication" \| "capabilityInvocation" \| "capabilityDelegation" \| "keyAgreement"` |
 | Units                    | `"cm" \| "feet" \| "inches" \| "km" \| "m" \| "miles" \| URL` |
 
 [`URL`]: https://developer.mozilla.org/en-US/docs/Web/API/URL
 [`Temporal.Instant`]: https://tc39.es/proposal-temporal/docs/instant.html
 [`Temporal.Duration`]: https://tc39.es/proposal-temporal/docs/duration.html
+[`Uint8Array`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
 [BCP 47]: https://www.rfc-editor.org/info/bcp47
 [`LanguageTag`]: https://phensley.github.io/cldr-engine/docs/en/api-languagetag
 [`CryptoKey`]: https://developer.mozilla.org/en-US/docs/Web/API/CryptoKey
