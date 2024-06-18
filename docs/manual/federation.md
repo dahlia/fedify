@@ -258,3 +258,80 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
   // There is a database connection in `ctx.data`.
 });
 ~~~~
+
+Another example is to determine the virtual host of the server based on the
+incoming HTTP request.  See the [next section](#virtual-hosting) for details.
+
+
+Virtual hosting
+---------------
+
+You may want to support multiple domains on the same server, so-called
+*virtual hosts*.  To determine the virtual host of the server based on the
+incoming HTTP request, you can set the `TContextData` type to a type that
+contains the virtual host information:
+
+~~~~ typescript
+import { createFederation } from "@fedify/fedify";
+
+export interface VirtualHost {
+  host: string;
+}
+
+export function parseVirtualHost(url: URL | string): VirtualHost {
+  url = typeof url === "string" ? new URL(url) : url;
+  return { host: url.hostname };
+}
+
+const federation = createFederation<VirtualHost>({
+  // Omitted for brevity; see the related section for details.
+});
+~~~~
+
+Then, you can pass the virtual host information to the `Federation.fetch()`
+as the `contextData` option:
+
+::: code-group
+
+~~~~ typescript [Deno]
+Deno.serve(
+  request => federation.fetch(request, {
+    contextData: parseVirtualHost(request.url), // [!code highlight]
+  })
+);
+~~~~
+
+~~~~ typescript [Node.js]
+import { serve } from "@hono/node-server";
+
+serve({
+  fetch(request) {
+    return federation.fetch(request, {
+      contextData: parseVirtualHost(request.url), // [!code highlight]
+    });
+  }
+})
+~~~~
+
+~~~~ typescript [Bun]
+Bun.serve({
+  fetch(request) {
+    return federation.fetch(request, {
+      contextData: parseVirtualHost(request.url), // [!code highlight]
+    });
+  }
+});
+~~~~
+
+:::
+
+Now you can access the virtual host information in the actor dispatcher,
+inbox listener, and other callback functions:
+
+~~~~ typescript{2-3}
+federation.setActorDispatcher("/@{handle}", (ctx, handle) => {
+  const { host } = ctx.data;
+  const fullHandle = `${handle}@${host}`;
+  // Omitted for brevity
+});
+~~~~
