@@ -39,7 +39,7 @@ await build({
     version: Deno.args[0] ?? metadata.version,
     description: "An ActivityPub server framework",
     keywords: ["ActivityPub", "fediverse"],
-    license: "AGPL-3.0",
+    license: "MIT",
     author: {
       name: "Hong Minhee",
       email: "hong@minhee.org",

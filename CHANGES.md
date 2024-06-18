@@ -8,6 +8,9 @@ Version 0.10.0
 
 To be released.
 
+Starting with this release, Fedify, previously distributed under [AGPL 3.0],
+is now distributed under the [MIT License] to encourage wider adoption.
+
  -  Besides RSA-PKCS#1-v1.5, Fedify now supports Ed25519 for signing and
     verifying the activities.  [[#55]]
 
@@ -154,6 +157,8 @@ To be released.
 [#55]: https://github.com/dahlia/fedify/issues/55
 [#65]: https://github.com/dahlia/fedify/issues/65
 [#68]: https://github.com/dahlia/fedify/pull/68
+[AGPL 3.0]: https://www.gnu.org/licenses/agpl-3.0.en.html
+[MIT License]: https://minhee.mit-license.org/
 [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
 [FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch

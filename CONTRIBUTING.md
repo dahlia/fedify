@@ -44,11 +44,11 @@ Pull requests
 
 ### License
 
-Fedify is licensed under the [AGPL 3.0].  By opening a pull request, you agree
-to license your contribution under the AGPL 3.0.  If you cannot agree to this
-license, please do not open a pull request.
+Fedify is licensed under the [MIT License].  By opening a pull request,
+you agree to license your contribution under the MIT License.  If you cannot
+agree to this license, please do not open a pull request.
 
-[AGPL 3.0]: https://www.gnu.org/licenses/agpl-3.0.en.html
+[MIT License]: https://minhee.mit-license.org/
 
 ### Coding conventions
 
