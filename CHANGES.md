@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.10.0
 --------------
 
-To be released.
+Released on June 18, 2024.
 
 Starting with this release, Fedify, previously distributed under [AGPL 3.0],
 is now distributed under the [MIT License] to encourage wider adoption.
