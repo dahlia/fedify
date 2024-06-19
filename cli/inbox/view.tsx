@@ -103,13 +103,13 @@ interface CodeBlockProps {
   code: string;
 }
 
-const highligher = await getHighlighter({
+const highlighter = await getHighlighter({
   themes: ["github-light"],
   langs: ["http", "json"],
 });
 
 const CodeBlock: FC<CodeBlockProps> = ({ language, code }: CodeBlockProps) => {
-  const result = highligher.codeToHtml(code, {
+  const result = highlighter.codeToHtml(code, {
     lang: language,
     theme: "github-light",
   });
