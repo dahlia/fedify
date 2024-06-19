@@ -8,6 +8,22 @@ Version 0.11.0
 
 To be released.
 
+ -  Frequently used JSON-LD contexts are now preloaded.  [[74]]
+
+     -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+        contexts:
+
+         -  <https://www.w3.org/ns/activitystreams>
+         -  <https://w3id.org/security/v1>
+         -  <https://w3id.org/security/data-integrity/v1>
+         -  <https://www.w3.org/ns/did/v1>
+         -  <https://w3id.org/security/multikey/v1>
+
+     -  The default `rules` for `kvCache()` function are now 5 minutes for all
+        URLs.
+
+[#74]: https://github.com/dahlia/fedify/issues/74
+
 
 Version 0.10.0
 --------------

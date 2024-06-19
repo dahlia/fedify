@@ -5,6 +5,7 @@ import { verifyRequest } from "../sig/http.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { rsaPrivateKey2 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
+import preloadedContexts from "./contexts.ts";
 import {
   fetchDocumentLoader,
   FetchError,
@@ -61,6 +62,16 @@ test("fetchDocumentLoader()", async (t) => {
   });
 
   mf.uninstall();
+
+  await t.step("preloaded contexts", async () => {
+    for (const [url, document] of Object.entries(preloadedContexts)) {
+      assertEquals(await fetchDocumentLoader(url), {
+        contextUrl: null,
+        documentUrl: url,
+        document,
+      });
+    }
+  });
 });
 
 test("getAuthenticatedDocumentLoader()", async (t) => {

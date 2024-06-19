@@ -2,6 +2,7 @@ import { getLogger } from "@logtape/logtape";
 import type { KvKey, KvStore } from "../federation/kv.ts";
 import { signRequest } from "../sig/http.ts";
 import { validateCryptoKey } from "../sig/key.ts";
+import preloadedContexts from "./contexts.ts";
 
 const logger = getLogger(["fedify", "runtime", "docloader"]);
 
@@ -113,12 +114,28 @@ async function getRemoteDocument(
 
 /**
  * A JSON-LD document loader that utilizes the browser's `fetch` API.
+ *
+ * This loader preloads the below frequently used contexts:
+ *
+ * - <https://www.w3.org/ns/activitystreams>
+ * - <https://w3id.org/security/v1>
+ * - <https://w3id.org/security/data-integrity/v1>
+ * - <https://www.w3.org/ns/did/v1>
+ * - <https://w3id.org/security/multikey/v1>
  * @param url The URL of the document to load.
  * @returns The remote document.
  */
 export async function fetchDocumentLoader(
   url: string,
 ): Promise<RemoteDocument> {
+  if (url in preloadedContexts) {
+    logger.debug("Using preloaded context: {url}.", { url });
+    return {
+      contextUrl: null,
+      document: preloadedContexts[url],
+      documentUrl: url,
+    };
+  }
   const request = createRequest(url);
   logRequest(request);
   const response = await fetch(request, {
@@ -199,11 +216,7 @@ export interface KvCacheParameters {
    * a {@link URLPattern} and `duration` is a {@link Temporal.Duration}.
    * The `duration` is allowed to be at most 30 days.
    *
-   * The default rules are:
-   *
-   * - `https://www.w3.org/ns/activitystreams` for 30 days
-   * - `https://w3id.org/security/v1` for 30 days
-   * - Everything else for 5 minutes
+   * By default, 5 minutes for all URLs.
    */
   rules?: [string | URL | URLPattern, Temporal.Duration][];
 }
@@ -218,11 +231,6 @@ export function kvCache(
 ): DocumentLoader {
   const keyPrefix = prefix ?? ["_fedify", "remoteDocument"];
   rules ??= [
-    [
-      "https://www.w3.org/ns/activitystreams",
-      Temporal.Duration.from({ days: 30 }),
-    ],
-    ["https://w3id.org/security/v1", Temporal.Duration.from({ days: 30 })],
     [new URLPattern({}), Temporal.Duration.from({ minutes: 5 })],
   ];
   for (const [p, duration] of rules) {
