@@ -36,15 +36,15 @@ const handleRegexp =
  * @example
  * ``` typescript
  * // Look up an actor by its fediverse handle:
- * await lookupObject("@hongminhee@todon.eu");
+ * await lookupObject("@hongminhee@fosstodon.org");
  * // returning a `Person` object.
  *
  * // A fediverse handle can omit the leading '@':
- * await lookupObject("hongminhee@todon.eu");
+ * await lookupObject("hongminhee@fosstodon.org");
  * // returning a `Person` object.
  *
  * // A `acct:` URI can be used as well:
- * await lookupObject("acct:hongminhee@todon.eu");
+ * await lookupObject("acct:hongminhee@fosstodon.org");
  * // returning a `Person` object.
  *
  * // Look up an object by its URI:

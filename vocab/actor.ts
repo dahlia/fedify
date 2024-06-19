@@ -85,11 +85,11 @@ export function getActorClassByTypeName(
  * ``` typescript
  * // Get the handle of an actor object:
  * await getActorHandle(
- *   new Person({ id: new URL("https://todon.eu/users/hongminhee") })
+ *   new Person({ id: new URL("https://fosstodon.org/users/hongminhee") })
  * );
  *
  * // Get the handle of an actor URI:
- * await getActorHandle(new URL("https://todon.eu/users/hongminhee"));
+ * await getActorHandle(new URL("https://fosstodon.org/users/hongminhee"));
  * ```
  *
  * @param actor The actor or actor URI to get the handle from.
