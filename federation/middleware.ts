@@ -238,10 +238,12 @@ export class Federation<TContextData> {
     // deno-lint-ignore no-explicit-any
     (new (...args: any[]) => Object) & { typeId: URL }
   >;
+  #inboxPath?: string;
+  #inboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
   #outboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
   #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData, void>;
   #followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
-  #inboxListeners: Map<
+  #inboxListeners?: Map<
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
   >;
@@ -281,7 +283,6 @@ export class Federation<TContextData> {
     this.#router = new Router();
     this.#router.add("/.well-known/webfinger", "webfinger");
     this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
-    this.#inboxListeners = new Map();
     this.#objectCallbacks = {};
     this.#objectTypeIds = {};
     this.#documentLoader = options.documentLoader ?? kvCache({
@@ -858,6 +859,65 @@ export class Federation<TContextData> {
   }
 
   /**
+   * Registers an inbox dispatcher.
+   *
+   * @param path The URI path pattern for the outbox dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`, and must match the inbox
+   *             listener path.
+   * @param dispatcher An inbox dispatcher callback to register.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   * @since 0.11.0
+   */
+  setInboxDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Activity, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void> {
+    if (this.#inboxCallbacks != null) {
+      throw new RouterError("Inbox dispatcher already set.");
+    }
+    if (this.#router.has("inbox")) {
+      if (this.#inboxPath !== path) {
+        throw new RouterError(
+          "Inbox dispatcher path must match inbox listener path.",
+        );
+      }
+    } else {
+      const variables = this.#router.add(path, "inbox");
+      if (variables.size !== 1 || !variables.has("handle")) {
+        throw new RouterError(
+          "Path for inbox dispatcher must have one variable: {handle}",
+        );
+      }
+      this.#inboxPath = path;
+    }
+    const callbacks: CollectionCallbacks<Activity, TContextData, void> = {
+      dispatcher,
+    };
+    this.#inboxCallbacks = callbacks;
+    const setters: CollectionCallbackSetters<TContextData, void> = {
+      setCounter(counter: CollectionCounter<TContextData, void>) {
+        callbacks.counter = counter;
+        return setters;
+      },
+      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+        callbacks.firstCursor = cursor;
+        return setters;
+      },
+      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+        callbacks.lastCursor = cursor;
+        return setters;
+      },
+      authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
+        return setters;
+      },
+    };
+    return setters;
+  }
+
+  /**
    * Registers an outbox dispatcher.
    *
    * @example
@@ -1045,7 +1105,8 @@ export class Federation<TContextData> {
    * @param inboxPath The URI path pattern for the inbox.  The syntax is based
    *                  on URI Template
    *                  ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
-   *                  The path must have one variable: `{handle}`.
+   *                  The path must have one variable: `{handle}`, and must
+   *                  match the inbox dispatcher path.
    * @param sharedInboxPath An optional URI path pattern for the shared inbox.
    *                        The syntax is based on URI Template
    *                        ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
@@ -1057,14 +1118,22 @@ export class Federation<TContextData> {
     inboxPath: `${string}{handle}${string}`,
     sharedInboxPath?: string,
   ): InboxListenerSetter<TContextData> {
-    if (this.#router.has("inbox")) {
-      throw new RouterError("Inbox already set.");
+    if (this.#inboxListeners != null) {
+      throw new RouterError("Inbox listeners already set.");
     }
-    const variables = this.#router.add(inboxPath, "inbox");
-    if (variables.size !== 1 || !variables.has("handle")) {
-      throw new RouterError(
-        "Path for inbox must have one variable: {handle}",
-      );
+    if (this.#router.has("inbox")) {
+      if (this.#inboxPath !== inboxPath) {
+        throw new RouterError(
+          "Inbox listener path must match inbox dispatcher path.",
+        );
+      }
+    } else {
+      const variables = this.#router.add(inboxPath, "inbox");
+      if (variables.size !== 1 || !variables.has("handle")) {
+        throw new RouterError(
+          "Path for inbox must have one variable: {handle}",
+        );
+      }
     }
     if (sharedInboxPath != null) {
       const siVars = this.#router.add(sharedInboxPath, "sharedInbox");
@@ -1074,7 +1143,7 @@ export class Federation<TContextData> {
         );
       }
     }
-    const listeners = this.#inboxListeners;
+    const listeners = this.#inboxListeners = new Map();
     const setter: InboxListenerSetter<TContextData> = {
       on<TActivity extends Activity>(
         // deno-lint-ignore no-explicit-any
@@ -1319,6 +1388,17 @@ export class Federation<TContextData> {
           onNotAcceptable,
         });
       case "inbox":
+        if (request.method !== "POST") {
+          return await handleCollection(request, {
+            name: "inbox",
+            handle: route.values.handle,
+            context,
+            collectionCallbacks: this.#inboxCallbacks,
+            onUnauthorized,
+            onNotFound,
+            onNotAcceptable,
+          });
+        }
         context = this.#createContext(
           request,
           contextData,
@@ -1336,7 +1416,7 @@ export class Federation<TContextData> {
           kv: this.#kv,
           kvPrefix: this.#kvPrefixes.activityIdempotence,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
-          inboxListeners: this.#inboxListeners,
+          inboxListeners: this.#inboxListeners ?? new Map(),
           inboxErrorHandler: this.#inboxErrorHandler,
           onNotFound,
           signatureTimeWindow: this.#signatureTimeWindow,

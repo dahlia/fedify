@@ -73,7 +73,7 @@ federation
         }),
       })
     );
-    return { items }
+    return { items };
   });
 ~~~~
 
@@ -312,6 +312,40 @@ federation
     return (total - (total % window)).toString();
   });
 ~~~~
+
+
+Inbox
+-----
+
+*This API is available since Fedify 0.11.0.*
+
+The inbox collection is similar to the outbox collection, but it's a collection
+of activities that an actor has received.
+
+Cursors and counters for the inbox collection are implemented in the same way as
+the outbox collection, so we don't repeat the explanation here.
+
+The below example shows how to construct an inbox collection:
+
+~~~~ typescript
+import { Activity } from "@fedify/fedify";
+
+federation
+  .setInboxDispatcher("/users/{handle}/inbox", async (ctx, handle) => {
+    // Work with the database to find the activities that the actor has received
+    // (the following `getInboxByUserHandle` is a hypothetical function):
+    const items: Activity[] = await getInboxByUserHandle(handle);
+    return { items };
+  })
+  .setCounter(async (ctx, handle) => {
+    // The following `countInboxByUserHandle` is a hypothetical function:
+    return await countInboxByUserHandle(handle);
+  });
+~~~~
+
+> [!NOTE]
+> The path for the inbox collection dispatcher must match the path for the inbox
+> listeners.
 
 
 Following

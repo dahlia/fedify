@@ -432,6 +432,46 @@ test("Federation.setInboxListeners()", async (t) => {
     );
   });
 
+  await t.step("path match", () => {
+    const federation = createFederation<void>({
+      kv,
+      documentLoader: mockDocumentLoader,
+    });
+    federation.setInboxDispatcher(
+      "/users/{handle}/inbox",
+      () => ({ items: [] }),
+    );
+    assertThrows(
+      () => federation.setInboxListeners("/users/{handle}/inbox2"),
+      RouterError,
+    );
+  });
+
+  await t.step("wrong variables in path", () => {
+    const federation = createFederation<void>({
+      kv,
+      documentLoader: mockDocumentLoader,
+    });
+    assertThrows(
+      () =>
+        federation.setInboxListeners(
+          "/users/inbox" as `${string}{handle}${string}`,
+        ),
+      RouterError,
+    );
+    assertThrows(
+      () => federation.setInboxListeners("/users/{handle}/inbox/{handle2}"),
+      RouterError,
+    );
+    assertThrows(
+      () =>
+        federation.setInboxListeners(
+          "/users/{handle2}/inbox" as `${string}{handle}${string}`,
+        ),
+      RouterError,
+    );
+  });
+
   await t.step("on()", async () => {
     const authenticatedRequests: [string, string][] = [];
     const federation = createFederation<void>({
@@ -639,4 +679,55 @@ test("Federation.setInboxListeners()", async (t) => {
   });
 
   mf.uninstall();
+});
+
+test("Federation.setInboxDispatcher()", async (t) => {
+  const kv = new MemoryKvStore();
+
+  await t.step("path match", () => {
+    const federation = createFederation<void>({
+      kv,
+      documentLoader: mockDocumentLoader,
+    });
+    federation.setInboxListeners("/users/{handle}/inbox");
+    assertThrows(
+      () =>
+        federation.setInboxDispatcher(
+          "/users/{handle}/inbox2",
+          () => ({ items: [] }),
+        ),
+      RouterError,
+    );
+  });
+
+  await t.step("wrong variables in path", () => {
+    const federation = createFederation<void>({
+      kv,
+      documentLoader: mockDocumentLoader,
+    });
+    assertThrows(
+      () =>
+        federation.setInboxDispatcher(
+          "/users/inbox" as `${string}{handle}${string}`,
+          () => ({ items: [] }),
+        ),
+      RouterError,
+    );
+    assertThrows(
+      () =>
+        federation.setInboxDispatcher(
+          "/users/{handle}/inbox/{handle2}",
+          () => ({ items: [] }),
+        ),
+      RouterError,
+    );
+    assertThrows(
+      () =>
+        federation.setInboxDispatcher(
+          "/users/{handle2}/inbox" as `${string}{handle}${string}`,
+          () => ({ items: [] }),
+        ),
+      RouterError,
+    );
+  });
 });

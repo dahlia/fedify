@@ -8,6 +8,8 @@ Version 0.11.0
 
 To be released.
 
+ -  Added `Federation.setInboxDispatcher()` method.  [[#71]]
+
  -  Frequently used JSON-LD contexts are now preloaded.  [[74]]
 
      -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
@@ -25,6 +27,7 @@ To be released.
  -  Added `Offer` class to Activity Vocabulary API.
     [[#65], [#76] by Lee Dogeon]
 
+[#71]: https://github.com/dahlia/fedify/issues/71
 [#74]: https://github.com/dahlia/fedify/issues/74
 [#76]: https://github.com/dahlia/fedify/pull/76
 
