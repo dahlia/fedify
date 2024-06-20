@@ -99,7 +99,7 @@ If you want to fix a bug in Fedify, please search the [GitHub issue tracker] to
 see if the bug has already been reported.  If it hasn't been reported yet,
 please open a new issue to discuss the bug.
 
-When you open a pull request, please provide the he issue number that the pull
+When you open a pull request, please provide the issue number that the pull
 request is related to.
 
 A patch set should include the following:
