@@ -23,7 +23,7 @@ To be released.
         URLs.
 
  -  Added `Offer` class to Activity Vocabulary API.
-    [[#65], [#76]]
+    [[#65], [#76] by Lee Dogeon]
 
 [#74]: https://github.com/dahlia/fedify/issues/74
 [#76]: https://github.com/dahlia/fedify/pull/76
@@ -759,4 +759,4 @@ Version 0.1.0
 
 Initial release.  Released on March 8, 2024.
 
-<!-- cSpell: ignore Wressell -->
+<!-- cSpell: ignore Dogeon Wressell -->
