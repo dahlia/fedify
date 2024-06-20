@@ -184,6 +184,7 @@ jobs:
         root: .
 
   publish-docs:
+    if: github.event_name == 'push'
     needs: [publish]
     runs-on: ubuntu-latest
     permissions:
