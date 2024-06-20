@@ -22,7 +22,11 @@ To be released.
      -  The default `rules` for `kvCache()` function are now 5 minutes for all
         URLs.
 
+ -  Added `Offer` class to Activity Vocabulary API.
+    [[#65], [#76]]
+
 [#74]: https://github.com/dahlia/fedify/issues/74
+[#76]: https://github.com/dahlia/fedify/pull/76
 
 
 Version 0.10.0
