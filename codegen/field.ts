@@ -20,9 +20,9 @@ export async function generateField(
 ): Promise<string> {
   const fieldName = await getFieldName(property.uri, prefix);
   if (areAllScalarTypes(property.range, types)) {
-    return `${fieldName}: ${
+    return `${fieldName}: (${
       getTypeNames(property.range, types, true)
-    }[] = [];\n`;
+    })[] = [];\n`;
   } else {
     return `${fieldName}: (${
       getTypeNames(property.range, types)

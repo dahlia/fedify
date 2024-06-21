@@ -1,6 +1,6 @@
 import { getFieldName } from "./field.ts";
 import type { PropertySchema, TypeSchema } from "./schema.ts";
-import { areAllScalarTypes, getTypeNames } from "./type.ts";
+import { areAllScalarTypes, getTypeGuards, getTypeNames } from "./type.ts";
 
 function generateParameterType(
   property: PropertySchema,
@@ -25,7 +25,7 @@ function generateParameterType(
   if (!property.functional) {
     if (scalar) {
       code.push(
-        `${property.pluralName}?: ${getTypeNames(range, types, true)}[];`,
+        `${property.pluralName}?: (${getTypeNames(range, types, true)})[];`,
       );
     } else {
       code.push(
@@ -87,7 +87,11 @@ export async function* generateConstructor(
     yield `
     this.#documentLoader = documentLoader;
     this.#contextLoader = contextLoader;
-    this.id = values.id ?? null;
+    if (values.id == null || values.id instanceof URL) {
+      this.id = values.id ?? null;
+    } else {
+      throw new TypeError("The id must be a URL.");
+    }
     `;
   } else {
     yield "super(values, { documentLoader, contextLoader });";
@@ -95,14 +99,41 @@ export async function* generateConstructor(
   for (const property of type.properties) {
     const fieldName = await getFieldName(property.uri);
     if (property.functional || property.singularAccessor) {
+      let typeGuards = getTypeGuards(
+        property.range,
+        types,
+        `values.${property.singularName}`,
+      );
+      let typeNames = getTypeNames(property.range, types);
+      const scalar = areAllScalarTypes(property.range, types);
+      if (!scalar) {
+        typeGuards =
+          `${typeGuards} || values.${property.singularName} instanceof URL`;
+        typeNames = `${typeNames} | URL`;
+      }
       yield `
         if ("${property.singularName}" in values && \
             values.${property.singularName} != null) {
-          this.${fieldName} = [values.${property.singularName}];
+          if (${typeGuards}) {
+            // @ts-ignore: type is checked above.
+            this.${fieldName} = [values.${property.singularName}];
+          } else {
+            throw new TypeError(
+              "The ${property.singularName} must be of type " +
+              ${JSON.stringify(typeNames)} + ".",
+            );
+          }
         }
       `;
     }
     if (!property.functional) {
+      let typeGuards = getTypeGuards(property.range, types, `v`);
+      let typeNames = getTypeNames(property.range, types);
+      const scalar = areAllScalarTypes(property.range, types);
+      if (!scalar) {
+        typeGuards = `${typeGuards} || v instanceof URL`;
+        typeNames = `${typeNames} | URL`;
+      }
       yield `
         if ("${property.pluralName}" in values && \
             values.${property.pluralName} != null) {
@@ -119,7 +150,16 @@ export async function* generateConstructor(
         `;
       }
       yield `
-          this.${fieldName} = values.${property.pluralName};
+          if (Array.isArray(values.${property.pluralName}) &&
+              values.${property.pluralName}.every(v => ${typeGuards})) {
+            // @ts-ignore: type is checked above.
+            this.${fieldName} = values.${property.pluralName};
+          } else {
+            throw new TypeError(
+              "The ${property.pluralName} must be an array of type " +
+              ${JSON.stringify(typeNames)} + ".",
+            );
+          }
         }
       `;
     }
@@ -166,14 +206,41 @@ export async function* generateCloner(
     const fieldName = await getFieldName(property.uri);
     yield `clone.${fieldName} = this.${fieldName};`;
     if (property.functional || property.singularAccessor) {
+      let typeGuards = getTypeGuards(
+        property.range,
+        types,
+        `values.${property.singularName}`,
+      );
+      let typeNames = getTypeNames(property.range, types);
+      const scalar = areAllScalarTypes(property.range, types);
+      if (!scalar) {
+        typeGuards =
+          `${typeGuards} || values.${property.singularName} instanceof URL`;
+        typeNames = `${typeNames} | URL`;
+      }
       yield `
         if ("${property.singularName}" in values && \
             values.${property.singularName} != null) {
-          clone.${fieldName} = [values.${property.singularName}];
+          if (${typeGuards}) {
+            // @ts-ignore: type is checked above.
+            clone.${fieldName} = [values.${property.singularName}];
+          } else {
+            throw new TypeError(
+              "The ${property.singularName} must be of type " +
+              ${JSON.stringify(typeNames)} + ".",
+            );
+          }
         }
       `;
     }
     if (!property.functional) {
+      let typeGuards = getTypeGuards(property.range, types, `v`);
+      let typeNames = getTypeNames(property.range, types);
+      const scalar = areAllScalarTypes(property.range, types);
+      if (!scalar) {
+        typeGuards = `${typeGuards} || v instanceof URL`;
+        typeNames = `${typeNames} | URL`;
+      }
       yield `
         if ("${property.pluralName}" in values && \
             values.${property.pluralName} != null) {
@@ -190,7 +257,16 @@ export async function* generateCloner(
         `;
       }
       yield `
-          clone.${fieldName} = values.${property.pluralName};
+          if (Array.isArray(values.${property.pluralName}) &&
+              values.${property.pluralName}.every(v => ${typeGuards})) {
+            // @ts-ignore: type is checked above.
+            clone.${fieldName} = values.${property.pluralName};
+          } else {
+            throw new TypeError(
+              "The ${property.pluralName} must be an array of type " +
+              ${JSON.stringify(typeNames)} + ".",
+            );
+          }
         }
       `;
     }

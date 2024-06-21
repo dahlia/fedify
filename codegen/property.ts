@@ -22,9 +22,9 @@ async function* generateProperty(
     }
     if (!property.functional) {
       yield doc;
-      yield `get ${property.pluralName}(): ${
+      yield `get ${property.pluralName}(): (${
         getTypeNames(property.range, types, true)
-      }[] {
+      })[] {
         return this.${await getFieldName(property.uri)};
       }
       `;

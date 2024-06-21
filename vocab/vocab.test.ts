@@ -49,9 +49,29 @@ test("new Object()", () => {
   assertEquals(obj.contents[1], new LanguageString("你好", "zh"));
 
   assertThrows(
+    () => new Object({ id: 123 as unknown as URL }),
+    TypeError,
+    "The id must be a URL.",
+  );
+  assertThrows(
     () => new Object({ name: "singular", names: ["plural"] }),
     TypeError,
     "Cannot initialize both name and names at the same time.",
+  );
+  assertThrows(
+    () => new Object({ name: 123 as unknown as string }),
+    TypeError,
+    "The name must be of type string | LanguageString.",
+  );
+  assertThrows(
+    () => new Object({ names: "foo" as unknown as string[] }),
+    TypeError,
+    "The names must be an array of type string | LanguageString.",
+  );
+  assertThrows(
+    () => new Object({ names: ["foo", 123 as unknown as string] }),
+    TypeError,
+    "The names must be an array of type string | LanguageString.",
   );
 });
 
@@ -79,6 +99,32 @@ test("Object.clone()", () => {
     new LanguageString("Hello", "en"),
     new LanguageString("你好", "zh"),
   ]);
+
+  assertThrows(
+    () => obj.clone({ id: 123 as unknown as URL }),
+    TypeError,
+    "The id must be a URL.",
+  );
+  assertThrows(
+    () => obj.clone({ name: "singular", names: ["plural"] }),
+    TypeError,
+    "Cannot update both name and names at the same time.",
+  );
+  assertThrows(
+    () => obj.clone({ name: 123 as unknown as string }),
+    TypeError,
+    "The name must be of type string | LanguageString.",
+  );
+  assertThrows(
+    () => obj.clone({ names: "foo" as unknown as string[] }),
+    TypeError,
+    "The names must be an array of type string | LanguageString.",
+  );
+  assertThrows(
+    () => obj.clone({ names: ["foo", 123 as unknown as string] }),
+    TypeError,
+    "The names must be an array of type string | LanguageString.",
+  );
 });
 
 test("Object.fromJsonLd()", async () => {
@@ -663,6 +709,24 @@ for (const typeUri in types) {
         );
       }
     }
+
+    assertThrows(
+      () => new cls({ id: 123 as unknown as URL }),
+      TypeError,
+      "The id must be a URL.",
+    );
+
+    for (const property of allProperties) {
+      const wrongValues = globalThis.Object.fromEntries(
+        globalThis.Object.entries(initValues),
+      );
+      if (property.functional) {
+        wrongValues[property.singularName] = {};
+      } else {
+        wrongValues[property.pluralName] = [{}];
+      }
+      assertThrows(() => new cls(wrongValues), TypeError);
+    }
   });
 
   test(`${type.name}.clone() [auto]`, () => {
@@ -678,6 +742,23 @@ for (const typeUri in types) {
           TypeError,
         );
       }
+    }
+
+    assertThrows(
+      () => instance.clone({ id: 123 as unknown as URL }),
+      TypeError,
+      "The id must be a URL.",
+    );
+    for (const property of allProperties) {
+      const wrongValues = globalThis.Object.fromEntries(
+        globalThis.Object.entries(initValues),
+      );
+      if (property.functional) {
+        wrongValues[property.singularName] = {};
+      } else {
+        wrongValues[property.pluralName] = [{}];
+      }
+      assertThrows(() => instance.clone(wrongValues), TypeError);
     }
   });
 

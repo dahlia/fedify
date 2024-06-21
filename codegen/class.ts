@@ -91,7 +91,7 @@ export async function* generateClasses(
   yield "// deno-lint-ignore-file ban-unused-ignore\n";
   yield "// @ts-ignore TS7016\n";
   yield 'import jsonld from "jsonld";\n';
-  yield `import { type LanguageTag, parseLanguageTag }
+  yield `import { LanguageTag, parseLanguageTag }
     from "@phensley/language-tag";\n`;
   yield `import { decode as decodeMultibase, encode as encodeMultibase }
     from "multibase";`;

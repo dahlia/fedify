@@ -231,7 +231,11 @@ const scalarTypes: Record<string, ScalarType> = {
   "fedify:publicKey": {
     name: "CryptoKey",
     typeGuard(v) {
-      return `${v} instanceof CryptoKey`;
+      return `
+        // @ts-ignore: CryptoKey exists in the global scope.
+        // dnt-shim-ignore
+        ${v} instanceof CryptoKey
+      `;
     },
     encoder(v) {
       return `{ "@value": await exportSpki(${v}) }`;
@@ -247,7 +251,11 @@ const scalarTypes: Record<string, ScalarType> = {
   "fedify:multibaseKey": {
     name: "CryptoKey",
     typeGuard(v) {
-      return `${v} instanceof CryptoKey`;
+      return `
+        // @ts-ignore: CryptoKey exists in the global scope.
+        // dnt-shim-ignore
+        ${v} instanceof CryptoKey
+      `;
     },
     encoder(v) {
       return `{
@@ -264,8 +272,8 @@ const scalarTypes: Record<string, ScalarType> = {
     },
   },
   "fedify:proofPurpose": {
-    name: `("assertionMethod" | "authentication" | "capabilityInvocation" |
-      "capabilityDelegation" | "keyAgreement")`,
+    name: '"assertionMethod" | "authentication" | "capabilityInvocation" | ' +
+      '"capabilityDelegation" | "keyAgreement"',
     typeGuard(v) {
       return `${v} === "assertionMethod" || ${v} === "authentication" ||
         ${v} === "capabilityInvocation" || ${v} === "capabilityDelegation" ||
@@ -380,6 +388,14 @@ export function getTypeGuard(
   if (typeUri in scalarTypes) return scalarTypes[typeUri].typeGuard(variable);
   if (typeUri in types) return `${variable} instanceof ${types[typeUri].name}`;
   throw new Error(`Unknown type: ${typeUri}`);
+}
+
+export function getTypeGuards(
+  typeUris: string[],
+  types: Record<string, TypeSchema>,
+  variable: string,
+): string {
+  return typeUris.map((t) => getTypeGuard(t, types, variable)).join(" || ");
 }
 
 export function* getEncoders(

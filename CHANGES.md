@@ -8,6 +8,8 @@ Version 0.11.0
 
 To be released.
 
+ -  Improved runtime type error messages for Activity Vocabulary API.  [[#79]]
+
  -  Added `Federation.setInboxDispatcher()` method.  [[#71]]
 
  -  Frequently used JSON-LD contexts are now preloaded.  [[74]]
@@ -30,6 +32,7 @@ To be released.
 [#71]: https://github.com/dahlia/fedify/issues/71
 [#74]: https://github.com/dahlia/fedify/issues/74
 [#76]: https://github.com/dahlia/fedify/pull/76
+[#79]: https://github.com/dahlia/fedify/issues/79
 
 
 Version 0.10.0
