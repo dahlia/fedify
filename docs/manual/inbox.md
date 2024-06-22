@@ -56,16 +56,16 @@ federation
 
 In the above example, the `~Federation.setInboxListeners()` method registers
 path patterns for the personal inbox and the shared inbox, and the following
-`~InboxListenerSetter.on()` method registers an inbox listener for the `Follow`
-activity.  The `~InboxListenerSetter.on()` method takes a class of the activity
+`~InboxListenerSetters.on()` method registers an inbox listener for the `Follow`
+activity.  The `~InboxListenerSetters.on()` method takes a class of the activity
 and a callback function that takes a `Context` object and the activity object.
 
-Note that the `~InboxListenerSetter.on()` method can be chained to register
+Note that the `~InboxListenerSetters.on()` method can be chained to register
 multiple inbox listeners for different activity types.
 
 > [!WARNING]
 > Activities of any type that are not registered with
-> the `~InboxListenerSetter.on()` method are silently ignored.
+> the `~InboxListenerSetters.on()` method are silently ignored.
 > If you want to catch all types of activities anyway, add a listener
 > for the `Activity` class.
 
@@ -98,13 +98,83 @@ the correct authentication.
       section](./vocab.md#object-ids-and-remote-objects) if you are not familiar
       with dereferencing accessors.
 
+### Shared inbox key dispatcher
+
+*This API is available since Fedify 0.11.0.*
+
+> [!TIP]
+> We highly recommend configuring the shared inbox key dispatcher to avoid
+> potential incompatibility issues with ActivityPub servers that require
+> [authorized fetch] (i.e., secure mode).
+
+If you want to use an authenticated `DocumentLoader` object as
+the `Context.documentLoader` for a shared inbox, you can set the identity
+for the authentication using `~InboxListenerSetters.setSharedKeyDispatcher()`
+method.  For example, the following shows how to implement the [instance actor]
+pattern:
+
+~~~~ typescript{5-9,13-18}
+import { Application, Person } from "@fedify/fedify";
+
+federation
+  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  // The following line assumes that there is an instance actor named `~actor`
+  // for the server.  The leading tilde (`~`) is just for avoiding conflicts
+  // with regular actor handles, but you don't have to necessarily follow this
+  // convention:
+  .setSharedKeyDispatcher((_ctx) => ({ handle: "~actor" }));
+
+federation
+  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+    if (handle === "~actor") {
+      // Returns an Application object for the instance actor:
+      return new Application({
+        // ...
+      });
+    }
+
+    // Fetches the regular actor from the database and returns a Person object:
+    return new Person({
+      // ...
+    });
+  });
+~~~~
+
+Or you can manually configure the key pair instead of referring to an actor
+by its handle:
+
+~~~~ typescript{11-18}
+import { importJwk } from "@fedify/fedify";
+
+interface InstanceActor {
+  privateKey: JsonWebKey;
+  publicKeyUri: string;
+}
+
+federation
+  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setSharedKeyDispatcher(async (_ctx) => {
+    // The following getInstanceActor() is just a hypothetical function that
+    // fetches information about the instance actor from a database or some
+    // other storage:
+    const instanceActor: InstanceActor = await getInstanceActor();
+    return {
+      privateKey: await importJwk(instanceActor.privateKey, "private"),
+      keyId: new URL(instanceActor.publicKeyUri),
+    };
+  });
+~~~~
+
+[authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
+[instance actor]: https://seb.jambor.dev/posts/understanding-activitypub-part-4-threads/#the-instance-actor
+
 
 Error handling
 --------------
 
 Since an incoming activity can be malformed or invalid, you may want to handle
 such cases.  Also, your listener itself may throw an error.
-The `~InboxListenerSetter.onError()` method registers a callback
+The `~InboxListenerSetters.onError()` method registers a callback
 function that takes a `Context` object and an error object.  The following shows
 an example of handling errors:
 

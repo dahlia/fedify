@@ -32,6 +32,7 @@ import type {
   ObjectAuthorizePredicate,
   ObjectDispatcher,
   OutboxErrorHandler,
+  SharedInboxKeyDispatcher,
 } from "./callback.ts";
 import { buildCollectionSynchronizationHeader } from "./collection.ts";
 import type {
@@ -248,6 +249,7 @@ export class Federation<TContextData> {
     InboxListener<TContextData, Activity>
   >;
   #inboxErrorHandler?: InboxErrorHandler<TContextData>;
+  #sharedInboxKeyDispatcher?: SharedInboxKeyDispatcher<TContextData>;
   #documentLoader: DocumentLoader;
   #contextLoader: DocumentLoader;
   #authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
@@ -1117,7 +1119,7 @@ export class Federation<TContextData> {
   setInboxListeners(
     inboxPath: `${string}{handle}${string}`,
     sharedInboxPath?: string,
-  ): InboxListenerSetter<TContextData> {
+  ): InboxListenerSetters<TContextData> {
     if (this.#inboxListeners != null) {
       throw new RouterError("Inbox listeners already set.");
     }
@@ -1144,26 +1146,32 @@ export class Federation<TContextData> {
       }
     }
     const listeners = this.#inboxListeners = new Map();
-    const setter: InboxListenerSetter<TContextData> = {
+    const setters: InboxListenerSetters<TContextData> = {
       on<TActivity extends Activity>(
         // deno-lint-ignore no-explicit-any
         type: new (...args: any[]) => TActivity,
         listener: InboxListener<TContextData, TActivity>,
-      ): InboxListenerSetter<TContextData> {
+      ): InboxListenerSetters<TContextData> {
         if (listeners.has(type)) {
           throw new TypeError("Listener already set for this type.");
         }
         listeners.set(type, listener as InboxListener<TContextData, Activity>);
-        return setter;
+        return setters;
       },
       onError: (
         handler: InboxErrorHandler<TContextData>,
-      ): InboxListenerSetter<TContextData> => {
+      ): InboxListenerSetters<TContextData> => {
         this.#inboxErrorHandler = handler;
-        return setter;
+        return setters;
+      },
+      setSharedKeyDispatcher: (
+        dispatcher: SharedInboxKeyDispatcher<TContextData>,
+      ): InboxListenerSetters<TContextData> => {
+        this.#sharedInboxKeyDispatcher = dispatcher;
+        return setters;
       },
     };
-    return setter;
+    return setters;
   }
 
   /**
@@ -1331,7 +1339,8 @@ export class Federation<TContextData> {
       return response instanceof Promise ? await response : response;
     }
     let context = this.#createContext(request, contextData);
-    switch (route.name.replace(/:.*$/, "")) {
+    const routeName = route.name.replace(/:.*$/, "");
+    switch (routeName) {
       case "webfinger":
         return await handleWebFinger(request, {
           context,
@@ -1399,17 +1408,21 @@ export class Federation<TContextData> {
             onNotAcceptable,
           });
         }
-        context = this.#createContext(
-          request,
-          contextData,
-          {
-            documentLoader: await context.getDocumentLoader({
-              handle: route.values.handle,
-            }),
-          },
-        );
+        context = this.#createContext(request, contextData, {
+          documentLoader: await context.getDocumentLoader({
+            handle: route.values.handle,
+          }),
+        });
         // falls through
       case "sharedInbox":
+        if (routeName !== "inbox" && this.#sharedInboxKeyDispatcher != null) {
+          const identity = await this.#sharedInboxKeyDispatcher(context);
+          context = this.#createContext(request, contextData, {
+            documentLoader: "handle" in identity
+              ? await context.getDocumentLoader(identity)
+              : context.getDocumentLoader(identity),
+          });
+        }
         return await handleInbox(request, {
           handle: route.values.handle ?? null,
           context,
@@ -1760,11 +1773,9 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   }
 
   getDocumentLoader(identity: { handle: string }): Promise<DocumentLoader>;
+  getDocumentLoader(identity: SenderKeyPair): DocumentLoader;
   getDocumentLoader(
-    identity: { keyId: URL; privateKey: CryptoKey },
-  ): DocumentLoader;
-  getDocumentLoader(
-    identity: { keyId: URL; privateKey: CryptoKey } | { handle: string },
+    identity: SenderKeyPair | { handle: string },
   ): DocumentLoader | Promise<DocumentLoader> {
     if ("handle" in identity) {
       const keyPair = this.getRsaKeyPairFromHandle(identity.handle);
@@ -2175,7 +2186,7 @@ export interface CollectionCallbackSetters<TContextData, TFilter> {
 /**
  * Registry for inbox listeners for different activity types.
  */
-export interface InboxListenerSetter<TContextData> {
+export interface InboxListenerSetters<TContextData> {
   /**
    * Registers a listener for a specific incoming activity type.
    *
@@ -2187,7 +2198,7 @@ export interface InboxListenerSetter<TContextData> {
     // deno-lint-ignore no-explicit-any
     type: new (...args: any[]) => TActivity,
     listener: InboxListener<TContextData, TActivity>,
-  ): InboxListenerSetter<TContextData>;
+  ): InboxListenerSetters<TContextData>;
 
   /**
    * Registers an error handler for inbox listeners.  Any exceptions thrown
@@ -2198,7 +2209,20 @@ export interface InboxListenerSetter<TContextData> {
    */
   onError(
     handler: InboxErrorHandler<TContextData>,
-  ): InboxListenerSetter<TContextData>;
+  ): InboxListenerSetters<TContextData>;
+
+  /**
+   * Configures a callback to dispatch the key pair for the authenticated
+   * document loader of the {@link Context} passed to the shared inbox listener.
+   *
+   * @param dispatcher A callback to dispatch the key pair for the authenticated
+   *                   document loader.
+   * @returns The setters object so that settings can be chained.
+   * @since 0.11.0
+   */
+  setSharedKeyDispatcher(
+    dispatcher: SharedInboxKeyDispatcher<TContextData>,
+  ): InboxListenerSetters<TContextData>;
 }
 
 interface SendActivityInternalOptions extends SendActivityOptions {

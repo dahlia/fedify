@@ -182,6 +182,7 @@ const followers: Record<string, Actor> = {};
 
 federation
   .setInboxListeners("/{handle}/inbox", "/inbox")
+  .setSharedKeyDispatcher((_) => ({ handle: "i" }))
   .on(Activity, async (ctx, activity) => {
     activities[ctx.data].activity = activity;
     if (activity instanceof Follow) {

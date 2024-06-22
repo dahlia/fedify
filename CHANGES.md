@@ -29,6 +29,15 @@ To be released.
  -  Added `Offer` class to Activity Vocabulary API.
     [[#65], [#76] by Lee Dogeon]
 
+ -  The key pair or the key pair for signing outgoing HTTP requests made from
+    the shared inbox now can be configured.  This improves the compatibility
+    with other ActivityPub implementations that require authorized fetches
+    (i.e., secure mode).
+
+     -  Added `SharedInboxKeyDispatcher` type.
+     -  Renamed `InboxListenerSetter` interface to `InboxListenerSetters`.
+     -  Added `InboxListenerSetters.setSharedKeyDispatcher()` method.
+
 [#71]: https://github.com/dahlia/fedify/issues/71
 [#74]: https://github.com/dahlia/fedify/issues/74
 [#76]: https://github.com/dahlia/fedify/pull/76

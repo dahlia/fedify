@@ -4,6 +4,7 @@ import type { Activity, CryptographicKey } from "../vocab/mod.ts";
 import type { Object } from "../vocab/vocab.ts";
 import type { PageItems } from "./collection.ts";
 import type { RequestContext } from "./context.ts";
+import type { SenderKeyPair } from "./send.ts";
 
 /**
  * A callback that dispatches a {@link NodeInfo} object.
@@ -126,6 +127,24 @@ export type InboxErrorHandler<TContextData> = (
   context: RequestContext<TContextData>,
   error: Error,
 ) => void | Promise<void>;
+
+/**
+ * A callback that dispatches the key pair for the authenticated document loader
+ * of the {@link Context} passed to the shared inbox listener.
+ *
+ * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @param context The request context.
+ * @returns The handle of the actor or the key pair for the authenticated
+ *          document loader of the {@link Context} passed to the shared inbox
+ *          listener.
+ * @since 0.11.0
+ */
+export type SharedInboxKeyDispatcher<TContextData> = (
+  context: RequestContext<TContextData>,
+) =>
+  | SenderKeyPair
+  | { handle: string }
+  | Promise<SenderKeyPair | { handle: string }>;
 
 /**
  * A callback that handles errors during outbox processing.
