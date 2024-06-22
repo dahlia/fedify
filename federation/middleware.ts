@@ -1417,11 +1417,13 @@ export class Federation<TContextData> {
       case "sharedInbox":
         if (routeName !== "inbox" && this.#sharedInboxKeyDispatcher != null) {
           const identity = await this.#sharedInboxKeyDispatcher(context);
-          context = this.#createContext(request, contextData, {
-            documentLoader: "handle" in identity
-              ? await context.getDocumentLoader(identity)
-              : context.getDocumentLoader(identity),
-          });
+          if (identity != null) {
+            context = this.#createContext(request, contextData, {
+              documentLoader: "handle" in identity
+                ? await context.getDocumentLoader(identity)
+                : context.getDocumentLoader(identity),
+            });
+          }
         }
         return await handleInbox(request, {
           handle: route.values.handle ?? null,

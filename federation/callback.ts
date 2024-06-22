@@ -136,7 +136,7 @@ export type InboxErrorHandler<TContextData> = (
  * @param context The request context.
  * @returns The handle of the actor or the key pair for the authenticated
  *          document loader of the {@link Context} passed to the shared inbox
- *          listener.
+ *          listener.  If `null` is returned, the request is not authorized.
  * @since 0.11.0
  */
 export type SharedInboxKeyDispatcher<TContextData> = (
@@ -144,7 +144,8 @@ export type SharedInboxKeyDispatcher<TContextData> = (
 ) =>
   | SenderKeyPair
   | { handle: string }
-  | Promise<SenderKeyPair | { handle: string }>;
+  | null
+  | Promise<SenderKeyPair | { handle: string } | null>;
 
 /**
  * A callback that handles errors during outbox processing.

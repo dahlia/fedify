@@ -165,6 +165,10 @@ federation
   });
 ~~~~
 
+> [!NOTE]
+> If a shared inbox key dispatcher returns `null`, the default `documentLoader`,
+> which is not authenticated, is used for the shared inbox.
+
 [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
 [instance actor]: https://seb.jambor.dev/posts/understanding-activitypub-part-4-threads/#the-instance-actor
 
