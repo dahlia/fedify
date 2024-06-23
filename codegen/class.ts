@@ -91,11 +91,12 @@ export async function* generateClasses(
   yield "// deno-lint-ignore-file ban-unused-ignore\n";
   yield "// @ts-ignore TS7016\n";
   yield 'import jsonld from "jsonld";\n';
+  yield 'import { getLogger } from "@logtape/logtape";\n';
   yield `import { LanguageTag, parseLanguageTag }
     from "@phensley/language-tag";\n`;
   yield `import { decode as decodeMultibase, encode as encodeMultibase }
     from "multibase";`;
-  yield `import { type DocumentLoader, fetchDocumentLoader }
+  yield `import { type DocumentLoader, fetchDocumentLoader, type RemoteDocument }
     from "${runtimePath}/docloader.ts";\n`;
   yield `import {
     exportSpki,

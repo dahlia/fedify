@@ -10,6 +10,9 @@ To be released.
 
  -  Improved runtime type error messages for Activity Vocabulary API.  [[#79]]
 
+ -  Added `suppressError` option to dereferencing accessors of Activity
+    Vocabulary classes.
+
  -  Added `Federation.setInboxDispatcher()` method.  [[#71]]
 
  -  Frequently used JSON-LD contexts are now preloaded.  [[74]]

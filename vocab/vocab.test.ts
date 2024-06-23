@@ -307,6 +307,11 @@ test("Activity.getObject()", async () => {
   assertInstanceOf(object, Object);
   assertEquals(object.id, new URL("https://example.com/object"));
   assertEquals(object.name, "Fetched object");
+
+  const activity2 = new Activity({
+    object: new URL("https://example.com/not-found"),
+  });
+  assertEquals(await activity2.getObject({ suppressError: true }), null);
 });
 
 test("Activity.getObjects()", async () => {
@@ -330,6 +335,19 @@ test("Activity.getObjects()", async () => {
   assertEquals(objects[0].name, "Fetched object");
   assertInstanceOf(objects[1], Object);
   assertEquals(objects[1].name, "Second object");
+
+  const activity2 = new Activity({
+    objects: [
+      new URL("https://example.com/not-found"),
+      new Object({
+        name: "Second object",
+      }),
+    ],
+  });
+  const objects2 = await toArray(activity2.getObjects({ suppressError: true }));
+  assertEquals(objects2.length, 1);
+  assertInstanceOf(objects2[0], Object);
+  assertEquals(objects2[0].name, "Second object");
 });
 
 test("Activity.clone()", async () => {

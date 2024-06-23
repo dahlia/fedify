@@ -4,10 +4,11 @@ snapshot[`generateClasses() 1`] = `
 "// deno-lint-ignore-file ban-unused-ignore
 // @ts-ignore TS7016
 import jsonld from \\"jsonld\\";
+import { getLogger } from \\"@logtape/logtape\\";
 import { LanguageTag, parseLanguageTag }
     from \\"@phensley/language-tag\\";
 import { decode as decodeMultibase, encode as encodeMultibase }
-    from \\"multibase\\";import { type DocumentLoader, fetchDocumentLoader }
+    from \\"multibase\\";import { type DocumentLoader, fetchDocumentLoader, type RemoteDocument }
     from \\"../runtime/docloader.ts\\";
 import {
     exportSpki,
@@ -1560,13 +1561,27 @@ proofs?: (DataIntegrityProof | URL)[];}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object | Link | PropertyValue> {
+    ): Promise<Object | Link | PropertyValue | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -1620,6 +1635,7 @@ proofs?: (DataIntegrityProof | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object | Link | PropertyValue> {
         const vs = this.#_49BipA5dq9eoH8LX8xdsVumveTca;
@@ -1629,6 +1645,7 @@ proofs?: (DataIntegrityProof | URL)[];}
             const fetched =
               await this.#fetchAttachment(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -1642,13 +1659,27 @@ proofs?: (DataIntegrityProof | URL)[];}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Application | Group | Organization | Person | Service> {
+    ): Promise<Application | Group | Organization | Person | Service | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Application.fromJsonLd(
@@ -1721,6 +1752,7 @@ proofs?: (DataIntegrityProof | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Application | Group | Organization | Person | Service | null> {
         if (this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py.length < 1) return null;
@@ -1728,6 +1760,7 @@ proofs?: (DataIntegrityProof | URL)[];}
         if (v instanceof URL) {
           const fetched =
             await this.#fetchAttribution(v, options);
+          if (fetched == null) return null;
           this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py[0] = fetched;
           return fetched;
         }
@@ -1755,6 +1788,7 @@ proofs?: (DataIntegrityProof | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Application | Group | Organization | Person | Service> {
         const vs = this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py;
@@ -1764,6 +1798,7 @@ proofs?: (DataIntegrityProof | URL)[];}
             const fetched =
               await this.#fetchAttribution(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -1777,13 +1812,27 @@ proofs?: (DataIntegrityProof | URL)[];}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -1819,6 +1868,7 @@ proofs?: (DataIntegrityProof | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6.length < 1) return null;
@@ -1826,6 +1876,7 @@ proofs?: (DataIntegrityProof | URL)[];}
         if (v instanceof URL) {
           const fetched =
             await this.#fetchAudience(v, options);
+          if (fetched == null) return null;
           this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6[0] = fetched;
           return fetched;
         }
@@ -1852,6 +1903,7 @@ proofs?: (DataIntegrityProof | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6;
@@ -1861,6 +1913,7 @@ proofs?: (DataIntegrityProof | URL)[];}
             const fetched =
               await this.#fetchAudience(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -1897,13 +1950,27 @@ get contents(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object | Link> {
+    ): Promise<Object | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -1952,6 +2019,7 @@ get contents(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object | Link> {
         const vs = this.#_3mhZzGXSpQ431mBSz2kvych22v4e;
@@ -1961,6 +2029,7 @@ get contents(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchContext(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2004,13 +2073,27 @@ get endTime(): (Temporal.Instant | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object | Link> {
+    ): Promise<Object | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -2053,6 +2136,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object | Link> {
         const vs = this.#_86xFhmgBapoMvYqjbjRuDPayTrS;
@@ -2062,6 +2146,7 @@ get endTime(): (Temporal.Instant | null) {
             const fetched =
               await this.#fetchGenerator(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2075,13 +2160,27 @@ get endTime(): (Temporal.Instant | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Image> {
+    ): Promise<Image | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Image.fromJsonLd(
@@ -2118,6 +2217,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Image | null> {
         if (this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR.length < 1) return null;
@@ -2125,6 +2225,7 @@ get endTime(): (Temporal.Instant | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchIcon(v, options);
+          if (fetched == null) return null;
           this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR[0] = fetched;
           return fetched;
         }
@@ -2152,6 +2253,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Image> {
         const vs = this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR;
@@ -2161,6 +2263,7 @@ get endTime(): (Temporal.Instant | null) {
             const fetched =
               await this.#fetchIcon(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2174,13 +2277,27 @@ get endTime(): (Temporal.Instant | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Image> {
+    ): Promise<Image | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Image.fromJsonLd(
@@ -2217,6 +2334,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Image | null> {
         if (this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U.length < 1) return null;
@@ -2224,6 +2342,7 @@ get endTime(): (Temporal.Instant | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchImage(v, options);
+          if (fetched == null) return null;
           this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U[0] = fetched;
           return fetched;
         }
@@ -2251,6 +2370,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Image> {
         const vs = this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U;
@@ -2260,6 +2380,7 @@ get endTime(): (Temporal.Instant | null) {
             const fetched =
               await this.#fetchImage(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2273,13 +2394,27 @@ get endTime(): (Temporal.Instant | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object | Link> {
+    ): Promise<Object | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -2324,6 +2459,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | Link | null> {
         if (this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s.length < 1) return null;
@@ -2331,6 +2467,7 @@ get endTime(): (Temporal.Instant | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchReplyTarget(v, options);
+          if (fetched == null) return null;
           this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s[0] = fetched;
           return fetched;
         }
@@ -2357,6 +2494,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object | Link> {
         const vs = this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s;
@@ -2366,6 +2504,7 @@ get endTime(): (Temporal.Instant | null) {
             const fetched =
               await this.#fetchReplyTarget(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2379,13 +2518,27 @@ get endTime(): (Temporal.Instant | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object | Link> {
+    ): Promise<Object | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -2430,6 +2583,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | Link | null> {
         if (this.#_31k5MUZJsnsPNg8dQQJieWaXTFnR.length < 1) return null;
@@ -2437,6 +2591,7 @@ get endTime(): (Temporal.Instant | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchLocation(v, options);
+          if (fetched == null) return null;
           this.#_31k5MUZJsnsPNg8dQQJieWaXTFnR[0] = fetched;
           return fetched;
         }
@@ -2463,6 +2618,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object | Link> {
         const vs = this.#_31k5MUZJsnsPNg8dQQJieWaXTFnR;
@@ -2472,6 +2628,7 @@ get endTime(): (Temporal.Instant | null) {
             const fetched =
               await this.#fetchLocation(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2485,13 +2642,27 @@ get endTime(): (Temporal.Instant | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Link | Object> {
+    ): Promise<Link | Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Link.fromJsonLd(
@@ -2535,6 +2706,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Link | Object | null> {
         if (this.#_gCVTegXxWWCw6wWRxa1QF65zusg.length < 1) return null;
@@ -2542,6 +2714,7 @@ get endTime(): (Temporal.Instant | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchPreview(v, options);
+          if (fetched == null) return null;
           this.#_gCVTegXxWWCw6wWRxa1QF65zusg[0] = fetched;
           return fetched;
         }
@@ -2567,6 +2740,7 @@ get endTime(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Link | Object> {
         const vs = this.#_gCVTegXxWWCw6wWRxa1QF65zusg;
@@ -2576,6 +2750,7 @@ get endTime(): (Temporal.Instant | null) {
             const fetched =
               await this.#fetchPreview(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2596,13 +2771,27 @@ get published(): (Temporal.Instant | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -2638,6 +2827,7 @@ get published(): (Temporal.Instant | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_7UpwM3JWcXhADcscukEehBorf6k.length < 1) return null;
@@ -2645,6 +2835,7 @@ get published(): (Temporal.Instant | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchReplies(v, options);
+          if (fetched == null) return null;
           this.#_7UpwM3JWcXhADcscukEehBorf6k[0] = fetched;
           return fetched;
         }
@@ -2684,13 +2875,27 @@ get summaries(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object | Link> {
+    ): Promise<Object | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -2736,6 +2941,7 @@ get summaries(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object | Link> {
         const vs = this.#_5chuqj6s95p5gg2sk1HntGfarRf;
@@ -2745,6 +2951,7 @@ get summaries(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchTag(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2780,13 +2987,27 @@ get urls(): ((URL | Link))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -2822,6 +3043,7 @@ get urls(): ((URL | Link))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_3hFbw7DTpHhq3cvVhkY8njhcsXbd.length < 1) return null;
@@ -2829,6 +3051,7 @@ get urls(): ((URL | Link))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchTo(v, options);
+          if (fetched == null) return null;
           this.#_3hFbw7DTpHhq3cvVhkY8njhcsXbd[0] = fetched;
           return fetched;
         }
@@ -2855,6 +3078,7 @@ get urls(): ((URL | Link))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_3hFbw7DTpHhq3cvVhkY8njhcsXbd;
@@ -2864,6 +3088,7 @@ get urls(): ((URL | Link))[] {
             const fetched =
               await this.#fetchTo(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2877,13 +3102,27 @@ get urls(): ((URL | Link))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -2919,6 +3158,7 @@ get urls(): ((URL | Link))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_aLZupjwL8XB7tzdLgCMXdjZ6qej.length < 1) return null;
@@ -2926,6 +3166,7 @@ get urls(): ((URL | Link))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchBto(v, options);
+          if (fetched == null) return null;
           this.#_aLZupjwL8XB7tzdLgCMXdjZ6qej[0] = fetched;
           return fetched;
         }
@@ -2952,6 +3193,7 @@ get urls(): ((URL | Link))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_aLZupjwL8XB7tzdLgCMXdjZ6qej;
@@ -2961,6 +3203,7 @@ get urls(): ((URL | Link))[] {
             const fetched =
               await this.#fetchBto(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -2974,13 +3217,27 @@ get urls(): ((URL | Link))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -3016,6 +3273,7 @@ get urls(): ((URL | Link))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_42a1SvBs24QSLzKcfjCyNTjW5a1g.length < 1) return null;
@@ -3023,6 +3281,7 @@ get urls(): ((URL | Link))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchCc(v, options);
+          if (fetched == null) return null;
           this.#_42a1SvBs24QSLzKcfjCyNTjW5a1g[0] = fetched;
           return fetched;
         }
@@ -3049,6 +3308,7 @@ get urls(): ((URL | Link))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_42a1SvBs24QSLzKcfjCyNTjW5a1g;
@@ -3058,6 +3318,7 @@ get urls(): ((URL | Link))[] {
             const fetched =
               await this.#fetchCc(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -3071,13 +3332,27 @@ get urls(): ((URL | Link))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -3113,6 +3388,7 @@ get urls(): ((URL | Link))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_3qvegKUB8YLgTXRpEf8E6JZSkz2H.length < 1) return null;
@@ -3120,6 +3396,7 @@ get urls(): ((URL | Link))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchBcc(v, options);
+          if (fetched == null) return null;
           this.#_3qvegKUB8YLgTXRpEf8E6JZSkz2H[0] = fetched;
           return fetched;
         }
@@ -3146,6 +3423,7 @@ get urls(): ((URL | Link))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_3qvegKUB8YLgTXRpEf8E6JZSkz2H;
@@ -3155,6 +3433,7 @@ get urls(): ((URL | Link))[] {
             const fetched =
               await this.#fetchBcc(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -3197,13 +3476,27 @@ get sensitive(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<DataIntegrityProof> {
+    ): Promise<DataIntegrityProof | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await DataIntegrityProof.fromJsonLd(
@@ -3238,6 +3531,7 @@ get sensitive(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<DataIntegrityProof | null> {
         if (this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8.length < 1) return null;
@@ -3245,6 +3539,7 @@ get sensitive(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchProof(v, options);
+          if (fetched == null) return null;
           this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8[0] = fetched;
           return fetched;
         }
@@ -3270,6 +3565,7 @@ get sensitive(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<DataIntegrityProof> {
         const vs = this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8;
@@ -3279,6 +3575,7 @@ get sensitive(): (boolean | null) {
             const fetched =
               await this.#fetchProof(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -5781,13 +6078,27 @@ get cryptosuite(): (\\"eddsa-jcs-2022\\" | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Multikey> {
+    ): Promise<Multikey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Multikey.fromJsonLd(
@@ -5825,6 +6136,7 @@ get cryptosuite(): (\\"eddsa-jcs-2022\\" | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Multikey | null> {
         if (this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg.length < 1) return null;
@@ -5832,6 +6144,7 @@ get cryptosuite(): (\\"eddsa-jcs-2022\\" | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchVerificationMethod(v, options);
+          if (fetched == null) return null;
           this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg[0] = fetched;
           return fetched;
         }
@@ -6323,13 +6636,27 @@ owner?: Application | Group | Organization | Person | Service | URL | null;publi
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Application | Group | Organization | Person | Service> {
+    ): Promise<Application | Group | Organization | Person | Service | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Application.fromJsonLd(
@@ -6399,6 +6726,7 @@ owner?: Application | Group | Organization | Person | Service | URL | null;publi
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Application | Group | Organization | Person | Service | null> {
         if (this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2.length < 1) return null;
@@ -6406,6 +6734,7 @@ owner?: Application | Group | Organization | Person | Service | URL | null;publi
         if (v instanceof URL) {
           const fetched =
             await this.#fetchOwner(v, options);
+          if (fetched == null) return null;
           this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2[0] = fetched;
           return fetched;
         }
@@ -6779,13 +7108,27 @@ controller?: Application | Group | Organization | Person | Service | URL | null;
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Application | Group | Organization | Person | Service> {
+    ): Promise<Application | Group | Organization | Person | Service | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Application.fromJsonLd(
@@ -6855,6 +7198,7 @@ controller?: Application | Group | Organization | Person | Service | URL | null;
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Application | Group | Organization | Person | Service | null> {
         if (this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN.length < 1) return null;
@@ -6862,6 +7206,7 @@ controller?: Application | Group | Organization | Person | Service | URL | null;
         if (v instanceof URL) {
           const fetched =
             await this.#fetchController(v, options);
+          if (fetched == null) return null;
           this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN[0] = fetched;
           return fetched;
         }
@@ -7333,13 +7678,27 @@ objects?: (Object | URL)[];}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Application | Group | Organization | Person | Service> {
+    ): Promise<Application | Group | Organization | Person | Service | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Application.fromJsonLd(
@@ -7412,6 +7771,7 @@ objects?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Application | Group | Organization | Person | Service | null> {
         if (this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D.length < 1) return null;
@@ -7419,6 +7779,7 @@ objects?: (Object | URL)[];}
         if (v instanceof URL) {
           const fetched =
             await this.#fetchActor(v, options);
+          if (fetched == null) return null;
           this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D[0] = fetched;
           return fetched;
         }
@@ -7446,6 +7807,7 @@ objects?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Application | Group | Organization | Person | Service> {
         const vs = this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D;
@@ -7455,6 +7817,7 @@ objects?: (Object | URL)[];}
             const fetched =
               await this.#fetchActor(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -7468,13 +7831,27 @@ objects?: (Object | URL)[];}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -7511,6 +7888,7 @@ objects?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc.length < 1) return null;
@@ -7518,6 +7896,7 @@ objects?: (Object | URL)[];}
         if (v instanceof URL) {
           const fetched =
             await this.#fetchObject(v, options);
+          if (fetched == null) return null;
           this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc[0] = fetched;
           return fetched;
         }
@@ -7545,6 +7924,7 @@ objects?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc;
@@ -7554,6 +7934,7 @@ objects?: (Object | URL)[];}
             const fetched =
               await this.#fetchObject(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -9115,13 +9496,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CryptographicKey> {
+    ): Promise<CryptographicKey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CryptographicKey.fromJsonLd(
@@ -9155,6 +9550,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CryptographicKey | null> {
         if (this.#_axq166E2eZADq34V4MYUc8KMZdC.length < 1) return null;
@@ -9162,6 +9558,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchPublicKey(v, options);
+          if (fetched == null) return null;
           this.#_axq166E2eZADq34V4MYUc8KMZdC[0] = fetched;
           return fetched;
         }
@@ -9186,6 +9583,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<CryptographicKey> {
         const vs = this.#_axq166E2eZADq34V4MYUc8KMZdC;
@@ -9195,6 +9593,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchPublicKey(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -9208,13 +9607,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Multikey> {
+    ): Promise<Multikey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Multikey.fromJsonLd(
@@ -9252,6 +9665,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Multikey | null> {
         if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
@@ -9259,6 +9673,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchAssertionMethod(v, options);
+          if (fetched == null) return null;
           this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
           return fetched;
         }
@@ -9287,6 +9702,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Multikey> {
         const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
@@ -9296,6 +9712,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchAssertionMethod(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -9322,13 +9739,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -9375,6 +9806,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length < 1) return null;
@@ -9382,6 +9814,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchInbox(v, options);
+          if (fetched == null) return null;
           this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0] = fetched;
           return fetched;
         }
@@ -9393,13 +9826,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -9443,6 +9890,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC.length < 1) return null;
@@ -9450,6 +9898,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchOutbox(v, options);
+          if (fetched == null) return null;
           this.#_41QwhqJouoLg3h8dRPKat21brynC[0] = fetched;
           return fetched;
         }
@@ -9461,13 +9910,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -9506,6 +9969,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length < 1) return null;
@@ -9513,6 +9977,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowing(v, options);
+          if (fetched == null) return null;
           this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee[0] = fetched;
           return fetched;
         }
@@ -9524,13 +9989,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -9572,6 +10051,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.length < 1) return null;
@@ -9579,6 +10059,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowers(v, options);
+          if (fetched == null) return null;
           this.#_BBCTgfphhsFzpVfKTykGSpBNwoA[0] = fetched;
           return fetched;
         }
@@ -9590,13 +10071,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -9636,6 +10131,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
@@ -9643,6 +10139,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchLinked(v, options);
+          if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
         }
@@ -9654,13 +10151,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -9694,6 +10205,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Collection> {
         const vs = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
@@ -9703,6 +10215,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
             const fetched =
               await this.#fetchStream(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -12311,13 +12824,27 @@ get totalItems(): (number | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link> {
+    ): Promise<CollectionPage | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CollectionPage.fromJsonLd(
@@ -12362,6 +12889,7 @@ get totalItems(): (number | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CollectionPage | Link | null> {
         if (this.#_3UyUdxnyn6cDn53QKrh4MBiearma.length < 1) return null;
@@ -12369,6 +12897,7 @@ get totalItems(): (number | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchCurrent(v, options);
+          if (fetched == null) return null;
           this.#_3UyUdxnyn6cDn53QKrh4MBiearma[0] = fetched;
           return fetched;
         }
@@ -12380,13 +12909,27 @@ get totalItems(): (number | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link> {
+    ): Promise<CollectionPage | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CollectionPage.fromJsonLd(
@@ -12431,6 +12974,7 @@ get totalItems(): (number | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CollectionPage | Link | null> {
         if (this.#_J52RqweMe6hhv7RnLJMC8BExTE5.length < 1) return null;
@@ -12438,6 +12982,7 @@ get totalItems(): (number | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFirst(v, options);
+          if (fetched == null) return null;
           this.#_J52RqweMe6hhv7RnLJMC8BExTE5[0] = fetched;
           return fetched;
         }
@@ -12449,13 +12994,27 @@ get totalItems(): (number | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link> {
+    ): Promise<CollectionPage | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CollectionPage.fromJsonLd(
@@ -12500,6 +13059,7 @@ get totalItems(): (number | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CollectionPage | Link | null> {
         if (this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26.length < 1) return null;
@@ -12507,6 +13067,7 @@ get totalItems(): (number | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchLast(v, options);
+          if (fetched == null) return null;
           this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26[0] = fetched;
           return fetched;
         }
@@ -12518,13 +13079,27 @@ get totalItems(): (number | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object | Link> {
+    ): Promise<Object | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -12568,6 +13143,7 @@ get totalItems(): (number | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object | Link> {
         const vs = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
@@ -12577,6 +13153,7 @@ get totalItems(): (number | null) {
             const fetched =
               await this.#fetchItem(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -13136,13 +13713,27 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Link | Collection> {
+    ): Promise<Link | Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Link.fromJsonLd(
@@ -13187,6 +13778,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Link | Collection | null> {
         if (this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le.length < 1) return null;
@@ -13194,6 +13786,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         if (v instanceof URL) {
           const fetched =
             await this.#fetchPartOf(v, options);
+          if (fetched == null) return null;
           this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le[0] = fetched;
           return fetched;
         }
@@ -13205,13 +13798,27 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link> {
+    ): Promise<CollectionPage | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CollectionPage.fromJsonLd(
@@ -13254,6 +13861,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CollectionPage | Link | null> {
         if (this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY.length < 1) return null;
@@ -13261,6 +13869,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         if (v instanceof URL) {
           const fetched =
             await this.#fetchNext(v, options);
+          if (fetched == null) return null;
           this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY[0] = fetched;
           return fetched;
         }
@@ -13272,13 +13881,27 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link> {
+    ): Promise<CollectionPage | Link | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CollectionPage.fromJsonLd(
@@ -13322,6 +13945,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CollectionPage | Link | null> {
         if (this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA.length < 1) return null;
@@ -13329,6 +13953,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         if (v instanceof URL) {
           const fetched =
             await this.#fetchPrev(v, options);
+          if (fetched == null) return null;
           this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA[0] = fetched;
           return fetched;
         }
@@ -16078,13 +16703,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CryptographicKey> {
+    ): Promise<CryptographicKey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CryptographicKey.fromJsonLd(
@@ -16118,6 +16757,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CryptographicKey | null> {
         if (this.#_axq166E2eZADq34V4MYUc8KMZdC.length < 1) return null;
@@ -16125,6 +16765,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchPublicKey(v, options);
+          if (fetched == null) return null;
           this.#_axq166E2eZADq34V4MYUc8KMZdC[0] = fetched;
           return fetched;
         }
@@ -16149,6 +16790,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<CryptographicKey> {
         const vs = this.#_axq166E2eZADq34V4MYUc8KMZdC;
@@ -16158,6 +16800,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchPublicKey(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -16171,13 +16814,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Multikey> {
+    ): Promise<Multikey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Multikey.fromJsonLd(
@@ -16215,6 +16872,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Multikey | null> {
         if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
@@ -16222,6 +16880,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchAssertionMethod(v, options);
+          if (fetched == null) return null;
           this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
           return fetched;
         }
@@ -16250,6 +16909,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Multikey> {
         const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
@@ -16259,6 +16919,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchAssertionMethod(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -16285,13 +16946,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -16338,6 +17013,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length < 1) return null;
@@ -16345,6 +17021,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchInbox(v, options);
+          if (fetched == null) return null;
           this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0] = fetched;
           return fetched;
         }
@@ -16356,13 +17033,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -16406,6 +17097,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC.length < 1) return null;
@@ -16413,6 +17105,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchOutbox(v, options);
+          if (fetched == null) return null;
           this.#_41QwhqJouoLg3h8dRPKat21brynC[0] = fetched;
           return fetched;
         }
@@ -16424,13 +17117,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -16469,6 +17176,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length < 1) return null;
@@ -16476,6 +17184,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowing(v, options);
+          if (fetched == null) return null;
           this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee[0] = fetched;
           return fetched;
         }
@@ -16487,13 +17196,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -16535,6 +17258,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.length < 1) return null;
@@ -16542,6 +17266,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowers(v, options);
+          if (fetched == null) return null;
           this.#_BBCTgfphhsFzpVfKTykGSpBNwoA[0] = fetched;
           return fetched;
         }
@@ -16553,13 +17278,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -16599,6 +17338,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
@@ -16606,6 +17346,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchLinked(v, options);
+          if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
         }
@@ -16617,13 +17358,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -16657,6 +17412,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Collection> {
         const vs = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
@@ -16666,6 +17422,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
             const fetched =
               await this.#fetchStream(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -17934,13 +18691,27 @@ get width(): (number | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Link | Object> {
+    ): Promise<Link | Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Link.fromJsonLd(
@@ -17982,6 +18753,7 @@ get width(): (number | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Link | Object> {
         const vs = this.#_gCVTegXxWWCw6wWRxa1QF65zusg;
@@ -17991,6 +18763,7 @@ get width(): (number | null) {
             const fetched =
               await this.#fetchPreview(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -20699,13 +21472,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CryptographicKey> {
+    ): Promise<CryptographicKey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CryptographicKey.fromJsonLd(
@@ -20739,6 +21526,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CryptographicKey | null> {
         if (this.#_axq166E2eZADq34V4MYUc8KMZdC.length < 1) return null;
@@ -20746,6 +21534,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchPublicKey(v, options);
+          if (fetched == null) return null;
           this.#_axq166E2eZADq34V4MYUc8KMZdC[0] = fetched;
           return fetched;
         }
@@ -20770,6 +21559,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<CryptographicKey> {
         const vs = this.#_axq166E2eZADq34V4MYUc8KMZdC;
@@ -20779,6 +21569,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchPublicKey(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -20792,13 +21583,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Multikey> {
+    ): Promise<Multikey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Multikey.fromJsonLd(
@@ -20836,6 +21641,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Multikey | null> {
         if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
@@ -20843,6 +21649,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchAssertionMethod(v, options);
+          if (fetched == null) return null;
           this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
           return fetched;
         }
@@ -20871,6 +21678,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Multikey> {
         const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
@@ -20880,6 +21688,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchAssertionMethod(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -20906,13 +21715,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -20959,6 +21782,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length < 1) return null;
@@ -20966,6 +21790,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchInbox(v, options);
+          if (fetched == null) return null;
           this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0] = fetched;
           return fetched;
         }
@@ -20977,13 +21802,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -21027,6 +21866,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC.length < 1) return null;
@@ -21034,6 +21874,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchOutbox(v, options);
+          if (fetched == null) return null;
           this.#_41QwhqJouoLg3h8dRPKat21brynC[0] = fetched;
           return fetched;
         }
@@ -21045,13 +21886,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -21090,6 +21945,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length < 1) return null;
@@ -21097,6 +21953,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowing(v, options);
+          if (fetched == null) return null;
           this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee[0] = fetched;
           return fetched;
         }
@@ -21108,13 +21965,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -21156,6 +22027,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.length < 1) return null;
@@ -21163,6 +22035,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowers(v, options);
+          if (fetched == null) return null;
           this.#_BBCTgfphhsFzpVfKTykGSpBNwoA[0] = fetched;
           return fetched;
         }
@@ -21174,13 +22047,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -21220,6 +22107,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
@@ -21227,6 +22115,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchLinked(v, options);
+          if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
         }
@@ -21238,13 +22127,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -21278,6 +22181,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Collection> {
         const vs = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
@@ -21287,6 +22191,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
             const fetched =
               await this.#fetchStream(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -22900,13 +23805,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CryptographicKey> {
+    ): Promise<CryptographicKey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CryptographicKey.fromJsonLd(
@@ -22940,6 +23859,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CryptographicKey | null> {
         if (this.#_axq166E2eZADq34V4MYUc8KMZdC.length < 1) return null;
@@ -22947,6 +23867,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchPublicKey(v, options);
+          if (fetched == null) return null;
           this.#_axq166E2eZADq34V4MYUc8KMZdC[0] = fetched;
           return fetched;
         }
@@ -22971,6 +23892,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<CryptographicKey> {
         const vs = this.#_axq166E2eZADq34V4MYUc8KMZdC;
@@ -22980,6 +23902,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchPublicKey(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -22993,13 +23916,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Multikey> {
+    ): Promise<Multikey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Multikey.fromJsonLd(
@@ -23037,6 +23974,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Multikey | null> {
         if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
@@ -23044,6 +23982,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchAssertionMethod(v, options);
+          if (fetched == null) return null;
           this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
           return fetched;
         }
@@ -23072,6 +24011,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Multikey> {
         const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
@@ -23081,6 +24021,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchAssertionMethod(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -23107,13 +24048,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -23160,6 +24115,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length < 1) return null;
@@ -23167,6 +24123,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchInbox(v, options);
+          if (fetched == null) return null;
           this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0] = fetched;
           return fetched;
         }
@@ -23178,13 +24135,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -23228,6 +24199,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC.length < 1) return null;
@@ -23235,6 +24207,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchOutbox(v, options);
+          if (fetched == null) return null;
           this.#_41QwhqJouoLg3h8dRPKat21brynC[0] = fetched;
           return fetched;
         }
@@ -23246,13 +24219,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -23291,6 +24278,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length < 1) return null;
@@ -23298,6 +24286,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowing(v, options);
+          if (fetched == null) return null;
           this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee[0] = fetched;
           return fetched;
         }
@@ -23309,13 +24298,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -23357,6 +24360,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.length < 1) return null;
@@ -23364,6 +24368,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowers(v, options);
+          if (fetched == null) return null;
           this.#_BBCTgfphhsFzpVfKTykGSpBNwoA[0] = fetched;
           return fetched;
         }
@@ -23375,13 +24380,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -23421,6 +24440,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
@@ -23428,6 +24448,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchLinked(v, options);
+          if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
         }
@@ -23439,13 +24460,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -23479,6 +24514,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Collection> {
         const vs = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
@@ -23488,6 +24524,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
             const fetched =
               await this.#fetchStream(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -25043,13 +26080,27 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -25085,6 +26136,7 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1.length < 1) return null;
@@ -25092,6 +26144,7 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
         if (v instanceof URL) {
           const fetched =
             await this.#fetchDescribes(v, options);
+          if (fetched == null) return null;
           this.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1[0] = fetched;
           return fetched;
         }
@@ -25411,13 +26464,27 @@ objects?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -25453,6 +26520,7 @@ objects?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_2N5scKaVEcdYHFmfKYYacAwUhUgQ;
@@ -25462,6 +26530,7 @@ objects?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?
             const fetched =
               await this.#fetchExclusiveOption(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -25475,13 +26544,27 @@ objects?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -25517,6 +26600,7 @@ objects?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_2mV6isMTPRKbWdLCjcpiEysq5dAY;
@@ -25526,6 +26610,7 @@ objects?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?
             const fetched =
               await this.#fetchInclusiveOption(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -26201,13 +27286,27 @@ relationships?: (Object | URL)[];}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -26245,6 +27344,7 @@ relationships?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_2Zqdmi46ZnDQsECS6mzwhrv3rUKq.length < 1) return null;
@@ -26252,6 +27352,7 @@ relationships?: (Object | URL)[];}
         if (v instanceof URL) {
           const fetched =
             await this.#fetchSubject(v, options);
+          if (fetched == null) return null;
           this.#_2Zqdmi46ZnDQsECS6mzwhrv3rUKq[0] = fetched;
           return fetched;
         }
@@ -26263,13 +27364,27 @@ relationships?: (Object | URL)[];}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -26304,6 +27419,7 @@ relationships?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc.length < 1) return null;
@@ -26311,6 +27427,7 @@ relationships?: (Object | URL)[];}
         if (v instanceof URL) {
           const fetched =
             await this.#fetchObject(v, options);
+          if (fetched == null) return null;
           this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc[0] = fetched;
           return fetched;
         }
@@ -26336,6 +27453,7 @@ relationships?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc;
@@ -26345,6 +27463,7 @@ relationships?: (Object | URL)[];}
             const fetched =
               await this.#fetchObject(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -26358,13 +27477,27 @@ relationships?: (Object | URL)[];}
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Object> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Object.fromJsonLd(
@@ -26401,6 +27534,7 @@ relationships?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Object | null> {
         if (this.#_4Lzz89F9qipAQSGkWyX9DGWiUojG.length < 1) return null;
@@ -26408,6 +27542,7 @@ relationships?: (Object | URL)[];}
         if (v instanceof URL) {
           const fetched =
             await this.#fetchRelationship(v, options);
+          if (fetched == null) return null;
           this.#_4Lzz89F9qipAQSGkWyX9DGWiUojG[0] = fetched;
           return fetched;
         }
@@ -26435,6 +27570,7 @@ relationships?: (Object | URL)[];}
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Object> {
         const vs = this.#_4Lzz89F9qipAQSGkWyX9DGWiUojG;
@@ -26444,6 +27580,7 @@ relationships?: (Object | URL)[];}
             const fetched =
               await this.#fetchRelationship(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -27530,13 +28667,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<CryptographicKey> {
+    ): Promise<CryptographicKey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await CryptographicKey.fromJsonLd(
@@ -27570,6 +28721,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<CryptographicKey | null> {
         if (this.#_axq166E2eZADq34V4MYUc8KMZdC.length < 1) return null;
@@ -27577,6 +28729,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchPublicKey(v, options);
+          if (fetched == null) return null;
           this.#_axq166E2eZADq34V4MYUc8KMZdC[0] = fetched;
           return fetched;
         }
@@ -27601,6 +28754,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<CryptographicKey> {
         const vs = this.#_axq166E2eZADq34V4MYUc8KMZdC;
@@ -27610,6 +28764,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchPublicKey(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -27623,13 +28778,27 @@ get preferredUsernames(): ((string | LanguageString))[] {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Multikey> {
+    ): Promise<Multikey | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Multikey.fromJsonLd(
@@ -27667,6 +28836,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Multikey | null> {
         if (this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3.length < 1) return null;
@@ -27674,6 +28844,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchAssertionMethod(v, options);
+          if (fetched == null) return null;
           this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3[0] = fetched;
           return fetched;
         }
@@ -27702,6 +28873,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Multikey> {
         const vs = this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3;
@@ -27711,6 +28883,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
             const fetched =
               await this.#fetchAssertionMethod(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
@@ -27737,13 +28910,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -27790,6 +28977,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB.length < 1) return null;
@@ -27797,6 +28985,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchInbox(v, options);
+          if (fetched == null) return null;
           this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB[0] = fetched;
           return fetched;
         }
@@ -27808,13 +28997,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection> {
+    ): Promise<OrderedCollection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await OrderedCollection.fromJsonLd(
@@ -27858,6 +29061,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<OrderedCollection | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC.length < 1) return null;
@@ -27865,6 +29069,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchOutbox(v, options);
+          if (fetched == null) return null;
           this.#_41QwhqJouoLg3h8dRPKat21brynC[0] = fetched;
           return fetched;
         }
@@ -27876,13 +29081,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -27921,6 +29140,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee.length < 1) return null;
@@ -27928,6 +29148,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowing(v, options);
+          if (fetched == null) return null;
           this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee[0] = fetched;
           return fetched;
         }
@@ -27939,13 +29160,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -27987,6 +29222,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_BBCTgfphhsFzpVfKTykGSpBNwoA.length < 1) return null;
@@ -27994,6 +29230,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchFollowers(v, options);
+          if (fetched == null) return null;
           this.#_BBCTgfphhsFzpVfKTykGSpBNwoA[0] = fetched;
           return fetched;
         }
@@ -28005,13 +29242,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -28051,6 +29302,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<Collection | null> {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
@@ -28058,6 +29310,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         if (v instanceof URL) {
           const fetched =
             await this.#fetchLinked(v, options);
+          if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
         }
@@ -28069,13 +29322,27 @@ get manuallyApprovesFollowers(): (boolean | null) {
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<Collection> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     
       try {
         return await Collection.fromJsonLd(
@@ -28109,6 +29376,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<Collection> {
         const vs = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9;
@@ -28118,6 +29386,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
             const fetched =
               await this.#fetchStream(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;

@@ -36,13 +36,27 @@ async function* generateProperty(
       options: {
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
+        suppressError?: boolean,
       } = {}
-    ): Promise<${getTypeNames(property.range, types)}> {
+    ): Promise<${getTypeNames(property.range, types)} | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
-      const { document } = await documentLoader(url.href);
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger(["fedify", "vocab"]).error(
+            "Failed to fetch {url}: {error}",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
     `;
     for (const range of property.range) {
       if (!(range in types)) continue;
@@ -83,6 +97,7 @@ async function* generateProperty(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): Promise<${getTypeNames(property.range, types)} | null> {
         if (this.${await getFieldName(property.uri)}.length < 1) return null;
@@ -90,6 +105,7 @@ async function* generateProperty(
         if (v instanceof URL) {
           const fetched =
             await this.#fetch${toPascalCase(property.singularName)}(v, options);
+          if (fetched == null) return null;
           this.${await getFieldName(property.uri)}[0] = fetched;
           return fetched;
         }
@@ -116,6 +132,7 @@ async function* generateProperty(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
+          suppressError?: boolean,
         } = {}
       ): AsyncIterable<${getTypeNames(property.range, types)}> {
         const vs = this.${await getFieldName(property.uri)};
@@ -125,6 +142,7 @@ async function* generateProperty(
             const fetched =
               await this.#fetch${toPascalCase(property.singularName)}(
                 v, options);
+            if (fetched == null) continue;
             vs[i] = fetched;
             yield fetched;
             continue;
