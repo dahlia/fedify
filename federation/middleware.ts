@@ -14,9 +14,10 @@ import type { Actor, Recipient } from "../vocab/actor.ts";
 import {
   Activity,
   CryptographicKey,
+  type Like,
   Multikey,
   type Object,
-} from "../vocab/mod.ts";
+} from "../vocab/vocab.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
   ActorDispatcher,
@@ -244,6 +245,7 @@ export class Federation<TContextData> {
   #outboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
   #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData, void>;
   #followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
+  #likedCallbacks?: CollectionCallbacks<Like, TContextData, void>;
   #inboxListeners?: Map<
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
@@ -1087,6 +1089,56 @@ export class Federation<TContextData> {
   }
 
   /**
+   * Registers a liked collection dispatcher.
+   * @param path The URI path pattern for the liked collection.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A liked collection callback to register.
+   * @returns An object with methods to set other liked collection
+   *          callbacks.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   * @since 0.11.0
+   */
+  setLikedDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Like, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void> {
+    if (this.#router.has("liked")) {
+      throw new RouterError("Liked collection dispatcher already set.");
+    }
+    const variables = this.#router.add(path, "liked");
+    if (variables.size !== 1 || !variables.has("handle")) {
+      throw new RouterError(
+        "Path for liked collection dispatcher must have one variable: {handle}",
+      );
+    }
+    const callbacks: CollectionCallbacks<Like, TContextData, void> = {
+      dispatcher,
+    };
+    this.#likedCallbacks = callbacks;
+    const setters: CollectionCallbackSetters<TContextData, void> = {
+      setCounter(counter: CollectionCounter<TContextData, void>) {
+        callbacks.counter = counter;
+        return setters;
+      },
+      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+        callbacks.firstCursor = cursor;
+        return setters;
+      },
+      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+        callbacks.lastCursor = cursor;
+        return setters;
+      },
+      authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
+        return setters;
+      },
+    };
+    return setters;
+  }
+
+  /**
    * Assigns the URL path for the inbox and starts setting inbox listeners.
    *
    * @example
@@ -1469,6 +1521,16 @@ export class Federation<TContextData> {
           onNotAcceptable,
         });
       }
+      case "liked":
+        return await handleCollection(request, {
+          name: "liked",
+          handle: route.values.handle,
+          context,
+          collectionCallbacks: this.#likedCallbacks,
+          onUnauthorized,
+          onNotFound,
+          onNotAcceptable,
+        });
       default: {
         const response = onNotFound(request);
         return response instanceof Promise ? await response : response;
@@ -1619,6 +1681,14 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return new URL(path, this.#url);
   }
 
+  getLikedUri(handle: string): URL {
+    const path = this.#router.build("liked", { handle });
+    if (path == null) {
+      throw new RouterError("No liked collection path registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
   parseUri(uri: URL): ParseUriResult | null {
     if (uri.origin !== this.#url.origin) return null;
     const route = this.#router.route(uri.pathname);
@@ -1643,6 +1713,8 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       return { type: "following", handle: route.values.handle };
     } else if (route.name === "followers") {
       return { type: "followers", handle: route.values.handle };
+    } else if (route.name === "liked") {
+      return { type: "liked", handle: route.values.handle };
     }
     return null;
   }

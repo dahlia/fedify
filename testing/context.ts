@@ -1,8 +1,8 @@
 import { getLogger } from "@logtape/logtape";
 import type { Context, RequestContext } from "../federation/context.ts";
 import { RouterError } from "../federation/router.ts";
-import { mockDocumentLoader } from "./docloader.ts";
 import { CryptographicKey } from "../vocab/vocab.ts";
+import { mockDocumentLoader } from "./docloader.ts";
 
 export function createContext<TContextData>(
   {
@@ -16,6 +16,7 @@ export function createContext<TContextData>(
     getInboxUri,
     getFollowingUri,
     getFollowersUri,
+    getLikedUri,
     parseUri,
     getActorKeyPairs,
     getActorKey,
@@ -37,6 +38,7 @@ export function createContext<TContextData>(
     getInboxUri: getInboxUri ?? throwRouteError,
     getFollowingUri: getFollowingUri ?? throwRouteError,
     getFollowersUri: getFollowersUri ?? throwRouteError,
+    getLikedUri: getLikedUri ?? throwRouteError,
     parseUri: parseUri ?? ((_uri) => {
       throw new Error("Not implemented");
     }),

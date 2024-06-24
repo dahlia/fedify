@@ -98,6 +98,15 @@ export interface Context<TContextData> {
   getFollowersUri(handle: string): URL;
 
   /**
+   * Builds the URI of an actor's liked collection with the given handle.
+   * @param handle The actor's handle.
+   * @returns The actor's liked collection URI.
+   * @throws {RouterError} If no liked collection is available.
+   * @since 0.11.0
+   */
+  getLikedUri(handle: string): URL;
+
+  /**
    * Determines the type of the URI and extracts the associated data.
    * @param uri The URI to parse.
    * @since 0.9.0
@@ -304,7 +313,12 @@ export type ParseUriResult =
   /**
    * The case of a followers collection URI.
    */
-  | { type: "followers"; handle: string };
+  | { type: "followers"; handle: string }
+  /**
+   * The case of a liked collection URI.
+   * @since 0.11.0
+   */
+  | { type: "liked"; handle: string };
 
 /**
  * Options for {@link Context.sendActivity} method and

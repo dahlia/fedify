@@ -469,3 +469,35 @@ federation
 > In the above example, we filter the actors in memory, but in the real
 > world, you should filter the actors in the database query to improve the
 > performance.
+
+
+Liked
+-----
+
+*This API is available since Fedify 0.11.0.*
+
+The liked collection is a collection of objects that an actor has liked.
+The liked collection is similar to the outbox collection, but it's a collection
+of `Like` activities instead of any activities.
+
+Cursors and counters for the liked collection are implemented in the same way as
+the outbox collection, so we don't repeat the explanation here.
+
+The below example shows how to construct a liked collection:
+
+~~~~ typescript
+federation
+  .setLikedDispatcher("/users/{handle}/liked", async (ctx, handle, cursor) => {
+    // Work with the database to find the objects that the actor has liked
+    // (the below `getLikedPostsByUserHandle` is a hypothetical function):
+    const objects = await getLikedByUserHandle(handle);
+    // Turn the posts into `Like` activities:
+    const items = posts.map(post =>
+      new Like({
+        id: new URL(`#post-${post.id}`, ctx.url),
+        actor: ctx.getActorUri(handle),
+        object: new URL(post.uri),
+      })
+    );
+  });
+~~~~

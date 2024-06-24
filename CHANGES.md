@@ -13,7 +13,10 @@ To be released.
  -  Added `suppressError` option to dereferencing accessors of Activity
     Vocabulary classes.
 
- -  Added `Federation.setInboxDispatcher()` method.  [[#71]]
+ -  Added more collection dispatchers.  [[#78]]
+
+     -  Added `Federation.setInboxDispatcher()` method.  [[#71]]
+     -  Added `Federation.setLikedDispatcher()` method.
 
  -  Frequently used JSON-LD contexts are now preloaded.  [[74]]
 
@@ -44,6 +47,7 @@ To be released.
 [#71]: https://github.com/dahlia/fedify/issues/71
 [#74]: https://github.com/dahlia/fedify/issues/74
 [#76]: https://github.com/dahlia/fedify/pull/76
+[#78]: https://github.com/dahlia/fedify/issues/78
 [#79]: https://github.com/dahlia/fedify/issues/79
 
 
