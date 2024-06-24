@@ -17,6 +17,10 @@ To be released.
 
      -  Added `Federation.setInboxDispatcher()` method.  [[#71]]
      -  Added `Federation.setLikedDispatcher()` method.
+     -  Added `Context.getLikedUri()` method.
+     -  Added `{ type: "liked"; handle: string }` case to `ParseUriResult` type.
+     -  Renamed `linked` property (which was a typo) to `liked` in
+        `Application`, `Group`, `Organization`, `Person`, and `Service` classes.
 
  -  Frequently used JSON-LD contexts are now preloaded.  [[74]]
 

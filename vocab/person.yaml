@@ -130,7 +130,7 @@ properties:
   range:
   - "https://www.w3.org/ns/activitystreams#Collection"
 
-- singularName: linked
+- singularName: liked
   functional: true
   uri: "https://www.w3.org/ns/activitystreams#liked"
   description: |

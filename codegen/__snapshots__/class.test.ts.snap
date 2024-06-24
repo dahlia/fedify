@@ -8925,7 +8925,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -9098,13 +9098,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -9214,7 +9214,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -9385,13 +9385,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU;
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -10066,7 +10066,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
-    async #fetchLinked(
+    async #fetchLiked(
       url: URL,
       options: {
         documentLoader?: DocumentLoader,
@@ -10108,10 +10108,10 @@ get manuallyApprovesFollowers(): (boolean | null) {
     
       /**
        * Similar to
-       * {@link Application.getLinked},
+       * {@link Application.getLiked},
        * but returns its \`@id\` URL instead of the object itself.
        */
-      get linkedId(): URL | null {
+      get likedId(): URL | null {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) return v;
@@ -10127,7 +10127,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * 
  */
 
-      async getLinked(
+      async getLiked(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
@@ -10138,7 +10138,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) {
           const fetched =
-            await this.#fetchLinked(v, options);
+            await this.#fetchLiked(v, options);
           if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
@@ -10862,7 +10862,7 @@ get indexable(): (boolean | null) {
           : v);
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
-        proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+        proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
@@ -16132,7 +16132,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -16305,13 +16305,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -16421,7 +16421,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -16592,13 +16592,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU;
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -17273,7 +17273,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
-    async #fetchLinked(
+    async #fetchLiked(
       url: URL,
       options: {
         documentLoader?: DocumentLoader,
@@ -17315,10 +17315,10 @@ get manuallyApprovesFollowers(): (boolean | null) {
     
       /**
        * Similar to
-       * {@link Group.getLinked},
+       * {@link Group.getLiked},
        * but returns its \`@id\` URL instead of the object itself.
        */
-      get linkedId(): URL | null {
+      get likedId(): URL | null {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) return v;
@@ -17334,7 +17334,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * 
  */
 
-      async getLinked(
+      async getLiked(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
@@ -17345,7 +17345,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) {
           const fetched =
-            await this.#fetchLinked(v, options);
+            await this.#fetchLiked(v, options);
           if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
@@ -18069,7 +18069,7 @@ get indexable(): (boolean | null) {
           : v);
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
-        proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+        proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
@@ -20901,7 +20901,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -21074,13 +21074,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -21190,7 +21190,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -21361,13 +21361,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU;
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -22042,7 +22042,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
-    async #fetchLinked(
+    async #fetchLiked(
       url: URL,
       options: {
         documentLoader?: DocumentLoader,
@@ -22084,10 +22084,10 @@ get manuallyApprovesFollowers(): (boolean | null) {
     
       /**
        * Similar to
-       * {@link Organization.getLinked},
+       * {@link Organization.getLiked},
        * but returns its \`@id\` URL instead of the object itself.
        */
-      get linkedId(): URL | null {
+      get likedId(): URL | null {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) return v;
@@ -22103,7 +22103,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * 
  */
 
-      async getLinked(
+      async getLiked(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
@@ -22114,7 +22114,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) {
           const fetched =
-            await this.#fetchLinked(v, options);
+            await this.#fetchLiked(v, options);
           if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
@@ -22838,7 +22838,7 @@ get indexable(): (boolean | null) {
           : v);
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
-        proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+        proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
@@ -23234,7 +23234,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -23407,13 +23407,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -23523,7 +23523,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -23694,13 +23694,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU;
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -24375,7 +24375,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
-    async #fetchLinked(
+    async #fetchLiked(
       url: URL,
       options: {
         documentLoader?: DocumentLoader,
@@ -24417,10 +24417,10 @@ get manuallyApprovesFollowers(): (boolean | null) {
     
       /**
        * Similar to
-       * {@link Person.getLinked},
+       * {@link Person.getLiked},
        * but returns its \`@id\` URL instead of the object itself.
        */
-      get linkedId(): URL | null {
+      get likedId(): URL | null {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) return v;
@@ -24436,7 +24436,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * 
  */
 
-      async getLinked(
+      async getLiked(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
@@ -24447,7 +24447,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) {
           const fetched =
-            await this.#fetchLinked(v, options);
+            await this.#fetchLiked(v, options);
           if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
@@ -25171,7 +25171,7 @@ get indexable(): (boolean | null) {
           : v);
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
-        proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+        proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
@@ -28096,7 +28096,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -28269,13 +28269,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -28385,7 +28385,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;linked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -28556,13 +28556,13 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU;
-        if (\\"linked\\" in values &&             values.linked != null) {
-          if (values.linked instanceof Collection || values.linked instanceof URL) {
+        if (\\"liked\\" in values &&             values.liked != null) {
+          if (values.liked instanceof Collection || values.liked instanceof URL) {
             // @ts-ignore: type is checked above.
-            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.linked];
+            clone.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = [values.liked];
           } else {
             throw new TypeError(
-              \\"The linked must be of type \\" +
+              \\"The liked must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -29237,7 +29237,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
-    async #fetchLinked(
+    async #fetchLiked(
       url: URL,
       options: {
         documentLoader?: DocumentLoader,
@@ -29279,10 +29279,10 @@ get manuallyApprovesFollowers(): (boolean | null) {
     
       /**
        * Similar to
-       * {@link Service.getLinked},
+       * {@link Service.getLiked},
        * but returns its \`@id\` URL instead of the object itself.
        */
-      get linkedId(): URL | null {
+      get likedId(): URL | null {
         if (this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU.length < 1) return null;
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) return v;
@@ -29298,7 +29298,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
  * 
  */
 
-      async getLinked(
+      async getLiked(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
@@ -29309,7 +29309,7 @@ get manuallyApprovesFollowers(): (boolean | null) {
         const v = this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
         if (v instanceof URL) {
           const fetched =
-            await this.#fetchLinked(v, options);
+            await this.#fetchLiked(v, options);
           if (fetched == null) return null;
           this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU[0] = fetched;
           return fetched;
@@ -30033,7 +30033,7 @@ get indexable(): (boolean | null) {
           : v);
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
-        proxy.linked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+        proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
