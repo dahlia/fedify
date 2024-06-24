@@ -48,15 +48,23 @@ that the `Federation` object uses to store several kinds of cache data and
 to maintain the queue of outgoing activities.
 
 `KvStore` is an abstract interface that represents a key-value store.
-Currently, there are two implementations of `KvStore`, which are the
+For now, Fedify provides two built-in implementations of `KvStore`, which are
 `MemoryKvStore` and `DenoKvStore` classes.  The `MemoryKvStore` class is for
 testing and development purposes, and the `DenoKvStore` class is Deno KV-backed
 implementation for production use (as you can guess from the name, it is only
-available in Deno runtime).  However, you can define your own `KvStore`
-implementation if you want to use a different key-value store.[^1]
+available in Deno runtime).
+
+As a separate package, [@fedify/redis] provides [`RedisKvStore`] class, which is
+a Redis-backed implementation for production use.
+
+You can define your own `KvStore` implementation if you want to use a different
+key-value store.[^1]
 
 [^1]: We are welcome to contributions of `KvStore` implementations for other
       key-value stores.
+
+[@fedify/redis]: https://github.com/dahlia/fedify-redis
+[`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore
 
 ### `kvPrefixes`
 
@@ -82,13 +90,18 @@ If you don't provide this option, activities will not be queued and will
 be sent immediately.
 
 `MessageQueue` is an abstract interface that represents a message queue.
-Currently, there are only two implementations of `MessageQueue`, which are
-the `InProcessMessageQueue` and `DenoKvMessageQueue` classes.
+For now, Fedify provides two built-in implementations of `MessageQueue`, which
+are `InProcessMessageQueue` and `DenoKvMessageQueue` classes.
 The `InProcessMessageQueue` class is for testing and development purposes,
 and the `DenoKvMessageQueue` class is a Deno KV-backed implementation for
 production use (as you can guess from the name, it is only available in Deno
-runtime).  However, you can define your own `MessageQueue` implementation if
-you want to use a different message queue.[^1]
+runtime).
+
+As a separate package, [@fedify/redis] provides [`RedisMessageQueue`] class,
+which is a Redis-backed implementation for production use.
+
+You can define your own `MessageQueue` implementation if you want to use
+a different message queue.[^1]
 
 > [!IMPORTANT]
 > While the `queue` option is optional, it is highly recommended to provide
@@ -96,6 +109,8 @@ you want to use a different message queue.[^1]
 > provide a message queue implementation, activities will not be queued and
 > will be sent immediately.  This can make delivery of activities unreliable
 > and can cause performance issues.
+
+[`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
 
 ### `documentLoader`
 
