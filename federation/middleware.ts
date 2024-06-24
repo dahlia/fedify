@@ -246,6 +246,7 @@ export class Federation<TContextData> {
   #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData, void>;
   #followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
   #likedCallbacks?: CollectionCallbacks<Like, TContextData, void>;
+  #featuredCallbacks?: CollectionCallbacks<Object, TContextData, void>;
   #inboxListeners?: Map<
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
@@ -640,6 +641,26 @@ export class Federation<TContextData> {
               "You configured a liked collection dispatcher, but the " +
                 "actor's liked property does not match the liked collection " +
                 "URI.  Set the property with Context.getLikedUri(handle).",
+            );
+          }
+        }
+        if (
+          this.#featuredCallbacks != null &&
+          this.#featuredCallbacks.dispatcher != null
+        ) {
+          if (actor?.featuredId == null) {
+            logger.warn(
+              "You configured a featured collection dispatcher, but the " +
+                "actor does not have a featured property.  Set the property " +
+                "with Context.getFeaturedUri(handle).",
+            );
+          } else if (
+            actor.featuredId.href != context.getFeaturedUri(handle).href
+          ) {
+            logger.warn(
+              "You configured a featured collection dispatcher, but the " +
+                "actor's featured property does not match the featured collection " +
+                "URI.  Set the property with Context.getFeaturedUri(handle).",
             );
           }
         }
@@ -1157,6 +1178,56 @@ export class Federation<TContextData> {
   }
 
   /**
+   * Registers a featured collection dispatcher.
+   * @param path The URI path pattern for the featured collection.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A featured collection callback to register.
+   * @returns An object with methods to set other featured collection
+   *          callbacks.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   * @since 0.11.0
+   */
+  setFeaturedDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Object, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void> {
+    if (this.#router.has("featured")) {
+      throw new RouterError("Featured collection dispatcher already set.");
+    }
+    const variables = this.#router.add(path, "featured");
+    if (variables.size !== 1 || !variables.has("handle")) {
+      throw new RouterError(
+        "Path for featured collection dispatcher must have one variable: {handle}",
+      );
+    }
+    const callbacks: CollectionCallbacks<Object, TContextData, void> = {
+      dispatcher,
+    };
+    this.#featuredCallbacks = callbacks;
+    const setters: CollectionCallbackSetters<TContextData, void> = {
+      setCounter(counter: CollectionCounter<TContextData, void>) {
+        callbacks.counter = counter;
+        return setters;
+      },
+      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+        callbacks.firstCursor = cursor;
+        return setters;
+      },
+      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+        callbacks.lastCursor = cursor;
+        return setters;
+      },
+      authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
+        return setters;
+      },
+    };
+    return setters;
+  }
+
+  /**
    * Assigns the URL path for the inbox and starts setting inbox listeners.
    *
    * @example
@@ -1549,6 +1620,16 @@ export class Federation<TContextData> {
           onNotFound,
           onNotAcceptable,
         });
+      case "featured":
+        return await handleCollection(request, {
+          name: "featured",
+          handle: route.values.handle,
+          context,
+          collectionCallbacks: this.#featuredCallbacks,
+          onUnauthorized,
+          onNotFound,
+          onNotAcceptable,
+        });
       default: {
         const response = onNotFound(request);
         return response instanceof Promise ? await response : response;
@@ -1707,6 +1788,14 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return new URL(path, this.#url);
   }
 
+  getFeaturedUri(handle: string): URL {
+    const path = this.#router.build("featured", { handle });
+    if (path == null) {
+      throw new RouterError("No featured collection path registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
   parseUri(uri: URL): ParseUriResult | null {
     if (uri.origin !== this.#url.origin) return null;
     const route = this.#router.route(uri.pathname);
@@ -1733,6 +1822,8 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       return { type: "followers", handle: route.values.handle };
     } else if (route.name === "liked") {
       return { type: "liked", handle: route.values.handle };
+    } else if (route.name === "featured") {
+      return { type: "featured", handle: route.values.handle };
     }
     return null;
   }

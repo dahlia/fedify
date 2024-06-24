@@ -74,6 +74,7 @@ test("Federation.createContext()", async (t) => {
     assertThrows(() => ctx.getFollowingUri("handle"), RouterError);
     assertThrows(() => ctx.getFollowersUri("handle"), RouterError);
     assertThrows(() => ctx.getLikedUri("handle"), RouterError);
+    assertThrows(() => ctx.getFeaturedUri("handle"), RouterError);
     assertEquals(ctx.parseUri(new URL("https://example.com/")), null);
     assertEquals(
       ctx.getHandleFromActorUri(new URL("https://example.com/")),
@@ -302,6 +303,20 @@ test("Federation.createContext()", async (t) => {
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle/liked")),
       { type: "liked", handle: "handle" },
+    );
+
+    federation.setFeaturedDispatcher(
+      "/users/{handle}/featured",
+      () => ({ items: [] }),
+    );
+    ctx = federation.createContext(new URL("https://example.com/"), 123);
+    assertEquals(
+      ctx.getFeaturedUri("handle"),
+      new URL("https://example.com/users/handle/featured"),
+    );
+    assertEquals(
+      ctx.parseUri(new URL("https://example.com/users/handle/featured")),
+      { type: "featured", handle: "handle" },
     );
   });
 

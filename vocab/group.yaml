@@ -12,6 +12,9 @@ defaultContext:
 - "https://w3id.org/security/multikey/v1"
 - manuallyApprovesFollowers: "as:manuallyApprovesFollowers"
   toot: "http://joinmastodon.org/ns#"
+  featured:
+    "@id": "toot:featured"
+    "@type": "@id"
   discoverable: "toot:discoverable"
   suspended: "toot:suspended"
   memorial: "toot:memorial"
@@ -140,6 +143,17 @@ properties:
     The `liked` collection MUST be either an {@link OrderedCollection} or
     a {@link Collection} and MAY be filtered on privileges of an authenticated
     user or as appropriate when no authentication is given.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
+- singularName: featured
+  functional: true
+  uri: "http://joinmastodon.org/ns#featured"
+  description: |
+    What is known in Mastodon as "pinned statuses", or statuses that are always
+    featured at the top of people's profiles, is implemented using an extra
+    property `featured` on the actor object that points to a {@link Collection}
+    of objects.
   range:
   - "https://www.w3.org/ns/activitystreams#Collection"
 

@@ -175,6 +175,10 @@ test("handleActor()", async () => {
       "https://w3id.org/security/multikey/v1",
       {
         manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
+        featured: {
+          "@id": "toot:featured",
+          "@type": "@id",
+        },
         discoverable: "toot:discoverable",
         indexable: "toot:indexable",
         memorial: "toot:memorial",
@@ -261,6 +265,10 @@ test("handleActor()", async () => {
       "https://w3id.org/security/multikey/v1",
       {
         manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
+        featured: {
+          "@id": "toot:featured",
+          "@type": "@id",
+        },
         discoverable: "toot:discoverable",
         indexable: "toot:indexable",
         memorial: "toot:memorial",

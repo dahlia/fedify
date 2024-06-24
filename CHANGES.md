@@ -21,6 +21,10 @@ To be released.
      -  Added `{ type: "liked"; handle: string }` case to `ParseUriResult` type.
      -  Renamed `linked` property (which was a typo) to `liked` in
         `Application`, `Group`, `Organization`, `Person`, and `Service` classes.
+     -  Added `Federation.setFeaturedDispatcher()` method.
+     -  Added `Context.getFeaturedUri()` method.
+     -  Added `{ type: "featured"; handle: string }` case to `ParseUriResult`
+        type.
 
  -  Frequently used JSON-LD contexts are now preloaded.  [[74]]
 

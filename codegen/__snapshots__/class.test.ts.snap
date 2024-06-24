@@ -8890,6 +8890,7 @@ export class Application extends Object {
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
+#_4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: (Endpoints)[] = [];
 #_gAJzg1QDc4rcefFsUzGSYmyXvNH: (boolean)[] = [];
@@ -8925,7 +8926,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -9110,6 +9111,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"streams\\" in values &&             values.streams != null) {
       
           if (Array.isArray(values.streams) &&
@@ -9214,7 +9227,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -9392,6 +9405,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           } else {
             throw new TypeError(
               \\"The liked must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja;
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -10146,6 +10171,84 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
+    async #fetchFeatured(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Collection | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Collection.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Application.getFeatured},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get featuredId(): URL | null {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** What is known in Mastodon as \\"pinned statuses\\", or statuses that are always
+ * featured at the top of people's profiles, is implemented using an extra
+ * property \`featured\` on the actor object that points to a {@link Collection}
+ * of objects.
+ * 
+ */
+
+      async getFeatured(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Collection | null> {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchFeatured(v, options);
+          if (fetched == null) return null;
+          this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
     async #fetchStream(
       url: URL,
       options: {
@@ -10376,6 +10479,15 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
+    for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    
+    array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
       const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
@@ -10439,7 +10551,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -10611,6 +10723,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = _3bgkPwJanyTCoVFM9ovRcus8tKkU;
+    const _4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#featured\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4N1vBJzXDf8NbBumeECQMFvKetja.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4N1vBJzXDf8NbBumeECQMFvKetja.push(await Collection.fromJsonLd(
+      v, options))
+    }
+    instance.#_4N1vBJzXDf8NbBumeECQMFvKetja = _4N1vBJzXDf8NbBumeECQMFvKetja;
     const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#streams\\"] ?? []) {
@@ -10863,6 +10989,26 @@ get indexable(): (boolean | null) {
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+      }
+      
+      const _4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4N1vBJzXDf8NbBumeECQMFvKetja.length == 1) {
+        proxy.featured = _4N1vBJzXDf8NbBumeECQMFvKetja[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
@@ -16097,6 +16243,7 @@ export class Group extends Object {
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
+#_4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: (Endpoints)[] = [];
 #_gAJzg1QDc4rcefFsUzGSYmyXvNH: (boolean)[] = [];
@@ -16132,7 +16279,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -16317,6 +16464,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"streams\\" in values &&             values.streams != null) {
       
           if (Array.isArray(values.streams) &&
@@ -16421,7 +16580,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -16599,6 +16758,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           } else {
             throw new TypeError(
               \\"The liked must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja;
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -17353,6 +17524,84 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
+    async #fetchFeatured(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Collection | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Collection.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Group.getFeatured},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get featuredId(): URL | null {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** What is known in Mastodon as \\"pinned statuses\\", or statuses that are always
+ * featured at the top of people's profiles, is implemented using an extra
+ * property \`featured\` on the actor object that points to a {@link Collection}
+ * of objects.
+ * 
+ */
+
+      async getFeatured(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Collection | null> {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchFeatured(v, options);
+          if (fetched == null) return null;
+          this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
     async #fetchStream(
       url: URL,
       options: {
@@ -17583,6 +17832,15 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
+    for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    
+    array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
       const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
@@ -17646,7 +17904,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -17818,6 +18076,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = _3bgkPwJanyTCoVFM9ovRcus8tKkU;
+    const _4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#featured\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4N1vBJzXDf8NbBumeECQMFvKetja.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4N1vBJzXDf8NbBumeECQMFvKetja.push(await Collection.fromJsonLd(
+      v, options))
+    }
+    instance.#_4N1vBJzXDf8NbBumeECQMFvKetja = _4N1vBJzXDf8NbBumeECQMFvKetja;
     const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#streams\\"] ?? []) {
@@ -18070,6 +18342,26 @@ get indexable(): (boolean | null) {
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+      }
+      
+      const _4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4N1vBJzXDf8NbBumeECQMFvKetja.length == 1) {
+        proxy.featured = _4N1vBJzXDf8NbBumeECQMFvKetja[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
@@ -20866,6 +21158,7 @@ export class Organization extends Object {
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
+#_4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: (Endpoints)[] = [];
 #_gAJzg1QDc4rcefFsUzGSYmyXvNH: (boolean)[] = [];
@@ -20901,7 +21194,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -21086,6 +21379,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"streams\\" in values &&             values.streams != null) {
       
           if (Array.isArray(values.streams) &&
@@ -21190,7 +21495,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -21368,6 +21673,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           } else {
             throw new TypeError(
               \\"The liked must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja;
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -22122,6 +22439,84 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
+    async #fetchFeatured(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Collection | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Collection.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Organization.getFeatured},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get featuredId(): URL | null {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** What is known in Mastodon as \\"pinned statuses\\", or statuses that are always
+ * featured at the top of people's profiles, is implemented using an extra
+ * property \`featured\` on the actor object that points to a {@link Collection}
+ * of objects.
+ * 
+ */
+
+      async getFeatured(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Collection | null> {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchFeatured(v, options);
+          if (fetched == null) return null;
+          this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
     async #fetchStream(
       url: URL,
       options: {
@@ -22352,6 +22747,15 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
+    for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    
+    array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
       const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
@@ -22415,7 +22819,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -22587,6 +22991,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = _3bgkPwJanyTCoVFM9ovRcus8tKkU;
+    const _4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#featured\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4N1vBJzXDf8NbBumeECQMFvKetja.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4N1vBJzXDf8NbBumeECQMFvKetja.push(await Collection.fromJsonLd(
+      v, options))
+    }
+    instance.#_4N1vBJzXDf8NbBumeECQMFvKetja = _4N1vBJzXDf8NbBumeECQMFvKetja;
     const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#streams\\"] ?? []) {
@@ -22839,6 +23257,26 @@ get indexable(): (boolean | null) {
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+      }
+      
+      const _4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4N1vBJzXDf8NbBumeECQMFvKetja.length == 1) {
+        proxy.featured = _4N1vBJzXDf8NbBumeECQMFvKetja[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
@@ -23199,6 +23637,7 @@ export class Person extends Object {
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
+#_4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: (Endpoints)[] = [];
 #_gAJzg1QDc4rcefFsUzGSYmyXvNH: (boolean)[] = [];
@@ -23234,7 +23673,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -23419,6 +23858,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"streams\\" in values &&             values.streams != null) {
       
           if (Array.isArray(values.streams) &&
@@ -23523,7 +23974,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -23701,6 +24152,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           } else {
             throw new TypeError(
               \\"The liked must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja;
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -24455,6 +24918,84 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
+    async #fetchFeatured(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Collection | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Collection.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Person.getFeatured},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get featuredId(): URL | null {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** What is known in Mastodon as \\"pinned statuses\\", or statuses that are always
+ * featured at the top of people's profiles, is implemented using an extra
+ * property \`featured\` on the actor object that points to a {@link Collection}
+ * of objects.
+ * 
+ */
+
+      async getFeatured(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Collection | null> {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchFeatured(v, options);
+          if (fetched == null) return null;
+          this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
     async #fetchStream(
       url: URL,
       options: {
@@ -24685,6 +25226,15 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
+    for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    
+    array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
       const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
@@ -24748,7 +25298,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -24920,6 +25470,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = _3bgkPwJanyTCoVFM9ovRcus8tKkU;
+    const _4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#featured\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4N1vBJzXDf8NbBumeECQMFvKetja.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4N1vBJzXDf8NbBumeECQMFvKetja.push(await Collection.fromJsonLd(
+      v, options))
+    }
+    instance.#_4N1vBJzXDf8NbBumeECQMFvKetja = _4N1vBJzXDf8NbBumeECQMFvKetja;
     const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#streams\\"] ?? []) {
@@ -25172,6 +25736,26 @@ get indexable(): (boolean | null) {
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+      }
+      
+      const _4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4N1vBJzXDf8NbBumeECQMFvKetja.length == 1) {
+        proxy.featured = _4N1vBJzXDf8NbBumeECQMFvKetja[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9
@@ -28061,6 +28645,7 @@ export class Service extends Object {
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU: (Collection | URL)[] = [];
+#_4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
 #_3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 #_sEoQwUbfk4hEfugzNQ2ZiDcLMkG: (Endpoints)[] = [];
 #_gAJzg1QDc4rcefFsUzGSYmyXvNH: (boolean)[] = [];
@@ -28096,7 +28681,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 ,
     {
       documentLoader,
@@ -28281,6 +28866,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           }
         }
       
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"streams\\" in values &&             values.streams != null) {
       
           if (Array.isArray(values.streams) &&
@@ -28385,7 +28982,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
 
     = {},
     options: {
@@ -28563,6 +29160,18 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
           } else {
             throw new TypeError(
               \\"The liked must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja;
+        if (\\"featured\\" in values &&             values.featured != null) {
+          if (values.featured instanceof Collection || values.featured instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4N1vBJzXDf8NbBumeECQMFvKetja = [values.featured];
+          } else {
+            throw new TypeError(
+              \\"The featured must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -29317,6 +29926,84 @@ get manuallyApprovesFollowers(): (boolean | null) {
         return v;
       }
       
+    async #fetchFeatured(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Collection | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Collection.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Service.getFeatured},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get featuredId(): URL | null {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** What is known in Mastodon as \\"pinned statuses\\", or statuses that are always
+ * featured at the top of people's profiles, is implemented using an extra
+ * property \`featured\` on the actor object that points to a {@link Collection}
+ * of objects.
+ * 
+ */
+
+      async getFeatured(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Collection | null> {
+        if (this.#_4N1vBJzXDf8NbBumeECQMFvKetja.length < 1) return null;
+        const v = this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchFeatured(v, options);
+          if (fetched == null) return null;
+          this.#_4N1vBJzXDf8NbBumeECQMFvKetja[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
     async #fetchStream(
       url: URL,
       options: {
@@ -29547,6 +30234,15 @@ get indexable(): (boolean | null) {
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
     
     array = [];
+    for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    
+    array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
       const element = (
     v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
@@ -29610,7 +30306,7 @@ get indexable(): (boolean | null) {
     }
     return await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
       { documentLoader: options.contextLoader },
     );
   }
@@ -29782,6 +30478,20 @@ get indexable(): (boolean | null) {
       v, options))
     }
     instance.#_3bgkPwJanyTCoVFM9ovRcus8tKkU = _3bgkPwJanyTCoVFM9ovRcus8tKkU;
+    const _4N1vBJzXDf8NbBumeECQMFvKetja: (Collection | URL)[] = [];
+
+    for (const v of values[\\"http://joinmastodon.org/ns#featured\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4N1vBJzXDf8NbBumeECQMFvKetja.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4N1vBJzXDf8NbBumeECQMFvKetja.push(await Collection.fromJsonLd(
+      v, options))
+    }
+    instance.#_4N1vBJzXDf8NbBumeECQMFvKetja = _4N1vBJzXDf8NbBumeECQMFvKetja;
     const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9: (Collection | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#streams\\"] ?? []) {
@@ -30034,6 +30744,26 @@ get indexable(): (boolean | null) {
     
       if (_3bgkPwJanyTCoVFM9ovRcus8tKkU.length == 1) {
         proxy.liked = _3bgkPwJanyTCoVFM9ovRcus8tKkU[0];
+      }
+      
+      const _4N1vBJzXDf8NbBumeECQMFvKetja = this.#_4N1vBJzXDf8NbBumeECQMFvKetja
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4N1vBJzXDf8NbBumeECQMFvKetja.length == 1) {
+        proxy.featured = _4N1vBJzXDf8NbBumeECQMFvKetja[0];
       }
       
       const _3sG2Hdwn9qzKGu9mpYkqakAMUkH9 = this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9

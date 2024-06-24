@@ -107,6 +107,15 @@ export interface Context<TContextData> {
   getLikedUri(handle: string): URL;
 
   /**
+   * Builds the URI of an actor's featured collection with the given handle.
+   * @param handle The actor's handle.
+   * @returns The actor's featured collection URI.
+   * @throws {RouterError} If no featured collection is available.
+   * @since 0.11.0
+   */
+  getFeaturedUri(handle: string): URL;
+
+  /**
    * Determines the type of the URI and extracts the associated data.
    * @param uri The URI to parse.
    * @since 0.9.0
@@ -318,7 +327,12 @@ export type ParseUriResult =
    * The case of a liked collection URI.
    * @since 0.11.0
    */
-  | { type: "liked"; handle: string };
+  | { type: "liked"; handle: string }
+  /**
+   * The case of a featured collection URI.
+   * @since 0.11.0
+   */
+  | { type: "featured"; handle: string };
 
 /**
  * Options for {@link Context.sendActivity} method and
