@@ -625,6 +625,24 @@ export class Federation<TContextData> {
             );
           }
         }
+        if (
+          this.#likedCallbacks != null &&
+          this.#likedCallbacks.dispatcher != null
+        ) {
+          if (actor?.likedId == null) {
+            logger.warn(
+              "You configured a liked collection dispatcher, but the " +
+                "actor does not have a liked property.  Set the property " +
+                "with Context.getLikedUri(handle).",
+            );
+          } else if (actor.likedId.href != context.getLikedUri(handle).href) {
+            logger.warn(
+              "You configured a liked collection dispatcher, but the " +
+                "actor's liked property does not match the liked collection " +
+                "URI.  Set the property with Context.getLikedUri(handle).",
+            );
+          }
+        }
         if (this.#router.has("inbox")) {
           if (actor.inboxId == null) {
             logger.warn(
