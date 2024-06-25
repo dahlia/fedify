@@ -26,7 +26,7 @@ To be released.
      -  Added `{ type: "featured"; handle: string }` case to `ParseUriResult`
         type.
 
- -  Frequently used JSON-LD contexts are now preloaded.  [[74]]
+ -  Frequently used JSON-LD contexts are now preloaded.  [[#74]]
 
      -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
         contexts:
