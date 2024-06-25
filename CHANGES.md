@@ -54,6 +54,42 @@ To be released.
      -  `CollectionPage.next`
      -  `CollectionPage.prev`
 
+ -  Added `target` property to `Activity` class in Activity Vocabulary API.
+
+     -  Added `Activity.getTarget()` method.
+     -  Added `Activity.getTargets()` method.
+     -  `new Activity()` constructor now accepts `target` option.
+     -  `new Activity()` constructor now accepts `targets` option.
+     -  `Activity.clone()` method now accepts `target` option.
+     -  `Activity.clone()` method now accepts `targets` option.
+
+ -  Added `result` property to `Activity` class in Activity Vocabulary API.
+
+     -  Added `Activity.getResult()` method.
+     -  Added `Activity.getResults()` method.
+     -  `new Activity()` constructor now accepts `result` option.
+     -  `new Activity()` constructor now accepts `results` option.
+     -  `Activity.clone()` method now accepts `result` option.
+     -  `Activity.clone()` method now accepts `results` option.
+
+ -  Added `origin` property to `Activity` class in Activity Vocabulary API.
+
+     -  Added `Activity.getOrigin()` method.
+     -  Added `Activity.getOrigins()` method.
+     -  `new Activity()` constructor now accepts `origin` option.
+     -  `new Activity()` constructor now accepts `origins` option.
+     -  `Activity.clone()` method now accepts `origin` option.
+     -  `Activity.clone()` method now accepts `origins` option.
+
+ -  Added `instrument` property to `Activity` class in Activity Vocabulary API.
+
+     -  Added `Activity.getInstrument()` method.
+     -  Added `Activity.getInstruments()` method.
+     -  `new Activity()` constructor now accepts `instrument` option.
+     -  `new Activity()` constructor now accepts `instruments` option.
+     -  `Activity.clone()` method now accepts `instrument` option.
+     -  `Activity.clone()` method now accepts `instruments` option.
+
  -  The key pair or the key pair for signing outgoing HTTP requests made from
     the shared inbox now can be configured.  This improves the compatibility
     with other ActivityPub implementations that require authorized fetches

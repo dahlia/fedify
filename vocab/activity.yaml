@@ -41,3 +41,50 @@ properties:
     wishlist", the object of the activity is the movie added.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
+
+- pluralName: targets
+  singularName: target
+  singularAccessor: true
+  uri: "https://www.w3.org/ns/activitystreams#target"
+  description: |
+    Describes the indirect object, or target, of the activity.  The precise
+    meaning of the target is largely dependent on the type of action being
+    described but will often be the object of the English preposition "to".
+    For instance, in the activity "John added a movie to his wishlist",
+    the target of the activity is John's wishlist.  An activity can have more
+    than one target. 
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"
+
+- pluralName: results
+  singularName: result
+  singularAccessor: true
+  uri: "https://www.w3.org/ns/activitystreams#result"
+  description: |
+    Describes the result of the activity.  For instance, if a particular action
+    results in the creation of a new resource, the result property can be used
+    to describe that new resource. 
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"
+
+- pluralName: origins
+  singularName: origin
+  singularAccessor: true
+  uri: "https://www.w3.org/ns/activitystreams#origin"
+  description: |
+    Describes an indirect object of the activity from which the activity is
+    directed.  The precise meaning of the origin is the object of the English
+    preposition "from". For instance, in the activity "John moved an item to
+    List B from List A", the origin of the activity is "List A".
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"
+
+- pluralName: instruments
+  singularName: instrument
+  singularAccessor: true
+  uri: "https://www.w3.org/ns/activitystreams#instrument"
+  description: |
+    Identifies one or more objects used (or to be used) in the completion of
+    an {@link Activity}.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"

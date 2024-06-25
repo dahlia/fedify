@@ -7457,6 +7457,10 @@ export class Activity extends Object {
     }
   #_2DjTTboo3CNHU2a2JQqUSE2dbv9D: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_2MH19yxjn1wnHsNfa5n4JBhJzxyc: (Object | URL)[] = [];
+#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF: (Object | URL)[] = [];
+#_u4QGFbRFcYmPEKGbPv1hpBR9r5G: (Object | URL)[] = [];
+#_25zu2s3VxVujgEKqrDycjE284XQR: (Object | URL)[] = [];
+#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ: (Object | URL)[] = [];
 
   /**
    * Constructs a new instance of Activity with the given values.
@@ -7485,7 +7489,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -7563,6 +7571,142 @@ objects?: (Object | URL)[];}
             );
           }
         }
+      
+        if (\\"target\\" in values &&             values.target != null) {
+          if (values.target instanceof Object || values.target instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF = [values.target];
+          } else {
+            throw new TypeError(
+              \\"The target must be of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"targets\\" in values &&             values.targets != null) {
+      
+          if (\\"target\\" in values &&
+              values.target != null) {
+            throw new TypeError(
+              \\"Cannot initialize both target and \\" +
+                \\"targets at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.targets) &&
+              values.targets.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF = values.targets;
+          } else {
+            throw new TypeError(
+              \\"The targets must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"result\\" in values &&             values.result != null) {
+          if (values.result instanceof Object || values.result instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G = [values.result];
+          } else {
+            throw new TypeError(
+              \\"The result must be of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"results\\" in values &&             values.results != null) {
+      
+          if (\\"result\\" in values &&
+              values.result != null) {
+            throw new TypeError(
+              \\"Cannot initialize both result and \\" +
+                \\"results at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.results) &&
+              values.results.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G = values.results;
+          } else {
+            throw new TypeError(
+              \\"The results must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"origin\\" in values &&             values.origin != null) {
+          if (values.origin instanceof Object || values.origin instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_25zu2s3VxVujgEKqrDycjE284XQR = [values.origin];
+          } else {
+            throw new TypeError(
+              \\"The origin must be of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"origins\\" in values &&             values.origins != null) {
+      
+          if (\\"origin\\" in values &&
+              values.origin != null) {
+            throw new TypeError(
+              \\"Cannot initialize both origin and \\" +
+                \\"origins at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.origins) &&
+              values.origins.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_25zu2s3VxVujgEKqrDycjE284XQR = values.origins;
+          } else {
+            throw new TypeError(
+              \\"The origins must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"instrument\\" in values &&             values.instrument != null) {
+          if (values.instrument instanceof Object || values.instrument instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ = [values.instrument];
+          } else {
+            throw new TypeError(
+              \\"The instrument must be of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"instruments\\" in values &&             values.instruments != null) {
+      
+          if (\\"instrument\\" in values &&
+              values.instrument != null) {
+            throw new TypeError(
+              \\"Cannot initialize both instrument and \\" +
+                \\"instruments at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.instruments) &&
+              values.instruments.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ = values.instruments;
+          } else {
+            throw new TypeError(
+              \\"The instruments must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -7593,7 +7737,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -7665,6 +7813,142 @@ objects?: (Object | URL)[];}
           } else {
             throw new TypeError(
               \\"The objects must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF = this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF;
+        if (\\"target\\" in values &&             values.target != null) {
+          if (values.target instanceof Object || values.target instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF = [values.target];
+          } else {
+            throw new TypeError(
+              \\"The target must be of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"targets\\" in values &&             values.targets != null) {
+      
+          if (\\"target\\" in values &&
+              values.target != null) {
+            throw new TypeError(
+              \\"Cannot update both target and \\" +
+                \\"targets at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.targets) &&
+              values.targets.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF = values.targets;
+          } else {
+            throw new TypeError(
+              \\"The targets must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G = this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G;
+        if (\\"result\\" in values &&             values.result != null) {
+          if (values.result instanceof Object || values.result instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G = [values.result];
+          } else {
+            throw new TypeError(
+              \\"The result must be of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"results\\" in values &&             values.results != null) {
+      
+          if (\\"result\\" in values &&
+              values.result != null) {
+            throw new TypeError(
+              \\"Cannot update both result and \\" +
+                \\"results at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.results) &&
+              values.results.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G = values.results;
+          } else {
+            throw new TypeError(
+              \\"The results must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_25zu2s3VxVujgEKqrDycjE284XQR = this.#_25zu2s3VxVujgEKqrDycjE284XQR;
+        if (\\"origin\\" in values &&             values.origin != null) {
+          if (values.origin instanceof Object || values.origin instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_25zu2s3VxVujgEKqrDycjE284XQR = [values.origin];
+          } else {
+            throw new TypeError(
+              \\"The origin must be of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"origins\\" in values &&             values.origins != null) {
+      
+          if (\\"origin\\" in values &&
+              values.origin != null) {
+            throw new TypeError(
+              \\"Cannot update both origin and \\" +
+                \\"origins at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.origins) &&
+              values.origins.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_25zu2s3VxVujgEKqrDycjE284XQR = values.origins;
+          } else {
+            throw new TypeError(
+              \\"The origins must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ = this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ;
+        if (\\"instrument\\" in values &&             values.instrument != null) {
+          if (values.instrument instanceof Object || values.instrument instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ = [values.instrument];
+          } else {
+            throw new TypeError(
+              \\"The instrument must be of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"instruments\\" in values &&             values.instruments != null) {
+      
+          if (\\"instrument\\" in values &&
+              values.instrument != null) {
+            throw new TypeError(
+              \\"Cannot update both instrument and \\" +
+                \\"instruments at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.instruments) &&
+              values.instruments.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ = values.instruments;
+          } else {
+            throw new TypeError(
+              \\"The instruments must be an array of type \\" +
               \\"Object | URL\\" + \\".\\",
             );
           }
@@ -7943,6 +8227,480 @@ objects?: (Object | URL)[];}
         }
       }
       
+    async #fetchTarget(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Object | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Object.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Activity.getTarget},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get targetId(): URL | null {
+        if (this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF.length < 1) return null;
+        const v = this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Describes the indirect object, or target, of the activity.  The precise
+ * meaning of the target is largely dependent on the type of action being
+ * described but will often be the object of the English preposition \\"to\\".
+ * For instance, in the activity \\"John added a movie to his wishlist\\",
+ * the target of the activity is John's wishlist.  An activity can have more
+ * than one target. 
+ * 
+ */
+
+      async getTarget(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Object | null> {
+        if (this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF.length < 1) return null;
+        const v = this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchTarget(v, options);
+          if (fetched == null) return null;
+          this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Activity.getTargets},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get targetIds(): URL[] {
+        return this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Describes the indirect object, or target, of the activity.  The precise
+ * meaning of the target is largely dependent on the type of action being
+ * described but will often be the object of the English preposition \\"to\\".
+ * For instance, in the activity \\"John added a movie to his wishlist\\",
+ * the target of the activity is John's wishlist.  An activity can have more
+ * than one target. 
+ * 
+ */
+
+      async* getTargets(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Object> {
+        const vs = this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchTarget(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
+    async #fetchResult(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Object | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Object.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Activity.getResult},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get resultId(): URL | null {
+        if (this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G.length < 1) return null;
+        const v = this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Describes the result of the activity.  For instance, if a particular action
+ * results in the creation of a new resource, the result property can be used
+ * to describe that new resource. 
+ * 
+ */
+
+      async getResult(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Object | null> {
+        if (this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G.length < 1) return null;
+        const v = this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchResult(v, options);
+          if (fetched == null) return null;
+          this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Activity.getResults},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get resultIds(): URL[] {
+        return this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Describes the result of the activity.  For instance, if a particular action
+ * results in the creation of a new resource, the result property can be used
+ * to describe that new resource. 
+ * 
+ */
+
+      async* getResults(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Object> {
+        const vs = this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchResult(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
+    async #fetchOrigin(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Object | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Object.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Activity.getOrigin},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get originId(): URL | null {
+        if (this.#_25zu2s3VxVujgEKqrDycjE284XQR.length < 1) return null;
+        const v = this.#_25zu2s3VxVujgEKqrDycjE284XQR[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Describes an indirect object of the activity from which the activity is
+ * directed.  The precise meaning of the origin is the object of the English
+ * preposition \\"from\\". For instance, in the activity \\"John moved an item to
+ * List B from List A\\", the origin of the activity is \\"List A\\".
+ * 
+ */
+
+      async getOrigin(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Object | null> {
+        if (this.#_25zu2s3VxVujgEKqrDycjE284XQR.length < 1) return null;
+        const v = this.#_25zu2s3VxVujgEKqrDycjE284XQR[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchOrigin(v, options);
+          if (fetched == null) return null;
+          this.#_25zu2s3VxVujgEKqrDycjE284XQR[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Activity.getOrigins},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get originIds(): URL[] {
+        return this.#_25zu2s3VxVujgEKqrDycjE284XQR.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Describes an indirect object of the activity from which the activity is
+ * directed.  The precise meaning of the origin is the object of the English
+ * preposition \\"from\\". For instance, in the activity \\"John moved an item to
+ * List B from List A\\", the origin of the activity is \\"List A\\".
+ * 
+ */
+
+      async* getOrigins(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Object> {
+        const vs = this.#_25zu2s3VxVujgEKqrDycjE284XQR;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchOrigin(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
+    async #fetchInstrument(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Object | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Object.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Activity.getInstrument},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get instrumentId(): URL | null {
+        if (this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ.length < 1) return null;
+        const v = this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Identifies one or more objects used (or to be used) in the completion of
+ * an {@link Activity}.
+ * 
+ */
+
+      async getInstrument(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Object | null> {
+        if (this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ.length < 1) return null;
+        const v = this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchInstrument(v, options);
+          if (fetched == null) return null;
+          this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Activity.getInstruments},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get instrumentIds(): URL[] {
+        return this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Identifies one or more objects used (or to be used) in the completion of
+ * an {@link Activity}.
+ * 
+ */
+
+      async* getInstruments(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Object> {
+        const vs = this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchInstrument(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -7982,6 +8740,42 @@ objects?: (Object | URL)[];}
     array.push(element);;
     }
     if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#object\\"] = array;
+    
+    array = [];
+    for (const v of this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#target\\"] = array;
+    
+    array = [];
+    for (const v of this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#result\\"] = array;
+    
+    array = [];
+    for (const v of this.#_25zu2s3VxVujgEKqrDycjE284XQR) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#origin\\"] = array;
+    
+    array = [];
+    for (const v of this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#instrument\\"] = array;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Activity\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -8182,6 +8976,62 @@ objects?: (Object | URL)[];}
       v, options))
     }
     instance.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc = _2MH19yxjn1wnHsNfa5n4JBhJzxyc;
+    const _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF: (Object | URL)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#target\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF.push(await Object.fromJsonLd(
+      v, options))
+    }
+    instance.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF = _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF;
+    const _u4QGFbRFcYmPEKGbPv1hpBR9r5G: (Object | URL)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#result\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _u4QGFbRFcYmPEKGbPv1hpBR9r5G.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _u4QGFbRFcYmPEKGbPv1hpBR9r5G.push(await Object.fromJsonLd(
+      v, options))
+    }
+    instance.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G = _u4QGFbRFcYmPEKGbPv1hpBR9r5G;
+    const _25zu2s3VxVujgEKqrDycjE284XQR: (Object | URL)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#origin\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _25zu2s3VxVujgEKqrDycjE284XQR.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _25zu2s3VxVujgEKqrDycjE284XQR.push(await Object.fromJsonLd(
+      v, options))
+    }
+    instance.#_25zu2s3VxVujgEKqrDycjE284XQR = _25zu2s3VxVujgEKqrDycjE284XQR;
+    const _3c5t2x7DYRo2shwTxpkd4kYSS5WQ: (Object | URL)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#instrument\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _3c5t2x7DYRo2shwTxpkd4kYSS5WQ.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _3c5t2x7DYRo2shwTxpkd4kYSS5WQ.push(await Object.fromJsonLd(
+      v, options))
+    }
+    instance.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ = _3c5t2x7DYRo2shwTxpkd4kYSS5WQ;
     
     return instance;
   }
@@ -8238,6 +9088,110 @@ objects?: (Object | URL)[];}
           || !(\\"object\\" in proxy)
           && _2MH19yxjn1wnHsNfa5n4JBhJzxyc.length > 0) {
         proxy.objects = _2MH19yxjn1wnHsNfa5n4JBhJzxyc;
+      }
+      
+      const _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF = this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF.length == 1) {
+        proxy.target = _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF[0];
+      }
+      
+      if (_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF.length > 1
+          || !(\\"target\\" in proxy)
+          && _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF.length > 0) {
+        proxy.targets = _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF;
+      }
+      
+      const _u4QGFbRFcYmPEKGbPv1hpBR9r5G = this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_u4QGFbRFcYmPEKGbPv1hpBR9r5G.length == 1) {
+        proxy.result = _u4QGFbRFcYmPEKGbPv1hpBR9r5G[0];
+      }
+      
+      if (_u4QGFbRFcYmPEKGbPv1hpBR9r5G.length > 1
+          || !(\\"result\\" in proxy)
+          && _u4QGFbRFcYmPEKGbPv1hpBR9r5G.length > 0) {
+        proxy.results = _u4QGFbRFcYmPEKGbPv1hpBR9r5G;
+      }
+      
+      const _25zu2s3VxVujgEKqrDycjE284XQR = this.#_25zu2s3VxVujgEKqrDycjE284XQR
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_25zu2s3VxVujgEKqrDycjE284XQR.length == 1) {
+        proxy.origin = _25zu2s3VxVujgEKqrDycjE284XQR[0];
+      }
+      
+      if (_25zu2s3VxVujgEKqrDycjE284XQR.length > 1
+          || !(\\"origin\\" in proxy)
+          && _25zu2s3VxVujgEKqrDycjE284XQR.length > 0) {
+        proxy.origins = _25zu2s3VxVujgEKqrDycjE284XQR;
+      }
+      
+      const _3c5t2x7DYRo2shwTxpkd4kYSS5WQ = this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3c5t2x7DYRo2shwTxpkd4kYSS5WQ.length == 1) {
+        proxy.instrument = _3c5t2x7DYRo2shwTxpkd4kYSS5WQ[0];
+      }
+      
+      if (_3c5t2x7DYRo2shwTxpkd4kYSS5WQ.length > 1
+          || !(\\"instrument\\" in proxy)
+          && _3c5t2x7DYRo2shwTxpkd4kYSS5WQ.length > 0) {
+        proxy.instruments = _3c5t2x7DYRo2shwTxpkd4kYSS5WQ;
       }
       
     return proxy;
@@ -8302,7 +9256,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -8342,7 +9300,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -8506,7 +9468,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -8546,7 +9512,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -8709,7 +9679,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -8749,7 +9723,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -11195,7 +12173,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -11235,7 +12217,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -11408,7 +12394,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -11448,7 +12438,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -12364,7 +13358,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -12404,7 +13402,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -12573,7 +13575,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -12613,7 +13619,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -14281,7 +15291,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -14321,7 +15335,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -14483,7 +15501,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -14523,7 +15545,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -14683,7 +15709,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -14723,7 +15753,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -15718,7 +16752,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -15758,7 +16796,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -15922,7 +16964,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -15962,7 +17008,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -19798,7 +20848,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -19838,7 +20892,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -20367,7 +21425,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -20407,7 +21469,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -26795,7 +27861,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -26863,7 +27933,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];}
 
     = {},
     options: {
@@ -27303,7 +28377,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -27343,7 +28421,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -28324,7 +29406,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -28364,7 +29450,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -31086,7 +32176,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -31126,7 +32220,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {
@@ -31291,7 +32389,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -31331,7 +32433,11 @@ ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
 proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
 actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
-objects?: (Object | URL)[];}
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
 
     = {},
     options: {

@@ -287,7 +287,11 @@ snapshot[`Deno.inspect(Accept) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -323,7 +327,11 @@ snapshot[`Deno.inspect(Accept) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -359,7 +367,11 @@ snapshot[`Deno.inspect(Accept) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -395,7 +407,11 @@ snapshot[`Deno.inspect(Activity) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -431,7 +447,11 @@ snapshot[`Deno.inspect(Activity) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -467,7 +487,11 @@ snapshot[`Deno.inspect(Activity) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -503,7 +527,11 @@ snapshot[`Deno.inspect(Add) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -539,7 +567,11 @@ snapshot[`Deno.inspect(Add) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -575,7 +607,11 @@ snapshot[`Deno.inspect(Add) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -611,7 +647,11 @@ snapshot[`Deno.inspect(Announce) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -647,7 +687,11 @@ snapshot[`Deno.inspect(Announce) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -683,7 +727,11 @@ snapshot[`Deno.inspect(Announce) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -869,7 +917,11 @@ snapshot[`Deno.inspect(Arrive) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -905,7 +957,11 @@ snapshot[`Deno.inspect(Arrive) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -941,7 +997,11 @@ snapshot[`Deno.inspect(Arrive) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -1187,7 +1247,11 @@ snapshot[`Deno.inspect(Block) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -1223,7 +1287,11 @@ snapshot[`Deno.inspect(Block) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -1259,7 +1327,11 @@ snapshot[`Deno.inspect(Block) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -1538,7 +1610,11 @@ snapshot[`Deno.inspect(Create) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -1574,7 +1650,11 @@ snapshot[`Deno.inspect(Create) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -1610,7 +1690,11 @@ snapshot[`Deno.inspect(Create) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -1646,7 +1730,11 @@ snapshot[`Deno.inspect(Delete) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -1682,7 +1770,11 @@ snapshot[`Deno.inspect(Delete) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -1718,7 +1810,11 @@ snapshot[`Deno.inspect(Delete) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -1754,7 +1850,11 @@ snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -1790,7 +1890,11 @@ snapshot[`Deno.inspect(Dislike) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -1826,7 +1930,11 @@ snapshot[`Deno.inspect(Dislike) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -2108,7 +2216,11 @@ snapshot[`Deno.inspect(Flag) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -2144,7 +2256,11 @@ snapshot[`Deno.inspect(Flag) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -2180,7 +2296,11 @@ snapshot[`Deno.inspect(Flag) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -2216,7 +2336,11 @@ snapshot[`Deno.inspect(Follow) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -2252,7 +2376,11 @@ snapshot[`Deno.inspect(Follow) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -2288,7 +2416,11 @@ snapshot[`Deno.inspect(Follow) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -2534,7 +2666,11 @@ snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -2570,7 +2706,11 @@ snapshot[`Deno.inspect(Ignore) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -2606,7 +2746,11 @@ snapshot[`Deno.inspect(Ignore) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -2750,7 +2894,11 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -2786,7 +2934,11 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -2822,7 +2974,11 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -2858,7 +3014,11 @@ snapshot[`Deno.inspect(Like) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -2894,7 +3054,11 @@ snapshot[`Deno.inspect(Like) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -2930,7 +3094,11 @@ snapshot[`Deno.inspect(Like) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -3290,7 +3458,11 @@ snapshot[`Deno.inspect(Offer) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -3326,7 +3498,11 @@ snapshot[`Deno.inspect(Offer) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -3362,7 +3538,11 @@ snapshot[`Deno.inspect(Offer) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -4278,6 +4458,10 @@ snapshot[`Deno.inspect(Question) [auto] 1`] = `
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {},
   exclusiveOptions: [ Object {} ],
   inclusiveOptions: [ Object {} ]
 }'
@@ -4316,6 +4500,10 @@ snapshot[`Deno.inspect(Question) [auto] 2`] = `
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/",
   exclusiveOptions: [ URL "https://example.com/" ],
   inclusiveOptions: [ URL "https://example.com/" ]
 }'
@@ -4354,6 +4542,10 @@ snapshot[`Deno.inspect(Question) [auto] 3`] = `
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ],
   exclusiveOptions: [ Object {}, Object {} ],
   inclusiveOptions: [ Object {}, Object {} ]
 }'
@@ -4391,7 +4583,11 @@ snapshot[`Deno.inspect(Reject) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -4427,7 +4623,11 @@ snapshot[`Deno.inspect(Reject) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -4463,7 +4663,11 @@ snapshot[`Deno.inspect(Reject) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -4610,7 +4814,11 @@ snapshot[`Deno.inspect(Remove) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -4646,7 +4854,11 @@ snapshot[`Deno.inspect(Remove) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -4682,7 +4894,11 @@ snapshot[`Deno.inspect(Remove) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -4973,7 +5189,11 @@ snapshot[`Deno.inspect(Undo) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -5009,7 +5229,11 @@ snapshot[`Deno.inspect(Undo) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -5045,7 +5269,11 @@ snapshot[`Deno.inspect(Undo) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
@@ -5081,7 +5309,11 @@ snapshot[`Deno.inspect(Update) [auto] 1`] = `
   sensitive: true,
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
-  object: Object {}
+  object: Object {},
+  target: Object {},
+  result: Object {},
+  origin: Object {},
+  instrument: Object {}
 }'
 `;
 
@@ -5117,7 +5349,11 @@ snapshot[`Deno.inspect(Update) [auto] 2`] = `
   sensitive: true,
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
-  object: URL "https://example.com/"
+  object: URL "https://example.com/",
+  target: URL "https://example.com/",
+  result: URL "https://example.com/",
+  origin: URL "https://example.com/",
+  instrument: URL "https://example.com/"
 }'
 `;
 
@@ -5153,7 +5389,11 @@ snapshot[`Deno.inspect(Update) [auto] 3`] = `
   sensitive: true,
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
-  objects: [ Object {}, Object {} ]
+  objects: [ Object {}, Object {} ],
+  targets: [ Object {}, Object {} ],
+  results: [ Object {}, Object {} ],
+  origins: [ Object {}, Object {} ],
+  instruments: [ Object {}, Object {} ]
 }'
 `;
 
