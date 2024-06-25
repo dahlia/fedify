@@ -40,6 +40,7 @@ async function* generateParametersType(
   typeUri: string,
   types: Record<string, TypeSchema>,
   parentheses = true,
+  excludeProperties: string[] = [],
 ): AsyncIterable<string> {
   const type = types[typeUri];
   if (parentheses) yield "{\n";
@@ -47,12 +48,16 @@ async function* generateParametersType(
     yield `id?: URL | null;\n`;
   } else {
     for await (
-      const code of generateParametersType(type.extends, types, false)
+      const code of generateParametersType(type.extends, types, false, [
+        ...excludeProperties,
+        ...type.properties.map((p) => p.singularName),
+      ])
     ) {
       yield code;
     }
   }
   for (const property of type.properties) {
+    if (excludeProperties.includes(property.singularName)) continue;
     yield generateParameterType(property, types);
   }
   if (parentheses) yield "}\n";

@@ -38,7 +38,10 @@ export async function* generateEncoder(
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { "@list": unknown[] } | string
+    >;
     `;
   }
   for (const property of type.properties) {
@@ -63,7 +66,17 @@ export async function* generateEncoder(
     }
     yield `;
     }
-    if (array.length > 0) values[${JSON.stringify(property.uri)}] = array;
+    if (array.length > 0) {
+      values[${JSON.stringify(property.uri)}] = (
+    `;
+    if (!property.functional && property.container === "list") {
+      yield `{ "@list": array }`;
+    } else {
+      yield `array`;
+    }
+    yield `
+      );
+    }
     `;
   }
   yield `

@@ -8,4 +8,13 @@ description: |
   are assumed to always be strictly ordered.
 defaultContext: "https://www.w3.org/ns/activitystreams"
 
-properties: []
+properties:
+- pluralName: items
+  singularName: item
+  uri: "https://www.w3.org/ns/activitystreams#items"
+  container: list
+  description: |
+    Identifies the items contained in a collection.  The items might be ordered
+    or unordered.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"

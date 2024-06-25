@@ -136,7 +136,7 @@ export type PropertySchema =
     /**
      * The container type of the property values.  It can be unspecified.
      */
-    container?: "graph";
+    container?: "graph" | "list";
   }
   | PropertySchemaBase & PropertySchemaTyping & {
     /**

@@ -3607,7 +3607,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#attachment\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#attachment\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py) {
@@ -3616,7 +3620,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#attributedTo\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#attributedTo\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6) {
@@ -3625,7 +3633,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#audience\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#audience\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz) {
@@ -3637,7 +3649,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#content\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#content\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3mhZzGXSpQ431mBSz2kvych22v4e) {
@@ -3646,7 +3662,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#context\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#context\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
@@ -3658,7 +3678,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#name\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_219RwDanjScTv5tYCjwGZVCM7KZ9) {
@@ -3670,7 +3694,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endTime\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#endTime\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_86xFhmgBapoMvYqjbjRuDPayTrS) {
@@ -3679,7 +3707,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#generator\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#generator\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR) {
@@ -3688,7 +3720,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#icon\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#icon\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U) {
@@ -3697,7 +3733,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#image\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#image\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s) {
@@ -3706,7 +3746,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#inReplyTo\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#inReplyTo\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_31k5MUZJsnsPNg8dQQJieWaXTFnR) {
@@ -3715,7 +3759,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#location\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#location\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_gCVTegXxWWCw6wWRxa1QF65zusg) {
@@ -3724,7 +3772,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preview\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#preview\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_5e258TDXtuhaFRPZiGoDfEpjdMr) {
@@ -3736,7 +3788,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#published\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#published\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_7UpwM3JWcXhADcscukEehBorf6k) {
@@ -3745,7 +3801,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#replies\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#replies\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2w3Jmue4up8iVDUA51WZqomEF438) {
@@ -3757,7 +3817,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#startTime\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#startTime\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1) {
@@ -3769,7 +3833,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#summary\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#summary\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_5chuqj6s95p5gg2sk1HntGfarRf) {
@@ -3778,7 +3846,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#tag\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#tag\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_385aB7ySixcf5Un6z3VsWmThgCzQ) {
@@ -3790,7 +3862,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#updated\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#updated\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2oPEH9MQ3aj8JVwyYuWkqoVwV865) {
@@ -3799,7 +3875,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#url\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#url\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3hFbw7DTpHhq3cvVhkY8njhcsXbd) {
@@ -3808,7 +3888,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#to\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#to\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_aLZupjwL8XB7tzdLgCMXdjZ6qej) {
@@ -3817,7 +3901,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#bto\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#bto\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_42a1SvBs24QSLzKcfjCyNTjW5a1g) {
@@ -3826,7 +3914,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#cc\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#cc\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3qvegKUB8YLgTXRpEf8E6JZSkz2H) {
@@ -3835,7 +3927,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#bcc\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#bcc\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8) {
@@ -3844,7 +3940,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3bNvLMBN1bCJETiTihM3wvi1B2JX) {
@@ -3856,7 +3956,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#duration\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#duration\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7) {
@@ -3865,7 +3969,11 @@ get sensitive(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#sensitive\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#sensitive\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8) {
@@ -3874,7 +3982,11 @@ get sensitive(): (boolean | null) {
       );
     array.push({ \\"@graph\\": element });;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#proof\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#proof\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Object\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -5405,7 +5517,10 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"http://joinmastodon.org/ns#Emoji\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -5665,7 +5780,11 @@ get value(): (string | LanguageString | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#name\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx) {
@@ -5677,7 +5796,11 @@ get value(): (string | LanguageString | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://schema.org#value\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://schema.org#value\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"http://schema.org#PropertyValue\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -6202,7 +6325,11 @@ get created(): (Temporal.Instant | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#cryptosuite\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#cryptosuite\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2mHVKxqA7zncjveJrDEo3pWpMZqg) {
@@ -6211,7 +6338,11 @@ get created(): (Temporal.Instant | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#verificationMethod\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#verificationMethod\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2AeEnPcAvVrPEuKbpmn9ZKNmWHKb) {
@@ -6222,7 +6353,11 @@ get created(): (Temporal.Instant | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#proofPurpose\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#proofPurpose\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3CjFK5vfKpX4HQuNh2b18TykoVLq) {
@@ -6234,7 +6369,11 @@ get created(): (Temporal.Instant | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#proofValue\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#proofValue\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3qzP3ukEZoUziK5FEiA1RhU4aqac) {
@@ -6246,7 +6385,11 @@ get created(): (Temporal.Instant | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://purl.org/dc/terms/created\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://purl.org/dc/terms/created\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://w3id.org/security#DataIntegrityProof\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -6771,7 +6914,11 @@ get publicKey(): (CryptoKey | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#owner\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#owner\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD) {
@@ -6780,7 +6927,11 @@ get publicKey(): (CryptoKey | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#publicKeyPem\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#publicKeyPem\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://w3id.org/security#Key\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -7247,7 +7398,11 @@ get publicKey(): (CryptoKey | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#controller\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#controller\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F) {
@@ -7259,7 +7414,11 @@ get publicKey(): (CryptoKey | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#publicKeyMultibase\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#publicKeyMultibase\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://w3id.org/security#Multikey\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -8721,7 +8880,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D) {
@@ -8730,7 +8892,11 @@ instruments?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#actor\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#actor\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc) {
@@ -8739,7 +8905,11 @@ instruments?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#object\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#object\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF) {
@@ -8748,7 +8918,11 @@ instruments?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#target\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#target\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G) {
@@ -8757,7 +8931,11 @@ instruments?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#result\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#result\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_25zu2s3VxVujgEKqrDycjE284XQR) {
@@ -8766,7 +8944,11 @@ instruments?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#origin\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#origin\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ) {
@@ -8775,7 +8957,11 @@ instruments?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#instrument\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#instrument\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Activity\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -9336,7 +9522,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Accept\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -9548,7 +9737,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Add\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -9759,7 +9951,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Announce\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -11370,7 +11565,10 @@ get indexable(): (boolean | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
@@ -11382,7 +11580,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
@@ -11391,7 +11593,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#publicKey\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
@@ -11400,7 +11606,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#assertionMethod\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
@@ -11409,7 +11619,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
@@ -11418,7 +11632,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://www.w3.org/ns/ldp#inbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
@@ -11427,7 +11645,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
@@ -11436,7 +11658,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#following\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
@@ -11445,7 +11671,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
@@ -11454,7 +11684,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
@@ -11463,7 +11697,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#featured\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
@@ -11472,7 +11710,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
@@ -11481,7 +11723,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
@@ -11490,7 +11736,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#discoverable\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
@@ -11499,7 +11749,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#suspended\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
@@ -11508,7 +11762,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#memorial\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
@@ -11517,7 +11775,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Application\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -12253,7 +12515,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -12474,7 +12739,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Arrive\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -12670,7 +12938,10 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Article\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -12934,7 +13205,10 @@ get height(): (number | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
@@ -12946,7 +13220,11 @@ get height(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#width\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#width\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
@@ -12958,7 +13236,11 @@ get height(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#height\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#height\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Document\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -13228,7 +13510,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Audio\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -13438,7 +13723,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Ignore\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -13655,7 +13943,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Block\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -14302,7 +14593,10 @@ get totalItems(): (number | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_XDbmNDuWHmrhqH712zqtecdbv1V) {
@@ -14314,7 +14608,11 @@ get totalItems(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#totalItems\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#totalItems\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3UyUdxnyn6cDn53QKrh4MBiearma) {
@@ -14323,7 +14621,11 @@ get totalItems(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#current\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#current\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_J52RqweMe6hhv7RnLJMC8BExTE5) {
@@ -14332,7 +14634,11 @@ get totalItems(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#first\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#first\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26) {
@@ -14341,7 +14647,11 @@ get totalItems(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#last\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#last\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg) {
@@ -14350,7 +14660,11 @@ get totalItems(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#items\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#items\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Collection\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -15029,7 +15343,10 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le) {
@@ -15038,7 +15355,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#partOf\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#partOf\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY) {
@@ -15047,7 +15368,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#next\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#next\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA) {
@@ -15056,7 +15381,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#prev\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#prev\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -15371,7 +15700,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Create\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -15581,7 +15913,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Delete\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -15789,7 +16124,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Dislike\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -16203,7 +16541,11 @@ get sharedInbox(): (URL | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#proxyUrl\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#proxyUrl\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_25S6UmgzDead8hxL5sQFezZTAusd) {
@@ -16212,7 +16554,11 @@ get sharedInbox(): (URL | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#oauthAuthorizationEndpoint\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#oauthAuthorizationEndpoint\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_iAMxqrSba7yBCRB1FZ5kEVdKEZ3) {
@@ -16221,7 +16567,11 @@ get sharedInbox(): (URL | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#oauthTokenEndpoint\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#oauthTokenEndpoint\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_8Bx9qN8oU7Bpt2xi6khaxWp1gMr) {
@@ -16230,7 +16580,11 @@ get sharedInbox(): (URL | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#provideClientKey\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#provideClientKey\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3dU7PMVQZJpsCpo2F4RQXxBXdPmS) {
@@ -16239,7 +16593,11 @@ get sharedInbox(): (URL | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#signClientKey\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#signClientKey\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3JprUSDLVqqX4dwHRi37qGZZCRCc) {
@@ -16248,7 +16606,11 @@ get sharedInbox(): (URL | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#sharedInbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#sharedInbox\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Endpoints\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -16621,7 +16983,10 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Event\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -16832,7 +17197,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Flag\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -17044,7 +17412,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Follow\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -18655,7 +19026,10 @@ get indexable(): (boolean | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
@@ -18667,7 +19041,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
@@ -18676,7 +19054,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#publicKey\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
@@ -18685,7 +19067,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#assertionMethod\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
@@ -18694,7 +19080,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
@@ -18703,7 +19093,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://www.w3.org/ns/ldp#inbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
@@ -18712,7 +19106,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
@@ -18721,7 +19119,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#following\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
@@ -18730,7 +19132,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
@@ -18739,7 +19145,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
@@ -18748,7 +19158,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#featured\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
@@ -18757,7 +19171,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
@@ -18766,7 +19184,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
@@ -18775,7 +19197,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#discoverable\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
@@ -18784,7 +19210,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#suspended\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
@@ -18793,7 +19223,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#memorial\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
@@ -18802,7 +19236,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Group\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -19997,7 +20435,11 @@ get width(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#href\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#href\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ) {
@@ -20006,7 +20448,11 @@ get width(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#rel\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#rel\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8) {
@@ -20015,7 +20461,11 @@ get width(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#mediaType\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
@@ -20027,7 +20477,11 @@ get width(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#name\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#name\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_f57HKWCp1YRBbTJE8PF12RbDJGf) {
@@ -20036,7 +20490,11 @@ get width(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#hreflang\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#hreflang\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
@@ -20048,7 +20506,11 @@ get width(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#height\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#height\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
@@ -20060,7 +20522,11 @@ get width(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#width\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#width\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_gCVTegXxWWCw6wWRxa1QF65zusg) {
@@ -20069,7 +20535,11 @@ get width(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preview\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#preview\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Link\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -20522,7 +20992,10 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Hashtag\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -20718,7 +21191,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Image\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -20928,7 +21404,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Like\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -21096,7 +21575,10 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Mention\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -21294,7 +21776,10 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Note\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -21505,7 +21990,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Offer\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -21607,7 +22095,8 @@ export class OrderedCollection extends Collection {
     static get typeId(): URL {
       return new URL(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\");
     }
-  
+  #_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg: (Object | URL)[] = [];
+
   /**
    * Constructs a new instance of OrderedCollection with the given values.
    * @param values The values to initialize the instance with.
@@ -21643,7 +22132,21 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       contextLoader?: DocumentLoader,
     } = {},
   ) {
-  super(values, { documentLoader, contextLoader });}
+  super(values, { documentLoader, contextLoader });
+        if (\\"items\\" in values &&             values.items != null) {
+      
+          if (Array.isArray(values.items) &&
+              values.items.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = values.items;
+          } else {
+            throw new TypeError(
+              \\"The items must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      }
 
   /**
    * Clones this instance, optionally updating it with the given values.
@@ -21679,10 +22182,103 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       contextLoader?: DocumentLoader,
     } = {}
   ): OrderedCollection {
-  const clone = super.clone(values, options) as unknown as OrderedCollection;
+  const clone = super.clone(values, options) as unknown as OrderedCollection;clone.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
+        if (\\"items\\" in values &&             values.items != null) {
+      
+          if (Array.isArray(values.items) &&
+              values.items.every(v => v instanceof Object || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = values.items;
+          } else {
+            throw new TypeError(
+              \\"The items must be an array of type \\" +
+              \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
     return clone;
   }
   
+    async #fetchItem(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Object | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Object.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link OrderedCollection.getItems},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get itemIds(): URL[] {
+        return this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Identifies the items contained in a collection.  The items might be ordered
+ * or unordered.
+ * 
+ */
+
+      async* getItems(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Object> {
+        const vs = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchItem(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -21703,7 +22299,23 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
+    
+    array = [];
+    for (const v of this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#items\\"] = (
+    { \\"@list\\": array }
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -21766,12 +22378,48 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     if (!(instance instanceof OrderedCollection)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
     }
+    const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg: (Object | URL)[] = [];
+
+    for (const v of values[\\"https://www.w3.org/ns/activitystreams#items\\"] ?? []) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.push(await Object.fromJsonLd(
+      v, options))
+    }
+    instance.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
     
     return instance;
   }
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
   const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.length > 1
+          || !(\\"item\\" in proxy)
+          && _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.length > 0) {
+        proxy.items = _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
+      }
+      
     return proxy;
   }
 
@@ -21936,7 +22584,10 @@ get startIndex(): (number | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd) {
@@ -21948,7 +22599,11 @@ get startIndex(): (number | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#startIndex\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#startIndex\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -23586,7 +24241,10 @@ get indexable(): (boolean | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
@@ -23598,7 +24256,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
@@ -23607,7 +24269,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#publicKey\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
@@ -23616,7 +24282,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#assertionMethod\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
@@ -23625,7 +24295,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
@@ -23634,7 +24308,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://www.w3.org/ns/ldp#inbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
@@ -23643,7 +24321,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
@@ -23652,7 +24334,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#following\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
@@ -23661,7 +24347,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
@@ -23670,7 +24360,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
@@ -23679,7 +24373,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#featured\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
@@ -23688,7 +24386,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
@@ -23697,7 +24399,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
@@ -23706,7 +24412,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#discoverable\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
@@ -23715,7 +24425,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#suspended\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
@@ -23724,7 +24438,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#memorial\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
@@ -23733,7 +24451,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Organization\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -24454,7 +25176,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Page\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -26065,7 +26790,10 @@ get indexable(): (boolean | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
@@ -26077,7 +26805,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
@@ -26086,7 +26818,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#publicKey\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
@@ -26095,7 +26831,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#assertionMethod\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
@@ -26104,7 +26844,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
@@ -26113,7 +26857,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://www.w3.org/ns/ldp#inbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
@@ -26122,7 +26870,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
@@ -26131,7 +26883,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#following\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
@@ -26140,7 +26896,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
@@ -26149,7 +26909,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
@@ -26158,7 +26922,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#featured\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
@@ -26167,7 +26935,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
@@ -26176,7 +26948,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
@@ -26185,7 +26961,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#discoverable\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
@@ -26194,7 +26974,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#suspended\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
@@ -26203,7 +26987,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#memorial\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
@@ -26212,7 +27000,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Person\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -27140,7 +27932,10 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne) {
@@ -27152,7 +27947,11 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#accuracy\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#accuracy\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3Q6KDcFQUJRRaBux1BL2yp5QWiBi) {
@@ -27164,7 +27963,11 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#altitude\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#altitude\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3g85RoKRnaNjP7DFyLSvsWDg7HGM) {
@@ -27176,7 +27979,11 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#latitude\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#latitude\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_B2GEYdS9yBAF3ho1pm1rcRg7cSf) {
@@ -27188,7 +27995,11 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#longitude\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#longitude\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3ga86BKHUtRkGx5PHBjRiUXXzwnw) {
@@ -27200,7 +28011,11 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#radius\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#radius\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_oKrwxU4V8wiKhMW1QEYQibcJh8c) {
@@ -27209,7 +28024,11 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#units\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#units\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Place\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -27681,7 +28500,10 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1) {
@@ -27690,7 +28512,11 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#describes\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#describes\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Profile\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -28157,7 +28983,10 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_2N5scKaVEcdYHFmfKYYacAwUhUgQ) {
@@ -28166,7 +28995,11 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#oneOf\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#oneOf\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2mV6isMTPRKbWdLCjcpiEysq5dAY) {
@@ -28175,7 +29008,11 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#anyOf\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#anyOf\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Question\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -28457,7 +29294,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Reject\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -29135,7 +29975,10 @@ relationships?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_2Zqdmi46ZnDQsECS6mzwhrv3rUKq) {
@@ -29144,7 +29987,11 @@ relationships?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#subject\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#subject\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc) {
@@ -29153,7 +30000,11 @@ relationships?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#object\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#object\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4Lzz89F9qipAQSGkWyX9DGWiUojG) {
@@ -29162,7 +30013,11 @@ relationships?: (Object | URL)[];}
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#relationship\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#relationship\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Relationship\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -29486,7 +30341,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Remove\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -31097,7 +31955,10 @@ get indexable(): (boolean | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
@@ -31109,7 +31970,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#preferredUsername\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
@@ -31118,7 +31983,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#publicKey\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#publicKey\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
@@ -31127,7 +31996,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://w3id.org/security#assertionMethod\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://w3id.org/security#assertionMethod\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
@@ -31136,7 +32009,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
@@ -31145,7 +32022,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://www.w3.org/ns/ldp#inbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://www.w3.org/ns/ldp#inbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
@@ -31154,7 +32035,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#outbox\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
@@ -31163,7 +32048,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#following\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#following\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
@@ -31172,7 +32061,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#followers\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
@@ -31181,7 +32074,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#liked\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
@@ -31190,7 +32087,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#featured\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#featured\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
@@ -31199,7 +32100,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#streams\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
@@ -31208,7 +32113,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#endpoints\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
@@ -31217,7 +32126,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#discoverable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#discoverable\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
@@ -31226,7 +32139,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#suspended\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#suspended\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
@@ -31235,7 +32152,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#memorial\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#memorial\\"] = (
+    array
+      );
+    }
     
     array = [];
     for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
@@ -31244,7 +32165,11 @@ get indexable(): (boolean | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"http://joinmastodon.org/ns#indexable\\"] = array;
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Service\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -32002,7 +32927,10 @@ get deleted(): (Temporal.Instant | null) {
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     array = [];
     for (const v of this.#_8g8g4LiVMhFTXskuDEqx4ascxUr) {
@@ -32014,7 +32942,11 @@ get deleted(): (Temporal.Instant | null) {
       );
     array.push(element);;
     }
-    if (array.length > 0) values[\\"https://www.w3.org/ns/activitystreams#deleted\\"] = array;
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#deleted\\"] = (
+    array
+      );
+    }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Tombstone\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -32256,7 +33188,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Undo\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -32469,7 +33404,10 @@ instruments?: (Object | URL)[];}
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Update\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
@@ -32665,7 +33603,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       ...options,
       expand: true,
     }) as unknown[];
-    const values = baseValues[0] as Record<string, unknown[] | string>;
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Video\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;

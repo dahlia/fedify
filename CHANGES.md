@@ -90,6 +90,10 @@ To be released.
      -  `Activity.clone()` method now accepts `instrument` option.
      -  `Activity.clone()` method now accepts `instruments` option.
 
+ -  The `items` property of `OrderedCollection` and `OrderedCollectionPage`
+    in Activity Vocabulary API is now represented as `orderedItems`
+    (was `items`) in JSON-LD.
+
  -  The key pair or the key pair for signing outgoing HTTP requests made from
     the shared inbox now can be configured.  This improves the compatibility
     with other ActivityPub implementations that require authorized fetches

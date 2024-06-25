@@ -678,7 +678,7 @@ test("handleCollection()", async () => {
   assertEquals(await response.json(), {
     "@context": "https://www.w3.org/ns/activitystreams",
     type: "OrderedCollection",
-    items: [
+    orderedItems: [
       { type: "Create", id: "https://example.com/activities/1" },
       { type: "Create", id: "https://example.com/activities/2" },
       { type: "Create", id: "https://example.com/activities/3" },
@@ -739,7 +739,7 @@ test("handleCollection()", async () => {
   assertEquals(await response.json(), {
     "@context": "https://www.w3.org/ns/activitystreams",
     type: "OrderedCollection",
-    items: [
+    orderedItems: [
       { type: "Create", id: "https://example.com/activities/1" },
       { type: "Create", id: "https://example.com/activities/2" },
       { type: "Create", id: "https://example.com/activities/3" },

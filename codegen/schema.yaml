@@ -32,7 +32,9 @@ $defs:
           container:
             description: >-
               The container type of the property values.  It can be unspecified.
-            const: "graph"
+            enum:
+            - graph
+            - list
         required:
         - pluralName
     - allOf:
