@@ -7,7 +7,13 @@ description: |
   Used to represent ordered subsets of items from an `OrderedCollection`.
   Refer to the Activity Streams 2.0 Core for a complete description of
   the `OrderedCollectionPage` object.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
+- toot: "http://joinmastodon.org/ns#"
+  sensitive: "as:sensitive"
+  Emoji: "toot:Emoji"
+  Hashtag: "as:Hashtag"
 
 properties:
 - singularName: startIndex

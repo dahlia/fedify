@@ -173,8 +173,16 @@ export async function* generateDecoder(
   for (const property of type.properties) {
     const variable = await getFieldName(property.uri, "");
     yield await generateField(property, types, "const ");
+    const arrayVariable = `${variable}__array`;
     yield `
-    for (const v of values[${JSON.stringify(property.uri)}] ?? []) {
+    const ${arrayVariable} = values[${JSON.stringify(property.uri)}];
+    for (
+      const v of ${arrayVariable} == null
+        ? []
+        : ${arrayVariable}.length === 1 && "@list" in ${arrayVariable}[0]
+        ? ${arrayVariable}[0]["@list"]
+        : ${arrayVariable}
+    ) {
       if (v == null) continue;
     `;
     if (!areAllScalarTypes(property.range, types)) {

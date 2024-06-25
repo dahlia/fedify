@@ -116,6 +116,16 @@ export interface Context<TContextData> {
   getFeaturedUri(handle: string): URL;
 
   /**
+   * Builds the URI of an actor's featured tags collection with the given
+   * handle.
+   * @param handle The actor's handle.
+   * @returns The actor's featured tags collection URI.
+   * @throws {RouterError} If no featured tags collection is available.
+   * @since 0.11.0
+   */
+  getFeaturedTagsUri(handle: string): URL;
+
+  /**
    * Determines the type of the URI and extracts the associated data.
    * @param uri The URI to parse.
    * @since 0.9.0
@@ -332,7 +342,12 @@ export type ParseUriResult =
    * The case of a featured collection URI.
    * @since 0.11.0
    */
-  | { type: "featured"; handle: string };
+  | { type: "featured"; handle: string }
+  /**
+   * The case of a featured tags collection URI.
+   * @since 0.11.0
+   */
+  | { type: "featuredTags"; handle: string };
 
 /**
  * Options for {@link Context.sendActivity} method and

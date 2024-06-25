@@ -38,8 +38,12 @@ callbacks that take a `Context` object as the first parameter:
  -  [Actor dispatcher](./actor.md)
  -  [Inbox listeners](./inbox.md)
  -  [Outbox collection dispatcher](./collections.md#outbox)
+ -  [Inbox collection dispatcher](./collections.md#inbox)
  -  [Following collection dispatcher](./collections.md#following)
  -  [Followers collection dispatcher](./collections.md#followers)
+ -  [Liked collection dispatcher](./collections.md#liked)
+ -  [Featured collection dispatcher](./collections.md#featured)
+ -  [Featured tags collection dispatcher](./collections.md#featured-tags)
  -  [NodeInfo dispatcher](./nodeinfo.md)
 
 Those are not all; there are more callbacks that take a `Context` object.
@@ -70,6 +74,9 @@ shows the methods:
  -  `~Context.getOutboxUri()`
  -  `~Context.getFollowingUri()`
  -  `~Context.getFollowersUri()`
+ -  `~Context.getLikedUri()`
+ -  `~Context.getFeaturedUri()`
+ -  `~Context.getFeaturedTagsUri()`
 
 You could hard-code the URIs, but it is better to use those methods to build
 the URIs because the URIs are subject to change in the future.

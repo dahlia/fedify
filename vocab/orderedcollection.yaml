@@ -6,7 +6,13 @@ entity: true
 description: |
   A subtype of {@link Collection} in which members of the logical collection
   are assumed to always be strictly ordered.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
+- toot: "http://joinmastodon.org/ns#"
+  sensitive: "as:sensitive"
+  Emoji: "toot:Emoji"
+  Hashtag: "as:Hashtag"
 
 properties:
 - pluralName: items
@@ -18,3 +24,4 @@ properties:
     or unordered.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
+  - "https://www.w3.org/ns/activitystreams#Link"

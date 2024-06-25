@@ -14,6 +14,7 @@ import type { Actor, Recipient } from "../vocab/actor.ts";
 import {
   Activity,
   CryptographicKey,
+  type Hashtag,
   type Like,
   Multikey,
   type Object,
@@ -247,6 +248,7 @@ export class Federation<TContextData> {
   #followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
   #likedCallbacks?: CollectionCallbacks<Like, TContextData, void>;
   #featuredCallbacks?: CollectionCallbacks<Object, TContextData, void>;
+  #featuredTagsCallbacks?: CollectionCallbacks<Hashtag, TContextData, void>;
   #inboxListeners?: Map<
     new (...args: unknown[]) => Activity,
     InboxListener<TContextData, Activity>
@@ -661,6 +663,27 @@ export class Federation<TContextData> {
               "You configured a featured collection dispatcher, but the " +
                 "actor's featured property does not match the featured collection " +
                 "URI.  Set the property with Context.getFeaturedUri(handle).",
+            );
+          }
+        }
+        if (
+          this.#featuredTagsCallbacks != null &&
+          this.#featuredTagsCallbacks.dispatcher != null
+        ) {
+          if (actor?.featuredTagsId == null) {
+            logger.warn(
+              "You configured a featured tags collection dispatcher, but the " +
+                "actor does not have a featuredTags property.  Set the property " +
+                "with Context.getFeaturedTagsUri(handle).",
+            );
+          } else if (
+            actor.featuredTagsId.href != context.getFeaturedTagsUri(handle).href
+          ) {
+            logger.warn(
+              "You configured a featured tags collection dispatcher, but the " +
+                "actor's featuredTags property does not match the featured tags " +
+                "collection URI.  Set the property with " +
+                "Context.getFeaturedTagsUri(handle).",
             );
           }
         }
@@ -1228,6 +1251,57 @@ export class Federation<TContextData> {
   }
 
   /**
+   * Registers a featured tags collection dispatcher.
+   * @param path The URI path pattern for the featured tags collection.
+   *             The syntax is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A featured tags collection callback to register.
+   * @returns An object with methods to set other featured tags collection
+   *          callbacks.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   * @since 0.11.0
+   */
+  setFeaturedTagsDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Hashtag, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void> {
+    if (this.#router.has("featuredTags")) {
+      throw new RouterError("Featured tags collection dispatcher already set.");
+    }
+    const variables = this.#router.add(path, "featuredTags");
+    if (variables.size !== 1 || !variables.has("handle")) {
+      throw new RouterError(
+        "Path for featured tags collection dispatcher must have one " +
+          "variable: {handle}",
+      );
+    }
+    const callbacks: CollectionCallbacks<Hashtag, TContextData, void> = {
+      dispatcher,
+    };
+    this.#featuredTagsCallbacks = callbacks;
+    const setters: CollectionCallbackSetters<TContextData, void> = {
+      setCounter(counter: CollectionCounter<TContextData, void>) {
+        callbacks.counter = counter;
+        return setters;
+      },
+      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+        callbacks.firstCursor = cursor;
+        return setters;
+      },
+      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+        callbacks.lastCursor = cursor;
+        return setters;
+      },
+      authorize(predicate: AuthorizePredicate<TContextData>) {
+        callbacks.authorizePredicate = predicate;
+        return setters;
+      },
+    };
+    return setters;
+  }
+
+  /**
    * Assigns the URL path for the inbox and starts setting inbox listeners.
    *
    * @example
@@ -1630,6 +1704,16 @@ export class Federation<TContextData> {
           onNotFound,
           onNotAcceptable,
         });
+      case "featuredTags":
+        return await handleCollection(request, {
+          name: "featured tags",
+          handle: route.values.handle,
+          context,
+          collectionCallbacks: this.#featuredTagsCallbacks,
+          onUnauthorized,
+          onNotFound,
+          onNotAcceptable,
+        });
       default: {
         const response = onNotFound(request);
         return response instanceof Promise ? await response : response;
@@ -1796,6 +1880,14 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return new URL(path, this.#url);
   }
 
+  getFeaturedTagsUri(handle: string): URL {
+    const path = this.#router.build("featuredTags", { handle });
+    if (path == null) {
+      throw new RouterError("No featured tags collection path registered.");
+    }
+    return new URL(path, this.#url);
+  }
+
   parseUri(uri: URL): ParseUriResult | null {
     if (uri.origin !== this.#url.origin) return null;
     const route = this.#router.route(uri.pathname);
@@ -1824,6 +1916,8 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       return { type: "liked", handle: route.values.handle };
     } else if (route.name === "featured") {
       return { type: "featured", handle: route.values.handle };
+    } else if (route.name === "featuredTags") {
+      return { type: "featuredTags", handle: route.values.handle };
     }
     return null;
   }

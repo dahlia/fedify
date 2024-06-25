@@ -528,3 +528,35 @@ federation
     return { items };
   });
 ~~~~
+
+
+Featured tags
+-------------
+
+*This API is available since Fedify 0.11.0.*
+
+The featured tags collection is a collection of tags that an actor has featured
+on top of their profile.  The featured tags collection is similar to the
+featured collection, but it's a collection of `Hashtag` objects instead of
+any ActivityStreams objects.
+
+Cursor and counter for the featured tags collection are implemented in the same
+way as the outbox collection, so we don't repeat the explanation here.
+
+The below example shows how to construct a featured tags collection:
+
+~~~~ typescript
+federation
+  .setFeaturedTagsDispatcher("/users/{handle}/tags", async (ctx, handle, cursor) => {
+    // Work with the database to find the tags that the actor has featured
+    // (the below `getFeaturedTagsByUserHandle` is a hypothetical function):
+    const hashtags = await getFeaturedTagsByUserHandle(handle);
+    const items = hashtags.map(hashtag =>
+      new Hashtag({
+        href: new URL(`/tags/${encodeURIComponent(hashtag)}`, ctx.url),
+        name: `#${hashtag}`,
+      })
+    );
+    return { items };
+  });
+~~~~

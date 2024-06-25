@@ -8,6 +8,7 @@ import type { Recipient } from "../vocab/actor.ts";
 import {
   Activity,
   type CryptographicKey,
+  Link,
   Object,
   OrderedCollection,
   OrderedCollectionPage,
@@ -167,7 +168,7 @@ export interface CollectionHandlerParameters<TItem, TContextData, TFilter> {
 }
 
 export async function handleCollection<
-  TItem extends URL | Object | Recipient,
+  TItem extends URL | Object | Link | Recipient,
   TContextData,
   TFilter,
 >(
@@ -277,16 +278,16 @@ export async function handleCollection<
   });
 }
 
-function filterCollectionItems<TItem extends Object | Recipient | URL>(
+function filterCollectionItems<TItem extends Object | Link | Recipient | URL>(
   items: TItem[],
   collectionName: string,
   filterPredicate?: (item: TItem) => boolean,
-): (Object | URL)[] {
-  const result: (Object | URL)[] = [];
+): (Object | Link | URL)[] {
+  const result: (Object | Link | URL)[] = [];
   let logged = false;
   for (const item of items) {
-    let mappedItem: Object | URL;
-    if (item instanceof Object || item instanceof URL) {
+    let mappedItem: Object | Link | URL;
+    if (item instanceof Object || item instanceof Link || item instanceof URL) {
       mappedItem = item;
     } else if (item.id == null) continue;
     else mappedItem = item.id;

@@ -25,6 +25,10 @@ To be released.
      -  Added `Context.getFeaturedUri()` method.
      -  Added `{ type: "featured"; handle: string }` case to `ParseUriResult`
         type.
+     -  Added `Federation.setFeaturedTagsDispatcher()` method.
+     -  Added `Context.getFeaturedTagsUri()` method.
+     -  Added `{ type: "featuredTags"; handle: string }` case to
+        `ParseUriResult` type.
 
  -  Frequently used JSON-LD contexts are now preloaded.  [[#74]]
 
@@ -49,15 +53,64 @@ To be released.
      -  `Collection.current`
      -  `Collection.first`
      -  `Collection.last`
-     -  `Collection.items`
      -  `CollectionPage.partOf`
      -  `CollectionPage.next`
      -  `CollectionPage.prev`
+
+ -  Added `featured` property to `Actor` types in Activity Vocabulary API.
+    [[#78]]
+
+     -  Added `Application.getFeatured()` method.
+     -  Added `Application.featuredId` property.
+     -  `new Application()` constructor now accepts `featured` option.
+     -  `Application.clone()` method now accepts `featured` option.
+     -  Added `Group.getFeatured()` method.
+     -  Added `Group.featuredId` property.
+     -  `new Group()` constructor now accepts `featured` option.
+     -  `Group.clone()` method now accepts `featured` option.
+     -  Added `Organization.getFeatured()` method.
+     -  Added `Organization.featuredId` property.
+     -  `new Organization()` constructor now accepts `featured` option.
+     -  `Organization.clone()` method now accepts `featured` option.
+     -  Added `Person.getFeatured()` method.
+     -  Added `Person.featuredId` property.
+     -  `new Person()` constructor now accepts `featured` option.
+     -  `Person.clone()` method now accepts `featured` option.
+     -  Added `Service.getFeatured()` method.
+     -  Added `Service.featuredId` property.
+     -  `new Service()` constructor now accepts `featured` option.
+     -  `Service.clone()` method now accepts `featured` option.
+
+ -  Added `featuredTags` property to `Actor` types in Activity Vocabulary API.
+    [[#78]]
+
+     -  Added `Application.getFeaturedTags()` method.
+     -  Added `Application.featuredTagsId` property.
+     -  `new Application()` constructor now accepts `featuredTags` option.
+     -  `Application.clone()` method now accepts `featuredTags` option.
+     -  Added `Group.getFeaturedTags()` method.
+     -  Added `Group.featuredTagsId` property.
+     -  `new Group()` constructor now accepts `featuredTags` option.
+     -  `Group.clone()` method now accepts `featuredTags` option.
+     -  Added `Organization.getFeaturedTags()` method.
+     -  Added `Organization.featuredTagsId` property.
+     -  `new Organization()` constructor now accepts `featuredTags` option.
+     -  `Organization.clone()` method now accepts `featuredTags` option.
+     -  Added `Person.getFeaturedTags()` method.
+     -  Added `Person.featuredTagsId` property.
+     -  `new Person()` constructor now accepts `featuredTags` option.
+     -  `Person.clone()` method now accepts `featuredTags` option.
+     -  Added `Service.getFeaturedTags()` method.
+     -  Added `Service.featuredTagsId` property.
+     -  `new Service()` constructor now accepts `featuredTags` option.
+     -  `Service.clone()` method now accepts `featuredTags` option.
 
  -  Added `target` property to `Activity` class in Activity Vocabulary API.
 
      -  Added `Activity.getTarget()` method.
      -  Added `Activity.getTargets()` method.
+     -  Added `Activity.targetId` property.
+     -  Added `Activity.targetIds` property.
      -  `new Activity()` constructor now accepts `target` option.
      -  `new Activity()` constructor now accepts `targets` option.
      -  `Activity.clone()` method now accepts `target` option.
@@ -67,6 +120,8 @@ To be released.
 
      -  Added `Activity.getResult()` method.
      -  Added `Activity.getResults()` method.
+     -  Added `Activity.resultId` property.
+     -  Added `Activity.resultIds` property.
      -  `new Activity()` constructor now accepts `result` option.
      -  `new Activity()` constructor now accepts `results` option.
      -  `Activity.clone()` method now accepts `result` option.
@@ -76,6 +131,8 @@ To be released.
 
      -  Added `Activity.getOrigin()` method.
      -  Added `Activity.getOrigins()` method.
+     -  Added `Activity.originId` property.
+     -  Added `Activity.originIds` property.
      -  `new Activity()` constructor now accepts `origin` option.
      -  `new Activity()` constructor now accepts `origins` option.
      -  `Activity.clone()` method now accepts `origin` option.
@@ -85,6 +142,8 @@ To be released.
 
      -  Added `Activity.getInstrument()` method.
      -  Added `Activity.getInstruments()` method.
+     -  Added `Activity.instrumentId` property.
+     -  Added `Activity.instrumentIds` property.
      -  `new Activity()` constructor now accepts `instrument` option.
      -  `new Activity()` constructor now accepts `instruments` option.
      -  `Activity.clone()` method now accepts `instrument` option.

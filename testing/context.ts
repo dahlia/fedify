@@ -18,6 +18,7 @@ export function createContext<TContextData>(
     getFollowersUri,
     getLikedUri,
     getFeaturedUri,
+    getFeaturedTagsUri,
     parseUri,
     getActorKeyPairs,
     getActorKey,
@@ -41,6 +42,7 @@ export function createContext<TContextData>(
     getFollowersUri: getFollowersUri ?? throwRouteError,
     getLikedUri: getLikedUri ?? throwRouteError,
     getFeaturedUri: getFeaturedUri ?? throwRouteError,
+    getFeaturedTagsUri: getFeaturedTagsUri ?? throwRouteError,
     parseUri: parseUri ?? ((_uri) => {
       throw new Error("Not implemented");
     }),

@@ -179,6 +179,10 @@ test("handleActor()", async () => {
           "@id": "toot:featured",
           "@type": "@id",
         },
+        featuredTags: {
+          "@id": "toot:featuredTags",
+          "@type": "@id",
+        },
         discoverable: "toot:discoverable",
         indexable: "toot:indexable",
         memorial: "toot:memorial",
@@ -267,6 +271,10 @@ test("handleActor()", async () => {
         manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
         featured: {
           "@id": "toot:featured",
+          "@type": "@id",
+        },
+        featuredTags: {
+          "@id": "toot:featuredTags",
           "@type": "@id",
         },
         discoverable: "toot:discoverable",
@@ -676,7 +684,16 @@ test("handleCollection()", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
+      {
+        Emoji: "toot:Emoji",
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
+      },
+    ],
     type: "OrderedCollection",
     orderedItems: [
       { type: "Create", id: "https://example.com/activities/1" },
@@ -737,7 +754,16 @@ test("handleCollection()", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
+      {
+        Emoji: "toot:Emoji",
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
+      },
+    ],
     type: "OrderedCollection",
     orderedItems: [
       { type: "Create", id: "https://example.com/activities/1" },
@@ -772,7 +798,16 @@ test("handleCollection()", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
+      {
+        Emoji: "toot:Emoji",
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
+      },
+    ],
     type: "OrderedCollection",
     totalItems: 3,
     first: "https://example.com/?cursor=0",
@@ -815,7 +850,16 @@ test("handleCollection()", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
+      {
+        Emoji: "toot:Emoji",
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
+      },
+    ],
     type: "OrderedCollectionPage",
     partOf: "https://example.com/",
     next: "https://example.com/?cursor=1",
@@ -861,7 +905,16 @@ test("handleCollection()", async () => {
     "application/activity+json",
   );
   assertEquals(await response.json(), {
-    "@context": "https://www.w3.org/ns/activitystreams",
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
+      {
+        Emoji: "toot:Emoji",
+        Hashtag: "as:Hashtag",
+        sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
+      },
+    ],
     type: "OrderedCollectionPage",
     partOf: "https://example.com/",
     prev: "https://example.com/?cursor=1",

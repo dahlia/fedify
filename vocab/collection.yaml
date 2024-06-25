@@ -9,7 +9,13 @@ description: |
 
   Refer to the Activity Streams 2.0 Core specification for a complete
   description of the Collection type.
-defaultContext: "https://www.w3.org/ns/activitystreams"
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
+- toot: "http://joinmastodon.org/ns#"
+  sensitive: "as:sensitive"
+  Emoji: "toot:Emoji"
+  Hashtag: "as:Hashtag"
 
 properties:
 - singularName: totalItems
@@ -57,3 +63,4 @@ properties:
     or unordered.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
+  - "https://www.w3.org/ns/activitystreams#Link"

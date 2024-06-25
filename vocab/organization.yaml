@@ -15,6 +15,9 @@ defaultContext:
   featured:
     "@id": "toot:featured"
     "@type": "@id"
+  featuredTags:
+    "@id": "toot:featuredTags"
+    "@type": "@id"
   discoverable: "toot:discoverable"
   suspended: "toot:suspended"
   memorial: "toot:memorial"
@@ -154,6 +157,17 @@ properties:
     featured at the top of people's profiles, is implemented using an extra
     property `featured` on the actor object that points to a {@link Collection}
     of objects.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
+- singularName: featuredTags
+  functional: true
+  uri: "http://joinmastodon.org/ns#featuredTags"
+  description: |
+    What is known in Mastodon as "featured hashtags", hashtags that are featured
+    at people's profiles, is implemented using an extra property `featuredTags`
+    on the actor object that points to a {@link Collection} of {@link Hashtag}
+    objects specifically.
   range:
   - "https://www.w3.org/ns/activitystreams#Collection"
 
