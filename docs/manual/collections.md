@@ -491,13 +491,40 @@ federation
     // Work with the database to find the objects that the actor has liked
     // (the below `getLikedPostsByUserHandle` is a hypothetical function):
     const objects = await getLikedByUserHandle(handle);
-    // Turn the posts into `Like` activities:
-    const items = posts.map(post =>
+    // Turn the ActivityStreams objects into `Like` activities:
+    const items = objects.map(object =>
       new Like({
-        id: new URL(`#post-${post.id}`, ctx.url),
+        id: new URL(`#post-${object.id}`, ctx.url),
         actor: ctx.getActorUri(handle),
-        object: new URL(post.uri),
+        object: new URL(object.uri),
       })
     );
+    return { items };
+  });
+~~~~
+
+
+Featured
+--------
+
+*This API is available since Fedify 0.11.0.*
+
+The featured collection is a collection of objects that an actor has featured
+on top of their profile, i.e., pinned statuses.  The featured collection is
+similar to the outbox collection, but it's a collection of any ActivityStreams
+objects instead of activities.
+
+Cursor and counter for the featured collection are implemented in the same way
+as the outbox collection, so we don't repeat the explanation here.
+
+The below example shows how to construct a featured collection:
+
+~~~~ typescript
+federation
+  .setFeaturedDispatcher("/users/{handle}/featured", async (ctx, handle, cursor) => {
+    // Work with the database to find the objects that the actor has featured
+    // (the below `getFeaturedPostsByUserHandle` is a hypothetical function):
+    const items = await getFeaturedByUserHandle(handle);
+    return { items };
   });
 ~~~~
