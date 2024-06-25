@@ -17,7 +17,6 @@ properties:
     Identifies the {@link Collection} to which a {@link CollectionPage} objects
     items belong.
   range:
-  - "https://www.w3.org/ns/activitystreams#Link"
   - "https://www.w3.org/ns/activitystreams#Collection"
 
 - singularName: next
@@ -26,7 +25,6 @@ properties:
   description: In a paged {@link Collection}, indicates the next page of items.
   range:
   - "https://www.w3.org/ns/activitystreams#CollectionPage"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - singularName: prev
   functional: true
@@ -35,4 +33,3 @@ properties:
     In a paged {@link Collection}, identifies the previous page of items.
   range:
   - "https://www.w3.org/ns/activitystreams#CollectionPage"
-  - "https://www.w3.org/ns/activitystreams#Link"

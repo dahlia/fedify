@@ -43,6 +43,17 @@ To be released.
  -  Added `Offer` class to Activity Vocabulary API.
     [[#65], [#76] by Lee Dogeon]
 
+ -  The below properties of `Collection` and `CollectionPage` in Activity
+    Vocabulary API now do not accept `Link` objects:
+
+     -  `Collection.current`
+     -  `Collection.first`
+     -  `Collection.last`
+     -  `Collection.items`
+     -  `CollectionPage.partOf`
+     -  `CollectionPage.next`
+     -  `CollectionPage.prev`
+
  -  The key pair or the key pair for signing outgoing HTTP requests made from
     the shared inbox now can be configured.  This improves the compatibility
     with other ActivityPub implementations that require authorized fetches

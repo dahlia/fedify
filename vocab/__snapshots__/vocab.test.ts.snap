@@ -1298,7 +1298,7 @@ snapshot[`Deno.inspect(Collection) [auto] 1`] = `
   current: CollectionPage {},
   first: CollectionPage {},
   last: CollectionPage {},
-  items: [ Object {}, Link {} ]
+  items: [ Object {} ]
 }'
 `;
 
@@ -1415,8 +1415,8 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 1`] = `
   current: CollectionPage {},
   first: CollectionPage {},
   last: CollectionPage {},
-  items: [ Object {}, Link {} ],
-  partOf: Link {},
+  items: [ Object {} ],
+  partOf: Collection {},
   next: CollectionPage {},
   prev: CollectionPage {}
 }'
@@ -1500,7 +1500,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 3`] = `
   first: CollectionPage {},
   last: CollectionPage {},
   items: [ Object {}, Object {} ],
-  partOf: Link {},
+  partOf: Collection {},
   next: CollectionPage {},
   prev: CollectionPage {}
 }'
@@ -3401,7 +3401,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 1`] = `
   current: CollectionPage {},
   first: CollectionPage {},
   last: CollectionPage {},
-  items: [ Object {}, Link {} ]
+  items: [ Object {} ]
 }'
 `;
 
@@ -3518,8 +3518,8 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 1`] = `
   current: CollectionPage {},
   first: CollectionPage {},
   last: CollectionPage {},
-  items: [ Object {}, Link {} ],
-  partOf: Link {},
+  items: [ Object {} ],
+  partOf: Collection {},
   next: CollectionPage {},
   prev: CollectionPage {},
   startIndex: 123
@@ -3605,7 +3605,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 3`] = `
   first: CollectionPage {},
   last: CollectionPage {},
   items: [ Object {}, Object {} ],
-  partOf: Link {},
+  partOf: Collection {},
   next: CollectionPage {},
   prev: CollectionPage {},
   startIndex: 123

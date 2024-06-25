@@ -12751,10 +12751,10 @@ export class Collection extends Object {
       return new URL(\\"https://www.w3.org/ns/activitystreams#Collection\\");
     }
   #_XDbmNDuWHmrhqH712zqtecdbv1V: (number)[] = [];
-#_3UyUdxnyn6cDn53QKrh4MBiearma: (CollectionPage | Link | URL)[] = [];
-#_J52RqweMe6hhv7RnLJMC8BExTE5: (CollectionPage | Link | URL)[] = [];
-#_gyJJnyEFnuNVi1HFZKfAn3Hfn26: (CollectionPage | Link | URL)[] = [];
-#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg: (Object | Link | URL)[] = [];
+#_3UyUdxnyn6cDn53QKrh4MBiearma: (CollectionPage | URL)[] = [];
+#_J52RqweMe6hhv7RnLJMC8BExTE5: (CollectionPage | URL)[] = [];
+#_gyJJnyEFnuNVi1HFZKfAn3Hfn26: (CollectionPage | URL)[] = [];
+#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg: (Object | URL)[] = [];
 
   /**
    * Constructs a new instance of Collection with the given values.
@@ -12781,7 +12781,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -12805,37 +12805,37 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         }
       
         if (\\"current\\" in values &&             values.current != null) {
-          if (values.current instanceof CollectionPage || values.current instanceof Link || values.current instanceof URL) {
+          if (values.current instanceof CollectionPage || values.current instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_3UyUdxnyn6cDn53QKrh4MBiearma = [values.current];
           } else {
             throw new TypeError(
               \\"The current must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"first\\" in values &&             values.first != null) {
-          if (values.first instanceof CollectionPage || values.first instanceof Link || values.first instanceof URL) {
+          if (values.first instanceof CollectionPage || values.first instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_J52RqweMe6hhv7RnLJMC8BExTE5 = [values.first];
           } else {
             throw new TypeError(
               \\"The first must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"last\\" in values &&             values.last != null) {
-          if (values.last instanceof CollectionPage || values.last instanceof Link || values.last instanceof URL) {
+          if (values.last instanceof CollectionPage || values.last instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26 = [values.last];
           } else {
             throw new TypeError(
               \\"The last must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -12843,13 +12843,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         if (\\"items\\" in values &&             values.items != null) {
       
           if (Array.isArray(values.items) &&
-              values.items.every(v => v instanceof Object || v instanceof Link || v instanceof URL)) {
+              values.items.every(v => v instanceof Object || v instanceof URL)) {
             // @ts-ignore: type is checked above.
             this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = values.items;
           } else {
             throw new TypeError(
               \\"The items must be an array of type \\" +
-              \\"Object | Link | URL\\" + \\".\\",
+              \\"Object | URL\\" + \\".\\",
             );
           }
         }
@@ -12881,7 +12881,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | URL)[];}
 
     = {},
     options: {
@@ -12903,37 +12903,37 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         }
       clone.#_3UyUdxnyn6cDn53QKrh4MBiearma = this.#_3UyUdxnyn6cDn53QKrh4MBiearma;
         if (\\"current\\" in values &&             values.current != null) {
-          if (values.current instanceof CollectionPage || values.current instanceof Link || values.current instanceof URL) {
+          if (values.current instanceof CollectionPage || values.current instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_3UyUdxnyn6cDn53QKrh4MBiearma = [values.current];
           } else {
             throw new TypeError(
               \\"The current must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
       clone.#_J52RqweMe6hhv7RnLJMC8BExTE5 = this.#_J52RqweMe6hhv7RnLJMC8BExTE5;
         if (\\"first\\" in values &&             values.first != null) {
-          if (values.first instanceof CollectionPage || values.first instanceof Link || values.first instanceof URL) {
+          if (values.first instanceof CollectionPage || values.first instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_J52RqweMe6hhv7RnLJMC8BExTE5 = [values.first];
           } else {
             throw new TypeError(
               \\"The first must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
       clone.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26 = this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26;
         if (\\"last\\" in values &&             values.last != null) {
-          if (values.last instanceof CollectionPage || values.last instanceof Link || values.last instanceof URL) {
+          if (values.last instanceof CollectionPage || values.last instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26 = [values.last];
           } else {
             throw new TypeError(
               \\"The last must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -12941,13 +12941,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         if (\\"items\\" in values &&             values.items != null) {
       
           if (Array.isArray(values.items) &&
-              values.items.every(v => v instanceof Object || v instanceof Link || v instanceof URL)) {
+              values.items.every(v => v instanceof Object || v instanceof URL)) {
             // @ts-ignore: type is checked above.
             clone.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = values.items;
           } else {
             throw new TypeError(
               \\"The items must be an array of type \\" +
-              \\"Object | Link | URL\\" + \\".\\",
+              \\"Object | URL\\" + \\".\\",
             );
           }
         }
@@ -12972,7 +12972,7 @@ get totalItems(): (number | null) {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link | null> {
+    ): Promise<CollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -13001,17 +13001,8 @@ get totalItems(): (number | null) {
         if (!(e instanceof TypeError)) throw e;
       }
       
-      try {
-        return await Link.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -13037,7 +13028,7 @@ get totalItems(): (number | null) {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<CollectionPage | Link | null> {
+      ): Promise<CollectionPage | null> {
         if (this.#_3UyUdxnyn6cDn53QKrh4MBiearma.length < 1) return null;
         const v = this.#_3UyUdxnyn6cDn53QKrh4MBiearma[0];
         if (v instanceof URL) {
@@ -13057,7 +13048,7 @@ get totalItems(): (number | null) {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link | null> {
+    ): Promise<CollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -13086,17 +13077,8 @@ get totalItems(): (number | null) {
         if (!(e instanceof TypeError)) throw e;
       }
       
-      try {
-        return await Link.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -13122,7 +13104,7 @@ get totalItems(): (number | null) {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<CollectionPage | Link | null> {
+      ): Promise<CollectionPage | null> {
         if (this.#_J52RqweMe6hhv7RnLJMC8BExTE5.length < 1) return null;
         const v = this.#_J52RqweMe6hhv7RnLJMC8BExTE5[0];
         if (v instanceof URL) {
@@ -13142,7 +13124,7 @@ get totalItems(): (number | null) {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link | null> {
+    ): Promise<CollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -13171,17 +13153,8 @@ get totalItems(): (number | null) {
         if (!(e instanceof TypeError)) throw e;
       }
       
-      try {
-        return await Link.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -13207,7 +13180,7 @@ get totalItems(): (number | null) {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<CollectionPage | Link | null> {
+      ): Promise<CollectionPage | null> {
         if (this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26.length < 1) return null;
         const v = this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26[0];
         if (v instanceof URL) {
@@ -13227,7 +13200,7 @@ get totalItems(): (number | null) {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<Object | Link | null> {
+    ): Promise<Object | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -13256,17 +13229,8 @@ get totalItems(): (number | null) {
         if (!(e instanceof TypeError)) throw e;
       }
       
-      try {
-        return await Link.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#Object\\"].join(\\", \\"));
     }
     
       /**
@@ -13291,7 +13255,7 @@ get totalItems(): (number | null) {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): AsyncIterable<Object | Link> {
+      ): AsyncIterable<Object> {
         const vs = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
         for (let i = 0; i < vs.length; i++) {
           const v = vs[i];
@@ -13345,7 +13309,7 @@ get totalItems(): (number | null) {
     array = [];
     for (const v of this.#_3UyUdxnyn6cDn53QKrh4MBiearma) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -13354,7 +13318,7 @@ get totalItems(): (number | null) {
     array = [];
     for (const v of this.#_J52RqweMe6hhv7RnLJMC8BExTE5) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -13363,7 +13327,7 @@ get totalItems(): (number | null) {
     array = [];
     for (const v of this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -13372,7 +13336,7 @@ get totalItems(): (number | null) {
     array = [];
     for (const v of this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -13461,7 +13425,7 @@ get totalItems(): (number | null) {
     _XDbmNDuWHmrhqH712zqtecdbv1V.push(v[\\"@value\\"])
     }
     instance.#_XDbmNDuWHmrhqH712zqtecdbv1V = _XDbmNDuWHmrhqH712zqtecdbv1V;
-    const _3UyUdxnyn6cDn53QKrh4MBiearma: (CollectionPage | Link | URL)[] = [];
+    const _3UyUdxnyn6cDn53QKrh4MBiearma: (CollectionPage | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#current\\"] ?? []) {
       if (v == null) continue;
@@ -13471,22 +13435,11 @@ get totalItems(): (number | null) {
         _3UyUdxnyn6cDn53QKrh4MBiearma.push(new URL(v[\\"@id\\"]));
         continue;
       }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _3UyUdxnyn6cDn53QKrh4MBiearma.push(decoded);
-      
+      _3UyUdxnyn6cDn53QKrh4MBiearma.push(await CollectionPage.fromJsonLd(
+      v, options))
     }
     instance.#_3UyUdxnyn6cDn53QKrh4MBiearma = _3UyUdxnyn6cDn53QKrh4MBiearma;
-    const _J52RqweMe6hhv7RnLJMC8BExTE5: (CollectionPage | Link | URL)[] = [];
+    const _J52RqweMe6hhv7RnLJMC8BExTE5: (CollectionPage | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#first\\"] ?? []) {
       if (v == null) continue;
@@ -13496,22 +13449,11 @@ get totalItems(): (number | null) {
         _J52RqweMe6hhv7RnLJMC8BExTE5.push(new URL(v[\\"@id\\"]));
         continue;
       }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _J52RqweMe6hhv7RnLJMC8BExTE5.push(decoded);
-      
+      _J52RqweMe6hhv7RnLJMC8BExTE5.push(await CollectionPage.fromJsonLd(
+      v, options))
     }
     instance.#_J52RqweMe6hhv7RnLJMC8BExTE5 = _J52RqweMe6hhv7RnLJMC8BExTE5;
-    const _gyJJnyEFnuNVi1HFZKfAn3Hfn26: (CollectionPage | Link | URL)[] = [];
+    const _gyJJnyEFnuNVi1HFZKfAn3Hfn26: (CollectionPage | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#last\\"] ?? []) {
       if (v == null) continue;
@@ -13521,22 +13463,11 @@ get totalItems(): (number | null) {
         _gyJJnyEFnuNVi1HFZKfAn3Hfn26.push(new URL(v[\\"@id\\"]));
         continue;
       }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _gyJJnyEFnuNVi1HFZKfAn3Hfn26.push(decoded);
-      
+      _gyJJnyEFnuNVi1HFZKfAn3Hfn26.push(await CollectionPage.fromJsonLd(
+      v, options))
     }
     instance.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26 = _gyJJnyEFnuNVi1HFZKfAn3Hfn26;
-    const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg: (Object | Link | URL)[] = [];
+    const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg: (Object | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#items\\"] ?? []) {
       if (v == null) continue;
@@ -13546,19 +13477,8 @@ get totalItems(): (number | null) {
         _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.push(new URL(v[\\"@id\\"]));
         continue;
       }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.push(decoded);
-      
+      _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.push(await Object.fromJsonLd(
+      v, options))
     }
     instance.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
     
@@ -13703,9 +13623,9 @@ export class CollectionPage extends Collection {
     static get typeId(): URL {
       return new URL(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\");
     }
-  #_2kWgBhQKjEauxx8C6qF3ZQamK4Le: (Link | Collection | URL)[] = [];
-#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY: (CollectionPage | Link | URL)[] = [];
-#_3b8yG8tDNzQFFEnWhCc13G8eHooA: (CollectionPage | Link | URL)[] = [];
+  #_2kWgBhQKjEauxx8C6qF3ZQamK4Le: (Collection | URL)[] = [];
+#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY: (CollectionPage | URL)[] = [];
+#_3b8yG8tDNzQFFEnWhCc13G8eHooA: (CollectionPage | URL)[] = [];
 
   /**
    * Constructs a new instance of CollectionPage with the given values.
@@ -13732,7 +13652,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | URL)[];partOf?: Collection | URL | null;next?: CollectionPage | URL | null;prev?: CollectionPage | URL | null;}
 ,
     {
       documentLoader,
@@ -13744,37 +13664,37 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
   ) {
   super(values, { documentLoader, contextLoader });
         if (\\"partOf\\" in values &&             values.partOf != null) {
-          if (values.partOf instanceof Link || values.partOf instanceof Collection || values.partOf instanceof URL) {
+          if (values.partOf instanceof Collection || values.partOf instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le = [values.partOf];
           } else {
             throw new TypeError(
               \\"The partOf must be of type \\" +
-              \\"Link | Collection | URL\\" + \\".\\",
+              \\"Collection | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"next\\" in values &&             values.next != null) {
-          if (values.next instanceof CollectionPage || values.next instanceof Link || values.next instanceof URL) {
+          if (values.next instanceof CollectionPage || values.next instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY = [values.next];
           } else {
             throw new TypeError(
               \\"The next must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"prev\\" in values &&             values.prev != null) {
-          if (values.prev instanceof CollectionPage || values.prev instanceof Link || values.prev instanceof URL) {
+          if (values.prev instanceof CollectionPage || values.prev instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA = [values.prev];
           } else {
             throw new TypeError(
               \\"The prev must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -13806,7 +13726,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | URL)[];partOf?: Collection | URL | null;next?: CollectionPage | URL | null;prev?: CollectionPage | URL | null;}
 
     = {},
     options: {
@@ -13816,37 +13736,37 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
   ): CollectionPage {
   const clone = super.clone(values, options) as unknown as CollectionPage;clone.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le = this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le;
         if (\\"partOf\\" in values &&             values.partOf != null) {
-          if (values.partOf instanceof Link || values.partOf instanceof Collection || values.partOf instanceof URL) {
+          if (values.partOf instanceof Collection || values.partOf instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le = [values.partOf];
           } else {
             throw new TypeError(
               \\"The partOf must be of type \\" +
-              \\"Link | Collection | URL\\" + \\".\\",
+              \\"Collection | URL\\" + \\".\\",
             );
           }
         }
       clone.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY = this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY;
         if (\\"next\\" in values &&             values.next != null) {
-          if (values.next instanceof CollectionPage || values.next instanceof Link || values.next instanceof URL) {
+          if (values.next instanceof CollectionPage || values.next instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY = [values.next];
           } else {
             throw new TypeError(
               \\"The next must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
       clone.#_3b8yG8tDNzQFFEnWhCc13G8eHooA = this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA;
         if (\\"prev\\" in values &&             values.prev != null) {
-          if (values.prev instanceof CollectionPage || values.prev instanceof Link || values.prev instanceof URL) {
+          if (values.prev instanceof CollectionPage || values.prev instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_3b8yG8tDNzQFFEnWhCc13G8eHooA = [values.prev];
           } else {
             throw new TypeError(
               \\"The prev must be of type \\" +
-              \\"CollectionPage | Link | URL\\" + \\".\\",
+              \\"CollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -13861,7 +13781,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<Link | Collection | null> {
+    ): Promise<Collection | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -13882,15 +13802,6 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       const { document } = fetchResult;
     
       try {
-        return await Link.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
-      try {
         return await Collection.fromJsonLd(
           document,
           { documentLoader, contextLoader },
@@ -13900,7 +13811,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       }
       
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
     }
     
       /**
@@ -13926,7 +13837,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<Link | Collection | null> {
+      ): Promise<Collection | null> {
         if (this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le.length < 1) return null;
         const v = this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le[0];
         if (v instanceof URL) {
@@ -13946,7 +13857,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link | null> {
+    ): Promise<CollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -13975,17 +13886,8 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         if (!(e instanceof TypeError)) throw e;
       }
       
-      try {
-        return await Link.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -14009,7 +13911,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<CollectionPage | Link | null> {
+      ): Promise<CollectionPage | null> {
         if (this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY.length < 1) return null;
         const v = this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY[0];
         if (v instanceof URL) {
@@ -14029,7 +13931,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<CollectionPage | Link | null> {
+    ): Promise<CollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -14058,17 +13960,8 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         if (!(e instanceof TypeError)) throw e;
       }
       
-      try {
-        return await Link.fromJsonLd(
-          document,
-          { documentLoader, contextLoader },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
-      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -14093,7 +13986,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<CollectionPage | Link | null> {
+      ): Promise<CollectionPage | null> {
         if (this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA.length < 1) return null;
         const v = this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA[0];
         if (v instanceof URL) {
@@ -14131,7 +14024,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     array = [];
     for (const v of this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Link ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -14140,7 +14033,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     array = [];
     for (const v of this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -14149,7 +14042,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     array = [];
     for (const v of this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : v instanceof CollectionPage ? await v.toJsonLd(options) : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -14221,7 +14114,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     if (!(instance instanceof CollectionPage)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
     }
-    const _2kWgBhQKjEauxx8C6qF3ZQamK4Le: (Link | Collection | URL)[] = [];
+    const _2kWgBhQKjEauxx8C6qF3ZQamK4Le: (Collection | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#partOf\\"] ?? []) {
       if (v == null) continue;
@@ -14231,22 +14124,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         _2kWgBhQKjEauxx8C6qF3ZQamK4Le.push(new URL(v[\\"@id\\"]));
         continue;
       }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Collection.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _2kWgBhQKjEauxx8C6qF3ZQamK4Le.push(decoded);
-      
+      _2kWgBhQKjEauxx8C6qF3ZQamK4Le.push(await Collection.fromJsonLd(
+      v, options))
     }
     instance.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le = _2kWgBhQKjEauxx8C6qF3ZQamK4Le;
-    const _3BT4kQLcXhHx7TAWaNDKh8nFn9eY: (CollectionPage | Link | URL)[] = [];
+    const _3BT4kQLcXhHx7TAWaNDKh8nFn9eY: (CollectionPage | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#next\\"] ?? []) {
       if (v == null) continue;
@@ -14256,22 +14138,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         _3BT4kQLcXhHx7TAWaNDKh8nFn9eY.push(new URL(v[\\"@id\\"]));
         continue;
       }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _3BT4kQLcXhHx7TAWaNDKh8nFn9eY.push(decoded);
-      
+      _3BT4kQLcXhHx7TAWaNDKh8nFn9eY.push(await CollectionPage.fromJsonLd(
+      v, options))
     }
     instance.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY = _3BT4kQLcXhHx7TAWaNDKh8nFn9eY;
-    const _3b8yG8tDNzQFFEnWhCc13G8eHooA: (CollectionPage | Link | URL)[] = [];
+    const _3b8yG8tDNzQFFEnWhCc13G8eHooA: (CollectionPage | URL)[] = [];
 
     for (const v of values[\\"https://www.w3.org/ns/activitystreams#prev\\"] ?? []) {
       if (v == null) continue;
@@ -14281,19 +14152,8 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         _3b8yG8tDNzQFFEnWhCc13G8eHooA.push(new URL(v[\\"@id\\"]));
         continue;
       }
-      
-      const decoded =
-      typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await CollectionPage.fromJsonLd(
-      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
-            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
-      v, options) : undefined
-      ;
-      if (typeof decoded === \\"undefined\\") continue;
-      _3b8yG8tDNzQFFEnWhCc13G8eHooA.push(decoded);
-      
+      _3b8yG8tDNzQFFEnWhCc13G8eHooA.push(await CollectionPage.fromJsonLd(
+      v, options))
     }
     instance.#_3b8yG8tDNzQFFEnWhCc13G8eHooA = _3b8yG8tDNzQFFEnWhCc13G8eHooA;
     
@@ -20707,7 +20567,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | URL)[];}
 ,
     {
       documentLoader,
@@ -20745,7 +20605,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | URL)[];}
 
     = {},
     options: {
@@ -20907,7 +20767,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | URL)[];partOf?: Collection | URL | null;next?: CollectionPage | URL | null;prev?: CollectionPage | URL | null;startIndex?: number | null;}
 ,
     {
       documentLoader,
@@ -20957,7 +20817,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | Link | URL | null;first?: CollectionPage | Link | URL | null;last?: CollectionPage | Link | URL | null;items?: (Object | Link | URL)[];partOf?: Link | Collection | URL | null;next?: CollectionPage | Link | URL | null;prev?: CollectionPage | Link | URL | null;startIndex?: number | null;}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | URL)[];partOf?: Collection | URL | null;next?: CollectionPage | URL | null;prev?: CollectionPage | URL | null;startIndex?: number | null;}
 
     = {},
     options: {

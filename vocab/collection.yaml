@@ -30,7 +30,6 @@ properties:
     the most recently updated member items.
   range:
   - "https://www.w3.org/ns/activitystreams#CollectionPage"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - singularName: first
   functional: true
@@ -40,7 +39,6 @@ properties:
     items in the collection.
   range:
   - "https://www.w3.org/ns/activitystreams#CollectionPage"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - singularName: last
   functional: true
@@ -50,7 +48,6 @@ properties:
     the collection.
   range:
   - "https://www.w3.org/ns/activitystreams#CollectionPage"
-  - "https://www.w3.org/ns/activitystreams#Link"
 
 - pluralName: items
   singularName: item
@@ -60,4 +57,3 @@ properties:
     or unordered.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
-  - "https://www.w3.org/ns/activitystreams#Link"
