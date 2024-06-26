@@ -12,7 +12,7 @@ import {
   rsaPublicKey2,
 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
-import { Create, Note } from "../vocab/vocab.ts";
+import { Create, Note, Place } from "../vocab/vocab.ts";
 import {
   createProof,
   signObject,
@@ -43,9 +43,16 @@ const fep8b32TestVectorKeyId = new URL(
   "https://server.example/users/alice#ed25519-key",
 );
 const fep8b32TestVectorActivity = new Create({
+  id: new URL("https://server.example/activities/1"),
   actor: new URL("https://server.example/users/alice"),
   object: new Note({
+    id: new URL("https://server.example/objects/1"),
+    attribution: new URL("https://server.example/users/alice"),
     content: "Hello world",
+    location: new Place({
+      longitude: -71.184902,
+      latitude: 25.273962,
+    }),
   }),
 });
 
@@ -69,8 +76,8 @@ test("createProof()", async () => {
   assertEquals(
     proof.proofValue,
     decodeHex(
-      "781cf7e090fcd46806fb415281a76f8a4a8d93b8f509a6c48c0fbfd06e8d0ff4" +
-        "ff5f08e3b0f99adac4e5c4c39777ac1450407d5c97432831941462ada362da0c",
+      "670e09df6555540b202f9a3993217cefc2e90a34dc94c0149fb646808645715f" +
+        "dad4c3e403da70c524ee4a8578486cf1a1782d6974a2c28fff909afda0b38101",
     ),
   );
   assertEquals(proof.created, created);
@@ -104,7 +111,7 @@ test("createProof()", async () => {
     proof2.proofValue,
     decode(
       // cSpell: disable
-      "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+      "zLaewdp4H9kqtwyrLatK4cjY5oRHwVcw4gibPSUDYDMhi4M49v8pcYk3ZB6D69dNpAPbUmY8ocuJ3m9KhKJEEg7z",
       // cSpell: enable
     ),
   );
@@ -144,11 +151,19 @@ test("signObject()", async () => {
         "https://www.w3.org/ns/activitystreams",
         "https://w3id.org/security/data-integrity/v1",
       ],
+      id: "https://server.example/activities/1",
       type: "Create",
       actor: "https://server.example/users/alice",
       object: {
+        id: "https://server.example/objects/1",
         type: "Note",
+        attributedTo: "https://server.example/users/alice",
         content: "Hello world",
+        location: {
+          type: "Place",
+          longitude: -71.184902,
+          latitude: 25.273962,
+        },
       },
       proof: {
         type: "DataIntegrityProof",
@@ -157,7 +172,7 @@ test("signObject()", async () => {
         proofPurpose: "assertionMethod",
         proofValue:
           // cSpell: disable
-          "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+          "zLaewdp4H9kqtwyrLatK4cjY5oRHwVcw4gibPSUDYDMhi4M49v8pcYk3ZB6D69dNpAPbUmY8ocuJ3m9KhKJEEg7z",
         // cSpell: enable
         created: "2023-02-24T23:36:38Z",
       },
@@ -177,11 +192,19 @@ test("signObject()", async () => {
         "https://www.w3.org/ns/activitystreams",
         "https://w3id.org/security/data-integrity/v1",
       ],
+      id: "https://server.example/activities/1",
       type: "Create",
       actor: "https://server.example/users/alice",
       object: {
+        id: "https://server.example/objects/1",
         type: "Note",
+        attributedTo: "https://server.example/users/alice",
         content: "Hello world",
+        location: {
+          type: "Place",
+          longitude: -71.184902,
+          latitude: 25.273962,
+        },
       },
       proof: [
         {
@@ -191,7 +214,7 @@ test("signObject()", async () => {
           proofPurpose: "assertionMethod",
           proofValue:
             // cSpell: disable
-            "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+            "zLaewdp4H9kqtwyrLatK4cjY5oRHwVcw4gibPSUDYDMhi4M49v8pcYk3ZB6D69dNpAPbUmY8ocuJ3m9KhKJEEg7z",
           // cSpell: enable
           created: "2023-02-24T23:36:38Z",
         },
@@ -201,7 +224,7 @@ test("signObject()", async () => {
           proofPurpose: "assertionMethod",
           proofValue:
             // cSpell: disable
-            "z4os7guLoXqReLCy135fZFVkEwvsEkUsg9jcEFQVuXM9L9H6CrqoDct8ZFuyruMDAQxaoV6S5bDKxoQUqNCLW7Tsh",
+            "zVrcY69MxozB9V9hmMmsjoB4YLCXvn6ienKr6jsP2rztSEr1WhMJymPqujKofkrV3C7A2C9iKYnRNSvtPgDQBCw2",
           // cSpell: enable
           type: "DataIntegrityProof",
           verificationMethod: "https://example.com/person2#key4",
@@ -226,65 +249,28 @@ test("verifyProof()", async () => {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
   };
+  // Test vector from <https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.feature>:
   const jsonLd = {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
-      "https://w3id.org/security/v1",
-      "https://w3id.org/security/data-integrity/v1",
-      {
-        Hashtag: "as:Hashtag",
-        MitraJcsRsaSignature2022: "mitra:MitraJcsRsaSignature2022",
-        mitra: "http://jsonld.mitra.social#",
-        proofPurpose: "sec:proofPurpose",
-        proofValue: "sec:proofValue",
-        sensitive: "as:sensitive",
-        verificationMethod: "sec:verificationMethod",
-      },
-    ],
-    actor: "https://wizard.casa/users/hongminhee",
-    id: "https://wizard.casa/objects/019006d7-95ac-3a0d-c62b-4635a4ea3294",
-    object: "https://activitypub.academy/users/banulius_rakdraval",
-    to: [
-      "https://activitypub.academy/users/banulius_rakdraval",
-    ],
-    type: "Follow",
-  };
-  const proof = new DataIntegrityProof({
-    cryptosuite: "eddsa-jcs-2022",
-    proofPurpose: "assertionMethod",
-    verificationMethod: new URL(
-      "https://wizard.casa/users/hongminhee#ed25519-key",
-    ),
-    proofValue: decode(
-      "zmzagWMY7wxj9By6AK27kVv9YzwuiTK7iuLgdDEVK8nHT1snicDEhXTibrPb74YCN8PGNopQnneRYST6cU4fMGnY",
-    ),
-    created: Temporal.Instant.from("2024-06-11T10:29:32.165658336Z"),
-  });
-  assertEquals(
-    await verifyProof(jsonLd, proof, options),
-    new Multikey({
-      id: new URL("https://wizard.casa/users/hongminhee#ed25519-key"),
-      controller: new URL("https://wizard.casa/users/hongminhee"),
-      publicKey: await importMultibaseKey(
-        "z6MkweqJajqa5jRAJTBVxxu47oCdB7HzmYbBKN8VGbFJmKkC",
-      ),
-    }),
-  );
-
-  // Test vector from <https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.feature>:
-  const jsonLd2 = {
-    "@context": [
-      "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/data-integrity/v1",
     ],
+    id: "https://server.example/activities/1",
     type: "Create",
     actor: "https://server.example/users/alice",
     object: {
+      id: "https://server.example/objects/1",
       type: "Note",
+      attributedTo: "https://server.example/users/alice",
       content: "Hello world",
+      location: {
+        type: "Place",
+        longitude: -71.184902,
+        latitude: 25.273962,
+      },
     },
   };
-  const proof2 = new DataIntegrityProof({
+  const proof = new DataIntegrityProof({
     cryptosuite: "eddsa-jcs-2022",
     verificationMethod: new URL(
       "https://server.example/users/alice#ed25519-key",
@@ -292,13 +278,13 @@ test("verifyProof()", async () => {
     proofPurpose: "assertionMethod",
     proofValue: decode(
       // cSpell: disable
-      "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+      "zLaewdp4H9kqtwyrLatK4cjY5oRHwVcw4gibPSUDYDMhi4M49v8pcYk3ZB6D69dNpAPbUmY8ocuJ3m9KhKJEEg7z",
       // cSpell: enable
     ),
     created: Temporal.Instant.from("2023-02-24T23:36:38Z"),
   });
   assertEquals(
-    await verifyProof(jsonLd2, proof2, options),
+    await verifyProof(jsonLd, proof, options),
     new Multikey({
       id: new URL("https://server.example/users/alice#ed25519-key"),
       controller: new URL("https://server.example/users/alice"),
@@ -308,11 +294,11 @@ test("verifyProof()", async () => {
     }),
   );
 
-  const jsonLd3 = { ...jsonLd2, object: { ...jsonLd2.object, content: "bye" } };
-  assertEquals(await verifyProof(jsonLd3, proof2, options), null);
+  const jsonLd2 = { ...jsonLd, object: { ...jsonLd.object, content: "bye" } };
+  assertEquals(await verifyProof(jsonLd2, proof, options), null);
 
-  const wrongProof = proof2.clone({ created: Temporal.Now.instant() });
-  assertEquals(await verifyProof(jsonLd2, wrongProof, options), null);
+  const wrongProof = proof.clone({ created: Temporal.Now.instant() });
+  assertEquals(await verifyProof(jsonLd, wrongProof, options), null);
 });
 
 test("verifyObject()", async () => {
@@ -325,11 +311,19 @@ test("verifyObject()", async () => {
       "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/data-integrity/v1",
     ],
+    id: "https://server.example/activities/1",
     type: "Create",
     actor: "https://server.example/users/alice",
     object: {
+      id: "https://server.example/objects/1",
       type: "Note",
+      attributedTo: "https://server.example/users/alice",
       content: "Hello world",
+      location: {
+        type: "Place",
+        longitude: -71.184902,
+        latitude: 25.273962,
+      },
     },
     proof: [
       {
@@ -339,7 +333,7 @@ test("verifyObject()", async () => {
         proofPurpose: "assertionMethod",
         proofValue:
           // cSpell: disable
-          "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+          "zLaewdp4H9kqtwyrLatK4cjY5oRHwVcw4gibPSUDYDMhi4M49v8pcYk3ZB6D69dNpAPbUmY8ocuJ3m9KhKJEEg7z",
         // cSpell: enable
         created: "2023-02-24T23:36:38Z",
       },
@@ -349,7 +343,7 @@ test("verifyObject()", async () => {
         proofPurpose: "assertionMethod",
         proofValue:
           // cSpell: disable
-          "z4os7guLoXqReLCy135fZFVkEwvsEkUsg9jcEFQVuXM9L9H6CrqoDct8ZFuyruMDAQxaoV6S5bDKxoQUqNCLW7Tsh",
+          "zVrcY69MxozB9V9hmMmsjoB4YLCXvn6ienKr6jsP2rztSEr1WhMJymPqujKofkrV3C7A2C9iKYnRNSvtPgDQBCw2",
         // cSpell: enable
         type: "DataIntegrityProof",
         verificationMethod: "https://example.com/person2#key4",

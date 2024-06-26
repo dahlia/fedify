@@ -1,10 +1,10 @@
+import { Activity, Multikey } from "@fedify/fedify/vocab";
+import { getLogger } from "@logtape/logtape";
 // @ts-ignore: json-canon is not typed
 import serialize from "json-canon";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { DataIntegrityProof, type Object } from "../vocab/vocab.ts";
 import { fetchKey, validateCryptoKey } from "./key.ts";
-import { Activity, Multikey } from "@fedify/fedify/vocab";
-import { getLogger } from "@logtape/logtape";
 
 const logger = getLogger(["fedify", "sig", "proof"]);
 
@@ -64,13 +64,8 @@ export async function createProof(
   const msgDigest = await crypto.subtle.digest("SHA-256", msgBytes);
   created ??= Temporal.Now.instant();
   const proofConfig = {
-    // The below commented out line is needed according to section 3.3.1 of
-    // the Data Integrity EdDSA Cryptosuites v1.0 spec, the FEP-8b32 spec does
-    // not reflect this step; however, the FEP-8b32 spec will be updated to
-    // be consistent with the Data Integrity EdDSA Cryptosuites v1.0 spec
-    // some time soon.  Before that happens, the below line is commented out.
-    // See also: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/91?u=hongminhee
-    // "@context": (compactMsg as any)["@context"],
+    // deno-lint-ignore no-explicit-any
+    "@context": (compactMsg as any)["@context"],
     type: "DataIntegrityProof",
     cryptosuite: "eddsa-jcs-2022",
     verificationMethod: keyId.href,
@@ -173,13 +168,8 @@ export async function verifyProof(
     options,
   );
   const proofConfig = {
-    // The below commented out line is needed according to section 3.3.1 of
-    // the Data Integrity EdDSA Cryptosuites v1.0 spec, the FEP-8b32 spec does
-    // not reflect this step; however, the FEP-8b32 spec will be updated to
-    // be consistent with the Data Integrity EdDSA Cryptosuites v1.0 spec
-    // some time soon.  Before that happens, the below line is commented out.
-    // See also: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/91?u=hongminhee
-    // "@context": (jsonLd as any)["@context"],
+    // deno-lint-ignore no-explicit-any
+    "@context": (jsonLd as any)["@context"],
     type: "DataIntegrityProof",
     cryptosuite: proof.cryptosuite,
     verificationMethod: proof.verificationMethodId.href,

@@ -162,6 +162,10 @@ To be released.
      -  Renamed `InboxListenerSetter` interface to `InboxListenerSetters`.
      -  Added `InboxListenerSetters.setSharedKeyDispatcher()` method.
 
+ -  Followed up the [change in `eddsa-jcs-2022` specification][eddsa-jcs-2022]
+    for Object Integrity Proofs.  [[FEP-8b32], [#54]]
+
+[eddsa-jcs-2022]: https://codeberg.org/fediverse/fep/pulls/338
 [#71]: https://github.com/dahlia/fedify/issues/71
 [#74]: https://github.com/dahlia/fedify/issues/74
 [#76]: https://github.com/dahlia/fedify/pull/76
