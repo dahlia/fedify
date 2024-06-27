@@ -8,6 +8,12 @@ Version 0.11.0
 
 To be released.
 
+ -  Added `Invite` class to Activity Vocabulary API.
+    Added `Join` class to Activity Vocabulary API.
+    Added `Leave` class to Activity Vocabulary API.
+    Added `Listen` class to Activity Vocabulary API.
+    [[#65], [#80] by Randy Wressell]
+
  -  Improved runtime type error messages for Activity Vocabulary API.  [[#79]]
 
  -  Added `suppressError` option to dereferencing accessors of Activity

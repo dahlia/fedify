@@ -1,0 +1,12 @@
+$schema: ../codegen/schema.yaml
+name: Leave
+uri: "https://www.w3.org/ns/activitystreams#Leave"
+extends: "https://www.w3.org/ns/activitystreams#Activity"
+entity: true
+description: |
+  Indicates that the `actor` has left the `object`.
+  The `target` and `origin` typically have no meaning.
+defaultContext:
+  - "https://www.w3.org/ns/activitystreams"
+  - "https://w3id.org/security/data-integrity/v1"
+properties: []
