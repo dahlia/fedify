@@ -44,6 +44,18 @@ To be released.
      -  The default `rules` for `kvCache()` function are now 5 minutes for all
         URLs.
 
+ -  Added `Invite` class to Activity Vocabulary API.
+    [[#65], [#80] by Randy Wressell]
+
+ -  Added `Join` class to Activity Vocabulary API.
+    [[#65], [#80] by Randy Wressell]
+
+ -  Added `Leave` class to Activity Vocabulary API.
+    [[#65], [#80] by Randy Wressell]
+
+ -  Added `Listen` class to Activity Vocabulary API.
+    [[#65], [#80] by Randy Wressell]
+
  -  Added `Offer` class to Activity Vocabulary API.
     [[#65], [#76] by Lee Dogeon]
 
