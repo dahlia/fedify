@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.11.0
 --------------
 
-To be released.
+Released on June 29, 2024.
 
  -  Improved runtime type error messages for Activity Vocabulary API.  [[#79]]
 
