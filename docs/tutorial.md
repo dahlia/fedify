@@ -76,7 +76,7 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 {
   "unstable": ["kv", "temporal"],
   "imports": {
-    "@fedify/fedify": "jsr:@fedify/fedify@^0.11.0"
+    "@fedify/fedify": "jsr:@fedify/fedify@^0.12.0"
   }
 }
 ~~~~
@@ -90,7 +90,7 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@fedify/fedify": "^0.11.0",
+    "@fedify/fedify": "^0.12.0",
     "@hono/node-server": "^1.11.1"
   }
 }
@@ -100,7 +100,7 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 {
   "dependencies": {
     "@deno/kv": "^0.8.0",
-    "@fedify/fedify": "^0.11.0"
+    "@fedify/fedify": "^0.12.0"
   }
 }
 ~~~
