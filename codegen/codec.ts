@@ -88,11 +88,45 @@ export async function* generateEncoder(
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      ${JSON.stringify(type.defaultContext)};
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? ${JSON.stringify(type.defaultContext)},
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  `;
+  const supertypes: string[] = [];
+  for (
+    let uri: string | undefined = typeUri;
+    uri != null;
+    uri = types[uri].extends
+  ) {
+    supertypes.push(uri);
+  }
+  for (const supertype of supertypes) {
+    for (const property of types[supertype].properties) {
+      if (property.embedContext == null) continue;
+      const compactName = property.embedContext.compactName;
+      yield `
+      if (${JSON.stringify(compactName)} in compacted &&
+          compacted.${compactName} != null) {
+        if (Array.isArray(compacted.${compactName})) {
+          for (const element of compacted.${compactName}) {
+            element["@context"] = docContext;
+          }
+        } else {
+         compacted.${compactName}["@context"] = docContext;
+        }
+      }
+      `;
+    }
+  }
+  yield `
+    }
+    return compacted;
   }
   `;
 }

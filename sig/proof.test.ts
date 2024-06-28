@@ -166,6 +166,10 @@ test("signObject()", async () => {
         },
       },
       proof: {
+        "@context": [
+          "https://www.w3.org/ns/activitystreams",
+          "https://w3id.org/security/data-integrity/v1",
+        ],
         type: "DataIntegrityProof",
         cryptosuite: "eddsa-jcs-2022",
         verificationMethod: "https://server.example/users/alice#ed25519-key",
@@ -208,6 +212,10 @@ test("signObject()", async () => {
       },
       proof: [
         {
+          "@context": [
+            "https://www.w3.org/ns/activitystreams",
+            "https://w3id.org/security/data-integrity/v1",
+          ],
           type: "DataIntegrityProof",
           cryptosuite: "eddsa-jcs-2022",
           verificationMethod: "https://server.example/users/alice#ed25519-key",
@@ -219,6 +227,10 @@ test("signObject()", async () => {
           created: "2023-02-24T23:36:38Z",
         },
         {
+          "@context": [
+            "https://www.w3.org/ns/activitystreams",
+            "https://w3id.org/security/data-integrity/v1",
+          ],
           created: "2023-02-24T23:36:38Z",
           cryptosuite: "eddsa-jcs-2022",
           proofPurpose: "assertionMethod",

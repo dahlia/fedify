@@ -3996,11 +3996,29 @@ get sensitive(): (boolean | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"sensitive\\":\\"as:sensitive\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"sensitive\\":\\"as:sensitive\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -5746,11 +5764,29 @@ proofs?: (DataIntegrityProof | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"Emoji\\":\\"toot:Emoji\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"Emoji\\":\\"toot:Emoji\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -6026,11 +6062,18 @@ get value(): (string | LanguageString | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",{\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
   }
   
   /**
@@ -6629,11 +6672,18 @@ get created(): (Temporal.Instant | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      \\"https://w3id.org/security/data-integrity/v1\\";
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? \\"https://w3id.org/security/data-integrity/v1\\",
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
   }
   
   /**
@@ -7206,11 +7256,18 @@ get publicKey(): (CryptoKey | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      \\"https://w3id.org/security/v1\\";
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? \\"https://w3id.org/security/v1\\",
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
   }
   
   /**
@@ -7707,11 +7764,18 @@ get publicKey(): (CryptoKey | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      \\"https://w3id.org/security/multikey/v1\\";
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? \\"https://w3id.org/security/multikey/v1\\",
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
   }
   
   /**
@@ -9264,11 +9328,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -9890,11 +9972,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -10105,11 +10205,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -10319,11 +10437,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -12260,11 +12396,29 @@ get indexable(): (boolean | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -13152,11 +13306,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -13376,11 +13548,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -13575,11 +13765,29 @@ proofs?: (DataIntegrityProof | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -13874,11 +14082,29 @@ get height(): (number | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -14161,11 +14387,29 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -14374,11 +14618,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -14594,11 +14856,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -15321,11 +15601,29 @@ get totalItems(): (number | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -16088,11 +16386,29 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -16427,11 +16743,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -16640,11 +16974,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -16851,11 +17203,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -17334,11 +17704,18 @@ get sharedInbox(): (URL | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      \\"https://www.w3.org/ns/activitystreams\\";
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
   }
   
   /**
@@ -17752,11 +18129,29 @@ proofs?: (DataIntegrityProof | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -17966,11 +18361,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -18181,11 +18594,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -20122,11 +20553,29 @@ get indexable(): (boolean | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -21574,11 +22023,18 @@ get width(): (number | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      \\"https://www.w3.org/ns/activitystreams\\";
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
   }
   
   /**
@@ -22086,11 +22542,18 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",{\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",{\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
   }
   
   /**
@@ -22285,11 +22748,29 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      \\"https://www.w3.org/ns/activitystreams\\";
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -22499,11 +22980,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -22717,11 +23216,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -22930,11 +23447,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -23143,11 +23678,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -23356,11 +23909,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -23567,11 +24138,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -23738,11 +24327,18 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      \\"https://www.w3.org/ns/activitystreams\\";
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? \\"https://www.w3.org/ns/activitystreams\\",
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
   }
   
   /**
@@ -23939,11 +24535,29 @@ proofs?: (DataIntegrityProof | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -24270,11 +24884,29 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -24706,11 +25338,29 @@ get startIndex(): (number | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -26735,11 +27385,29 @@ get indexable(): (boolean | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -27612,11 +28280,29 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -29553,11 +30239,29 @@ get indexable(): (boolean | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -30730,11 +31434,29 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -31260,11 +31982,29 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -31763,11 +32503,29 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -32062,11 +32820,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -32782,11 +33558,29 @@ relationships?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -33130,11 +33924,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -35071,11 +35883,29 @@ get indexable(): (boolean | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -36001,11 +36831,29 @@ get deleted(): (Temporal.Instant | null) {
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -36253,11 +37101,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -36469,11 +37335,29 @@ instruments?: (Object | URL)[];}
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**
@@ -36668,11 +37552,29 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         { documentLoader: options.contextLoader },
       );
     }
-    return await jsonld.compact(
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
       values,
-      options.context ?? [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"],
+      docContext,
       { documentLoader: options.contextLoader },
     );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
   }
   
   /**

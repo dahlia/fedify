@@ -307,6 +307,9 @@ properties:
   singularAccessor: true
   uri: "https://w3id.org/security#proof"
   container: graph
+  embedContext:
+    compactName: proof
+    inherit: true
   description: |
     A cryptographic proof that can be used to verify the integrity of an object.
   range:

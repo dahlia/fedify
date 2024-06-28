@@ -72,6 +72,21 @@ $defs:
           The description of the property.  It is used as the doc comment of
           the generated property accessors.
         type: string
+      embedContext:
+        description: >-
+          Whether the enclosed object should have its own context when
+          the document is compacted.
+        type: object
+        properties:
+          compactName:
+            description: >-
+              The compact name of the property that contains the context.
+            type: string
+          inherit:
+            description: >-
+              Whether the embedded context should be the same as the context of
+              the enclosing document.
+            const: true
     required:
     - singularName
     - uri

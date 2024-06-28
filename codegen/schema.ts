@@ -81,6 +81,23 @@ export interface PropertySchemaBase {
    * the generated property accessors.
    */
   description: string;
+
+  /**
+   * Whether the enclosed object should have its own context when the document
+   * is compacted.
+   */
+  embedContext?: {
+    /**
+     * The compact name of the property that contains the context.
+     */
+    compactName: string;
+
+    /**
+     * Whether the embedded context should be the same as the context of
+     * the enclosing document.
+     */
+    inherit: true;
+  };
 }
 
 export type PropertySchemaTyping = {
