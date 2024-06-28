@@ -863,10 +863,10 @@ test("handleCollection()", async () => {
     type: "OrderedCollectionPage",
     partOf: "https://example.com/",
     next: "https://example.com/?cursor=1",
-    items: {
+    orderedItems: [{
       id: "https://example.com/activities/1",
       type: "Create",
-    },
+    }],
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
@@ -918,10 +918,10 @@ test("handleCollection()", async () => {
     type: "OrderedCollectionPage",
     partOf: "https://example.com/",
     prev: "https://example.com/?cursor=1",
-    items: {
+    orderedItems: [{
       id: "https://example.com/activities/3",
       type: "Create",
-    },
+    }],
   });
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);

@@ -16,6 +16,17 @@ defaultContext:
   Hashtag: "as:Hashtag"
 
 properties:
+- pluralName: items
+  singularName: item
+  uri: "https://www.w3.org/ns/activitystreams#items"
+  container: list
+  description: |
+    Identifies the items contained in a collection.  The items might be ordered
+    or unordered.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Object"
+  - "https://www.w3.org/ns/activitystreams#Link"
+
 - singularName: startIndex
   functional: true
   uri: "https://www.w3.org/ns/activitystreams#startIndex"

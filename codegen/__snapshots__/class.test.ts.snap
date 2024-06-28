@@ -24417,7 +24417,8 @@ export class OrderedCollectionPage extends CollectionPage {
     static get typeId(): URL {
       return new URL(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\");
     }
-  #_2W4yinFwqmpneu2h4m1mZ3pcLADd: (number)[] = [];
+  #_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg: (Object | Link | URL)[] = [];
+#_2W4yinFwqmpneu2h4m1mZ3pcLADd: (number)[] = [];
 
   /**
    * Constructs a new instance of OrderedCollectionPage with the given values.
@@ -24444,7 +24445,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | Link | URL)[];partOf?: Collection | URL | null;next?: CollectionPage | URL | null;prev?: CollectionPage | URL | null;startIndex?: number | null;}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;partOf?: Collection | URL | null;next?: CollectionPage | URL | null;prev?: CollectionPage | URL | null;items?: (Object | Link | URL)[];startIndex?: number | null;}
 ,
     {
       documentLoader,
@@ -24455,6 +24456,20 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     } = {},
   ) {
   super(values, { documentLoader, contextLoader });
+        if (\\"items\\" in values &&             values.items != null) {
+      
+          if (Array.isArray(values.items) &&
+              values.items.every(v => v instanceof Object || v instanceof Link || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = values.items;
+          } else {
+            throw new TypeError(
+              \\"The items must be an array of type \\" +
+              \\"Object | Link | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"startIndex\\" in values &&             values.startIndex != null) {
           if (typeof values.startIndex === \\"number\\" && Number.isInteger(values.startIndex) && values.startIndex >= 0) {
             // @ts-ignore: type is checked above.
@@ -24494,7 +24509,7 @@ tos?: (Object | URL)[];bto?: Object | URL | null;
 btos?: (Object | URL)[];cc?: Object | URL | null;
 ccs?: (Object | URL)[];bcc?: Object | URL | null;
 bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
-proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;items?: (Object | Link | URL)[];partOf?: Collection | URL | null;next?: CollectionPage | URL | null;prev?: CollectionPage | URL | null;startIndex?: number | null;}
+proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: CollectionPage | URL | null;first?: CollectionPage | URL | null;last?: CollectionPage | URL | null;partOf?: Collection | URL | null;next?: CollectionPage | URL | null;prev?: CollectionPage | URL | null;items?: (Object | Link | URL)[];startIndex?: number | null;}
 
     = {},
     options: {
@@ -24502,7 +24517,21 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       contextLoader?: DocumentLoader,
     } = {}
   ): OrderedCollectionPage {
-  const clone = super.clone(values, options) as unknown as OrderedCollectionPage;clone.#_2W4yinFwqmpneu2h4m1mZ3pcLADd = this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd;
+  const clone = super.clone(values, options) as unknown as OrderedCollectionPage;clone.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
+        if (\\"items\\" in values &&             values.items != null) {
+      
+          if (Array.isArray(values.items) &&
+              values.items.every(v => v instanceof Object || v instanceof Link || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = values.items;
+          } else {
+            throw new TypeError(
+              \\"The items must be an array of type \\" +
+              \\"Object | Link | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_2W4yinFwqmpneu2h4m1mZ3pcLADd = this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd;
         if (\\"startIndex\\" in values &&             values.startIndex != null) {
           if (typeof values.startIndex === \\"number\\" && Number.isInteger(values.startIndex) && values.startIndex >= 0) {
             // @ts-ignore: type is checked above.
@@ -24518,6 +24547,94 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     return clone;
   }
   
+    async #fetchItem(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Object | Link | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Object.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Link.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"https://www.w3.org/ns/activitystreams#Link\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link OrderedCollectionPage.getItems},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get itemIds(): URL[] {
+        return this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Identifies the items contained in a collection.  The items might be ordered
+ * or unordered.
+ * 
+ */
+
+      async* getItems(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Object | Link> {
+        const vs = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchItem(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** A non-negative integer value identifying the relative position within
  * the logical view of a strictly ordered collection.
  * 
@@ -24551,6 +24668,19 @@ get startIndex(): (number | null) {
       string,
       unknown[] | { \\"@list\\": unknown[] } | string
     >;
+    
+    array = [];
+    for (const v of this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Object ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#items\\"] = (
+    { \\"@list\\": array }
+      );
+    }
     
     array = [];
     for (const v of this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd) {
@@ -24629,6 +24759,38 @@ get startIndex(): (number | null) {
     if (!(instance instanceof OrderedCollectionPage)) {
       throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
     }
+    const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg: (Object | Link | URL)[] = [];
+
+    const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg__array = values[\\"https://www.w3.org/ns/activitystreams#items\\"];
+    for (
+      const v of _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg__array == null
+        ? []
+        : _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg__array.length === 1 && \\"@list\\" in _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg__array[0]
+        ? _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg__array[0][\\"@list\\"]
+        : _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+            t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
+            t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.push(decoded);
+      
+    }
+    instance.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
     const _2W4yinFwqmpneu2h4m1mZ3pcLADd: (number)[] = [];
 
     const _2W4yinFwqmpneu2h4m1mZ3pcLADd__array = values[\\"https://www.w3.org/ns/activitystreams#startIndex\\"];
@@ -24649,6 +24811,28 @@ get startIndex(): (number | null) {
   
   protected _getCustomInspectProxy(): Record<string, unknown> {
   const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+      const _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg = this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.length > 1
+          || !(\\"item\\" in proxy)
+          && _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg.length > 0) {
+        proxy.items = _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg;
+      }
+      
       const _2W4yinFwqmpneu2h4m1mZ3pcLADd = this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd
         // deno-lint-ignore no-explicit-any
         .map((v: any) => v instanceof URL
