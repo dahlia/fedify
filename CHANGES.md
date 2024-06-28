@@ -183,6 +183,7 @@ To be released.
 [#76]: https://github.com/dahlia/fedify/pull/76
 [#78]: https://github.com/dahlia/fedify/issues/78
 [#79]: https://github.com/dahlia/fedify/issues/79
+[#80]: https://github.com/dahlia/fedify/pull/80
 
 
 Version 0.10.0
