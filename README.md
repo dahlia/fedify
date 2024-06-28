@@ -8,7 +8,7 @@ Fedify: an ActivityPub server framework
 [![npm][npm badge]][npm]
 [![GitHub Actions][GitHub Actions badge]][GitHub Actions]
 [![Matrix][Matrix badge]][Matrix]
-[![Follow @hongminhee@fosstodon.org][@hongminhee@fosstodon.org badge]][@hongminhee@fosstodon.org]
+[![Follow @fedify@hollo.social][@fedify@hollo.social badge]][@fedify@hollo.social]
 
 > [!NOTE]
 > Looking for a quick demo?  Here it is: [Fedify Demo] on Deno Playground.
@@ -54,8 +54,8 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].  Or tag
 [GitHub Actions badge]: https://github.com/dahlia/fedify/actions/workflows/build.yaml/badge.svg
 [Matrix]: https://matrix.to/#/#fedify:matrix.org
 [Matrix badge]: https://img.shields.io/matrix/fedify%3Amatrix.org
-[@hongminhee@fosstodon.org badge]: https://fedi-badge.deno.dev/@hongminhee@fosstodon.org/followers.svg
-[@hongminhee@fosstodon.org]: https://fosstodon.org/@hongminhee
+[@fedify@hollo.social badge]: https://fedi-badge.deno.dev/@fedify@hollo.social/followers.svg
+[@fedify@hollo.social]: https://hollo.social/@fedify
 [Fedify Demo]: https://dash.deno.com/playground/fedify-demo
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [fediverse]: https://en.wikipedia.org/wiki/Fediverse

@@ -11,5 +11,5 @@ Usage
 
 ~~~~ sh
 deno task codegen  # At very first time only
-deno run -A ./main.ts @hongminhee@fosstodon.org
+deno run -A ./main.ts @fedify@hollo.social
 ~~~~
