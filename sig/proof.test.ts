@@ -1,7 +1,7 @@
 import { importMultibaseKey } from "@fedify/fedify/runtime";
 import { DataIntegrityProof, Multikey } from "@fedify/fedify/vocab";
 import { assertEquals, assertInstanceOf, assertRejects } from "@std/assert";
-import { decodeHex } from "@std/encoding/hex";
+import { decodeHex, encodeHex } from "@std/encoding/hex";
 import { decode } from "multibase";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
@@ -73,11 +73,12 @@ test("createProof()", async () => {
   assertEquals(proof.cryptosuite, "eddsa-jcs-2022");
   assertEquals(proof.verificationMethodId, ed25519PublicKey.id);
   assertEquals(proof.proofPurpose, "assertionMethod");
+  console.log(encodeHex(proof.proofValue!));
   assertEquals(
     proof.proofValue,
     decodeHex(
-      "670e09df6555540b202f9a3993217cefc2e90a34dc94c0149fb646808645715f" +
-        "dad4c3e403da70c524ee4a8578486cf1a1782d6974a2c28fff909afda0b38101",
+      "ebea8d8f81181a6e3ef5c2455da00a2773bd94231e558b7ff0dd46566e6d0a94" +
+        "549264a9b3e435e136fb5f100f07bb0dbbb25566d5deea83dfd1be6a3104b202",
     ),
   );
   assertEquals(proof.created, created);

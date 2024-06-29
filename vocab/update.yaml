@@ -16,4 +16,5 @@ defaultContext:
   sensitive: "as:sensitive"
   Emoji: "toot:Emoji"
   Hashtag: "as:Hashtag"
+  ChatMessage: "http://litepub.social/ns#ChatMessage"
 properties: []

@@ -8,6 +8,10 @@ Version 0.12.0
 
 To be released.
 
+ -  Added `ChatMessage` class to Activity Vocabulary API.  [[#85]]
+
+[#85]: https://github.com/dahlia/fedify/issues/85
+
 
 Version 0.11.0
 --------------
