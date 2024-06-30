@@ -1389,6 +1389,26 @@ export class Federation<TContextData> {
     return setters;
   }
 
+  #dispatchInboxListener(
+    activity: Activity,
+  ): InboxListener<TContextData, Activity> | null {
+    // deno-lint-ignore no-explicit-any
+    let cls: new (...args: any[]) => Activity = activity
+      // deno-lint-ignore no-explicit-any
+      .constructor as unknown as new (...args: any[]) => Activity;
+    const inboxListeners = this.#inboxListeners;
+    if (inboxListeners == null) {
+      return null;
+    }
+    while (true) {
+      if (inboxListeners.has(cls)) break;
+      if (cls === Activity) return null;
+      cls = globalThis.Object.getPrototypeOf(cls);
+    }
+    const listener = inboxListeners.get(cls)!;
+    return listener;
+  }
+
   /**
    * Sends an activity to recipients' inboxes.  You would typically use
    * {@link Context.sendActivity} instead of this method.
@@ -1646,7 +1666,7 @@ export class Federation<TContextData> {
           kv: this.#kv,
           kvPrefix: this.#kvPrefixes.activityIdempotence,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
-          inboxListeners: this.#inboxListeners ?? new Map(),
+          inboxListenerDispatcher: this.#dispatchInboxListener.bind(this),
           inboxErrorHandler: this.#inboxErrorHandler,
           onNotFound,
           signatureTimeWindow: this.#signatureTimeWindow,

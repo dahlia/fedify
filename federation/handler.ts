@@ -313,10 +313,9 @@ export interface InboxHandlerParameters<TContextData> {
   kv: KvStore;
   kvPrefix: KvKey;
   actorDispatcher?: ActorDispatcher<TContextData>;
-  inboxListeners: Map<
-    new (...args: unknown[]) => Activity,
-    InboxListener<TContextData, Activity>
-  >;
+  inboxListenerDispatcher: (
+    activity: Activity,
+  ) => InboxListener<TContextData, Activity> | null;
   inboxErrorHandler?: InboxErrorHandler<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   signatureTimeWindow: Temporal.DurationLike;
@@ -330,7 +329,7 @@ export async function handleInbox<TContextData>(
     kv,
     kvPrefix,
     actorDispatcher,
-    inboxListeners,
+    inboxListenerDispatcher,
     inboxErrorHandler,
     onNotFound,
     signatureTimeWindow,
@@ -430,25 +429,17 @@ export async function handleInbox<TContextData>(
     });
     return response;
   }
-  // deno-lint-ignore no-explicit-any
-  let cls: new (...args: any[]) => Activity = activity
-    // deno-lint-ignore no-explicit-any
-    .constructor as unknown as new (...args: any[]) => Activity;
-  while (true) {
-    if (inboxListeners.has(cls)) break;
-    if (cls === Activity) {
-      logger.error(
-        "Unsupported activity type:\n{activity}",
-        { activity: json },
-      );
-      return new Response("", {
-        status: 202,
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
-      });
-    }
-    cls = globalThis.Object.getPrototypeOf(cls);
+  const listener = inboxListenerDispatcher(activity);
+  if (listener == null) {
+    logger.error(
+      "Unsupported activity type:\n{activity}",
+      { activity: json },
+    );
+    return new Response("", {
+      status: 202,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
-  const listener = inboxListeners.get(cls)!;
   try {
     await listener(context, activity);
   } catch (error) {
