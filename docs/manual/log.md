@@ -157,6 +157,14 @@ The `["fedify", "federation", "outbox"]` category is used for logging messages
 related to outgoing activities.  When you cannot send an activity, you can
 check the log messages in this category with the `"debug"` level.
 
+### `["fedify", "federation", "queue"]`
+
+*This category is available since Fedify 0.12.0.*
+
+The `["fedify", "federation", "queue"]` category is used for logging messages
+related to the task queue.  When you are curious about the task queue, you can
+check the log messages in this category with the `"debug"` level.
+
 ### `["fedify", "httpsig", "verify"]`
 
 *This category is available since Fedify 0.8.0.*

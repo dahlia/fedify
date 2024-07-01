@@ -114,7 +114,7 @@ export type CollectionCursor<TContextData, TFilter> = (
  * @typeParam TActivity The type of activity to listen for.
  */
 export type InboxListener<TContextData, TActivity extends Activity> = (
-  context: RequestContext<TContextData>,
+  context: Context<TContextData>,
   activity: TActivity,
 ) => void | Promise<void>;
 
@@ -124,7 +124,7 @@ export type InboxListener<TContextData, TActivity extends Activity> = (
  * @typeParam TContextData The context data to pass to the {@link Context}.
  */
 export type InboxErrorHandler<TContextData> = (
-  context: RequestContext<TContextData>,
+  context: Context<TContextData>,
   error: Error,
 ) => void | Promise<void>;
 

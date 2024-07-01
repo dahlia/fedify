@@ -43,7 +43,7 @@ properties.  Some of them are required:
 
 ### `kv`
 
-*Required.*  The `~FederationParameters.kv` property is a `KvStore` instance
+*Required.*  The `~FederationOptions.kv` property is a `KvStore` instance
 that the `Federation` object uses to store several kinds of cache data and
 to maintain the queue of outgoing activities.
 
@@ -68,7 +68,7 @@ key-value store.[^1]
 
 ### `kvPrefixes`
 
-The `~FederationParameters.kvPrefixes` property is an object that contains
+The `~FederationOptions.kvPrefixes` property is an object that contains
 the key prefixes for the cache data.  The following are the key prefixes
 that the `Federation` object uses:
 
@@ -84,10 +84,10 @@ that the `Federation` object uses:
 
 *This API is available since Fedify 0.5.0.*
 
-The `~FederationParameters.queue` property is a `MessageQueue` instance that
-the `Federation` object uses to maintain the queue of outgoing activities.
-If you don't provide this option, activities will not be queued and will
-be sent immediately.
+The `~FederationOptions.queue` property is a `MessageQueue` instance that
+the `Federation` object uses to maintain the queue of incoming and outgoing
+activities.  If you don't provide this option, activities will not be queued
+and will be processed immediately.
 
 `MessageQueue` is an abstract interface that represents a message queue.
 For now, Fedify provides two built-in implementations of `MessageQueue`, which

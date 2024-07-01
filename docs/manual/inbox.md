@@ -173,6 +173,26 @@ federation
 [instance actor]: https://seb.jambor.dev/posts/understanding-activitypub-part-4-threads/#the-instance-actor
 
 
+Making inbox listeners non-blocking
+-----------------------------------
+
+*This API is available since Fedify 0.12.0.*
+
+Usually, processes inside an inbox listener should be non-blocking because
+they may involve long-running tasks.  Fortunately, you can easily turn inbox
+listeners into non-blocking by providing a [`queue`](./federation.md#queue)
+option to `createFederation()` function.  If it is not present, incoming
+activities are processed immediately and block the response to the sender until
+the processing is done.
+
+While the [`queue`](./federation.md#queue) option is not mandatory,
+it is highly recommended to use it in production environments to prevent
+the server from being overwhelmed by incoming activities.
+
+> [!NOTE]
+> Activities with invalid signatures/proofs are silently ignored and not queued.
+
+
 Error handling
 --------------
 
@@ -194,5 +214,5 @@ federation
 ~~~~
 
 > [!NOTE]
-> Activities with invalid signatures are silently ignored and not passed to
-> the error handler.
+> Activities with invalid signatures/proofs are silently ignored and not passed
+> to the error handler.

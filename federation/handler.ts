@@ -26,6 +26,8 @@ import type {
 } from "./callback.ts";
 import type { RequestContext } from "./context.ts";
 import type { KvKey, KvStore } from "./kv.ts";
+import type { MessageQueue } from "./mq.ts";
+import type { InboxMessage } from "./queue.ts";
 
 export function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);
@@ -312,6 +314,7 @@ export interface InboxHandlerParameters<TContextData> {
   context: RequestContext<TContextData>;
   kv: KvStore;
   kvPrefix: KvKey;
+  queue?: MessageQueue;
   actorDispatcher?: ActorDispatcher<TContextData>;
   inboxListenerDispatcher: (
     activity: Activity,
@@ -328,6 +331,7 @@ export async function handleInbox<TContextData>(
     context,
     kv,
     kvPrefix,
+    queue,
     actorDispatcher,
     inboxListenerDispatcher,
     inboxErrorHandler,
@@ -428,6 +432,20 @@ export async function handleInbox<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
     return response;
+  }
+  if (queue != null) {
+    await queue.enqueue(
+      {
+        type: "inbox",
+        baseUrl: request.url,
+        activity: json,
+        handle,
+      } satisfies InboxMessage,
+    );
+    return new Response("Activity is enqueued.", {
+      status: 202,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
   const listener = inboxListenerDispatcher(activity);
   if (listener == null) {

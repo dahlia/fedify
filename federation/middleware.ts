@@ -53,7 +53,12 @@ import {
 } from "./handler.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
-import type { OutboxMessage, SenderKeyJwkPair } from "./queue.ts";
+import type {
+  InboxMessage,
+  Message,
+  OutboxMessage,
+  SenderKeyJwkPair,
+} from "./queue.ts";
 import { Router, RouterError } from "./router.ts";
 import { extractInboxes, sendActivity, type SenderKeyPair } from "./send.ts";
 
@@ -220,6 +225,8 @@ export function createFederation<TContextData>(
   });
 }
 
+const invokedByContext = Symbol("invokedByContext");
+
 /**
  * An object that registers federation-related business logic and dispatches
  * requests to the appropriate handlers.
@@ -321,16 +328,27 @@ export class Federation<TContextData> {
     ].map((ms) => Temporal.Duration.from({ milliseconds: ms }));
   }
 
-  #startQueue() {
+  #startQueue(ctxData: TContextData) {
     if (this.#queue != null && !this.#queueStarted) {
-      const logger = getLogger(["fedify", "federation", "outbox"]);
-      logger.debug("Starting an outbox queue.");
-      this.#queue?.listen(this.#listenQueue.bind(this));
+      const logger = getLogger(["fedify", "federation", "queue"]);
+      logger.debug("Starting a task queue.");
+      this.#queue?.listen((msg) => this.#listenQueue(ctxData, msg));
       this.#queueStarted = true;
     }
   }
 
-  async #listenQueue(message: OutboxMessage): Promise<void> {
+  async #listenQueue(ctxData: TContextData, message: Message): Promise<void> {
+    if (message.type === "outbox") {
+      await this.#listenOutboxMessage(ctxData, message);
+    } else if (message.type === "inbox") {
+      await this.#listenInboxMessage(ctxData, message);
+    }
+  }
+
+  async #listenOutboxMessage(
+    _: TContextData,
+    message: OutboxMessage,
+  ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
     const logData = {
       keyIds: message.keys.map((pair) => pair.keyId),
@@ -404,6 +422,40 @@ export class Federation<TContextData> {
     );
   }
 
+  async #listenInboxMessage(
+    ctxData: TContextData,
+    message: InboxMessage,
+  ): Promise<void> {
+    const logger = getLogger(["fedify", "federation", "inbox"]);
+    const baseUrl = new URL(message.baseUrl);
+    let context = this.#createContext(baseUrl, ctxData);
+    if (message.handle) {
+      context = this.#createContext(baseUrl, ctxData, {
+        documentLoader: await context.getDocumentLoader({
+          handle: message.handle,
+        }),
+      });
+    }
+    const activity = await Activity.fromJsonLd(message.activity, context);
+    const listener = this.#dispatchInboxListener(activity);
+    if (listener == null) {
+      logger.error(
+        "Unsupported activity type:\n{activity}",
+        { activity: message.activity },
+      );
+      return;
+    }
+    try {
+      await listener(context, activity);
+    } catch (error) {
+      logger.error(
+        "Failed to process the activity:\n{error}",
+        { error, activity: message.activity },
+      );
+      await this.#inboxErrorHandler?.(context, error);
+    }
+  }
+
   /**
    * Create a new context.
    * @param baseUrl The base URL of the server.  The `pathname` remains root,
@@ -436,6 +488,7 @@ export class Federation<TContextData> {
   #createContext(
     baseUrl: URL,
     contextData: TContextData,
+    opts?: { documentLoader?: DocumentLoader },
   ): ContextImpl<TContextData>;
 
   #createContext(
@@ -1418,15 +1471,28 @@ export class Federation<TContextData> {
    * @param activity The activity to send.
    * @param options Options for sending the activity.
    * @throws {TypeError} If the activity to send does not have an actor.
+   * @deprecated Use {@link Context.sendActivity} instead.
    */
   async sendActivity(
     keys: SenderKeyPair[],
     recipients: Recipient | Recipient[],
     activity: Activity,
-    { preferSharedInbox, immediate, excludeBaseUris, collectionSync }:
-      SendActivityInternalOptions = {},
+    options: SendActivityInternalOptions<TContextData>,
   ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
+    if (!(invokedByContext in options) || !options[invokedByContext]) {
+      logger.warn(
+        "The Federation.sendActivity() method is deprecated.  Use " +
+          "Context.sendActivity() instead.",
+      );
+    }
+    const {
+      preferSharedInbox,
+      immediate,
+      excludeBaseUris,
+      collectionSync,
+      contextData,
+    } = options;
     if (keys.length < 1) {
       throw new TypeError("The sender's keys must not be empty.");
     }
@@ -1442,7 +1508,7 @@ export class Federation<TContextData> {
         "The activity to send must have at least one actor property.",
       );
     }
-    this.#startQueue();
+    this.#startQueue(contextData);
     if (activity.id == null) {
       activity = activity.clone({
         id: new URL(`urn:uuid:${crypto.randomUUID()}`),
@@ -2139,7 +2205,12 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     } else {
       keys = [sender];
     }
-    const opts: SendActivityInternalOptions = { ...options };
+    const opts: SendActivityInternalOptions<TContextData> = {
+      contextData: this.data,
+      ...options,
+      // @ts-ignore: This is a private symbol
+      [invokedByContext]: true,
+    };
     let expandedRecipients: Recipient[];
     if (Array.isArray(recipients)) {
       expandedRecipients = recipients;
@@ -2550,8 +2621,10 @@ export interface InboxListenerSetters<TContextData> {
   ): InboxListenerSetters<TContextData>;
 }
 
-interface SendActivityInternalOptions extends SendActivityOptions {
+interface SendActivityInternalOptions<TContextData>
+  extends SendActivityOptions {
   collectionSync?: string;
+  contextData: TContextData;
 }
 
 function notFound(_request: Request): Response {

@@ -8,6 +8,15 @@ Version 0.12.0
 
 To be released.
 
+ -  Incoming activities are now queued before being dispatched to the inbox
+    listener if the `queue` option is provided to the `createFederation()`
+    function.  [[#70]]
+
+     -  The type of `InboxListener` callback type's first parameter became
+        `Context` (was `RequestContext`).
+     -  The type of `InboxErrorHandler` callback type's first parameter became
+        `Context` (was `RequestContext`).
+
  -  Added `ChatMessage` class to Activity Vocabulary API.  [[#85]]
 
  -  Improved multitenancy (virtual hosting) support.  [[#66]]
@@ -18,7 +27,18 @@ To be released.
      -  The type of `ActorKeyPairsDispatcher<TContextData>`'s first parameter
         became `Context` (was `TContextData`).
 
+ -  Deprecated `Federation.sendActivity()` method.
+
+ -  The last parameter of `Federation.sendActivity()` method is no longer
+    optional.  Also, it now takes the required `contextData` option.
+
+ -  Added more log messages using the [LogTape] library.  Currently the below
+    logger categories are used:
+
+     -  `["fedify", "federation", "queue"]`
+
 [#66]: https://github.com/dahlia/fedify/issues/66
+[#70]: https://github.com/dahlia/fedify/issues/70
 [#85]: https://github.com/dahlia/fedify/issues/85
 
 
