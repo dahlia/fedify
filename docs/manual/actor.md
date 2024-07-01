@@ -195,7 +195,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // Many more properties; see the previous section for details.
   });
 })
-  .setKeyPairsDispatcher(async (ctxData, handle) => {
+  .setKeyPairsDispatcher(async (ctx, handle) => {
     // Work with the database to find the key pair by the handle.
     if (user == null) return [];  // Return null if the key pair is not found.
     // Return the loaded key pair.  See the below example for details.
@@ -256,7 +256,7 @@ federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // Omitted for brevity; see the previous example for details.
   })
-  .setKeyPairsDispatcher(async (ctxData, handle) => {
+  .setKeyPairsDispatcher(async (ctx, handle) => {
     const kv = await Deno.openKv();
     const entry = await kv.get<{ privateKey: JsonWebKey; publicKey: JsonWebKey }>(
       ["keypair", handle],

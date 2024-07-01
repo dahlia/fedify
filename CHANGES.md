@@ -15,6 +15,8 @@ To be released.
      -  Added `Context.hostname` property.
      -  Added `Context.host` property.
      -  Added `Context.origin` property.
+     -  The type of `ActorKeyPairsDispatcher<TContextData>`'s first parameter
+        became `Context` (was `TContextData`).
 
 [#66]: https://github.com/dahlia/fedify/issues/66
 [#85]: https://github.com/dahlia/fedify/issues/85

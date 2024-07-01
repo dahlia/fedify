@@ -3,7 +3,7 @@ import type { Actor } from "../vocab/actor.ts";
 import type { Activity, CryptographicKey } from "../vocab/mod.ts";
 import type { Object } from "../vocab/vocab.ts";
 import type { PageItems } from "./collection.ts";
-import type { RequestContext } from "./context.ts";
+import type { Context, RequestContext } from "./context.ts";
 import type { SenderKeyPair } from "./send.ts";
 
 /**
@@ -35,13 +35,13 @@ export type ActorDispatcher<TContextData> = (
  * A callback that dispatches key pairs for an actor.
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
- * @param contextData The context data.
+ * @param context The context.
  * @param handle The actor's handle.
  * @returns The key pairs.
  * @since 0.10.0
  */
 export type ActorKeyPairsDispatcher<TContextData> = (
-  contextData: TContextData,
+  context: Context<TContextData>,
   handle: string,
 ) => CryptoKeyPair[] | Promise<CryptoKeyPair[]>;
 

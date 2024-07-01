@@ -748,8 +748,8 @@ export class Federation<TContextData> {
             "deprecated.  Use the ActorCallbackSetters.setKeyPairsDispatcher() " +
             "instead.",
         );
-        callbacks.keyPairsDispatcher = async (ctxData, handle) => {
-          const key = await dispatcher(ctxData, handle);
+        callbacks.keyPairsDispatcher = async (ctx, handle) => {
+          const key = await dispatcher(ctx.data, handle);
           if (key == null) return [];
           return [key];
         };
@@ -1737,6 +1737,7 @@ interface ContextOptions<TContextData> {
   documentLoader: DocumentLoader;
   contextLoader: DocumentLoader;
   authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
+  invokedFromActorKeyPairsDispatcher?: { handle: string };
 }
 
 class ContextImpl<TContextData> implements Context<TContextData> {
@@ -1758,6 +1759,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   readonly contextLoader: DocumentLoader;
   readonly #authenticatedDocumentLoaderFactory:
     AuthenticatedDocumentLoaderFactory;
+  readonly #invokedFromActorKeyPairsDispatcher?: { handle: string };
 
   constructor(
     {
@@ -1771,6 +1773,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       documentLoader,
       contextLoader,
       authenticatedDocumentLoaderFactory,
+      invokedFromActorKeyPairsDispatcher,
     }: ContextOptions<TContextData>,
   ) {
     this.#url = url;
@@ -1784,6 +1787,8 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     this.contextLoader = contextLoader;
     this.#authenticatedDocumentLoaderFactory =
       authenticatedDocumentLoaderFactory;
+    this.#invokedFromActorKeyPairsDispatcher =
+      invokedFromActorKeyPairsDispatcher;
   }
 
   get hostname(): string {
@@ -1945,16 +1950,24 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   }
 
   async getActorKeyPairs(handle: string): Promise<ActorKeyPair[]> {
+    const logger = getLogger(["fedify", "federation", "actor"]);
+    if (this.#invokedFromActorKeyPairsDispatcher != null) {
+      logger.warn(
+        "Context.getActorKeyPairs({getActorKeyPairsHandle}) method is " +
+          "invoked from the actor key pairs dispatcher " +
+          "({actorKeyPairsDispatcherHandle}); this may cause an infinite loop.",
+        {
+          getActorKeyPairsHandle: handle,
+          actorKeyPairsDispatcherHandle:
+            this.#invokedFromActorKeyPairsDispatcher.handle,
+        },
+      );
+    }
     let keyPairs: (CryptoKeyPair & { keyId: URL })[];
     try {
-      keyPairs = await this.getKeyPairsFromHandle(
-        this.#url,
-        this.data,
-        handle,
-      );
+      keyPairs = await this.getKeyPairsFromHandle(handle);
     } catch (_) {
-      getLogger(["fedify", "federation", "actor"])
-        .warn("No actor key pairs dispatcher registered.");
+      logger.warn("No actor key pairs dispatcher registered.");
       return [];
     }
     const owner = this.getActorUri(handle);
@@ -1979,8 +1992,6 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   }
 
   protected async getKeyPairsFromHandle(
-    url: URL | string,
-    contextData: TContextData,
     handle: string,
   ): Promise<(CryptoKeyPair & { keyId: URL })[]> {
     const logger = getLogger(["fedify", "federation", "actor"]);
@@ -1992,9 +2003,22 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       logger.warn("No actor dispatcher registered.");
       return [];
     }
-    const actorUri = new URL(path, url);
+    const actorUri = new URL(path, this.#url);
     const keyPairs = await this.actorCallbacks?.keyPairsDispatcher(
-      contextData,
+      new ContextImpl({
+        url: this.#url,
+        federation: this.#federation,
+        router: this.#router,
+        objectTypeIds: this.#objectTypeIds,
+        objectCallbacks: this.objectCallbacks,
+        actorCallbacks: this.actorCallbacks,
+        data: this.data,
+        documentLoader: this.documentLoader,
+        contextLoader: this.contextLoader,
+        authenticatedDocumentLoaderFactory:
+          this.#authenticatedDocumentLoaderFactory,
+        invokedFromActorKeyPairsDispatcher: { handle },
+      }),
       handle,
     );
     if (keyPairs.length < 1) {
@@ -2038,11 +2062,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   protected async getRsaKeyPairFromHandle(
     handle: string,
   ): Promise<CryptoKeyPair & { keyId: URL } | null> {
-    const keyPairs = await this.getKeyPairsFromHandle(
-      this.#url,
-      this.data,
-      handle,
-    );
+    const keyPairs = await this.getKeyPairsFromHandle(handle);
     for (const keyPair of keyPairs) {
       const { privateKey } = keyPair;
       if (
@@ -2085,11 +2105,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   ): Promise<void> {
     let keys: SenderKeyPair[];
     if ("handle" in sender) {
-      keys = await this.getKeyPairsFromHandle(
-        this.#url,
-        this.data,
-        sender.handle,
-      );
+      keys = await this.getKeyPairsFromHandle(sender.handle);
       if (keys.length < 1) {
         throw new Error(
           `No key pair found for actor ${JSON.stringify(sender.handle)}.`,
@@ -2223,7 +2239,7 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
       throw new Error("No actor dispatcher registered.");
     }
     if (this.#invokedFromActorDispatcher != null) {
-      getLogger(["fedify", "federation"]).warn(
+      getLogger(["fedify", "federation", "actor"]).warn(
         "RequestContext.getActor({getActorHandle}) is invoked from " +
           "the actor dispatcher ({actorDispatcherHandle}); " +
           "this may cause an infinite loop.",
@@ -2385,7 +2401,7 @@ export interface ActorCallbackSetters<TContextData> {
    * Use {@link ActorCallbackSetters.setKeyPairsDispatcher} instead.
    * @param dispatcher A callback that returns the key pair for an actor.
    * @returns The setters object so that settings can be chained.
-   * @deprecated
+   * @deprecated Use {@link ActorCallbackSetters.setKeyPairsDispatcher} instead.
    */
   setKeyPairDispatcher(
     dispatcher: ActorKeyPairDispatcher<TContextData>,

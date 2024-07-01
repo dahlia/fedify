@@ -80,7 +80,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     assertionMethods: keyPairs.map((keyPair) => keyPair.multikey),
   });
 })
-  .setKeyPairsDispatcher(async (_ctxData, handle) => {
+  .setKeyPairsDispatcher(async (_ctx, handle) => {
     const blog = await getBlog();
     if (blog == null) return [];
     else if (blog.handle !== handle) return [];
