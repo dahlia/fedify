@@ -13,6 +13,28 @@ import type { SenderKeyPair } from "./send.ts";
  */
 export interface Context<TContextData> {
   /**
+   * The origin of the federated server, including the scheme (`http://` or
+   * `https://`) and the host (e.g., `example.com:8080`).
+   * @since 0.12.0
+   */
+  readonly origin: string;
+
+  /**
+   * The host of the federated server, including the hostname
+   * (e.g., `example.com`) and the port following a colon (e.g., `:8080`)
+   * if it is not the default port for the scheme.
+   * @since 0.12.0
+   */
+  readonly host: string;
+
+  /**
+   * The hostname of the federated server (e.g., `example.com`).  This is
+   * the same as the host without the port.
+   * @since 0.12.0
+   */
+  readonly hostname: string;
+
+  /**
    * The user-defined data associated with the context.
    */
   readonly data: TContextData;

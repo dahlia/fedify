@@ -1786,6 +1786,18 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       authenticatedDocumentLoaderFactory;
   }
 
+  get hostname(): string {
+    return this.#url.hostname;
+  }
+
+  get host(): string {
+    return this.#url.host;
+  }
+
+  get origin(): string {
+    return this.#url.origin;
+  }
+
   getNodeInfoUri(): URL {
     const path = this.#router.build("nodeInfo", {});
     if (path == null) {

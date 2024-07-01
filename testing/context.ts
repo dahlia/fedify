@@ -6,6 +6,7 @@ import { mockDocumentLoader } from "./docloader.ts";
 
 export function createContext<TContextData>(
   {
+    url,
     data,
     documentLoader,
     contextLoader,
@@ -24,13 +25,17 @@ export function createContext<TContextData>(
     getActorKey,
     getDocumentLoader,
     sendActivity,
-  }: Partial<Context<TContextData>> & { data: TContextData },
+  }: Partial<Context<TContextData>> & { url?: URL; data: TContextData },
 ): Context<TContextData> {
   function throwRouteError(): URL {
     throw new RouterError("Not implemented");
   }
+  url ??= new URL("http://example.com/");
   return {
     data,
+    origin: url.origin,
+    host: url.host,
+    hostname: url.hostname,
     documentLoader: documentLoader ?? mockDocumentLoader,
     contextLoader: contextLoader ?? mockDocumentLoader,
     getNodeInfoUri: getNodeInfoUri ?? throwRouteError,

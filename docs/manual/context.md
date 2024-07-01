@@ -61,6 +61,23 @@ export async function handler(request: Request) {
 ~~~~
 
 
+Getting the base URL
+--------------------
+
+*This API is available since Fedify 0.12.0.*
+
+The `Context` object has properties to get the base URL of the current request:
+
+| Property           | Description                             | Value example              |
+|--------------------|-----------------------------------------|----------------------------|
+| `Context.hostname` | A hostname                              | `"example.com"`            |
+| `Context.host`     | A hostname followed by an optional port | `"example.com:88"`         |
+| `Context.origin`   | A scheme followed by a host             | `"https://example.com:88"` |
+
+For `RequestContext`, there is an additional property named `~RequestContext.url` that
+contains the full URL of the current request.
+
+
 Building the object URIs
 ------------------------
 

@@ -58,8 +58,14 @@ test("Federation.createContext()", async (t) => {
       documentLoader,
       contextLoader: mockDocumentLoader,
     });
-    let ctx = federation.createContext(new URL("https://example.com/"), 123);
+    let ctx = federation.createContext(
+      new URL("https://example.com:1234/"),
+      123,
+    );
     assertEquals(ctx.data, 123);
+    assertEquals(ctx.origin, "https://example.com:1234");
+    assertEquals(ctx.host, "example.com:1234");
+    assertEquals(ctx.hostname, "example.com");
     assertStrictEquals(ctx.documentLoader, documentLoader);
     assertStrictEquals(ctx.contextLoader, mockDocumentLoader);
     assertThrows(() => ctx.getNodeInfoUri(), RouterError);
@@ -344,6 +350,9 @@ test("Federation.createContext()", async (t) => {
     const ctx = federation.createContext(req, 123);
     assertEquals(ctx.request, req);
     assertEquals(ctx.url, new URL("https://example.com/"));
+    assertEquals(ctx.origin, "https://example.com");
+    assertEquals(ctx.host, "example.com");
+    assertEquals(ctx.hostname, "example.com");
     assertEquals(ctx.data, 123);
     assertRejects(
       () => ctx.getActor("someone"),

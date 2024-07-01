@@ -69,6 +69,7 @@
     "Misskey",
     "multibase",
     "multikey",
+    "multitenancy",
     "nodeinfo",
     "phensley",
     "Pixelfed",

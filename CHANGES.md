@@ -10,6 +10,13 @@ To be released.
 
  -  Added `ChatMessage` class to Activity Vocabulary API.  [[#85]]
 
+ -  Improved multitenancy (virtual hosting) support.  [[#66]]
+
+     -  Added `Context.hostname` property.
+     -  Added `Context.host` property.
+     -  Added `Context.origin` property.
+
+[#66]: https://github.com/dahlia/fedify/issues/66
 [#85]: https://github.com/dahlia/fedify/issues/85
 
 
