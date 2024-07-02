@@ -223,12 +223,12 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
         published: create.published ?? Temporal.Now.instant(),
       };
       // Filters only `Note` objects that are in reply to posts in this blog:
-      const urlPattern = new URLPattern("/posts/:uuid", ctx.url.href);
       for (const replyTargetId of object.replyTargetIds) {
-        const match = urlPattern.exec(replyTargetId);
-        if (match == null) continue;
-        const postUuid = match.pathname.groups.uuid;
-        if (postUuid == null) continue;
+        const parsed = ctx.parseUri(replyTargetId);
+        if (
+          parsed == null || parsed.type !== "object" || parsed.class !== Article
+        ) continue;
+        const postUuid = parsed.values.uuid;
         await addComment({ ...comment, postUuid });
       }
     } else {
