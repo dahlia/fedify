@@ -14,5 +14,6 @@ export {
 export * from "./kv.ts";
 export * from "./middleware.ts";
 export * from "./mq.ts";
+export * from "./retry.ts";
 export * from "./router.ts";
 export { type SenderKeyPair } from "./send.ts";

@@ -10,6 +10,7 @@ export interface OutboxMessage {
   keys: SenderKeyJwkPair[];
   activity: unknown;
   inbox: string;
+  started: string;
   trial: number;
   headers: Record<string, string>;
 }

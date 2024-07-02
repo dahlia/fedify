@@ -59,6 +59,7 @@ import type {
   OutboxMessage,
   SenderKeyJwkPair,
 } from "./queue.ts";
+import { createExponentialBackoffPolicy, type RetryPolicy } from "./retry.ts";
 import { Router, RouterError } from "./router.ts";
 import { extractInboxes, sendActivity, type SenderKeyPair } from "./send.ts";
 
@@ -120,13 +121,22 @@ export interface CreateFederationOptions {
    * the window is a minute.
    */
   signatureTimeWindow?: Temporal.DurationLike;
+
+  /**
+   * The retry policy for sending activities to recipients' inboxes.
+   * By default, this uses an exponential backoff strategy with a maximum of
+   * 10 attempts and a maximum delay of 12 hours.
+   * @since 0.12.0
+   */
+  outboxRetryPolicy?: RetryPolicy;
 }
 
 /**
  * Parameters for initializing a {@link Federation} instance.
  * @deprecated
  */
-export interface FederationParameters extends CreateFederationOptions {
+export interface FederationParameters
+  extends Omit<CreateFederationOptions, "outboxRetryPolicy"> {
   /**
    * The message queue for sending activities to recipients' inboxes.
    * If not provided, activities will not be queued and will be sent
@@ -184,10 +194,6 @@ export interface FederationParameters extends CreateFederationOptions {
    * @deprecated
    */
   treatHttps?: boolean;
-
-  // TODO: The following option should be removed, and exponential backoff
-  // should be used instead:
-  backoffSchedule?: Temporal.Duration[];
 }
 
 /**
@@ -268,14 +274,15 @@ export class Federation<TContextData> {
   #treatHttps: boolean;
   #onOutboxError?: OutboxErrorHandler;
   #signatureTimeWindow: Temporal.DurationLike;
-  #backoffSchedule: Temporal.Duration[];
+  #outboxRetryPolicy: RetryPolicy;
 
   /**
    * Create a new {@link Federation} instance.
    * @param parameters Parameters for initializing the instance.
    * @deprecated Use {@link createFederation} method instead.
    */
-  constructor(options: FederationParameters) {
+  constructor(parameters: FederationParameters) {
+    const options = parameters as CreateFederationOptions;
     const logger = getLogger(["fedify", "federation"]);
     // @ts-ignore: This is a private symbol.
     if (!options[invokedByCreateFederation]) {
@@ -309,8 +316,8 @@ export class Federation<TContextData> {
       options.authenticatedDocumentLoaderFactory ??
         getAuthenticatedDocumentLoader;
     this.#onOutboxError = options.onOutboxError;
-    this.#treatHttps = options.treatHttps ?? false;
-    if (options.treatHttps) {
+    this.#treatHttps = parameters.treatHttps ?? false;
+    if (parameters.treatHttps) {
       logger.warn(
         "The treatHttps option is deprecated and will be removed in " +
           "a future release.  Instead, use the x-forwarded-fetch library" +
@@ -319,13 +326,8 @@ export class Federation<TContextData> {
       );
     }
     this.#signatureTimeWindow = options.signatureTimeWindow ?? { minutes: 1 };
-    this.#backoffSchedule = options.backoffSchedule ?? [
-      3_000,
-      15_000,
-      60_000,
-      15 * 60_000,
-      60 * 60_000,
-    ].map((ms) => Temporal.Duration.from({ milliseconds: ms }));
+    this.#outboxRetryPolicy = options.outboxRetryPolicy ??
+      createExponentialBackoffPolicy();
   }
 
   #startQueue(ctxData: TContextData) {
@@ -397,16 +399,29 @@ export class Federation<TContextData> {
           { ...logData, error, activityId: activity?.id?.href },
         );
       }
-      if (message.trial < this.#backoffSchedule.length) {
+      const delay = this.#outboxRetryPolicy({
+        elapsedTime: Temporal.Instant.from(message.started).until(
+          Temporal.Now.instant(),
+        ),
+        attempts: message.trial,
+      });
+      if (delay != null) {
         logger.error(
           "Failed to send activity {activityId} to {inbox} (trial #{trial})" +
             "; retry...:\n{error}",
           { ...logData, error, activityId: activity?.id?.href },
         );
-        this.#queue?.enqueue({
-          ...message,
-          trial: message.trial + 1,
-        }, { delay: this.#backoffSchedule[message.trial] });
+        this.#queue?.enqueue(
+          {
+            ...message,
+            trial: message.trial + 1,
+          } satisfies OutboxMessage,
+          {
+            delay: Temporal.Duration.compare(delay, { seconds: 0 }) < 0
+              ? Temporal.Duration.from({ seconds: 0 })
+              : delay,
+          },
+        );
       } else {
         logger.error(
           "Failed to send activity {activityId} to {inbox} after {trial} " +
@@ -1576,6 +1591,7 @@ export class Federation<TContextData> {
         keys: keyJwkPairs,
         activity: activityJson,
         inbox,
+        started: new Date().toISOString(),
         trial: 0,
         headers: collectionSync == null ? {} : {
           "Collection-Synchronization":

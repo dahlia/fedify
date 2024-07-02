@@ -8,6 +8,8 @@
 export interface MessageQueueEnqueueOptions {
   /**
    * The delay before the message is enqueued.  No delay by default.
+   *
+   * It must not be negative.
    */
   delay?: Temporal.Duration;
 }
@@ -47,7 +49,7 @@ export class InProcessMessageQueue implements MessageQueue {
   enqueue(message: any, options?: MessageQueueEnqueueOptions): Promise<void> {
     const delay = options?.delay == null
       ? 0
-      : options.delay.total("millisecond");
+      : Math.max(options.delay.total("millisecond"), 0);
     setTimeout(() => {
       for (const handler of this.#handlers) handler(message);
     }, delay);

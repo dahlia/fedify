@@ -43,7 +43,7 @@ properties.  Some of them are required:
 
 ### `kv`
 
-*Required.*  The `~FederationOptions.kv` property is a `KvStore` instance
+*Required.*  The `~CreateFederationOptions.kv` property is a `KvStore` instance
 that the `Federation` object uses to store several kinds of cache data and
 to maintain the queue of outgoing activities.
 
@@ -68,7 +68,7 @@ key-value store.[^1]
 
 ### `kvPrefixes`
 
-The `~FederationOptions.kvPrefixes` property is an object that contains
+The `~CreateFederationOptions.kvPrefixes` property is an object that contains
 the key prefixes for the cache data.  The following are the key prefixes
 that the `Federation` object uses:
 
@@ -84,7 +84,7 @@ that the `Federation` object uses:
 
 *This API is available since Fedify 0.5.0.*
 
-The `~FederationOptions.queue` property is a `MessageQueue` instance that
+The `~CreateFederationOptions.queue` property is a `MessageQueue` instance that
 the `Federation` object uses to maintain the queue of incoming and outgoing
 activities.  If you don't provide this option, activities will not be queued
 and will be processed immediately.
@@ -151,6 +151,20 @@ load remote JSON-LD contexts.  The type of the function is the same as the
 `documentLoader` function, but their purposes are different (see also
 [*Document loader vs. context loader*
 section](./context.md#document-loader-vs-context-loader)).
+
+### `outboxRetryPolicy`
+
+*This API is available since Fedify 0.12.0.*
+
+The retry policy for sending activities to recipients' inboxes.
+
+By default, this uses an exponential backoff strategy with a maximum of 10
+attempts and a maximum delay of 12 hours.
+
+You can fully customize the retry policy by providing a custom function that
+satisfies the `RetryPolicy` type.  Or you can adjust the parameters of
+the `createExponentialBackoffRetryPolicy()` function, which is a default
+implementation of the retry policy.
 
 
 How the `Federation` object recognizes the domain name

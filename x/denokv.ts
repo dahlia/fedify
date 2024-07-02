@@ -89,7 +89,7 @@ export class DenoKvMessageQueue implements MessageQueue {
     await this.#kv.enqueue(
       message,
       options?.delay == null ? undefined : {
-        delay: options.delay.total("millisecond"),
+        delay: Math.max(options.delay.total("millisecond"), 0),
       },
     );
   }

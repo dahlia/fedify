@@ -42,6 +42,7 @@
     "cfworker",
     "codegen",
     "cryptosuite",
+    "decorrelated",
     "deflist",
     "Deno",
     "denokv",

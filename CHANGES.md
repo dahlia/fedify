@@ -17,6 +17,16 @@ To be released.
      -  The type of `InboxErrorHandler` callback type's first parameter became
         `Context` (was `RequestContext`).
 
+ -  Implemented fully customizable retry policy for failed tasks in the task
+    queue.  By default, the task queue retries the failed tasks with
+    an exponential backoff policy with decorrelated jitter.
+
+     -  Added `outboxRetryPolicy` option to `CreateFederationOptions` interface.
+     -  Added `RetryPolicy` callback type.
+     -  Added `RetryContext` interface.
+     -  Added `createExponentialBackoffPolicy()` function.
+     -  Added `CreateExponentialBackoffPolicyOptions` interface.
+
  -  Added `ChatMessage` class to Activity Vocabulary API.  [[#85]]
 
  -  Improved multitenancy (virtual hosting) support.  [[#66]]
