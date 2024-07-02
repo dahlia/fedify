@@ -355,7 +355,14 @@ export async function handleInbox<TContextData>(
     json = await request.clone().json();
   } catch (error) {
     logger.error("Failed to parse JSON:\n{error}", { handle, error });
-    await inboxErrorHandler?.(context, error);
+    try {
+      await inboxErrorHandler?.(context, error);
+    } catch (error) {
+      logger.error(
+        "An unexpected error occurred in inbox error handler:\n{error}",
+        { error, activity: json },
+      );
+    }
     return new Response("Invalid JSON.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -366,7 +373,14 @@ export async function handleInbox<TContextData>(
     activity = await verifyObject(Activity, json, context);
   } catch (error) {
     logger.error("Failed to parse activity:\n{error}", { handle, json, error });
-    await inboxErrorHandler?.(context, error);
+    try {
+      await inboxErrorHandler?.(context, error);
+    } catch (error) {
+      logger.error(
+        "An unexpected error occurred in inbox error handler:\n{error}",
+        { error, activity: json },
+      );
+    }
     return new Response("Invalid activity.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -440,6 +454,8 @@ export async function handleInbox<TContextData>(
         baseUrl: request.url,
         activity: json,
         handle,
+        attempt: 0,
+        started: new Date().toISOString(),
       } satisfies InboxMessage,
     );
     return new Response("Activity is enqueued.", {
@@ -461,11 +477,18 @@ export async function handleInbox<TContextData>(
   try {
     await listener(context, activity);
   } catch (error) {
+    try {
+      await inboxErrorHandler?.(context, error);
+    } catch (error) {
+      logger.error(
+        "An unexpected error occurred in inbox error handler:\n{error}",
+        { error, activityId: activity.id?.href, activity: json },
+      );
+    }
     logger.error(
-      "Failed to process the activity:\n{error}",
-      { error, activity: json },
+      "Failed to process the incoming activity {activityId}:\n{error}",
+      { error, activityId: activity.id?.href, activity: json },
     );
-    await inboxErrorHandler?.(context, error);
     return new Response("Internal server error.", {
       status: 500,
       headers: { "Content-Type": "text/plain; charset=utf-8" },

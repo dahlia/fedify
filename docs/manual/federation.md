@@ -166,6 +166,19 @@ satisfies the `RetryPolicy` type.  Or you can adjust the parameters of
 the `createExponentialBackoffRetryPolicy()` function, which is a default
 implementation of the retry policy.
 
+### `inboxRetryPolicy`
+
+*This API is available since Fedify 0.12.0.*
+
+The retry policy for processing incoming activities.
+
+By default, this uses an exponential backoff strategy with a maximum of 10
+attempts and a maximum delay of 12 hours.
+
+In the same way as the `outboxRetryPolicy` option, you can fully customize
+the retry policy by providing a custom function that satisfies the `RetryPolicy`
+type.  Or you can adjust the parameters of the built-in 
+`createExponentialBackoffRetryPolicy()` function.
 
 How the `Federation` object recognizes the domain name
 ------------------------------------------------------

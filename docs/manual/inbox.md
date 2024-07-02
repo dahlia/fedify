@@ -181,16 +181,42 @@ Making inbox listeners non-blocking
 Usually, processes inside an inbox listener should be non-blocking because
 they may involve long-running tasks.  Fortunately, you can easily turn inbox
 listeners into non-blocking by providing a [`queue`](./federation.md#queue)
-option to `createFederation()` function.  If it is not present, incoming
-activities are processed immediately and block the response to the sender until
-the processing is done.
+option to `createFederation()` function:
 
-While the [`queue`](./federation.md#queue) option is not mandatory,
-it is highly recommended to use it in production environments to prevent
-the server from being overwhelmed by incoming activities.
+~~~~ typescript
+import { createFederation, InProcessMessageQueue } from "@fedify/fedify";
+
+const federation = createFederation({
+  // Omitted for brevity; see the related section for details.
+  queue: new InProcessMessageQueue(),  // [!code highlight]
+});
+~~~~
+
+> [!NOTE]
+> The `InProcessMessageQueue` is a simple in-memory message queue that is
+> suitable for development and testing.  For production use, you should
+> consider using a more robust message queue, such as `DenoKvMessageQueue`
+> from `@fedify/fedify/x/deno` module or [`RedisMessageQueue`] from
+> [`@fedify/redis`] package.
+
+If it is not present, incoming activities are processed immediately and block
+the response to the sender until the processing is done.
+
+While the `queue` option is not mandatory, it is highly recommended to use it
+in production environments to prevent the server from being overwhelmed by
+incoming activities.
+
+With the `queue` enabled, the failed activities are automatically retried
+after a certain period of time.  The default retry strategy is exponential
+backoff with a maximum of 10 retries, but you can customize it by providing
+an [`inboxRetryPolicy`](./federation.md#inboxretrypolicy) option to
+the `createFederation()` function.
 
 > [!NOTE]
 > Activities with invalid signatures/proofs are silently ignored and not queued.
+
+[`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
+[`@fedify/redis`]: https://github.com/dahlia/fedify-redis
 
 
 Error handling

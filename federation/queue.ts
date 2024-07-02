@@ -11,7 +11,7 @@ export interface OutboxMessage {
   activity: unknown;
   inbox: string;
   started: string;
-  trial: number;
+  attempt: number;
   headers: Record<string, string>;
 }
 
@@ -19,5 +19,7 @@ export interface InboxMessage {
   type: "inbox";
   baseUrl: string;
   activity: unknown;
+  started: string;
+  attempt: number;
   handle: string | null;
 }

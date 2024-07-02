@@ -129,6 +129,14 @@ export interface CreateFederationOptions {
    * @since 0.12.0
    */
   outboxRetryPolicy?: RetryPolicy;
+
+  /**
+   * The retry policy for processing incoming activities.  By default, this
+   * uses an exponential backoff strategy with a maximum of 10 attempts and a
+   * maximum delay of 12 hours.
+   * @since 0.12.0
+   */
+  inboxRetryPolicy?: RetryPolicy;
 }
 
 /**
@@ -136,7 +144,8 @@ export interface CreateFederationOptions {
  * @deprecated
  */
 export interface FederationParameters
-  extends Omit<CreateFederationOptions, "outboxRetryPolicy"> {
+  extends
+    Omit<CreateFederationOptions, "outboxRetryPolicy" | "inboxRetryPolicy"> {
   /**
    * The message queue for sending activities to recipients' inboxes.
    * If not provided, activities will not be queued and will be sent
@@ -275,6 +284,7 @@ export class Federation<TContextData> {
   #onOutboxError?: OutboxErrorHandler;
   #signatureTimeWindow: Temporal.DurationLike;
   #outboxRetryPolicy: RetryPolicy;
+  #inboxRetryPolicy: RetryPolicy;
 
   /**
    * Create a new {@link Federation} instance.
@@ -328,6 +338,8 @@ export class Federation<TContextData> {
     this.#signatureTimeWindow = options.signatureTimeWindow ?? { minutes: 1 };
     this.#outboxRetryPolicy = options.outboxRetryPolicy ??
       createExponentialBackoffPolicy();
+    this.#inboxRetryPolicy = options.inboxRetryPolicy ??
+      createExponentialBackoffPolicy();
   }
 
   #startQueue(ctxData: TContextData) {
@@ -356,7 +368,7 @@ export class Federation<TContextData> {
       keyIds: message.keys.map((pair) => pair.keyId),
       inbox: message.inbox,
       activity: message.activity,
-      trial: message.trial,
+      attempt: message.attempt,
       headers: message.headers,
     };
     let activity: Activity | null = null;
@@ -403,18 +415,18 @@ export class Federation<TContextData> {
         elapsedTime: Temporal.Instant.from(message.started).until(
           Temporal.Now.instant(),
         ),
-        attempts: message.trial,
+        attempts: message.attempt,
       });
       if (delay != null) {
         logger.error(
-          "Failed to send activity {activityId} to {inbox} (trial #{trial})" +
-            "; retry...:\n{error}",
+          "Failed to send activity {activityId} to {inbox} (attempt " +
+            "#{attempt}); retry...:\n{error}",
           { ...logData, error, activityId: activity?.id?.href },
         );
         this.#queue?.enqueue(
           {
             ...message,
-            trial: message.trial + 1,
+            attempt: message.attempt + 1,
           } satisfies OutboxMessage,
           {
             delay: Temporal.Duration.compare(delay, { seconds: 0 }) < 0
@@ -424,8 +436,8 @@ export class Federation<TContextData> {
         );
       } else {
         logger.error(
-          "Failed to send activity {activityId} to {inbox} after {trial} " +
-            "trials; giving up:\n{error}",
+          "Failed to send activity {activityId} to {inbox} after {attempt} " +
+            "attempts; giving up:\n{error}",
           { ...logData, error, activityId: activity?.id?.href },
         );
       }
@@ -450,25 +462,101 @@ export class Federation<TContextData> {
           handle: message.handle,
         }),
       });
+    } else if (this.#sharedInboxKeyDispatcher != null) {
+      const identity = await this.#sharedInboxKeyDispatcher(context);
+      if (identity != null) {
+        context = this.#createContext(baseUrl, ctxData, {
+          documentLoader: "handle" in identity
+            ? await context.getDocumentLoader(identity)
+            : context.getDocumentLoader(identity),
+        });
+      }
     }
     const activity = await Activity.fromJsonLd(message.activity, context);
+    const cacheKey = activity.id == null ? null : [
+      ...this.#kvPrefixes.activityIdempotence,
+      activity.id.href,
+    ] satisfies KvKey;
+    if (cacheKey != null) {
+      const cached = await this.#kv.get(cacheKey);
+      if (cached === true) {
+        logger.debug("Activity {activityId} has already been processed.", {
+          activityId: activity.id?.href,
+          activity: message.activity,
+        });
+        return;
+      }
+    }
     const listener = this.#dispatchInboxListener(activity);
     if (listener == null) {
       logger.error(
         "Unsupported activity type:\n{activity}",
-        { activity: message.activity },
+        { activity: message.activity, trial: message.attempt },
       );
       return;
     }
     try {
       await listener(context, activity);
     } catch (error) {
-      logger.error(
-        "Failed to process the activity:\n{error}",
-        { error, activity: message.activity },
-      );
-      await this.#inboxErrorHandler?.(context, error);
+      try {
+        await this.#inboxErrorHandler?.(context, error);
+      } catch (error) {
+        logger.error(
+          "An unexpected error occurred in inbox error handler:\n{error}",
+          {
+            error,
+            trial: message.attempt,
+            activityId: activity.id?.href,
+            activity: message.activity,
+          },
+        );
+      }
+      const delay = this.#inboxRetryPolicy({
+        elapsedTime: Temporal.Instant.from(message.started).until(
+          Temporal.Now.instant(),
+        ),
+        attempts: message.attempt,
+      });
+      if (delay != null) {
+        logger.error(
+          "Failed to process the incoming activity {activityId} (attempt " +
+            "#{attempt}); retry...:\n{error}",
+          {
+            error,
+            attempt: message.attempt,
+            activityId: activity.id?.href,
+            activity: message.activity,
+          },
+        );
+        this.#queue?.enqueue(
+          {
+            ...message,
+            attempt: message.attempt + 1,
+          } satisfies InboxMessage,
+          {
+            delay: Temporal.Duration.compare(delay, { seconds: 0 }) < 0
+              ? Temporal.Duration.from({ seconds: 0 })
+              : delay,
+          },
+        );
+      } else {
+        logger.error(
+          "Failed to process the incoming activity {activityId} after " +
+            "{trial} attempts; giving up:\n{error}",
+          { error, activityId: activity.id?.href, activity: message.activity },
+        );
+      }
+      return;
     }
+    if (cacheKey != null) {
+      await this.#kv.set(cacheKey, true, {
+        ttl: Temporal.Duration.from({ days: 1 }),
+      });
+    }
+    logger.info(
+      "Activity {activityId} has been processed.",
+      { activityId: activity.id?.href, activity: message.activity },
+    );
   }
 
   /**
@@ -1592,7 +1680,7 @@ export class Federation<TContextData> {
         activity: activityJson,
         inbox,
         started: new Date().toISOString(),
-        trial: 0,
+        attempt: 0,
         headers: collectionSync == null ? {} : {
           "Collection-Synchronization":
             await buildCollectionSynchronizationHeader(

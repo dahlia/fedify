@@ -16,12 +16,16 @@ To be released.
         `Context` (was `RequestContext`).
      -  The type of `InboxErrorHandler` callback type's first parameter became
         `Context` (was `RequestContext`).
+     -  The type of `SharedInboxKeyDispatcher` callback type's first parameter
+        became `Context` (was `RequestContext`).
 
  -  Implemented fully customizable retry policy for failed tasks in the task
     queue.  By default, the task queue retries the failed tasks with
     an exponential backoff policy with decorrelated jitter.
 
      -  Added `outboxRetryPolicy` option to `CreateFederationOptions` interface.
+     -  Added `inboxRetryPolicy` option to `CreateFederationOptions` interface.
+        [[#70]]
      -  Added `RetryPolicy` callback type.
      -  Added `RetryContext` interface.
      -  Added `createExponentialBackoffPolicy()` function.

@@ -71,7 +71,8 @@ recipient server failure, and so on.  For reliable delivery, Fedify enqueues
 an outgoing activity to the queue instead of immediately sending it to
 the recipient's inbox if possible; the system retries the delivery on failure.
 
-This queueing mechanism is enabled only if `Federation` object has a `queue`:
+This queueing mechanism is enabled only if a [`queue`](./federation.md#queue)
+option is set to the `createFederation()` function:
 
 ~~~~ typescript
 import { createFederation, InProcessMessageQueue } from "@fedify/fedify";
@@ -85,11 +86,22 @@ const federation = createFederation({
 > [!NOTE]
 > The `InProcessMessageQueue` is a simple in-memory message queue that is
 > suitable for development and testing.  For production use, you should
-> consider using a more robust message queue, such as `DenoKvMessageQueue`.
+> consider using a more robust message queue, such as `DenoKvMessageQueue`
+> from `@fedify/fedify/x/deno` module or [`RedisMessageQueue`] from
+> [`@fedify/redis`] package.
+
+The failed activities are automatically retried after a certain period of time.
+The default retry strategy is exponential backoff with a maximum of 10 retries,
+but you can customize it by providing
+an [`outboxRetryPolicy`](./federation.md#outboxretrypolicy) option to
+the `createFederation()` function.
 
 If the `queue` is not set, the `~Context.sendActivity()` method immediately
 sends the activity to the recipient's inbox.  If the delivery fails, it throws
 an error and does not retry the delivery.
+
+[`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
+[`@fedify/redis`]: https://github.com/dahlia/fedify-redis
 
 
 Immediately sending an activity

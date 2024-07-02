@@ -11,6 +11,13 @@ test("createExponentialBackoffPolicy()", () => {
   const noMatter = Temporal.Duration.from({ seconds: 0 });
   for (let i = 0; i < 10; i++) {
     assertDurationRange(
+      policy({ elapsedTime: noMatter, attempts: 0 }),
+      { seconds: 1 },
+      { seconds: 2 },
+    );
+  }
+  for (let i = 0; i < 10; i++) {
+    assertDurationRange(
       policy({ elapsedTime: noMatter, attempts: 1 }),
       { seconds: 2 },
       { seconds: 4 },

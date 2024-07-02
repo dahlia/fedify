@@ -133,14 +133,14 @@ export type InboxErrorHandler<TContextData> = (
  * of the {@link Context} passed to the shared inbox listener.
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
- * @param context The request context.
+ * @param context The context.
  * @returns The handle of the actor or the key pair for the authenticated
  *          document loader of the {@link Context} passed to the shared inbox
  *          listener.  If `null` is returned, the request is not authorized.
  * @since 0.11.0
  */
 export type SharedInboxKeyDispatcher<TContextData> = (
-  context: RequestContext<TContextData>,
+  context: Context<TContextData>,
 ) =>
   | SenderKeyPair
   | { handle: string }
