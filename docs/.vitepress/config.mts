@@ -176,6 +176,13 @@ export default defineConfig({
           "https://repository-images.githubusercontent.com/766072261/03a63032-03aa-481e-aa31-091809a49043",
       },
     ],
+    [
+      "meta",
+      {
+        name: "fediverse:creator",
+        content: "@fedify@hollo.social"
+      }
+    ],
     ...plausibleScript,
   ],
 
