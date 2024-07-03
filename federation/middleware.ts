@@ -88,6 +88,21 @@ export interface CreateFederationOptions {
   queue?: MessageQueue;
 
   /**
+   * Whether to start the task queue manually or automatically.
+   *
+   * If `true`, the task queue will not start automatically and you need to
+   * manually start it by calling the {@link Federation.startQueue} method.
+   *
+   * If `false`, the task queue will start automatically as soon as
+   * the first task is enqueued.
+   *
+   * By default, the queue starts automatically.
+   *
+   * @since 0.12.0
+   */
+  manuallyStartQueue?: boolean;
+
+  /**
    * A custom JSON-LD document loader.  By default, this uses the built-in
    * cache-backed loader that fetches remote documents over HTTP(S).
    */
@@ -255,6 +270,7 @@ export class Federation<TContextData> {
   #kvPrefixes: FederationKvPrefixes;
   #queue?: MessageQueue;
   #queueStarted: boolean;
+  #manuallyStartQueue: boolean;
   #router: Router;
   #nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
   #actorCallbacks?: ActorCallbacks<TContextData>;
@@ -309,6 +325,7 @@ export class Federation<TContextData> {
     };
     this.#queue = options.queue;
     this.#queueStarted = false;
+    this.#manuallyStartQueue = options.manuallyStartQueue ?? false;
     this.#router = new Router();
     this.#router.add("/.well-known/webfinger", "webfinger");
     this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
@@ -555,6 +572,19 @@ export class Federation<TContextData> {
       "Activity {activityId} has been processed.",
       { activityId: activity.id?.href, activity: message.activity },
     );
+  }
+
+  /**
+   * Manually start the task queue.
+   *
+   * This method is useful when you set the `manuallyStartQueue` option to
+   * `true` in the {@link createFederation} function.
+   * @param contextData The context data to pass to the context.
+   * @since 0.12.0
+   */
+  startQueue(contextData: TContextData): Promise<void> {
+    this.#startQueue(contextData);
+    return Promise.resolve();
   }
 
   /**
@@ -1586,7 +1616,7 @@ export class Federation<TContextData> {
         "The activity to send must have at least one actor property.",
       );
     }
-    this.#startQueue(contextData);
+    if (!this.#manuallyStartQueue) this.#startQueue(contextData);
     if (activity.id == null) {
       activity = activity.clone({
         id: new URL(`urn:uuid:${crypto.randomUUID()}`),
@@ -1805,7 +1835,7 @@ export class Federation<TContextData> {
             });
           }
         }
-        if (this.#queue != null) this.#startQueue(contextData);
+        if (!this.#manuallyStartQueue) this.#startQueue(contextData);
         return await handleInbox(request, {
           handle: route.values.handle ?? null,
           context,

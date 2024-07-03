@@ -112,6 +112,29 @@ a different message queue.[^1]
 
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
 
+### `manuallyStartQueue`
+
+*This API is available since Fedify 0.12.0.*
+
+Whether to start the task queue manually or automatically.
+
+If `true`, the task queue will not start automatically and you need to
+manually start it by calling the `Federation.startQueue()` method.
+
+If `false`, the task queue will start automatically as soon as the first
+task is enqueued.
+
+By default, the queue starts automatically.
+
+> [!TIP]
+> This option is useful when you want to separately deploy the web server
+> and the task queue worker.  In this case, you can start the task queue
+> in the worker process, and the web server process doesn't start the task
+> queue, but only enqueues tasks.  Of course, in this case, you need to
+> provide a `MessageQueue` backend that can be shared between the web server
+> and the worker process (e.g., a Redis-backed message queue) as
+> the [`queue`](#queue) option.
+
 ### `documentLoader`
 
 A JSON-LD document loader function that the `Federation` object uses to

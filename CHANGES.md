@@ -31,6 +31,13 @@ To be released.
      -  Added `createExponentialBackoffPolicy()` function.
      -  Added `CreateExponentialBackoffPolicyOptions` interface.
 
+ -  `Federation` object now allows its task queue to be started manually.
+    [[#53]]
+
+     -  Added `manuallyStartQueue` option to `CreateFederationOptions`
+        interface.
+     -  Added `Federation.startQueue()` method.
+
  -  Added `ChatMessage` class to Activity Vocabulary API.  [[#85]]
 
  -  Improved multitenancy (virtual hosting) support.  [[#66]]
@@ -52,6 +59,7 @@ To be released.
 
      -  `["fedify", "federation", "queue"]`
 
+[#53]: https://github.com/dahlia/fedify/issues/53
 [#66]: https://github.com/dahlia/fedify/issues/66
 [#70]: https://github.com/dahlia/fedify/issues/70
 [#85]: https://github.com/dahlia/fedify/issues/85
