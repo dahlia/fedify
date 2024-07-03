@@ -1805,6 +1805,7 @@ export class Federation<TContextData> {
             });
           }
         }
+        if (this.#queue != null) this.#startQueue(contextData);
         return await handleInbox(request, {
           handle: route.values.handle ?? null,
           context,
