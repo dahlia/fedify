@@ -41,7 +41,8 @@ To be released.
      -  The type of `ActorKeyPairsDispatcher<TContextData>`'s first parameter
         became `Context` (was `TContextData`).
 
- -  Deprecated `Federation.sendActivity()` method.
+ -  Deprecated `Federation.sendActivity()` method.  Use `Context.sendActivity()`
+    method instead.
 
  -  The last parameter of `Federation.sendActivity()` method is no longer
     optional.  Also, it now takes the required `contextData` option.

@@ -51,6 +51,7 @@ import {
   handleInbox,
   handleObject,
 } from "./handler.ts";
+import { InboxListenerSet } from "./inbox.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
 import type {
@@ -271,10 +272,7 @@ export class Federation<TContextData> {
   #likedCallbacks?: CollectionCallbacks<Like, TContextData, void>;
   #featuredCallbacks?: CollectionCallbacks<Object, TContextData, void>;
   #featuredTagsCallbacks?: CollectionCallbacks<Hashtag, TContextData, void>;
-  #inboxListeners?: Map<
-    new (...args: unknown[]) => Activity,
-    InboxListener<TContextData, Activity>
-  >;
+  #inboxListeners?: InboxListenerSet<TContextData>;
   #inboxErrorHandler?: InboxErrorHandler<TContextData>;
   #sharedInboxKeyDispatcher?: SharedInboxKeyDispatcher<TContextData>;
   #documentLoader: DocumentLoader;
@@ -487,7 +485,7 @@ export class Federation<TContextData> {
         return;
       }
     }
-    const listener = this.#dispatchInboxListener(activity);
+    const listener = this.#inboxListeners?.dispatch(activity);
     if (listener == null) {
       logger.error(
         "Unsupported activity type:\n{activity}",
@@ -1516,17 +1514,14 @@ export class Federation<TContextData> {
         );
       }
     }
-    const listeners = this.#inboxListeners = new Map();
+    const listeners = this.#inboxListeners = new InboxListenerSet();
     const setters: InboxListenerSetters<TContextData> = {
       on<TActivity extends Activity>(
         // deno-lint-ignore no-explicit-any
         type: new (...args: any[]) => TActivity,
         listener: InboxListener<TContextData, TActivity>,
       ): InboxListenerSetters<TContextData> {
-        if (listeners.has(type)) {
-          throw new TypeError("Listener already set for this type.");
-        }
-        listeners.set(type, listener as InboxListener<TContextData, Activity>);
+        listeners.add(type, listener as InboxListener<TContextData, Activity>);
         return setters;
       },
       onError: (
@@ -1543,26 +1538,6 @@ export class Federation<TContextData> {
       },
     };
     return setters;
-  }
-
-  #dispatchInboxListener(
-    activity: Activity,
-  ): InboxListener<TContextData, Activity> | null {
-    // deno-lint-ignore no-explicit-any
-    let cls: new (...args: any[]) => Activity = activity
-      // deno-lint-ignore no-explicit-any
-      .constructor as unknown as new (...args: any[]) => Activity;
-    const inboxListeners = this.#inboxListeners;
-    if (inboxListeners == null) {
-      return null;
-    }
-    while (true) {
-      if (inboxListeners.has(cls)) break;
-      if (cls === Activity) return null;
-      cls = globalThis.Object.getPrototypeOf(cls);
-    }
-    const listener = inboxListeners.get(cls)!;
-    return listener;
   }
 
   /**
@@ -1836,7 +1811,7 @@ export class Federation<TContextData> {
           kv: this.#kv,
           kvPrefix: this.#kvPrefixes.activityIdempotence,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
-          inboxListenerDispatcher: this.#dispatchInboxListener.bind(this),
+          inboxListeners: this.#inboxListeners,
           inboxErrorHandler: this.#inboxErrorHandler,
           onNotFound,
           signatureTimeWindow: this.#signatureTimeWindow,

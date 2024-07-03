@@ -180,6 +180,7 @@ the retry policy by providing a custom function that satisfies the `RetryPolicy`
 type.  Or you can adjust the parameters of the built-in 
 `createExponentialBackoffRetryPolicy()` function.
 
+
 How the `Federation` object recognizes the domain name
 ------------------------------------------------------
 

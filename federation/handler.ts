@@ -20,11 +20,11 @@ import type {
   CollectionCursor,
   CollectionDispatcher,
   InboxErrorHandler,
-  InboxListener,
   ObjectAuthorizePredicate,
   ObjectDispatcher,
 } from "./callback.ts";
 import type { RequestContext } from "./context.ts";
+import type { InboxListenerSet } from "./inbox.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
 import type { InboxMessage } from "./queue.ts";
@@ -316,9 +316,7 @@ export interface InboxHandlerParameters<TContextData> {
   kvPrefix: KvKey;
   queue?: MessageQueue;
   actorDispatcher?: ActorDispatcher<TContextData>;
-  inboxListenerDispatcher: (
-    activity: Activity,
-  ) => InboxListener<TContextData, Activity> | null;
+  inboxListeners?: InboxListenerSet<TContextData>;
   inboxErrorHandler?: InboxErrorHandler<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   signatureTimeWindow: Temporal.DurationLike;
@@ -333,7 +331,7 @@ export async function handleInbox<TContextData>(
     kvPrefix,
     queue,
     actorDispatcher,
-    inboxListenerDispatcher,
+    inboxListeners,
     inboxErrorHandler,
     onNotFound,
     signatureTimeWindow,
@@ -463,7 +461,7 @@ export async function handleInbox<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  const listener = inboxListenerDispatcher(activity);
+  const listener = inboxListeners?.dispatch(activity);
   if (listener == null) {
     logger.error(
       "Unsupported activity type:\n{activity}",
