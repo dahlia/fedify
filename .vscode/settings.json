@@ -71,6 +71,7 @@
     "rels",
     "setext",
     "spki",
+    "SSRF",
     "subproperty",
     "superproperty",
     "tempserver",

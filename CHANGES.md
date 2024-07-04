@@ -8,6 +8,17 @@ Version 0.9.2
 
 To be released.
 
+ -  Fixed a SSRF vulnerability in the built-in document loader.
+    [[CVE-2024-39687]]
+
+     -  The `fetchDocumentLoader()` function now throws an error when the given
+        URL is not an HTTP or HTTPS URL or refers to a private network address.
+     -  The `getAuthenticatedDocumentLoader()` function now returns a document
+        loader that throws an error when the given URL is not an HTTP or HTTPS
+        URL or refers to a private network address.
+
+[CVE-2024-39687]: https://github.com/dahlia/fedify/security/advisories/GHSA-p9cg-vqcc-grcx
+
 
 Version 0.9.1
 -------------
