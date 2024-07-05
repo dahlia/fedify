@@ -79,6 +79,7 @@
     "RSASSA-PKCS1",
     "setext",
     "spki",
+    "SSRF",
     "subproperty",
     "superproperty",
     "supertypes",

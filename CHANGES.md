@@ -8,6 +8,15 @@ Version 0.11.1
 
 To be released.
 
+ -  Fixed a SSRF vulnerability in the built-in document loader.
+    [[CVE-2024-39687]]
+
+     -  The `fetchDocumentLoader()` function now throws an error when the given
+        URL is not an HTTP or HTTPS URL or refers to a private network address.
+     -  The `getAuthenticatedDocumentLoader()` function now returns a document
+        loader that throws an error when the given URL is not an HTTP or HTTPS
+        URL or refers to a private network address.
+
 
 Version 0.11.0
 --------------
@@ -192,6 +201,21 @@ Released on June 29, 2024.
 [#80]: https://github.com/dahlia/fedify/pull/80
 
 
+Version 0.10.1
+--------------
+
+Released on July 5, 2024.
+
+ -  Fixed a SSRF vulnerability in the built-in document loader.
+    [[CVE-2024-39687]]
+
+     -  The `fetchDocumentLoader()` function now throws an error when the given
+        URL is not an HTTP or HTTPS URL or refers to a private network address.
+     -  The `getAuthenticatedDocumentLoader()` function now returns a document
+        loader that throws an error when the given URL is not an HTTP or HTTPS
+        URL or refers to a private network address.
+
+
 Version 0.10.0
 --------------
 
@@ -351,6 +375,23 @@ is now distributed under the [MIT License] to encourage wider adoption.
 [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
 [FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
+
+
+Version 0.9.2
+-------------
+
+Released on July 5, 2024.
+
+ -  Fixed a SSRF vulnerability in the built-in document loader.
+    [[CVE-2024-39687]]
+
+     -  The `fetchDocumentLoader()` function now throws an error when the given
+        URL is not an HTTP or HTTPS URL or refers to a private network address.
+     -  The `getAuthenticatedDocumentLoader()` function now returns a document
+        loader that throws an error when the given URL is not an HTTP or HTTPS
+        URL or refers to a private network address.
+
+[CVE-2024-39687]: https://github.com/dahlia/fedify/security/advisories/GHSA-p9cg-vqcc-grcx
 
 
 Version 0.9.1

@@ -12,6 +12,7 @@ import {
   getAuthenticatedDocumentLoader,
   kvCache,
 } from "./docloader.ts";
+import { UrlError } from "./url.ts";
 
 test("new FetchError()", () => {
   const e = new FetchError("https://example.com/", "An error message.");
@@ -72,6 +73,20 @@ test("fetchDocumentLoader()", async (t) => {
       });
     }
   });
+
+  await t.step("deny non-HTTP/HTTPS", async () => {
+    await assertRejects(
+      () => fetchDocumentLoader("ftp://localhost"),
+      UrlError,
+    );
+  });
+
+  await t.step("deny private network", async () => {
+    await assertRejects(
+      () => fetchDocumentLoader("https://localhost"),
+      UrlError,
+    );
+  });
 });
 
 test("getAuthenticatedDocumentLoader()", async (t) => {
@@ -104,6 +119,22 @@ test("getAuthenticatedDocumentLoader()", async (t) => {
   });
 
   mf.uninstall();
+
+  await t.step("deny non-HTTP/HTTPS", async () => {
+    const loader = await getAuthenticatedDocumentLoader({
+      keyId: new URL("https://example.com/key2"),
+      privateKey: rsaPrivateKey2,
+    });
+    assertRejects(() => loader("ftp://localhost"), UrlError);
+  });
+
+  await t.step("deny private network", async () => {
+    const loader = await getAuthenticatedDocumentLoader({
+      keyId: new URL("https://example.com/key2"),
+      privateKey: rsaPrivateKey2,
+    });
+    assertRejects(() => loader("http://localhost"), UrlError);
+  });
 });
 
 test("kvCache()", async (t) => {
