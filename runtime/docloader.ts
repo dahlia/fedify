@@ -2,6 +2,7 @@ import { getLogger } from "@logtape/logtape";
 import type { KvKey, KvStore } from "../federation/kv.ts";
 import { signRequest } from "../sig/http.ts";
 import { validateCryptoKey } from "../sig/key.ts";
+import { validatePublicUrl } from "./url.ts";
 
 const logger = getLogger(["fedify", "runtime", "docloader"]);
 
@@ -119,6 +120,7 @@ async function getRemoteDocument(
 export async function fetchDocumentLoader(
   url: string,
 ): Promise<RemoteDocument> {
+  await validatePublicUrl(url);
   const request = createRequest(url);
   logRequest(request);
   const response = await fetch(request, {
@@ -152,6 +154,7 @@ export function getAuthenticatedDocumentLoader(
 ): DocumentLoader {
   validateCryptoKey(identity.privateKey);
   async function load(url: string): Promise<RemoteDocument> {
+    await validatePublicUrl(url);
     let request = createRequest(url);
     request = await signRequest(request, identity.privateKey, identity.keyId);
     logRequest(request);
