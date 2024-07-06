@@ -1,0 +1,11 @@
+$schema: ../codegen/schema.yaml
+name: Read
+uri: "https://www.w3.org/ns/activitystreams#Read"
+extends: "https://www.w3.org/ns/activitystreams#Activity"
+entity: true
+description: |
+  Indicates that the `actor` has read the `object`.
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
+properties: []

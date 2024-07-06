@@ -64,6 +64,7 @@ lists the activity types that Fedify provides:
  -  [`Move`](https://jsr.io/@fedify/fedify/doc/vocab/~/Move)
  -  [`Offer`](https://jsr.io/@fedify/fedify/doc/vocab/~/Offer)
  -  [`Question`](https://jsr.io/@fedify/fedify/doc/vocab/~/Question)
+ -  [`Read`](https://jsr.io/@fedify/fedify/doc/vocab/~/Read)
  -  [`Reject`](https://jsr.io/@fedify/fedify/doc/vocab/~/Reject)
  -  [`Remove`](https://jsr.io/@fedify/fedify/doc/vocab/~/Remove)
  -  [`Undo`](https://jsr.io/@fedify/fedify/doc/vocab/~/Undo)
