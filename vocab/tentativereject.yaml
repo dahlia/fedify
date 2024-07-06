@@ -1,0 +1,12 @@
+$schema: ../codegen/schema.yaml
+name: TentativeReject
+uri: "https://www.w3.org/ns/activitystreams#TentativeReject"
+extends: "https://www.w3.org/ns/activitystreams#Reject"
+entity: true
+description: |
+  A specialization of {@link Reject} in which
+  the rejection is considered tentative.
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
+properties: []

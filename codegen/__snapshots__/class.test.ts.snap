@@ -4078,6 +4078,11 @@ get sensitive(): (boolean | null) {
       return await Accept.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
+      delete values[\\"@type\\"];
+      return await TentativeAccept.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
       delete values[\\"@type\\"];
       return await Add.fromJsonLd(values, options);
@@ -4138,6 +4143,11 @@ get sensitive(): (boolean | null) {
       return await Question.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Travel\\")) {
+      delete values[\\"@type\\"];
+      return await Travel.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Join\\")) {
       delete values[\\"@type\\"];
       return await Join.fromJsonLd(values, options);
@@ -4158,6 +4168,11 @@ get sensitive(): (boolean | null) {
       return await Listen.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Move\\")) {
+      delete values[\\"@type\\"];
+      return await Move.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Offer\\")) {
       delete values[\\"@type\\"];
       return await Offer.fromJsonLd(values, options);
@@ -4168,9 +4183,19 @@ get sensitive(): (boolean | null) {
       return await Invite.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Read\\")) {
+      delete values[\\"@type\\"];
+      return await Read.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
       delete values[\\"@type\\"];
       return await Reject.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
+      delete values[\\"@type\\"];
+      return await TentativeReject.fromJsonLd(values, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
@@ -4186,6 +4211,11 @@ get sensitive(): (boolean | null) {
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
       delete values[\\"@type\\"];
       return await Update.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#View\\")) {
+      delete values[\\"@type\\"];
+      return await View.fromJsonLd(values, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\")) {
@@ -4322,7 +4352,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -4436,7 +4466,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -4505,7 +4535,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -4579,7 +4609,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -4611,7 +4641,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -4646,7 +4676,7 @@ get sensitive(): (boolean | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : undefined
       ;
@@ -4747,7 +4777,7 @@ get sensitive(): (boolean | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -9622,6 +9652,11 @@ instruments?: (Object | URL)[];}
       return await Accept.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
+      delete values[\\"@type\\"];
+      return await TentativeAccept.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
       delete values[\\"@type\\"];
       return await Add.fromJsonLd(values, options);
@@ -9682,6 +9717,11 @@ instruments?: (Object | URL)[];}
       return await Question.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Travel\\")) {
+      delete values[\\"@type\\"];
+      return await Travel.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Join\\")) {
       delete values[\\"@type\\"];
       return await Join.fromJsonLd(values, options);
@@ -9702,6 +9742,11 @@ instruments?: (Object | URL)[];}
       return await Listen.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Move\\")) {
+      delete values[\\"@type\\"];
+      return await Move.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Offer\\")) {
       delete values[\\"@type\\"];
       return await Offer.fromJsonLd(values, options);
@@ -9712,9 +9757,19 @@ instruments?: (Object | URL)[];}
       return await Invite.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Read\\")) {
+      delete values[\\"@type\\"];
+      return await Read.fromJsonLd(values, options);
+    }
+    
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
       delete values[\\"@type\\"];
       return await Reject.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
+      delete values[\\"@type\\"];
+      return await TentativeReject.fromJsonLd(values, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
@@ -9730,6 +9785,11 @@ instruments?: (Object | URL)[];}
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
       delete values[\\"@type\\"];
       return await Update.fromJsonLd(values, options);
+    }
+    
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#View\\")) {
+      delete values[\\"@type\\"];
+      return await View.fromJsonLd(values, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Activity\\")) {
@@ -10261,6 +10321,11 @@ instruments?: (Object | URL)[];}
     }
   if (\\"@type\\" in values) {
 
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
+      delete values[\\"@type\\"];
+      return await TentativeAccept.fromJsonLd(values, options);
+    }
+    
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -13605,6 +13670,11 @@ instruments?: (Object | URL)[];}
       return await Question.fromJsonLd(values, options);
     }
     
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Travel\\")) {
+      delete values[\\"@type\\"];
+      return await Travel.fromJsonLd(values, options);
+    }
+    
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -16011,7 +16081,7 @@ get totalItems(): (number | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -22450,7 +22520,7 @@ get width(): (number | null) {
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : undefined
       ;
@@ -24641,6 +24711,238 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
   }
   }
 
+/** Indicates that the \`actor\` has moved \`object\` from \`origin\` to \`target\`.
+ * If the \`origin\` or \`target\` are not specified,
+ * either can be determined by context.
+ * 
+ */
+export class Move extends Activity {
+
+    /**
+     * The type URI of {@link Move}: \`https://www.w3.org/ns/activitystreams#Move\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Move\\");
+    }
+  
+  /**
+   * Constructs a new instance of Move with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Move {
+  const clone = super.clone(values, options) as unknown as Move;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Move\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
+      values,
+      docContext,
+      { documentLoader: options.contextLoader },
+    );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Move> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Move\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof Move)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Move \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Move \\" + inspect(proxy, options);
+  }
+  }
+
 /** Represents a short written work typically less than a single paragraph in
  * length.
  * 
@@ -25202,7 +25504,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -25656,7 +25958,7 @@ get startIndex(): (number | null) {
       
       const decoded =
       typeof v === \\"object\\" && \\"@type\\" in v
-      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
+      && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Object\\",\\"http://joinmastodon.org/ns#Emoji\\",\\"http://litepub.social/ns#ChatMessage\\",\\"https://www.w3.org/ns/activitystreams#Activity\\",\\"https://www.w3.org/ns/activitystreams#Accept\\",\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\",\\"https://www.w3.org/ns/activitystreams#Add\\",\\"https://www.w3.org/ns/activitystreams#Announce\\",\\"https://www.w3.org/ns/activitystreams#Create\\",\\"https://www.w3.org/ns/activitystreams#Delete\\",\\"https://www.w3.org/ns/activitystreams#Dislike\\",\\"https://www.w3.org/ns/activitystreams#Flag\\",\\"https://www.w3.org/ns/activitystreams#Follow\\",\\"https://www.w3.org/ns/activitystreams#Ignore\\",\\"https://www.w3.org/ns/activitystreams#Block\\",\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\",\\"https://www.w3.org/ns/activitystreams#Arrive\\",\\"https://www.w3.org/ns/activitystreams#Question\\",\\"https://www.w3.org/ns/activitystreams#Travel\\",\\"https://www.w3.org/ns/activitystreams#Join\\",\\"https://www.w3.org/ns/activitystreams#Leave\\",\\"https://www.w3.org/ns/activitystreams#Like\\",\\"https://www.w3.org/ns/activitystreams#Listen\\",\\"https://www.w3.org/ns/activitystreams#Move\\",\\"https://www.w3.org/ns/activitystreams#Offer\\",\\"https://www.w3.org/ns/activitystreams#Invite\\",\\"https://www.w3.org/ns/activitystreams#Read\\",\\"https://www.w3.org/ns/activitystreams#Reject\\",\\"https://www.w3.org/ns/activitystreams#TentativeReject\\",\\"https://www.w3.org/ns/activitystreams#Remove\\",\\"https://www.w3.org/ns/activitystreams#Undo\\",\\"https://www.w3.org/ns/activitystreams#Update\\",\\"https://www.w3.org/ns/activitystreams#View\\",\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Article\\",\\"https://www.w3.org/ns/activitystreams#Collection\\",\\"https://www.w3.org/ns/activitystreams#CollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#Document\\",\\"https://www.w3.org/ns/activitystreams#Audio\\",\\"https://www.w3.org/ns/activitystreams#Image\\",\\"https://www.w3.org/ns/activitystreams#Page\\",\\"https://www.w3.org/ns/activitystreams#Video\\",\\"https://www.w3.org/ns/activitystreams#Event\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Note\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Place\\",\\"https://www.w3.org/ns/activitystreams#Profile\\",\\"https://www.w3.org/ns/activitystreams#Relationship\\",\\"https://www.w3.org/ns/activitystreams#Service\\",\\"https://www.w3.org/ns/activitystreams#Tombstone\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Object.fromJsonLd(
       v, options) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
@@ -32914,6 +33216,236 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
   }
   }
 
+/** Indicates that the \`actor\` has read the \`object\`.
+ * 
+ */
+export class Read extends Activity {
+
+    /**
+     * The type URI of {@link Read}: \`https://www.w3.org/ns/activitystreams#Read\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Read\\");
+    }
+  
+  /**
+   * Constructs a new instance of Read with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Read {
+  const clone = super.clone(values, options) as unknown as Read;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Read\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
+      values,
+      docContext,
+      { documentLoader: options.contextLoader },
+    );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Read> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Read\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof Read)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Read \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Read \\" + inspect(proxy, options);
+  }
+  }
+
 /** Indicates that the \`actor\` is rejecting the \`object\`.  The \`target\` and
  * \`origin\` typically have no defined meaning.
  * 
@@ -33109,6 +33641,11 @@ instruments?: (Object | URL)[];}
     }
   if (\\"@type\\" in values) {
 
+    if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
+      delete values[\\"@type\\"];
+      return await TentativeReject.fromJsonLd(values, options);
+    }
+    
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -36886,6 +37423,468 @@ get indexable(): (boolean | null) {
   }
   }
 
+/** A specialization of {@link Accept} indicating that
+ * the acceptance is tentative.
+ * 
+ */
+export class TentativeAccept extends Accept {
+
+    /**
+     * The type URI of {@link TentativeAccept}: \`https://www.w3.org/ns/activitystreams#TentativeAccept\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\");
+    }
+  
+  /**
+   * Constructs a new instance of TentativeAccept with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): TentativeAccept {
+  const clone = super.clone(values, options) as unknown as TentativeAccept;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
+      values,
+      docContext,
+      { documentLoader: options.contextLoader },
+    );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<TentativeAccept> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof TentativeAccept)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"TentativeAccept \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"TentativeAccept \\" + inspect(proxy, options);
+  }
+  }
+
+/** A specialization of {@link Reject} in which
+ * the rejection is considered tentative.
+ * 
+ */
+export class TentativeReject extends Reject {
+
+    /**
+     * The type URI of {@link TentativeReject}: \`https://www.w3.org/ns/activitystreams#TentativeReject\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\");
+    }
+  
+  /**
+   * Constructs a new instance of TentativeReject with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): TentativeReject {
+  const clone = super.clone(values, options) as unknown as TentativeReject;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#TentativeReject\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
+      values,
+      docContext,
+      { documentLoader: options.contextLoader },
+    );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<TentativeReject> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof TentativeReject)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"TentativeReject \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"TentativeReject \\" + inspect(proxy, options);
+  }
+  }
+
 /** A \`Tombstone\` represents a content object that has been deleted.
  * It can be used in {@link Collection}s to signify that there used to be
  * an object at this position, but it has been deleted.
@@ -37187,6 +38186,239 @@ get deleted(): (Temporal.Instant | null) {
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Tombstone \\" + inspect(proxy, options);
+  }
+  }
+
+/** Indicates that the \`actor\` is traveling to \`target\` from \`origin\`.
+ * \`Travel\` is an \`IntransitiveObject\` whose \`actor\` specifies the direct object.
+ * If the \`target\` or \`origin\` are not specified,
+ * either can be determined by context.
+ * 
+ */
+export class Travel extends IntransitiveActivity {
+
+    /**
+     * The type URI of {@link Travel}: \`https://www.w3.org/ns/activitystreams#Travel\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#Travel\\");
+    }
+  
+  /**
+   * Constructs a new instance of Travel with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Travel {
+  const clone = super.clone(values, options) as unknown as Travel;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Travel\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
+      values,
+      docContext,
+      { documentLoader: options.contextLoader },
+    );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Travel> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Travel\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof Travel)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Travel \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Travel \\" + inspect(proxy, options);
   }
   }
 
@@ -37874,6 +39106,236 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
   ): string {
     const proxy = this._getCustomInspectProxy();
     return \\"Video \\" + inspect(proxy, options);
+  }
+  }
+
+/** Indicates that the \`actor\` has viewed the object.
+ * 
+ */
+export class View extends Activity {
+
+    /**
+     * The type URI of {@link View}: \`https://www.w3.org/ns/activitystreams#View\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/activitystreams#View\\");
+    }
+  
+  /**
+   * Constructs a new instance of View with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+attachments?: (Object | Link | PropertyValue | URL)[];attribution?: Application | Group | Organization | Person | Service | URL | null;
+attributions?: (Application | Group | Organization | Person | Service | URL)[];audience?: Object | URL | null;
+audiences?: (Object | URL)[];content?: string | LanguageString | null;
+contents?: ((string | LanguageString))[];contexts?: (Object | Link | URL)[];name?: string | LanguageString | null;
+names?: ((string | LanguageString))[];endTime?: Temporal.Instant | null;generators?: (Object | Link | URL)[];icon?: Image | URL | null;
+icons?: (Image | URL)[];image?: Image | URL | null;
+images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
+replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
+locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
+urls?: ((URL | Link))[];to?: Object | URL | null;
+tos?: (Object | URL)[];bto?: Object | URL | null;
+btos?: (Object | URL)[];cc?: Object | URL | null;
+ccs?: (Object | URL)[];bcc?: Object | URL | null;
+bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration | null;sensitive?: boolean | null;proof?: DataIntegrityProof | URL | null;
+proofs?: (DataIntegrityProof | URL)[];actor?: Application | Group | Organization | Person | Service | URL | null;
+actors?: (Application | Group | Organization | Person | Service | URL)[];object?: Object | URL | null;
+objects?: (Object | URL)[];target?: Object | URL | null;
+targets?: (Object | URL)[];result?: Object | URL | null;
+results?: (Object | URL)[];origin?: Object | URL | null;
+origins?: (Object | URL)[];instrument?: Object | URL | null;
+instruments?: (Object | URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): View {
+  const clone = super.clone(values, options) as unknown as View;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    expand?: boolean,
+    contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
+  } = {}): Promise<unknown> {
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      expand: true,
+    }) as unknown[];
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#View\\"];
+    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (options.expand) {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    const docContext = options.context ??
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+    const compacted = await jsonld.compact(
+      values,
+      docContext,
+      { documentLoader: options.contextLoader },
+    );
+    if (docContext != null) {
+      // Embed context
+  
+      if (\\"proof\\" in compacted &&
+          compacted.proof != null) {
+        if (Array.isArray(compacted.proof)) {
+          for (const element of compacted.proof) {
+            element[\\"@context\\"] = docContext;
+          }
+        } else {
+         compacted.proof[\\"@context\\"] = docContext;
+        }
+      }
+      
+    }
+    return compacted;
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<View> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#View\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = await super.fromJsonLd(values, options);
+    if (!(instance instanceof View)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"View \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"View \\" + inspect(proxy, options);
   }
   }
 

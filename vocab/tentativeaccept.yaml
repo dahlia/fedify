@@ -1,0 +1,12 @@
+$schema: ../codegen/schema.yaml
+name: TentativeAccept
+uri: "https://www.w3.org/ns/activitystreams#TentativeAccept"
+extends: "https://www.w3.org/ns/activitystreams#Accept"
+entity: true
+description: |
+  A specialization of {@link Accept} indicating that
+  the acceptance is tentative.
+defaultContext:
+- "https://www.w3.org/ns/activitystreams"
+- "https://w3id.org/security/data-integrity/v1"
+properties: []

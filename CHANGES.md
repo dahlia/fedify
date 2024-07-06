@@ -40,6 +40,21 @@ To be released.
 
  -  Added `ChatMessage` class to Activity Vocabulary API.  [[#85]]
 
+ -  Added `Move` class to Activity Vocabulary API.  [[#65], [#92] by Lee Dogeon]
+
+ -  Added `Read` class to Activity Vocabulary API.  [[#65], [#92] by Lee Dogeon]
+
+ -  Added `Travel` class to Activity Vocabulary API.
+    [[#65], [#92] by Lee Dogeon]
+
+ -  Added `View` class to Activity Vocabulary API.  [[#65], [#92] by Lee Dogeon]
+
+ -  Added `TentativeAccept` class to Activity Vocabulary API.
+    [[#65], [#92] by Lee Dogeon]
+
+ -  Added `TentativeReject` class to Activity Vocabulary API.
+    [[#65], [#92] by Lee Dogeon]
+
  -  Improved multitenancy (virtual hosting) support.  [[#66]]
 
      -  Added `Context.hostname` property.
@@ -72,6 +87,7 @@ To be released.
 [#66]: https://github.com/dahlia/fedify/issues/66
 [#70]: https://github.com/dahlia/fedify/issues/70
 [#85]: https://github.com/dahlia/fedify/issues/85
+[#92]: https://github.com/dahlia/fedify/pull/92
 
 
 Version 0.11.1
