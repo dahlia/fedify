@@ -70,3 +70,4 @@ lists the activity types that Fedify provides:
  -  [`Travel`](https://jsr.io/@fedify/fedify/doc/vocab/~/Travel)
  -  [`Undo`](https://jsr.io/@fedify/fedify/doc/vocab/~/Undo)
  -  [`Update`](https://jsr.io/@fedify/fedify/doc/vocab/~/Update)
+ -  [`View`](https://jsr.io/@fedify/fedify/doc/vocab/~/View)
