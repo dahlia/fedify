@@ -68,6 +68,7 @@ lists the activity types that Fedify provides:
  -  [`Reject`](https://jsr.io/@fedify/fedify/doc/vocab/~/Reject)
  -  [`Remove`](https://jsr.io/@fedify/fedify/doc/vocab/~/Remove)
  -  [`TentativeAccept`](https://jsr.io/@fedify/fedify/doc/vocab/~/TentativeAccept)
+ -  [`TentativeReject`](https://jsr.io/@fedify/fedify/doc/vocab/~/TentativeReject)
  -  [`Travel`](https://jsr.io/@fedify/fedify/doc/vocab/~/Travel)
  -  [`Undo`](https://jsr.io/@fedify/fedify/doc/vocab/~/Undo)
  -  [`Update`](https://jsr.io/@fedify/fedify/doc/vocab/~/Update)
