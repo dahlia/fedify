@@ -80,6 +80,9 @@ To be released.
  -  Added `View` class to Activity Vocabulary API.
     [[#65], [#92] by Lee Dogeon]
 
+ -  Added `TentativeAccept` class to Activity Vocabulary API.
+    [[#65], [#92] by Lee Dogeon]
+
 [#53]: https://github.com/dahlia/fedify/issues/53
 [#66]: https://github.com/dahlia/fedify/issues/66
 [#70]: https://github.com/dahlia/fedify/issues/70
