@@ -61,6 +61,7 @@ lists the activity types that Fedify provides:
  -  [`Leave`](https://jsr.io/@fedify/fedify/doc/vocab/~/Leave)
  -  [`Like`](https://jsr.io/@fedify/fedify/doc/vocab/~/Like)
  -  [`Listen`](https://jsr.io/@fedify/fedify/doc/vocab/~/Listen)
+ -  [`Move`](https://jsr.io/@fedify/fedify/doc/vocab/~/Move)
  -  [`Offer`](https://jsr.io/@fedify/fedify/doc/vocab/~/Offer)
  -  [`Question`](https://jsr.io/@fedify/fedify/doc/vocab/~/Question)
  -  [`Reject`](https://jsr.io/@fedify/fedify/doc/vocab/~/Reject)

@@ -68,10 +68,14 @@ To be released.
 
      -  `["fedify", "federation", "queue"]`
 
+ -  Added `Move` class to Activity Vocabulary API.
+    [[#65], [#92] by Lee Dogeon]
+
 [#53]: https://github.com/dahlia/fedify/issues/53
 [#66]: https://github.com/dahlia/fedify/issues/66
 [#70]: https://github.com/dahlia/fedify/issues/70
 [#85]: https://github.com/dahlia/fedify/issues/85
+[#92]: https://github.com/dahlia/fedify/pull/92
 
 
 Version 0.11.1
