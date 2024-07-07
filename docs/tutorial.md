@@ -625,7 +625,7 @@ the domain name to the one ngrok provides you):[^3]
 
 ~~~~ sh
 curl https://79e8-125-129-0-52.ngrok-free.app/.well-known/webfinger?resource=acct:me@7d2d-125-129-0-52.ngrok-free.app
-curl https://79e8-125-129-0-52.ngrok-free.app/users/me
+curl -H"Accept: application/activity+json" https://79e8-125-129-0-52.ngrok-free.app/users/me
 ~~~~
 
 Does it work?  If so, congratulations!  Your server is now exposed to the
