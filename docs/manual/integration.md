@@ -42,6 +42,48 @@ app.use(federation(fedi, (ctx) => "context data"));  // [!code highlight]
 [Hono]: https://hono.dev/
 
 
+h3
+--
+
+[h3] is an HTTP server framework behind [Nitro], [Analog], [Vinxi],
+[SolidStart], [TanStack Start], and other many web frameworks.
+The [@fedify/h3] package provides a middleware to integrate Fedify with h3:
+
+~~~~ typescript {9-15}
+import { createApp, createRouter } from "h3";
+import { createFederation } from "@fedify/fedify";
+import { integrateFederation, onError } from "@fedify/h3";
+
+export const federation = createFederation<string>({
+  // Omitted for brevity; see the related section for details.
+});
+
+export const app = createApp({ onError });
+app.use(
+  integrateFederation(
+    federation,
+    (event, request) => "context data goes here"
+  )
+);
+
+const router = createRouter();
+app.use(router);
+~~~~
+
+> [!NOTE]
+> Your app has to configure `onError` to let Fedify negotiate content types.
+> If you don't do this, Fedify will not be able to respond with a proper error
+> status code when a content negotiation fails.
+
+[h3]: https://h3.unjs.io/
+[Nitro]: https://nitro.unjs.io/
+[Analog]: https://analogjs.org/
+[Vinxi]: https://vinxi.vercel.app/
+[SolidStart]: https://start.solidjs.com/
+[TanStack Start]: https://tanstack.com/start
+[@fedify/h3]: https://github.com/dahlia/fedify-h3
+
+
 Fresh
 -----
 
