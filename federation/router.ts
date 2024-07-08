@@ -3,19 +3,33 @@ import { Router as InnerRouter } from "uri-template-router";
 import { parseTemplate, type Template } from "url-template";
 
 /**
+ * Options for the {@link Router}.
+ * @since 0.12.0
+ */
+export interface RouterOptions {
+  /**
+   * Whether to ignore trailing slashes when matching paths.
+   */
+  trailingSlashInsensitive?: boolean;
+}
+
+/**
  * URL router and constructor based on URI Template
  * ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
  */
 export class Router {
   #router: InnerRouter;
   #templates: Record<string, Template>;
+  #trailingSlashInsensitive: boolean;
 
   /**
    * Create a new {@link Router}.
+   * @param options Options for the router.
    */
-  constructor() {
+  constructor(options: RouterOptions = {}) {
     this.#router = new InnerRouter();
     this.#templates = {};
+    this.#trailingSlashInsensitive = options.trailingSlashInsensitive ?? false;
   }
 
   /**
@@ -49,8 +63,13 @@ export class Router {
    *          `null`.
    */
   route(url: string): { name: string; values: Record<string, string> } | null {
-    const match = this.#router.resolveURI(url);
-    if (match == null) return null;
+    let match = this.#router.resolveURI(url);
+    if (match == null) {
+      if (!this.#trailingSlashInsensitive) return null;
+      url = url.endsWith("/") ? url.replace(/\/+$/, "") : `${url}/`;
+      match = this.#router.resolveURI(url);
+      if (match == null) return null;
+    }
     return {
       name: match.matchValue,
       values: match.params,

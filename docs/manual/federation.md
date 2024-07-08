@@ -38,7 +38,7 @@ const federation = createFederation<void>({
 Constructor parameters
 ----------------------
 
-The `Federation` constructor function takes an object with the following
+The `createFederation()` function takes an object with the following
 properties.  Some of them are required:
 
 ### `kv`
@@ -202,6 +202,16 @@ In the same way as the `outboxRetryPolicy` option, you can fully customize
 the retry policy by providing a custom function that satisfies the `RetryPolicy`
 type.  Or you can adjust the parameters of the built-in 
 `createExponentialBackoffRetryPolicy()` function.
+
+### `trailingSlashInsensitive`
+
+*This API is available since Fedify 0.12.0.*
+
+Whether the router should be insensitive to trailing slashes in the URL paths.
+For example, if this option is `true`, `/foo` and `/foo/` are treated as the
+same path.
+
+Turned off by default.
 
 
 How the `Federation` object recognizes the domain name

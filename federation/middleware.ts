@@ -153,6 +153,14 @@ export interface CreateFederationOptions {
    * @since 0.12.0
    */
   inboxRetryPolicy?: RetryPolicy;
+
+  /**
+   * Whether the router should be insensitive to trailing slashes in the URL
+   * paths.  For example, if this option is `true`, `/foo` and `/foo/` are
+   * treated as the same path.  Turned off by default.
+   * @since 0.12.0
+   */
+  trailingSlashInsensitive?: boolean;
 }
 
 /**
@@ -326,7 +334,9 @@ export class Federation<TContextData> {
     this.#queue = options.queue;
     this.#queueStarted = false;
     this.#manuallyStartQueue = options.manuallyStartQueue ?? false;
-    this.#router = new Router();
+    this.#router = new Router({
+      trailingSlashInsensitive: options.trailingSlashInsensitive,
+    });
     this.#router.add("/.well-known/webfinger", "webfinger");
     this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
     this.#objectCallbacks = {};

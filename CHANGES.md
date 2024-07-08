@@ -38,6 +38,14 @@ To be released.
         interface.
      -  Added `Federation.startQueue()` method.
 
+ -  Made the router able to be insensitive to trailing slashes in the URL paths.
+    [[#81]]
+
+     -  Added `trailingSlashInsensitive` option to `CreateFederationOptions`
+        interface.
+     -  Added `RouterOptions` interface.
+     -  Added an optional parameter to `new Router()` constructor.
+
  -  Added `ChatMessage` class to Activity Vocabulary API.  [[#85]]
 
  -  Added `Move` class to Activity Vocabulary API.  [[#65], [#92] by Lee Dogeon]
@@ -86,6 +94,7 @@ To be released.
 [#53]: https://github.com/dahlia/fedify/issues/53
 [#66]: https://github.com/dahlia/fedify/issues/66
 [#70]: https://github.com/dahlia/fedify/issues/70
+[#81]: https://github.com/dahlia/fedify/issues/81
 [#85]: https://github.com/dahlia/fedify/issues/85
 [#92]: https://github.com/dahlia/fedify/pull/92
 
