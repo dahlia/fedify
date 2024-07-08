@@ -8,6 +8,7 @@ added in the future.[^1]
   -  [Actor lookup CLI](./actor-lookup-cli/)
   -  [Federated single-user blog](./blog/)
   -  [Fedi badge](https://github.com/dahlia/fedi-badge)
+  -  [Ghost's ActivityPub server](https://github.com/TryGhost/ActivityPub)
   -  [Hollo: a federated single-user microblogging
      software](https://github.com/dahlia/hollo)
   -  [Hono integration sample](./hono-sample/)
