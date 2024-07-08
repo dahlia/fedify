@@ -48,7 +48,29 @@ Fedify is licensed under the [MIT License].  By opening a pull request,
 you agree to license your contribution under the MIT License.  If you cannot
 agree to this license, please do not open a pull request.
 
-[MIT License]: https://minhee.mit-license.org/
+[MIT License]: https://minhee.mit-license.org/2024/
+
+### Development environment
+
+Fedify uses [Deno] as the main development environment, and is tested with Deno,
+[Node.js], and [Bun].  Therefore, you need to install Deno, Node.js, and Bun to
+contribute to Fedify.
+
+The recommended editor for Fedify is [Visual Studio Code] with
+the [Deno extension] installed.  Or you can use any editor that supports Deno;
+see the [*Set Up Your Environment* section][1] in the Deno manual.
+
+> [!NOTE]
+>
+> Fedify heavily depends on code generation, so you need to run
+> `deno task codegen` before coding or testing.
+
+[Deno]: https://deno.com/
+[Node.js]: https://nodejs.org/
+[Bun]: https://bun.sh/
+[Visual Studio Code]: https://code.visualstudio.com/
+[Deno extension]: https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno
+[1]: https://docs.deno.com/runtime/manual/getting_started/setup_your_environment/
 
 ### Coding conventions
 
@@ -57,7 +79,7 @@ Please run the following commands before opening a pull request:
 ~~~~ bash
 deno fmt
 deno task check
-deno task test
+deno task test-all
 ~~~~
 
 ### Docs
@@ -91,7 +113,6 @@ to *http://localhost:5173/* to view the docs.
 [inline links]: https://spec.commonmark.org/0.31.2/#inline-link
 [setext headings]: https://spec.commonmark.org/0.31.2/#setext-headings
 [ATX headings]: https://spec.commonmark.org/0.31.2/#atx-headings
-[Bun]: https://bun.sh/
 
 ### Bug fix
 
