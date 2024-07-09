@@ -30,13 +30,17 @@ export async function validatePublicUrl(url: string): Promise<void> {
     const netPermission = await Deno.permissions.query({ name: "net" });
     if (netPermission.state !== "granted") return;
   }
-  const { address, family } = await lookup(hostname);
-  if (
-    family === 4 && !isValidPublicIPv4Address(address) ||
-    family === 6 && !isValidPublicIPv6Address(address) ||
-    family < 4 || family === 5 || family > 6
-  ) {
-    throw new UrlError(`Invalid or private address: ${address}`);
+  // To prevent SSRF via DNS rebinding, we need to resolve all IP addresses
+  // and ensure that they are all public:
+  const addresses = await lookup(hostname, { all: true });
+  for (const { address, family } of addresses) {
+    if (
+      family === 4 && !isValidPublicIPv4Address(address) ||
+      family === 6 && !isValidPublicIPv6Address(address) ||
+      family < 4 || family === 5 || family > 6
+    ) {
+      throw new UrlError(`Invalid or private address: ${address}`);
+    }
   }
 }
 

@@ -8,6 +8,15 @@ Version 0.9.3
 
 To be released.
 
+ -  Fixed a vulnerability of SSRF via DNS rebinding in the built-in document
+    loader.  [[CVE-2024-39687]]
+
+     -  The `fetchDocumentLoader()` function now throws an error when the given
+        domain name has any records referring to a private network address.
+     -  The `getAuthenticatedDocumentLoader()` function now returns a document
+        loader that throws an error when the given domain name has any records
+        referring to a private network address.
+
 
 Version 0.9.2
 -------------
