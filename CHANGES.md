@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.11.2
 --------------
 
-To be released.
+Released on July 9, 2024.
 
  -  Fixed a vulnerability of SSRF via DNS rebinding in the built-in document
     loader.  [[CVE-2024-39687]]
