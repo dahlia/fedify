@@ -83,10 +83,6 @@ test("Federation.createContext()", async (t) => {
     assertThrows(() => ctx.getFeaturedUri("handle"), RouterError);
     assertThrows(() => ctx.getFeaturedTagsUri("handle"), RouterError);
     assertEquals(ctx.parseUri(new URL("https://example.com/")), null);
-    assertEquals(
-      ctx.getHandleFromActorUri(new URL("https://example.com/")),
-      null,
-    );
     assertEquals(await ctx.getActorKeyPairs("handle"), []);
     assertEquals(await ctx.getActorKey("handle"), null);
     assertRejects(
@@ -139,14 +135,6 @@ test("Federation.createContext()", async (t) => {
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle")),
       { type: "actor", handle: "handle" },
-    );
-    assertEquals(
-      ctx.getHandleFromActorUri(new URL("https://example.com/")),
-      null,
-    );
-    assertEquals(
-      ctx.getHandleFromActorUri(new URL("https://example.com/users/handle")),
-      "handle",
     );
     assertEquals(
       await ctx.getActorKeyPairs("handle"),

@@ -39,7 +39,6 @@
  * @module
  */
 export * from "./federation/mod.ts";
-export { sign, verify, type VerifyOptions } from "./httpsig/mod.ts";
 export * from "./nodeinfo/mod.ts";
 export * from "./runtime/mod.ts";
 export * from "./sig/mod.ts";

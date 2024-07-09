@@ -51,15 +51,6 @@ export function createContext<TContextData>(
     parseUri: parseUri ?? ((_uri) => {
       throw new Error("Not implemented");
     }),
-    getHandleFromActorUri(actorUri: URL): string | null {
-      getLogger(["fedify", "federation"]).warn(
-        "Context.getHandleFromActorUri() is deprecated; " +
-          "use Context.parseUri() instead.",
-      );
-      const result = this.parseUri(actorUri);
-      if (result?.type === "actor") return result.handle;
-      return null;
-    },
     getDocumentLoader: getDocumentLoader ?? ((_params) => {
       throw new Error("Not implemented");
     }),

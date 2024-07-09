@@ -2145,16 +2145,6 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return null;
   }
 
-  getHandleFromActorUri(actorUri: URL): string | null {
-    getLogger(["fedify", "federation"]).warn(
-      "Context.getHandleFromActorUri() is deprecated; " +
-        "use Context.parseUri() instead.",
-    );
-    const result = this.parseUri(actorUri);
-    if (result?.type === "actor") return result.handle;
-    return null;
-  }
-
   async getActorKeyPairs(handle: string): Promise<ActorKeyPair[]> {
     const logger = getLogger(["fedify", "federation", "actor"]);
     if (this.#invokedFromActorKeyPairsDispatcher != null) {

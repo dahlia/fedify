@@ -77,6 +77,16 @@ To be released.
  -  The last parameter of `Federation.sendActivity()` method is no longer
     optional.  Also, it now takes the required `contextData` option.
 
+ -  Removed `Context.getHandleFromActorUri()` method which was deprecated in
+    version 0.9.0.  Use `Context.parseUri()` method instead.
+
+ -  Removed `@fedify/fedify/httpsig` module which was deprecated in version
+    0.9.0.  Use `@fedify/fedify/sig` module instead.
+
+     -  Removed `sign()` function.
+     -  Removed `verify()` function.
+     -  Removed `VerifyOptions` interface.
+
  -  Fixed a SSRF vulnerability in the built-in document loader.
     [[CVE-2024-39687]]
 

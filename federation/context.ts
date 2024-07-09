@@ -155,14 +155,6 @@ export interface Context<TContextData> {
   parseUri(uri: URL): ParseUriResult | null;
 
   /**
-   * Extracts the actor's handle from an actor URI, if it is a valid actor URI.
-   * @param actorUri The actor's URI.
-   * @returns The actor's handle, or `null` if the URI is not a valid actor URI.
-   * @deprecated Use {@link Context.parseUri} instead.
-   */
-  getHandleFromActorUri(actorUri: URL): string | null;
-
-  /**
    * Gets the key pairs for an actor.
    * @param handle The actor's handle.
    * @returns An async iterable of the actor's key pairs.  It can be empty.
