@@ -8,6 +8,15 @@ Version 0.10.2
 
 To be released.
 
+ -  Fixed a vulnerability of SSRF via DNS rebinding in the built-in document
+    loader.  [[CVE-2024-39687]]
+
+     -  The `fetchDocumentLoader()` function now throws an error when the given
+        domain name has any records referring to a private network address.
+     -  The `getAuthenticatedDocumentLoader()` function now returns a document
+        loader that throws an error when the given domain name has any records
+        referring to a private network address.
+
 
 Version 0.10.1
 --------------
@@ -183,6 +192,21 @@ is now distributed under the [MIT License] to encourage wider adoption.
 [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
 [FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
+
+
+Version 0.9.3
+-------------
+
+Released on July 9, 2024.
+
+ -  Fixed a vulnerability of SSRF via DNS rebinding in the built-in document
+    loader.  [[CVE-2024-39687]]
+
+     -  The `fetchDocumentLoader()` function now throws an error when the given
+        domain name has any records referring to a private network address.
+     -  The `getAuthenticatedDocumentLoader()` function now returns a document
+        loader that throws an error when the given domain name has any records
+        referring to a private network address.
 
 
 Version 0.9.2
