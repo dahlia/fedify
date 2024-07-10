@@ -20,7 +20,8 @@ interface FreshContext {
 }
 
 /**
- * Create options for the `federation` object to integrate with Fresh.
+ * Create options for the {@link Federation.fetch} method to integrate with
+ * Fresh.
  *
  * @example _middleware.ts
  * ``` typescript
@@ -88,6 +89,7 @@ export function integrateFetchOptions(
  * @param createContextData A function to create a context data for the
  *                          {@link Federation} object.
  * @returns A Fresh middleware handler.
+ * @since 0.4.0
  */
 export function integrateHandler<
   TContextData,
@@ -103,8 +105,7 @@ export function integrateHandler<
     request: Request,
     context: TFreshContext,
   ): Promise<Response> => {
-    let contextData = createContextData(request, context);
-    if (contextData instanceof Promise) contextData = await contextData;
+    const contextData = await createContextData(request, context);
     return await federation.fetch(request, {
       contextData,
       ...integrateFetchOptions(context),

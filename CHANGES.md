@@ -96,17 +96,26 @@ To be released.
         loader that throws an error when the given URL is not an HTTP or HTTPS
         URL or refers to a private network address.
 
+ -  Added `@fedify/fedify/x/astro` module for integrating with [Astro]
+    middleware.  [[#50]]
+
+     -  Added `createMiddleware()` function.
+     -  Added `createFetchOptions()` function.
+     -  Added `ContextDataFactory` type.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
      -  `["fedify", "federation", "queue"]`
 
+[#50]: https://github.com/dahlia/fedify/issues/50
 [#53]: https://github.com/dahlia/fedify/issues/53
 [#66]: https://github.com/dahlia/fedify/issues/66
 [#70]: https://github.com/dahlia/fedify/issues/70
 [#81]: https://github.com/dahlia/fedify/issues/81
 [#85]: https://github.com/dahlia/fedify/issues/85
 [#92]: https://github.com/dahlia/fedify/pull/92
+[Astro]: https://astro.build/
 
 
 Version 0.11.2

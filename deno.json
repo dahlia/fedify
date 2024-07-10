@@ -9,6 +9,7 @@
     "./sig": "./sig/mod.ts",
     "./vocab": "./vocab/mod.ts",
     "./webfinger": "./webfinger/mod.ts",
+    "./x/astro": "./x/astro.ts",
     "./x/denokv": "./x/denokv.ts",
     "./x/fresh": "./x/fresh.ts",
     "./x/hono": "./x/hono.ts"
