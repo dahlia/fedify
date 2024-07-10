@@ -158,7 +158,7 @@ takes an object with the new properties and returns a new object with the new
 properties.  The following shows an example of changing the `~Object.content`
 property of a `Note` object:
 
-~~~~ typescript{9-11}
+~~~~ typescript{8-10}
 import { LanguageString, Note } from "@fedify/fedify";
 
 const noteInEnglish = new Note({

@@ -28,6 +28,8 @@ await Deno.writeTextFile(
       ...metadata.imports,
       "@logtape/logtape": metadata.imports["@logtape/logtape"]
         .replace(/^jsr:/, "npm:"),
+      "@hugoalh/http-header-link": metadata.imports["@hugoalh/http-header-link"]
+        .replace(/^jsr:/, "npm:"),
     },
   }),
 );

@@ -71,6 +71,15 @@ To be released.
      -  The type of `ActorKeyPairsDispatcher<TContextData>`'s first parameter
         became `Context` (was `TContextData`).
 
+ -  The built-in document loaders now recognize JSON-LD context provided in
+    an HTTP `Link` header. [[#6]]
+
+     -  The `fetchDocumentLoader()` function now recognizes the `Link` header
+        with the `http://www.w3.org/ns/json-ld#context` link relation.
+     -  The `getAuthenticatedDocumentLoader()` function now returns a document
+        loader that recognizes the `Link` header with
+        the `http://www.w3.org/ns/json-ld#context` link relation.
+
  -  Deprecated `Federation.sendActivity()` method.  Use `Context.sendActivity()`
     method instead.
 
@@ -108,6 +117,7 @@ To be released.
 
      -  `["fedify", "federation", "queue"]`
 
+[#6]: https://github.com/dahlia/fedify/issues/6
 [#50]: https://github.com/dahlia/fedify/issues/50
 [#53]: https://github.com/dahlia/fedify/issues/53
 [#66]: https://github.com/dahlia/fedify/issues/66

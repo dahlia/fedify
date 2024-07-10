@@ -1,3 +1,4 @@
+import { HTTPHeaderLink } from "@hugoalh/http-header-link";
 import { getLogger } from "@logtape/logtape";
 import type { KvKey, KvStore } from "../federation/kv.ts";
 import { signRequest } from "../sig/http.ts";
@@ -12,8 +13,19 @@ const logger = getLogger(["fedify", "runtime", "docloader"]);
  * a {@link DocumentLoader}.
  */
 export interface RemoteDocument {
+  /**
+   * The URL of the context document.
+   */
   contextUrl: string | null;
+
+  /**
+   * The fetched JSON-LD document.
+   */
   document: unknown;
+
+  /**
+   * The URL of the fetched document.
+   */
   documentUrl: string;
 }
 
@@ -98,6 +110,18 @@ async function getRemoteDocument(
       `HTTP ${response.status}: ${documentUrl}`,
     );
   }
+  const linkHeader = response.headers.get("Link");
+  let contextUrl: string | null = null;
+  if (linkHeader != null) {
+    const link = new HTTPHeaderLink(linkHeader);
+    const entries = link.getByRel("http://www.w3.org/ns/json-ld#context");
+    for (const [uri, params] of entries) {
+      if ("type" in params && params.type === "application/ld+json") {
+        contextUrl = uri;
+        break;
+      }
+    }
+  }
   logger.debug(
     "Fetched document: {status} {url} {headers}",
     {
@@ -107,7 +131,7 @@ async function getRemoteDocument(
     },
   );
   return {
-    contextUrl: null,
+    contextUrl,
     document: await response.json(),
     documentUrl,
   };

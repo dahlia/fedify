@@ -52,6 +52,35 @@ test("fetchDocumentLoader()", async (t) => {
     });
   });
 
+  mf.mock("GET@/object2", (_req) =>
+    new Response(
+      JSON.stringify({
+        id: "https://example.com/object2",
+        name: "Fetched object",
+        type: "Object",
+      }),
+      {
+        status: 200,
+        headers: {
+          Link: "<https://www.w3.org/ns/activitystreams>; " +
+            'rel="http://www.w3.org/ns/json-ld#context"; ' +
+            'type="application/ld+json"',
+        },
+      },
+    ));
+
+  await t.step("Link header", async () => {
+    assertEquals(await fetchDocumentLoader("https://example.com/object2"), {
+      contextUrl: "https://www.w3.org/ns/activitystreams",
+      documentUrl: "https://example.com/object2",
+      document: {
+        id: "https://example.com/object2",
+        name: "Fetched object",
+        type: "Object",
+      },
+    });
+  });
+
   mf.mock("GET@/404", (_req) => new Response("", { status: 404 }));
 
   await t.step("not ok", async () => {
