@@ -5,7 +5,12 @@
  * This module contains some utilities for integrating Fedify with
  * the [Astro] framework.
  *
+ * > [!NOTE]
+ * >
+ * > Astro integration requires [on-demand server rendering][1].
+ *
  * [Astro]: https://astro.build/
+ * [1]: https://docs.astro.build/en/guides/server-side-rendering/
  *
  * @module
  * @since 0.12.0
@@ -34,6 +39,7 @@ type MiddlewareHandler<TAstroContext extends AstroContext> = (
  * @example src/middleware.ts
  * ``` typescript
  * import { defineMiddleware } from "astro:middleware";
+ * import { createFetchOptions } from "@fedify/fedify/x/astro";
  * import { federation } from "./federation";  // Import the `Federation` object
  *
  * export const onRequest = defineMiddleware((context, next) => {
@@ -106,6 +112,7 @@ export type ContextDataFactory<
  * @example src/middleware.ts
  * ``` typescript
  * import type { MiddlewareHandler } from "astro";
+ * import { createMiddleware } from "@fedify/fedify/x/astro";
  * import { federation } from "./federation";  // Import the `Federation` object
  *
  * export const onRequest: MiddlewareHandler = createMiddleware(

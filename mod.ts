@@ -19,6 +19,7 @@
  * - [NodeInfo] protocol
  * - Special touch for interoperability with Mastodon and few other popular
  *   fediverse software
+ * - Integration with various web frameworks
  * - CLI toolchain for testing and debugging
  *
  * If you want to know more about the project, please take a look at the

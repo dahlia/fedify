@@ -17,6 +17,38 @@ Fedify is designed to be used together with web frameworks.  This document
 explains how to integrate Fedify with web frameworks.
 
 
+Astro
+-----
+
+*This API is available since Fedify 0.12.0.*
+
+[Astro] is a web framework for content-driven websites.  Fedify has
+the `@fedify/fedify/x/astro` module that provides a middleware to integrate
+Fedify with Astro.  Put the following code in your *src/middleware.ts* file:
+
+~~~~ typescript
+import type { MiddlewareHandler } from "astro";
+import { createFederation } from "@fedify/fedify";
+import { createMiddleware } from "@fedify/fedify/x/astro";
+
+const federation = createFederation<string>({
+  // Omitted for brevity; see the related section for details.
+});
+
+export const onRequest: MiddlewareHandler = createMiddleware(
+  federation,
+  (astroContext) => "context data",
+);
+~~~~
+
+> [!NOTE]
+>
+> Astro integration requires [on-demand server rendering][1].
+
+[Astro]: https://astro.build/
+[1]: https://docs.astro.build/en/guides/server-side-rendering/
+
+
 Hono
 ----
 
