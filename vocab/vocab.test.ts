@@ -1,5 +1,4 @@
 import { isDeno } from "@david/which-runtime";
-import type { DataIntegrityProof } from "@fedify/fedify";
 import { toArray } from "@hongminhee/aitertools";
 import { parseLanguageTag } from "@phensley/language-tag";
 import {
@@ -29,6 +28,7 @@ import {
   Announce,
   Create,
   CryptographicKey,
+  type DataIntegrityProof,
   Follow,
   Note,
   Object,

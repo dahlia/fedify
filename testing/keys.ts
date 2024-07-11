@@ -1,5 +1,4 @@
-import { Multikey } from "@fedify/fedify/vocab";
-import { CryptographicKey } from "../vocab/vocab.ts";
+import { CryptographicKey, Multikey } from "../vocab/vocab.ts";
 
 export const rsaPublicKey1 = new CryptographicKey({
   id: new URL("https://example.com/key"),

@@ -1,5 +1,5 @@
-import { Activity, Multikey } from "@fedify/fedify/vocab";
 import { getLogger } from "@logtape/logtape";
+import { Activity, Multikey } from "../vocab/vocab.ts";
 // @ts-ignore: json-canon is not typed
 import serialize from "json-canon";
 import type { DocumentLoader } from "../runtime/docloader.ts";

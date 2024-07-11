@@ -1,8 +1,7 @@
-import { importMultibaseKey } from "@fedify/fedify/runtime";
-import { DataIntegrityProof, Multikey } from "@fedify/fedify/vocab";
 import { assertEquals, assertInstanceOf, assertRejects } from "@std/assert";
 import { decodeHex, encodeHex } from "@std/encoding/hex";
 import { decode } from "multibase";
+import { importMultibaseKey } from "../runtime/key.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
   ed25519Multikey,
@@ -12,7 +11,13 @@ import {
   rsaPublicKey2,
 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
-import { Create, Note, Place } from "../vocab/vocab.ts";
+import {
+  Create,
+  DataIntegrityProof,
+  Multikey,
+  Note,
+  Place,
+} from "../vocab/vocab.ts";
 import {
   createProof,
   signObject,

@@ -1,4 +1,3 @@
-import { lookupObject } from "@fedify/fedify/vocab";
 import {
   assertEquals,
   assertRejects,
@@ -24,6 +23,7 @@ import {
   rsaPublicKey3,
 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
+import { lookupObject } from "../vocab/lookup.ts";
 import { Create, Multikey, Note, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
