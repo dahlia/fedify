@@ -98,6 +98,7 @@ export default defineConfig({
         text: "Examples",
         link: "https://github.com/dahlia/fedify/tree/main/examples",
       },
+      { text: "Security policy", link: "/security.md" },
       { text: "Contribute", link: "/contribute.md" },
       { text: "Changelog", link: "/changelog.md" },
     ],
