@@ -1,14 +1,13 @@
 {
   "imports": {
-    "@fedify/fedify": "../../mod.ts",
-    "@fedify/fedify/federation": "../../federation/mod.ts",
-    "@fedify/fedify/httpsig": "../../httpsig/mod.ts",
-    "@fedify/fedify/runtime": "../../runtime/mod.ts",
-    "@fedify/fedify/sig": "../../sig/mod.ts",
-    "@fedify/fedify/vocab": "../../vocab/mod.ts",
-    "@fedify/fedify/webfinger": "../../webfinger/mod.ts",
-    "@fedify/fedify/x/denokv": "../../x/denokv.ts",
-    "@fedify/fedify/x/hono": "../../x/hono.ts",
+    "@fedify/fedify": "../../src/mod.ts",
+    "@fedify/fedify/federation": "../../src/federation/mod.ts",
+    "@fedify/fedify/runtime": "../../src/runtime/mod.ts",
+    "@fedify/fedify/sig": "../../src/sig/mod.ts",
+    "@fedify/fedify/vocab": "../../src/vocab/mod.ts",
+    "@fedify/fedify/webfinger": "../../src/webfinger/mod.ts",
+    "@fedify/fedify/x/denokv": "../../src/x/denokv.ts",
+    "@fedify/fedify/x/hono": "../../src/x/hono.ts",
     "hono": "jsr:@hono/hono@^4.4.6"
   }
 }

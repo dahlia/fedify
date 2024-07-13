@@ -1,0 +1,7 @@
+.cov/
+.cov.lcov
+.dnt-import-map.json
+.test-report.xml
+apidoc/
+coverage/
+npm/

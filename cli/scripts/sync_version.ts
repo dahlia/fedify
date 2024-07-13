@@ -1,5 +1,5 @@
 import jsonPreserveIndent from "json-preserve-indent";
-import metadata from "../../deno.json" with { type: "json" };
+import metadata from "../../src/deno.json" with { type: "json" };
 
 const denoJsonPath = `${import.meta.dirname}/../deno.json`;
 const denoJson = await Deno.readTextFile(denoJsonPath);

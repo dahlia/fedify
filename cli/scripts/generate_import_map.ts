@@ -1,4 +1,4 @@
-import fedifyMetadata from "../../deno.json" with { type: "json" };
+import fedifyMetadata from "../../src/deno.json" with { type: "json" };
 import cliImportMap from "../import_map.json" with { type: "json" };
 
 const release = Deno.args[0] == "--release";
@@ -9,7 +9,7 @@ const fedifyImports = Object.fromEntries(
       k.replace(/^\./, "@fedify/fedify"),
       release
         ? `jsr:${k.replace(/^\./, `@fedify/fedify@^${fedifyMetadata.version}`)}`
-        : "../" + v,
+        : "../src/" + v,
     ]),
 );
 

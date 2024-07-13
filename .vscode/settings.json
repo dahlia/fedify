@@ -2,11 +2,6 @@
   "deno.enable": true,
   "deno.unstable": true,
   "files.eol": "\n",
-  "files.exclude": {
-    "cli": true,
-    "examples/blog": true,
-    "examples/hono-sample": true
-  },
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "yaml.completion": true,
@@ -17,6 +12,20 @@
     "https://json-schema.org/draft/2020-12/schema": "/codegen/schema.yaml"
   },
   "yaml.validate": true,
+  "[javascript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.sortImports": "always"
+    }
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "denoland.vscode-deno",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.sortImports": "always"
+    }
+  },
   "[json]": {
     "editor.defaultFormatter": "vscode.json-language-features",
     "editor.formatOnSave": true
@@ -32,7 +41,15 @@
       "source.sortImports": "always"
     }
   },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "denoland.vscode-deno",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.sortImports": "always"
+    }
+  },
   "cSpell.words": [
+    "aarch64",
     "activitypub",
     "aitertools",
     "apidoc",
@@ -56,6 +73,7 @@
     "fediverse",
     "Guppe",
     "halfyear",
+    "highligher",
     "hongminhee",
     "hono",
     "httpsig",
@@ -70,18 +88,21 @@
     "metas",
     "microblogging",
     "Misskey",
+    "msvc",
     "multibase",
     "multikey",
     "multitenancy",
     "nodeinfo",
     "phensley",
     "Pixelfed",
+    "poppanator",
     "proto",
     "redirections",
     "rels",
     "RSA-PKCS",
     "RSASSA-PKCS1",
     "setext",
+    "shiki",
     "spki",
     "SSRF",
     "subproperty",
@@ -90,6 +111,7 @@
     "tempserver",
     "unfollow",
     "unfollowing",
+    "uuidv7",
     "urlpattern",
     "vitepress",
     "webfinger"

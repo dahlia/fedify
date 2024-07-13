@@ -124,11 +124,11 @@ await build({
       await Deno.copyFile(`vocab/${entry.name}`, `npm/esm/vocab/${entry.name}`);
     }
     await Deno.copyFile("codegen/schema.yaml", "npm/esm/codegen/schema.yaml");
-    await Deno.copyFile("CHANGES.md", "npm/CHANGES.md");
-    await Deno.copyFile("FEDERATION.md", "npm/FEDERATION.md");
-    await Deno.copyFile("LICENSE", "npm/LICENSE");
-    await Deno.copyFile("logo.svg", "npm/logo.svg");
-    await Deno.copyFile("README.md", "npm/README.md");
+    await Deno.copyFile("../CHANGES.md", "npm/CHANGES.md");
+    await Deno.copyFile("../FEDERATION.md", "npm/FEDERATION.md");
+    await Deno.copyFile("../LICENSE", "npm/LICENSE");
+    await Deno.copyFile("../logo.svg", "npm/logo.svg");
+    await Deno.copyFile("../README.md", "npm/README.md");
   },
 });
 

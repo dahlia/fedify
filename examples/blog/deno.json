@@ -1,7 +1,7 @@
 {
   "lock": false,
   "tasks": {
-    "fedify-codegen": "cat ../../vocab/vocab.ts > /dev/null || (deno run --allow-read --allow-write --check ../../codegen/main.ts ../../vocab/ ../runtime/ > ../../vocab/vocab.ts && deno fmt ../../vocab/vocab.ts && deno cache ../../vocab/vocab.ts && deno check ../../vocab/vocab.ts)",
+    "fedify-codegen": "cat ../../src/vocab/vocab.ts > /dev/null || (deno run --allow-read --allow-write --check ../../src/codegen/main.ts ../../src/vocab/ ../runtime/ > ../../src/vocab/vocab.ts && deno fmt ../../src/vocab/vocab.ts && deno cache ../../src/vocab/vocab.ts && deno check ../../src/vocab/vocab.ts)",
     "generate-import-map": "deno run --allow-read --allow-write generate_import_map.ts",
     "codegen": "deno task fedify-codegen && deno task generate-import-map",
     "check": "deno task codegen && deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",

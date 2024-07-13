@@ -25,32 +25,36 @@ jobs:
       with:
         bun-version: latest
     - run: deno task cache
+      working-directory: ${{ github.workspace }}/src/
     - run: deno task test --coverage=.cov --junit-path=.test-report.xml
       env:
         RUST_BACKTRACE: ${{ runner.debug }}
+      working-directory: ${{ github.workspace }}/src/
     - uses: EnricoMi/publish-unit-test-result-action@v2
       if: runner.os == 'Linux' && always()
       with:
         check_name: "Test Results (Linux)"
-        files: .test-report.xml
+        files: src/.test-report.xml
     - uses: EnricoMi/publish-unit-test-result-action/macos@v2
       if: runner.os == 'macOS' && always()
       with:
         check_name: "Test Results (macOS)"
-        files: .test-report.xml
+        files: src/.test-report.xml
     - uses: EnricoMi/publish-unit-test-result-action/windows@v2
       if: runner.os == 'Windows' && always()
       with:
         check_name: "Test Results (Windows)"
-        files: .test-report.xml
+        files: src/.test-report.xml
     - run: deno coverage --lcov .cov > .cov.lcov
+      working-directory: ${{ github.workspace }}/src/
     - uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
-        file: .cov.lcov
+        file: src/.cov.lcov
     - run: deno task dnt
+      working-directory: ${{ github.workspace }}/src/
     - run: bun test_runner.js
-      working-directory: ${{ github.workspace }}/npm/
+      working-directory: ${{ github.workspace }}/src/npm/
 
   lint:
     runs-on: ubuntu-latest
@@ -60,6 +64,7 @@ jobs:
       with:
         deno-version: v1.x
     - run: deno task hooks:pre-commit
+      working-directory: ${{ github.workspace }}/src/
     - run: deno task check
       working-directory: ${{ github.workspace }}/examples/blog/
 
@@ -77,9 +82,11 @@ jobs:
       with:
         node-version: lts/*
     - run: deno task publish --dry-run
+      working-directory: ${{ github.workspace }}/src/
     - run: deno task dnt
+      working-directory: ${{ github.workspace }}/src/
     - run: npm publish --dry-run
-      working-directory: ${{ github.workspace }}/npm/
+      working-directory: ${{ github.workspace }}/src/npm/
     - run: deno task publish-dry-run
       working-directory: ${{ github.workspace }}/cli/
 
@@ -106,17 +113,21 @@ jobs:
           '.version = .version + "-dev." + $build + "+" + $commit' \
           deno.json > deno.json.tmp
         mv deno.json.tmp deno.json
+      working-directory: ${{ github.workspace }}/src/
     - if: github.ref_type == 'tag'
       run: |
         set -ex
         [[ "$(jq -r .version deno.json)" = "$GITHUB_REF_NAME" ]]
         ! grep -i "to be released" CHANGES.md
+      working-directory: ${{ github.workspace }}/src/
     # Don't know why, but the .gitignore list is not overriden by include list
     # in deno.json:
     - run: rm vocab/.gitignore
+      working-directory: ${{ github.workspace }}/src/
     - run: 'deno task dnt "$(jq -r .version deno.json)"'
+      working-directory: ${{ github.workspace }}/src/
     - run: npm pack
-      working-directory: ${{ github.workspace }}/npm/
+      working-directory: ${{ github.workspace }}/src/npm/
     - run: deno task pack
       working-directory: ${{ github.workspace }}/cli/
     - id: extract-changelog
@@ -136,7 +147,7 @@ jobs:
         body_path: ${{ steps.extract-changelog.outputs.output-file }}
         name: Fedify ${{ github.ref_name }}
         files: |
-          npm/*.tgz
+          src/npm/*.tgz
           cli/fedify-cli-*
         generate_release_notes: false
         discussion_category_name: Announcements
@@ -144,6 +155,7 @@ jobs:
         github.event_name == 'push' &&
         github.ref_type == 'tag' || github.ref == 'refs/heads/main'
       run: deno task publish --allow-dirty
+      working-directory: ${{ github.workspace }}/src/
     - if: |
         github.event_name == 'push' &&
         github.ref_type == 'tag' || github.ref == 'refs/heads/main'
@@ -162,7 +174,7 @@ jobs:
         fi
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
-      working-directory: ${{ github.workspace }}/npm/
+      working-directory: ${{ github.workspace }}/src/npm/
 
   publish-examples-blog:
     if: github.event_name == 'push'
@@ -177,6 +189,7 @@ jobs:
       with:
         deno-version: v1.x
     - run: deno task codegen
+      working-directory: ${{ github.workspace }}/src/
     - uses: denoland/deployctl@v1
       with:
         project: fedify-blog

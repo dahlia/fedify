@@ -1,7 +1,6 @@
-const fedifyImportMap = JSON.parse(
-  await Deno.readTextFile(`${import.meta.dirname}/../../deno.json`),
-).imports;
+import fedifyManifest from "../../src/deno.json" with { type: "json" };
 
+const fedifyImportMap = fedifyManifest.imports;
 const blogImportMap = JSON.parse(
   await Deno.readTextFile(`${import.meta.dirname}/import_map.json`),
 ).imports;

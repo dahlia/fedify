@@ -1,4 +1,4 @@
-import parentMetadata from "../../deno.json" with { type: "json" };
+import parentMetadata from "../../src/deno.json" with { type: "json" };
 import metadata from "../deno.json" with { type: "json" };
 
 if (metadata.version !== parentMetadata.version) {
