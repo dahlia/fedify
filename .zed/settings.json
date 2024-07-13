@@ -8,18 +8,12 @@
   "languages": {
     "TypeScript": {
       "language_servers": [
-        "deno",
-        "!typescript-language-server",
-        "!eslint",
-        "..."
+        "deno"
       ]
     },
     "TSX": {
       "language_servers": [
-        "deno",
-        "!typescript-language-server",
-        "!eslint",
-        "..."
+        "deno"
       ]
     }
   },
