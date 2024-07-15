@@ -745,6 +745,18 @@ test("Federation.setInboxDispatcher()", async (t) => {
     );
   });
 
+  await t.step("path match", () => {
+    const federation = createFederation<void>({
+      kv,
+      documentLoader: mockDocumentLoader,
+    });
+    federation.setInboxListeners("/users/{handle}/inbox");
+    federation.setInboxDispatcher(
+      "/users/{handle}/inbox",
+      () => ({ items: [] }),
+    );
+  });
+
   await t.step("wrong variables in path", () => {
     const federation = createFederation<void>({
       kv,
