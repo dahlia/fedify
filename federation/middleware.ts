@@ -1351,6 +1351,7 @@ export class Federation<TContextData> {
           "Path for inbox must have one variable: {handle}",
         );
       }
+      this.#inboxPath = inboxPath;
     }
     if (sharedInboxPath != null) {
       const siVars = this.#router.add(sharedInboxPath, "sharedInbox");
