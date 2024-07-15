@@ -128,6 +128,18 @@ To be released.
 [Astro]: https://astro.build/
 
 
+Version 0.11.3
+--------------
+
+Released on July 15, 2024.
+
+ -  Fixed a bug where use of `Federation.setInboxDispatcher()` after
+    `Federation.setInboxListeners()` had caused a `RouterError` to be
+    thrown even if the paths match.  [[#101] by Fabien O'Carroll]
+
+[#101]: https://github.com/dahlia/fedify/pull/101
+
+
 Version 0.11.2
 --------------
 
