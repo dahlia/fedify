@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.11.3
 --------------
 
-To be released.
+Released on July 15, 2024.
 
  -  Fixed a bug where use of `Federation.setInboxDispatcher()` after
     `Federation.setInboxListeners()` had caused a `RouterError` to be
