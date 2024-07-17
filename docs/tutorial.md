@@ -210,7 +210,7 @@ const federation = createFederation<void>({
 });
 ~~~~
 
-In the above code, we import the `createFederation` function from the Fedify
+In the above code, we import the `createFederation()` function from the Fedify
 framework to create a new `Federation` object.  We pass an object to the
 `createFederation()` function, which is the configuration object.
 The `kv` property is a key-value store that is used to store several internal
