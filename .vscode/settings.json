@@ -1,5 +1,11 @@
 {
   "deno.enable": true,
+  "deno.enablePaths": [
+    "cli",
+    "src",
+    "examples/blog",
+    "examples/hono-sample"
+  ],
   "deno.unstable": true,
   "files.eol": "\n",
   "files.insertFinalNewline": true,

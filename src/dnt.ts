@@ -55,6 +55,10 @@ await build({
     bugs: {
       url: "https://github.com/dahlia/fedify/issues",
     },
+    funding: [
+      "https://github.com/sponsors/dahlia",
+      "https://toss.me/hongminhee",
+    ],
   },
   outDir: "./npm",
   entryPoints,

@@ -1,17 +1,20 @@
 <!-- deno-fmt-ignore-file -->
 
-`fedify`: the CLI toolchain for debugging fediverse apps
-========================================================
+`fedify`: the CLI toolchain for Fedify and debugging ActivityPub
+================================================================
 
 [![JSR][JSR badge]][JSR]
+[![npm][npm badge]][npm]
 [![GitHub Releases][GitHub Releases badge]][GitHub Releases]
 
-The `fedify` is a CLI toolchain for debugging ActivityPub-enabled federated
-server apps.  Although it is primarily designed for developers who use [Fedify],
-it can be used with any ActivityPub-enabled server.
+The `fedify` is a CLI toolchain for Fedify and debugging ActivityPub-enabled
+federated server apps.  Although it is primarily designed for developers who use
+[Fedify], it can be used with any ActivityPub-enabled server.
 
 [JSR]: https://jsr.io/@fedify/cli
 [JSR badge]: https://jsr.io/badges/@fedify/cli
+[npm]: https://www.npmjs.com/package/@fedify/cli
+[npm badge]: https://img.shields.io/npm/v/@fedify/cli?logo=npm
 [GitHub Releases]: https://github.com/dahlia/fedify/releases
 [GitHub Releases badge]: https://img.shields.io/github/v/release/dahlia/fedify?sort=semver&logo=github
 [Fedify]: https://fedify.dev/
@@ -19,6 +22,26 @@ it can be used with any ActivityPub-enabled server.
 
 Installation
 ------------
+
+### Using npm
+
+If you have npm installed, you can install `fedify` by running the following
+command:
+
+~~~~ sh
+npm install -g @fedify/cli
+~~~~
+
+### Using Bun
+
+If you have [Bun] installed, you can install `fedify` by running the following
+command:
+
+~~~~ sh [Bun]
+bun install -g @fedify/cli
+~~~~
+
+[Bun]: https://bun.sh/
 
 ### Using Deno
 

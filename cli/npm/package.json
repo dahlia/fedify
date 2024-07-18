@@ -1,0 +1,54 @@
+{
+  "name": "@fedify/cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "files": [
+    "README.md",
+    "install.mjs",
+    "run.mjs"
+  ],
+  "bin": {
+    "fedify": "./run.mjs"
+  },
+  "scripts": {
+    "postinstall": "node install.mjs"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
+  "description": "CLI toolchain for Fedify and debugging ActivityPub",
+  "keywords": [
+    "fedify",
+    "activitypub",
+    "cli",
+    "fediverse"
+  ],
+  "homepage": "https://fedify.dev/cli",
+  "bugs": {
+    "url": "https://github.com/dahlia/fedify/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Hong Minhee",
+    "email": "hong@minhee.org",
+    "url": "https://hongminhee.org/"
+  },
+  "funding": [
+    "https://github.com/sponsors/dahlia",
+    "https://toss.me/hongminhee"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dahlia/fedify.git"
+  }
+}

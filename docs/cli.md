@@ -1,20 +1,41 @@
 ---
 description: >-
-  The fedify command is a CLI toolchain for debugging ActivityPub-enabled
-  federated server apps.  This section explains the key features of the fedify
-  command.
+  The fedify command is a CLI toolchain for Fedify and debugging
+  ActivityPub-enabled federated server apps.  This section explains the key
+  features of the fedify command.
 ---
 
 `fedify`: CLI toolchain
 =======================
 
-The `fedify` command is a CLI toolchain for debugging ActivityPub-enabled
-federated server apps.  Although it is primarily designed for developers who
-use Fedify, it can be used with any ActivityPub-enabled server.
+The `fedify` command is a CLI toolchain for Fedify and debugging
+ActivityPub-enabled federated server apps.  Although it is primarily designed
+for developers who use Fedify, it can be used with any ActivityPub-enabled
+server.
 
 
 Installation
 ------------
+
+### Using npm
+
+If you have [Node.js] or [Bun] installed, you can install `fedify` by running
+the following command:
+
+::: code-group
+
+~~~~ sh [Node.js]
+npm install -g @fedify/cli
+~~~~
+
+~~~~ sh [Bun]
+bun install -g @fedify/cli
+~~~~
+
+:::
+
+[Node.js]: https://nodejs.org/
+[Bun]: https://bun.sh/
 
 ### Using Deno
 

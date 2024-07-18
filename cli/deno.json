@@ -10,11 +10,13 @@
   "exclude": [
     ".vscode",
     "fedify-cli-*.tar.xz",
+    "fedify-cli-*.tgz",
     "fedify-cli-*.zip"
   ],
   "unstable": [
     "fs",
     "kv",
+    "process",
     "temporal"
   ],
   "tasks": {
@@ -26,6 +28,7 @@
     "run": "deno task codegen && deno run --allow-all mod.ts",
     "publish": "deno task codegen && deno task generate-import-map --release && deno publish",
     "publish-dry-run": "deno task codegen && deno publish --dry-run --allow-dirty",
-    "pack": "deno task codegen && deno run -A scripts/pack.ts"
+    "pack": "deno task codegen && deno run -A scripts/pack.ts",
+    "npm": "deno run --allow-read --allow-write --allow-run --allow-env npm/pack.ts"
   }
 }

@@ -130,6 +130,8 @@ jobs:
       working-directory: ${{ github.workspace }}/src/npm/
     - run: deno task pack
       working-directory: ${{ github.workspace }}/cli/
+    - run: 'deno task npm "$(jq -r .version deno.json)"'
+      working-directory: ${{ github.workspace }}/cli/
     - id: extract-changelog
       uses: dahlia/submark@5a5ff0a58382fb812616a5801402f5aef00f90ce
       with:
@@ -175,6 +177,14 @@ jobs:
       env:
         NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       working-directory: ${{ github.workspace }}/src/npm/
+    - if: github.event_name == 'push' && github.ref_type == 'tag'
+      run: |
+        set -ex
+        npm config set //registry.npmjs.org/:_authToken "$NPM_AUTH_TOKEN"
+        npm publish --provenance --access public fedify-cli-*.tgz
+      env:
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      working-directory: ${{ github.workspace }}/cli/
 
   publish-examples-blog:
     if: github.event_name == 'push'
