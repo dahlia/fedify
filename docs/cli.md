@@ -72,6 +72,96 @@ the appropriate executable for your platform and put it in your `PATH`.
 [releases]: https://github.com/dahlia/fedify/releases
 
 
+`fedify init`: Initializing a Fedify project
+--------------------------------------------
+
+*This command is available since Fedify 0.12.0.*
+
+The `fedify init` command is used to initialize a new Fedify project.
+It creates a new directory with the necessary files and directories for a
+Fedify project.  To create a new Fedify project, run the below command:
+
+~~~~ sh
+fedify init my-fedify-project
+~~~~
+
+The above command will start the interactive prompt to initialize a new Fedify
+project.  It will ask you a few questions to set up the project:
+
+ -  JavaScript runtime: [Deno], [Bun], or [Node.js]
+ -  Package manager (if Node.js): [npm], [pnpm], or [Yarn]
+ -  Web framework: Bare-bones, [Astro] (unless Deno), [Fresh] (if Deno),
+    or [Hono]
+ -  Key-value store: In-memory, [Redis], or [Deno KV] (if Deno)
+ -  Message queue: In-memory, [Redis], or [Deno KV] (if Deno)
+
+Alternatively, you can specify the options in the command line to skip some of
+interactive prompts:
+
+[npm]: https://www.npmjs.com/
+[pnpm]: https://pnpm.io/
+[Yarn]: https://yarnpkg.com/
+[Astro]: https://astro.build/
+[Fresh]: https://fresh.deno.dev/
+[Hono]: https://hono.dev/
+[Redis]: https://redis.io/
+[Deno KV]: https://deno.com/kv
+
+### `-r`/`--runtime`: JavaScript runtime
+
+You can specify the JavaScript runtime by using the `-r`/`--runtime` option.
+The available options are:
+
+ -  `deno`: [Deno]
+ -  `bun`: [Bun]
+ -  `node`: [Node.js]
+
+### `-p`/`--package-manager`: Node.js package manager
+
+If you choose Node.js as the JavaScript runtime, you can specify the package
+manager by using the `-p`/`--package-manager` option.  The available options
+are:
+
+ -  `npm`: [npm]
+ -  `pnpm`: [pnpm]
+ -  `yarn`: [Yarn]
+
+It's ignored if you choose Deno or Bun as the JavaScript runtime.
+
+### `-w`/`--web-framework`: Web framework
+
+You can specify the web framework to integrate with Fedify by using
+the `-w`/`--web-framework` option.  The available options are:
+
+ -  `astro`: [Astro] (unless Deno)
+ -  `fresh`: [Fresh] (if Deno)
+ -  `hono`: [Hono]
+
+If it's omitted, no web framework will be integrated.
+
+### `-k`/`--kv-store`: Key-value store
+
+You can specify the key-value store to use by using the `-k`/`--kv-store`
+option.  The available options are:
+
+ -  `redis`: [Redis]
+ -  `denokv`: [Deno KV]
+
+If it's omitted, the in-memory key-value store (which is for development
+purpose) will be used.
+
+### `-q`/`--message-queue`: Message queue
+
+You can specify the message queue to use by using the `-q`/`--message-queue`
+option.  The available options are:
+
+ -  `redis`: [Redis]
+ -  `denokv`: [Deno KV]
+
+If it's omitted, the in-process message queue (which is for development purpose)
+will be used.
+
+
 `fedify lookup`: Looking up an ActivityPub object
 -------------------------------------------------
 

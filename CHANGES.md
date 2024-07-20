@@ -8,6 +8,8 @@ Version 0.12.0
 
 To be released.
 
+ -  The `fedify` command is now [available on npm][@fedify/cli].  [[#104]]
+
  -  Incoming activities are now queued before being dispatched to the inbox
     listener if the `queue` option is provided to the `createFederation()`
     function.  [[#70]]
@@ -112,11 +114,14 @@ To be released.
      -  Added `createFetchOptions()` function.
      -  Added `ContextDataFactory` type.
 
+ -  Added `fedify init` subcommand.  [[#105]]
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
      -  `["fedify", "federation", "queue"]`
 
+[@fedify/cli]: https://www.npmjs.com/package/@fedify/cli
 [#6]: https://github.com/dahlia/fedify/issues/6
 [#50]: https://github.com/dahlia/fedify/issues/50
 [#53]: https://github.com/dahlia/fedify/issues/53
@@ -125,6 +130,8 @@ To be released.
 [#81]: https://github.com/dahlia/fedify/issues/81
 [#85]: https://github.com/dahlia/fedify/issues/85
 [#92]: https://github.com/dahlia/fedify/pull/92
+[#104]: https://github.com/dahlia/fedify/issues/104
+[#105]: https://github.com/dahlia/fedify/issues/105
 [Astro]: https://astro.build/
 
 
