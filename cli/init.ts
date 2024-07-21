@@ -198,7 +198,7 @@ export default app;
 `,
         "src/index.ts": runtime === "node"
           ? `\
-import { serve } from "@hono/node-server"
+import { serve } from "@hono/node-server";
 import app from "./app";
 
 serve(
@@ -523,7 +523,7 @@ export const command = new Command()
         files: {
           "main.ts": runtime === "node"
             ? `\
-import { serve } from '@hono/node-server'
+import { serve } from "@hono/node-server";
 import federation from "./federation";
 
 serve(
@@ -694,6 +694,18 @@ export default federation;
       dir,
       dependencies,
     );
+    if (runtime !== "deno") {
+      const devDependencies: Record<string, string> = {
+        "@biomejs/biome": "^1.8.3",
+      };
+      await addDependencies(
+        runtime,
+        packageManager,
+        dir,
+        devDependencies,
+        true,
+      );
+    }
     for (const [filename, content] of Object.entries(files)) {
       const path = join(dir, filename);
       const dirName = dirname(path);
@@ -701,38 +713,167 @@ export default federation;
       await Deno.writeTextFile(path, content);
     }
     if (runtime === "deno") {
-      const cfgPath = join(dir, "deno.json");
-      const cfg = JSON.parse(await Deno.readTextFile(cfgPath));
-      await Deno.writeTextFile(
-        cfgPath,
-        JSON.stringify(
-          {
-            ...cfg,
-            unstable: [
-              "temporal",
-              ...kvStoreDesc.denoUnstable ?? [],
-              ...mqDesc.denoUnstable ?? [],
-            ],
-            tasks: { ...cfg.tasks, ...initializer.tasks },
+      await rewriteJsonFile(
+        join(dir, "deno.json"),
+        {},
+        (cfg) => ({
+          ...cfg,
+          unstable: [
+            "temporal",
+            ...kvStoreDesc.denoUnstable ?? [],
+            ...mqDesc.denoUnstable ?? [],
+          ],
+          tasks: { ...cfg.tasks, ...initializer.tasks },
+        }),
+      );
+      await rewriteJsonFile(
+        join(dir, ".vscode", "settings.json"),
+        {},
+        (vsCodeSettings) => ({
+          "deno.enable": true,
+          "deno.unstable": true,
+          "editor.detectIndentation": false,
+          "editor.indentSize": 2,
+          "editor.insertSpaces": true,
+          "[javascript]": {
+            "editor.defaultFormatter": "denoland.vscode-deno",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.sortImports": "always",
+            },
           },
-          null,
-          2,
-        ),
+          "[javascriptreact]": {
+            "editor.defaultFormatter": "denoland.vscode-deno",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.sortImports": "always",
+            },
+          },
+          "[json]": {
+            "editor.defaultFormatter": "vscode.json-language-features",
+            "editor.formatOnSave": true,
+          },
+          "[jsonc]": {
+            "editor.defaultFormatter": "vscode.json-language-features",
+            "editor.formatOnSave": true,
+          },
+          "[typescript]": {
+            "editor.defaultFormatter": "denoland.vscode-deno",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.sortImports": "always",
+            },
+          },
+          "[typescriptreact]": {
+            "editor.defaultFormatter": "denoland.vscode-deno",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.sortImports": "always",
+            },
+          },
+          ...vsCodeSettings,
+        }),
+      );
+      await rewriteJsonFile(
+        join(dir, ".vscode", "extensions.json"),
+        {},
+        (vsCodeExtensions) => ({
+          recommendations: uniqueArray([
+            "denoland.vscode-deno",
+            ...vsCodeExtensions.recommendations ?? [],
+          ]),
+          ...vsCodeExtensions,
+        }),
       );
     } else {
-      const cfgPath = join(dir, "package.json");
-      const cfg = JSON.parse(await Deno.readTextFile(cfgPath));
-      await Deno.writeTextFile(
-        cfgPath,
-        JSON.stringify(
-          {
-            type: "module",
-            ...cfg,
-            scripts: { ...cfg.scripts, ...initializer.tasks },
+      await rewriteJsonFile(
+        join(dir, "package.json"),
+        {},
+        (cfg) => ({
+          type: "module",
+          ...cfg,
+          scripts: { ...cfg.scripts, ...initializer.tasks },
+        }),
+      );
+      await rewriteJsonFile(
+        join(dir, ".vscode", "settings.json"),
+        {},
+        (vsCodeSettings) => ({
+          "editor.detectIndentation": false,
+          "editor.indentSize": 2,
+          "editor.insertSpaces": true,
+          "[javascript]": {
+            "editor.defaultFormatter": "biomejs.biome",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.organizeImports.biome": "always",
+            },
           },
-          null,
-          2,
-        ),
+          "[javascriptreact]": {
+            "editor.defaultFormatter": "biomejs.biome",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.organizeImports.biome": "always",
+            },
+          },
+          "[json]": {
+            "editor.defaultFormatter": "biomejs.biome",
+            "editor.formatOnSave": true,
+          },
+          "[jsonc]": {
+            "editor.defaultFormatter": "biomejs.biome",
+            "editor.formatOnSave": true,
+          },
+          "[typescript]": {
+            "editor.defaultFormatter": "biomejs.biome",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.organizeImports.biome": "always",
+            },
+          },
+          "[typescriptreact]": {
+            "editor.defaultFormatter": "biomejs.biome",
+            "editor.formatOnSave": true,
+            "editor.codeActionsOnSave": {
+              "source.organizeImports.biome": "always",
+            },
+          },
+          ...vsCodeSettings,
+        }),
+      );
+      await rewriteJsonFile(
+        join(dir, ".vscode", "extensions.json"),
+        {},
+        (vsCodeExtensions) => ({
+          recommendations: uniqueArray([
+            "biomejs.biome",
+            ...vsCodeExtensions.recommendations ?? [],
+          ]),
+          ...vsCodeExtensions,
+        }),
+      );
+      await rewriteJsonFile(
+        join(dir, "biome.json"),
+        {},
+        (cfg) => ({
+          "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+          ...cfg,
+          organizeImports: {
+            ...cfg.organizeImports,
+            enabled: true,
+          },
+          formatter: {
+            ...cfg.formatter,
+            enabled: true,
+            indentStyle: "space",
+            indentWidth: 2,
+          },
+          linter: {
+            ...cfg.linter,
+            enabled: true,
+            rules: { recommended: true },
+          },
+        }),
       );
     }
     console.error(initializer.instruction);
@@ -788,6 +929,7 @@ async function addDependencies(
   pm: PackageManager,
   dir: string,
   dependencies: Record<string, string>,
+  dev: boolean = false,
 ): Promise<void> {
   const deps = Object.entries(dependencies)
     .map(([name, version]) =>
@@ -799,7 +941,13 @@ async function addDependencies(
   const cmd = new Deno.Command(
     runtime === "node" ? pm : runtime,
     {
-      args: ["add", ...deps],
+      args: [
+        "add",
+        ...(dev
+          ? [runtime === "bun" || pm === "yarn" ? "--dev" : "--save-dev"]
+          : []),
+        ...uniqueArray(deps),
+      ],
       cwd: dir,
       stdin: "inherit",
       stdout: "inherit",
@@ -828,3 +976,32 @@ async function getLatestFedifyVersion(version: string): Promise<string> {
   }
   return format(maxVersion);
 }
+
+async function rewriteJsonFile(
+  path: string,
+  // deno-lint-ignore no-explicit-any
+  empty: any,
+  // deno-lint-ignore no-explicit-any
+  rewriter: (json: any) => any,
+): Promise<void> {
+  let jsonText: string | null = null;
+  try {
+    jsonText = await Deno.readTextFile(path);
+  } catch (e) {
+    if (!(e instanceof Deno.errors.NotFound)) throw e;
+  }
+  let json = jsonText == null ? empty : JSON.parse(jsonText);
+  json = rewriter(json);
+  await Deno.mkdir(dirname(path), { recursive: true });
+  await Deno.writeTextFile(path, JSON.stringify(json, null, 2));
+}
+
+function uniqueArray<T extends boolean | number | string>(a: T[]): T[] {
+  const result: T[] = [];
+  for (const v of a) {
+    if (!result.includes(v)) result.push(v);
+  }
+  return result;
+}
+
+// cSpell: ignore denoland biomejs
