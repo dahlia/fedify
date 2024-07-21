@@ -15,7 +15,44 @@ export async function getDocumentLoader(): Promise<DocumentLoader> {
   const kv = new DenoKvStore(await Deno.openKv(path));
   return documentLoader = kvCache({
     kv,
-    loader: fetchDocumentLoader,
+    rules: [
+      [
+        new URLPattern({
+          protocol: "http{s}?",
+          hostname: "localhost",
+          port: "*",
+          pathname: "/*",
+          search: "*",
+          hash: "*",
+        }),
+        Temporal.Duration.from({ seconds: 0 }),
+      ],
+      [
+        new URLPattern({
+          protocol: "http{s}?",
+          hostname: "127.0.0.1",
+          port: "*",
+          pathname: "/*",
+          search: "*",
+          hash: "*",
+        }),
+        Temporal.Duration.from({ seconds: 0 }),
+      ],
+      [
+        new URLPattern({
+          protocol: "http{s}?",
+          hostname: "\\[\\:\\:1\\]",
+          port: "*",
+          pathname: "/*",
+          search: "*",
+          hash: "*",
+        }),
+        Temporal.Duration.from({ seconds: 0 }),
+      ],
+    ],
+    loader(url) {
+      return fetchDocumentLoader(url, true);
+    },
   });
 }
 

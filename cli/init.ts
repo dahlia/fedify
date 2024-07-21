@@ -134,7 +134,13 @@ To start the server, run the following command:
         colors.bold.green(
           runtime === "bun" ? "bun dev" : `${pm} run dev`,
         )
-      }`,
+      }
+
+Then, try look up an actor from your server:
+
+  ${colors.bold.green("fedify lookup http://localhost:4321/users/john")}
+
+`,
     }),
   },
   fresh: {
@@ -162,7 +168,12 @@ export const handler: Handler = integrateHandler(federation, () => undefined);
       instruction: `
 To start the server, run the following command:
 
-  ${colors.bold.green("deno task start")}`,
+  ${colors.bold.green("deno task start")}
+
+Then, try look up an actor from your server:
+
+  ${colors.bold.green("fedify lookup http://localhost:8000/users/john")}
+`,
     }),
   },
   hono: {
@@ -240,7 +251,12 @@ To start the server, run the following command:
             ? "bun dev"
             : `${pm} run dev`,
         )
-      }`,
+      }
+
+Then, try look up an actor from your server:
+
+  ${colors.bold.green("fedify lookup http://localhost:8000/users/john")}
+`,
     }),
   },
 } as const;
@@ -560,7 +576,12 @@ To start the server, run the following command:
               ? "bun dev"
               : `${packageManager} run dev`,
           )
-        }`,
+        }
+
+Then, try look up an actor from your server:
+
+  ${colors.bold.green("fedify lookup http://localhost:8000/users/john")}
+`,
       };
     } else {
       const desc = webFrameworks[webFramework];
@@ -714,7 +735,11 @@ export default federation;
         ),
       );
     }
-    console.log(initializer.instruction);
+    console.error(initializer.instruction);
+    console.error(`\
+Start by editing the ${colors.bold.blue(initializer.federationFile)} \
+file to define your federation!
+`);
   });
 
 function drawDinosaur() {
