@@ -107,9 +107,14 @@ To be released.
 
      -  The `fetchDocumentLoader()` function now throws an error when the given
         URL is not an HTTP or HTTPS URL or refers to a private network address.
+     -  Added an optional second parameter to the `fetchDocumentLoader()`
+        function, which can be used to allow fetching private network addresses.
      -  The `getAuthenticatedDocumentLoader()` function now returns a document
         loader that throws an error when the given URL is not an HTTP or HTTPS
         URL or refers to a private network address.
+     -  Added an optional second parameter to
+        the `getAuthenticatedDocumentLoader()` function, which can be used to
+        allow fetching private network addresses.
 
  -  Added `@fedify/fedify/x/astro` module for integrating with [Astro]
     middleware.  [[#50]]

@@ -4,7 +4,7 @@ import type { KvKey, KvStore } from "../federation/kv.ts";
 import { signRequest } from "../sig/http.ts";
 import { validateCryptoKey } from "../sig/key.ts";
 import preloadedContexts from "./contexts.ts";
-import { validatePublicUrl } from "./url.ts";
+import { UrlError, validatePublicUrl } from "./url.ts";
 
 const logger = getLogger(["fedify", "runtime", "docloader"]);
 
@@ -148,10 +148,13 @@ async function getRemoteDocument(
  * - <https://www.w3.org/ns/did/v1>
  * - <https://w3id.org/security/multikey/v1>
  * @param url The URL of the document to load.
+ * @param allowPrivateAddress Whether to allow fetching private network
+ *                            addresses.  Turned off by default.
  * @returns The remote document.
  */
 export async function fetchDocumentLoader(
   url: string,
+  allowPrivateAddress: boolean = false,
 ): Promise<RemoteDocument> {
   if (url in preloadedContexts) {
     logger.debug("Using preloaded context: {url}.", { url });
@@ -161,7 +164,16 @@ export async function fetchDocumentLoader(
       documentUrl: url,
     };
   }
-  await validatePublicUrl(url);
+  if (!allowPrivateAddress) {
+    try {
+      await validatePublicUrl(url);
+    } catch (error) {
+      if (error instanceof UrlError) {
+        logger.error("Disallowed private URL: {url}", { url, error });
+      }
+      throw error;
+    }
+  }
   const request = createRequest(url);
   logRequest(request);
   const response = await fetch(request, {
@@ -186,16 +198,28 @@ export async function fetchDocumentLoader(
  * the fetched documents.
  * @param identity The identity to get the document loader for.
  *                 The actor's key pair.
+ * @param allowPrivateAddress Whether to allow fetching private network
+ *                            addresses.  Turned off by default.
  * @returns The authenticated document loader.
  * @throws {TypeError} If the key is invalid or unsupported.
  * @since 0.4.0
  */
 export function getAuthenticatedDocumentLoader(
   identity: { keyId: URL; privateKey: CryptoKey },
+  allowPrivateAddress: boolean = false,
 ): DocumentLoader {
   validateCryptoKey(identity.privateKey);
   async function load(url: string): Promise<RemoteDocument> {
-    await validatePublicUrl(url);
+    if (!allowPrivateAddress) {
+      try {
+        await validatePublicUrl(url);
+      } catch (error) {
+        if (error instanceof UrlError) {
+          logger.error("Disallowed private URL: {url}", { url, error });
+        }
+        throw error;
+      }
+    }
     let request = createRequest(url);
     request = await signRequest(request, identity.privateKey, identity.keyId);
     logRequest(request);
