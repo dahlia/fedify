@@ -98,6 +98,10 @@ To be released.
      -  Removed `verify()` function.
      -  Removed `VerifyOptions` interface.
 
+ -  Fixed a bug where the `lookupWebFinger()` function had incorrectly queried
+    if the given `resource` was a URL starts with `http:` or had a non-default
+    port number.
+
  -  Fixed a SSRF vulnerability in the built-in document loader.
     [[CVE-2024-39687]]
 

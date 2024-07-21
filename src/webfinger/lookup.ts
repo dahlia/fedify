@@ -13,6 +13,7 @@ export async function lookupWebFinger(
   resource: URL | string,
 ): Promise<ResourceDescriptor | null> {
   if (typeof resource === "string") resource = new URL(resource);
+  let protocol = "https:";
   let server: string;
   if (resource.protocol === "acct:") {
     const atPos = resource.pathname.lastIndexOf("@");
@@ -20,9 +21,10 @@ export async function lookupWebFinger(
     server = resource.pathname.substring(atPos + 1);
     if (server === "") return null;
   } else {
-    server = resource.hostname;
+    protocol = resource.protocol;
+    server = resource.host;
   }
-  let url = new URL(`https://${server}/.well-known/webfinger`);
+  let url = new URL(`${protocol}//${server}/.well-known/webfinger`);
   url.searchParams.set("resource", resource.href);
   while (true) {
     logger.debug(
