@@ -8,13 +8,19 @@ prev:
   link: ./install.md
 ---
 
-Tutorial
-========
+In-depth tutorial
+=================
 
 In this tutorial, we will build a small federated server that can only accept
-follow requests.  Despite its simplicity, it will cover the key features of the
+follow requests to understand the basic concepts of the Fedify framework.
+Despite its simplicity, it will cover the key features of the
 ActivityPub protocol and the Fedify framework, such as actors, sending and
 receiving activities, and the inbox.
+
+This tutorial will not use the quick start project template created by the
+[`fedify init`](./cli.md#fedify-init-initializing-a-fedify-project) command.
+Instead, we will start from scratch to understand how the Fedify framework
+works without any boilerplate code.
 
 As prerequisite knowledge, you should have a basic understanding of
 JavaScript, command-line interfaces, and minimum experience with building
@@ -50,18 +56,19 @@ echo '{ "unstable": ["kv", "temporal"] }' > deno.json
 deno add @fedify/fedify
 ~~~~
 
+~~~~ sh [Bun]
+mkdir follow-server
+cd follow-server/
+echo '{ "type": "module" }' > package.json
+bun add @deno/kv @fedify/fedify
+~~~~
+
 ~~~~ sh [Node.js]
 mkdir follow-server
 cd follow-server/
 echo '{ "type": "module" }' > package.json
 npm add -D typescript tsx @types/node
 npm add @deno/kv @fedify/fedify @hono/node-server
-~~~~
-
-~~~~ sh [Bun]
-mkdir follow-server
-cd follow-server/
-bun add @deno/kv @fedify/fedify
 ~~~~
 
 :::
@@ -81,6 +88,16 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 }
 ~~~~
 
+~~~ json [Bun]
+{
+  "type": "module",
+  "dependencies": {
+    "@deno/kv": "^0.8.0",
+    "@fedify/fedify": "^0.12.0"
+  }
+}
+~~~
+
 ~~~ json [Node.js]
 {
   "type": "module",
@@ -96,16 +113,23 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 }
 ~~~
 
-~~~ json [Bun]
-{
-  "dependencies": {
-    "@deno/kv": "^0.8.0",
-    "@fedify/fedify": "^0.12.0"
-  }
-}
-~~~
-
 :::
+
+> [!NOTE]
+> The [`"unstable"`] field in the *deno.json* file is required because Fedify
+> uses [`Temporal`] API, which is an unstable feature in Deno as of
+> July 2024.  By adding `"temporal"` to the `"unstable"` field, you can use the
+> Fedify framework without any issues.
+
+> [!NOTE]
+> In Bun and Node.js, you need to add [`"type": "module"`] to the *package.json*
+> file because Fedify is an ESM-only package.
+
+> [!TIP]
+> Do you wonder why we need to add *[tsx]* and *@types/node* in the case of
+> Node.js?  It's because Fedify is written in TypeScript, and
+> Node.js doesn't support TypeScript out of the box.  By adding *tsx* and
+> *@types/node*, you can write TypeScript code in Node.js without any hassle.
 
 [^2]: The actual version number may vary depending on the latest version of the
       Fedify framework as of reading this tutorial.
@@ -113,6 +137,10 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 [Deno]: https://deno.com/
 [Bun]: https://bun.sh/
 [Node.js]: https://nodejs.org/
+[`"unstable"`]: https://docs.deno.com/runtime/manual/tools/unstable_flags/#configuring-flags-in-deno.json
+[`Temporal`]: https://tc39.es/proposal-temporal/docs/
+[`"type": "module"`]: https://nodejs.org/api/packages.html#type
+[tsx]: https://tsx.is/
 
 
 Creating the server
@@ -131,10 +159,8 @@ Deno.serve(request =>
 );
 ~~~~
 
-~~~~ typescript [Node.js]
-import { serve } from "@hono/node-server";
-
-serve({
+~~~~ typescript [Bun]
+Bun.serve({
   port: 8000,
   fetch(request) {
     return new Response("Hello, world", {
@@ -144,8 +170,10 @@ serve({
 });
 ~~~~
 
-~~~~ typescript [Bun]
-Bun.serve({
+~~~~ typescript [Node.js]
+import { serve } from "@hono/node-server";
+
+serve({
   port: 8000,
   fetch(request) {
     return new Response("Hello, world", {
@@ -166,12 +194,12 @@ request.  You can run the server by executing the following command:
 deno run -A server.ts
 ~~~~
 
-~~~~ sh [Node.js]
-node --import tsx server.ts
-~~~~
-
 ~~~~ sh [Bun]
 bun server.ts
+~~~~
+
+~~~~ sh [Node.js]
+node --import tsx server.ts
 ~~~~
 
 ::::
@@ -179,17 +207,17 @@ bun server.ts
 Now, open your web browser and navigate to <http://localhost:8000/>.  You should
 see the <q>Hello, world</q> message.
 
-As you can guess, [`Deno.serve()`] (in case of Deno), [`serve()`] (in case of
-Node.js), and [`Bun.serve()`] (in case of Bun) are a function to create an HTTP
+As you can guess, [`Deno.serve()`] (in case of Deno), [`Bun.serve()`] (in case
+of Bun), and [`serve()`] (in case of Node.js) are a function to create an HTTP
 server.  They take a callback function that receives a [`Request`] object and
 returns a [`Response`] object. The `Response` object is sent back to the client.
 
 This server is not federated yet, but it's a good starting point to build a
 federated server.
 
-[`Deno.serve()`]: https://deno.land/api?s=Deno.serve
-[`serve()`]: https://github.com/honojs/node-server?tab=readme-ov-file#usage
+[`Deno.serve()`]: https://docs.deno.com/api/deno/~/Deno.serve
 [`Bun.serve()`]: https://bun.sh/docs/api/http#bun-serve
+[`serve()`]: https://github.com/honojs/node-server?tab=readme-ov-file#usage
 [`Request`]: https://developer.mozilla.org/en-US/docs/Web/API/Request
 [`Response`]: https://developer.mozilla.org/en-US/docs/Web/API/Response
 
@@ -232,10 +260,8 @@ Deno.serve(
 );
 ~~~~
 
-~~~~ typescript{6} [Node.js]
-import { serve } from "@hono/node-server";
-
-serve({
+~~~~ typescript{4} [Bun]
+Bun.serve({
   port: 8000,
   fetch(request) {
     return federation.fetch(request, { contextData: undefined });
@@ -243,8 +269,10 @@ serve({
 });
 ~~~~
 
-~~~~ typescript{4} [Bun]
-Bun.serve({
+~~~~ typescript{6} [Node.js]
+import { serve } from "@hono/node-server";
+
+serve({
   port: 8000,
   fetch(request) {
     return federation.fetch(request, { contextData: undefined });
@@ -283,12 +311,12 @@ to the next step.
 > deno add @logtape/logtape
 > ~~~~
 >
-> ~~~~ sh [Node.js]
-> npm add @logtape/logtape
-> ~~~~
->
 > ~~~~ sh [Bun]
 > bun add @logtape/logtape
+> ~~~~
+>
+> ~~~~ sh [Node.js]
+> npm add @logtape/logtape
 > ~~~~
 >
 > :::
@@ -352,6 +380,32 @@ Deno.serve(
 );
 ~~~~
 
+~~~~ typescript{7-16} [Bun]
+import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
+
+const federation = createFederation<void>({
+  kv: new MemoryKvStore(),
+});
+
+federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  if (handle !== "me") return null;  // Other than "me" is not found.
+  return new Person({
+    id: ctx.getActorUri(handle),
+    name: "Me",  // Display name
+    summary: "This is me!",  // Bio
+    preferredUsername: handle,  // Bare handle
+    url: new URL("/", ctx.url),
+  });
+});
+
+Bun.serve({
+  port: 8000,
+  fetch(request) {
+    return federation.fetch(request, { contextData: undefined });
+  }
+});
+~~~~
+
 ~~~~ typescript{8-17} [Node.js]
 import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
 import { serve } from "@hono/node-server";
@@ -379,32 +433,6 @@ serve({
 });
 ~~~~
 
-~~~~ typescript{7-16} [Bun]
-import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
-
-const federation = createFederation<void>({
-  kv: new MemoryKvStore(),
-});
-
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  if (handle !== "me") return null;  // Other than "me" is not found.
-  return new Person({
-    id: ctx.getActorUri(handle),
-    name: "Me",  // Display name
-    summary: "This is me!",  // Bio
-    preferredUsername: handle,  // Bare handle
-    url: new URL("/", ctx.url),
-  });
-});
-
-Bun.serve({
-  port: 8000,
-  fetch(request) {
-    return federation.fetch(request, { contextData: undefined });
-  }
-});
-~~~~
-
 :::
 
 In the above code, we use the `Federation.setActorDispatcher()` method to set
@@ -423,12 +451,12 @@ WebFinger for the actor.  Run the server by executing the following command:
 deno run -A server.ts
 ~~~~
 
-~~~~ sh [Node.js]
-node --import tsx server.ts
+~~~~ sh [Bun]
+bun run server.ts
 ~~~~
 
-~~~~ sh [Bun]
-bun server.ts
+~~~~ sh [Node.js]
+node --import tsx server.ts
 ~~~~
 
 :::
@@ -557,12 +585,12 @@ To do this, you need to install the package:
 deno add @hongminhee/x-forwarded-fetch
 ~~~~
 
-~~~~ sh [Node.js]
-npm install x-forwarded-fetch
-~~~~
-
 ~~~~ sh [Bun]
 bun add x-forwarded-fetch
+~~~~
+
+~~~~ sh [Node.js]
+npm add x-forwarded-fetch
 ~~~~
 
 :::
@@ -580,6 +608,15 @@ Deno.serve(
 );
 ~~~~
 
+~~~~ typescript{1,5} [Bun]
+import { behindProxy } from "x-forwarded-fetch";
+
+Bun.serve({
+  port: 8000,
+  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined })),
+});
+~~~~
+
 ~~~~ typescript{2,6} [Node.js]
 import { serve } from "@hono/node-server";
 import { behindProxy } from "x-forwarded-fetch";
@@ -587,15 +624,6 @@ import { behindProxy } from "x-forwarded-fetch";
 serve({
   port: 8000,
   fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined }),
-});
-~~~~
-
-~~~~ typescript{1,5} [Bun]
-import { behindProxy } from "x-forwarded-fetch";
-
-Bun.serve({
-  port: 8000,
-  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined })),
 });
 ~~~~
 
@@ -610,12 +638,12 @@ then run the server again:
 deno run -A server.ts
 ~~~~
 
-~~~~ sh [Node.js]
-node --import tsx server.ts
+~~~~ sh [Bun]
+bun run server.ts
 ~~~~
 
-~~~~ sh [Bun]
-bun server.ts
+~~~~ sh [Node.js]
+node --import tsx server.ts
 ~~~~
 
 :::
@@ -793,10 +821,12 @@ federation
   });
 ~~~~
 
-~~~~ typescript{15-16,19-39} [Node.js]
+~~~~ typescript{15-16,19-39} [Bun]
+import { serialize as encodeV8, deserialize as decodeV8 } from "node:v8";
 import { openKv } from "@deno/kv";
 
-const kv = await openKv("kv.db");  // Open the key-value store
+// Open the key-value store:
+const kv = await openKv("kv.db", { encodeV8, decodeV8 });
 
 federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
@@ -838,12 +868,10 @@ federation
   });
 ~~~~
 
-~~~~ typescript{15-16,19-39} [Bun]
-import { serialize as encodeV8, deserialize as decodeV8 } from "node:v8";
+~~~~ typescript{15-16,19-39} [Node.js]
 import { openKv } from "@deno/kv";
 
-// Open the key-value store:
-const kv = await openKv("kv.db", { encodeV8, decodeV8 });
+const kv = await openKv("kv.db");  // Open the key-value store
 
 federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
@@ -1039,8 +1067,8 @@ Deno.serve(async (request) => {
 });
 ~~~~
 
-~~~~ typescript{4-18} [Node.js]
-serve({
+~~~~ typescript{4-18} [Bun]
+Bun.serve({
   port: 8000,
   async fetch(request) {
     const url = new URL(request.url);
@@ -1065,8 +1093,8 @@ serve({
 });
 ~~~~
 
-~~~~ typescript{4-18} [Bun]
-Bun.serve({
+~~~~ typescript{4-18} [Node.js]
+serve({
   port: 8000,
   async fetch(request) {
     const url = new URL(request.url);
@@ -1143,12 +1171,16 @@ Exercises
     activity.
 
  -  Integration with a web framework: In the above example, we hard-coded
-    the home page inside the callback function passed to the `Deno.serve()`.
-    Instead, you can use a web framework like [Fresh] to utilize the proper
-    routing system and [JSX] templates to produce HTML.
+    the home page inside the callback function passed to `Deno.serve()`
+    (in case of Deno), `Bun.serve()` (in case of Bun), and `serve()` (in case
+    of Node.js).  This is not enough for a real-world application as you would
+    need to rendering HTML templates, handling media files, and so on.
+    Instead, you can use a web framework like [Hono] or [Fresh] to utilize
+    the proper routing system and [JSX] templates to produce HTML.
 
     See also the [*Integration* section](./manual/integration.md) in
     the manual for more details.
 
+[Hono]: https://hono.dev/
 [Fresh]: https://fresh.deno.dev/
 [JSX]: https://facebook.github.io/jsx/

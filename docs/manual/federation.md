@@ -214,6 +214,83 @@ same path.
 Turned off by default.
 
 
+The `~Federation.fetch()` API
+-----------------------------
+
+*This API is available since Fedify 0.6.0.*
+
+The `Federation` object provides the `~Federation.fetch()` method to handle
+incoming HTTP requests.  The `~Federation.fetch()` method takes an incoming
+[`Request`] and returns a [`Response`].
+
+Actually, this interface is de facto standard in the server-side JavaScript
+world, and it is inspired by the [`window.fetch()`] method in the browser
+environment.
+
+Therefore, you can pass it to the [`Deno.serve()`] function in [Deno], and
+the [`Bun.serve()`] function in [Bun]:
+
+::: code-group
+
+~~~~ typescript [Deno]
+Deno.serve(
+  (request) => federation.fetch(request, { contextData: undefined })
+);
+~~~~
+
+~~~~ typescript [Bun]
+Bun.serve({
+  fetch: (request) => federation.fetch(request, { contextData: undefined }),
+})
+~~~~
+
+:::
+
+However, in case of [Node.js], it has no built-in server API that takes
+`fetch()` callback function like Deno or Bun.  Instead, you need to use
+[@hono/node-server] package to adapt the `~Federation.fetch()` method to
+the Node.js' HTTP server API:
+
+::: code-group
+
+~~~~ sh [Node.js]
+npm add @hono/node-server
+~~~~
+
+:::
+
+And then, you can use the [`serve()`] function from the package:
+
+::: code-group
+
+~~~~ typescript [Node.js]
+import { serve } from "@hono/node-server";
+
+serve({
+  fetch: (request) => federation.fetch(request, { contextData: undefined }),
+})
+~~~~
+
+:::
+
+> [!NOTE]
+>
+> Although a `Federation` object can be directly passed to the HTTP server
+> APIs, you would usually integrate it with a web framework.  For details,
+> see the [*Integration* section](./integration.md).
+
+[`Request`]: https://developer.mozilla.org/en-US/docs/Web/API/Request
+[`Response`]: https://developer.mozilla.org/en-US/docs/Web/API/Response
+[`window.fetch()`]: https://developer.mozilla.org/en-US/docs/Web/API/Window/fetch
+[`Deno.serve()`]: https://docs.deno.com/api/deno/~/Deno.serve
+[Deno]: http://deno.com/
+[`Bun.serve()`]: https://bun.sh/docs/api/http#bun-serve
+[Bun]: https://bun.sh/
+[Node.js]: https://nodejs.org/
+[@hono/node-server]: https://github.com/honojs/node-server
+[`serve()`]: https://github.com/honojs/node-server?tab=readme-ov-file#usage
+
+
 How the `Federation` object recognizes the domain name
 ------------------------------------------------------
 
