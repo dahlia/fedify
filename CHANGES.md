@@ -86,7 +86,7 @@ To be released.
      -  Added `VerifyRequestOptions.keyCache` property.
      -  Added `VerifyProofOptions.keyCache` property.
      -  Added `VerifyObjectOptions.keyCache` property.
-     -  Added `FederationKvPrefixes.publicKeyCache` property.
+     -  Added `FederationKvPrefixes.publicKey` property.
 
  -  The built-in document loaders now recognize JSON-LD context provided in
     an HTTP `Link` header. [[#6]]

@@ -80,6 +80,12 @@ that the `Federation` object uses:
 :   The key prefix used for storing remote JSON-LD documents.
     `["_fedify", "remoteDocument"]` by default.
 
+`~FederationKvPrefixes.publicKey`
+:   *This API is available since Fedify 0.12.0.*
+
+    The key prefix used for caching public keys.  `["_fedify", "publicKey"]`
+    by default.
+
 ### `queue`
 
 *This API is available since Fedify 0.5.0.*

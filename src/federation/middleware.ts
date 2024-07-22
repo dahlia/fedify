@@ -246,11 +246,11 @@ export interface FederationKvPrefixes {
   remoteDocument: KvKey;
 
   /**
-   * The key prefix used for caching public keys.  `["_fedify", "publicKey"]`
-   * by default.
+   * The key prefix used for caching public keys.
+   * `["_fedify", "publicKey"]` by default.
    * @since 0.12.0
    */
-  publicKeyCache: KvKey;
+  publicKey: KvKey;
 }
 
 const invokedByCreateFederation = Symbol("invokedByCreateFederation");
@@ -335,7 +335,7 @@ export class Federation<TContextData> {
       ...({
         activityIdempotence: ["_fedify", "activityIdempotence"],
         remoteDocument: ["_fedify", "remoteDocument"],
-        publicKeyCache: ["_fedify", "publicKey"],
+        publicKey: ["_fedify", "publicKey"],
       } satisfies FederationKvPrefixes),
       ...(options.kvPrefixes ?? {}),
     };

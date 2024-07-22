@@ -317,7 +317,7 @@ export interface InboxHandlerParameters<TContextData> {
   kv: KvStore;
   kvPrefixes: {
     activityIdempotence: KvKey;
-    publicKeyCache: KvKey;
+    publicKey: KvKey;
   };
   queue?: MessageQueue;
   actorDispatcher?: ActorDispatcher<TContextData>;
@@ -374,7 +374,7 @@ export async function handleInbox<TContextData>(
   const keyCache: KeyCache = {
     async get(keyId: URL) {
       const serialized = await kv.get([
-        ...kvPrefixes.publicKeyCache,
+        ...kvPrefixes.publicKey,
         keyId.href,
       ]);
       if (serialized == null) return null;
@@ -391,7 +391,7 @@ export async function handleInbox<TContextData>(
     },
     async set(keyId: URL, key: CryptographicKey | Multikey) {
       const serialized = await key.toJsonLd(context);
-      await kv.set([...kvPrefixes.publicKeyCache, keyId.href], serialized);
+      await kv.set([...kvPrefixes.publicKey, keyId.href], serialized);
     },
   };
   let activity: Activity | null;
