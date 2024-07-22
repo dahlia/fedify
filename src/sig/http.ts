@@ -3,7 +3,7 @@ import { equals } from "@std/bytes";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { CryptographicKey } from "../vocab/vocab.ts";
-import { fetchKey, validateCryptoKey } from "./key.ts";
+import { fetchKey, type KeyCache, validateCryptoKey } from "./key.ts";
 
 /**
  * Signs a request using the given private key.
@@ -94,6 +94,12 @@ export interface VerifyRequestOptions {
    * useful for testing.
    */
   currentTime?: Temporal.Instant;
+
+  /**
+   * The key cache to use for caching public keys.
+   * @since 0.12.0
+   */
+  keyCache?: KeyCache;
 }
 
 /**
@@ -111,10 +117,11 @@ export interface VerifyRequestOptions {
  */
 export async function verifyRequest(
   request: Request,
-  { documentLoader, contextLoader, timeWindow, currentTime }:
+  { documentLoader, contextLoader, timeWindow, currentTime, keyCache }:
     VerifyRequestOptions = {},
 ): Promise<CryptographicKey | null> {
   const logger = getLogger(["fedify", "sig", "http"]);
+  const originalRequest = request;
   request = request.clone();
   const dateHeader = request.headers.get("Date");
   if (dateHeader == null) {
@@ -225,11 +232,13 @@ export async function verifyRequest(
     return null;
   }
   const { keyId, headers, signature } = sigValues;
-  const key = await fetchKey(new URL(keyId), CryptographicKey, {
+  const keyResult = await fetchKey(new URL(keyId), CryptographicKey, {
     documentLoader,
     contextLoader,
+    keyCache,
   });
-  if (key == null) return null;
+  if (keyResult == null) return null;
+  const { key, cached } = keyResult;
   const headerNames = headers.split(/\s+/g);
   if (
     !headerNames.includes("(request-target)") || !headerNames.includes("date")
@@ -266,11 +275,31 @@ export async function verifyRequest(
     new TextEncoder().encode(message),
   );
   if (!verified) {
+    if (cached) {
+      logger.debug(
+        "Failed to verify with the cached key {keyId}; signature {signature} " +
+          "is invalid.  Retrying with the freshly fetched key...",
+        { keyId, signature, message },
+      );
+      return await verifyRequest(
+        originalRequest,
+        {
+          documentLoader,
+          contextLoader,
+          timeWindow,
+          currentTime,
+          keyCache: {
+            get: () => Promise.resolve(null),
+            set: async (keyId, key) => await keyCache?.set(keyId, key),
+          },
+        },
+      );
+    }
     logger.debug(
-      "Failed to verify; signature {signature} is invalid.  " +
-        "Check if the key is correct or if the signed message is correct.  " +
-        "The message to sign is:\n{message}",
-      { signature, message },
+      "Failed to verify with the fetched key {keyId}; signature {signature} " +
+        "is invalid.  Check if the key is correct or if the signed message " +
+        "is correct.  The message to sign is:\n{message}",
+      { keyId, signature, message },
     );
     return null;
   }

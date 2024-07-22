@@ -2,13 +2,15 @@ import { getLogger } from "@logtape/logtape";
 import { accepts } from "@std/http/negotiation";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
+import type { KeyCache } from "../sig/key.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { verifyObject } from "../sig/proof.ts";
 import type { Recipient } from "../vocab/actor.ts";
 import {
   Activity,
-  type CryptographicKey,
+  CryptographicKey,
   Link,
+  Multikey,
   Object,
   OrderedCollection,
   OrderedCollectionPage,
@@ -313,7 +315,10 @@ export interface InboxHandlerParameters<TContextData> {
   handle: string | null;
   context: RequestContext<TContextData>;
   kv: KvStore;
-  kvPrefix: KvKey;
+  kvPrefixes: {
+    activityIdempotence: KvKey;
+    publicKeyCache: KvKey;
+  };
   queue?: MessageQueue;
   actorDispatcher?: ActorDispatcher<TContextData>;
   inboxListeners?: InboxListenerSet<TContextData>;
@@ -328,7 +333,7 @@ export async function handleInbox<TContextData>(
     handle,
     context,
     kv,
-    kvPrefix,
+    kvPrefixes,
     queue,
     actorDispatcher,
     inboxListeners,
@@ -366,9 +371,36 @@ export async function handleInbox<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
+  const keyCache: KeyCache = {
+    async get(keyId: URL) {
+      const serialized = await kv.get([
+        ...kvPrefixes.publicKeyCache,
+        keyId.href,
+      ]);
+      if (serialized == null) return null;
+      let object: Object;
+      try {
+        object = await Object.fromJsonLd(serialized, context);
+      } catch {
+        return null;
+      }
+      if (object instanceof CryptographicKey || object instanceof Multikey) {
+        return object;
+      }
+      return null;
+    },
+    async set(keyId: URL, key: CryptographicKey | Multikey) {
+      const serialized = await key.toJsonLd(context);
+      await kv.set([...kvPrefixes.publicKeyCache, keyId.href], serialized);
+    },
+  };
   let activity: Activity | null;
   try {
-    activity = await verifyObject(Activity, json, context);
+    activity = await verifyObject(Activity, json, {
+      contextLoader: context.contextLoader,
+      documentLoader: context.documentLoader,
+      keyCache,
+    });
   } catch (error) {
     logger.error("Failed to parse activity:\n{error}", { handle, json, error });
     try {
@@ -387,8 +419,10 @@ export async function handleInbox<TContextData>(
   let httpSigKey: CryptographicKey | null = null;
   if (activity == null) {
     const key = await verifyRequest(request, {
-      ...context,
+      contextLoader: context.contextLoader,
+      documentLoader: context.documentLoader,
       timeWindow: signatureTimeWindow,
+      keyCache,
     });
     if (key == null) {
       logger.error("Failed to verify the request signature.", { handle });
@@ -403,7 +437,7 @@ export async function handleInbox<TContextData>(
   }
   const cacheKey = activity.id == null
     ? null
-    : [...kvPrefix, activity.id.href] satisfies KvKey;
+    : [...kvPrefixes.activityIdempotence, activity.id.href] satisfies KvKey;
   if (cacheKey != null) {
     const cached = await kv.get(cacheKey);
     if (cached === true) {

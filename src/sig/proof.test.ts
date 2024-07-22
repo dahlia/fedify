@@ -13,11 +13,13 @@ import {
 import { test } from "../testing/mod.ts";
 import {
   Create,
+  type CryptographicKey,
   DataIntegrityProof,
   Multikey,
   Note,
   Place,
 } from "../vocab/vocab.ts";
+import type { KeyCache } from "./key.ts";
 import {
   createProof,
   signObject,
@@ -263,9 +265,19 @@ test("signObject()", async () => {
 });
 
 test("verifyProof()", async () => {
+  const cache: Record<string, CryptographicKey | Multikey> = {};
   const options: VerifyProofOptions = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
+    keyCache: {
+      get(keyId) {
+        return Promise.resolve(cache[keyId.href] ?? null);
+      },
+      set(keyId, key) {
+        cache[keyId.href] = key;
+        return Promise.resolve();
+      },
+    } satisfies KeyCache,
   };
   // Test vector from <https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.feature>:
   const jsonLd = {
@@ -301,15 +313,29 @@ test("verifyProof()", async () => {
     ),
     created: Temporal.Instant.from("2023-02-24T23:36:38Z"),
   });
+  const expectedKey = new Multikey({
+    id: new URL("https://server.example/users/alice#ed25519-key"),
+    controller: new URL("https://server.example/users/alice"),
+    publicKey: await importMultibaseKey(
+      "z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2",
+    ),
+  });
   assertEquals(
     await verifyProof(jsonLd, proof, options),
-    new Multikey({
-      id: new URL("https://server.example/users/alice#ed25519-key"),
-      controller: new URL("https://server.example/users/alice"),
-      publicKey: await importMultibaseKey(
-        "z6MkrJVnaZkeFzdQyMZu1cgjg7k1pZZ6pvBQ7XJPt4swbTQ2",
-      ),
-    }),
+    expectedKey,
+  );
+  assertEquals(
+    cache["https://server.example/users/alice#ed25519-key"],
+    expectedKey,
+  );
+  cache["https://server.example/users/alice#ed25519-key"] = ed25519Multikey;
+  assertEquals(
+    await verifyProof(jsonLd, proof, options),
+    expectedKey,
+  );
+  assertEquals(
+    cache["https://server.example/users/alice#ed25519-key"],
+    expectedKey,
   );
 
   const jsonLd2 = { ...jsonLd, object: { ...jsonLd.object, content: "bye" } };

@@ -4,7 +4,12 @@ import { Activity, Multikey } from "../vocab/vocab.ts";
 import serialize from "json-canon";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { DataIntegrityProof, type Object } from "../vocab/vocab.ts";
-import { fetchKey, validateCryptoKey } from "./key.ts";
+import {
+  fetchKey,
+  type FetchKeyResult,
+  type KeyCache,
+  validateCryptoKey,
+} from "./key.ts";
 
 const logger = getLogger(["fedify", "sig", "proof"]);
 
@@ -137,6 +142,12 @@ export interface VerifyProofOptions {
    * The document loader for loading remote JSON-LD documents.
    */
   documentLoader?: DocumentLoader;
+
+  /**
+   * The key cache to use for caching public keys.
+   * @since 0.12.0
+   */
+  keyCache?: KeyCache;
 }
 
 /**
@@ -188,20 +199,42 @@ export async function verifyProof(
   const digest = new Uint8Array(proofDigest.byteLength + msgDigest.byteLength);
   digest.set(new Uint8Array(proofDigest), 0);
   digest.set(new Uint8Array(msgDigest), proofDigest.byteLength);
-  let publicKey: Multikey & { publicKey: CryptoKey } | null;
+  let fetchedKey: FetchKeyResult<Multikey> | null;
   try {
-    publicKey = await publicKeyPromise;
+    fetchedKey = await publicKeyPromise;
   } catch (error) {
     logger.debug(
       "Failed to get the key (verificationMethod) for the proof:\n{proof}",
-      { proof, error },
+      { proof, keyId: proof.verificationMethodId.href, error },
     );
     return null;
   }
-  if (publicKey == null || publicKey.publicKey.algorithm.name !== "Ed25519") {
+  if (fetchedKey == null) {
     logger.debug(
-      "The key (verificationMethod) for the proof is not a valid Ed25519 " +
-        "key:\n{keyId}",
+      "Failed to get the key (verificationMethod) for the proof:\n{proof}",
+      { proof, keyId: proof.verificationMethodId.href },
+    );
+    return null;
+  }
+  const publicKey = fetchedKey.key;
+  if (publicKey.publicKey.algorithm.name !== "Ed25519") {
+    if (fetchedKey.cached) {
+      logger.debug(
+        "The cached key (verificationMethod) for the proof is not a valid " +
+          "Ed25519 key:\n{keyId}; retrying with the freshly fetched key...",
+        { proof, keyId: proof.verificationMethodId.href },
+      );
+      return await verifyProof(jsonLd, proof, {
+        ...options,
+        keyCache: {
+          get: () => Promise.resolve(null),
+          set: async (keyId, key) => await options.keyCache?.set(keyId, key),
+        },
+      });
+    }
+    logger.debug(
+      "The fetched key (verificationMethod) for the proof is not a valid " +
+        "Ed25519 key:\n{keyId}",
       { proof, keyId: proof.verificationMethodId.href },
     );
     return null;
@@ -213,7 +246,24 @@ export async function verifyProof(
     digest,
   );
   if (!verified) {
-    logger.debug("The proof's signature is invalid.", { proof });
+    if (fetchedKey.cached) {
+      logger.debug(
+        "Failed to verify the proof with the cached key {keyId}; retrying " +
+          "with the freshly fetched key...",
+        { keyId: proof.verificationMethodId.href, proof },
+      );
+      return await verifyProof(jsonLd, proof, {
+        ...options,
+        keyCache: {
+          get: () => Promise.resolve(null),
+          set: async (keyId, key) => await options.keyCache?.set(keyId, key),
+        },
+      });
+    }
+    logger.debug(
+      "Failed to verify the proof with the fetched key {keyId}:\n{proof}",
+      { keyId: proof.verificationMethodId.href, proof },
+    );
     return null;
   }
   return publicKey;

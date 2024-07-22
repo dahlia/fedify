@@ -145,6 +145,28 @@ export interface FetchKeyOptions {
    * The context loader for loading remote JSON-LD contexts.
    */
   contextLoader?: DocumentLoader;
+
+  /**
+   * The key cache to use for caching public keys.
+   * @since 0.12.0
+   */
+  keyCache?: KeyCache;
+}
+
+/**
+ * The result of {@link fetchKey}.
+ * @since 0.12.0
+ */
+export interface FetchKeyResult<T extends CryptographicKey | Multikey> {
+  /**
+   * The fetched (or cached) key.
+   */
+  readonly key: T & { publicKey: CryptoKey };
+
+  /**
+   * Whether the key is fetched from the cache.
+   */
+  readonly cached: boolean;
 }
 
 /**
@@ -172,10 +194,21 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
       },
     ): Promise<T>;
   },
-  { documentLoader, contextLoader }: FetchKeyOptions = {},
-): Promise<T & { publicKey: CryptoKey } | null> {
+  { documentLoader, contextLoader, keyCache }: FetchKeyOptions = {},
+): Promise<FetchKeyResult<T> | null> {
   const logger = getLogger(["fedify", "sig", "key"]);
+  const cacheKey = typeof keyId === "string" ? new URL(keyId) : keyId;
   keyId = typeof keyId === "string" ? keyId : keyId.href;
+  if (keyCache != null) {
+    const cachedKey = await keyCache.get(cacheKey);
+    if (cachedKey instanceof cls && cachedKey.publicKey != null) {
+      logger.debug("Key {keyId} found in cache.", { keyId });
+      return {
+        key: cachedKey as T & { publicKey: CryptoKey },
+        cached: true,
+      };
+    }
+  }
   logger.debug("Fetching key {keyId} to verify signature...", { keyId });
   let document: unknown;
   try {
@@ -244,5 +277,31 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
     );
     return null;
   }
-  return key as T & { publicKey: CryptoKey };
+  if (keyCache != null) {
+    await keyCache.set(cacheKey, key);
+    logger.debug("Key {keyId} cached.", { keyId });
+  }
+  return {
+    key: key as T & { publicKey: CryptoKey },
+    cached: false,
+  };
+}
+
+/**
+ * A cache for storing cryptographic keys.
+ * @since 0.12.0
+ */
+export interface KeyCache {
+  /**
+   * Gets a key from the cache.
+   * @param keyId The key ID.
+   */
+  get(keyId: URL): Promise<CryptographicKey | Multikey | null>;
+
+  /**
+   * Sets a key to the cache.
+   * @param keyId The key ID.
+   * @param key The key to cache.
+   */
+  set(keyId: URL, key: CryptographicKey | Multikey): Promise<void>;
 }

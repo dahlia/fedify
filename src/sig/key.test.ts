@@ -15,6 +15,7 @@ import {
   type FetchKeyOptions,
   generateCryptoKeyPair,
   importJwk,
+  type KeyCache,
   validateCryptoKey,
 } from "./key.ts";
 
@@ -199,22 +200,40 @@ test("importJwk()", async () => {
 });
 
 test("fetchKey()", async () => {
+  const cache: Record<string, CryptographicKey | Multikey> = {};
   const options: FetchKeyOptions = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
+    keyCache: {
+      get(keyId) {
+        return Promise.resolve(cache[keyId.href] ?? null);
+      },
+      set(keyId, key) {
+        cache[keyId.href] = key;
+        return Promise.resolve();
+      },
+    } satisfies KeyCache,
   };
   assertEquals(
     await fetchKey("https://example.com/nothing", CryptographicKey, options),
     null,
   );
+  assertEquals(cache, {});
   assertEquals(
     await fetchKey("https://example.com/object", CryptographicKey, options),
     null,
   );
+  assertEquals(cache, {});
   assertEquals(
     await fetchKey("https://example.com/key", CryptographicKey, options),
-    rsaPublicKey1,
+    { key: rsaPublicKey1, cached: false },
   );
+  assertEquals(cache, { "https://example.com/key": rsaPublicKey1 });
+  assertEquals(
+    await fetchKey("https://example.com/key", CryptographicKey, options),
+    { key: rsaPublicKey1, cached: true },
+  );
+  assertEquals(cache, { "https://example.com/key": rsaPublicKey1 });
   assertEquals(
     await fetchKey(
       "https://example.com/person#no-key",
@@ -223,20 +242,57 @@ test("fetchKey()", async () => {
     ),
     null,
   );
+  assertEquals(cache, { "https://example.com/key": rsaPublicKey1 });
   assertEquals(
     await fetchKey(
       "https://example.com/person2#key3",
       CryptographicKey,
       options,
     ),
-    rsaPublicKey3,
+    { key: rsaPublicKey3, cached: false },
   );
+  assertEquals(cache, {
+    "https://example.com/key": rsaPublicKey1,
+    "https://example.com/person2#key3": rsaPublicKey3,
+  });
+  assertEquals(
+    await fetchKey(
+      "https://example.com/person2#key3",
+      CryptographicKey,
+      options,
+    ),
+    { key: rsaPublicKey3, cached: true },
+  );
+  assertEquals(cache, {
+    "https://example.com/key": rsaPublicKey1,
+    "https://example.com/person2#key3": rsaPublicKey3,
+  });
   assertEquals(
     await fetchKey(
       "https://example.com/person2#key4",
       Multikey,
       options,
     ),
-    ed25519Multikey,
+    { key: ed25519Multikey, cached: false },
+  );
+  assertEquals(cache, {
+    "https://example.com/key": rsaPublicKey1,
+    "https://example.com/person2#key3": rsaPublicKey3,
+    "https://example.com/person2#key4": ed25519Multikey,
+  });
+  assertEquals(
+    await fetchKey(
+      "https://example.com/person2#key4",
+      Multikey,
+      options,
+    ),
+    { key: ed25519Multikey, cached: true },
+  );
+  assertEquals(
+    await fetchKey("https://example.com/key", CryptographicKey, {
+      ...options,
+      keyCache: undefined,
+    }),
+    { key: rsaPublicKey1, cached: false },
   );
 });

@@ -73,6 +73,21 @@ To be released.
      -  The type of `ActorKeyPairsDispatcher<TContextData>`'s first parameter
         became `Context` (was `TContextData`).
 
+ -  During verifying HTTP Signatures and Object Integrity Proofs, once fetched
+    public keys are now cached.  [[#107]]
+
+     -  The `verifyRequest()` function now caches the fetched public keys
+        when the `keyCache` option is provided.
+     -  The `verifyProof()` function now caches the fetched public keys
+        when the `keyCache` option is provided.
+     -  The `verifyObject()` function now caches the fetched public keys
+        when the `keyCache` option is provided.
+     -  Added `KeyCache` interface.
+     -  Added `VerifyRequestOptions.keyCache` property.
+     -  Added `VerifyProofOptions.keyCache` property.
+     -  Added `VerifyObjectOptions.keyCache` property.
+     -  Added `FederationKvPrefixes.publicKeyCache` property.
+
  -  The built-in document loaders now recognize JSON-LD context provided in
     an HTTP `Link` header. [[#6]]
 
@@ -141,6 +156,7 @@ To be released.
 [#92]: https://github.com/dahlia/fedify/pull/92
 [#104]: https://github.com/dahlia/fedify/issues/104
 [#105]: https://github.com/dahlia/fedify/issues/105
+[#107]: https://github.com/dahlia/fedify/issues/107
 [Astro]: https://astro.build/
 
 

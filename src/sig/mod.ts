@@ -8,10 +8,16 @@ export {
   verifyRequest,
   type VerifyRequestOptions,
 } from "./http.ts";
-export { exportJwk, generateCryptoKeyPair, importJwk } from "./key.ts";
+export {
+  exportJwk,
+  generateCryptoKeyPair,
+  importJwk,
+  type KeyCache,
+} from "./key.ts";
 export {
   doesActorOwnKey,
   type DoesActorOwnKeyOptions,
   getKeyOwner,
   type GetKeyOwnerOptions,
 } from "./owner.ts";
+export * from "./proof.ts";

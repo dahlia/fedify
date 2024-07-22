@@ -6,7 +6,13 @@ import {
   rsaPublicKey2,
 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
-import { signRequest, verifyRequest } from "./http.ts";
+import type { CryptographicKey, Multikey } from "../vocab/vocab.ts";
+import {
+  signRequest,
+  verifyRequest,
+  type VerifyRequestOptions,
+} from "./http.ts";
+import type { KeyCache } from "./key.ts";
 
 test("signRequest()", async () => {
   const request = new Request("https://example.com/", {
@@ -31,7 +37,7 @@ test("signRequest()", async () => {
   );
 });
 
-test("verify()", async () => {
+test("verifyRequest()", async () => {
   const request = new Request("https://example.com/", {
     method: "POST",
     body: "Hello, world!",
@@ -51,18 +57,28 @@ test("verify()", async () => {
         '+M6DrfkfQuUBw=="', // cSpell: enable
     },
   });
-  const key = await verifyRequest(
-    request,
-    {
-      contextLoader: mockDocumentLoader,
-      documentLoader: mockDocumentLoader,
-      currentTime: Temporal.Instant.from("2024-03-05T07:49:44Z"),
-    },
-  );
-  assertEquals(
-    key,
-    rsaPublicKey1,
-  );
+  const cache: Record<string, CryptographicKey | Multikey> = {};
+  const options: VerifyRequestOptions = {
+    contextLoader: mockDocumentLoader,
+    documentLoader: mockDocumentLoader,
+    currentTime: Temporal.Instant.from("2024-03-05T07:49:44Z"),
+    keyCache: {
+      get(keyId) {
+        return Promise.resolve(cache[keyId.href] ?? null);
+      },
+      set(keyId, key) {
+        cache[keyId.href] = key;
+        return Promise.resolve();
+      },
+    } satisfies KeyCache,
+  };
+  let key = await verifyRequest(request, options);
+  assertEquals(key, rsaPublicKey1);
+  assertEquals(cache, { "https://example.com/key": rsaPublicKey1 });
+  cache["https://example.com/key"] = rsaPublicKey2;
+  key = await verifyRequest(request, options);
+  assertEquals(key, rsaPublicKey1);
+  assertEquals(cache, { "https://example.com/key": rsaPublicKey1 });
 
   assertEquals(
     await verifyRequest(
