@@ -54,7 +54,7 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].  Or tag
 [GitHub Actions]: https://github.com/dahlia/fedify/actions/workflows/build.yaml
 [GitHub Actions badge]: https://github.com/dahlia/fedify/actions/workflows/build.yaml/badge.svg
 [Matrix]: https://matrix.to/#/#fedify:matrix.org
-[Matrix badge]: https://img.shields.io/matrix/fedify%3Amatrix.org
+[Matrix badge]: https://img.shields.io/matrix/fedify%3Amatrix.org?logo=matrix
 [@fedify@hollo.social badge]: https://fedi-badge.deno.dev/@fedify@hollo.social/followers.svg
 [@fedify@hollo.social]: https://hollo.social/@fedify
 [Fedify Demo]: https://dash.deno.com/playground/fedify-demo
