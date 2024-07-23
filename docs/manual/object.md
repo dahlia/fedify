@@ -57,3 +57,24 @@ path.  This pattern syntax follows the [URI Template] specification.
 
 [objects]: https://www.w3.org/TR/activitystreams-core/#object
 [URI Template]: https://datatracker.ietf.org/doc/html/rfc6570
+
+
+Constructing object URIs
+------------------------
+
+To construct an object URI, you can use the `Context.getObjectUri()` method.
+This method takes a class and URL arguments, and returns a dereferenceable URI
+of the object.
+
+The below example shows how to construct an object URI:
+
+~~~~ typescript
+ctx.getObjectUri(Note, { handle: "alice", id: "123" });
+~~~~
+
+> [!NOTE]
+>
+> The `Context.getObjectUri()` method does not guarantee that the object
+> actually exists.  It only constructs a URI based on the given class and URL
+> arguments, which may respond with `404 Not Found`.  Make sure to check
+> if the arguments are valid before calling the method.

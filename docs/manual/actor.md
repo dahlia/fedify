@@ -275,3 +275,25 @@ federation
 [2]: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/79?u=hongminhee
 [`CryptoKeyPair`]: https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair
 [Deno KV]: https://deno.com/kv
+
+
+Constructing actor URIs
+-----------------------
+
+To construct an actor URI, you can use the `Context.getActorUri()` method.
+This method takes a bare handle and returns a dereferenceable URI of the actor.
+
+The below example shows how to construct an actor URI:
+
+~~~~ typescript
+ctx.getActorUri("john_doe")
+~~~~
+
+In the above example, the `Context.getActorUri()` method generates the
+dereferenceable URI of the actor with the bare handle `"john_doe"`.
+
+> [!NOTE]
+>
+> The `Context.getActorUri()` method does not guarantee that the actor
+> URI is always dereferenceable for every argument.  Make sure that
+> the argument is a valid bare handle before calling the method.

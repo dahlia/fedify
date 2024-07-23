@@ -5,7 +5,6 @@
     "@deno/dnt": "jsr:@deno/dnt@^0.41.2",
     "@fedify/fedify": "../../src/mod.ts",
     "@fedify/fedify/federation": "../../src/federation/mod.ts",
-    "@fedify/fedify/httpsig": "./httpsig/mod.ts",
     "@fedify/fedify/nodeinfo": "./nodeinfo/mod.ts",
     "@fedify/fedify/runtime": "../../src/runtime/mod.ts",
     "@fedify/fedify/vocab": "../../src/vocab/mod.ts",

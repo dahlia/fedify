@@ -313,6 +313,26 @@ federation
   });
 ~~~~
 
+### Constructing outbox collection URIs
+
+To construct an outbox collection URI, you can use the `Context.getOutboxUri()`
+method.  This method takes the actor's handle and returns the dereferenceable
+URI of the outbox collection of the actor.
+
+The following shows how to construct an outbox collection URI of an actor named
+`"alice"`:
+
+~~~~ typescript
+ctx.getOutboxUri("alice")
+~~~~
+
+> [!NOTE]
+>
+> The `Context.getOutboxUri()` method does not guarantee that the outbox
+> collection actually exists.  It only constructs a URI based on the given
+> handle, which may respond with `404 Not Found`.  Make sure to check if the
+> handle is valid before calling the method.
+
 
 Inbox
 -----
@@ -346,6 +366,26 @@ federation
 > [!NOTE]
 > The path for the inbox collection dispatcher must match the path for the inbox
 > listeners.
+
+### Constructing inbox collection URIs
+
+To construct an inbox collection URI, you can use the `Context.getInboxUri()`
+method.  This method takes the actor's handle and returns the dereferenceable
+URI of the inbox collection of the actor.
+
+The following shows how to construct an inbox collection URI of an actor named
+`"alice"`:
+
+~~~~ typescript
+ctx.getInboxUri("alice")
+~~~~
+
+> [!NOTE]
+>
+> The `Context.getInboxUri()` method does not guarantee that the inbox
+> collection actually exists.  It only constructs a URI based on the given
+> handle, which may respond with `404 Not Found`.  Make sure to check if the
+> handle is valid before calling the method.
 
 
 Following
@@ -381,6 +421,25 @@ federation
   // The first cursor is an empty string:
   .setFirstCursor(async (ctx, handle) => "");
 ~~~~
+
+### Constructing following collection URIs
+
+To construct a following collection URI, you can use
+the `Context.getFollowingUri()` method.  This method takes the actor's handle
+and returns the dereferenceable URI of the following collection of the actor.
+
+The following shows how to construct a following collection URI of an actor
+named `"alice"`:
+
+~~~~ typescript
+ctx.getFollowingUri("alice")
+~~~~
+
+> [!NOTE]
+> The `Context.getFollowingUri()` method does not guarantee that the following
+> collection actually exists.  It only constructs a URI based on the given
+> handle, which may respond with `404 Not Found`.  Make sure to check if the
+> handle is valid before calling the method.
 
 
 Followers
@@ -470,6 +529,26 @@ federation
 > world, you should filter the actors in the database query to improve the
 > performance.
 
+### Constructing followers collection URIs
+
+To construct a followers collection URI, you can use
+the `Context.getFollowersUri()` method.  This method takes the actor's handle
+and returns the dereferenceable URI of the followers collection of the actor.
+
+The following shows how to construct a followers collection URI of an actor
+named `"alice"`:
+
+~~~~ typescript
+ctx.getFollowersUri("alice")
+~~~~
+
+> [!NOTE]
+>
+> The `Context.getFollowersUri()` method does not guarantee that the followers
+> collection actually exists.  It only constructs a URI based on the given
+> handle, which may respond with `404 Not Found`.  Make sure to check if the
+> handle is valid before calling the method.
+
 
 Liked
 -----
@@ -503,6 +582,26 @@ federation
   });
 ~~~~
 
+### Constructing liked collection URIs
+
+To construct a liked collection URI, you can use the `Context.getLikedUri()`
+method.  This method takes the actor's handle and returns the dereferenceable
+URI of the liked collection of the actor.
+
+The following shows how to construct a liked collection URI of an actor named
+`"alice"`:
+
+~~~~ typescript
+ctx.getLikedUri("alice")
+~~~~
+
+> [!NOTE]
+>
+> The `Context.getLikedUri()` method does not guarantee that the liked
+> collection actually exists.  It only constructs a URI based on the given
+> handle, which may respond with `404 Not Found`.  Make sure to check if the
+> handle is valid before calling the method.
+
 
 Featured
 --------
@@ -528,6 +627,27 @@ federation
     return { items };
   });
 ~~~~
+
+### Constructing featured collection URIs
+
+To construct a featured collection URI, you can use
+the `Context.getFeaturedUri()` method.  This method takes the actor's handle
+and returns the dereferenceable URI of the featured collection of the actor.
+
+The following shows how to construct a featured collection URI of an actor named
+`"alice"`:
+
+~~~~ typescript
+ctx.getFeaturedUri("alice")
+~~~~
+
+> [!NOTE]
+>
+> The `Context.getFeaturedUri()` method does not guarantee that the featured
+> collection actually exists.  It only constructs a URI based on the given
+> handle, which may respond with `404 Not Found`.  Make sure to check if the
+> handle is valid before calling the method.
+
 
 
 Featured tags
@@ -560,3 +680,24 @@ federation
     return { items };
   });
 ~~~~
+
+### Constructing featured tags collection URIs
+
+To construct a featured tags collection URI, you can use
+the `Context.getFeaturedTagsUri()` method.  This method takes the actor's handle
+and returns the dereferenceable URI of the featured tags collection of
+the actor.
+
+The following shows how to construct a featured tags collection URI of an actor
+named `"alice"`:
+
+~~~~ typescript
+ctx.getFeaturedTagsUri("alice")
+~~~~
+
+> [!NOTE]
+>
+> The `Context.getFeaturedTagsUri()` method does not guarantee that the featured
+> tags collection actually exists.  It only constructs a URI based on the given
+> handle, which may respond with `404 Not Found`.  Make sure to check
+> if the handle is valid before calling the method.

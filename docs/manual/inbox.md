@@ -242,3 +242,30 @@ federation
 > [!NOTE]
 > Activities with invalid signatures/proofs are silently ignored and not passed
 > to the error handler.
+
+
+Constructing inbox URIs
+-----------------------
+
+To construct an inbox URI, you can use the `~Context.getInboxUri()` method.
+This method optionally takes a handle of an actor and returns a dereferenceable
+URI of the inbox of the actor.  If no argument is provided, the method returns
+the shared inbox URI.
+
+The following shows how to construct an inbox URI of an actor named `"alice"`:
+
+~~~~ typescript
+ctx.getInboxUri("alice")
+~~~~
+
+> [!NOTE]
+> The `~Context.getInboxUri()` method does not guarantee that the inbox
+> actually exists.  It only constructs a URI based on the given handle,
+> which may respond with `404 Not Found`.  Make sure to check if the handle
+> is valid before calling the method.
+
+The following shows how to construct a shared inbox URI:
+
+~~~~ typescript
+ctx.getInboxUri()
+~~~~
