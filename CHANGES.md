@@ -131,13 +131,6 @@ To be released.
         the `getAuthenticatedDocumentLoader()` function, which can be used to
         allow fetching private network addresses.
 
- -  Added `@fedify/fedify/x/astro` module for integrating with [Astro]
-    middleware.  [[#50]]
-
-     -  Added `createMiddleware()` function.
-     -  Added `createFetchOptions()` function.
-     -  Added `ContextDataFactory` type.
-
  -  Added `fedify init` subcommand.  [[#105]]
 
  -  Added more log messages using the [LogTape] library.  Currently the below
@@ -147,7 +140,6 @@ To be released.
 
 [@fedify/cli]: https://www.npmjs.com/package/@fedify/cli
 [#6]: https://github.com/dahlia/fedify/issues/6
-[#50]: https://github.com/dahlia/fedify/issues/50
 [#53]: https://github.com/dahlia/fedify/issues/53
 [#66]: https://github.com/dahlia/fedify/issues/66
 [#70]: https://github.com/dahlia/fedify/issues/70
@@ -157,7 +149,6 @@ To be released.
 [#104]: https://github.com/dahlia/fedify/issues/104
 [#105]: https://github.com/dahlia/fedify/issues/105
 [#107]: https://github.com/dahlia/fedify/issues/107
-[Astro]: https://astro.build/
 
 
 Version 0.11.3

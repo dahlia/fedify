@@ -73,7 +73,7 @@ const packageManagerAvailabilities: Record<PackageManager, boolean> = Object
     ),
   );
 
-type WebFramework = "astro" | "fresh" | "hono";
+type WebFramework = "fresh" | "hono";
 
 interface WebFrameworkInitializer {
   command?: [string, ...string[]];
@@ -91,58 +91,6 @@ interface WebFrameworkDescription {
 }
 
 const webFrameworks: Record<WebFramework, WebFrameworkDescription> = {
-  astro: {
-    label: "Astro",
-    runtimes: ["bun", "node"],
-    init: (runtime, pm) => ({
-      command: [
-        runtime === "bun" ? "bun" : pm,
-        "create",
-        "astro@^4.8.0",
-        ...(pm === "npm" ? ["--"] : []),
-        "--skip-houston",
-        "--typescript=strict",
-        "--no-install",
-        "--no-git",
-        ".",
-      ],
-      federationFile: "src/federation.ts",
-      files: {
-        "src/middleware.ts": `\
-import type { MiddlewareHandler } from "astro";
-import { createMiddleware } from "@fedify/fedify/x/astro";
-import federation from "./federation";
-
-export const onRequest: MiddlewareHandler = createMiddleware(
-  federation,
-  (astroContext) => undefined,
-);
-`,
-        "astro.config.mjs": `\
-import { defineConfig } from "astro/config";
-
-// https://astro.build/config
-export default defineConfig({
-  output: "server"
-});
-`,
-      },
-      instruction: `
-To start the server, run the following command:
-
-  ${
-        colors.bold.green(
-          runtime === "bun" ? "bun dev" : `${pm} run dev`,
-        )
-      }
-
-Then, try look up an actor from your server:
-
-  ${colors.bold.green("fedify lookup http://localhost:4321/users/john")}
-
-`,
-    }),
-  },
   fresh: {
     label: "Fresh",
     runtimes: ["deno"],

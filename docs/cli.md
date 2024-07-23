@@ -90,8 +90,7 @@ project.  It will ask you a few questions to set up the project:
 
  -  JavaScript runtime: [Deno], [Bun], or [Node.js]
  -  Package manager (if Node.js): [npm], [pnpm], or [Yarn]
- -  Web framework: Bare-bones, [Astro] (unless Deno), [Fresh] (if Deno),
-    or [Hono]
+ -  Web framework: Bare-bones, [Fresh] (if Deno), or [Hono]
  -  Key-value store: In-memory, [Redis], or [Deno KV] (if Deno)
  -  Message queue: In-memory, [Redis], or [Deno KV] (if Deno)
 
@@ -101,7 +100,6 @@ interactive prompts:
 [npm]: https://www.npmjs.com/
 [pnpm]: https://pnpm.io/
 [Yarn]: https://yarnpkg.com/
-[Astro]: https://astro.build/
 [Fresh]: https://fresh.deno.dev/
 [Hono]: https://hono.dev/
 [Redis]: https://redis.io/
@@ -133,7 +131,6 @@ It's ignored if you choose Deno or Bun as the JavaScript runtime.
 You can specify the web framework to integrate with Fedify by using
 the `-w`/`--web-framework` option.  The available options are:
 
- -  `astro`: [Astro] (unless Deno)
  -  `fresh`: [Fresh] (if Deno)
  -  `hono`: [Hono]
 
