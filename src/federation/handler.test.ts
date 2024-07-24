@@ -64,7 +64,7 @@ test("handleActor()", async () => {
       return new URL(`https://example.com/users/${handle}`);
     },
   });
-  const actorDispatcher: ActorDispatcher<void> = (ctx, handle, _key) => {
+  const actorDispatcher: ActorDispatcher<void> = (ctx, handle) => {
     if (handle !== "someone") return null;
     return new Person({
       id: ctx.getActorUri(handle),
@@ -105,7 +105,7 @@ test("handleActor()", async () => {
   context = createRequestContext<void>({
     ...context,
     getActor(handle) {
-      return Promise.resolve(actorDispatcher(context, handle, null));
+      return Promise.resolve(actorDispatcher(context, handle));
     },
   });
   response = await handleActor(

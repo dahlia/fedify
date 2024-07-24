@@ -84,7 +84,6 @@ test("Federation.createContext()", async (t) => {
     assertThrows(() => ctx.getFeaturedTagsUri("handle"), RouterError);
     assertEquals(ctx.parseUri(new URL("https://example.com/")), null);
     assertEquals(await ctx.getActorKeyPairs("handle"), []);
-    assertEquals(await ctx.getActorKey("handle"), null);
     assertRejects(
       () => ctx.getDocumentLoader({ handle: "handle" }),
       Error,
@@ -168,13 +167,6 @@ test("Federation.createContext()", async (t) => {
           }),
         },
       ],
-    );
-    assertEquals(
-      await ctx.getActorKey("handle"),
-      rsaPublicKey2.clone({
-        id: new URL("https://example.com/users/handle#main-key"),
-        owner: new URL("https://example.com/users/handle"),
-      }),
     );
     const loader = await ctx.getDocumentLoader({ handle: "handle" });
     assertEquals(await loader("https://example.com/object"), {
@@ -683,10 +675,10 @@ test("Federation.setInboxListeners()", async (t) => {
         "/users/{handle}",
         (_, handle) => handle === "john" ? new Person({}) : null,
       )
-      .setKeyPairDispatcher(() => ({
+      .setKeyPairsDispatcher(() => [{
         privateKey: rsaPrivateKey2,
         publicKey: rsaPublicKey2.publicKey!,
-      }));
+      }]);
     const error = new Error("test");
     const errors: unknown[] = [];
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox")

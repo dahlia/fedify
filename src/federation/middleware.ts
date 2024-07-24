@@ -22,7 +22,6 @@ import {
 import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
   ActorDispatcher,
-  ActorKeyPairDispatcher,
   ActorKeyPairsDispatcher,
   AuthorizePredicate,
   CollectionCounter,
@@ -766,8 +765,8 @@ export class Federation<TContextData> {
       );
     }
     const callbacks: ActorCallbacks<TContextData> = {
-      dispatcher: async (context, handle, key) => {
-        const actor = await dispatcher(context, handle, key);
+      dispatcher: async (context, handle) => {
+        const actor = await dispatcher(context, handle);
         if (actor == null) return null;
         const logger = getLogger(["fedify", "federation", "actor"]);
         if (
@@ -942,19 +941,6 @@ export class Federation<TContextData> {
     const setters: ActorCallbackSetters<TContextData> = {
       setKeyPairsDispatcher(dispatcher: ActorKeyPairsDispatcher<TContextData>) {
         callbacks.keyPairsDispatcher = dispatcher;
-        return setters;
-      },
-      setKeyPairDispatcher(dispatcher: ActorKeyPairDispatcher<TContextData>) {
-        getLogger(["fedify", "federation", "actor"]).warn(
-          "The ActorCallbackSetters.setKeyPairDispatcher() method is " +
-            "deprecated.  Use the ActorCallbackSetters.setKeyPairsDispatcher() " +
-            "instead.",
-        );
-        callbacks.keyPairsDispatcher = async (ctx, handle) => {
-          const key = await dispatcher(ctx.data, handle);
-          if (key == null) return [];
-          return [key];
-        };
         return setters;
       },
       authorize(predicate: AuthorizePredicate<TContextData>) {
@@ -1784,11 +1770,9 @@ export class Federation<TContextData> {
           nodeInfoDispatcher: this.#nodeInfoDispatcher!,
         });
       case "actor":
-        // FIXME: When the deprecated last parameter (key) of ActorDispatcher
-        //        is removed, uncomment the following line.
-        // context = this.#createContext(request, contextData, {
-        //   invokedFromActorDispatcher: { handle: route.values.handle },
-        // });
+        context = this.#createContext(request, contextData, {
+          invokedFromActorDispatcher: { handle: route.values.handle },
+        });
         return await handleActor(request, {
           handle: route.values.handle,
           context,
@@ -2245,25 +2229,6 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return result;
   }
 
-  async getActorKey(handle: string): Promise<CryptographicKey | null> {
-    getLogger(["fedify", "federation", "actor"]).warn(
-      "Context.getActorKey() method is deprecated; " +
-        "use Context.getActorKeyPairs() method instead.",
-    );
-    let keyPair: CryptoKeyPair & { keyId: URL } | null;
-    try {
-      keyPair = await this.getRsaKeyPairFromHandle(handle);
-    } catch (_) {
-      return null;
-    }
-    if (keyPair == null) return null;
-    return new CryptographicKey({
-      id: keyPair.keyId,
-      owner: this.getActorUri(handle),
-      publicKey: keyPair.publicKey,
-    });
-  }
-
   protected async getRsaKeyPairFromHandle(
     handle: string,
   ): Promise<CryptoKeyPair & { keyId: URL } | null> {
@@ -2459,23 +2424,12 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
         },
       );
     }
-    let rsaKey: CryptoKeyPair & { keyId: URL } | null;
-    try {
-      rsaKey = await this.getRsaKeyPairFromHandle(handle);
-    } catch (_) {
-      rsaKey = null;
-    }
     return await this.actorCallbacks.dispatcher(
       new RequestContextImpl({
         ...this.#options,
         invokedFromActorDispatcher: { handle },
       }),
       handle,
-      rsaKey == null ? null : new CryptographicKey({
-        id: rsaKey.keyId,
-        owner: this.getActorUri(handle),
-        publicKey: rsaKey.publicKey,
-      }),
     );
   }
 
@@ -2603,18 +2557,6 @@ export interface ActorCallbackSetters<TContextData> {
    */
   setKeyPairsDispatcher(
     dispatcher: ActorKeyPairsDispatcher<TContextData>,
-  ): ActorCallbackSetters<TContextData>;
-
-  /**
-   * Sets the RSA-PKCS#1-v1.5 key pair dispatcher for actors.
-   *
-   * Use {@link ActorCallbackSetters.setKeyPairsDispatcher} instead.
-   * @param dispatcher A callback that returns the key pair for an actor.
-   * @returns The setters object so that settings can be chained.
-   * @deprecated Use {@link ActorCallbackSetters.setKeyPairsDispatcher} instead.
-   */
-  setKeyPairDispatcher(
-    dispatcher: ActorKeyPairDispatcher<TContextData>,
   ): ActorCallbackSetters<TContextData>;
 
   /**

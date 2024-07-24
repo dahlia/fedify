@@ -64,12 +64,16 @@ export async function handleActor<TContextData>(
     onUnauthorized,
   }: ActorHandlerParameters<TContextData>,
 ): Promise<Response> {
-  if (actorDispatcher == null) return await onNotFound(request);
-  // FIXME: When the deprecated last parameter (key) of ActorDispatcher
-  //        is removed, replace the below line with a direct all to
-  //        actorDispatcher:
-  const actor = await context.getActor(handle);
-  if (actor == null) return await onNotFound(request);
+  const logger = getLogger(["fedify", "federation", "actor"]);
+  if (actorDispatcher == null) {
+    logger.debug("Actor dispatcher is not set.", { handle });
+    return await onNotFound(request);
+  }
+  const actor = await actorDispatcher(context, handle);
+  if (actor == null) {
+    logger.debug("Actor {handle} not found.", { handle });
+    return await onNotFound(request);
+  }
   if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
   if (authorizePredicate != null) {
     const key = await context.getSignedKey();
@@ -347,7 +351,7 @@ export async function handleInbox<TContextData>(
     logger.error("Actor dispatcher is not set.", { handle });
     return await onNotFound(request);
   } else if (handle != null) {
-    const actor = await context.getActor(handle);
+    const actor = await actorDispatcher(context, handle);
     if (actor == null) {
       logger.error("Actor {handle} not found.", { handle });
       return await onNotFound(request);

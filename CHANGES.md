@@ -8,6 +8,23 @@ Version 0.13.0
 
 To be released.
 
+ -  Removed the singular actor key pair dispatcher APIs which were deprecated
+    in version 0.10.0.
+
+     -  Removed the last parameter of the `ActorDispatcher` callback type.
+        Use `Context.getActorKeyPairs()` method instead.
+     -  Removed `ActorKeyPairDispatcher` type.  Use `ActorKeyPairsDispatcher`
+        type instead.
+     -  Removed `ActorCallbackSetters.setKeyPairDispatcher()` method.
+        Use `ActorCallbackSetters.setKeyPairsDispatcher()` method instead.
+     -  Removed `Context.getActorKey()` method.
+        Use `Context.getActorKeyPairs()` method instead.
+
+ -  Added more log messages using the [LogTape] library.  Currently the below
+    logger categories are used:
+
+     -  `["fedify", "webfinger", "server"]`
+
 
 Version 0.12.0
 --------------

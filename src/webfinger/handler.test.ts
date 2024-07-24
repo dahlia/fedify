@@ -3,7 +3,7 @@ import type { ActorDispatcher } from "../federation/callback.ts";
 import { createRequestContext } from "../testing/context.ts";
 import { test } from "../testing/mod.ts";
 import type { Actor } from "../vocab/actor.ts";
-import { CryptographicKey, Link, Person } from "../vocab/vocab.ts";
+import { Link, Person } from "../vocab/vocab.ts";
 import { handleWebFinger } from "./handler.ts";
 
 test("handleWebFinger()", async () => {
@@ -14,18 +14,10 @@ test("handleWebFinger()", async () => {
     getActorUri(handle) {
       return new URL(`https://example.com/users/${handle}`);
     },
-    getActorKey(_handle) {
-      return Promise.resolve(
-        new CryptographicKey({
-          id: new URL("https://example.com/keys/someone"),
-        }),
-      );
-    },
     async getActor(handle): Promise<Actor | null> {
       return await actorDispatcher(
         context,
         handle,
-        await context.getActorKey(handle),
       );
     },
     parseUri(uri) {
@@ -34,7 +26,7 @@ test("handleWebFinger()", async () => {
       return { type: "actor", handle: paths[paths.length - 1] };
     },
   });
-  const actorDispatcher: ActorDispatcher<void> = (ctx, handle, _key) => {
+  const actorDispatcher: ActorDispatcher<void> = (ctx, handle) => {
     if (handle !== "someone") return null;
     return new Person({
       id: ctx.getActorUri(handle),

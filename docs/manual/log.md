@@ -201,6 +201,15 @@ related to looking up ActivityPub objects.  When you are curious about the
 lookup process, you can check the log messages in this category with the
 `"debug"` level.
 
+### `["fedify", "webfinger", "server"]`
+
+*This category is available since Fedify 0.13.0.*
+
+The `["fedify", "webfinger", "server"]` category is used for logging messages
+related to the WebFinger server.  When you are curious about the WebFinger
+server, you can check the log messages in this category with the `"debug"`
+level.
+
 ### `["fedify", "webfinger", "lookup"]`
 
 *This category is available since Fedify 0.10.0.*

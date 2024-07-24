@@ -1,7 +1,10 @@
+import { getLogger } from "@logtape/logtape";
 import type { ActorDispatcher } from "../federation/callback.ts";
 import type { RequestContext } from "../federation/context.ts";
 import { Link as LinkObject } from "../vocab/mod.ts";
 import type { Link, ResourceDescriptor } from "./jrd.ts";
+
+const logger = getLogger(["fedify", "webfinger", "server"]);
 
 /**
  * Parameters for {@link handleWebFinger}.
@@ -63,8 +66,15 @@ export async function handleWebFinger<TContextData>(
   } else {
     handle = uriParsed.handle;
   }
-  const actor = await context.getActor(handle);
-  if (actor == null) return await onNotFound(request);
+  if (actorDispatcher == null) {
+    logger.error("Actor dispatcher is not set.", { handle });
+    return await onNotFound(request);
+  }
+  const actor = await actorDispatcher(context, handle);
+  if (actor == null) {
+    logger.error("Actor {handle} not found.", { handle });
+    return await onNotFound(request);
+  }
   const links: Link[] = [
     {
       rel: "self",

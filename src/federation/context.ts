@@ -163,15 +163,6 @@ export interface Context<TContextData> {
   getActorKeyPairs(handle: string): Promise<ActorKeyPair[]>;
 
   /**
-   * Gets a public RSA-PKCS#1-v1.5 {@link CryptographicKey} for an actor,
-   * if any exists.
-   * @param handle The actor's handle.
-   * @returns The actor's public key, or `null` if the actor has no key.
-   * @deprecated Use {@link Context.getActorKeyPairs} instead.
-   */
-  getActorKey(handle: string): Promise<CryptographicKey | null>;
-
-  /**
    * Gets an authenticated {@link DocumentLoader} for the given identity.
    * Note that an authenticated document loader intentionally does not cache
    * the fetched documents.

@@ -21,14 +21,10 @@ export type NodeInfoDispatcher<TContextData> = (
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @param context The request context.
  * @param handle The actor's handle.
- * @param key The public key of the actor.  **Deprecated: Do not rely on this
- *            parameter. Instead, use the {@link Context.getActorKeyPairs}
- *            method.**
  */
 export type ActorDispatcher<TContextData> = (
   context: RequestContext<TContextData>,
   handle: string,
-  key: CryptographicKey | null,
 ) => Actor | null | Promise<Actor | null>;
 
 /**
@@ -44,17 +40,6 @@ export type ActorKeyPairsDispatcher<TContextData> = (
   context: Context<TContextData>,
   handle: string,
 ) => CryptoKeyPair[] | Promise<CryptoKeyPair[]>;
-
-/**
- * A callback that dispatches a key pair for an actor.
- *
- * @typeParam TContextData The context data to pass to the {@link Context}.
- * @deprecated
- */
-export type ActorKeyPairDispatcher<TContextData> = (
-  contextData: TContextData,
-  handle: string,
-) => CryptoKeyPair | null | Promise<CryptoKeyPair | null>;
 
 /**
  * A callback that dispatches an object.
