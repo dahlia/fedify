@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.12.0
 --------------
 
-To be released.
+Released on July 24, 2024.
 
  -  The `fedify` command is now [available on npm][@fedify/cli].  [[#104]]
 
