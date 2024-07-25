@@ -20,10 +20,23 @@ To be released.
      -  Removed `Context.getActorKey()` method.
         Use `Context.getActorKeyPairs()` method instead.
 
+ -  The `Federation` is no more a class, but an interface, which has been
+    planned since version 0.10.0.  [[#69]]
+
+     -  `new Federation()` constructor is removed.  Use `createFederation()`
+        function instead.
+     -  Removed `Federation.sendActivity()` method.
+        Use `Context.sendActivity()` method instead.
+     -  Removed `Federation` class.
+     -  Added `Federation` interface.
+     -  Removed `FederationParameters` interface.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
      -  `["fedify", "webfinger", "server"]`
+
+[#69]: https://github.com/dahlia/fedify/issues/69
 
 
 Version 0.12.0

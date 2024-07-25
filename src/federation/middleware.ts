@@ -163,72 +163,6 @@ export interface CreateFederationOptions {
 }
 
 /**
- * Parameters for initializing a {@link Federation} instance.
- * @deprecated
- */
-export interface FederationParameters
-  extends
-    Omit<CreateFederationOptions, "outboxRetryPolicy" | "inboxRetryPolicy"> {
-  /**
-   * The message queue for sending activities to recipients' inboxes.
-   * If not provided, activities will not be queued and will be sent
-   * immediately.
-   * @since 0.5.0
-   */
-  queue?: MessageQueue;
-
-  /**
-   * A custom JSON-LD context loader.  By default, this uses the same loader
-   * as the document loader.
-   * @since 0.8.0
-   */
-  contextLoader?: DocumentLoader;
-
-  /**
-   * A factory function that creates an authenticated document loader for a
-   * given identity.  This is used for fetching documents that require
-   * authentication.
-   *
-   * @since 0.4.0
-   */
-  authenticatedDocumentLoaderFactory?: AuthenticatedDocumentLoaderFactory;
-
-  /**
-   * A callback that handles errors during outbox processing.  Note that this
-   * callback can be called multiple times for the same activity, because
-   * the delivery is retried according to the backoff schedule until it
-   * succeeds or reaches the maximum retry count.
-   *
-   * If any errors are thrown in this callback, they are ignored.
-   *
-   * @since 0.6.0
-   */
-  onOutboxError?: OutboxErrorHandler;
-
-  /**
-   * The time window for verifying the signature of incoming requests.  If the
-   * request is older or newer than this window, it is rejected.  By default,
-   * the window is a minute.
-   */
-  signatureTimeWindow?: Temporal.DurationLike;
-
-  /**
-   * Whether to treat HTTP requests as HTTPS.  This is useful for testing and
-   * local development.  However, it must be disabled in production.
-   * Turned off by default.
-   *
-   * Note that this option is deprecated and will be removed in a future
-   * release.  Instead, use the [x-forwarded-fetch] library to recognize
-   * the `X-Forwarded-Host` and `X-Forwarded-Proto` headers.
-   *
-   * [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
-   *
-   * @deprecated
-   */
-  treatHttps?: boolean;
-}
-
-/**
  * Prefixes for namespacing keys in the Deno KV store.
  */
 export interface FederationKvPrefixes {
@@ -252,7 +186,392 @@ export interface FederationKvPrefixes {
   publicKey: KvKey;
 }
 
-const invokedByCreateFederation = Symbol("invokedByCreateFederation");
+/**
+ * An object that registers federation-related business logic and dispatches
+ * requests to the appropriate handlers.
+ *
+ * It also provides a middleware interface for handling requests before your
+ * web framework's router; see {@link Federation.fetch}.
+ *
+ * @since 0.13.0
+ */
+export interface Federation<TContextData> {
+  /**
+   * Manually start the task queue.
+   *
+   * This method is useful when you set the `manuallyStartQueue` option to
+   * `true` in the {@link createFederation} function.
+   * @param contextData The context data to pass to the context.
+   */
+  startQueue(contextData: TContextData): Promise<void>;
+
+  /**
+   * Create a new context.
+   * @param baseUrl The base URL of the server.  The `pathname` remains root,
+   *                and the `search` and `hash` are stripped.
+   * @param contextData The context data to pass to the context.
+   * @returns The new context.
+   */
+  createContext(baseUrl: URL, contextData: TContextData): Context<TContextData>;
+
+  /**
+   * Create a new context for a request.
+   * @param request The request object.
+   * @param contextData The context data to pass to the context.
+   * @returns The new request context.
+   */
+  createContext(
+    request: Request,
+    contextData: TContextData,
+  ): RequestContext<TContextData>;
+
+  /**
+   * Registers a NodeInfo dispatcher.
+   * @param path The URI path pattern for the NodeInfo dispatcher.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have no variables.
+   * @param dispatcher A NodeInfo dispatcher callback to register.
+   * @throws {RouterError} Thrown if the path pattern is invalid.
+   */
+  setNodeInfoDispatcher(
+    path: string,
+    dispatcher: NodeInfoDispatcher<TContextData>,
+  ): void;
+
+  /**
+   * Registers an actor dispatcher.
+   *
+   * @example
+   * ``` typescript
+   * federation.setActorDispatcher(
+   *   "/users/{handle}",
+   *   async (ctx, handle) => {
+   *     return new Person({
+   *       id: ctx.getActorUri(handle),
+   *       preferredUsername: handle,
+   *       // ...
+   *     });
+   *   }
+   * );
+   * ```
+   *
+   * @param path The URI path pattern for the actor dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher An actor dispatcher callback to register.
+   * @returns An object with methods to set other actor dispatcher callbacks.
+   * @throws {RouterError} Thrown if the path pattern is invalid.
+   */
+  setActorDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: ActorDispatcher<TContextData>,
+  ): ActorCallbackSetters<TContextData>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path:
+      `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path:
+      `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path:
+      `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path:
+      `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path: `${string}{${TParam}}${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an object dispatcher.
+   *
+   * @typeParam TContextData The context data to pass to the {@link Context}.
+   * @typeParam TObject The type of object to dispatch.
+   * @typeParam TParam The parameter names of the requested URL.
+   * @param cls The Activity Vocabulary class of the object to dispatch.
+   * @param path The URI path pattern for the object dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one or more variables.
+   * @param dispatcher An object dispatcher callback to register.
+   */
+  setObjectDispatcher<TObject extends Object, TParam extends string>(
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => TObject) & { typeId: URL },
+    path: `${string}{${TParam}}${string}`,
+    dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
+  ): ObjectCallbackSetters<TContextData, TObject, TParam>;
+
+  /**
+   * Registers an inbox dispatcher.
+   *
+   * @param path The URI path pattern for the outbox dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`, and must match the inbox
+   *             listener path.
+   * @param dispatcher An inbox dispatcher callback to register.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   */
+  setInboxDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Activity, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void>;
+
+  /**
+   * Registers an outbox dispatcher.
+   *
+   * @example
+   * ``` typescript
+   * federation.setOutboxDispatcher(
+   *   "/users/{handle}/outbox",
+   *   async (ctx, handle, options) => {
+   *     let items: Activity[];
+   *     let nextCursor: string;
+   *     // ...
+   *     return { items, nextCursor };
+   *   }
+   * );
+   * ```
+   *
+   * @param path The URI path pattern for the outbox dispatcher.  The syntax is
+   *             based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher An outbox dispatcher callback to register.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   */
+  setOutboxDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Activity, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void>;
+
+  /**
+   * Registers a following collection dispatcher.
+   * @param path The URI path pattern for the following collection.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A following collection callback to register.
+   * @returns An object with methods to set other following collection
+   *          callbacks.
+   * @throws {RouterError} Thrown if the path pattern is invalid.
+   */
+  setFollowingDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Actor | URL, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void>;
+
+  /**
+   * Registers a followers collection dispatcher.
+   * @param path The URI path pattern for the followers collection.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A followers collection callback to register.
+   * @returns An object with methods to set other followers collection
+   *          callbacks.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   */
+  setFollowersDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<
+      Recipient,
+      TContextData,
+      URL
+    >,
+  ): CollectionCallbackSetters<TContextData, URL>;
+
+  /**
+   * Registers a liked collection dispatcher.
+   * @param path The URI path pattern for the liked collection.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A liked collection callback to register.
+   * @returns An object with methods to set other liked collection
+   *          callbacks.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   */
+  setLikedDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Like, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void>;
+
+  /**
+   * Registers a featured collection dispatcher.
+   * @param path The URI path pattern for the featured collection.  The syntax
+   *             is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A featured collection callback to register.
+   * @returns An object with methods to set other featured collection
+   *          callbacks.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   */
+  setFeaturedDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Object, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void>;
+
+  /**
+   * Registers a featured tags collection dispatcher.
+   * @param path The URI path pattern for the featured tags collection.
+   *             The syntax is based on URI Template
+   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
+   *             must have one variable: `{handle}`.
+   * @param dispatcher A featured tags collection callback to register.
+   * @returns An object with methods to set other featured tags collection
+   *          callbacks.
+   * @throws {@link RouterError} Thrown if the path pattern is invalid.
+   */
+  setFeaturedTagsDispatcher(
+    path: `${string}{handle}${string}`,
+    dispatcher: CollectionDispatcher<Hashtag, TContextData, void>,
+  ): CollectionCallbackSetters<TContextData, void>;
+
+  /**
+   * Assigns the URL path for the inbox and starts setting inbox listeners.
+   *
+   * @example
+   * ``` typescript
+   * federation
+   *   .setInboxListeners("/users/{handle/inbox", "/inbox")
+   *   .on(Follow, async (ctx, follow) => {
+   *     const from = await follow.getActor(ctx);
+   *     if (!isActor(from)) return;
+   *     // ...
+   *     await ctx.sendActivity({ })
+   *   })
+   *   .on(Undo, async (ctx, undo) => {
+   *     // ...
+   *   });
+   * ```
+   *
+   * @param inboxPath The URI path pattern for the inbox.  The syntax is based
+   *                  on URI Template
+   *                  ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
+   *                  The path must have one variable: `{handle}`, and must
+   *                  match the inbox dispatcher path.
+   * @param sharedInboxPath An optional URI path pattern for the shared inbox.
+   *                        The syntax is based on URI Template
+   *                        ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
+   *                        The path must have no variables.
+   * @returns An object to register inbox listeners.
+   * @throws {RouteError} Thrown if the path pattern is invalid.
+   */
+  setInboxListeners(
+    inboxPath: `${string}{handle}${string}`,
+    sharedInboxPath?: string,
+  ): InboxListenerSetters<TContextData>;
+
+  /**
+   * Handles a request related to federation.  If a request is not related to
+   * federation, the `onNotFound` or `onNotAcceptable` callback is called.
+   *
+   * Usually, this method is called from a server's request handler or
+   * a web framework's middleware.
+   *
+   * @param request The request object.
+   * @param parameters The parameters for handling the request.
+   * @returns The response to the request.
+   */
+  fetch(
+    request: Request,
+    options: FederationFetchOptions<TContextData>,
+  ): Promise<Response>;
+}
 
 /**
  * Create a new {@link Federation} instance.
@@ -263,74 +582,48 @@ const invokedByCreateFederation = Symbol("invokedByCreateFederation");
 export function createFederation<TContextData>(
   options: CreateFederationOptions,
 ): Federation<TContextData> {
-  return new Federation<TContextData>({
-    ...options,
-    // @ts-ignore: This is a private symbol.
-    [invokedByCreateFederation]: true,
-  });
+  return new FederationImpl<TContextData>(options);
 }
 
 const invokedByContext = Symbol("invokedByContext");
 
-/**
- * An object that registers federation-related business logic and dispatches
- * requests to the appropriate handlers.
- *
- * It also provides a middleware interface for handling requests before your
- * web framework's router; see {@link Federation.handle}.
- */
-export class Federation<TContextData> {
-  #kv: KvStore;
-  #kvPrefixes: FederationKvPrefixes;
-  #queue?: MessageQueue;
-  #queueStarted: boolean;
-  #manuallyStartQueue: boolean;
-  #router: Router;
-  #nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
-  #actorCallbacks?: ActorCallbacks<TContextData>;
-  #objectCallbacks: Record<string, ObjectCallbacks<TContextData, string>>;
-  #objectTypeIds: Record<
+class FederationImpl<TContextData> implements Federation<TContextData> {
+  kv: KvStore;
+  kvPrefixes: FederationKvPrefixes;
+  queue?: MessageQueue;
+  queueStarted: boolean;
+  manuallyStartQueue: boolean;
+  router: Router;
+  nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
+  actorCallbacks?: ActorCallbacks<TContextData>;
+  objectCallbacks: Record<string, ObjectCallbacks<TContextData, string>>;
+  objectTypeIds: Record<
     string,
     // deno-lint-ignore no-explicit-any
     (new (...args: any[]) => Object) & { typeId: URL }
   >;
-  #inboxPath?: string;
-  #inboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
-  #outboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
-  #followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData, void>;
-  #followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
-  #likedCallbacks?: CollectionCallbacks<Like, TContextData, void>;
-  #featuredCallbacks?: CollectionCallbacks<Object, TContextData, void>;
-  #featuredTagsCallbacks?: CollectionCallbacks<Hashtag, TContextData, void>;
-  #inboxListeners?: InboxListenerSet<TContextData>;
-  #inboxErrorHandler?: InboxErrorHandler<TContextData>;
-  #sharedInboxKeyDispatcher?: SharedInboxKeyDispatcher<TContextData>;
-  #documentLoader: DocumentLoader;
-  #contextLoader: DocumentLoader;
-  #authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
-  #treatHttps: boolean;
-  #onOutboxError?: OutboxErrorHandler;
-  #signatureTimeWindow: Temporal.DurationLike;
-  #outboxRetryPolicy: RetryPolicy;
-  #inboxRetryPolicy: RetryPolicy;
+  inboxPath?: string;
+  inboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
+  outboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
+  followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData, void>;
+  followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
+  likedCallbacks?: CollectionCallbacks<Like, TContextData, void>;
+  featuredCallbacks?: CollectionCallbacks<Object, TContextData, void>;
+  featuredTagsCallbacks?: CollectionCallbacks<Hashtag, TContextData, void>;
+  inboxListeners?: InboxListenerSet<TContextData>;
+  inboxErrorHandler?: InboxErrorHandler<TContextData>;
+  sharedInboxKeyDispatcher?: SharedInboxKeyDispatcher<TContextData>;
+  documentLoader: DocumentLoader;
+  contextLoader: DocumentLoader;
+  authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
+  onOutboxError?: OutboxErrorHandler;
+  signatureTimeWindow: Temporal.DurationLike;
+  outboxRetryPolicy: RetryPolicy;
+  inboxRetryPolicy: RetryPolicy;
 
-  /**
-   * Create a new {@link Federation} instance.
-   * @param parameters Parameters for initializing the instance.
-   * @deprecated Use {@link createFederation} method instead.
-   */
-  constructor(parameters: FederationParameters) {
-    const options = parameters as CreateFederationOptions;
-    const logger = getLogger(["fedify", "federation"]);
-    // @ts-ignore: This is a private symbol.
-    if (!options[invokedByCreateFederation]) {
-      logger.warn(
-        "The Federation constructor is deprecated.  Use the createFederation()" +
-          "function instead.",
-      );
-    }
-    this.#kv = options.kv;
-    this.#kvPrefixes = {
+  constructor(options: CreateFederationOptions) {
+    this.kv = options.kv;
+    this.kvPrefixes = {
       ...({
         activityIdempotence: ["_fedify", "activityIdempotence"],
         remoteDocument: ["_fedify", "remoteDocument"],
@@ -338,48 +631,39 @@ export class Federation<TContextData> {
       } satisfies FederationKvPrefixes),
       ...(options.kvPrefixes ?? {}),
     };
-    this.#queue = options.queue;
-    this.#queueStarted = false;
-    this.#manuallyStartQueue = options.manuallyStartQueue ?? false;
-    this.#router = new Router({
+    this.queue = options.queue;
+    this.queueStarted = false;
+    this.manuallyStartQueue = options.manuallyStartQueue ?? false;
+    this.router = new Router({
       trailingSlashInsensitive: options.trailingSlashInsensitive,
     });
-    this.#router.add("/.well-known/webfinger", "webfinger");
-    this.#router.add("/.well-known/nodeinfo", "nodeInfoJrd");
-    this.#objectCallbacks = {};
-    this.#objectTypeIds = {};
-    this.#documentLoader = options.documentLoader ?? kvCache({
+    this.router.add("/.well-known/webfinger", "webfinger");
+    this.router.add("/.well-known/nodeinfo", "nodeInfoJrd");
+    this.objectCallbacks = {};
+    this.objectTypeIds = {};
+    this.documentLoader = options.documentLoader ?? kvCache({
       loader: fetchDocumentLoader,
       kv: options.kv,
-      prefix: this.#kvPrefixes.remoteDocument,
+      prefix: this.kvPrefixes.remoteDocument,
     });
-    this.#contextLoader = options.contextLoader ?? this.#documentLoader;
-    this.#authenticatedDocumentLoaderFactory =
+    this.contextLoader = options.contextLoader ?? this.documentLoader;
+    this.authenticatedDocumentLoaderFactory =
       options.authenticatedDocumentLoaderFactory ??
         getAuthenticatedDocumentLoader;
-    this.#onOutboxError = options.onOutboxError;
-    this.#treatHttps = parameters.treatHttps ?? false;
-    if (parameters.treatHttps) {
-      logger.warn(
-        "The treatHttps option is deprecated and will be removed in " +
-          "a future release.  Instead, use the x-forwarded-fetch library" +
-          " to recognize the X-Forwarded-Host and X-Forwarded-Proto " +
-          "headers.  See also: <https://github.com/dahlia/x-forwarded-fetch>.",
-      );
-    }
-    this.#signatureTimeWindow = options.signatureTimeWindow ?? { minutes: 1 };
-    this.#outboxRetryPolicy = options.outboxRetryPolicy ??
+    this.onOutboxError = options.onOutboxError;
+    this.signatureTimeWindow = options.signatureTimeWindow ?? { minutes: 1 };
+    this.outboxRetryPolicy = options.outboxRetryPolicy ??
       createExponentialBackoffPolicy();
-    this.#inboxRetryPolicy = options.inboxRetryPolicy ??
+    this.inboxRetryPolicy = options.inboxRetryPolicy ??
       createExponentialBackoffPolicy();
   }
 
   #startQueue(ctxData: TContextData) {
-    if (this.#queue != null && !this.#queueStarted) {
+    if (this.queue != null && !this.queueStarted) {
       const logger = getLogger(["fedify", "federation", "queue"]);
       logger.debug("Starting a task queue.");
-      this.#queue?.listen((msg) => this.#listenQueue(ctxData, msg));
-      this.#queueStarted = true;
+      this.queue?.listen((msg) => this.#listenQueue(ctxData, msg));
+      this.queueStarted = true;
     }
   }
 
@@ -421,29 +705,29 @@ export class Federation<TContextData> {
         keys.push(pair);
       }
       const documentLoader = rsaKeyPair == null
-        ? this.#documentLoader
-        : this.#authenticatedDocumentLoaderFactory(rsaKeyPair);
+        ? this.documentLoader
+        : this.authenticatedDocumentLoaderFactory(rsaKeyPair);
       activity = await Activity.fromJsonLd(message.activity, {
         documentLoader,
-        contextLoader: this.#contextLoader,
+        contextLoader: this.contextLoader,
       });
       await sendActivity({
         keys,
         activity,
         inbox: new URL(message.inbox),
-        contextLoader: this.#contextLoader,
+        contextLoader: this.contextLoader,
         headers: new Headers(message.headers),
       });
     } catch (error) {
       try {
-        this.#onOutboxError?.(error, activity);
+        this.onOutboxError?.(error, activity);
       } catch (error) {
         logger.error(
           "An unexpected error occurred in onError handler:\n{error}",
           { ...logData, error, activityId: activity?.id?.href },
         );
       }
-      const delay = this.#outboxRetryPolicy({
+      const delay = this.outboxRetryPolicy({
         elapsedTime: Temporal.Instant.from(message.started).until(
           Temporal.Now.instant(),
         ),
@@ -455,7 +739,7 @@ export class Federation<TContextData> {
             "#{attempt}); retry...:\n{error}",
           { ...logData, error, activityId: activity?.id?.href },
         );
-        this.#queue?.enqueue(
+        this.queue?.enqueue(
           {
             ...message,
             attempt: message.attempt + 1,
@@ -494,8 +778,8 @@ export class Federation<TContextData> {
           handle: message.handle,
         }),
       });
-    } else if (this.#sharedInboxKeyDispatcher != null) {
-      const identity = await this.#sharedInboxKeyDispatcher(context);
+    } else if (this.sharedInboxKeyDispatcher != null) {
+      const identity = await this.sharedInboxKeyDispatcher(context);
       if (identity != null) {
         context = this.#createContext(baseUrl, ctxData, {
           documentLoader: "handle" in identity
@@ -506,11 +790,11 @@ export class Federation<TContextData> {
     }
     const activity = await Activity.fromJsonLd(message.activity, context);
     const cacheKey = activity.id == null ? null : [
-      ...this.#kvPrefixes.activityIdempotence,
+      ...this.kvPrefixes.activityIdempotence,
       activity.id.href,
     ] satisfies KvKey;
     if (cacheKey != null) {
-      const cached = await this.#kv.get(cacheKey);
+      const cached = await this.kv.get(cacheKey);
       if (cached === true) {
         logger.debug("Activity {activityId} has already been processed.", {
           activityId: activity.id?.href,
@@ -519,7 +803,7 @@ export class Federation<TContextData> {
         return;
       }
     }
-    const listener = this.#inboxListeners?.dispatch(activity);
+    const listener = this.inboxListeners?.dispatch(activity);
     if (listener == null) {
       logger.error(
         "Unsupported activity type:\n{activity}",
@@ -531,7 +815,7 @@ export class Federation<TContextData> {
       await listener(context, activity);
     } catch (error) {
       try {
-        await this.#inboxErrorHandler?.(context, error);
+        await this.inboxErrorHandler?.(context, error);
       } catch (error) {
         logger.error(
           "An unexpected error occurred in inbox error handler:\n{error}",
@@ -543,7 +827,7 @@ export class Federation<TContextData> {
           },
         );
       }
-      const delay = this.#inboxRetryPolicy({
+      const delay = this.inboxRetryPolicy({
         elapsedTime: Temporal.Instant.from(message.started).until(
           Temporal.Now.instant(),
         ),
@@ -560,7 +844,7 @@ export class Federation<TContextData> {
             activity: message.activity,
           },
         );
-        this.#queue?.enqueue(
+        this.queue?.enqueue(
           {
             ...message,
             attempt: message.attempt + 1,
@@ -581,7 +865,7 @@ export class Federation<TContextData> {
       return;
     }
     if (cacheKey != null) {
-      await this.#kv.set(cacheKey, true, {
+      await this.kv.set(cacheKey, true, {
         ttl: Temporal.Duration.from({ days: 1 }),
       });
     }
@@ -591,39 +875,16 @@ export class Federation<TContextData> {
     );
   }
 
-  /**
-   * Manually start the task queue.
-   *
-   * This method is useful when you set the `manuallyStartQueue` option to
-   * `true` in the {@link createFederation} function.
-   * @param contextData The context data to pass to the context.
-   * @since 0.12.0
-   */
   startQueue(contextData: TContextData): Promise<void> {
     this.#startQueue(contextData);
     return Promise.resolve();
   }
 
-  /**
-   * Create a new context.
-   * @param baseUrl The base URL of the server.  The `pathname` remains root,
-   *                and the `search` and `hash` are stripped.
-   * @param contextData The context data to pass to the context.
-   * @returns The new context.
-   */
   createContext(baseUrl: URL, contextData: TContextData): Context<TContextData>;
-
-  /**
-   * Create a new context for a request.
-   * @param request The request object.
-   * @param contextData The context data to pass to the context.
-   * @returns The new request context.
-   */
   createContext(
     request: Request,
     contextData: TContextData,
   ): RequestContext<TContextData>;
-
   createContext(
     urlOrRequest: Request | URL,
     contextData: TContextData,
@@ -675,90 +936,45 @@ export class Federation<TContextData> {
       url.hash = "";
       url.search = "";
     }
-    if (this.#treatHttps) url.protocol = "https:";
     const ctxOptions: ContextOptions<TContextData> = {
       url,
       federation: this,
-      router: this.#router,
-      objectTypeIds: this.#objectTypeIds,
-      objectCallbacks: this.#objectCallbacks,
-      actorCallbacks: this.#actorCallbacks,
       data: contextData,
-      documentLoader: opts.documentLoader ?? this.#documentLoader,
-      contextLoader: this.#contextLoader,
-      authenticatedDocumentLoaderFactory:
-        this.#authenticatedDocumentLoaderFactory,
+      documentLoader: opts.documentLoader ?? this.documentLoader,
     };
     if (request == null) return new ContextImpl(ctxOptions);
     return new RequestContextImpl({
       ...ctxOptions,
       request,
-      signatureTimeWindow: this.#signatureTimeWindow,
-      followersCallbacks: this.#followersCallbacks,
       invokedFromActorDispatcher: opts.invokedFromActorDispatcher,
       invokedFromObjectDispatcher: opts.invokedFromObjectDispatcher,
     });
   }
 
-  /**
-   * Registers a NodeInfo dispatcher.
-   * @param path The URI path pattern for the NodeInfo dispatcher.  The syntax
-   *             is based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have no variables.
-   * @param dispatcher A NodeInfo dispatcher callback to register.
-   * @throws {RouterError} Thrown if the path pattern is invalid.
-   * @since 0.2.0
-   */
   setNodeInfoDispatcher(
     path: string,
     dispatcher: NodeInfoDispatcher<TContextData>,
   ) {
-    if (this.#router.has("nodeInfo")) {
+    if (this.router.has("nodeInfo")) {
       throw new RouterError("NodeInfo dispatcher already set.");
     }
-    const variables = this.#router.add(path, "nodeInfo");
+    const variables = this.router.add(path, "nodeInfo");
     if (variables.size !== 0) {
       throw new RouterError(
         "Path for NodeInfo dispatcher must have no variables.",
       );
     }
-    this.#nodeInfoDispatcher = dispatcher;
+    this.nodeInfoDispatcher = dispatcher;
   }
 
-  /**
-   * Registers an actor dispatcher.
-   *
-   * @example
-   * ``` typescript
-   * federation.setActorDispatcher(
-   *   "/users/{handle}",
-   *   async (ctx, handle) => {
-   *     return new Person({
-   *       id: ctx.getActorUri(handle),
-   *       preferredUsername: handle,
-   *       // ...
-   *     });
-   *   }
-   * );
-   * ```
-   *
-   * @param path The URI path pattern for the actor dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
-   * @param dispatcher An actor dispatcher callback to register.
-   * @returns An object with methods to set other actor dispatcher callbacks.
-   * @throws {RouterError} Thrown if the path pattern is invalid.
-   */
   setActorDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: ActorDispatcher<TContextData>,
   ): ActorCallbackSetters<TContextData> {
-    if (this.#router.has("actor")) {
+    if (this.router.has("actor")) {
       throw new RouterError("Actor dispatcher already set.");
     }
-    const variables = this.#router.add(path, "actor");
+    const variables = this.router.add(path, "actor");
     if (variables.size !== 1 || !variables.has("handle")) {
       throw new RouterError(
         "Path for actor dispatcher must have one variable: {handle}",
@@ -770,8 +986,8 @@ export class Federation<TContextData> {
         if (actor == null) return null;
         const logger = getLogger(["fedify", "federation", "actor"]);
         if (
-          this.#followingCallbacks != null &&
-          this.#followingCallbacks.dispatcher != null
+          this.followingCallbacks != null &&
+          this.followingCallbacks.dispatcher != null
         ) {
           if (actor.followingId == null) {
             logger.warn(
@@ -791,8 +1007,8 @@ export class Federation<TContextData> {
           }
         }
         if (
-          this.#followersCallbacks != null &&
-          this.#followersCallbacks.dispatcher != null
+          this.followersCallbacks != null &&
+          this.followersCallbacks.dispatcher != null
         ) {
           if (actor.followersId == null) {
             logger.warn(
@@ -812,8 +1028,8 @@ export class Federation<TContextData> {
           }
         }
         if (
-          this.#outboxCallbacks != null &&
-          this.#outboxCallbacks.dispatcher != null
+          this.outboxCallbacks != null &&
+          this.outboxCallbacks.dispatcher != null
         ) {
           if (actor?.outboxId == null) {
             logger.warn(
@@ -830,8 +1046,8 @@ export class Federation<TContextData> {
           }
         }
         if (
-          this.#likedCallbacks != null &&
-          this.#likedCallbacks.dispatcher != null
+          this.likedCallbacks != null &&
+          this.likedCallbacks.dispatcher != null
         ) {
           if (actor?.likedId == null) {
             logger.warn(
@@ -848,8 +1064,8 @@ export class Federation<TContextData> {
           }
         }
         if (
-          this.#featuredCallbacks != null &&
-          this.#featuredCallbacks.dispatcher != null
+          this.featuredCallbacks != null &&
+          this.featuredCallbacks.dispatcher != null
         ) {
           if (actor?.featuredId == null) {
             logger.warn(
@@ -868,8 +1084,8 @@ export class Federation<TContextData> {
           }
         }
         if (
-          this.#featuredTagsCallbacks != null &&
-          this.#featuredTagsCallbacks.dispatcher != null
+          this.featuredTagsCallbacks != null &&
+          this.featuredTagsCallbacks.dispatcher != null
         ) {
           if (actor?.featuredTagsId == null) {
             logger.warn(
@@ -888,7 +1104,7 @@ export class Federation<TContextData> {
             );
           }
         }
-        if (this.#router.has("inbox")) {
+        if (this.router.has("inbox")) {
           if (actor.inboxId == null) {
             logger.warn(
               "You configured inbox listeners, but the actor does not " +
@@ -937,7 +1153,7 @@ export class Federation<TContextData> {
         return actor;
       },
     };
-    this.#actorCallbacks = callbacks;
+    this.actorCallbacks = callbacks;
     const setters: ActorCallbackSetters<TContextData> = {
       setKeyPairsDispatcher(dispatcher: ActorKeyPairsDispatcher<TContextData>) {
         callbacks.keyPairsDispatcher = dispatcher;
@@ -951,20 +1167,6 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Registers an object dispatcher.
-   *
-   * @typeParam TContextData The context data to pass to the {@link Context}.
-   * @typeParam TObject The type of object to dispatch.
-   * @typeParam TParam The parameter names of the requested URL.
-   * @param cls The Activity Vocabulary class of the object to dispatch.
-   * @param path The URI path pattern for the object dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one or more variables.
-   * @param dispatcher An object dispatcher callback to register.
-   * @since 0.7.0
-   */
   setObjectDispatcher<TObject extends Object, TParam extends string>(
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
@@ -972,21 +1174,6 @@ export class Federation<TContextData> {
       `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
     dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
   ): ObjectCallbackSetters<TContextData, TObject, TParam>;
-
-  /**
-   * Registers an object dispatcher.
-   *
-   * @typeParam TContextData The context data to pass to the {@link Context}.
-   * @typeParam TObject The type of object to dispatch.
-   * @typeParam TParam The parameter names of the requested URL.
-   * @param cls The Activity Vocabulary class of the object to dispatch.
-   * @param path The URI path pattern for the object dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one or more variables.
-   * @param dispatcher An object dispatcher callback to register.
-   * @since 0.7.0
-   */
   setObjectDispatcher<TObject extends Object, TParam extends string>(
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
@@ -994,21 +1181,6 @@ export class Federation<TContextData> {
       `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
     dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
   ): ObjectCallbackSetters<TContextData, TObject, TParam>;
-
-  /**
-   * Registers an object dispatcher.
-   *
-   * @typeParam TContextData The context data to pass to the {@link Context}.
-   * @typeParam TObject The type of object to dispatch.
-   * @typeParam TParam The parameter names of the requested URL.
-   * @param cls The Activity Vocabulary class of the object to dispatch.
-   * @param path The URI path pattern for the object dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one or more variables.
-   * @param dispatcher An object dispatcher callback to register.
-   * @since 0.7.0
-   */
   setObjectDispatcher<TObject extends Object, TParam extends string>(
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
@@ -1016,21 +1188,6 @@ export class Federation<TContextData> {
       `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
     dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
   ): ObjectCallbackSetters<TContextData, TObject, TParam>;
-
-  /**
-   * Registers an object dispatcher.
-   *
-   * @typeParam TContextData The context data to pass to the {@link Context}.
-   * @typeParam TObject The type of object to dispatch.
-   * @typeParam TParam The parameter names of the requested URL.
-   * @param cls The Activity Vocabulary class of the object to dispatch.
-   * @param path The URI path pattern for the object dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one or more variables.
-   * @param dispatcher An object dispatcher callback to register.
-   * @since 0.7.0
-   */
   setObjectDispatcher<TObject extends Object, TParam extends string>(
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
@@ -1038,49 +1195,18 @@ export class Federation<TContextData> {
       `${string}{${TParam}}${string}{${TParam}}${string}{${TParam}}${string}`,
     dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
   ): ObjectCallbackSetters<TContextData, TObject, TParam>;
-
-  /**
-   * Registers an object dispatcher.
-   *
-   * @typeParam TContextData The context data to pass to the {@link Context}.
-   * @typeParam TObject The type of object to dispatch.
-   * @typeParam TParam The parameter names of the requested URL.
-   * @param cls The Activity Vocabulary class of the object to dispatch.
-   * @param path The URI path pattern for the object dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one or more variables.
-   * @param dispatcher An object dispatcher callback to register.
-   * @since 0.7.0
-   */
   setObjectDispatcher<TObject extends Object, TParam extends string>(
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
     path: `${string}{${TParam}}${string}{${TParam}}${string}`,
     dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
   ): ObjectCallbackSetters<TContextData, TObject, TParam>;
-
-  /**
-   * Registers an object dispatcher.
-   *
-   * @typeParam TContextData The context data to pass to the {@link Context}.
-   * @typeParam TObject The type of object to dispatch.
-   * @typeParam TParam The parameter names of the requested URL.
-   * @param cls The Activity Vocabulary class of the object to dispatch.
-   * @param path The URI path pattern for the object dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one or more variables.
-   * @param dispatcher An object dispatcher callback to register.
-   * @since 0.7.0
-   */
   setObjectDispatcher<TObject extends Object, TParam extends string>(
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
     path: `${string}{${TParam}}${string}`,
     dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
   ): ObjectCallbackSetters<TContextData, TObject, TParam>;
-
   setObjectDispatcher<TObject extends Object, TParam extends string>(
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
@@ -1088,10 +1214,10 @@ export class Federation<TContextData> {
     dispatcher: ObjectDispatcher<TContextData, TObject, TParam>,
   ): ObjectCallbackSetters<TContextData, TObject, TParam> {
     const routeName = `object:${cls.typeId.href}`;
-    if (this.#router.has(routeName)) {
+    if (this.router.has(routeName)) {
       throw new RouterError(`Object dispatcher for ${cls.name} already set.`);
     }
-    const variables = this.#router.add(path, routeName);
+    const variables = this.router.add(path, routeName);
     if (variables.size < 1) {
       throw new RouterError(
         "Path for object dispatcher must have at least one variable.",
@@ -1101,8 +1227,8 @@ export class Federation<TContextData> {
       dispatcher,
       parameters: variables as unknown as Set<TParam>,
     };
-    this.#objectCallbacks[cls.typeId.href] = callbacks;
-    this.#objectTypeIds[cls.typeId.href] = cls;
+    this.objectCallbacks[cls.typeId.href] = callbacks;
+    this.objectTypeIds[cls.typeId.href] = cls;
     const setters: ObjectCallbackSetters<TContextData, TObject, TParam> = {
       authorize(predicate: ObjectAuthorizePredicate<TContextData, TParam>) {
         callbacks.authorizePredicate = predicate;
@@ -1112,44 +1238,32 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Registers an inbox dispatcher.
-   *
-   * @param path The URI path pattern for the outbox dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`, and must match the inbox
-   *             listener path.
-   * @param dispatcher An inbox dispatcher callback to register.
-   * @throws {@link RouterError} Thrown if the path pattern is invalid.
-   * @since 0.11.0
-   */
   setInboxDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Activity, TContextData, void>,
   ): CollectionCallbackSetters<TContextData, void> {
-    if (this.#inboxCallbacks != null) {
+    if (this.inboxCallbacks != null) {
       throw new RouterError("Inbox dispatcher already set.");
     }
-    if (this.#router.has("inbox")) {
-      if (this.#inboxPath !== path) {
+    if (this.router.has("inbox")) {
+      if (this.inboxPath !== path) {
         throw new RouterError(
           "Inbox dispatcher path must match inbox listener path.",
         );
       }
     } else {
-      const variables = this.#router.add(path, "inbox");
+      const variables = this.router.add(path, "inbox");
       if (variables.size !== 1 || !variables.has("handle")) {
         throw new RouterError(
           "Path for inbox dispatcher must have one variable: {handle}",
         );
       }
-      this.#inboxPath = path;
+      this.inboxPath = path;
     }
     const callbacks: CollectionCallbacks<Activity, TContextData, void> = {
       dispatcher,
     };
-    this.#inboxCallbacks = callbacks;
+    this.inboxCallbacks = callbacks;
     const setters: CollectionCallbackSetters<TContextData, void> = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
@@ -1171,37 +1285,14 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Registers an outbox dispatcher.
-   *
-   * @example
-   * ``` typescript
-   * federation.setOutboxDispatcher(
-   *   "/users/{handle}/outbox",
-   *   async (ctx, handle, options) => {
-   *     let items: Activity[];
-   *     let nextCursor: string;
-   *     // ...
-   *     return { items, nextCursor };
-   *   }
-   * );
-   * ```
-   *
-   * @param path The URI path pattern for the outbox dispatcher.  The syntax is
-   *             based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
-   * @param dispatcher An outbox dispatcher callback to register.
-   * @throws {@link RouterError} Thrown if the path pattern is invalid.
-   */
   setOutboxDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Activity, TContextData, void>,
   ): CollectionCallbackSetters<TContextData, void> {
-    if (this.#router.has("outbox")) {
+    if (this.router.has("outbox")) {
       throw new RouterError("Outbox dispatcher already set.");
     }
-    const variables = this.#router.add(path, "outbox");
+    const variables = this.router.add(path, "outbox");
     if (variables.size !== 1 || !variables.has("handle")) {
       throw new RouterError(
         "Path for outbox dispatcher must have one variable: {handle}",
@@ -1210,7 +1301,7 @@ export class Federation<TContextData> {
     const callbacks: CollectionCallbacks<Activity, TContextData, void> = {
       dispatcher,
     };
-    this.#outboxCallbacks = callbacks;
+    this.outboxCallbacks = callbacks;
     const setters: CollectionCallbackSetters<TContextData, void> = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
@@ -1232,25 +1323,14 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Registers a following collection dispatcher.
-   * @param path The URI path pattern for the following collection.  The syntax
-   *             is based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
-   * @param dispatcher A following collection callback to register.
-   * @returns An object with methods to set other following collection
-   *          callbacks.
-   * @throws {RouterError} Thrown if the path pattern is invalid.
-   */
   setFollowingDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Actor | URL, TContextData, void>,
   ): CollectionCallbackSetters<TContextData, void> {
-    if (this.#router.has("following")) {
+    if (this.router.has("following")) {
       throw new RouterError("Following collection dispatcher already set.");
     }
-    const variables = this.#router.add(path, "following");
+    const variables = this.router.add(path, "following");
     if (variables.size !== 1 || !variables.has("handle")) {
       throw new RouterError(
         "Path for following collection dispatcher must have one variable: {handle}",
@@ -1259,7 +1339,7 @@ export class Federation<TContextData> {
     const callbacks: CollectionCallbacks<Actor | URL, TContextData, void> = {
       dispatcher,
     };
-    this.#followingCallbacks = callbacks;
+    this.followingCallbacks = callbacks;
     const setters: CollectionCallbackSetters<TContextData, void> = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
@@ -1281,17 +1361,6 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Registers a followers collection dispatcher.
-   * @param path The URI path pattern for the followers collection.  The syntax
-   *             is based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
-   * @param dispatcher A followers collection callback to register.
-   * @returns An object with methods to set other followers collection
-   *          callbacks.
-   * @throws {@link RouterError} Thrown if the path pattern is invalid.
-   */
   setFollowersDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
@@ -1300,10 +1369,10 @@ export class Federation<TContextData> {
       URL
     >,
   ): CollectionCallbackSetters<TContextData, URL> {
-    if (this.#router.has("followers")) {
+    if (this.router.has("followers")) {
       throw new RouterError("Followers collection dispatcher already set.");
     }
-    const variables = this.#router.add(path, "followers");
+    const variables = this.router.add(path, "followers");
     if (variables.size !== 1 || !variables.has("handle")) {
       throw new RouterError(
         "Path for followers collection dispatcher must have one variable: {handle}",
@@ -1316,7 +1385,7 @@ export class Federation<TContextData> {
     > = {
       dispatcher,
     };
-    this.#followersCallbacks = callbacks;
+    this.followersCallbacks = callbacks;
     const setters: CollectionCallbackSetters<TContextData, URL> = {
       setCounter(counter: CollectionCounter<TContextData, URL>) {
         callbacks.counter = counter;
@@ -1338,26 +1407,14 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Registers a liked collection dispatcher.
-   * @param path The URI path pattern for the liked collection.  The syntax
-   *             is based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
-   * @param dispatcher A liked collection callback to register.
-   * @returns An object with methods to set other liked collection
-   *          callbacks.
-   * @throws {@link RouterError} Thrown if the path pattern is invalid.
-   * @since 0.11.0
-   */
   setLikedDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Like, TContextData, void>,
   ): CollectionCallbackSetters<TContextData, void> {
-    if (this.#router.has("liked")) {
+    if (this.router.has("liked")) {
       throw new RouterError("Liked collection dispatcher already set.");
     }
-    const variables = this.#router.add(path, "liked");
+    const variables = this.router.add(path, "liked");
     if (variables.size !== 1 || !variables.has("handle")) {
       throw new RouterError(
         "Path for liked collection dispatcher must have one variable: {handle}",
@@ -1366,7 +1423,7 @@ export class Federation<TContextData> {
     const callbacks: CollectionCallbacks<Like, TContextData, void> = {
       dispatcher,
     };
-    this.#likedCallbacks = callbacks;
+    this.likedCallbacks = callbacks;
     const setters: CollectionCallbackSetters<TContextData, void> = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
@@ -1388,26 +1445,14 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Registers a featured collection dispatcher.
-   * @param path The URI path pattern for the featured collection.  The syntax
-   *             is based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
-   * @param dispatcher A featured collection callback to register.
-   * @returns An object with methods to set other featured collection
-   *          callbacks.
-   * @throws {@link RouterError} Thrown if the path pattern is invalid.
-   * @since 0.11.0
-   */
   setFeaturedDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Object, TContextData, void>,
   ): CollectionCallbackSetters<TContextData, void> {
-    if (this.#router.has("featured")) {
+    if (this.router.has("featured")) {
       throw new RouterError("Featured collection dispatcher already set.");
     }
-    const variables = this.#router.add(path, "featured");
+    const variables = this.router.add(path, "featured");
     if (variables.size !== 1 || !variables.has("handle")) {
       throw new RouterError(
         "Path for featured collection dispatcher must have one variable: {handle}",
@@ -1416,7 +1461,7 @@ export class Federation<TContextData> {
     const callbacks: CollectionCallbacks<Object, TContextData, void> = {
       dispatcher,
     };
-    this.#featuredCallbacks = callbacks;
+    this.featuredCallbacks = callbacks;
     const setters: CollectionCallbackSetters<TContextData, void> = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
@@ -1438,26 +1483,14 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Registers a featured tags collection dispatcher.
-   * @param path The URI path pattern for the featured tags collection.
-   *             The syntax is based on URI Template
-   *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
-   * @param dispatcher A featured tags collection callback to register.
-   * @returns An object with methods to set other featured tags collection
-   *          callbacks.
-   * @throws {@link RouterError} Thrown if the path pattern is invalid.
-   * @since 0.11.0
-   */
   setFeaturedTagsDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<Hashtag, TContextData, void>,
   ): CollectionCallbackSetters<TContextData, void> {
-    if (this.#router.has("featuredTags")) {
+    if (this.router.has("featuredTags")) {
       throw new RouterError("Featured tags collection dispatcher already set.");
     }
-    const variables = this.#router.add(path, "featuredTags");
+    const variables = this.router.add(path, "featuredTags");
     if (variables.size !== 1 || !variables.has("handle")) {
       throw new RouterError(
         "Path for featured tags collection dispatcher must have one " +
@@ -1467,7 +1500,7 @@ export class Federation<TContextData> {
     const callbacks: CollectionCallbacks<Hashtag, TContextData, void> = {
       dispatcher,
     };
-    this.#featuredTagsCallbacks = callbacks;
+    this.featuredTagsCallbacks = callbacks;
     const setters: CollectionCallbackSetters<TContextData, void> = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
@@ -1489,67 +1522,37 @@ export class Federation<TContextData> {
     return setters;
   }
 
-  /**
-   * Assigns the URL path for the inbox and starts setting inbox listeners.
-   *
-   * @example
-   * ``` typescript
-   * federation
-   *   .setInboxListeners("/users/{handle/inbox", "/inbox")
-   *   .on(Follow, async (ctx, follow) => {
-   *     const from = await follow.getActor(ctx);
-   *     if (!isActor(from)) return;
-   *     // ...
-   *     await ctx.sendActivity({ })
-   *   })
-   *   .on(Undo, async (ctx, undo) => {
-   *     // ...
-   *   });
-   * ```
-   *
-   * @param inboxPath The URI path pattern for the inbox.  The syntax is based
-   *                  on URI Template
-   *                  ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
-   *                  The path must have one variable: `{handle}`, and must
-   *                  match the inbox dispatcher path.
-   * @param sharedInboxPath An optional URI path pattern for the shared inbox.
-   *                        The syntax is based on URI Template
-   *                        ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
-   *                        The path must have no variables.
-   * @returns An object to register inbox listeners.
-   * @throws {RouteError} Thrown if the path pattern is invalid.
-   */
   setInboxListeners(
     inboxPath: `${string}{handle}${string}`,
     sharedInboxPath?: string,
   ): InboxListenerSetters<TContextData> {
-    if (this.#inboxListeners != null) {
+    if (this.inboxListeners != null) {
       throw new RouterError("Inbox listeners already set.");
     }
-    if (this.#router.has("inbox")) {
-      if (this.#inboxPath !== inboxPath) {
+    if (this.router.has("inbox")) {
+      if (this.inboxPath !== inboxPath) {
         throw new RouterError(
           "Inbox listener path must match inbox dispatcher path.",
         );
       }
     } else {
-      const variables = this.#router.add(inboxPath, "inbox");
+      const variables = this.router.add(inboxPath, "inbox");
       if (variables.size !== 1 || !variables.has("handle")) {
         throw new RouterError(
           "Path for inbox must have one variable: {handle}",
         );
       }
-      this.#inboxPath = inboxPath;
+      this.inboxPath = inboxPath;
     }
     if (sharedInboxPath != null) {
-      const siVars = this.#router.add(sharedInboxPath, "sharedInbox");
+      const siVars = this.router.add(sharedInboxPath, "sharedInbox");
       if (siVars.size !== 0) {
         throw new RouterError(
           "Path for shared inbox must have no variables.",
         );
       }
     }
-    const listeners = this.#inboxListeners = new InboxListenerSet();
+    const listeners = this.inboxListeners = new InboxListenerSet();
     const setters: InboxListenerSetters<TContextData> = {
       on<TActivity extends Activity>(
         // deno-lint-ignore no-explicit-any
@@ -1562,30 +1565,19 @@ export class Federation<TContextData> {
       onError: (
         handler: InboxErrorHandler<TContextData>,
       ): InboxListenerSetters<TContextData> => {
-        this.#inboxErrorHandler = handler;
+        this.inboxErrorHandler = handler;
         return setters;
       },
       setSharedKeyDispatcher: (
         dispatcher: SharedInboxKeyDispatcher<TContextData>,
       ): InboxListenerSetters<TContextData> => {
-        this.#sharedInboxKeyDispatcher = dispatcher;
+        this.sharedInboxKeyDispatcher = dispatcher;
         return setters;
       },
     };
     return setters;
   }
 
-  /**
-   * Sends an activity to recipients' inboxes.  You would typically use
-   * {@link Context.sendActivity} instead of this method.
-   *
-   * @param keys The sender's key pairs.
-   * @param recipients The recipients of the activity.
-   * @param activity The activity to send.
-   * @param options Options for sending the activity.
-   * @throws {TypeError} If the activity to send does not have an actor.
-   * @deprecated Use {@link Context.sendActivity} instead.
-   */
   async sendActivity(
     keys: SenderKeyPair[],
     recipients: Recipient | Recipient[],
@@ -1621,7 +1613,7 @@ export class Federation<TContextData> {
         "The activity to send must have at least one actor property.",
       );
     }
-    if (!this.#manuallyStartQueue) this.#startQueue(contextData);
+    if (!this.manuallyStartQueue) this.#startQueue(contextData);
     if (activity.id == null) {
       activity = activity.clone({
         id: new URL(`urn:uuid:${crypto.randomUUID()}`),
@@ -1637,7 +1629,7 @@ export class Federation<TContextData> {
       activityId: activity.id?.href,
       activity,
     });
-    if (immediate || this.#queue == null) {
+    if (immediate || this.queue == null) {
       if (immediate) {
         logger.debug(
           "Sending activity immediately without queue since immediate option " +
@@ -1657,7 +1649,7 @@ export class Federation<TContextData> {
             keys,
             activity,
             inbox: new URL(inbox),
-            contextLoader: this.#contextLoader,
+            contextLoader: this.contextLoader,
             headers: collectionSync == null ? undefined : new Headers({
               "Collection-Synchronization":
                 await buildCollectionSynchronizationHeader(
@@ -1681,7 +1673,7 @@ export class Federation<TContextData> {
       keyJwkPairs.push({ keyId: keyId.href, privateKey: privateKeyJwk });
     }
     const activityJson = await activity.toJsonLd({
-      contextLoader: this.#contextLoader,
+      contextLoader: this.contextLoader,
     });
     for (const inbox in inboxes) {
       const message: OutboxMessage = {
@@ -1699,22 +1691,10 @@ export class Federation<TContextData> {
             ),
         },
       };
-      this.#queue.enqueue(message);
+      this.queue.enqueue(message);
     }
   }
 
-  /**
-   * Handles a request related to federation.  If a request is not related to
-   * federation, the `onNotFound` or `onNotAcceptable` callback is called.
-   *
-   * Usually, this method is called from a server's request handler or
-   * a web framework's middleware.
-   *
-   * @param request The request object.
-   * @param parameters The parameters for handling the request.
-   * @returns The response to the request.
-   * @since 0.6.0
-   */
   async fetch(
     request: Request,
     options: FederationFetchOptions<TContextData>,
@@ -1748,7 +1728,7 @@ export class Federation<TContextData> {
     onNotAcceptable ??= notAcceptable;
     onUnauthorized ??= unauthorized;
     const url = new URL(request.url);
-    const route = this.#router.route(url.pathname);
+    const route = this.router.route(url.pathname);
     if (route == null) {
       const response = onNotFound(request);
       return response instanceof Promise ? await response : response;
@@ -1759,7 +1739,7 @@ export class Federation<TContextData> {
       case "webfinger":
         return await handleWebFinger(request, {
           context,
-          actorDispatcher: this.#actorCallbacks?.dispatcher,
+          actorDispatcher: this.actorCallbacks?.dispatcher,
           onNotFound,
         });
       case "nodeInfoJrd":
@@ -1767,7 +1747,7 @@ export class Federation<TContextData> {
       case "nodeInfo":
         return await handleNodeInfo(request, {
           context,
-          nodeInfoDispatcher: this.#nodeInfoDispatcher!,
+          nodeInfoDispatcher: this.nodeInfoDispatcher!,
         });
       case "actor":
         context = this.#createContext(request, contextData, {
@@ -1776,16 +1756,16 @@ export class Federation<TContextData> {
         return await handleActor(request, {
           handle: route.values.handle,
           context,
-          actorDispatcher: this.#actorCallbacks?.dispatcher,
-          authorizePredicate: this.#actorCallbacks?.authorizePredicate,
+          actorDispatcher: this.actorCallbacks?.dispatcher,
+          authorizePredicate: this.actorCallbacks?.authorizePredicate,
           onUnauthorized,
           onNotFound,
           onNotAcceptable,
         });
       case "object": {
         const typeId = route.name.replace(/^object:/, "");
-        const callbacks = this.#objectCallbacks[typeId];
-        const cls = this.#objectTypeIds[typeId];
+        const callbacks = this.objectCallbacks[typeId];
+        const cls = this.objectTypeIds[typeId];
         context = this.#createContext(request, contextData, {
           invokedFromObjectDispatcher: { cls, values: route.values },
         });
@@ -1804,7 +1784,7 @@ export class Federation<TContextData> {
           name: "outbox",
           handle: route.values.handle,
           context,
-          collectionCallbacks: this.#outboxCallbacks,
+          collectionCallbacks: this.outboxCallbacks,
           onUnauthorized,
           onNotFound,
           onNotAcceptable,
@@ -1815,7 +1795,7 @@ export class Federation<TContextData> {
             name: "inbox",
             handle: route.values.handle,
             context,
-            collectionCallbacks: this.#inboxCallbacks,
+            collectionCallbacks: this.inboxCallbacks,
             onUnauthorized,
             onNotFound,
             onNotAcceptable,
@@ -1828,8 +1808,8 @@ export class Federation<TContextData> {
         });
         // falls through
       case "sharedInbox":
-        if (routeName !== "inbox" && this.#sharedInboxKeyDispatcher != null) {
-          const identity = await this.#sharedInboxKeyDispatcher(context);
+        if (routeName !== "inbox" && this.sharedInboxKeyDispatcher != null) {
+          const identity = await this.sharedInboxKeyDispatcher(context);
           if (identity != null) {
             context = this.#createContext(request, contextData, {
               documentLoader: "handle" in identity
@@ -1838,24 +1818,24 @@ export class Federation<TContextData> {
             });
           }
         }
-        if (!this.#manuallyStartQueue) this.#startQueue(contextData);
+        if (!this.manuallyStartQueue) this.#startQueue(contextData);
         return await handleInbox(request, {
           handle: route.values.handle ?? null,
           context,
-          kv: this.#kv,
-          kvPrefixes: this.#kvPrefixes,
-          actorDispatcher: this.#actorCallbacks?.dispatcher,
-          inboxListeners: this.#inboxListeners,
-          inboxErrorHandler: this.#inboxErrorHandler,
+          kv: this.kv,
+          kvPrefixes: this.kvPrefixes,
+          actorDispatcher: this.actorCallbacks?.dispatcher,
+          inboxListeners: this.inboxListeners,
+          inboxErrorHandler: this.inboxErrorHandler,
           onNotFound,
-          signatureTimeWindow: this.#signatureTimeWindow,
+          signatureTimeWindow: this.signatureTimeWindow,
         });
       case "following":
         return await handleCollection(request, {
           name: "following",
           handle: route.values.handle,
           context,
-          collectionCallbacks: this.#followingCallbacks,
+          collectionCallbacks: this.followingCallbacks,
           onUnauthorized,
           onNotFound,
           onNotAcceptable,
@@ -1877,7 +1857,7 @@ export class Federation<TContextData> {
                 baseUrl!,
               ))
             : undefined,
-          collectionCallbacks: this.#followersCallbacks,
+          collectionCallbacks: this.followersCallbacks,
           onUnauthorized,
           onNotFound,
           onNotAcceptable,
@@ -1888,7 +1868,7 @@ export class Federation<TContextData> {
           name: "liked",
           handle: route.values.handle,
           context,
-          collectionCallbacks: this.#likedCallbacks,
+          collectionCallbacks: this.likedCallbacks,
           onUnauthorized,
           onNotFound,
           onNotAcceptable,
@@ -1898,7 +1878,7 @@ export class Federation<TContextData> {
           name: "featured",
           handle: route.values.handle,
           context,
-          collectionCallbacks: this.#featuredCallbacks,
+          collectionCallbacks: this.featuredCallbacks,
           onUnauthorized,
           onNotFound,
           onNotAcceptable,
@@ -1908,7 +1888,7 @@ export class Federation<TContextData> {
           name: "featured tags",
           handle: route.values.handle,
           context,
-          collectionCallbacks: this.#featuredTagsCallbacks,
+          collectionCallbacks: this.featuredTagsCallbacks,
           onUnauthorized,
           onNotFound,
           onNotAcceptable,
@@ -1923,99 +1903,66 @@ export class Federation<TContextData> {
 
 interface ContextOptions<TContextData> {
   url: URL;
-  federation: Federation<TContextData>;
-  router: Router;
-  objectTypeIds: Record<
-    string,
-    // deno-lint-ignore no-explicit-any
-    (new (...args: any[]) => Object) & { typeId: URL }
-  >;
-  objectCallbacks: Record<string, ObjectCallbacks<TContextData, string>>;
-  actorCallbacks?: ActorCallbacks<TContextData>;
+  federation: FederationImpl<TContextData>;
   data: TContextData;
   documentLoader: DocumentLoader;
-  contextLoader: DocumentLoader;
-  authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   invokedFromActorKeyPairsDispatcher?: { handle: string };
 }
 
 class ContextImpl<TContextData> implements Context<TContextData> {
-  readonly #url: URL;
-  readonly #federation: Federation<TContextData>;
-  readonly #router: Router;
-  readonly #objectTypeIds: Record<
-    string,
-    // deno-lint-ignore no-explicit-any
-    (new (...args: any[]) => Object) & { typeId: URL }
-  >;
-  protected readonly objectCallbacks: Record<
-    string,
-    ObjectCallbacks<TContextData, string>
-  >;
-  protected readonly actorCallbacks?: ActorCallbacks<TContextData>;
+  readonly url: URL;
+  readonly federation: FederationImpl<TContextData>;
   readonly data: TContextData;
   readonly documentLoader: DocumentLoader;
-  readonly contextLoader: DocumentLoader;
-  readonly #authenticatedDocumentLoaderFactory:
-    AuthenticatedDocumentLoaderFactory;
-  readonly #invokedFromActorKeyPairsDispatcher?: { handle: string };
+  readonly invokedFromActorKeyPairsDispatcher?: { handle: string };
 
   constructor(
     {
       url,
       federation,
-      router,
-      objectTypeIds,
-      objectCallbacks,
-      actorCallbacks,
       data,
       documentLoader,
-      contextLoader,
-      authenticatedDocumentLoaderFactory,
       invokedFromActorKeyPairsDispatcher,
     }: ContextOptions<TContextData>,
   ) {
-    this.#url = url;
-    this.#federation = federation;
-    this.#router = router;
-    this.#objectTypeIds = objectTypeIds;
-    this.objectCallbacks = objectCallbacks;
-    this.actorCallbacks = actorCallbacks;
+    this.url = url;
+    this.federation = federation;
     this.data = data;
     this.documentLoader = documentLoader;
-    this.contextLoader = contextLoader;
-    this.#authenticatedDocumentLoaderFactory =
-      authenticatedDocumentLoaderFactory;
-    this.#invokedFromActorKeyPairsDispatcher =
+    this.invokedFromActorKeyPairsDispatcher =
       invokedFromActorKeyPairsDispatcher;
   }
 
   get hostname(): string {
-    return this.#url.hostname;
+    return this.url.hostname;
   }
 
   get host(): string {
-    return this.#url.host;
+    return this.url.host;
   }
 
   get origin(): string {
-    return this.#url.origin;
+    return this.url.origin;
+  }
+
+  get contextLoader(): DocumentLoader {
+    return this.federation.contextLoader;
   }
 
   getNodeInfoUri(): URL {
-    const path = this.#router.build("nodeInfo", {});
+    const path = this.federation.router.build("nodeInfo", {});
     if (path == null) {
       throw new RouterError("No NodeInfo dispatcher registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getActorUri(handle: string): URL {
-    const path = this.#router.build("actor", { handle });
+    const path = this.federation.router.build("actor", { handle });
     if (path == null) {
       throw new RouterError("No actor dispatcher registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getObjectUri<TObject extends Object>(
@@ -2023,7 +1970,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
     values: Record<string, string>,
   ): URL {
-    const callbacks = this.objectCallbacks[cls.typeId.href];
+    const callbacks = this.federation.objectCallbacks[cls.typeId.href];
     if (callbacks == null) {
       throw new RouterError("No object dispatcher registered.");
     }
@@ -2032,81 +1979,84 @@ class ContextImpl<TContextData> implements Context<TContextData> {
         throw new TypeError(`Missing parameter: ${param}`);
       }
     }
-    const path = this.#router.build(`object:${cls.typeId.href}`, values);
+    const path = this.federation.router.build(
+      `object:${cls.typeId.href}`,
+      values,
+    );
     if (path == null) {
       throw new RouterError("No object dispatcher registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getOutboxUri(handle: string): URL {
-    const path = this.#router.build("outbox", { handle });
+    const path = this.federation.router.build("outbox", { handle });
     if (path == null) {
       throw new RouterError("No outbox dispatcher registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getInboxUri(): URL;
   getInboxUri(handle: string): URL;
   getInboxUri(handle?: string): URL {
     if (handle == null) {
-      const path = this.#router.build("sharedInbox", {});
+      const path = this.federation.router.build("sharedInbox", {});
       if (path == null) {
         throw new RouterError("No shared inbox path registered.");
       }
-      return new URL(path, this.#url);
+      return new URL(path, this.url);
     }
-    const path = this.#router.build("inbox", { handle });
+    const path = this.federation.router.build("inbox", { handle });
     if (path == null) {
       throw new RouterError("No inbox path registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getFollowingUri(handle: string): URL {
-    const path = this.#router.build("following", { handle });
+    const path = this.federation.router.build("following", { handle });
     if (path == null) {
       throw new RouterError("No following collection path registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getFollowersUri(handle: string): URL {
-    const path = this.#router.build("followers", { handle });
+    const path = this.federation.router.build("followers", { handle });
     if (path == null) {
       throw new RouterError("No followers collection path registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getLikedUri(handle: string): URL {
-    const path = this.#router.build("liked", { handle });
+    const path = this.federation.router.build("liked", { handle });
     if (path == null) {
       throw new RouterError("No liked collection path registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getFeaturedUri(handle: string): URL {
-    const path = this.#router.build("featured", { handle });
+    const path = this.federation.router.build("featured", { handle });
     if (path == null) {
       throw new RouterError("No featured collection path registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   getFeaturedTagsUri(handle: string): URL {
-    const path = this.#router.build("featuredTags", { handle });
+    const path = this.federation.router.build("featuredTags", { handle });
     if (path == null) {
       throw new RouterError("No featured tags collection path registered.");
     }
-    return new URL(path, this.#url);
+    return new URL(path, this.url);
   }
 
   parseUri(uri: URL): ParseUriResult | null {
-    if (uri.origin !== this.#url.origin) return null;
-    const route = this.#router.route(uri.pathname);
+    if (uri.origin !== this.url.origin) return null;
+    const route = this.federation.router.route(uri.pathname);
     if (route == null) return null;
     else if (route.name === "actor") {
       return { type: "actor", handle: route.values.handle };
@@ -2114,7 +2064,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       const typeId = route.name.replace(/^object:/, "");
       return {
         type: "object",
-        class: this.#objectTypeIds[typeId],
+        class: this.federation.objectTypeIds[typeId],
         typeId: new URL(typeId),
         values: route.values,
       };
@@ -2140,7 +2090,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
 
   async getActorKeyPairs(handle: string): Promise<ActorKeyPair[]> {
     const logger = getLogger(["fedify", "federation", "actor"]);
-    if (this.#invokedFromActorKeyPairsDispatcher != null) {
+    if (this.invokedFromActorKeyPairsDispatcher != null) {
       logger.warn(
         "Context.getActorKeyPairs({getActorKeyPairsHandle}) method is " +
           "invoked from the actor key pairs dispatcher " +
@@ -2148,7 +2098,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
         {
           getActorKeyPairsHandle: handle,
           actorKeyPairsDispatcherHandle:
-            this.#invokedFromActorKeyPairsDispatcher.handle,
+            this.invokedFromActorKeyPairsDispatcher.handle,
         },
       );
     }
@@ -2184,28 +2134,18 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     handle: string,
   ): Promise<(CryptoKeyPair & { keyId: URL })[]> {
     const logger = getLogger(["fedify", "federation", "actor"]);
-    if (this.actorCallbacks?.keyPairsDispatcher == null) {
+    if (this.federation.actorCallbacks?.keyPairsDispatcher == null) {
       throw new Error("No actor key pairs dispatcher registered.");
     }
-    const path = this.#router.build("actor", { handle });
+    const path = this.federation.router.build("actor", { handle });
     if (path == null) {
       logger.warn("No actor dispatcher registered.");
       return [];
     }
-    const actorUri = new URL(path, this.#url);
-    const keyPairs = await this.actorCallbacks?.keyPairsDispatcher(
+    const actorUri = new URL(path, this.url);
+    const keyPairs = await this.federation.actorCallbacks?.keyPairsDispatcher(
       new ContextImpl({
-        url: this.#url,
-        federation: this.#federation,
-        router: this.#router,
-        objectTypeIds: this.#objectTypeIds,
-        objectCallbacks: this.objectCallbacks,
-        actorCallbacks: this.actorCallbacks,
-        data: this.data,
-        documentLoader: this.documentLoader,
-        contextLoader: this.contextLoader,
-        authenticatedDocumentLoaderFactory:
-          this.#authenticatedDocumentLoaderFactory,
+        ...this,
         invokedFromActorKeyPairsDispatcher: { handle },
       }),
       handle,
@@ -2261,10 +2201,10 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       return keyPair.then((pair) =>
         pair == null
           ? this.documentLoader
-          : this.#authenticatedDocumentLoaderFactory(pair)
+          : this.federation.authenticatedDocumentLoaderFactory(pair)
       );
     }
-    return this.#authenticatedDocumentLoaderFactory(identity);
+    return this.federation.authenticatedDocumentLoaderFactory(identity);
   }
 
   async sendActivity(
@@ -2310,14 +2250,14 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       ) {
         expandedRecipients.push(recipient);
       }
-      const collectionId = this.#router.build("followers", sender);
+      const collectionId = this.federation.router.build("followers", sender);
       opts.collectionSync = collectionId == null
         ? undefined
-        : new URL(collectionId, this.#url).href;
+        : new URL(collectionId, this.url).href;
     } else {
       expandedRecipients = [recipients];
     }
-    return await this.#federation.sendActivity(
+    return await this.federation.sendActivity(
       keys,
       expandedRecipients,
       activity,
@@ -2336,8 +2276,6 @@ class ContextImpl<TContextData> implements Context<TContextData> {
 interface RequestContextOptions<TContextData>
   extends ContextOptions<TContextData> {
   request: Request;
-  signatureTimeWindow?: Temporal.DurationLike;
-  followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
   invokedFromActorDispatcher?: { handle: string };
   invokedFromObjectDispatcher?: {
     // deno-lint-ignore no-explicit-any
@@ -2348,13 +2286,6 @@ interface RequestContextOptions<TContextData>
 
 class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
   implements RequestContext<TContextData> {
-  readonly #options: RequestContextOptions<TContextData>;
-  readonly #followersCallbacks?: CollectionCallbacks<
-    Recipient,
-    TContextData,
-    URL
-  >;
-  readonly #signatureTimeWindow?: Temporal.DurationLike;
   readonly #invokedFromActorDispatcher?: { handle: string };
   readonly #invokedFromObjectDispatcher?: {
     // deno-lint-ignore no-explicit-any
@@ -2366,9 +2297,6 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
 
   constructor(options: RequestContextOptions<TContextData>) {
     super(options);
-    this.#options = options;
-    this.#followersCallbacks = options.followersCallbacks;
-    this.#signatureTimeWindow = options.signatureTimeWindow;
     this.#invokedFromActorDispatcher = options.invokedFromActorDispatcher;
     this.#invokedFromObjectDispatcher = options.invokedFromObjectDispatcher;
     this.request = options.request;
@@ -2376,10 +2304,10 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
   }
 
   protected async *getFollowers(handle: string): AsyncIterable<Recipient> {
-    if (this.#followersCallbacks == null) {
+    if (this.federation.followersCallbacks == null) {
       throw new Error("No followers collection dispatcher registered.");
     }
-    const result = await this.#followersCallbacks.dispatcher(
+    const result = await this.federation.followersCallbacks.dispatcher(
       this,
       handle,
       null,
@@ -2388,14 +2316,17 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
       for (const recipient of result.items) yield recipient;
       return;
     }
-    if (this.#followersCallbacks.firstCursor == null) {
+    if (this.federation.followersCallbacks.firstCursor == null) {
       throw new Error(
         "No first cursor dispatcher registered for followers collection.",
       );
     }
-    let cursor = await this.#followersCallbacks.firstCursor(this, handle);
+    let cursor = await this.federation.followersCallbacks.firstCursor(
+      this,
+      handle,
+    );
     while (cursor != null) {
-      const result = await this.#followersCallbacks.dispatcher(
+      const result = await this.federation.followersCallbacks.dispatcher(
         this,
         handle,
         cursor,
@@ -2408,8 +2339,8 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
 
   async getActor(handle: string): Promise<Actor | null> {
     if (
-      this.actorCallbacks == null ||
-      this.actorCallbacks.dispatcher == null
+      this.federation.actorCallbacks == null ||
+      this.federation.actorCallbacks.dispatcher == null
     ) {
       throw new Error("No actor dispatcher registered.");
     }
@@ -2424,9 +2355,9 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
         },
       );
     }
-    return await this.actorCallbacks.dispatcher(
+    return await this.federation.actorCallbacks.dispatcher(
       new RequestContextImpl({
-        ...this.#options,
+        ...this,
         invokedFromActorDispatcher: { handle },
       }),
       handle,
@@ -2438,7 +2369,7 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     cls: (new (...args: any[]) => TObject) & { typeId: URL },
     values: Record<string, string>,
   ): Promise<TObject | null> {
-    const callbacks = this.objectCallbacks[cls.typeId.href];
+    const callbacks = this.federation.objectCallbacks[cls.typeId.href];
     if (callbacks == null) {
       throw new Error("No object dispatcher registered.");
     }
@@ -2463,7 +2394,7 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     }
     return await callbacks.dispatcher(
       new RequestContextImpl({
-        ...this.#options,
+        ...this,
         invokedFromObjectDispatcher: { cls, values },
       }),
       values,
@@ -2477,7 +2408,7 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     if (this.#signedKey !== undefined) return this.#signedKey;
     return this.#signedKey = await verifyRequest(this.request, {
       ...this,
-      timeWindow: this.#signatureTimeWindow,
+      timeWindow: this.federation.signatureTimeWindow,
     });
   }
 
