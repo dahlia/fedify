@@ -9,8 +9,9 @@ description: |
   but the direct object is the question itself and therefore it would not
   contain an `object` property.
 
-  Either of the `anyOf` and `oneOf` properties *may* be used to express possible
-  answers, but a Question object *must not* have both properties.
+  Either of the `inclusiveOptions` and `exclusiveOptions` properties *may* be
+  used to express possible answers, but a Question object *must not* have both
+  properties.
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
 - "https://w3id.org/security/data-integrity/v1"
@@ -42,6 +43,16 @@ properties:
     a Question can have only one answer, use `exclusiveOptions`.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
+
+- singularName: closed
+  functional: true
+  uri: "https://www.w3.org/ns/activitystreams#closed"
+  description: |
+    Indicates that a question has been closed, and answers are no longer
+    accepted.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#dateTime"
+  - "http://www.w3.org/2001/XMLSchema#boolean"
 
 - singularName: voters
   functional: true

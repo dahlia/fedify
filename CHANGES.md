@@ -8,6 +8,12 @@ Version 0.13.0
 
 To be released.
 
+ -  Added `closed` property to `Question` class in Activity Vocabulary API.
+
+     -  Added `Question.closed` property.
+     -  `new Question()` constructor now accepts `closed` option.
+     -  `Question.clone()` method now accepts `closed` option.
+
  -  Added `voters` property to `Question` class in Activity Vocabulary API.
 
      -  Added `Question.voters` property.

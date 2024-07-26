@@ -5178,6 +5178,7 @@ snapshot[`Deno.inspect(Question) [auto] 1`] = `
   instrument: Object {},
   exclusiveOptions: [ Object {} ],
   inclusiveOptions: [ Object {} ],
+  closed: 2024-03-03T08:30:06.796196096Z,
   voters: 123
 }'
 `;
@@ -5221,6 +5222,7 @@ snapshot[`Deno.inspect(Question) [auto] 2`] = `
   instrument: URL "https://example.com/",
   exclusiveOptions: [ URL "https://example.com/" ],
   inclusiveOptions: [ URL "https://example.com/" ],
+  closed: 2024-03-03T08:30:06.796196096Z,
   voters: 123
 }'
 `;
@@ -5264,6 +5266,7 @@ snapshot[`Deno.inspect(Question) [auto] 3`] = `
   instruments: [ Object {}, Object {} ],
   exclusiveOptions: [ Object {}, Object {} ],
   inclusiveOptions: [ Object {}, Object {} ],
+  closed: 2024-03-03T08:30:06.796196096Z,
   voters: 123
 }'
 `;

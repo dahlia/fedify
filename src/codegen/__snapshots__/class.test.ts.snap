@@ -32655,8 +32655,9 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
  * but the direct object is the question itself and therefore it would not
  * contain an \`object\` property.
  * 
- * Either of the \`anyOf\` and \`oneOf\` properties *may* be used to express possible
- * answers, but a Question object *must not* have both properties.
+ * Either of the \`inclusiveOptions\` and \`exclusiveOptions\` properties *may* be
+ * used to express possible answers, but a Question object *must not* have both
+ * properties.
  * 
  */
 export class Question extends IntransitiveActivity {
@@ -32669,6 +32670,7 @@ export class Question extends IntransitiveActivity {
     }
   #_2N5scKaVEcdYHFmfKYYacAwUhUgQ: (Object | URL)[] = [];
 #_2mV6isMTPRKbWdLCjcpiEysq5dAY: (Object | URL)[] = [];
+#_3KronwL8DiiKBRcJFKQPiEHm8xb6: ((Temporal.Instant | boolean))[] = [];
 #_3H4RdST7dxfmghccvE3rKD3KgcxG: (number)[] = [];
 
   /**
@@ -32702,7 +32704,7 @@ objects?: (Object | URL)[];target?: Object | URL | null;
 targets?: (Object | URL)[];result?: Object | URL | null;
 results?: (Object | URL)[];origin?: Object | URL | null;
 origins?: (Object | URL)[];instrument?: Object | URL | null;
-instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];voters?: number | null;}
+instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];closed?: Temporal.Instant | boolean | null;voters?: number | null;}
 ,
     {
       documentLoader,
@@ -32737,6 +32739,18 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
             throw new TypeError(
               \\"The inclusiveOptions must be an array of type \\" +
               \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"closed\\" in values &&             values.closed != null) {
+          if (values.closed instanceof Temporal.Instant || typeof values.closed === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            this.#_3KronwL8DiiKBRcJFKQPiEHm8xb6 = [values.closed];
+          } else {
+            throw new TypeError(
+              \\"The closed must be of type \\" +
+              \\"Temporal.Instant | boolean\\" + \\".\\",
             );
           }
         }
@@ -32786,7 +32800,7 @@ objects?: (Object | URL)[];target?: Object | URL | null;
 targets?: (Object | URL)[];result?: Object | URL | null;
 results?: (Object | URL)[];origin?: Object | URL | null;
 origins?: (Object | URL)[];instrument?: Object | URL | null;
-instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];voters?: number | null;}
+instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];closed?: Temporal.Instant | boolean | null;voters?: number | null;}
 
     = {},
     options: {
@@ -32819,6 +32833,18 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
             throw new TypeError(
               \\"The inclusiveOptions must be an array of type \\" +
               \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3KronwL8DiiKBRcJFKQPiEHm8xb6 = this.#_3KronwL8DiiKBRcJFKQPiEHm8xb6;
+        if (\\"closed\\" in values &&             values.closed != null) {
+          if (values.closed instanceof Temporal.Instant || typeof values.closed === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_3KronwL8DiiKBRcJFKQPiEHm8xb6 = [values.closed];
+          } else {
+            throw new TypeError(
+              \\"The closed must be of type \\" +
+              \\"Temporal.Instant | boolean\\" + \\".\\",
             );
           }
         }
@@ -32998,6 +33024,15 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
         }
       }
       
+/** Indicates that a question has been closed, and answers are no longer
+ * accepted.
+ * 
+ */
+get closed(): (Temporal.Instant | boolean | null) {
+        if (this.#_3KronwL8DiiKBRcJFKQPiEHm8xb6.length < 1) return null;
+        return this.#_3KronwL8DiiKBRcJFKQPiEHm8xb6[0];
+      }
+      
 /** How many people have voted in the poll.  Distinct from how many votes have
  * been cast (in the case of multiple-choice polls).
  * 
@@ -33054,6 +33089,22 @@ get voters(): (number | null) {
     }
     if (array.length > 0) {
       values[\\"https://www.w3.org/ns/activitystreams#anyOf\\"] = (
+    array
+      );
+    }
+    
+    array = [];
+    for (const v of this.#_3KronwL8DiiKBRcJFKQPiEHm8xb6) {
+      const element = (
+    v instanceof Temporal.Instant ? {
+        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#dateTime\\",
+        \\"@value\\": v.toString(),
+      } : { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#closed\\"] = (
     array
       );
     }
@@ -33195,6 +33246,29 @@ get voters(): (number | null) {
       v, options))
     }
     instance.#_2mV6isMTPRKbWdLCjcpiEysq5dAY = _2mV6isMTPRKbWdLCjcpiEysq5dAY;
+    const _3KronwL8DiiKBRcJFKQPiEHm8xb6: ((Temporal.Instant | boolean))[] = [];
+
+    const _3KronwL8DiiKBRcJFKQPiEHm8xb6__array = values[\\"https://www.w3.org/ns/activitystreams#closed\\"];
+    for (
+      const v of _3KronwL8DiiKBRcJFKQPiEHm8xb6__array == null
+        ? []
+        : _3KronwL8DiiKBRcJFKQPiEHm8xb6__array.length === 1 && \\"@list\\" in _3KronwL8DiiKBRcJFKQPiEHm8xb6__array[0]
+        ? _3KronwL8DiiKBRcJFKQPiEHm8xb6__array[0][\\"@list\\"]
+        : _3KronwL8DiiKBRcJFKQPiEHm8xb6__array
+    ) {
+      if (v == null) continue;
+    
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+        && \\"@value\\" in v && typeof v[\\"@value\\"] === \\"string\\"
+        && v[\\"@type\\"] === \\"http://www.w3.org/2001/XMLSchema#dateTime\\" ? Temporal.Instant.from(v[\\"@value\\"]) : typeof v === \\"object\\" && \\"@value\\" in v
+        && typeof v[\\"@value\\"] === \\"boolean\\" ? v[\\"@value\\"] : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3KronwL8DiiKBRcJFKQPiEHm8xb6.push(decoded);
+      
+    }
+    instance.#_3KronwL8DiiKBRcJFKQPiEHm8xb6 = _3KronwL8DiiKBRcJFKQPiEHm8xb6;
     const _3H4RdST7dxfmghccvE3rKD3KgcxG: (number)[] = [];
 
     const _3H4RdST7dxfmghccvE3rKD3KgcxG__array = values[\\"http://joinmastodon.org/ns#votersCount\\"];
@@ -33257,6 +33331,26 @@ get voters(): (number | null) {
           || !(\\"inclusiveOption\\" in proxy)
           && _2mV6isMTPRKbWdLCjcpiEysq5dAY.length > 0) {
         proxy.inclusiveOptions = _2mV6isMTPRKbWdLCjcpiEysq5dAY;
+      }
+      
+      const _3KronwL8DiiKBRcJFKQPiEHm8xb6 = this.#_3KronwL8DiiKBRcJFKQPiEHm8xb6
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3KronwL8DiiKBRcJFKQPiEHm8xb6.length == 1) {
+        proxy.closed = _3KronwL8DiiKBRcJFKQPiEHm8xb6[0];
       }
       
       const _3H4RdST7dxfmghccvE3rKD3KgcxG = this.#_3H4RdST7dxfmghccvE3rKD3KgcxG
