@@ -5177,7 +5177,8 @@ snapshot[`Deno.inspect(Question) [auto] 1`] = `
   origin: Object {},
   instrument: Object {},
   exclusiveOptions: [ Object {} ],
-  inclusiveOptions: [ Object {} ]
+  inclusiveOptions: [ Object {} ],
+  voters: 123
 }'
 `;
 
@@ -5219,7 +5220,8 @@ snapshot[`Deno.inspect(Question) [auto] 2`] = `
   origin: URL "https://example.com/",
   instrument: URL "https://example.com/",
   exclusiveOptions: [ URL "https://example.com/" ],
-  inclusiveOptions: [ URL "https://example.com/" ]
+  inclusiveOptions: [ URL "https://example.com/" ],
+  voters: 123
 }'
 `;
 
@@ -5261,7 +5263,8 @@ snapshot[`Deno.inspect(Question) [auto] 3`] = `
   origins: [ Object {}, Object {} ],
   instruments: [ Object {}, Object {} ],
   exclusiveOptions: [ Object {}, Object {} ],
-  inclusiveOptions: [ Object {}, Object {} ]
+  inclusiveOptions: [ Object {}, Object {} ],
+  voters: 123
 }'
 `;
 

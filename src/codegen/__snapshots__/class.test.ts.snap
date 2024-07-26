@@ -10730,7 +10730,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -17041,7 +17041,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -17272,7 +17272,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -32656,7 +32656,7 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
  * contain an \`object\` property.
  * 
  * Either of the \`anyOf\` and \`oneOf\` properties *may* be used to express possible
- * answers, but a Question object *must not* have both properties. 
+ * answers, but a Question object *must not* have both properties.
  * 
  */
 export class Question extends IntransitiveActivity {
@@ -32669,6 +32669,7 @@ export class Question extends IntransitiveActivity {
     }
   #_2N5scKaVEcdYHFmfKYYacAwUhUgQ: (Object | URL)[] = [];
 #_2mV6isMTPRKbWdLCjcpiEysq5dAY: (Object | URL)[] = [];
+#_3H4RdST7dxfmghccvE3rKD3KgcxG: (number)[] = [];
 
   /**
    * Constructs a new instance of Question with the given values.
@@ -32701,7 +32702,7 @@ objects?: (Object | URL)[];target?: Object | URL | null;
 targets?: (Object | URL)[];result?: Object | URL | null;
 results?: (Object | URL)[];origin?: Object | URL | null;
 origins?: (Object | URL)[];instrument?: Object | URL | null;
-instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];}
+instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];voters?: number | null;}
 ,
     {
       documentLoader,
@@ -32739,6 +32740,18 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
             );
           }
         }
+      
+        if (\\"voters\\" in values &&             values.voters != null) {
+          if (typeof values.voters === \\"number\\" && Number.isInteger(values.voters) && values.voters >= 0) {
+            // @ts-ignore: type is checked above.
+            this.#_3H4RdST7dxfmghccvE3rKD3KgcxG = [values.voters];
+          } else {
+            throw new TypeError(
+              \\"The voters must be of type \\" +
+              \\"number\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -32773,7 +32786,7 @@ objects?: (Object | URL)[];target?: Object | URL | null;
 targets?: (Object | URL)[];result?: Object | URL | null;
 results?: (Object | URL)[];origin?: Object | URL | null;
 origins?: (Object | URL)[];instrument?: Object | URL | null;
-instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];}
+instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOptions?: (Object | URL)[];voters?: number | null;}
 
     = {},
     options: {
@@ -32806,6 +32819,18 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
             throw new TypeError(
               \\"The inclusiveOptions must be an array of type \\" +
               \\"Object | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3H4RdST7dxfmghccvE3rKD3KgcxG = this.#_3H4RdST7dxfmghccvE3rKD3KgcxG;
+        if (\\"voters\\" in values &&             values.voters != null) {
+          if (typeof values.voters === \\"number\\" && Number.isInteger(values.voters) && values.voters >= 0) {
+            // @ts-ignore: type is checked above.
+            clone.#_3H4RdST7dxfmghccvE3rKD3KgcxG = [values.voters];
+          } else {
+            throw new TypeError(
+              \\"The voters must be of type \\" +
+              \\"number\\" + \\".\\",
             );
           }
         }
@@ -32866,7 +32891,7 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
       
 /** Identifies an exclusive option for a Question.  Use of \`exclusiveOptions\`
  * implies that the Question can have only a single answer.  To indicate that
- * a Question can have multiple answers, use \`inclusiveOptions\`. 
+ * a Question can have multiple answers, use \`inclusiveOptions\`.
  * 
  */
 
@@ -32973,6 +32998,15 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
         }
       }
       
+/** How many people have voted in the poll.  Distinct from how many votes have
+ * been cast (in the case of multiple-choice polls).
+ * 
+ */
+get voters(): (number | null) {
+        if (this.#_3H4RdST7dxfmghccvE3rKD3KgcxG.length < 1) return null;
+        return this.#_3H4RdST7dxfmghccvE3rKD3KgcxG[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @returns The JSON-LD representation of this object.
@@ -33024,6 +33058,22 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
       );
     }
     
+    array = [];
+    for (const v of this.#_3H4RdST7dxfmghccvE3rKD3KgcxG) {
+      const element = (
+    {
+        \\"@type\\": \\"http://www.w3.org/2001/XMLSchema#nonNegativeInteger\\",
+        \\"@value\\": v,
+      }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"http://joinmastodon.org/ns#votersCount\\"] = (
+    array
+      );
+    }
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Question\\"];
     if (this.id) values[\\"@id\\"] = this.id.href;
     if (options.expand) {
@@ -33033,7 +33083,7 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -33145,6 +33195,20 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
       v, options))
     }
     instance.#_2mV6isMTPRKbWdLCjcpiEysq5dAY = _2mV6isMTPRKbWdLCjcpiEysq5dAY;
+    const _3H4RdST7dxfmghccvE3rKD3KgcxG: (number)[] = [];
+
+    const _3H4RdST7dxfmghccvE3rKD3KgcxG__array = values[\\"http://joinmastodon.org/ns#votersCount\\"];
+    for (
+      const v of _3H4RdST7dxfmghccvE3rKD3KgcxG__array == null
+        ? []
+        : _3H4RdST7dxfmghccvE3rKD3KgcxG__array.length === 1 && \\"@list\\" in _3H4RdST7dxfmghccvE3rKD3KgcxG__array[0]
+        ? _3H4RdST7dxfmghccvE3rKD3KgcxG__array[0][\\"@list\\"]
+        : _3H4RdST7dxfmghccvE3rKD3KgcxG__array
+    ) {
+      if (v == null) continue;
+    _3H4RdST7dxfmghccvE3rKD3KgcxG.push(v[\\"@value\\"])
+    }
+    instance.#_3H4RdST7dxfmghccvE3rKD3KgcxG = _3H4RdST7dxfmghccvE3rKD3KgcxG;
     
     return instance;
   }
@@ -33193,6 +33257,26 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
           || !(\\"inclusiveOption\\" in proxy)
           && _2mV6isMTPRKbWdLCjcpiEysq5dAY.length > 0) {
         proxy.inclusiveOptions = _2mV6isMTPRKbWdLCjcpiEysq5dAY;
+      }
+      
+      const _3H4RdST7dxfmghccvE3rKD3KgcxG = this.#_3H4RdST7dxfmghccvE3rKD3KgcxG
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3H4RdST7dxfmghccvE3rKD3KgcxG.length == 1) {
+        proxy.voters = _3H4RdST7dxfmghccvE3rKD3KgcxG[0];
       }
       
     return proxy;
@@ -38795,7 +38879,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,

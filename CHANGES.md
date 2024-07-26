@@ -8,6 +8,12 @@ Version 0.13.0
 
 To be released.
 
+ -  Added `voters` property to `Question` class in Activity Vocabulary API.
+
+     -  Added `Question.voters` property.
+     -  `new Question()` constructor now accepts `voters` option.
+     -  `Question.clone()` method now accepts `voters` option.
+
  -  Removed the singular actor key pair dispatcher APIs which were deprecated
     in version 0.10.0.
 

@@ -12,6 +12,7 @@ defaultContext:
 - "https://w3id.org/security/data-integrity/v1"
 - toot: "http://joinmastodon.org/ns#"
   sensitive: "as:sensitive"
+  votersCount: "toot:votersCount"
   Emoji: "toot:Emoji"
   Hashtag: "as:Hashtag"
 properties: []

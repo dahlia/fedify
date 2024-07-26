@@ -10,12 +10,13 @@ description: |
   contain an `object` property.
 
   Either of the `anyOf` and `oneOf` properties *may* be used to express possible
-  answers, but a Question object *must not* have both properties. 
+  answers, but a Question object *must not* have both properties.
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
 - "https://w3id.org/security/data-integrity/v1"
 - toot: "http://joinmastodon.org/ns#"
   sensitive: "as:sensitive"
+  votersCount: "toot:votersCount"
   Emoji: "toot:Emoji"
   Hashtag: "as:Hashtag"
 
@@ -27,7 +28,7 @@ properties:
   description: |
     Identifies an exclusive option for a Question.  Use of `exclusiveOptions`
     implies that the Question can have only a single answer.  To indicate that
-    a Question can have multiple answers, use `inclusiveOptions`. 
+    a Question can have multiple answers, use `inclusiveOptions`.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
 
@@ -41,3 +42,12 @@ properties:
     a Question can have only one answer, use `exclusiveOptions`.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
+
+- singularName: voters
+  functional: true
+  uri: "http://joinmastodon.org/ns#votersCount"
+  description: |
+    How many people have voted in the poll.  Distinct from how many votes have
+    been cast (in the case of multiple-choice polls).
+  range:
+  - "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
