@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.12.1
 --------------
 
-To be released.
+Released on July 27, 2024.
 
  -  Fixed a bug where `fedify init -w hono` had generated scaffold files without
     Fedify integration.
