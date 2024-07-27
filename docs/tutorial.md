@@ -60,7 +60,7 @@ deno add @fedify/fedify
 mkdir follow-server
 cd follow-server/
 echo '{ "type": "module" }' > package.json
-bun add @deno/kv @fedify/fedify
+bun add @fedify/fedify
 ~~~~
 
 ~~~~ sh [Node.js]
@@ -68,7 +68,7 @@ mkdir follow-server
 cd follow-server/
 echo '{ "type": "module" }' > package.json
 npm add -D typescript tsx @types/node
-npm add @deno/kv @fedify/fedify @hono/node-server
+npm add @fedify/fedify @hono/node-server
 ~~~~
 
 :::
@@ -92,7 +92,6 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 {
   "type": "module",
   "dependencies": {
-    "@deno/kv": "^0.8.0",
     "@fedify/fedify": "^0.12.0"
   }
 }
