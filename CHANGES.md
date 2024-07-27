@@ -8,6 +8,11 @@ Version 0.12.1
 
 To be released.
 
+ -  Fixed a bug where `fedify init -w hono` had generated scaffold files without
+    Fedify integration.
+ -  Fixed a bug where `fedify init -r bun -w hono` had generated scaffold files
+    with a wrong port number (was 3000).
+
 
 Version 0.12.0
 --------------
