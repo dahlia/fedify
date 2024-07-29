@@ -38,7 +38,7 @@
     "fast-check": "npm:fast-check@^3.19.0",
     "json-canon": "npm:json-canon@^1.0.1",
     "jsonld": "npm:jsonld@^8.3.2",
-    "mock_fetch": "https://deno.land/x/mock_fetch@0.3.0/mod.ts",
+    "mock_fetch": "https://raw.githubusercontent.com/dahlia/deno_mock_fetch/internalize-router/mod.ts",
     "multibase": "npm:multibase@^4.0.6",
     "multicodec": "npm:multicodec@^3.2.1",
     "pkijs": "npm:pkijs@^3.1.0",
