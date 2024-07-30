@@ -140,6 +140,15 @@ export interface CreateFederationOptions {
   signatureTimeWindow?: Temporal.DurationLike | false;
 
   /**
+   * Whether to skip HTTP Signatures verification for incoming activities.
+   * This is useful for testing purposes, but should not be used in production.
+   *
+   * By default, this is `false` (i.e., signatures are verified).
+   * @since 0.13.0
+   */
+  skipSignatureVerification?: boolean;
+
+  /**
    * The retry policy for sending activities to recipients' inboxes.
    * By default, this uses an exponential backoff strategy with a maximum of
    * 10 attempts and a maximum delay of 12 hours.
@@ -620,6 +629,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
   authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   onOutboxError?: OutboxErrorHandler;
   signatureTimeWindow: Temporal.DurationLike | false;
+  skipSignatureVerification: boolean;
   outboxRetryPolicy: RetryPolicy;
   inboxRetryPolicy: RetryPolicy;
 
@@ -654,6 +664,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         getAuthenticatedDocumentLoader;
     this.onOutboxError = options.onOutboxError;
     this.signatureTimeWindow = options.signatureTimeWindow ?? { minutes: 1 };
+    this.skipSignatureVerification = options.skipSignatureVerification ?? false;
     this.outboxRetryPolicy = options.outboxRetryPolicy ??
       createExponentialBackoffPolicy();
     this.inboxRetryPolicy = options.inboxRetryPolicy ??
@@ -1831,6 +1842,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
           inboxErrorHandler: this.inboxErrorHandler,
           onNotFound,
           signatureTimeWindow: this.signatureTimeWindow,
+          skipSignatureVerification: this.skipSignatureVerification,
         });
       case "following":
         return await handleCollection(request, {

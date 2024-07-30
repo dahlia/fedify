@@ -27,6 +27,7 @@ To be released.
         became `Temporal.DurationLike | false` (was `Temporal.DurationLike`).
      -  The type of `VerifyRequestOptions.timeWindow` property became
         `Temporal.DurationLike | false` (was `Temporal.DurationLike`).
+     -  Added `CreateFederationOptions.skipSignatureVerification` property.
 
  -  Removed the singular actor key pair dispatcher APIs which were deprecated
     in version 0.10.0.

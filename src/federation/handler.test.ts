@@ -1,7 +1,11 @@
 import { assert, assertEquals, assertFalse } from "@std/assert";
 import { createRequestContext } from "../testing/context.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
-import { rsaPublicKey2 } from "../testing/keys.ts";
+import {
+  rsaPrivateKey3,
+  rsaPublicKey2,
+  rsaPublicKey3,
+} from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
 import {
   type Activity,
@@ -21,10 +25,13 @@ import {
   acceptsJsonLd,
   handleActor,
   handleCollection,
+  handleInbox,
   handleObject,
   respondWithObject,
   respondWithObjectIfAcceptable,
 } from "./handler.ts";
+import { MemoryKvStore } from "./kv.ts";
+import { signRequest } from "../sig/http.ts";
 
 test("acceptsJsonLd()", () => {
   assert(acceptsJsonLd(
@@ -926,6 +933,127 @@ test("handleCollection()", async () => {
   assertEquals(onNotFoundCalled, null);
   assertEquals(onNotAcceptableCalled, null);
   assertEquals(onUnauthorizedCalled, null);
+});
+
+test("handleInbox()", async () => {
+  const activity = new Create({
+    id: new URL("https://example.com/activities/1"),
+    actor: new URL("https://example.com/person2"),
+    object: new Note({
+      id: new URL("https://example.com/notes/1"),
+      attribution: new URL("https://example.com/person2"),
+      content: "Hello, world!",
+    }),
+  });
+  const unsignedRequest = new Request("https://example.com/", {
+    method: "POST",
+    body: JSON.stringify(await activity.toJsonLd()),
+  });
+  const unsignedContext = createRequestContext({
+    request: unsignedRequest,
+    url: new URL(unsignedRequest.url),
+    data: undefined,
+  });
+  let onNotFoundCalled: Request | null = null;
+  const onNotFound = (request: Request) => {
+    onNotFoundCalled = request;
+    return new Response("Not found", { status: 404 });
+  };
+  const actorDispatcher: ActorDispatcher<void> = (_ctx, handle) => {
+    if (handle !== "someone") return null;
+    return new Person({ name: "Someone" });
+  };
+  const inboxOptions = {
+    kv: new MemoryKvStore(),
+    kvPrefixes: {
+      activityIdempotence: ["_fedify", "activityIdempotence"],
+      publicKey: ["_fedify", "publicKey"],
+    },
+    actorDispatcher,
+    onNotFound,
+    signatureTimeWindow: { minutes: 5 },
+    skipSignatureVerification: false,
+  } as const;
+  let response = await handleInbox(unsignedRequest, {
+    handle: null,
+    context: unsignedContext,
+    ...inboxOptions,
+    actorDispatcher: undefined,
+  });
+  assertEquals(onNotFoundCalled, unsignedRequest);
+  assertEquals(response.status, 404);
+
+  onNotFoundCalled = null;
+  response = await handleInbox(unsignedRequest, {
+    handle: "nobody",
+    context: unsignedContext,
+    ...inboxOptions,
+  });
+  assertEquals(onNotFoundCalled, unsignedRequest);
+  assertEquals(response.status, 404);
+
+  onNotFoundCalled = null;
+  response = await handleInbox(unsignedRequest, {
+    handle: null,
+    context: unsignedContext,
+    ...inboxOptions,
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(response.status, 401);
+
+  response = await handleInbox(unsignedRequest, {
+    handle: "someone",
+    context: unsignedContext,
+    ...inboxOptions,
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(response.status, 401);
+
+  onNotFoundCalled = null;
+  const signedRequest = await signRequest(
+    unsignedRequest.clone(),
+    rsaPrivateKey3,
+    rsaPublicKey3.id!,
+  );
+  const signedContext = createRequestContext({
+    request: signedRequest,
+    url: new URL(signedRequest.url),
+    data: undefined,
+    documentLoader: mockDocumentLoader,
+  });
+  response = await handleInbox(signedRequest, {
+    handle: null,
+    context: signedContext,
+    ...inboxOptions,
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(response.status, 202);
+
+  response = await handleInbox(signedRequest, {
+    handle: "someone",
+    context: signedContext,
+    ...inboxOptions,
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(response.status, 202);
+
+  response = await handleInbox(unsignedRequest, {
+    handle: null,
+    context: unsignedContext,
+    ...inboxOptions,
+    skipSignatureVerification: true,
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(response.status, 202);
+
+  response = await handleInbox(unsignedRequest, {
+    handle: "someone",
+    context: unsignedContext,
+    ...inboxOptions,
+    skipSignatureVerification: true,
+  });
+  assertEquals(onNotFoundCalled, null);
+  assertEquals(response.status, 202);
 });
 
 test("respondWithObject()", async () => {

@@ -329,6 +329,7 @@ export interface InboxHandlerParameters<TContextData> {
   inboxErrorHandler?: InboxErrorHandler<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
   signatureTimeWindow: Temporal.DurationLike | false;
+  skipSignatureVerification: boolean;
 }
 
 export async function handleInbox<TContextData>(
@@ -344,6 +345,7 @@ export async function handleInbox<TContextData>(
     inboxErrorHandler,
     onNotFound,
     signatureTimeWindow,
+    skipSignatureVerification,
   }: InboxHandlerParameters<TContextData>,
 ): Promise<Response> {
   const logger = getLogger(["fedify", "federation", "inbox"]);
@@ -422,21 +424,26 @@ export async function handleInbox<TContextData>(
   }
   let httpSigKey: CryptographicKey | null = null;
   if (activity == null) {
-    const key = await verifyRequest(request, {
-      contextLoader: context.contextLoader,
-      documentLoader: context.documentLoader,
-      timeWindow: signatureTimeWindow,
-      keyCache,
-    });
-    if (key == null) {
-      logger.error("Failed to verify the request signature.", { handle });
-      const response = new Response("Failed to verify the request signature.", {
-        status: 401,
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
+    if (!skipSignatureVerification) {
+      const key = await verifyRequest(request, {
+        contextLoader: context.contextLoader,
+        documentLoader: context.documentLoader,
+        timeWindow: signatureTimeWindow,
+        keyCache,
       });
-      return response;
+      if (key == null) {
+        logger.error("Failed to verify the request signature.", { handle });
+        const response = new Response(
+          "Failed to verify the request signature.",
+          {
+            status: 401,
+            headers: { "Content-Type": "text/plain; charset=utf-8" },
+          },
+        );
+        return response;
+      }
+      httpSigKey = key;
     }
-    httpSigKey = key;
     activity = await Activity.fromJsonLd(json, context);
   }
   const cacheKey = activity.id == null
