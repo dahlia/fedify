@@ -188,4 +188,28 @@ test("verifyRequest()", async () => {
     ),
     null,
   );
+  assertEquals(
+    await verifyRequest(
+      request,
+      {
+        documentLoader: mockDocumentLoader,
+        contextLoader: mockDocumentLoader,
+        currentTime: Temporal.Instant.from("2024-01-01T00:00:00.0000Z"),
+        timeWindow: false,
+      },
+    ),
+    rsaPublicKey1,
+  );
+  assertEquals(
+    await verifyRequest(
+      request,
+      {
+        documentLoader: mockDocumentLoader,
+        contextLoader: mockDocumentLoader,
+        currentTime: Temporal.Instant.from("2025-01-01T00:00:00.0000Z"),
+        timeWindow: false,
+      },
+    ),
+    rsaPublicKey1,
+  );
 });

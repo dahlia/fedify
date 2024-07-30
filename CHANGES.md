@@ -20,6 +20,14 @@ To be released.
      -  `new Question()` constructor now accepts `voters` option.
      -  `Question.clone()` method now accepts `voters` option.
 
+ -  HTTP Signatures verficiation now can be optionally skipped for the sake of
+    testing.  [[#110]]
+
+     -  The type of `CreateFederationOptions.signatureTimeWindow` property
+        became `Temporal.DurationLike | false` (was `Temporal.DurationLike`).
+     -  The type of `VerifyRequestOptions.timeWindow` property became
+        `Temporal.DurationLike | false` (was `Temporal.DurationLike`).
+
  -  Removed the singular actor key pair dispatcher APIs which were deprecated
     in version 0.10.0.
 
@@ -49,6 +57,7 @@ To be released.
      -  `["fedify", "webfinger", "server"]`
 
 [#69]: https://github.com/dahlia/fedify/issues/69
+[#110]: https://github.com/dahlia/fedify/issues/110
 
 
 Version 0.12.0

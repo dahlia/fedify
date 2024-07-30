@@ -132,10 +132,12 @@ export interface CreateFederationOptions {
 
   /**
    * The time window for verifying the signature of incoming requests.  If the
-   * request is older or newer than this window, it is rejected.  By default,
-   * the window is a minute.
+   * request is older or newer than this window, it is rejected.  Or if it is
+   * `false`, the request's timestamp is not checked at all.
+   *
+   * By default, the window is a minute.
    */
-  signatureTimeWindow?: Temporal.DurationLike;
+  signatureTimeWindow?: Temporal.DurationLike | false;
 
   /**
    * The retry policy for sending activities to recipients' inboxes.
@@ -617,7 +619,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
   contextLoader: DocumentLoader;
   authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   onOutboxError?: OutboxErrorHandler;
-  signatureTimeWindow: Temporal.DurationLike;
+  signatureTimeWindow: Temporal.DurationLike | false;
   outboxRetryPolicy: RetryPolicy;
   inboxRetryPolicy: RetryPolicy;
 

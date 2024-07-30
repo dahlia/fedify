@@ -328,7 +328,7 @@ export interface InboxHandlerParameters<TContextData> {
   inboxListeners?: InboxListenerSet<TContextData>;
   inboxErrorHandler?: InboxErrorHandler<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
-  signatureTimeWindow: Temporal.DurationLike;
+  signatureTimeWindow: Temporal.DurationLike | false;
 }
 
 export async function handleInbox<TContextData>(

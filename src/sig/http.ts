@@ -85,9 +85,11 @@ export interface VerifyRequestOptions {
   /**
    * The time window to allow for the request date.  The actual time window is
    * twice the value of this option, with the current time as the center.
+   * Or if it is `false`, no time check is performed.
+   *
    * A minute by default.
    */
-  timeWindow?: Temporal.DurationLike;
+  timeWindow?: Temporal.DurationLike | false;
 
   /**
    * The current time.  If not specified, the current time is used.  This is
@@ -193,19 +195,21 @@ export async function verifyRequest(
   }
   const date = Temporal.Instant.from(new Date(dateHeader).toISOString());
   const now = currentTime ?? Temporal.Now.instant();
-  const tw: Temporal.DurationLike = timeWindow ?? { minutes: 1 };
-  if (Temporal.Instant.compare(date, now.add(tw)) > 0) {
-    logger.debug(
-      "Failed to verify; Date is too far in the future.",
-      { date: date.toString(), now: now.toString() },
-    );
-    return null;
-  } else if (Temporal.Instant.compare(date, now.subtract(tw)) < 0) {
-    logger.debug(
-      "Failed to verify; Date is too far in the past.",
-      { date: date.toString(), now: now.toString() },
-    );
-    return null;
+  if (timeWindow !== false) {
+    const tw: Temporal.DurationLike = timeWindow ?? { minutes: 1 };
+    if (Temporal.Instant.compare(date, now.add(tw)) > 0) {
+      logger.debug(
+        "Failed to verify; Date is too far in the future.",
+        { date: date.toString(), now: now.toString() },
+      );
+      return null;
+    } else if (Temporal.Instant.compare(date, now.subtract(tw)) < 0) {
+      logger.debug(
+        "Failed to verify; Date is too far in the past.",
+        { date: date.toString(), now: now.toString() },
+      );
+      return null;
+    }
   }
   const sigValues = Object.fromEntries(
     sigHeader.split(",").map((pair) =>
