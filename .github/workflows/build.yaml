@@ -96,7 +96,6 @@ jobs:
     permissions:
       id-token: write
       contents: write
-      discussions: write
     steps:
     - uses: actions/checkout@v4
     - uses: denoland/setup-deno@v1
@@ -152,7 +151,6 @@ jobs:
           src/npm/*.tgz
           cli/fedify-cli-*
         generate_release_notes: false
-        discussion_category_name: Announcements
     - if: |
         github.event_name == 'push' &&
         github.ref_type == 'tag' || github.ref == 'refs/heads/main'

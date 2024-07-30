@@ -137,8 +137,11 @@ Then, try look up an actor from your server:
       files: {
         "src/app.ts": `\
 import { Hono } from "${runtime === "deno" ? "@hono/hono" : "hono"}";
+import { federation } from "@fedify/fedify/x/hono";
+import fedi from "./federation${runtime === "deno" ? ".ts" : ""}";
 
 const app = new Hono();
+app.use(federation(fedi, () => undefined))
 
 app.get("/", (c) => c.text("Hello, Fedify!"));
 
@@ -163,6 +166,7 @@ serve(
 import app from "./app";
 
 const server = Bun.serve({
+  port: 8000,
   fetch: app.fetch.bind(app),
 });
 
