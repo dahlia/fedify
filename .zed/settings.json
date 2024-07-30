@@ -1,19 +1,40 @@
 {
   "deno": {
-    "enable": true
+    "enable": true,
+    "enablePaths": [
+      "cli",
+      "src",
+      "examples/blog",
+      "examples/hono-sample"
+    ],
+    "unstable": true
   },
   "ensure_final_newline_on_save": true,
   "format_on_save": "on",
   "formatter": "language_server",
   "languages": {
+    "JavaScript": {
+      "language_servers": [
+        "deno",
+        "!typescript-language-server",
+        "!vtsls",
+        "..."
+      ]
+    },
     "TypeScript": {
       "language_servers": [
-        "deno"
+        "deno",
+        "!typescript-language-server",
+        "!vtsls",
+        "..."
       ]
     },
     "TSX": {
       "language_servers": [
-        "deno"
+        "deno",
+        "!typescript-language-server",
+        "!vtsls",
+        "..."
       ]
     }
   },
