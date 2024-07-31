@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.12.2
 --------------
 
-To be released.
+Released on July 31, 2024.
 
  -  Fixed a bug where incoming activities had not been enqueued even
     if the `queue` option was provided to the `createFederation()` function.
