@@ -61,6 +61,15 @@ To be released.
 [#110]: https://github.com/dahlia/fedify/issues/110
 
 
+Version 0.12.2
+--------------
+
+Released on July 31, 2024.
+
+ -  Fixed a bug where incoming activities had not been enqueued even
+    if the `queue` option was provided to the `createFederation()` function.
+
+
 Version 0.12.1
 --------------
 

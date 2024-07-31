@@ -92,7 +92,7 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 {
   "type": "module",
   "dependencies": {
-    "@deno/kv": "^0.8.0",
+    "@deno/kv": "^0.8.1",
     "@fedify/fedify": "^0.13.0"
   }
 }
@@ -107,7 +107,7 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
     "typescript": "^5.4.5"
   },
   "dependencies": {
-    "@deno/kv": "^0.8.0",
+    "@deno/kv": "^0.8.1",
     "@fedify/fedify": "^0.13.0",
     "@hono/node-server": "^1.11.1"
   }
