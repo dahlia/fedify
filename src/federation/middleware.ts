@@ -1860,6 +1860,7 @@ export class Federation<TContextData> {
           context,
           kv: this.#kv,
           kvPrefixes: this.#kvPrefixes,
+          queue: this.#queue,
           actorDispatcher: this.#actorCallbacks?.dispatcher,
           inboxListeners: this.#inboxListeners,
           inboxErrorHandler: this.#inboxErrorHandler,

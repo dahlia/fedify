@@ -8,6 +8,9 @@ Version 0.12.2
 
 To be released.
 
+ -  Fixed a bug where incoming activities had not been enqueued even
+    if the `queue` option was provided to the `createFederation()` function.
+
 
 Version 0.12.1
 --------------

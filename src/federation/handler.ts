@@ -490,6 +490,10 @@ export async function handleInbox<TContextData>(
         started: new Date().toISOString(),
       } satisfies InboxMessage,
     );
+    logger.info(
+      "Activity {activityId} is eunqueued.",
+      { activityId: activity.id?.href, activity: json },
+    );
     return new Response("Activity is enqueued.", {
       status: 202,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
