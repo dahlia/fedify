@@ -52,6 +52,9 @@ To be released.
      -  Added `Federation` interface.
      -  Removed `FederationParameters` interface.
 
+ -  The `fedify init` command now generates a scaffold project with logging
+    configuration using the [LogTape] library.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 

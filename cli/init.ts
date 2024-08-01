@@ -2,9 +2,10 @@ import { colors } from "@cliffy/ansi";
 import { Command, EnumType } from "@cliffy/command";
 import { Select } from "@cliffy/prompt";
 import { getLogger } from "@logtape/logtape";
-import { dirname, join } from "@std/path";
+import { basename, dirname, join, normalize } from "@std/path";
 import { format, greaterThan, parse } from "@std/semver";
 import metadata from "./deno.json" with { type: "json" };
+import { exists } from "@std/fs";
 
 type Runtime = "deno" | "bun" | "node";
 
@@ -79,7 +80,9 @@ interface WebFrameworkInitializer {
   command?: [string, ...string[]];
   dependencies?: Record<string, string>;
   federationFile: string;
+  loggingFile: string;
   files?: Record<string, string>;
+  prependFiles?: Record<string, string>;
   tasks?: Record<string, string>;
   instruction: string;
 }
@@ -87,14 +90,18 @@ interface WebFrameworkInitializer {
 interface WebFrameworkDescription {
   label: string;
   runtimes: Runtime[] | null;
-  init(runtime: Runtime, pm: PackageManager): WebFrameworkInitializer;
+  init(
+    projectName: string,
+    runtime: Runtime,
+    pm: PackageManager,
+  ): WebFrameworkInitializer;
 }
 
 const webFrameworks: Record<WebFramework, WebFrameworkDescription> = {
   fresh: {
     label: "Fresh",
     runtimes: ["deno"],
-    init: (_, __) => ({
+    init: (_, __, ___) => ({
       command: [
         "deno",
         "run",
@@ -103,6 +110,7 @@ const webFrameworks: Record<WebFramework, WebFrameworkDescription> = {
         ".",
       ],
       federationFile: "federation/mod.ts",
+      loggingFile: "logging.ts",
       files: {
         "routes/_middleware.ts": `\
 import { Handler } from "$fresh/server.ts";
@@ -112,6 +120,9 @@ import { integrateHandler } from "@fedify/fedify/x/fresh";
 // This is the entry point to the Fedify middleware from the Fresh framework:
 export const handler: Handler = integrateHandler(federation, () => undefined);
 `,
+      },
+      prependFiles: {
+        "fresh.config.ts": 'import "./logging.ts";\n',
       },
       instruction: `
 To start the server, run the following command:
@@ -127,18 +138,22 @@ Then, try look up an actor from your server:
   hono: {
     label: "Hono",
     runtimes: null,
-    init: (runtime, pm) => ({
+    init: (projectName, runtime, pm) => ({
       dependencies: runtime === "deno"
         ? { "@hono/hono": "^4.5.0" } as Record<string, string>
         : runtime === "node"
         ? { hono: "^4.5.0", "@hono/node-server": "^1.12.0", tsx: "^4.16.2" }
         : { hono: "^4.5.0" },
       federationFile: "src/federation.ts",
+      loggingFile: "src/logging.ts",
       files: {
         "src/app.ts": `\
 import { Hono } from "${runtime === "deno" ? "@hono/hono" : "hono"}";
 import { federation } from "@fedify/fedify/x/hono";
+import { getLogger } from "@logtape/logtape";
 import fedi from "./federation${runtime === "deno" ? ".ts" : ""}";
+
+const logger = getLogger(${JSON.stringify(projectName)});
 
 const app = new Hono();
 app.use(federation(fedi, () => undefined))
@@ -151,6 +166,7 @@ export default app;
           ? `\
 import { serve } from "@hono/node-server";
 import app from "./app";
+import "./logging";
 
 serve(
   {
@@ -164,6 +180,7 @@ serve(
           : runtime === "bun"
           ? `\
 import app from "./app";
+import "./logging";
 
 const server = Bun.serve({
   port: 8000,
@@ -174,6 +191,7 @@ console.log("Server started at", server.url.href);
 `
           : `\
 import app from "./app.ts";
+import "./logging.ts";
 
 Deno.serve(
   {
@@ -318,6 +336,9 @@ export const command = new Command()
     "Choose the message queue to use for background jobs.",
   )
   .action(async (options, dir: string) => {
+    const projectName = basename(
+      await exists(dir) ? await Deno.realPath(dir) : normalize(dir),
+    );
     let dinosaurDrawn = false;
     let runtime = options.runtime;
     if (runtime == null) {
@@ -469,6 +490,7 @@ export const command = new Command()
     if (webFramework == null) {
       initializer = {
         federationFile: "federation.ts",
+        loggingFile: "logging.ts",
         dependencies: runtime === "node"
           ? { "@hono/node-server": "^1.12.0", tsx: "^4.16.2" }
           : {},
@@ -477,6 +499,7 @@ export const command = new Command()
             ? `\
 import { serve } from "@hono/node-server";
 import federation from "./federation";
+import "./logging";
 
 serve(
   {
@@ -490,6 +513,7 @@ serve(
             : runtime === "bun"
             ? `\
 import federation from "./federation";
+import "./logging";
 
 const server = Bun.serve({
   fetch: (req) => federation.fetch(req, { contextData: undefined }),
@@ -499,6 +523,7 @@ console.log("Server started at", server.url.href);
 `
             : `\
 import federation from "./federation.ts";
+import "./logging.ts";
 
 Deno.serve(
   {
@@ -545,7 +570,7 @@ Then, try look up an actor from your server:
         );
         Deno.exit(1);
       }
-      initializer = desc.init(runtime, packageManager);
+      initializer = desc.init(projectName, runtime, packageManager);
     }
     const kvStoreDesc: KvStoreDescription = kvStore != null
       ? kvStores[kvStore]
@@ -579,12 +604,15 @@ Then, try look up an actor from your server:
     }
     const importStatements = Object.entries(imports)
       .map(([module, symbols]) =>
-        `import { ${symbols.join(", ")} } from ${JSON.stringify(module)};\n`
+        `import { ${symbols.join(", ")} } from ${JSON.stringify(module)};`
       )
-      .join("");
+      .join("\n");
     const federation = `\
 import { createFederation, Person } from "@fedify/fedify";
+import { getLogger } from "@logtape/logtape";
 ${importStatements}
+
+const logger = getLogger(${JSON.stringify(projectName)});
 
 const federation = createFederation({
   kv: ${kvStoreDesc.object},
@@ -597,14 +625,33 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     preferredUsername: handle,
     name: handle,
   });
-})
+});
 
 export default federation;
 `;
+    const logging = `\
+import { configure, getConsoleSink } from "@logtape/logtape";
+
+await configure({
+  sinks: {
+    console: getConsoleSink(),
+  },
+  filters: {},
+  loggers: [
+    { category: ${
+      JSON.stringify(projectName)
+    }, level: "debug", sinks: ["console"] },
+    { category: "fedify", level: "info", sinks: ["console"] },
+    { category: "logtape", level: "warning", sinks: ["console"] },
+  ],
+});
+`;
     const files = {
       [initializer.federationFile]: federation,
+      [initializer.loggingFile]: logging,
       ...initializer.files,
     };
+    const { prependFiles } = initializer;
     await Deno.mkdir(dir, { recursive: true });
     for await (const _ of Deno.readDir(dir)) {
       console.error("The directory is not empty.  Aborting.");
@@ -636,6 +683,7 @@ export default federation;
     }
     const dependencies: Record<string, string> = {
       "@fedify/fedify": `^${await getLatestFedifyVersion(metadata.version)}`,
+      "@logtape/logtape": "^0.4.2",
       ...initializer.dependencies,
       ...kvStoreDesc?.dependencies,
       ...mqDesc?.dependencies,
@@ -663,6 +711,17 @@ export default federation;
       const dirName = dirname(path);
       await Deno.mkdir(dirName, { recursive: true });
       await Deno.writeTextFile(path, content);
+    }
+    if (prependFiles != null) {
+      for (const [filename, prefix] of Object.entries(prependFiles)) {
+        const path = join(dir, filename);
+        const dirName = dirname(path);
+        await Deno.mkdir(dirName, { recursive: true });
+        await Deno.writeTextFile(
+          path,
+          `${prefix}${await Deno.readTextFile(path)}`,
+        );
+      }
     }
     if (runtime === "deno") {
       await rewriteJsonFile(
@@ -947,7 +1006,7 @@ async function rewriteJsonFile(
   let json = jsonText == null ? empty : JSON.parse(jsonText);
   json = rewriter(json);
   await Deno.mkdir(dirname(path), { recursive: true });
-  await Deno.writeTextFile(path, JSON.stringify(json, null, 2));
+  await Deno.writeTextFile(path, JSON.stringify(json, null, 2) + "\n");
 }
 
 function uniqueArray<T extends boolean | number | string>(a: T[]): T[] {
