@@ -67,7 +67,7 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].  Or tag
 [FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
 [NodeInfo]: https://nodeinfo.diaspora.software/
 [GitHub Discussions]: https://github.com/dahlia/fedify/discussions
-[#Fedify]: https://elk.zone/mastodon.social/tags/fedify
+[#Fedify]: https://mastodon.social/tags/fedify
 [Mastodon]: https://joinmastodon.org/
 [Lemmy]: https://join-lemmy.org/
 [Pixelfed]: https://pixelfed.org/

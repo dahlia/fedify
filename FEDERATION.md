@@ -42,7 +42,7 @@ ActivityPub
 
 Since Fedify is a framework, what activity types it uses is up to
 the application developers.  However, Fedify provides a set of
-activity types that are commonly used in the Fediverse.  The following
+activity types that are commonly used in the fediverse.  The following
 lists the activity types that Fedify provides:
 
  -  [`Accept`](https://jsr.io/@fedify/fedify/doc/vocab/~/Accept)
@@ -50,6 +50,7 @@ lists the activity types that Fedify provides:
  -  [`Announce`](https://jsr.io/@fedify/fedify/doc/vocab/~/Announce)
  -  [`Arrive`](https://jsr.io/@fedify/fedify/doc/vocab/~/Arrive)
  -  [`Block`](https://jsr.io/@fedify/fedify/doc/vocab/~/Block)
+ -  [`ChatMessage`](https://jsr.io/@fedify/fedify/doc/vocab/~/ChatMessage)
  -  [`Create`](https://jsr.io/@fedify/fedify/doc/vocab/~/Create)
  -  [`Delete`](https://jsr.io/@fedify/fedify/doc/vocab/~/Delete)
  -  [`Dislike`](https://jsr.io/@fedify/fedify/doc/vocab/~/Dislike)
