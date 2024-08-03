@@ -670,7 +670,11 @@ fedify tunnel 3000
 >  :   The host of the public tunnel server.
 >
 > If you want to make your local server aware of these headers, you can use
-> the [x-forwarded-fetch] package.
+> the [x-forwarded-fetch] middleware in front of your HTTP server.
+>
+> For more information, see [*How the `Federation` object recognizes the domain
+> name* section](./manual/federation.md#how-the-federation-object-recognizes-the-domain-name)
+> in the *Federation* document.
 
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 

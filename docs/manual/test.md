@@ -26,6 +26,7 @@ To test your federated server app, you need to expose your local server to the
 public internet with a domain name and TLS certificate.  There are several tools
 that help you do that:
 
+ -  [`fedify tunnel`](../cli.md#fedify-tunnel-exposing-a-local-http-server-to-the-public-internet)
  -  [ngrok](https://ngrok.com/)
  -  [serveo](https://serveo.net/)
  -  [localhost.run](https://localhost.run/)
