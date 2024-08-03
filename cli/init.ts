@@ -109,6 +109,7 @@ const webFrameworks: Record<WebFramework, WebFrameworkDescription> = {
         "https://deno.land/x/fresh@1.6.8/init.ts",
         ".",
       ],
+      dependencies: { "@hongminhee/x-forwarded-fetch": "^0.2.0" },
       federationFile: "federation/mod.ts",
       loggingFile: "logging.ts",
       files: {
@@ -119,6 +120,37 @@ import { integrateHandler } from "@fedify/fedify/x/fresh";
 
 // This is the entry point to the Fedify middleware from the Fresh framework:
 export const handler: Handler = integrateHandler(federation, () => undefined);
+`,
+        "dev.ts": `\
+#!/usr/bin/env -S deno run -A --watch=static/,routes/
+
+import dev from "$fresh/dev.ts";
+
+import "$std/dotenv/load.ts";
+
+await dev(import.meta.url, "./main.ts");
+`,
+        "main.ts": `\
+/// <reference no-default-lib="true" />
+/// <reference lib="dom" />
+/// <reference lib="dom.iterable" />
+/// <reference lib="dom.asynciterable" />
+/// <reference lib="deno.ns" />
+
+import "$std/dotenv/load.ts";
+
+import { ServerContext } from "$fresh/server.ts";
+import manifest from "./fresh.gen.ts";
+import config from "./fresh.config.ts";
+import { behindProxy } from "@hongminhee/x-forwarded-fetch";
+
+const ctx = await ServerContext.fromManifest(manifest, {
+  ...config,
+  dev: false,
+});
+const handler = behindProxy(ctx.handler());
+
+Deno.serve({ handler, ...config.server });
 `,
       },
       prependFiles: {
@@ -140,10 +172,18 @@ Then, try look up an actor from your server:
     runtimes: null,
     init: (projectName, runtime, pm) => ({
       dependencies: runtime === "deno"
-        ? { "@hono/hono": "^4.5.0" } as Record<string, string>
+        ? {
+          "@hono/hono": "^4.5.0",
+          "@hongminhee/x-forwarded-fetch": "^0.2.0",
+        } as Record<string, string>
         : runtime === "node"
-        ? { hono: "^4.5.0", "@hono/node-server": "^1.12.0", tsx: "^4.16.2" }
-        : { hono: "^4.5.0" },
+        ? {
+          hono: "^4.5.0",
+          "@hono/node-server": "^1.12.0",
+          tsx: "^4.16.2",
+          "x-forwarded-fetch": "^0.2.0",
+        }
+        : { hono: "^4.5.0", "x-forwarded-fetch": "^0.2.0" },
       federationFile: "src/federation.ts",
       loggingFile: "src/logging.ts",
       files: {
@@ -165,13 +205,14 @@ export default app;
         "src/index.ts": runtime === "node"
           ? `\
 import { serve } from "@hono/node-server";
+import { behindProxy } from "x-forwarded-fetch";
 import app from "./app";
 import "./logging";
 
 serve(
   {
     port: 8000,
-    fetch: app.fetch.bind(app),
+    fetch: behindProxy(app.fetch.bind(app)),
   },
   (info) =>
     console.log("Server started at http://" + info.address + ":" + info.port)
@@ -179,17 +220,19 @@ serve(
 `
           : runtime === "bun"
           ? `\
+import { behindProxy } from "x-forwarded-fetch";
 import app from "./app";
 import "./logging";
 
 const server = Bun.serve({
   port: 8000,
-  fetch: app.fetch.bind(app),
+  fetch: behindProxy(app.fetch.bind(app)),
 });
 
 console.log("Server started at", server.url.href);
 `
           : `\
+import { behindProxy } from "@hongminhee/x-forwarded-fetch";
 import app from "./app.ts";
 import "./logging.ts";
 
@@ -199,7 +242,7 @@ Deno.serve(
     onListen: ({ port, hostname }) =>
       console.log("Server started at http://" + hostname + ":" + port)
   },
-  app.fetch.bind(app),
+  behindProxy(app.fetch.bind(app)),
 );
 `,
       },
@@ -491,20 +534,29 @@ export const command = new Command()
       initializer = {
         federationFile: "federation.ts",
         loggingFile: "logging.ts",
-        dependencies: runtime === "node"
-          ? { "@hono/node-server": "^1.12.0", tsx: "^4.16.2" }
-          : {},
+        dependencies: runtime === "deno"
+          ? { "@hongminhee/x-forwarded-fetch": "^0.2.0" }
+          : runtime === "node"
+          ? {
+            "@hono/node-server": "^1.12.0",
+            tsx: "^4.16.2",
+            "x-forwarded-fetch": "^0.2.0",
+          }
+          : { "x-forwarded-fetch": "^0.2.0" },
         files: {
           "main.ts": runtime === "node"
             ? `\
 import { serve } from "@hono/node-server";
+import { behindProxy } from "x-forwarded-fetch";
 import federation from "./federation";
 import "./logging";
 
 serve(
   {
     port: 8000,
-    fetch: (req) => federation.fetch(req, { contextData: undefined })
+    fetch: behindProxy(
+      (req) => federation.fetch(req, { contextData: undefined }),
+    ),
   },
   (info) =>
     console.log("Server started at http://" + info.address + ":" + info.port)
@@ -512,16 +564,21 @@ serve(
 `
             : runtime === "bun"
             ? `\
+import { behindProxy } from "x-forwarded-fetch";
 import federation from "./federation";
 import "./logging";
 
 const server = Bun.serve({
-  fetch: (req) => federation.fetch(req, { contextData: undefined }),
+  port: 8000,
+  fetch: behindProxy(
+    (req) => federation.fetch(req, { contextData: undefined }),
+  ),
 });
 
 console.log("Server started at", server.url.href);
 `
             : `\
+import { behindProxy } from "@hongminhee/x-forwarded-fetch";
 import federation from "./federation.ts";
 import "./logging.ts";
 
@@ -531,7 +588,7 @@ Deno.serve(
     onListen: ({ port, hostname }) =>
       console.log("Server started at http://" + hostname + ":" + port)
   },
-  (req) => federation.fetch(req, { contextData: undefined }),
+  behindProxy((req) => federation.fetch(req, { contextData: undefined })),
 );
 `,
         },

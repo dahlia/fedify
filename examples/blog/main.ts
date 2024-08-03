@@ -17,7 +17,4 @@ const ctx = await ServerContext.fromManifest(manifest, {
 });
 const handler = behindProxy(ctx.handler());
 
-Deno.serve({
-  handler,
-  ...config.server,
-});
+Deno.serve({ handler, ...config.server });
