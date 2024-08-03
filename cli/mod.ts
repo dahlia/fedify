@@ -6,6 +6,7 @@ import { command as inbox } from "./inbox.tsx";
 import { command as init } from "./init.ts";
 import { recordingSink } from "./log.ts";
 import { command as lookup } from "./lookup.ts";
+import { command as tunnel } from "./tunnel.ts";
 
 const command = new Command()
   .name("fedify")
@@ -46,6 +47,7 @@ const command = new Command()
   .command("init", init)
   .command("lookup", lookup)
   .command("inbox", inbox)
+  .command("tunnel", tunnel)
   .command("completions", new CompletionsCommand())
   .command("help", new HelpCommand().global());
 

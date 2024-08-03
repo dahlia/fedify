@@ -52,6 +52,9 @@ To be released.
      -  Added `Federation` interface.
      -  Removed `FederationParameters` interface.
 
+ -  Added `fedify tunnel` command to expose a local HTTP server to the public
+    internet.
+
  -  The `fedify init` command now generates a scaffold project with logging
     configuration using the [LogTape] library.
 

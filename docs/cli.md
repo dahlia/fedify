@@ -640,6 +640,51 @@ about the security implications of exposing the server to the public internet.
 > be served via HTTP instead of HTTPS.
 
 
+`fedify tunnel`: Exposing a local HTTP server to the public internet
+--------------------------------------------------------------------
+
+*This command is available since Fedify 0.13.0.*
+
+The `fedify tunnel` command is used to expose a local HTTP server to the public
+internet using a secure tunnel.  It is useful when you want to test your
+local ActivityPub server with the real-world ActivityPub instances.
+
+To create a tunnel for a local server, for example, running on port 3000,
+run the below command:
+
+~~~~ sh
+fedify tunnel 3000
+~~~~
+
+> [!TIP]
+>
+> The HTTP requests through the tunnel have the following headers:
+>
+>  `X-Forwarded-For`
+>  :   The IP address of the client.
+>
+>  `X-Forwarded-Proto`
+>  :   The protocol of the client, either `http` or `https`.
+>
+>  `X-Forwarded-Host`
+>  :   The host of the public tunnel server.
+>
+> If you want to make your local server aware of these headers, you can use
+> the [x-forwarded-fetch] package.
+
+[x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
+
+### `-s`/`--service`: The tunneling service
+
+The `-s`/`--service` option is used to specify the tunneling service to use.
+Available services can be found in the output of the `fedify tunnel --help`
+command.  For example, to use the serveo.net, run the below command:
+
+~~~~ sh
+fedify tunnel --service serveo.net 3000
+~~~~
+
+
 Shell completions
 -----------------
 
