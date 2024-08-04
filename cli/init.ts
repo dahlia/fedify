@@ -248,6 +248,11 @@ Deno.serve(
       },
       tasks: {
         "dev": runtime === "deno"
+          ? "deno run -A --watch ./src/index.ts"
+          : runtime === "bun"
+          ? "bun run --hot ./src/index.ts"
+          : "tsx watch ./src/index.ts",
+        "prod": runtime === "deno"
           ? "deno run -A ./src/index.ts"
           : runtime === "bun"
           ? "bun run ./src/index.ts"
@@ -594,6 +599,11 @@ Deno.serve(
         },
         tasks: {
           "dev": runtime === "deno"
+            ? "deno run -A --watch ./main.ts"
+            : runtime === "bun"
+            ? "bun run --hot ./main.ts"
+            : "tsx watch ./main.ts",
+          "prod": runtime === "deno"
             ? "deno run -A ./main.ts"
             : runtime === "bun"
             ? "bun run ./main.ts"

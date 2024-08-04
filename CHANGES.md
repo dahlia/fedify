@@ -60,6 +60,7 @@ To be released.
 
      -  Now a scaffold project uses a [x-forwarded-fetch] middleware to
         support `X-Forwarded-Proto` and `X-Forwarded-Host` headers.
+     -  Now a scaffold project has hot reloading by default.
      -  Now a scaffold project has logging configuration using the [LogTape]
         library.
 
