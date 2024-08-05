@@ -90,7 +90,8 @@ project.  It will ask you a few questions to set up the project:
 
  -  JavaScript runtime: [Deno], [Bun], or [Node.js]
  -  Package manager (if Node.js): [npm], [pnpm], or [Yarn]
- -  Web framework: Bare-bones, [Fresh] (if Deno), or [Hono]
+ -  Web framework: Bare-bones, [Fresh] (if Deno), [Hono], or
+    [Express] (unless Deno)
  -  Key-value store: In-memory, [Redis], or [Deno KV] (if Deno)
  -  Message queue: In-memory, [Redis], or [Deno KV] (if Deno)
 
@@ -102,6 +103,7 @@ interactive prompts:
 [Yarn]: https://yarnpkg.com/
 [Fresh]: https://fresh.deno.dev/
 [Hono]: https://hono.dev/
+[Express]: https://expressjs.com/
 [Redis]: https://redis.io/
 [Deno KV]: https://deno.com/kv
 
@@ -133,6 +135,7 @@ the `-w`/`--web-framework` option.  The available options are:
 
  -  `fresh`: [Fresh] (if Deno)
  -  `hono`: [Hono]
+ -  `express`: [Express] (unless Deno)
 
 If it's omitted, no web framework will be integrated.
 

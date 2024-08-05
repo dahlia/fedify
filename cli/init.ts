@@ -74,11 +74,12 @@ const packageManagerAvailabilities: Record<PackageManager, boolean> = Object
     ),
   );
 
-type WebFramework = "fresh" | "hono";
+type WebFramework = "fresh" | "hono" | "express";
 
 interface WebFrameworkInitializer {
   command?: [string, ...string[]];
   dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
   federationFile: string;
   loggingFile: string;
   files?: Record<string, string>;
@@ -270,6 +271,67 @@ To start the server, run the following command:
             : `${pm} run dev`,
         )
       }
+
+Then, try look up an actor from your server:
+
+  ${colors.bold.green("fedify lookup http://localhost:8000/users/john")}
+`,
+    }),
+  },
+  express: {
+    label: "Express",
+    runtimes: ["bun", "node"],
+    init: (projectName, runtime, pm) => ({
+      dependencies: {
+        express: "^4.19.2",
+        "@fedify/express": "^0.1.3",
+        ...(runtime === "node" ? { tsx: "^4.16.2" } : {}),
+      },
+      devDependencies: {
+        "@types/express": "^4.17.21",
+      },
+      federationFile: "src/federation.ts",
+      loggingFile: "src/logging.ts",
+      files: {
+        "src/app.ts": `\
+import express from "express";
+import { integrateFederation } from "@fedify/express";
+import { getLogger } from "@logtape/logtape";
+import federation from "./federation";
+
+const logger = getLogger(${JSON.stringify(projectName)});
+
+export const app = express();
+
+app.set("trust proxy", true);
+
+app.use(integrateFederation(federation, (req) => undefined));
+
+app.get("/", (req, res) => res.send("Hello, Fedify!"));
+
+export default app;
+`,
+        "src/index.ts": `\
+import app from "./app";
+import "./logging";
+
+app.listen(8000, () => {
+  console.log("Server started at http://localhost:8000");
+});
+`,
+      },
+      tasks: {
+        "dev": runtime === "bun"
+          ? "bun run --hot ./src/index.ts"
+          : "tsx watch ./src/index.ts",
+        "prod": runtime === "bun"
+          ? "bun run ./src/index.ts"
+          : "node --import tsx ./src/index.ts",
+      },
+      instruction: `
+To start the server, run the following command:
+
+  ${colors.bold.green(runtime === "bun" ? "bun dev" : `${pm} run dev`)}
 
 Then, try look up an actor from your server:
 
@@ -764,6 +826,7 @@ await configure({
     if (runtime !== "deno") {
       const devDependencies: Record<string, string> = {
         "@biomejs/biome": "^1.8.3",
+        ...initializer.devDependencies,
       };
       await addDependencies(
         runtime,
@@ -1052,6 +1115,7 @@ async function getLatestFedifyVersion(version: string): Promise<string> {
     if (v === version) return version;
     else if (result.versions[v].yanked) continue;
     const semVer = parse(v);
+    if (semVer.prerelease != null && semVer.prerelease.length > 0) continue;
     if (greaterThan(semVer, maxVersion)) maxVersion = semVer;
   }
   return format(maxVersion);

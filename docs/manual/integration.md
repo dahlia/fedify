@@ -17,6 +17,33 @@ Fedify is designed to be used together with web frameworks.  This document
 explains how to integrate Fedify with web frameworks.
 
 
+Express
+-------
+
+[Express] is a fast, unopinionated, minimalist web framework for Node.js.
+The [@fedify/express] package provides a middleware to integrate Fedify with
+Express:
+
+~~~~ typescript
+import express from "express";
+import { integrateFederation } from "@fedify/express";
+import { createFederation } from "@fedify/fedify";
+
+export const federation = createFederation<string>({
+  // Omitted for brevity; see the related section for details.
+});
+
+export const app = express();
+
+app.set("trust proxy", true);
+
+app.use(integrateFederation(federation, (req) => "context data goes here"));  // [!code highlight]
+~~~~
+
+[Express]: https://expressjs.com/
+[@fedify/express]: https://github.com/dahlia/fedify-express
+
+
 Hono
 ----
 
