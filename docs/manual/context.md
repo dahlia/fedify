@@ -250,7 +250,7 @@ the `getFollowing()` method returns the following collection.
 > but just passing the `Context` object to dereferencing accessors is enough.
 >
 > See the [*`Context.documentLoader` on an inbox listener*
-> section](./inbox.md#context.documentloader-on-an-inbox-listener) for details.
+> section](./inbox.md#context-documentloader-on-an-inbox-listener) for details.
 
 
 Document loader vs. context loader
