@@ -4,6 +4,7 @@ import footnote from "markdown-it-footnote";
 import { jsrRef } from "markdown-it-jsr-ref";
 import process from "node:process";
 import { defineConfig } from "vitepress";
+import { withMermaid } from "vitepress-plugin-mermaid";
 
 const progress = new SingleBar({}, Presets.shades_classic);
 let started = false;
@@ -66,7 +67,7 @@ const MANUAL = {
   activeMatch: "/manual",
 };
 
-export default defineConfig({
+export default withMermaid(defineConfig({
   title: "Fedify",
   description: "Fedify docs",
   themeConfig: {
@@ -210,4 +211,4 @@ export default defineConfig({
       ],
     ];
   },
-});
+}));

@@ -17,6 +17,65 @@ Fedify is designed to be used together with web frameworks.  This document
 explains how to integrate Fedify with web frameworks.
 
 
+How it works
+------------
+
+Usually, Fedify behaves as a middleware that wraps around the web framework's
+request handler.  The middleware intercepts the incoming HTTP requests and
+dispatches them to the appropriate handler based on the request path and
+the `Accept` header (i.e., [content negotiation]).  Basically, this architecture
+allows Fedify and your web framework to coexist in the same domain and port.
+
+For example, if you make a request to */.well-known/webfinger* Fedify will
+handle the request by itself, but if you make a request to */users/alice*
+(assuming your web framework has a handler for `/users/:handle`) with `Accept:
+text/html` header, Fedify will dispatch the request to the web framework's
+appropriate handler for `/users/:handle`.  Or if you define an actor dispatcher
+for `/users/{handle}` in Fedify, and the request is made with `Accept:
+application/activity+json` header, Fedify will dispatch the request to the
+appropriate actor dispatcher.
+
+Here is a diagram that illustrates the architecture:
+
+~~~~ mermaid
+sequenceDiagram
+  participant Client
+  participant Fedify
+  participant AD as Actor dispatcher<br/>(Fedify)
+  participant WF as Web framework
+
+  Client ->> Fedify: GET /users/alice<br/>(Accept: application/activity+json)
+  Fedify -->> Client: 200 OK
+  Fedify ->> AD: GET /users/alice
+  AD -->> Fedify: 200 OK
+  Fedify -->> Client: 200 OK
+
+  Client ->> Fedify: GET /users/alice<br/>(Accept: text/html)
+  Fedify -->> Client: 200 OK
+  Fedify ->> AD: GET /users/alice<br/>(Accept: text/html)
+  AD -->> Fedify: 406 Not Acceptable
+  Fedify ->> WF: GET /users/alice
+  WF -->> Fedify: 200 OK
+  Fedify -->> Client: 200 OK
+~~~~
+
+> [!NOTE]
+>
+> Why not use a reverse proxy in front of the web framework and Fedify?
+> Because you would want to call Fedify's API from the web framework's
+> request handler, e.g., to send an ActivityPub activity.  If you put a
+> reverse proxy in front of them, the web framework cannot call Fedify's API
+> directly.
+>
+> Of course, you can divide your application into two separate services,
+> one for ActivityPub and the other for the web application, and put a
+> reverse proxy in front of them.  But in this case, you need to implement
+> the communication between the two services (using a message queue or RPC,
+> for example), which is non-trivial.
+
+[content negotiation]: https://developer.mozilla.org/en-US/docs/Web/HTTP/Content_negotiation
+
+
 Express
 -------
 
