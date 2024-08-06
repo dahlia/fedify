@@ -59,6 +59,7 @@ To be released.
     changes:
 
      -  Added support for [Express] framework.
+     -  Added support for [Nitro] framework.
      -  Now a scaffold project uses a [x-forwarded-fetch] middleware to
         support `X-Forwarded-Proto` and `X-Forwarded-Host` headers.
      -  Now a scaffold project has hot reloading by default.
@@ -73,6 +74,7 @@ To be released.
 [#69]: https://github.com/dahlia/fedify/issues/69
 [#110]: https://github.com/dahlia/fedify/issues/110
 [Express]: https://expressjs.com/
+[Nitro]: https://nitro.unjs.io/
 
 
 Version 0.12.2

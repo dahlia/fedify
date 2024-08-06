@@ -74,10 +74,10 @@ const packageManagerAvailabilities: Record<PackageManager, boolean> = Object
     ),
   );
 
-type WebFramework = "fresh" | "hono" | "express";
+type WebFramework = "fresh" | "hono" | "express" | "nitro";
 
 interface WebFrameworkInitializer {
-  command?: [string, ...string[]];
+  command?: [string, ...string[]] | [...string[], string];
   dependencies?: Record<string, string>;
   devDependencies?: Record<string, string>;
   federationFile: string;
@@ -336,6 +336,60 @@ To start the server, run the following command:
 Then, try look up an actor from your server:
 
   ${colors.bold.green("fedify lookup http://localhost:8000/users/john")}
+`,
+    }),
+  },
+  nitro: {
+    label: "Nitro",
+    runtimes: ["bun", "node"],
+    init: (_, runtime, pm) => ({
+      command: [
+        ...(runtime === "bun"
+          ? ["bunx"]
+          : pm === "npm"
+          ? ["npx", "--yes"]
+          : [pm, "dlx"]),
+        "giget@latest",
+        "nitro",
+        ".",
+        "--install",
+      ],
+      dependencies: {
+        "@fedify/h3": "^0.1.0",
+      },
+      federationFile: "server/federation.ts",
+      loggingFile: "server/logging.ts",
+      files: {
+        "server/middleware/federation.ts": `\
+import { integrateFederation } from "@fedify/h3";
+import federation from "../federation"
+
+export default integrateFederation(
+  federation,
+  (event, request) => undefined,
+);
+`,
+        "server/error.ts": `\
+import { onError } from "@fedify/h3";
+
+export default onError;
+`,
+        "nitro.config.ts": `\
+//https://nitro.unjs.io/config
+export default defineNitroConfig({
+  srcDir: "server",
+  errorHandler: "~/error"
+});
+`,
+      },
+      instruction: `
+To start the server, run the following command:
+
+  ${colors.bold.green(runtime === "bun" ? "bun dev" : `${pm} run dev`)}
+
+Then, try look up an actor from your server:
+
+  ${colors.bold.green("fedify lookup http://localhost:3000/users/john")}
 `,
     }),
   },
