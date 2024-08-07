@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.13.0
 --------------
 
-To be released.
+Released on August 7, 2024.
 
  -  Added `closed` property to `Question` class in Activity Vocabulary API.
 
