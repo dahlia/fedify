@@ -51,11 +51,14 @@ async function pack(os: OS, arch: Arch): Promise<void> {
   }
 }
 
+const promises: Promise<void>[] = [];
 for (const osKey in triplets) {
   const os = osKey as OS;
   for (const arch in triplets[os]) {
-    await pack(os, arch as Arch);
+    const promise = pack(os, arch as Arch);
+    promises.push(promise);
   }
 }
+await Promise.all(promises);
 
 // cSpell: ignore cfvz
