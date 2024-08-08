@@ -18,12 +18,6 @@ jobs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: v1.x
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - uses: oven-sh/setup-bun@v1
-      with:
-        bun-version: latest
     - run: deno task cache
       working-directory: ${{ github.workspace }}/src/
     - run: deno task test --coverage=.cov --junit-path=.test-report.xml
@@ -51,6 +45,26 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: src/.cov.lcov
+
+  test-dnt:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v1.x
+    - uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+    - uses: oven-sh/setup-bun@v1
+      with:
+        bun-version: latest
+    - run: deno task cache
+      working-directory: ${{ github.workspace }}/src/
     - run: deno task dnt
       working-directory: ${{ github.workspace }}/src/
     - run: bun test_runner.js
@@ -87,11 +101,13 @@ jobs:
       working-directory: ${{ github.workspace }}/src/
     - run: npm publish --dry-run
       working-directory: ${{ github.workspace }}/src/npm/
+      env:
+        DNT_SKIP_TEST: "true"
     - run: deno task publish-dry-run
       working-directory: ${{ github.workspace }}/cli/
 
   publish:
-    needs: [test, lint, release-test]
+    needs: [test, test-dnt, lint, release-test]
     runs-on: ubuntu-latest
     permissions:
       id-token: write
