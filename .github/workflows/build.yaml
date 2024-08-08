@@ -125,6 +125,8 @@ jobs:
       working-directory: ${{ github.workspace }}/src/
     - run: 'deno task dnt "$(jq -r .version deno.json)"'
       working-directory: ${{ github.workspace }}/src/
+      env:
+        DNT_SKIP_TEST: "true"
     - run: npm pack
       working-directory: ${{ github.workspace }}/src/npm/
     - run: deno task pack

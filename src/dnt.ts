@@ -103,6 +103,7 @@ await build({
   typeCheck: "both",
   declaration: "separate",
   declarationMap: true,
+  test: Deno.env.get("DNT_SKIP_TEST") !== "true",
   compilerOptions: {
     target: "ES2022",
   },
