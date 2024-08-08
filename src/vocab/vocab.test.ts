@@ -191,7 +191,7 @@ test("Object.toJsonLd()", async () => {
     ],
   });
   assertEquals(
-    await obj.toJsonLd({ expand: true, contextLoader: mockDocumentLoader }),
+    await obj.toJsonLd({ format: "expand", contextLoader: mockDocumentLoader }),
     [
       {
         "@type": [
@@ -518,7 +518,21 @@ test("Place.fromJsonLd()", async () => {
   assertEquals(place.radius, 15);
   assertEquals(place.units, "miles");
 
-  const jsonLd = await place.toJsonLd({ contextLoader: mockDocumentLoader });
+  let jsonLd = await place.toJsonLd({ contextLoader: mockDocumentLoader });
+  assertEquals(jsonLd, {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "Place",
+    name: "Fresno Area",
+    latitude: 36.75,
+    longitude: 119.7667,
+    radius: 15,
+    units: "miles",
+  });
+
+  jsonLd = await place.toJsonLd({
+    format: "compact",
+    contextLoader: mockDocumentLoader,
+  });
   assertEquals(jsonLd, {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
@@ -783,12 +797,12 @@ for (const typeUri in types) {
   for (const property of allProperties) {
     if (areAllScalarTypes(property.range, types)) continue;
 
-    const docLoader = (url: string) => {
+    const docLoader = async (url: string) => {
       if (url !== `https://example.com/test`) throw new Error("Not Found");
       return {
         documentUrl: url,
         contextUrl: null,
-        document: sampleValues[property.range[0]].toJsonLd({
+        document: await sampleValues[property.range[0]].toJsonLd({
           contextLoader: mockDocumentLoader,
         }),
       };
@@ -860,7 +874,17 @@ for (const typeUri in types) {
     assertInstanceOf(instance, cls);
     assertEquals(instance.id, new URL("https://example.com/"));
     assertEquals(
-      await instance.toJsonLd({ contextLoader: mockDocumentLoader }),
+      await instance.toJsonLd(),
+      {
+        "@id": "https://example.com/",
+        "@type": typeUri,
+      },
+    );
+    assertEquals(
+      await instance.toJsonLd({
+        format: "compact",
+        contextLoader: mockDocumentLoader,
+      }),
       {
         "@context": type.defaultContext,
         "id": "https://example.com/",
@@ -902,6 +926,7 @@ for (const typeUri in types) {
 
     const jsonLd2 = await instance.toJsonLd({
       contextLoader: mockDocumentLoader,
+      format: "compact",
       context: "https://www.w3.org/ns/activitystreams",
     });
     assertEquals(jsonLd2["@context"], "https://www.w3.org/ns/activitystreams");
@@ -914,7 +939,7 @@ for (const typeUri in types) {
 
     const expanded = await instance.toJsonLd({
       contextLoader: mockDocumentLoader,
-      expand: true,
+      format: "expand",
     });
     const restored3 = await cls.fromJsonLd(expanded, {
       documentLoader: mockDocumentLoader,
@@ -942,6 +967,20 @@ for (const typeUri in types) {
       contextLoader: mockDocumentLoader,
     });
     assertEquals(restored4, instance2);
+
+    assertRejects(
+      () =>
+        instance.toJsonLd({ context: "https://www.w3.org/ns/activitystreams" }),
+      TypeError,
+    );
+    assertRejects(
+      () =>
+        instance.toJsonLd({
+          format: "expand",
+          context: "https://www.w3.org/ns/activitystreams",
+        }),
+      TypeError,
+    );
   });
 
   if (isDeno) {

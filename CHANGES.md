@@ -8,6 +8,15 @@ Version 0.14.0
 
 To be released.
 
+ -  Improved the performance of `Object.toJsonLd()` method.
+
+     -  Added `format` option to `Object.toJsonLd()` method.
+     -  Deprecated `expand` option of `Object.toJsonLd()` method.
+        Use `format: "expand"` option instead.
+     -  The `context` option of `Object.toJsonLd()` method is now only
+        applicable to `format: "compact"`.  Otherwise, it throws
+        a `TypeErrror`.
+
 
 Version 0.13.0
 --------------

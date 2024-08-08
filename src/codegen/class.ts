@@ -61,6 +61,8 @@ async function* generateClass(
     `;
   }
   yield `
+    #cachedJsonLd?: unknown;
+
     /**
      * The type URI of {@link ${type.name}}: \`${typeUri}\`.
      */

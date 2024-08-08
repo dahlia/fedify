@@ -60,6 +60,7 @@ export async function createProof(
   }
   const objectWithoutProofs = object.clone({ proofs: [] });
   const compactMsg = await objectWithoutProofs.toJsonLd({
+    format: "compact",
     contextLoader,
     context,
   });

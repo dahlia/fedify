@@ -16,13 +16,41 @@ export async function* generateEncoder(
   yield `
   /**
    * Converts this object to a JSON-LD structure.
+   * @param options The options to use.
+   *                - \`format\`: The format of the output: \`compact\` or
+                      \`expand\`.
+   *                - \`contextLoader\`: The loader for remote JSON-LD contexts.
+   *                - \`context\`: The JSON-LD context to use.  Not applicable
+                      when \`format\` is set to \`'expand'\`.
    * @returns The JSON-LD representation of this object.
    */
   async toJsonLd(options: {
+    format?: "compact" | "expand",
     expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
+    if (options.expand != null) {
+      if (options.format != null) {
+        throw new TypeError(
+          "The expand option, which is deprecated, cannot be used together " +
+          "with the format option."
+        );
+      }
+      getLogger(["fedify", "vocab"]).warn(
+        "The expand option is deprecated; use format: 'expand' instead.",
+      );
+      options = { ...options, format: "expand", expand: undefined };
+    }
+    if (options.format == null && this.#cachedJsonLd != null) {
+      return this.#cachedJsonLd;
+    }
+    if (options.format !== "compact" && options.context != null) {
+      throw new TypeError(
+        "The context option can only be used when the format option is set " +
+        "to 'compact'."
+      );
+    }
     options = {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
@@ -36,7 +64,8 @@ export async function* generateEncoder(
     yield `
     const baseValues = await super.toJsonLd({
       ...options,
-      expand: true,
+      format: "expand",
+      context: undefined,
     }) as unknown[];
     const values = baseValues[0] as Record<
       string,
@@ -82,7 +111,7 @@ export async function* generateEncoder(
   yield `
     values["@type"] = [${JSON.stringify(type.uri)}];
     if (this.id) values["@id"] = this.id.href;
-    if (options.expand) {
+    if (options.format === "expand") {
       return await jsonld.expand(
         values,
         { documentLoader: options.contextLoader },
@@ -198,7 +227,11 @@ export async function* generateDecoder(
     `;
   } else {
     yield `
-    const instance = await super.fromJsonLd(values, options);
+    const instance = await super.fromJsonLd(values, {
+      ...options,
+      // @ts-ignore: an internal option
+      _fromSubclass: true,
+    });
     if (!(instance instanceof ${type.name})) {
       throw new TypeError("Unexpected type: " + instance.constructor.name);
     }
@@ -251,6 +284,17 @@ export async function* generateDecoder(
     `;
   }
   yield `
+    if (!("_fromSubclass" in options) || !options._fromSubclass) {
+      try {
+        instance.#cachedJsonLd = structuredClone(json);
+      } catch (e) {
+        getLogger(["fedify", "vocab"]).warn(
+          "Failed to cache JSON-LD: {json}",
+          { json },
+        );
+        throw e;
+      }
+    }
     return instance;
   }
   `;

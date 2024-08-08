@@ -83,6 +83,7 @@
     "test-without-codegen": "deno test --check --doc --allow-read --allow-write --unstable-kv --trace-leaks",
     "test": "deno task codegen && deno task test-without-codegen",
     "coverage": "rm -rf coverage/ && deno task test --coverage && deno coverage --html coverage",
+    "bench": "deno task codegen && deno bench --allow-read --allow-write --allow-net --allow-env --allow-run --unstable-kv",
     "apidoc": "deno task codegen && deno doc --html --name=Fedify --output=apidoc/ mod.ts",
     "check-version": "deno run ../cli/scripts/check_version.ts",
     "publish": "deno task codegen && deno publish",

@@ -138,6 +138,7 @@ test("createProof()", async () => {
 
 test("signObject()", async () => {
   const options = {
+    format: "compact" as const,
     contextLoader: mockDocumentLoader,
     documentLoader: mockDocumentLoader,
     context: [
