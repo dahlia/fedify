@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Like
+compactName: Like
 uri: "https://www.w3.org/ns/activitystreams#Like"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

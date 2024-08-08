@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Flag
+compactName: Flag
 uri: "https://www.w3.org/ns/activitystreams#Flag"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

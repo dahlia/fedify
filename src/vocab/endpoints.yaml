@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Endpoints
+compactName: as:Endpoints
 uri: "https://www.w3.org/ns/activitystreams#Endpoints"
 entity: false
 description: Contents of {@link Actor}'s `endpoints`.
@@ -8,6 +9,7 @@ defaultContext: "https://www.w3.org/ns/activitystreams"
 properties:
 - singularName: proxyUrl
   functional: true
+  compactName: proxyUrl
   uri: "https://www.w3.org/ns/activitystreams#proxyUrl"
   description: |
     Endpoint URI so this actor's clients may access remote ActivityStreams
@@ -19,6 +21,7 @@ properties:
 
 - singularName: oauthAuthorizationEndpoint
   functional: true
+  compactName: oauthAuthorizationEndpoint
   uri: "https://www.w3.org/ns/activitystreams#oauthAuthorizationEndpoint"
   description: |
     If OAuth 2.0 bearer tokens [RFC 6749] [RFC 6750] are being used for
@@ -31,6 +34,7 @@ properties:
 
 - singularName: oauthTokenEndpoint
   functional: true
+  compactName: oauthTokenEndpoint
   uri: "https://www.w3.org/ns/activitystreams#oauthTokenEndpoint"
   description: |
     If OAuth 2.0 bearer tokens [RFC 6749] [RFC 6750] are being used for
@@ -42,6 +46,7 @@ properties:
 
 - singularName: provideClientKey
   functional: true
+  compactName: provideClientKey
   uri: "https://www.w3.org/ns/activitystreams#provideClientKey"
   description: |
     If Linked Data Signatures and HTTP Signatures are being used for
@@ -53,6 +58,7 @@ properties:
 
 - singularName: signClientKey
   functional: true
+  compactName: signClientKey
   uri: "https://www.w3.org/ns/activitystreams#signClientKey"
   description: |
     If Linked Data Signatures and HTTP Signatures are being used for
@@ -64,6 +70,7 @@ properties:
 
 - singularName: sharedInbox
   functional: true
+  compactName: sharedInbox
   uri: "https://www.w3.org/ns/activitystreams#sharedInbox"
   description: |
     An optional endpoint [used for wide delivery of publicly addressed

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Create
+compactName: Create
 uri: "https://www.w3.org/ns/activitystreams#Create"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

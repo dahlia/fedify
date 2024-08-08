@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Invite
+compactName: Invite
 uri: "https://www.w3.org/ns/activitystreams#Invite"
 extends: "https://www.w3.org/ns/activitystreams#Offer"
 entity: true

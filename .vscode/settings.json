@@ -17,8 +17,8 @@
   "yaml.format.enable": false,
   "yaml.hover": true,
   "yaml.schemas": {
-    "codegen/schema.yaml": "/vocab/*.yaml",
-    "https://json-schema.org/draft/2020-12/schema": "/codegen/schema.yaml"
+    "src/codegen/schema.yaml": "/src/vocab/*.yaml",
+    "https://json-schema.org/draft/2020-12/schema": "/src/codegen/schema.yaml"
   },
   "yaml.validate": true,
   "[javascript]": {
@@ -67,6 +67,7 @@
     "callouts",
     "cfworker",
     "codegen",
+    "compactable",
     "cryptosuite",
     "decorrelated",
     "deflist",

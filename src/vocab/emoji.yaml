@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Emoji
+compactName: Emoji
 uri: "http://joinmastodon.org/ns#Emoji"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true

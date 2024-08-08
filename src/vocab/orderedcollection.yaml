@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: OrderedCollection
+compactName: OrderedCollection
 uri: "https://www.w3.org/ns/activitystreams#OrderedCollection"
 extends: "https://www.w3.org/ns/activitystreams#Collection"
 entity: true
@@ -17,6 +18,7 @@ defaultContext:
 properties:
 - pluralName: items
   singularName: item
+  compactName: orderedItems
   uri: "https://www.w3.org/ns/activitystreams#items"
   container: list
   description: |

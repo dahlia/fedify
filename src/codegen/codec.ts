@@ -2,10 +2,12 @@ import { generateField, getFieldName } from "./field.ts";
 import type { TypeSchema } from "./schema.ts";
 import {
   areAllScalarTypes,
+  getAllProperties,
   getDecoder,
   getDecoders,
   getEncoders,
   getSubtypes,
+  isCompactableType,
 } from "./type.ts";
 
 export async function* generateEncoder(
@@ -55,6 +57,92 @@ export async function* generateEncoder(
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  `;
+  if (isCompactableType(typeUri, types)) {
+    yield `
+    if (
+      options.format == null
+    `;
+    for (const property of type.properties) {
+      if (!property.range.every((r) => isCompactableType(r, types))) {
+        yield `
+        && (
+          this.${await getFieldName(property.uri)} == null ||
+          this.${await getFieldName(property.uri)}.length < 1
+        )
+        `;
+      }
+    }
+    yield `
+    ) {
+    `;
+    if (type.extends == null) {
+      yield "const result: Record<string, unknown> = {};";
+    } else {
+      yield `
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      `;
+      const selfProperties = type.properties.map((p) => p.uri);
+      for (const property of getAllProperties(typeUri, types, true)) {
+        if (!selfProperties.includes(property.uri)) continue;
+        yield `delete result[${JSON.stringify(property.compactName)}];`;
+      }
+    }
+    yield `
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    `;
+    for (const property of type.properties) {
+      yield `
+      compactItems = [];
+      for (const v of this.${await getFieldName(property.uri)}) {
+        const item = (
+      `;
+      if (!areAllScalarTypes(property.range, types)) {
+        yield "v instanceof URL ? v.href : ";
+      }
+      const encoders = getEncoders(
+        property.range,
+        types,
+        "v",
+        "options",
+        true,
+      );
+      for (const code of encoders) yield code;
+      yield `
+        );
+        compactItems.push(item);
+      }
+      `;
+      if (property.functional || property.container !== "list") {
+        yield `
+        if (compactItems.length > 1) {
+          result[${JSON.stringify(property.compactName)}] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[${JSON.stringify(property.compactName)}] = compactItems[0];
+        }
+        `;
+      } else {
+        yield `
+        if (compactItems.length > 0) {
+          result[${JSON.stringify(property.compactName)}] = compactItems;
+        }
+        `;
+      }
+    }
+    yield `
+      result["type"] = ${JSON.stringify(type.compactName ?? type.uri)};
+      if (this.id != null) result["id"] = this.id.href;
+      result["@context"] = ${JSON.stringify(type.defaultContext)};
+      return result;
+    }
+    `;
+  }
+  yield `
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   `;
@@ -110,7 +198,7 @@ export async function* generateEncoder(
   }
   yield `
     values["@type"] = [${JSON.stringify(type.uri)}];
-    if (this.id) values["@id"] = this.id.href;
+    if (this.id != null) values["@id"] = this.id.href;
     if (options.format === "expand") {
       return await jsonld.expand(
         values,
@@ -287,12 +375,11 @@ export async function* generateDecoder(
     if (!("_fromSubclass" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger(["fedify", "vocab"]).warn(
           "Failed to cache JSON-LD: {json}",
           { json },
         );
-        throw e;
       }
     }
     return instance;

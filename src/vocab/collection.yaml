@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Collection
+compactName: Collection
 uri: "https://www.w3.org/ns/activitystreams#Collection"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true
@@ -20,6 +21,7 @@ defaultContext:
 properties:
 - singularName: totalItems
   functional: true
+  compactName: totalItems
   uri: "https://www.w3.org/ns/activitystreams#totalItems"
   description: |
     A non-negative integer specifying the total number of objects contained by
@@ -30,6 +32,7 @@ properties:
 
 - singularName: current
   functional: true
+  compactName: current
   uri: "https://www.w3.org/ns/activitystreams#current"
   description: |
     In a paged {@link Collection}, indicates the page that contains
@@ -39,6 +42,7 @@ properties:
 
 - singularName: first
   functional: true
+  compactName: first
   uri: "https://www.w3.org/ns/activitystreams#first"
   description: |
     In a paged {@link Collection}, indicates the furthest preceding page of
@@ -48,6 +52,7 @@ properties:
 
 - singularName: last
   functional: true
+  compactName: last
   uri: "https://www.w3.org/ns/activitystreams#last"
   description: |
     In a paged {@link Collection}, indicates the furthest proceeding page of
@@ -57,6 +62,7 @@ properties:
 
 - pluralName: items
   singularName: item
+  compactName: items
   uri: "https://www.w3.org/ns/activitystreams#items"
   description: |
     Identifies the items contained in a collection.  The items might be ordered

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Tombstone
+compactName: Tombstone
 uri: "https://www.w3.org/ns/activitystreams#Tombstone"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true
@@ -14,6 +15,7 @@ defaultContext:
 properties:
 - singularName: deleted
   functional: true
+  compactName: deleted
   uri: "https://www.w3.org/ns/activitystreams#deleted"
   description: |
     On a `Tombstone` object, the `deleted` property is a timestamp for when

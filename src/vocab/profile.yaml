@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Profile
+compactName: Profile
 uri: "https://www.w3.org/ns/activitystreams#Profile"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true
@@ -16,6 +17,7 @@ defaultContext:
 properties:
 - singularName: describes
   functional: true
+  compactName: describes
   uri: "https://www.w3.org/ns/activitystreams#describes"
   description: |
     On a {@link Profile} object, the {@link Profile.describes} property

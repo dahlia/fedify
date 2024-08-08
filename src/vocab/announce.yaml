@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Announce
+compactName: Announce
 uri: "https://www.w3.org/ns/activitystreams#Announce"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

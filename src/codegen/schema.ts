@@ -32,6 +32,12 @@ export interface TypeSchema {
   extends?: TypeUri;
 
   /**
+   * The type name used in the compacted JSON-LD document.  It is used as the
+   * value of the `type` field.
+   */
+  compactName?: string;
+
+  /**
    * Marks the type an entity type rather than a value type.  Turning on this
    * flag will make property accessors for the type asynchronous, so that they
    * can load the values of the properties from the remote server.
@@ -69,6 +75,12 @@ export interface PropertySchemaBase {
    * The qualified URI of the property.
    */
   uri: string;
+
+  /**
+   * The property name used in the compacted JSON-LD document.  It is used as
+   * the key of the property.
+   */
+  compactName: string;
 
   /**
    * The qualified URI of the superproperty of the property (if any).

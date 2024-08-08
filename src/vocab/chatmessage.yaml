@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: ChatMessage
+compactName: ChatMessage
 uri: "http://litepub.social/ns#ChatMessage"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true

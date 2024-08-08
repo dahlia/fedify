@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Reject
+compactName: Reject
 uri: "https://www.w3.org/ns/activitystreams#Reject"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Follow
+compactName: Follow
 uri: "https://www.w3.org/ns/activitystreams#Follow"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

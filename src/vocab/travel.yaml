@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Travel
+compactName: Travel
 uri: "https://www.w3.org/ns/activitystreams#Travel"
 extends: "https://www.w3.org/ns/activitystreams#IntransitiveActivity"
 entity: true

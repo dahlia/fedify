@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Article
+compactName: Article
 uri: "https://www.w3.org/ns/activitystreams#Article"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Listen
+compactName: Listen
 uri: "https://www.w3.org/ns/activitystreams#Listen"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

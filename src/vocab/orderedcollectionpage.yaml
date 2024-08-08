@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: OrderedCollectionPage
+compactName: OrderedCollectionPage
 uri: "https://www.w3.org/ns/activitystreams#OrderedCollectionPage"
 extends: "https://www.w3.org/ns/activitystreams#CollectionPage"
 entity: true
@@ -18,6 +19,7 @@ defaultContext:
 properties:
 - pluralName: items
   singularName: item
+  compactName: orderedItems
   uri: "https://www.w3.org/ns/activitystreams#items"
   container: list
   description: |
@@ -29,6 +31,7 @@ properties:
 
 - singularName: startIndex
   functional: true
+  compactName: startIndex
   uri: "https://www.w3.org/ns/activitystreams#startIndex"
   description: |
     A non-negative integer value identifying the relative position within

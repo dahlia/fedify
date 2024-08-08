@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Offer
+compactName: Offer
 uri: "https://www.w3.org/ns/activitystreams#Offer"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

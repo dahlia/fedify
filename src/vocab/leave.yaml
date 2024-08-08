@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Leave
+compactName: Leave
 uri: "https://www.w3.org/ns/activitystreams#Leave"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Multikey
+compactName: Multikey
 uri: "https://w3id.org/security#Multikey"
 entity: true
 description: |
@@ -12,6 +13,7 @@ defaultContext: "https://w3id.org/security/multikey/v1"
 properties:
 - singularName: controller
   functional: true
+  compactName: controller
   uri: "https://w3id.org/security#controller"
   description: An actor who owns this key.
   range:
@@ -23,6 +25,7 @@ properties:
 
 - singularName: publicKey
   functional: true
+  compactName: publicKeyMultibase
   uri: "https://w3id.org/security#publicKeyMultibase"
   description: |
     A [Multibase]-encoded value of a [Multicodec] prefix and the key.

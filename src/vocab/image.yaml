@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Image
+compactName: Image
 uri: "https://www.w3.org/ns/activitystreams#Image"
 extends: "https://www.w3.org/ns/activitystreams#Document"
 entity: true

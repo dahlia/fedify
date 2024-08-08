@@ -1,9 +1,20 @@
-import type { TypeSchema } from "./schema.ts";
+import type { PropertySchema, TypeSchema } from "./schema.ts";
+
+// The list of JSON-LD contexts to apply heuristics that bypass the proper
+// JSON-LD processor.
+const HEURISTICS_CONTEXTS: string[] = [
+  "https://www.w3.org/ns/activitystreams",
+  "https://w3id.org/security/v1",
+  "https://w3id.org/security/data-integrity/v1",
+  "https://www.w3.org/ns/did/v1",
+  "https://w3id.org/security/multikey/v1",
+];
 
 interface ScalarType {
   name: string;
   typeGuard(variable: string): string;
   encoder(variable: string): string;
+  compactEncoder?: (variable: string) => string;
   dataCheck(variable: string): string;
   decoder(variable: string): string;
 }
@@ -16,6 +27,9 @@ const scalarTypes: Record<string, ScalarType> = {
     },
     encoder(v) {
       return `{ "@value": ${v} }`;
+    },
+    compactEncoder(v) {
+      return v;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
@@ -35,6 +49,9 @@ const scalarTypes: Record<string, ScalarType> = {
         "@type": "http://www.w3.org/2001/XMLSchema#integer",
         "@value": ${v},
       }`;
+    },
+    compactEncoder(v) {
+      return v;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@type" in ${v}
@@ -56,6 +73,9 @@ const scalarTypes: Record<string, ScalarType> = {
         "@value": ${v},
       }`;
     },
+    compactEncoder(v) {
+      return v;
+    },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@type" in ${v}
         && ${v}["@type"] === "http://www.w3.org/2001/XMLSchema#nonNegativeInteger"
@@ -76,6 +96,9 @@ const scalarTypes: Record<string, ScalarType> = {
         "@value": ${v},
       }`;
     },
+    compactEncoder(v) {
+      return v;
+    },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@type" in ${v}
         && ${v}["@type"] === "http://www.w3.org/2001/XMLSchema#float"
@@ -93,6 +116,9 @@ const scalarTypes: Record<string, ScalarType> = {
     encoder(v) {
       return `{ "@value": ${v} }`;
     },
+    compactEncoder(v) {
+      return v;
+    },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
         && typeof ${v}["@value"] === "string" && !("@language" in ${v})`;
@@ -108,6 +134,9 @@ const scalarTypes: Record<string, ScalarType> = {
     },
     encoder(v) {
       return `{ "@id": ${v}.href }`;
+    },
+    compactEncoder(v) {
+      return `${v}.href`;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@id" in ${v}
@@ -148,6 +177,9 @@ const scalarTypes: Record<string, ScalarType> = {
         "@value": ${v}.toString(),
       }`;
     },
+    compactEncoder(v) {
+      return `${v}.toString()`;
+    },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@type" in ${v}
         && "@value" in ${v} && typeof ${v}["@value"] === "string"
@@ -168,6 +200,9 @@ const scalarTypes: Record<string, ScalarType> = {
         "@value": ${v}.toString(),
       }`;
     },
+    compactEncoder(v) {
+      return `${v}.toString()`;
+    },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@type" in ${v}
         && "@value" in ${v} && typeof ${v}["@value"] === "string"
@@ -184,6 +219,9 @@ const scalarTypes: Record<string, ScalarType> = {
     },
     encoder(v) {
       return `{ "@value": ${v} }`;
+    },
+    compactEncoder(v) {
+      return v;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
@@ -204,6 +242,9 @@ const scalarTypes: Record<string, ScalarType> = {
         "@value": new TextDecoder().decode(encodeMultibase("base58btc", ${v})),
       }`;
     },
+    compactEncoder(v) {
+      return `new TextDecoder().decode(encodeMultibase("base58btc", ${v}))`;
+    },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
         && typeof ${v}["@value"] === "string"`;
@@ -219,6 +260,9 @@ const scalarTypes: Record<string, ScalarType> = {
     },
     encoder(v) {
       return `{ "@value": ${v}.compact() }`;
+    },
+    compactEncoder(v) {
+      return `${v}.compact()`;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
@@ -239,6 +283,9 @@ const scalarTypes: Record<string, ScalarType> = {
     },
     encoder(v) {
       return `{ "@value": await exportSpki(${v}) }`;
+    },
+    compactEncoder(v) {
+      return `await exportSpki(${v})`;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
@@ -263,6 +310,9 @@ const scalarTypes: Record<string, ScalarType> = {
         "@value": await exportMultibaseKey(${v}),
       }`;
     },
+    compactEncoder(v) {
+      return `await exportMultibaseKey(${v})`;
+    },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
         && typeof ${v}["@value"] === "string"`;
@@ -283,6 +333,9 @@ const scalarTypes: Record<string, ScalarType> = {
       return `{
         "@id": "https://w3id.org/security#" + ${v},
       }`;
+    },
+    compactEncoder(v) {
+      return v;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@id" in ${v}
@@ -305,6 +358,9 @@ const scalarTypes: Record<string, ScalarType> = {
     },
     encoder(v) {
       return `{ "@value": ${v} }`;
+    },
+    compactEncoder(v) {
+      return v;
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@value" in ${v}
@@ -356,6 +412,26 @@ export function areAllScalarTypes(
   return typeUris.every((typeUri) => isScalarType(typeUri, types));
 }
 
+export function isCompactableType(
+  typeUri: string,
+  types: Record<string, TypeSchema>,
+): boolean {
+  if (typeUri in scalarTypes) {
+    return scalarTypes[typeUri].compactEncoder != null;
+  } else if (typeUri in types) {
+    const type = types[typeUri];
+    if (type.compactName == null) return false;
+    const defaultContext = type.defaultContext;
+    return defaultContext != null &&
+        HEURISTICS_CONTEXTS.includes(defaultContext as string) ||
+      Array.isArray(defaultContext) &&
+        (defaultContext as string[]).some(
+          HEURISTICS_CONTEXTS.includes.bind(HEURISTICS_CONTEXTS),
+        );
+  }
+  throw new Error(`Unknown type: ${typeUri}`);
+}
+
 export function getSubtypes(
   typeUri: string,
   types: Record<string, TypeSchema>,
@@ -369,14 +445,50 @@ export function getSubtypes(
   return subtypes.filter((t, i) => subtypes.indexOf(t) === i);
 }
 
+export function getSupertypes(
+  typeUri: string,
+  types: Record<string, TypeSchema>,
+  excludeSelf = false,
+): string[] {
+  const supertypes: string[] = excludeSelf ? [] : [typeUri];
+  const type = types[typeUri];
+  if (type.extends) supertypes.push(...getSupertypes(type.extends, types));
+  return supertypes;
+}
+
+export function* getAllProperties(
+  typeUri: string,
+  types: Record<string, TypeSchema>,
+  excludeSelf = false,
+): Iterable<PropertySchema> {
+  for (const t of getSupertypes(typeUri, types, excludeSelf)) {
+    if (!(t in types)) continue;
+    for (const prop of types[t].properties) yield prop;
+  }
+}
+
 export function getEncoder(
   typeUri: string,
   types: Record<string, TypeSchema>,
   variable: string,
   optionsVariable: string,
+  compact = false,
 ): string {
-  if (typeUri in scalarTypes) return scalarTypes[typeUri].encoder(variable);
-  if (typeUri in types) return `await ${variable}.toJsonLd(${optionsVariable})`;
+  if (typeUri in scalarTypes) {
+    return compact
+      ? scalarTypes[typeUri].compactEncoder?.(variable) ??
+        scalarTypes[typeUri].encoder(variable)
+      : scalarTypes[typeUri].encoder(variable);
+  }
+  if (typeUri in types) {
+    return compact
+      ? `await ${variable}.toJsonLd({
+           ...(${optionsVariable}),
+           format: undefined,
+           context: undefined,
+         })`
+      : `await ${variable}.toJsonLd(${optionsVariable})`;
+  }
   throw new Error(`Unknown type: ${typeUri}`);
 }
 
@@ -403,6 +515,7 @@ export function* getEncoders(
   types: Record<string, TypeSchema>,
   variable: string,
   optionsVariable: string,
+  compact = false,
 ): Iterable<string> {
   let i = typeUris.length;
   for (const typeUri of typeUris) {
@@ -410,7 +523,7 @@ export function* getEncoders(
       yield getTypeGuard(typeUri, types, variable);
       yield " ? ";
     }
-    yield getEncoder(typeUri, types, variable, optionsVariable);
+    yield getEncoder(typeUri, types, variable, optionsVariable, compact);
     if (i > 0) yield " : ";
   }
 }

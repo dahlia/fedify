@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Update
+compactName: Update
 uri: "https://www.w3.org/ns/activitystreams#Update"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Block
+compactName: Block
 uri: "https://www.w3.org/ns/activitystreams#Block"
 extends: "https://www.w3.org/ns/activitystreams#Ignore"
 entity: true

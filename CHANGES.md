@@ -10,12 +10,15 @@ To be released.
 
  -  Improved the performance of `Object.toJsonLd()` method.
 
+     -  `Object.toJsonLd()` method no longer guarantees that the returned
+        JSON-LD object is compacted unless the `format: "compact"` option is
+        provided.
      -  Added `format` option to `Object.toJsonLd()` method.
      -  Deprecated `expand` option of `Object.toJsonLd()` method.
         Use `format: "expand"` option instead.
      -  The `context` option of `Object.toJsonLd()` method is now only
         applicable to `format: "compact"`.  Otherwise, it throws
-        a `TypeErrror`.
+        a `TypeError`.
 
 
 Version 0.13.0

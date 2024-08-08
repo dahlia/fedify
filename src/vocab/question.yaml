@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Question
+compactName: Question
 uri: "https://www.w3.org/ns/activitystreams#Question"
 extends: "https://www.w3.org/ns/activitystreams#IntransitiveActivity"
 entity: true
@@ -25,6 +26,7 @@ properties:
 - pluralName: exclusiveOptions
   singularName: exclusiveOption
   singularAccessor: false
+  compactName: oneOf
   uri: "https://www.w3.org/ns/activitystreams#oneOf"
   description: |
     Identifies an exclusive option for a Question.  Use of `exclusiveOptions`
@@ -36,6 +38,7 @@ properties:
 - pluralName: inclusiveOptions
   singularName: inclusiveOption
   singularAccessor: false
+  compactName: anyOf
   uri: "https://www.w3.org/ns/activitystreams#anyOf"
   description: |
     Identifies an inclusive option for a Question.  Use of `inclusiveOptions`
@@ -46,6 +49,7 @@ properties:
 
 - singularName: closed
   functional: true
+  compactName: closed
   uri: "https://www.w3.org/ns/activitystreams#closed"
   description: |
     Indicates that a question has been closed, and answers are no longer
@@ -56,6 +60,7 @@ properties:
 
 - singularName: voters
   functional: true
+  compactName: votersCount
   uri: "http://joinmastodon.org/ns#votersCount"
   description: |
     How many people have voted in the poll.  Distinct from how many votes have

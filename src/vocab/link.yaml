@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Link
+compactName: Link
 uri: "https://www.w3.org/ns/activitystreams#Link"
 entity: false
 description: |
@@ -16,6 +17,7 @@ defaultContext: "https://www.w3.org/ns/activitystreams"
 properties:
 - singularName: href
   functional: true
+  compactName: href
   uri: "https://www.w3.org/ns/activitystreams#href"
   description: "The target resource pointed to by a {@link Link}."
   range:
@@ -24,6 +26,7 @@ properties:
 - pluralName: rels
   singularName: rel
   singularAccessor: true
+  compactName: rel
   uri: "https://www.w3.org/ns/activitystreams#rel"
   description: |
     A link relation associated with a {@link Link}. The value MUST conform to
@@ -37,6 +40,7 @@ properties:
 
 - singularName: mediaType
   functional: true
+  compactName: mediaType
   uri: "https://www.w3.org/ns/activitystreams#mediaType"
   description: |
     When used on a {@link Link}, identifies the MIME media type of the
@@ -47,6 +51,7 @@ properties:
 - pluralName: names
   singularName: name
   singularAccessor: true
+  compactName: name
   uri: "https://www.w3.org/ns/activitystreams#name"
   description: |
     A simple, human-readable, plain-text name for the object. HTML markup MUST
@@ -58,6 +63,7 @@ properties:
 
 - singularName: language
   functional: true
+  compactName: hreflang
   uri: "https://www.w3.org/ns/activitystreams#hreflang"
   description: |
     Hints as to the language used by the target resource.
@@ -67,6 +73,7 @@ properties:
 
 - singularName: height
   functional: true
+  compactName: height
   uri: "https://www.w3.org/ns/activitystreams#height"
   description: |
     On a {@link Link}, specifies a hint as to the rendering height in
@@ -76,6 +83,7 @@ properties:
 
 - singularName: width
   functional: true
+  compactName: width
   uri: "https://www.w3.org/ns/activitystreams#width"
   description: |
     On a {@link Link}, specifies a hint as to the rendering width in
@@ -85,6 +93,7 @@ properties:
 
 - pluralName: previews
   singularName: preview
+  compactName: preview
   uri: "https://www.w3.org/ns/activitystreams#preview"
   description: "Identifies an entity that provides a preview of this object."
   range:

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: View
+compactName: View
 uri: "https://www.w3.org/ns/activitystreams#View"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

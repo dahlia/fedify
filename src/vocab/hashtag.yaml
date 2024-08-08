@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Hashtag
+compactName: Hashtag
 uri: "https://www.w3.org/ns/activitystreams#Hashtag"
 extends: "https://www.w3.org/ns/activitystreams#Link"
 entity: false

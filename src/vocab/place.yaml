@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Place
+compactName: Place
 uri: "https://www.w3.org/ns/activitystreams#Place"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true
@@ -14,6 +15,7 @@ defaultContext:
 properties:
 - singularName: accuracy
   functional: true
+  compactName: accuracy
   uri: "https://www.w3.org/ns/activitystreams#accuracy"
   description: |
     Indicates the accuracy of position coordinates on a {@link Place} objects.
@@ -23,6 +25,7 @@ properties:
 
 - singularName: altitude
   functional: true
+  compactName: altitude
   uri: "https://www.w3.org/ns/activitystreams#altitude"
   description: |
     Indicates the altitude of a place.  The measurement units is indicated
@@ -33,6 +36,7 @@ properties:
 
 - singularName: latitude
   functional: true
+  compactName: latitude
   uri: "https://www.w3.org/ns/activitystreams#latitude"
   description: The latitude of a place.
   range:
@@ -40,6 +44,7 @@ properties:
 
 - singularName: longitude
   functional: true
+  compactName: longitude
   uri: "https://www.w3.org/ns/activitystreams#longitude"
   description: The longitude of a place.
   range:
@@ -47,6 +52,7 @@ properties:
 
 - singularName: radius
   functional: true
+  compactName: radius
   uri: "https://www.w3.org/ns/activitystreams#radius"
   description: |
     The radius from the given latitude and longitude for a {@link Place}.
@@ -58,6 +64,7 @@ properties:
 
 - singularName: units
   functional: true
+  compactName: units
   uri: "https://www.w3.org/ns/activitystreams#units"
   description: |
     Specifies the measurement units for the {@link Place.radius} and

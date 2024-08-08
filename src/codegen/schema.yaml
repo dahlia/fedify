@@ -60,6 +60,11 @@ $defs:
         description: The qualified URI of the property.
         type: string
         format: uri
+      compactName:
+        description: >-
+          The property name used in the compacted JSON-LD document.  It is used
+          as the key of the property.
+        type: string
       subpropertyOf:
         description: >-
           The qualified URI of the superproperty of the property (if any).
@@ -180,6 +185,11 @@ properties:
     description: The qualified URI of the type.
     type: string
     format: uri
+  compactName:
+    description: >-
+      The type name used in the compacted JSON-LD document.  It is used as the
+      value of the `type` field.
+    type: string
   extends:
     description: The qualified URIs of the base type of the type (if any).
     type: string

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Delete
+compactName: Delete
 uri: "https://www.w3.org/ns/activitystreams#Delete"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

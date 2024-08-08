@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: CollectionPage
+compactName: CollectionPage
 uri: "https://www.w3.org/ns/activitystreams#CollectionPage"
 extends: "https://www.w3.org/ns/activitystreams#Collection"
 entity: true
@@ -18,6 +19,7 @@ defaultContext:
 properties:
 - singularName: partOf
   functional: true
+  compactName: partOf
   uri: "https://www.w3.org/ns/activitystreams#partOf"
   description: |
     Identifies the {@link Collection} to which a {@link CollectionPage} objects
@@ -27,6 +29,7 @@ properties:
 
 - singularName: next
   functional: true
+  compactName: next
   uri: "https://www.w3.org/ns/activitystreams#next"
   description: In a paged {@link Collection}, indicates the next page of items.
   range:
@@ -34,6 +37,7 @@ properties:
 
 - singularName: prev
   functional: true
+  compactName: prev
   uri: "https://www.w3.org/ns/activitystreams#prev"
   description: |
     In a paged {@link Collection}, identifies the previous page of items.

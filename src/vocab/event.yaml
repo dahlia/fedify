@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Event
+compactName: Event
 uri: "https://www.w3.org/ns/activitystreams#Event"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true

@@ -1,4 +1,5 @@
 import { assert, assertEquals, assertFalse } from "@std/assert";
+import { signRequest } from "../sig/http.ts";
 import { createRequestContext } from "../testing/context.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
@@ -31,7 +32,6 @@ import {
   respondWithObjectIfAcceptable,
 } from "./handler.ts";
 import { MemoryKvStore } from "./kv.ts";
-import { signRequest } from "../sig/http.ts";
 
 test("acceptsJsonLd()", () => {
   assert(acceptsJsonLd(
@@ -690,6 +690,18 @@ test("handleCollection()", async () => {
     response.headers.get("Content-Type"),
     "application/activity+json",
   );
+  const createCtx = [
+    "https://www.w3.org/ns/activitystreams",
+    "https://w3id.org/security/data-integrity/v1",
+    {
+      ChatMessage: "http://litepub.social/ns#ChatMessage",
+      Emoji: "toot:Emoji",
+      Hashtag: "as:Hashtag",
+      sensitive: "as:sensitive",
+      toot: "http://joinmastodon.org/ns#",
+      votersCount: "toot:votersCount",
+    },
+  ];
   assertEquals(await response.json(), {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
@@ -703,9 +715,21 @@ test("handleCollection()", async () => {
     ],
     type: "OrderedCollection",
     orderedItems: [
-      { type: "Create", id: "https://example.com/activities/1" },
-      { type: "Create", id: "https://example.com/activities/2" },
-      { type: "Create", id: "https://example.com/activities/3" },
+      {
+        "@context": createCtx,
+        type: "Create",
+        id: "https://example.com/activities/1",
+      },
+      {
+        "@context": createCtx,
+        type: "Create",
+        id: "https://example.com/activities/2",
+      },
+      {
+        "@context": createCtx,
+        type: "Create",
+        id: "https://example.com/activities/3",
+      },
     ],
   });
   assertEquals(onNotFoundCalled, null);
@@ -773,9 +797,21 @@ test("handleCollection()", async () => {
     ],
     type: "OrderedCollection",
     orderedItems: [
-      { type: "Create", id: "https://example.com/activities/1" },
-      { type: "Create", id: "https://example.com/activities/2" },
-      { type: "Create", id: "https://example.com/activities/3" },
+      {
+        "@context": createCtx,
+        type: "Create",
+        id: "https://example.com/activities/1",
+      },
+      {
+        "@context": createCtx,
+        type: "Create",
+        id: "https://example.com/activities/2",
+      },
+      {
+        "@context": createCtx,
+        type: "Create",
+        id: "https://example.com/activities/3",
+      },
     ],
   });
   assertEquals(onNotFoundCalled, null);
@@ -871,6 +907,7 @@ test("handleCollection()", async () => {
     partOf: "https://example.com/",
     next: "https://example.com/?cursor=1",
     orderedItems: [{
+      "@context": createCtx,
       id: "https://example.com/activities/1",
       type: "Create",
     }],
@@ -926,6 +963,7 @@ test("handleCollection()", async () => {
     partOf: "https://example.com/",
     prev: "https://example.com/?cursor=1",
     orderedItems: [{
+      "@context": createCtx,
       id: "https://example.com/activities/3",
       type: "Create",
     }],

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Group
+compactName: Group
 uri: "https://www.w3.org/ns/activitystreams#Group"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true
@@ -30,6 +31,7 @@ properties:
 - pluralName: preferredUsernames
   singularName: preferredUsername
   singularAccessor: true
+  compactName: preferredUsername
   uri: "https://www.w3.org/ns/activitystreams#preferredUsername"
   description: |
     A short username which may be used to refer to the actor,
@@ -41,6 +43,7 @@ properties:
 - pluralName: publicKeys
   singularName: publicKey
   singularAccessor: true
+  compactName: publicKey
   uri: "https://w3id.org/security#publicKey"
   description: A public part of the key pair owned by this actor.
   untyped: true
@@ -50,6 +53,7 @@ properties:
 - pluralName: assertionMethods
   singularName: assertionMethod
   singularAccessor: true
+  compactName: assertionMethod
   uri: "https://w3id.org/security#assertionMethod"
   description: |
     Represents this actor's public keys.  It serves as equivalent to
@@ -61,6 +65,7 @@ properties:
 
 - singularName: manuallyApprovesFollowers
   functional: true
+  compactName: manuallyApprovesFollowers
   uri: "https://www.w3.org/ns/activitystreams#manuallyApprovesFollowers"
   description: |
     When `true`, conveys that for this actor, follow requests are not usually
@@ -74,6 +79,7 @@ properties:
 
 - singularName: inbox
   functional: true
+  compactName: inbox
   uri: "http://www.w3.org/ns/ldp#inbox"
   description: |
     The inbox stream contains all activities received by the actor.  The server
@@ -94,6 +100,7 @@ properties:
 
 - singularName: outbox
   functional: true
+  compactName: outbox
   uri: "https://www.w3.org/ns/activitystreams#outbox"
   description: |
     The outbox stream contains activities the user has published,
@@ -111,6 +118,7 @@ properties:
 
 - singularName: following
   functional: true
+  compactName: following
   uri: "https://www.w3.org/ns/activitystreams#following"
   description: |
     This is a list of everybody that the actor has followed, added as a
@@ -123,6 +131,7 @@ properties:
 
 - singularName: followers
   functional: true
+  compactName: followers
   uri: "https://www.w3.org/ns/activitystreams#followers"
   description: |
     This is a list of everyone who has sent a {@link Follow} activity
@@ -138,6 +147,7 @@ properties:
 
 - singularName: liked
   functional: true
+  compactName: liked
   uri: "https://www.w3.org/ns/activitystreams#liked"
   description: |
     This is a list of every object from all of the actor's {@link Like}
@@ -151,6 +161,7 @@ properties:
 
 - singularName: featured
   functional: true
+  compactName: featured
   uri: "http://joinmastodon.org/ns#featured"
   description: |
     What is known in Mastodon as "pinned statuses", or statuses that are always
@@ -162,6 +173,7 @@ properties:
 
 - singularName: featuredTags
   functional: true
+  compactName: featuredTags
   uri: "http://joinmastodon.org/ns#featuredTags"
   description: |
     What is known in Mastodon as "featured hashtags", hashtags that are featured
@@ -174,6 +186,7 @@ properties:
 - pluralName: streams
   singularName: stream
   singularAccessor: false
+  compactName: streams
   uri: "https://www.w3.org/ns/activitystreams#streams"
   description: |
     A list of supplementary Collections which may be of interest.
@@ -182,6 +195,7 @@ properties:
 
 - singularName: endpoints
   functional: true
+  compactName: endpoints
   uri: "https://www.w3.org/ns/activitystreams#endpoints"
   description: |
     A JSON object which maps additional (typically server/domain-wide) endpoints
@@ -193,6 +207,7 @@ properties:
 
 - singularName: discoverable
   functional: true
+  compactName: discoverable
   uri: "http://joinmastodon.org/ns#discoverable"
   description: |
     Allows users to opt-in or opt-out of discoverability features like
@@ -204,6 +219,7 @@ properties:
 
 - singularName: suspended
   functional: true
+  compactName: suspended
   uri: "http://joinmastodon.org/ns#suspended"
   description: |
     Reports whether a user was locally suspended, for better handling of
@@ -213,6 +229,7 @@ properties:
 
 - singularName: memorial
   functional: true
+  compactName: memorial
   uri: "http://joinmastodon.org/ns#memorial"
   description: Whether the actor is in-memorial state.
   range:
@@ -220,6 +237,7 @@ properties:
 
 - singularName: indexable
   functional: true
+  compactName: indexable
   uri: "http://joinmastodon.org/ns#indexable"
   description: Whether the actor allows to be indexed.
   range:

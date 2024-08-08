@@ -90,7 +90,7 @@ export async function* generateClasses(
   runtimePath: string,
 ): AsyncIterable<string> {
   runtimePath = runtimePath.replace(/\/+$/, "");
-  yield "// deno-lint-ignore-file ban-unused-ignore\n";
+  yield "// deno-lint-ignore-file ban-unused-ignore prefer-const\n";
   yield "// @ts-ignore TS7016\n";
   yield 'import jsonld from "jsonld";\n';
   yield 'import { getLogger } from "@logtape/logtape";\n';

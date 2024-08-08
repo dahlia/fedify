@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Activity
+compactName: Activity
 uri: "https://www.w3.org/ns/activitystreams#Activity"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true
@@ -18,6 +19,7 @@ properties:
 - pluralName: actors
   singularName: actor
   singularAccessor: true
+  compactName: actor
   uri: "https://www.w3.org/ns/activitystreams#actor"
   subpropertyOf: "https://www.w3.org/ns/activitystreams#attributedTo"
   description: |
@@ -34,6 +36,7 @@ properties:
 - pluralName: objects
   singularName: object
   singularAccessor: true
+  compactName: object
   uri: "https://www.w3.org/ns/activitystreams#object"
   description: |
     When used within an {@link Activity}, describes the direct object of
@@ -45,6 +48,7 @@ properties:
 - pluralName: targets
   singularName: target
   singularAccessor: true
+  compactName: target
   uri: "https://www.w3.org/ns/activitystreams#target"
   description: |
     Describes the indirect object, or target, of the activity.  The precise
@@ -59,6 +63,7 @@ properties:
 - pluralName: results
   singularName: result
   singularAccessor: true
+  compactName: result
   uri: "https://www.w3.org/ns/activitystreams#result"
   description: |
     Describes the result of the activity.  For instance, if a particular action
@@ -70,6 +75,7 @@ properties:
 - pluralName: origins
   singularName: origin
   singularAccessor: true
+  compactName: origin
   uri: "https://www.w3.org/ns/activitystreams#origin"
   description: |
     Describes an indirect object of the activity from which the activity is
@@ -82,6 +88,7 @@ properties:
 - pluralName: instruments
   singularName: instrument
   singularAccessor: true
+  compactName: instrument
   uri: "https://www.w3.org/ns/activitystreams#instrument"
   description: |
     Identifies one or more objects used (or to be used) in the completion of

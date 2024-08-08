@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Relationship
+compactName: Relationship
 uri: "https://www.w3.org/ns/activitystreams#Relationship"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true
@@ -18,6 +19,7 @@ defaultContext:
 properties:
 - singularName: subject
   functional: true
+  compactName: subject
   uri: "https://www.w3.org/ns/activitystreams#subject"
   description: |
     On a {@link Relationship} object, the {@link Relationship.subject} property
@@ -30,6 +32,7 @@ properties:
 - singularName: object
   pluralName: objects
   singularAccessor: true
+  compactName: object
   uri: "https://www.w3.org/ns/activitystreams#object"
   description: |
     Describes the entity to which the {@link Relationship.subject} is related.
@@ -39,6 +42,7 @@ properties:
 - singularName: relationship
   pluralName: relationships
   singularAccessor: true
+  compactName: relationship
   uri: "https://www.w3.org/ns/activitystreams#relationship"
   description: |
     On a {@link Relationship} object, the {@link Relationship.relationship}

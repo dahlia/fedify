@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Join
+compactName: Join
 uri: "https://www.w3.org/ns/activitystreams#Join"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

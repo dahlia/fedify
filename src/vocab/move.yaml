@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Move
+compactName: Move
 uri: "https://www.w3.org/ns/activitystreams#Move"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

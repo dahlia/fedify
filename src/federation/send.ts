@@ -1,6 +1,6 @@
 import { getLogger } from "@logtape/logtape";
-import { signRequest } from "../sig/http.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
+import { signRequest } from "../sig/http.ts";
 import { validateCryptoKey } from "../sig/key.ts";
 import { signObject } from "../sig/proof.ts";
 import type { Recipient } from "../vocab/actor.ts";
@@ -168,7 +168,10 @@ export async function sendActivity(
       },
     );
   }
-  const jsonLd = await activity.toJsonLd({ contextLoader });
+  const jsonLd = await activity.toJsonLd({
+    format: "compact",
+    contextLoader,
+  });
   headers = new Headers(headers);
   headers.set("Content-Type", "application/activity+json");
   let request = new Request(inbox, {

@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Document
+compactName: Document
 uri: "https://www.w3.org/ns/activitystreams#Document"
 extends: "https://www.w3.org/ns/activitystreams#Object"
 entity: true
@@ -11,6 +12,7 @@ defaultContext:
 properties:
 - singularName: width
   functional: true
+  compactName: width
   uri: "https://www.w3.org/ns/activitystreams#width"
   description: |
     Specifies a hint as to the rendering width in
@@ -20,6 +22,7 @@ properties:
 
 - singularName: height
   functional: true
+  compactName: height
   uri: "https://www.w3.org/ns/activitystreams#height"
   description: |
     Specifies a hint as to the rendering height in

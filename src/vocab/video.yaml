@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Video
+compactName: Video
 uri: "https://www.w3.org/ns/activitystreams#Video"
 extends: "https://www.w3.org/ns/activitystreams#Document"
 entity: true

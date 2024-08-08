@@ -1,5 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Accept
+compactName: Accept
 uri: "https://www.w3.org/ns/activitystreams#Accept"
 extends: "https://www.w3.org/ns/activitystreams#Activity"
 entity: true

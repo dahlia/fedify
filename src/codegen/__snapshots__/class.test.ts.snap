@@ -1,7 +1,7 @@
 export const snapshot = {};
 
 snapshot[`generateClasses() 1`] = `
-"// deno-lint-ignore-file ban-unused-ignore
+"// deno-lint-ignore-file ban-unused-ignore prefer-const
 // @ts-ignore TS7016
 import jsonld from \\"jsonld\\";
 import { getLogger } from \\"@logtape/logtape\\";
@@ -3627,6 +3627,562 @@ get sensitive(): (boolean | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+        && (
+          this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz == null ||
+          this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz.length < 1
+        )
+        
+        && (
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav == null ||
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length < 1
+        )
+        
+        && (
+          this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1 == null ||
+          this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1.length < 1
+        )
+        
+        && (
+          this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8 == null ||
+          this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8.length < 1
+        )
+        
+    ) {
+    const result: Record<string, unknown> = {};
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_49BipA5dq9eoH8LX8xdsVumveTca) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Link ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"attachment\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"attachment\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"attributedTo\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"attributedTo\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3ocC3VVi88cEd5sPWL8djkZsvTN6) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"audience\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"audience\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"content\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"content\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3mhZzGXSpQ431mBSz2kvych22v4e) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"context\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"context\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"name\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"name\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_219RwDanjScTv5tYCjwGZVCM7KZ9) {
+        const item = (
+      v.toString()
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"endTime\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"endTime\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_86xFhmgBapoMvYqjbjRuDPayTrS) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"generator\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"generator\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_33CjRLy5ujtsUrwRSCrsggvGdKuR) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"icon\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"icon\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3dXrUdkARxwyJLtJcYi1AJ92H41U) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"image\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"image\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3fpbDrvZgf3Kq1a5V9aByFn8kx3s) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"inReplyTo\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"inReplyTo\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_31k5MUZJsnsPNg8dQQJieWaXTFnR) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"location\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"location\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_gCVTegXxWWCw6wWRxa1QF65zusg) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Link ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"preview\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"preview\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_5e258TDXtuhaFRPZiGoDfEpjdMr) {
+        const item = (
+      v.toString()
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"published\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"published\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_7UpwM3JWcXhADcscukEehBorf6k) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"replies\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"replies\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2w3Jmue4up8iVDUA51WZqomEF438) {
+        const item = (
+      v.toString()
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"startTime\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"startTime\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"summary\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"summary\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_5chuqj6s95p5gg2sk1HntGfarRf) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"tag\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"tag\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_385aB7ySixcf5Un6z3VsWmThgCzQ) {
+        const item = (
+      v.toString()
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"updated\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"updated\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2oPEH9MQ3aj8JVwyYuWkqoVwV865) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"url\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"url\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3hFbw7DTpHhq3cvVhkY8njhcsXbd) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"to\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"to\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_aLZupjwL8XB7tzdLgCMXdjZ6qej) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"bto\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"bto\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_42a1SvBs24QSLzKcfjCyNTjW5a1g) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"cc\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"cc\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3qvegKUB8YLgTXRpEf8E6JZSkz2H) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"bcc\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"bcc\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"mediaType\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"mediaType\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3bNvLMBN1bCJETiTihM3wvi1B2JX) {
+        const item = (
+      v.toString()
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"duration\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"duration\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_u8gdcDTtChQ4tbSQMXc4cYWyum7) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"sensitive\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"sensitive\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"proof\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"proof\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Object\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"sensitive\\":\\"as:sensitive\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   const values: Record<string, unknown[] | string> = {};
@@ -4019,7 +4575,7 @@ get sensitive(): (boolean | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Object\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -5008,12 +5564,11 @@ get sensitive(): (boolean | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -5850,6 +6405,27 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Emoji\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"Emoji\\":\\"toot:Emoji\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -5864,7 +6440,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"http://joinmastodon.org/ns#Emoji\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -5950,12 +6526,11 @@ proofs?: (DataIntegrityProof | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -6118,6 +6693,27 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"ChatMessage\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"Emoji\\":\\"toot:Emoji\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -6132,7 +6728,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"http://litepub.social/ns#ChatMessage\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -6218,12 +6814,11 @@ proofs?: (DataIntegrityProof | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -6439,6 +7034,65 @@ get value(): (string | LanguageString | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+        && (
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav == null ||
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length < 1
+        )
+        
+        && (
+          this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx == null ||
+          this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx.length < 1
+        )
+        
+    ) {
+    const result: Record<string, unknown> = {};
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"name\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"name\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"value\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"value\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"PropertyValue\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",{\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   const values: Record<string, unknown[] | string> = {};
@@ -6475,7 +7129,7 @@ get value(): (string | LanguageString | null) {
     }
     
     values[\\"@type\\"] = [\\"http://schema.org#PropertyValue\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -6592,12 +7246,11 @@ get value(): (string | LanguageString | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -7049,6 +7702,7 @@ get created(): (Temporal.Instant | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   const values: Record<string, unknown[] | string> = {};
@@ -7126,7 +7780,7 @@ get created(): (Temporal.Instant | null) {
     }
     
     values[\\"@type\\"] = [\\"https://w3id.org/security#DataIntegrityProof\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -7274,12 +7928,11 @@ get created(): (Temporal.Instant | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -7721,6 +8374,69 @@ get publicKey(): (CryptoKey | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    const result: Record<string, unknown> = {};
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_5UJq9NDh3ZHgswFwwdVxQvJxdx2) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"owner\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"owner\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2fE2QMDdg6KFGqa4NEC3TmjApSAD) {
+        const item = (
+      await exportSpki(v)
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"publicKeyPem\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"publicKeyPem\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"CryptographicKey\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = \\"https://w3id.org/security/v1\\";
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   const values: Record<string, unknown[] | string> = {};
@@ -7751,7 +8467,7 @@ get publicKey(): (CryptoKey | null) {
     }
     
     values[\\"@type\\"] = [\\"https://w3id.org/security#Key\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -7872,12 +8588,11 @@ get publicKey(): (CryptoKey | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -8267,6 +8982,69 @@ get publicKey(): (CryptoKey | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    const result: Record<string, unknown> = {};
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2yr3eUBTP6cNcyaxKzAXWjFsnGzN) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"controller\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"controller\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4XLHbsR2gLVWU3NpEqKt9wANzn4F) {
+        const item = (
+      await exportMultibaseKey(v)
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"publicKeyMultibase\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"publicKeyMultibase\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Multikey\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = \\"https://w3id.org/security/multikey/v1\\";
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   const values: Record<string, unknown[] | string> = {};
@@ -8300,7 +9078,7 @@ get publicKey(): (CryptoKey | null) {
     }
     
     values[\\"@type\\"] = [\\"https://w3id.org/security#Multikey\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -8421,12 +9199,11 @@ get publicKey(): (CryptoKey | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -9814,6 +10591,151 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"actor\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"actor\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"object\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"object\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"target\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"target\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"result\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"result\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_25zu2s3VxVujgEKqrDycjE284XQR) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"origin\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"origin\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"instrument\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"instrument\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Activity\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -9906,7 +10828,7 @@ instruments?: (Object | URL)[];}
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Activity\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -10278,12 +11200,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -10612,6 +11533,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Accept\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -10626,7 +11568,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Accept\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -10717,12 +11659,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -10896,6 +11837,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Add\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -10910,7 +11872,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Add\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -10996,12 +11958,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -11174,6 +12135,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Announce\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -11188,7 +12170,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Announce\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -11274,12 +12256,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -12955,6 +13936,317 @@ get indexable(): (boolean | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+        && (
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf == null ||
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf.length < 1
+        )
+        
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"preferredUsername\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"preferredUsername\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"publicKey\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"publicKey\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"assertionMethod\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"assertionMethod\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"inbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"inbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"outbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"outbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"following\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"following\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"followers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"followers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"liked\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"liked\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featured\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featured\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2MxnRRLq9iPzx5CFq2NPrXdUDCac) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featuredTags\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featuredTags\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"streams\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"streams\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
+        const item = (
+      await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"endpoints\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"endpoints\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"discoverable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"discoverable\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"suspended\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"suspended\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"memorial\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"memorial\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"indexable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"indexable\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Application\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -13193,7 +14485,7 @@ get indexable(): (boolean | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Application\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -13597,12 +14889,11 @@ get indexable(): (boolean | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -14135,6 +15426,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"IntransitiveActivity\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -14149,7 +15461,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -14250,12 +15562,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -14428,6 +15739,7 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -14442,7 +15754,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Arrive\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -14528,12 +15840,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -14691,6 +16002,27 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Article\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -14705,7 +16037,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Article\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -14791,12 +16123,11 @@ proofs?: (DataIntegrityProof | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -15022,6 +16353,55 @@ get height(): (number | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"width\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"width\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"height\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"height\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Document\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -15068,7 +16448,7 @@ get height(): (number | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Document\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -15202,12 +16582,11 @@ get height(): (number | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -15405,6 +16784,27 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Audio\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -15419,7 +16819,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Audio\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -15505,12 +16905,11 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -15682,6 +17081,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Ignore\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -15696,7 +17116,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Ignore\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -15787,12 +17207,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -15966,6 +17385,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Block\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -15980,7 +17420,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Block\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -16066,12 +17506,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -16689,6 +18128,117 @@ get totalItems(): (number | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_XDbmNDuWHmrhqH712zqtecdbv1V) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"totalItems\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"totalItems\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3UyUdxnyn6cDn53QKrh4MBiearma) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"current\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"current\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_J52RqweMe6hhv7RnLJMC8BExTE5) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"first\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"first\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_gyJJnyEFnuNVi1HFZKfAn3Hfn26) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"last\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"last\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"items\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"items\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Collection\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -16771,7 +18321,7 @@ get totalItems(): (number | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Collection\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -16981,12 +18531,11 @@ get totalItems(): (number | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -17549,6 +19098,81 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2kWgBhQKjEauxx8C6qF3ZQamK4Le) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"partOf\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"partOf\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3BT4kQLcXhHx7TAWaNDKh8nFn9eY) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"next\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"next\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3b8yG8tDNzQFFEnWhCc13G8eHooA) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"prev\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"prev\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"CollectionPage\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -17602,7 +19226,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#CollectionPage\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -17756,12 +19380,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -17991,6 +19614,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Create\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -18005,7 +19649,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Create\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -18091,12 +19735,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -18268,6 +19911,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Delete\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -18282,7 +19946,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Delete\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -18368,12 +20032,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -18543,6 +20206,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Dislike\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -18557,7 +20241,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Dislike\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -18643,12 +20327,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -19021,6 +20704,105 @@ get sharedInbox(): (URL | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    const result: Record<string, unknown> = {};
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2JCYDbSxEHCCLdBYed33cCETfGyR) {
+        const item = (
+      v.href
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"proxyUrl\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"proxyUrl\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_25S6UmgzDead8hxL5sQFezZTAusd) {
+        const item = (
+      v.href
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"oauthAuthorizationEndpoint\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"oauthAuthorizationEndpoint\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_iAMxqrSba7yBCRB1FZ5kEVdKEZ3) {
+        const item = (
+      v.href
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"oauthTokenEndpoint\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"oauthTokenEndpoint\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_8Bx9qN8oU7Bpt2xi6khaxWp1gMr) {
+        const item = (
+      v.href
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"provideClientKey\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"provideClientKey\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3dU7PMVQZJpsCpo2F4RQXxBXdPmS) {
+        const item = (
+      v.href
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"signClientKey\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"signClientKey\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3JprUSDLVqqX4dwHRi37qGZZCRCc) {
+        const item = (
+      v.href
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"sharedInbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"sharedInbox\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"as:Endpoints\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = \\"https://www.w3.org/ns/activitystreams\\";
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   const values: Record<string, unknown[] | string> = {};
@@ -19103,7 +20885,7 @@ get sharedInbox(): (URL | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Endpoints\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -19258,12 +21040,11 @@ get sharedInbox(): (URL | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -19556,6 +21337,27 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Event\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -19570,7 +21372,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Event\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -19656,12 +21458,11 @@ proofs?: (DataIntegrityProof | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -19834,6 +21635,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Flag\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -19848,7 +21670,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Flag\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -19934,12 +21756,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -20113,6 +21934,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Follow\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -20127,7 +21969,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Follow\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -20213,12 +22055,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -21894,6 +23735,317 @@ get indexable(): (boolean | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+        && (
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf == null ||
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf.length < 1
+        )
+        
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"preferredUsername\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"preferredUsername\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"publicKey\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"publicKey\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"assertionMethod\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"assertionMethod\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"inbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"inbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"outbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"outbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"following\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"following\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"followers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"followers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"liked\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"liked\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featured\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featured\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2MxnRRLq9iPzx5CFq2NPrXdUDCac) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featuredTags\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featuredTags\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"streams\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"streams\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
+        const item = (
+      await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"endpoints\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"endpoints\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"discoverable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"discoverable\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"suspended\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"suspended\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"memorial\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"memorial\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"indexable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"indexable\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Group\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -22132,7 +24284,7 @@ get indexable(): (boolean | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Group\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -22536,12 +24688,11 @@ get indexable(): (boolean | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -23530,6 +25681,149 @@ get width(): (number | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+        && (
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav == null ||
+          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav.length < 1
+        )
+        
+    ) {
+    const result: Record<string, unknown> = {};
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_pVjLsybKQdmkjuU7MHjiVmNnuj7) {
+        const item = (
+      v.href
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"href\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"href\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2a1c5GkfkQsnyyLybF8UXBQfFuHZ) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"rel\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"rel\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3BLrzmscsjHCw8TF5BHRW9WkPnX8) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"mediaType\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"mediaType\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"name\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"name\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_f57HKWCp1YRBbTJE8PF12RbDJGf) {
+        const item = (
+      v.compact()
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"hreflang\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"hreflang\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2cGKFeFJMmiNpGZFEF75mCwFQsKb) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"height\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"height\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2e9AP7WdHBJYAgXG6GEyq7nSkNMe) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"width\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"width\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_gCVTegXxWWCw6wWRxa1QF65zusg) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Link ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"preview\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"preview\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Link\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = \\"https://www.w3.org/ns/activitystreams\\";
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   const values: Record<string, unknown[] | string> = {};
@@ -23647,7 +25941,7 @@ get width(): (number | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Link\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -23867,12 +26161,11 @@ get width(): (number | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -24194,6 +26487,27 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Hashtag\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",{\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -24208,7 +26522,7 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Hashtag\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -24283,12 +26597,11 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -24446,6 +26759,27 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Image\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = \\"https://www.w3.org/ns/activitystreams\\";
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -24460,7 +26794,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Image\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -24546,12 +26880,11 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -24724,6 +27057,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Offer\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -24738,7 +27092,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Offer\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -24829,12 +27183,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -25006,6 +27359,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Invite\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -25020,7 +27394,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Invite\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -25106,12 +27480,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -25283,6 +27656,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Join\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -25297,7 +27691,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Join\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -25383,12 +27777,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -25560,6 +27953,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Leave\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -25574,7 +27988,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Leave\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -25660,12 +28074,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -25837,6 +28250,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Like\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -25851,7 +28285,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Like\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -25937,12 +28371,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -26112,6 +28545,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Listen\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -26126,7 +28580,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Listen\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -26212,12 +28666,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -26347,6 +28800,27 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Mention\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = \\"https://www.w3.org/ns/activitystreams\\";
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -26361,7 +28835,7 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Mention\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -26436,12 +28910,11 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -26614,6 +29087,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Move\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -26628,7 +29122,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Move\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -26714,12 +29208,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -26879,6 +29372,27 @@ proofs?: (DataIntegrityProof | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Note\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -26893,7 +29407,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Note\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -26979,12 +29493,11 @@ proofs?: (DataIntegrityProof | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -27261,6 +29774,47 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      delete result[\\"items\\"];
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 0) {
+          result[\\"orderedItems\\"] = compactItems;
+        }
+        
+      result[\\"type\\"] = \\"OrderedCollection\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -27288,7 +29842,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -27406,12 +29960,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -27745,6 +30298,61 @@ get startIndex(): (number | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      delete result[\\"items\\"];
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2JPCKWTcfBmTCcW8Tv3TpRaLVaqg) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Object ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 0) {
+          result[\\"orderedItems\\"] = compactItems;
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2W4yinFwqmpneu2h4m1mZ3pcLADd) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"startIndex\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"startIndex\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"OrderedCollectionPage\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -27788,7 +30396,7 @@ get startIndex(): (number | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -27920,12 +30528,11 @@ get startIndex(): (number | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -29643,6 +32250,317 @@ get indexable(): (boolean | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+        && (
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf == null ||
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf.length < 1
+        )
+        
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"preferredUsername\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"preferredUsername\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"publicKey\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"publicKey\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"assertionMethod\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"assertionMethod\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"inbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"inbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"outbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"outbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"following\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"following\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"followers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"followers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"liked\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"liked\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featured\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featured\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2MxnRRLq9iPzx5CFq2NPrXdUDCac) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featuredTags\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featuredTags\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"streams\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"streams\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
+        const item = (
+      await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"endpoints\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"endpoints\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"discoverable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"discoverable\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"suspended\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"suspended\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"memorial\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"memorial\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"indexable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"indexable\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Organization\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -29881,7 +32799,7 @@ get indexable(): (boolean | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Organization\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -30285,12 +33203,11 @@ get indexable(): (boolean | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -30808,6 +33725,27 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Page\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -30822,7 +33760,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Page\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -30908,12 +33846,11 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -32589,6 +35526,317 @@ get indexable(): (boolean | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+        && (
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf == null ||
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf.length < 1
+        )
+        
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"preferredUsername\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"preferredUsername\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"publicKey\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"publicKey\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"assertionMethod\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"assertionMethod\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"inbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"inbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"outbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"outbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"following\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"following\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"followers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"followers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"liked\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"liked\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featured\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featured\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2MxnRRLq9iPzx5CFq2NPrXdUDCac) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featuredTags\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featuredTags\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"streams\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"streams\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
+        const item = (
+      await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"endpoints\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"endpoints\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"discoverable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"discoverable\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"suspended\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"suspended\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"memorial\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"memorial\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"indexable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"indexable\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Person\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -32827,7 +36075,7 @@ get indexable(): (boolean | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Person\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -33231,12 +36479,11 @@ get indexable(): (boolean | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -33961,6 +37208,111 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_3UCsHnBHvDAXJnBuzw3zw1VVs3Ne) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"accuracy\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"accuracy\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3Q6KDcFQUJRRaBux1BL2yp5QWiBi) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"altitude\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"altitude\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3g85RoKRnaNjP7DFyLSvsWDg7HGM) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"latitude\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"latitude\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_B2GEYdS9yBAF3ho1pm1rcRg7cSf) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"longitude\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"longitude\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3ga86BKHUtRkGx5PHBjRiUXXzwnw) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"radius\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"radius\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_oKrwxU4V8wiKhMW1QEYQibcJh8c) {
+        const item = (
+      v == \\"cm\\" || v == \\"feet\\" || v == \\"inches\\" || v == \\"km\\" || v == \\"m\\" || v == \\"miles\\" ? v : v.href
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"units\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"units\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Place\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -34068,7 +37420,7 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Place\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -34246,12 +37598,11 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -34635,6 +37986,45 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_3CLQ1PLSXrhSQbTGGHuxNyaEFKM1) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"describes\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"describes\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Profile\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -34662,7 +38052,7 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Profile\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -34769,12 +38159,11 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -35258,6 +38647,91 @@ get voters(): (number | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2N5scKaVEcdYHFmfKYYacAwUhUgQ) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"oneOf\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"oneOf\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2mV6isMTPRKbWdLCjcpiEysq5dAY) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"anyOf\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"anyOf\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3KronwL8DiiKBRcJFKQPiEHm8xb6) {
+        const item = (
+      v instanceof Temporal.Instant ? v.toString() : v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"closed\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"closed\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3H4RdST7dxfmghccvE3rKD3KgcxG) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"votersCount\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"votersCount\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Question\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -35330,7 +38804,7 @@ get voters(): (number | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Question\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -35495,12 +38969,11 @@ get voters(): (number | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -35755,6 +39228,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Read\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -35769,7 +39263,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Read\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -35855,12 +39349,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -36032,6 +39525,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Reject\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -36046,7 +39560,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Reject\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -36137,12 +39651,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -36782,6 +40295,81 @@ relationships?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_2Zqdmi46ZnDQsECS6mzwhrv3rUKq) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"subject\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"subject\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"object\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"object\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4Lzz89F9qipAQSGkWyX9DGWiUojG) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"relationship\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"relationship\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Relationship\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -36835,7 +40423,7 @@ relationships?: (Object | URL)[];}
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Relationship\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -36984,12 +40572,11 @@ relationships?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -37233,6 +40820,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Remove\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -37247,7 +40855,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Remove\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -37333,12 +40941,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -39014,6 +42621,317 @@ get indexable(): (boolean | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+        && (
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf == null ||
+          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf.length < 1
+        )
+        
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf) {
+        const item = (
+      typeof v === \\"string\\" ? v : {
+        \\"@value\\": v.toString(),
+        \\"@language\\": v.language.compact(),
+      }
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"preferredUsername\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"preferredUsername\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_axq166E2eZADq34V4MYUc8KMZdC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"publicKey\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"publicKey\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4EHQFWZSz1k1d4LmPrQiMba2GbP3) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"assertionMethod\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"assertionMethod\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_36QNc9MxfkKf6h8sEUQSHnV9NZA) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"manuallyApprovesFollowers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"inbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"inbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"outbox\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"outbox\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3yAv8jymNfNuJUDuBzJ1NQhdbAee) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"following\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"following\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_BBCTgfphhsFzpVfKTykGSpBNwoA) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"followers\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"followers\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3bgkPwJanyTCoVFM9ovRcus8tKkU) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"liked\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"liked\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_4N1vBJzXDf8NbBumeECQMFvKetja) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featured\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featured\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2MxnRRLq9iPzx5CFq2NPrXdUDCac) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"featuredTags\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"featuredTags\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_3sG2Hdwn9qzKGu9mpYkqakAMUkH9) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"streams\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"streams\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_sEoQwUbfk4hEfugzNQ2ZiDcLMkG) {
+        const item = (
+      await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"endpoints\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"endpoints\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_gAJzg1QDc4rcefFsUzGSYmyXvNH) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"discoverable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"discoverable\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2kGKkJtoFWg8c18PaVSqj9NKP4t7) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"suspended\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"suspended\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_79S8K4f5J9MWUgCxziRyUe6PTHZ) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"memorial\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"memorial\\"] = compactItems[0];
+        }
+        
+      compactItems = [];
+      for (const v of this.#_2diCorzqPGQQqftp6e4SrCEwEnyk) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"indexable\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"indexable\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Service\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -39252,7 +43170,7 @@ get indexable(): (boolean | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Service\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -39656,12 +43574,11 @@ get indexable(): (boolean | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -40193,6 +44110,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"TentativeAccept\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -40207,7 +44145,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -40293,12 +44231,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -40470,6 +44407,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"TentativeReject\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -40484,7 +44442,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#TentativeReject\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -40570,12 +44528,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -40770,6 +44727,41 @@ get deleted(): (Temporal.Instant | null) {
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      compactItems = [];
+      for (const v of this.#_8g8g4LiVMhFTXskuDEqx4ascxUr) {
+        const item = (
+      v.toString()
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"deleted\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"deleted\\"] = compactItems[0];
+        }
+        
+      result[\\"type\\"] = \\"Tombstone\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -40800,7 +44792,7 @@ get deleted(): (Temporal.Instant | null) {
     }
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Tombstone\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -40900,12 +44892,11 @@ get deleted(): (Temporal.Instant | null) {
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -41099,6 +45090,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Travel\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -41113,7 +45125,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Travel\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -41199,12 +45211,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -41381,6 +45392,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Undo\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -41395,7 +45427,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Undo\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -41481,12 +45513,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -41661,6 +45692,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Update\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\"}];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -41675,7 +45727,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Update\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -41761,12 +45813,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -41924,6 +45975,27 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"Video\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -41938,7 +46010,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Video\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -42024,12 +46096,11 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
@@ -42200,6 +46271,27 @@ instruments?: (Object | URL)[];}
       ...options,
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
+  
+    if (
+      options.format == null
+    
+    ) {
+    
+      const result = await super.toJsonLd({
+        ...options,
+        format: undefined,
+        context: undefined,
+      }) as Record<string, unknown>;
+      
+      // deno-lint-ignore no-unused-vars
+      let compactItems: unknown[];
+    
+      result[\\"type\\"] = \\"View\\";
+      if (this.id != null) result[\\"id\\"] = this.id.href;
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      return result;
+    }
+    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -42214,7 +46306,7 @@ instruments?: (Object | URL)[];}
     >;
     
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#View\\"];
-    if (this.id) values[\\"@id\\"] = this.id.href;
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
       return await jsonld.expand(
         values,
@@ -42300,12 +46392,11 @@ instruments?: (Object | URL)[];}
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
         instance.#cachedJsonLd = structuredClone(json);
-      } catch (e) {
+      } catch {
         getLogger([\\"fedify\\", \\"vocab\\"]).warn(
           \\"Failed to cache JSON-LD: {json}\\",
           { json },
         );
-        throw e;
       }
     }
     return instance;
