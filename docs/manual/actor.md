@@ -174,24 +174,28 @@ an array of `Multikey` instances.  This property is usually used for verifying
 Public keys of an `Actor`
 -------------------------
 
-In order to sign and verify the activities, you need to set the `publicKey`
-property of the actor.  The `publicKey` property contains a `CryptographicKey`
-instance, and usually you don't have to create it manually.
-Instead, you can register a key pairs dispatcher through
+In order to sign and verify the activities, you need to set the `publicKey` and
+`assertionMethods` property of the actor.  The `publicKey` property contains
+a `CryptographicKey` instance, and the `assertionMethods` property contains
+an array of `Multikey` instances.  Usually you don't have to create them
+manually.  Instead, you can register a key pairs dispatcher through
 the `~ActorCallbackSetters.setKeyPairsDispatcher()` method so that Fedify can
 dispatch appropriate key pairs by the actor's bare handle:
 
-~~~~ typescript{7-9,12-17}
+~~~~ typescript{4-6,10-14,17-26}
 federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   // Work with the database to find the actor by the handle.
   if (user == null) return null;  // Return null if the actor is not found.
+  // Context.getActorKeyPairs() method dispatches the key pairs of an actor
+  // by the handle, and returns an array of key pairs in various formats:
+  const keys = ctx.getActorKeyPairs(handle);
   return new Person({
     id: ctx.getActorUri(handle),
     preferredUsername: handle,
-    // Context.getActorKeyPairs() method dispatches the key pairs of an actor
-    // by the handle, and returns an array of key pairs in various formats.
-    // In this example, we only use first CryptographicKey.
-    publicKey: (await ctx.getActorKeyPairs(handle))[0].cryptographicKey,
+    // For the publicKey property, we only use first CryptographicKey:
+    publicKey: keys[0].cryptographicKey,
+    // For the assertionMethods property, we use all Multikey instances:
+    assertionMethods: keys.map((key) => key.multikey),
     // Many more properties; see the previous section for details.
   });
 })
@@ -199,7 +203,11 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // Work with the database to find the key pair by the handle.
     if (user == null) return [];  // Return null if the key pair is not found.
     // Return the loaded key pair.  See the below example for details.
-    return [{ publicKey, privateKey }];
+    return [
+      { publicKey1, privateKey1 },
+      { publicKey2, privateKey2 },
+      // ...
+    ];
   });
 ~~~~
 
@@ -209,23 +217,27 @@ function that takes context data and a bare handle, and returns an array of
 [`CryptoKeyPair`] object which is defined in the Web Cryptography API.
 
 Usually, you need to generate key pairs for each actor when the actor is
-created (i.e., when a new user is signed up), and securely store an actor's key
+created (i.e., when a new user is signed up), and securely store actor's key
 pairs in the database.  The key pairs dispatcher should load the key pairs from
 the database and return them.
 
 How to generate key pairs and store them in the database is out of the scope of
-this document, but here's a simple example of how to generate a key pair and
-store it in a [Deno KV] database in form of JWK:
+this document, but here's a simple example of how to generate key pairs and
+store them in a [Deno KV] database in form of JWK:
 
 ~~~~ typescript
 import { generateCryptoKeyPair, exportJwk } from "@fedify/fedify";
 
 const kv = await Deno.openKv();
-const { privateKey, publicKey } =
-  await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
-await kv.set(["keypair", handle], {
-  privateKey: await exportJwk(privateKey),
-  publicKey: await exportJwk(publicKey),
+const rsaPair = await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
+const ed25519Pair = await generateCryptoKeyPair("Ed25519");
+await kv.set(["keypair", "rsa", handle], {
+  privateKey: await exportJwk(rsaPair.privateKey),
+  publicKey: await exportJwk(rsaPair.publicKey),
+});
+await kv.set(["keypair", "ed25519", handle], {
+  privateKey: await exportJwk(ed25519Pair.privateKey),
+  publicKey: await exportJwk(ed25519Pair.publicKey),
 });
 ~~~~
 
@@ -245,12 +257,18 @@ await kv.set(["keypair", handle], {
 >
 > If your federated app needs to support both HTTP Signatures and Object
 > Integrity Proofs, you need to generate both RSA-PKCS#1-v1.5 and Ed25519 key
-> pairs for each actor, and store them in the database.
+> pairs for each actor, and store them in the database—and we recommend
+> you to support both key types.
 
-Here's an example of how to load a key pair from the database too:
+Here's an example of how to load key pairs from the database too:
 
-~~~~ typescript{8-16}
+~~~~ typescript{12-34}
 import { importJwk } from "@fedify/fedify";
+
+interface KeyPairEntry {
+  privateKey: JsonWebKey;
+  publicKey: JsonWebKey;
+}
 
 federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
@@ -258,16 +276,26 @@ federation
   })
   .setKeyPairsDispatcher(async (ctx, handle) => {
     const kv = await Deno.openKv();
-    const entry = await kv.get<{ privateKey: JsonWebKey; publicKey: JsonWebKey }>(
-      ["keypair", handle],
+    const result: CryptoKeyPair[] = [];
+    const rsaPair = await kv.get<KeyPairEntry>(
+      ["keypair", "rsa", handle],
     );
-    if (entry == null || entry.value == null) return [];
-    return [
-      {
-        privateKey: await importJwk(entry.value.privateKey, "private"),
-        publicKey: await importJwk(entry.value.publicKey, "public"),
-      }
-    ];
+    if (rsaPair?.value != null) {
+      result.push({
+        privateKey: await importJwk(rsaPair.value.privateKey, "private"),
+        publicKey: await importJwk(rsaPair.value.publicKey, "public"),
+      });
+    }
+    const ed25519Pair = await kv.get<KeyPairEntry>(
+      ["keypair", "ed25519", handle],
+    );
+    if (ed25519Pair?.value != null) {
+      result.push({
+        privateKey: await importJwk(ed25519.value.privateKey, "private"),
+        publicKey: await importJwk(ed25519.value.publicKey, "public"),
+      });
+    }
+    return result;
   });
 ~~~~
 
