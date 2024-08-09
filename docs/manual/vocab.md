@@ -307,6 +307,22 @@ representation of the object:
 const jsonLd = await create.toJsonLd();
 ~~~~
 
+By default, the `toJsonLd()` method returns the JSON-LD document which is
+neither compacted nor expanded.  Instead, it processes the JSON-LD document
+without the proper JSON-LD processor for efficiency.
+
+The `toJsonLd()` method takes some options to customize the JSON-LD document.
+For example, you can compact the JSON-LD document with a custom context.
+In this case, the `toJsonLd()` method returns the compacted JSON-LD document
+which is processed by the proper JSON-LD processor:
+
+~~~~ typescript
+const jsonLd = await create.toJsonLd({
+  format: "compact",
+  context: "https://example.com/context",
+});
+~~~~
+
 > [!TIP]
 > Why are the `fromJsonLd()` and `toJsonLd()` methods asynchronous?  Because
 > both methods may fetch remote documents under the hood in order to
