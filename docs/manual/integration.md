@@ -51,7 +51,6 @@ sequenceDiagram
   Fedify -->> Client: 200 OK
 
   Client ->> Fedify: GET /users/alice<br/>(Accept: text/html)
-  Fedify -->> Client: 200 OK
   Fedify ->> AD: GET /users/alice<br/>(Accept: text/html)
   AD -->> Fedify: 406 Not Acceptable
   Fedify ->> WF: GET /users/alice
