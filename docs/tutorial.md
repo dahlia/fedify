@@ -551,32 +551,41 @@ Exposing the server to the public internet
 
 To expose the server to the public internet, generally, you need a proper domain
 name configured with a DNS record pointing to your server's IP address.
-However, for local development, you can use a tool like [ngrok] to temporarily
-expose your server to the public internet.
+However, for local development, you can use the `fedify tunnel` command to
+temporarily expose your server to the public internet.
 
-In order to install ngrok on your system, please follow the [instructions on
-the ngrok website][ngrok quickstart] (you only need to follow until the step 2).
+To use `fedify tunnel`, first make sure you have the `fedify` command installed.
+If you haven't installed it yet, please follow the installation instructions in
+the [*`fedify`: CLI toolchain* section](./cli.md#installation).
 
-After installing ngrok, you can expose your server to the public internet by
-running the following command (note that you need to run this command in a new
-terminal session so that the server is still running):
+After installing the `fedify` command, you can expose your server to the public
+internet by running the following command (note that you need to run this
+command in a new terminal session so that the server is still running):
 
 ~~~~ sh
-ngrok http 8000
+fedify tunnel 8000
 ~~~~
 
 The above command will expose your server to the public internet.  You will see
-a public URL that you can use to access your server from the internet.
+a public URL that you can use to access your server from the internet, e.g.:
+
+~~~~ console
+✔ Your local server at 8000 is now publicly accessible:
+
+https://e875a03fc2a35b.lhr.life/
+
+Press ^C to close the tunnel.
+~~~~
 
 > [!NOTE]
-> Do not rely on ngrok for production use.  It is only for local development.
-> Unless you have paid for a subscription, the domain name ngrok provides is
-> temporary and will change every time you restart ngrok.
+> Do not rely on `fedify tunnel` for production use.  It is only for local
+> development.  The domain name it provides is temporary and will change every
+> time you restart the command.
 
-However, since ngrok is a reverse proxy between the public internet and your
-server, the server still is not aware the fact that it is exposed to the public
-internet through HTTPS.  In order to make the server aware of it, you need to
-place a [x-forwarded-fetch] middleware in front of the `Federation`.
+However, since `fedify tunnel` is a reverse proxy between the public internet
+and your server, the server still is not aware the fact that it is exposed to
+the public internet through HTTPS.  In order to make the server aware of it,
+you need to place a [x-forwarded-fetch] middleware in front of the `Federation`.
 
 To do this, you need to install the package:
 
@@ -650,11 +659,11 @@ node --import tsx server.ts
 :::
 
 Let's query the actor *me* again, but this time with the public URL (change
-the domain name to the one ngrok provides you):[^3]
+the domain name to the one `fedify tunnel` provides you):[^3]
 
 ~~~~ sh
-curl https://79e8-125-129-0-52.ngrok-free.app/.well-known/webfinger?resource=acct:me@7d2d-125-129-0-52.ngrok-free.app
-curl -H"Accept: application/activity+json" https://79e8-125-129-0-52.ngrok-free.app/users/me
+curl https://e875a03fc2a35b.lhr.life/.well-known/webfinger?resource=acct:me@e875a03fc2a35b.lhr.life
+curl -H"Accept: application/activity+json" https://e875a03fc2a35b.lhr.life/users/me
 ~~~~
 
 Does it work?  If so, congratulations!  Your server is now exposed to the
@@ -662,12 +671,10 @@ public internet.  However, you still can't follow the actor *me* from other
 ActivityPub servers because our server doesn't accept follow requests yet.
 
 > [!TIP]
-> There are alternatives to ngrok.  See also the [*Exposing a local server to
-> the public* section](./manual/test.md#exposing-a-local-server-to-the-public)
+> There are alternatives to `fedify tunnel`.  See also the [*Exposing a local
+> server to the public* section](./manual/test.md#exposing-a-local-server-to-the-public)
 > in the manual for more details.
 
-[ngrok]: https://ngrok.com/
-[ngrok quickstart]: https://ngrok.com/docs/getting-started/
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 
@@ -946,19 +953,19 @@ Now you should see the actor *me* with the public key in the response:
       "indexable": "toot:indexable"
     }
   ],
-  "id": "https://79e8-125-129-0-52.ngrok-free.app/users/me",
+  "id": "https://e875a03fc2a35b.lhr.life/users/me",
   "type": "Person",
-  "inbox": "https://79e8-125-129-0-52.ngrok-free.app/users/me/inbox",
+  "inbox": "https://e875a03fc2a35b.lhr.life/users/me/inbox",
   "publicKey": {
-    "id": "https://79e8-125-129-0-52.ngrok-free.app/users/me#main-key",
+    "id": "https://e875a03fc2a35b.lhr.life/users/me#main-key",
     "type": "CryptographicKey",
-    "owner": "https://79e8-125-129-0-52.ngrok-free.app/users/me",
+    "owner": "https://e875a03fc2a35b.lhr.life/users/me",
     "publicKeyPem": "-----BEGIN PUBLIC KEY-----\nMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEA0kptPO/arJVTv1qBzISP\nhJC8MZSut20FHZuJFON/kTscQT19eP2zGC9qDnQVl1vOXrvFybPWMjQP4p2x1/VM\np0wnY2EzKsdU4+lKfHsjd0VU2+TJvPtZ/AqJAG3PLMXeN7E5RpeUTwdTr9fkyrHE\n0M8n8yWG1AMtXp5pzhR/Le8uHmuSjbgJxIZPZOj8T6ZdMXKxudF0H/i0IB60lN9D\nt5tOzajmE5jvZD0mapdIDhghidGBu77fgopKmBtNn3IDjLJLXIh3dp7NICl1czHB\ntVtU1c2kmNPXq1WSndQgokN4CXNoy/BqTKo4VhIOWWb/oGaTZOWflFM5EXWTJUxK\n8JFyCD/1KVJXYEd662y+r400oDJqHKHhG78yud83PD4bpbJm/t7BD7RgO95g/rpN\nwi8mjLQVp7Y9ttXGf3lEgbBPZfPr0pm3X4ppoDAwtzVO7RmfboSb9ECa9uwQc1VG\nse3yNi7bDrHIu+HjBzk+glELcW2Hj4t4s/PPX9g0fH3UHgME1Pysz3Y8OZZeJlTu\n1yYcCg9X/dMV1qxxon6b8XhIEttW+RZjJunmtzOt1sKf2NM2jPXv+ZmFRao1eOzo\nvcVI/eeXV+1LDhHtTQJGnLObqnHnVdg3Qiaao176KOxrKh4/l6kJmaq/pw8+ZSkE\nzxUovxHGCJ0UqqgcaPsBsJMCAwEAAQ==\n-----END PUBLIC KEY-----"
   },
   "name": "Me",
   "preferredUsername": "me",
   "summary": "This is me!",
-  "url": "https://79e8-125-129-0-52.ngrok-free.app/"
+  "url": "https://e875a03fc2a35b.lhr.life/"
 }
 ~~~~
 
