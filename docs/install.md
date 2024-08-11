@@ -61,6 +61,8 @@ For more information about the `fedify init` command, please refer to the
 [*`fedify init`* section](./cli.md#fedify-init-initializing-a-fedify-project)
 in the *CLI toolchain* docs.
 
+[![The “fedify init” command demo](https://asciinema.org/a/671658.svg)](https://asciinema.org/a/671658)
+
 
 Manual installation
 -------------------
