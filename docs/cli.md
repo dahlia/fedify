@@ -46,6 +46,7 @@ command:
 
 ~~~~ sh [Linux/macOS]
 deno install \
+  -g \
   -A \
   --unstable-fs --unstable-kv --unstable-temporal \
   -n fedify \
@@ -54,6 +55,7 @@ deno install \
 
 ~~~~ powershell [Windows]
 deno install `
+  -g `
   -A `
   --unstable-fs --unstable-kv --unstable-temporal `
   -n fedify `

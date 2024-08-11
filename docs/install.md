@@ -34,7 +34,7 @@ bun install -g @fedify/cli
 ~~~~
 
 ~~~~ sh [Deno]
-deno install -A --unstable-fs --unstable-kv --unstable-temporal -n fedify jsr:@fedify/cli
+deno install -g -A --unstable-fs --unstable-kv --unstable-temporal -n fedify jsr:@fedify/cli
 ~~~~
 
 :::
