@@ -4645,268 +4645,215 @@ get sensitive(): (boolean | null) {
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"http://joinmastodon.org/ns#Emoji\\")) {
-      delete values[\\"@type\\"];
-      return await Emoji.fromJsonLd(values, options);
+      return await Emoji.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"http://litepub.social/ns#ChatMessage\\")) {
-      delete values[\\"@type\\"];
-      return await ChatMessage.fromJsonLd(values, options);
+      return await ChatMessage.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Activity\\")) {
-      delete values[\\"@type\\"];
-      return await Activity.fromJsonLd(values, options);
+      return await Activity.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
-      delete values[\\"@type\\"];
-      return await Accept.fromJsonLd(values, options);
+      return await Accept.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
-      delete values[\\"@type\\"];
-      return await TentativeAccept.fromJsonLd(values, options);
+      return await TentativeAccept.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
-      delete values[\\"@type\\"];
-      return await Add.fromJsonLd(values, options);
+      return await Add.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Announce\\")) {
-      delete values[\\"@type\\"];
-      return await Announce.fromJsonLd(values, options);
+      return await Announce.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Create\\")) {
-      delete values[\\"@type\\"];
-      return await Create.fromJsonLd(values, options);
+      return await Create.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Delete\\")) {
-      delete values[\\"@type\\"];
-      return await Delete.fromJsonLd(values, options);
+      return await Delete.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Dislike\\")) {
-      delete values[\\"@type\\"];
-      return await Dislike.fromJsonLd(values, options);
+      return await Dislike.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Flag\\")) {
-      delete values[\\"@type\\"];
-      return await Flag.fromJsonLd(values, options);
+      return await Flag.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Follow\\")) {
-      delete values[\\"@type\\"];
-      return await Follow.fromJsonLd(values, options);
+      return await Follow.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
-      delete values[\\"@type\\"];
-      return await Ignore.fromJsonLd(values, options);
+      return await Ignore.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
-      delete values[\\"@type\\"];
-      return await Block.fromJsonLd(values, options);
+      return await Block.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
-      delete values[\\"@type\\"];
-      return await IntransitiveActivity.fromJsonLd(values, options);
+      return await IntransitiveActivity.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Arrive\\")) {
-      delete values[\\"@type\\"];
-      return await Arrive.fromJsonLd(values, options);
+      return await Arrive.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Question\\")) {
-      delete values[\\"@type\\"];
-      return await Question.fromJsonLd(values, options);
+      return await Question.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Travel\\")) {
-      delete values[\\"@type\\"];
-      return await Travel.fromJsonLd(values, options);
+      return await Travel.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Join\\")) {
-      delete values[\\"@type\\"];
-      return await Join.fromJsonLd(values, options);
+      return await Join.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Leave\\")) {
-      delete values[\\"@type\\"];
-      return await Leave.fromJsonLd(values, options);
+      return await Leave.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Like\\")) {
-      delete values[\\"@type\\"];
-      return await Like.fromJsonLd(values, options);
+      return await Like.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Listen\\")) {
-      delete values[\\"@type\\"];
-      return await Listen.fromJsonLd(values, options);
+      return await Listen.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Move\\")) {
-      delete values[\\"@type\\"];
-      return await Move.fromJsonLd(values, options);
+      return await Move.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Offer\\")) {
-      delete values[\\"@type\\"];
-      return await Offer.fromJsonLd(values, options);
+      return await Offer.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Invite\\")) {
-      delete values[\\"@type\\"];
-      return await Invite.fromJsonLd(values, options);
+      return await Invite.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Read\\")) {
-      delete values[\\"@type\\"];
-      return await Read.fromJsonLd(values, options);
+      return await Read.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
-      delete values[\\"@type\\"];
-      return await Reject.fromJsonLd(values, options);
+      return await Reject.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
-      delete values[\\"@type\\"];
-      return await TentativeReject.fromJsonLd(values, options);
+      return await TentativeReject.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
-      delete values[\\"@type\\"];
-      return await Remove.fromJsonLd(values, options);
+      return await Remove.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Undo\\")) {
-      delete values[\\"@type\\"];
-      return await Undo.fromJsonLd(values, options);
+      return await Undo.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
-      delete values[\\"@type\\"];
-      return await Update.fromJsonLd(values, options);
+      return await Update.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#View\\")) {
-      delete values[\\"@type\\"];
-      return await View.fromJsonLd(values, options);
+      return await View.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\")) {
-      delete values[\\"@type\\"];
-      return await Application.fromJsonLd(values, options);
+      return await Application.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Article\\")) {
-      delete values[\\"@type\\"];
-      return await Article.fromJsonLd(values, options);
+      return await Article.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Collection\\")) {
-      delete values[\\"@type\\"];
-      return await Collection.fromJsonLd(values, options);
+      return await Collection.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
-      delete values[\\"@type\\"];
-      return await CollectionPage.fromJsonLd(values, options);
+      return await CollectionPage.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
-      delete values[\\"@type\\"];
-      return await OrderedCollectionPage.fromJsonLd(values, options);
+      return await OrderedCollectionPage.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\")) {
-      delete values[\\"@type\\"];
-      return await OrderedCollection.fromJsonLd(values, options);
+      return await OrderedCollection.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Document\\")) {
-      delete values[\\"@type\\"];
-      return await Document.fromJsonLd(values, options);
+      return await Document.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
-      delete values[\\"@type\\"];
-      return await Audio.fromJsonLd(values, options);
+      return await Audio.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Image\\")) {
-      delete values[\\"@type\\"];
-      return await Image.fromJsonLd(values, options);
+      return await Image.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Page\\")) {
-      delete values[\\"@type\\"];
-      return await Page.fromJsonLd(values, options);
+      return await Page.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Video\\")) {
-      delete values[\\"@type\\"];
-      return await Video.fromJsonLd(values, options);
+      return await Video.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Event\\")) {
-      delete values[\\"@type\\"];
-      return await Event.fromJsonLd(values, options);
+      return await Event.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\")) {
-      delete values[\\"@type\\"];
-      return await Group.fromJsonLd(values, options);
+      return await Group.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Note\\")) {
-      delete values[\\"@type\\"];
-      return await Note.fromJsonLd(values, options);
+      return await Note.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\")) {
-      delete values[\\"@type\\"];
-      return await Organization.fromJsonLd(values, options);
+      return await Organization.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\")) {
-      delete values[\\"@type\\"];
-      return await Person.fromJsonLd(values, options);
+      return await Person.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Place\\")) {
-      delete values[\\"@type\\"];
-      return await Place.fromJsonLd(values, options);
+      return await Place.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Profile\\")) {
-      delete values[\\"@type\\"];
-      return await Profile.fromJsonLd(values, options);
+      return await Profile.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Relationship\\")) {
-      delete values[\\"@type\\"];
-      return await Relationship.fromJsonLd(values, options);
+      return await Relationship.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\")) {
-      delete values[\\"@type\\"];
-      return await Service.fromJsonLd(values, options);
+      return await Service.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Tombstone\\")) {
-      delete values[\\"@type\\"];
-      return await Tombstone.fromJsonLd(values, options);
+      return await Tombstone.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Object\\")) {
@@ -6514,6 +6461,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -6802,6 +6750,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -10898,148 +10847,119 @@ instruments?: (Object | URL)[];}
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
-      delete values[\\"@type\\"];
-      return await Accept.fromJsonLd(values, options);
+      return await Accept.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
-      delete values[\\"@type\\"];
-      return await TentativeAccept.fromJsonLd(values, options);
+      return await TentativeAccept.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
-      delete values[\\"@type\\"];
-      return await Add.fromJsonLd(values, options);
+      return await Add.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Announce\\")) {
-      delete values[\\"@type\\"];
-      return await Announce.fromJsonLd(values, options);
+      return await Announce.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Create\\")) {
-      delete values[\\"@type\\"];
-      return await Create.fromJsonLd(values, options);
+      return await Create.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Delete\\")) {
-      delete values[\\"@type\\"];
-      return await Delete.fromJsonLd(values, options);
+      return await Delete.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Dislike\\")) {
-      delete values[\\"@type\\"];
-      return await Dislike.fromJsonLd(values, options);
+      return await Dislike.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Flag\\")) {
-      delete values[\\"@type\\"];
-      return await Flag.fromJsonLd(values, options);
+      return await Flag.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Follow\\")) {
-      delete values[\\"@type\\"];
-      return await Follow.fromJsonLd(values, options);
+      return await Follow.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
-      delete values[\\"@type\\"];
-      return await Ignore.fromJsonLd(values, options);
+      return await Ignore.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
-      delete values[\\"@type\\"];
-      return await Block.fromJsonLd(values, options);
+      return await Block.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
-      delete values[\\"@type\\"];
-      return await IntransitiveActivity.fromJsonLd(values, options);
+      return await IntransitiveActivity.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Arrive\\")) {
-      delete values[\\"@type\\"];
-      return await Arrive.fromJsonLd(values, options);
+      return await Arrive.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Question\\")) {
-      delete values[\\"@type\\"];
-      return await Question.fromJsonLd(values, options);
+      return await Question.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Travel\\")) {
-      delete values[\\"@type\\"];
-      return await Travel.fromJsonLd(values, options);
+      return await Travel.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Join\\")) {
-      delete values[\\"@type\\"];
-      return await Join.fromJsonLd(values, options);
+      return await Join.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Leave\\")) {
-      delete values[\\"@type\\"];
-      return await Leave.fromJsonLd(values, options);
+      return await Leave.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Like\\")) {
-      delete values[\\"@type\\"];
-      return await Like.fromJsonLd(values, options);
+      return await Like.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Listen\\")) {
-      delete values[\\"@type\\"];
-      return await Listen.fromJsonLd(values, options);
+      return await Listen.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Move\\")) {
-      delete values[\\"@type\\"];
-      return await Move.fromJsonLd(values, options);
+      return await Move.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Offer\\")) {
-      delete values[\\"@type\\"];
-      return await Offer.fromJsonLd(values, options);
+      return await Offer.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Invite\\")) {
-      delete values[\\"@type\\"];
-      return await Invite.fromJsonLd(values, options);
+      return await Invite.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Read\\")) {
-      delete values[\\"@type\\"];
-      return await Read.fromJsonLd(values, options);
+      return await Read.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
-      delete values[\\"@type\\"];
-      return await Reject.fromJsonLd(values, options);
+      return await Reject.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
-      delete values[\\"@type\\"];
-      return await TentativeReject.fromJsonLd(values, options);
+      return await TentativeReject.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
-      delete values[\\"@type\\"];
-      return await Remove.fromJsonLd(values, options);
+      return await Remove.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Undo\\")) {
-      delete values[\\"@type\\"];
-      return await Undo.fromJsonLd(values, options);
+      return await Undo.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
-      delete values[\\"@type\\"];
-      return await Update.fromJsonLd(values, options);
+      return await Update.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#View\\")) {
-      delete values[\\"@type\\"];
-      return await View.fromJsonLd(values, options);
+      return await View.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Activity\\")) {
@@ -11047,6 +10967,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -11638,8 +11559,7 @@ instruments?: (Object | URL)[];}
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
-      delete values[\\"@type\\"];
-      return await TentativeAccept.fromJsonLd(values, options);
+      return await TentativeAccept.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Accept\\")) {
@@ -11647,6 +11567,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -11946,6 +11867,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -12244,6 +12166,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -14559,6 +14482,7 @@ get indexable(): (boolean | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -15531,18 +15455,15 @@ instruments?: (Object | URL)[];}
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Arrive\\")) {
-      delete values[\\"@type\\"];
-      return await Arrive.fromJsonLd(values, options);
+      return await Arrive.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Question\\")) {
-      delete values[\\"@type\\"];
-      return await Question.fromJsonLd(values, options);
+      return await Question.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Travel\\")) {
-      delete values[\\"@type\\"];
-      return await Travel.fromJsonLd(values, options);
+      return await Travel.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#IntransitiveActivity\\")) {
@@ -15550,6 +15471,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -15828,6 +15750,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -16111,6 +16034,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -16518,23 +16442,19 @@ get height(): (number | null) {
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
-      delete values[\\"@type\\"];
-      return await Audio.fromJsonLd(values, options);
+      return await Audio.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Image\\")) {
-      delete values[\\"@type\\"];
-      return await Image.fromJsonLd(values, options);
+      return await Image.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Page\\")) {
-      delete values[\\"@type\\"];
-      return await Page.fromJsonLd(values, options);
+      return await Page.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Video\\")) {
-      delete values[\\"@type\\"];
-      return await Video.fromJsonLd(values, options);
+      return await Video.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Document\\")) {
@@ -16542,6 +16462,7 @@ get height(): (number | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -16893,6 +16814,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -17186,8 +17108,7 @@ instruments?: (Object | URL)[];}
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
-      delete values[\\"@type\\"];
-      return await Block.fromJsonLd(values, options);
+      return await Block.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Ignore\\")) {
@@ -17195,6 +17116,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -17494,6 +17416,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -18391,18 +18314,15 @@ get totalItems(): (number | null) {
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
-      delete values[\\"@type\\"];
-      return await CollectionPage.fromJsonLd(values, options);
+      return await CollectionPage.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
-      delete values[\\"@type\\"];
-      return await OrderedCollectionPage.fromJsonLd(values, options);
+      return await OrderedCollectionPage.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\")) {
-      delete values[\\"@type\\"];
-      return await OrderedCollection.fromJsonLd(values, options);
+      return await OrderedCollection.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Collection\\")) {
@@ -18410,6 +18330,7 @@ get totalItems(): (number | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -19296,8 +19217,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
-      delete values[\\"@type\\"];
-      return await OrderedCollectionPage.fromJsonLd(values, options);
+      return await OrderedCollectionPage.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
@@ -19305,6 +19225,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -19723,6 +19644,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -20020,6 +19942,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -20315,6 +20238,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -21446,6 +21370,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -21744,6 +21669,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -22043,6 +21969,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -24358,6 +24285,7 @@ get indexable(): (boolean | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -26000,13 +25928,11 @@ get width(): (number | null) {
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Hashtag\\")) {
-      delete values[\\"@type\\"];
-      return await Hashtag.fromJsonLd(values, options);
+      return await Hashtag.fromJsonLd(json, options);
     }
     
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Mention\\")) {
-      delete values[\\"@type\\"];
-      return await Mention.fromJsonLd(values, options);
+      return await Mention.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Link\\")) {
@@ -26585,6 +26511,7 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -26868,6 +26795,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -27162,8 +27090,7 @@ instruments?: (Object | URL)[];}
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Invite\\")) {
-      delete values[\\"@type\\"];
-      return await Invite.fromJsonLd(values, options);
+      return await Invite.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Offer\\")) {
@@ -27171,6 +27098,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -27468,6 +27396,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -27765,6 +27694,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -28062,6 +27992,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -28359,6 +28290,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -28654,6 +28586,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -28898,6 +28831,7 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -29196,6 +29130,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -29481,6 +29416,7 @@ proofs?: (DataIntegrityProof | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -29916,6 +29852,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -30470,6 +30407,7 @@ get startIndex(): (number | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -32873,6 +32811,7 @@ get indexable(): (boolean | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -33834,6 +33773,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -36149,6 +36089,7 @@ get indexable(): (boolean | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -37494,6 +37435,7 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -38126,6 +38068,7 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -38878,6 +38821,7 @@ get voters(): (number | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -39337,6 +39281,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -39630,8 +39575,7 @@ instruments?: (Object | URL)[];}
   if (\\"@type\\" in values) {
 
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
-      delete values[\\"@type\\"];
-      return await TentativeReject.fromJsonLd(values, options);
+      return await TentativeReject.fromJsonLd(json, options);
     }
     
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Reject\\")) {
@@ -39639,6 +39583,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -40497,6 +40442,7 @@ relationships?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -40929,6 +40875,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -43244,6 +43191,7 @@ get indexable(): (boolean | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -44219,6 +44167,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -44516,6 +44465,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -44866,6 +44816,7 @@ get deleted(): (Temporal.Instant | null) {
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -45199,6 +45150,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -45501,6 +45453,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -45801,6 +45754,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -46084,6 +46038,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option
@@ -46380,6 +46335,7 @@ instruments?: (Object | URL)[];}
     }
   }
   
+    delete values[\\"@type\\"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option

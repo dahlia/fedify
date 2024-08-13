@@ -295,8 +295,7 @@ export async function* generateDecoder(
   for (const subtypeUri of subtypes) {
     yield `
     if (values["@type"].includes(${JSON.stringify(subtypeUri)})) {
-      delete values["@type"];
-      return await ${types[subtypeUri].name}.fromJsonLd(values, options);
+      return await ${types[subtypeUri].name}.fromJsonLd(json, options);
     }
     `;
   }
@@ -315,6 +314,7 @@ export async function* generateDecoder(
     `;
   } else {
     yield `
+    delete values["@type"];
     const instance = await super.fromJsonLd(values, {
       ...options,
       // @ts-ignore: an internal option

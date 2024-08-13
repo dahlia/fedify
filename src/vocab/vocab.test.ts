@@ -144,7 +144,7 @@ test("Object.fromJsonLd()", async () => {
     new LanguageString("你好", "zh"),
   ]);
 
-  const create = await Object.fromJsonLd({
+  const createJsonLd = {
     "@context": "https://www.w3.org/ns/activitystreams",
     "type": "Create",
     "name": "Test",
@@ -156,13 +156,18 @@ test("Object.fromJsonLd()", async () => {
       "type": "Note",
       "content": "Content",
     },
-  }, { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader });
+  };
+  const create = await Object.fromJsonLd(
+    createJsonLd,
+    { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader },
+  );
   assertInstanceOf(create, Create);
   assertEquals(create.name, "Test");
   assertEquals(create.contents, [
     new LanguageString("Hello", "en"),
     new LanguageString("你好", "zh"),
   ]);
+  assertEquals(await create.toJsonLd(), createJsonLd);
   const note = await create.getObject();
   assertInstanceOf(note, Note);
   assertEquals(note.content, "Content");
