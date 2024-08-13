@@ -2,10 +2,10 @@ import { colors } from "@cliffy/ansi";
 import { Command, EnumType } from "@cliffy/command";
 import { Select } from "@cliffy/prompt";
 import { getLogger } from "@logtape/logtape";
+import { exists } from "@std/fs";
 import { basename, dirname, join, normalize } from "@std/path";
 import { format, greaterThan, parse } from "@std/semver";
 import metadata from "./deno.json" with { type: "json" };
-import { exists } from "@std/fs";
 
 type Runtime = "deno" | "bun" | "node";
 
@@ -84,6 +84,7 @@ interface WebFrameworkInitializer {
   loggingFile: string;
   files?: Record<string, string>;
   prependFiles?: Record<string, string>;
+  compilerOptions?: Record<string, string | boolean | number | null>;
   tasks?: Record<string, string>;
   instruction: string;
 }
@@ -181,18 +182,21 @@ Then, try look up an actor from your server:
         ? {
           hono: "^4.5.0",
           "@hono/node-server": "^1.12.0",
-          tsx: "^4.16.2",
+          tsx: "^4.17.0",
           "x-forwarded-fetch": "^0.2.0",
         }
         : { hono: "^4.5.0", "x-forwarded-fetch": "^0.2.0" },
+      devDependencies: runtime === "bun"
+        ? { "@types/bun": "^1.1.6" } as Record<string, string>
+        : {},
       federationFile: "src/federation.ts",
       loggingFile: "src/logging.ts",
       files: {
-        "src/app.ts": `\
+        "src/app.tsx": `\
 import { Hono } from "${runtime === "deno" ? "@hono/hono" : "hono"}";
 import { federation } from "@fedify/fedify/x/hono";
 import { getLogger } from "@logtape/logtape";
-import fedi from "./federation${runtime === "deno" ? ".ts" : ""}";
+import fedi from "./federation.ts";
 
 const logger = getLogger(${JSON.stringify(projectName)});
 
@@ -207,8 +211,8 @@ export default app;
           ? `\
 import { serve } from "@hono/node-server";
 import { behindProxy } from "x-forwarded-fetch";
-import app from "./app";
-import "./logging";
+import app from "./app.tsx";
+import "./logging.ts";
 
 serve(
   {
@@ -222,8 +226,8 @@ serve(
           : runtime === "bun"
           ? `\
 import { behindProxy } from "x-forwarded-fetch";
-import app from "./app";
-import "./logging";
+import app from "./app.tsx";
+import "./logging.ts";
 
 const server = Bun.serve({
   port: 8000,
@@ -234,7 +238,7 @@ console.log("Server started at", server.url.href);
 `
           : `\
 import { behindProxy } from "@hongminhee/x-forwarded-fetch";
-import app from "./app.ts";
+import app from "./app.tsx";
 import "./logging.ts";
 
 Deno.serve(
@@ -246,6 +250,14 @@ Deno.serve(
   behindProxy(app.fetch.bind(app)),
 );
 `,
+      },
+      compilerOptions: runtime === "deno" ? undefined : {
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "jsxImportSource": "hono/jsx",
       },
       tasks: {
         "dev": runtime === "deno"
@@ -285,10 +297,11 @@ Then, try look up an actor from your server:
       dependencies: {
         express: "^4.19.2",
         "@fedify/express": "^0.1.3",
-        ...(runtime === "node" ? { tsx: "^4.16.2" } : {}),
+        ...(runtime === "node" ? { tsx: "^4.17.0" } : {}),
       },
       devDependencies: {
         "@types/express": "^4.17.21",
+        ...(runtime === "bun" ? { "@types/bun": "^1.1.6" } : {}),
       },
       federationFile: "src/federation.ts",
       loggingFile: "src/logging.ts",
@@ -297,7 +310,7 @@ Then, try look up an actor from your server:
 import express from "express";
 import { integrateFederation } from "@fedify/express";
 import { getLogger } from "@logtape/logtape";
-import federation from "./federation";
+import federation from "./federation.ts";
 
 const logger = getLogger(${JSON.stringify(projectName)});
 
@@ -312,13 +325,19 @@ app.get("/", (req, res) => res.send("Hello, Fedify!"));
 export default app;
 `,
         "src/index.ts": `\
-import app from "./app";
-import "./logging";
+import app from "./app.ts";
+import "./logging.ts";
 
 app.listen(8000, () => {
   console.log("Server started at http://localhost:8000");
 });
 `,
+      },
+      compilerOptions: runtime === "deno" ? undefined : {
+        "module": "NodeNext",
+        "moduleResolution": "NodeNext",
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
       },
       tasks: {
         "dev": runtime === "bun"
@@ -660,17 +679,18 @@ export const command = new Command()
           : runtime === "node"
           ? {
             "@hono/node-server": "^1.12.0",
-            tsx: "^4.16.2",
+            tsx: "^4.17.0",
             "x-forwarded-fetch": "^0.2.0",
           }
           : { "x-forwarded-fetch": "^0.2.0" },
+        devDependencies: runtime === "bun" ? { "@types/bun": "^1.1.6" } : {},
         files: {
           "main.ts": runtime === "node"
             ? `\
 import { serve } from "@hono/node-server";
 import { behindProxy } from "x-forwarded-fetch";
-import federation from "./federation";
-import "./logging";
+import federation from "./federation.ts";
+import "./logging.ts";
 
 serve(
   {
@@ -686,8 +706,8 @@ serve(
             : runtime === "bun"
             ? `\
 import { behindProxy } from "x-forwarded-fetch";
-import federation from "./federation";
-import "./logging";
+import federation from "./federation.ts";
+import "./logging.ts";
 
 const server = Bun.serve({
   port: 8000,
@@ -712,6 +732,12 @@ Deno.serve(
   behindProxy((req) => federation.fetch(req, { contextData: undefined })),
 );
 `,
+        },
+        compilerOptions: runtime === "deno" ? undefined : {
+          "module": "NodeNext",
+          "moduleResolution": "NodeNext",
+          "allowImportingTsExtensions": true,
+          "noEmit": true,
         },
         tasks: {
           "dev": runtime === "deno"
@@ -913,6 +939,12 @@ await configure({
         {},
         (cfg) => ({
           ...cfg,
+          ...initializer.compilerOptions == null ? {} : {
+            compilerOptions: {
+              ...cfg?.compilerOptions,
+              ...initializer.compilerOptions,
+            },
+          },
           unstable: [
             "temporal",
             ...kvStoreDesc.denoUnstable ?? [],
@@ -990,6 +1022,19 @@ await configure({
           scripts: { ...cfg.scripts, ...initializer.tasks },
         }),
       );
+      if (initializer.compilerOptions != null) {
+        await rewriteJsonFile(
+          join(dir, "tsconfig.json"),
+          {},
+          (cfg) => ({
+            ...cfg,
+            compilerOptions: {
+              ...cfg?.compilerOptions,
+              ...initializer.compilerOptions,
+            },
+          }),
+        );
+      }
       await rewriteJsonFile(
         join(dir, ".vscode", "settings.json"),
         {},
