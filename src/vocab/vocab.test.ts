@@ -34,6 +34,7 @@ import {
   Object,
   Person,
   Place,
+  Source,
 } from "./vocab.ts";
 
 test("new Object()", () => {
@@ -136,6 +137,10 @@ test("Object.fromJsonLd()", async () => {
       "en": "Hello",
       "zh": "你好",
     },
+    "source": {
+      "content": "Hello",
+      "mediaType": "text/plain",
+    },
   }, { documentLoader: mockDocumentLoader, contextLoader: mockDocumentLoader });
   assertInstanceOf(obj, Object);
   assertEquals(obj.name, "Test");
@@ -143,6 +148,9 @@ test("Object.fromJsonLd()", async () => {
     new LanguageString("Hello", "en"),
     new LanguageString("你好", "zh"),
   ]);
+  assertInstanceOf(obj.source, Source);
+  assertEquals(obj.source.content, "Hello");
+  assertEquals(obj.source.mediaType, "text/plain");
 
   const createJsonLd = {
     "@context": "https://www.w3.org/ns/activitystreams",
@@ -893,7 +901,7 @@ for (const typeUri in types) {
       {
         "@context": type.defaultContext,
         "id": "https://example.com/",
-        "type": type.name === "Endpoints" ? "as:Endpoints" : type.name,
+        "type": type.compactName ?? type.name,
       },
     );
 

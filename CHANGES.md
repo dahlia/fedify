@@ -8,6 +8,15 @@ Version 0.14.0
 
 To be released.
 
+ -  Added `source` property to `Object` class in Activity Vocabulary API.
+    [[#114]]
+
+     -  Added `Object.source` property.
+     -  `new Object()` constructor now accepts `source` option.
+     -  `Object.clone()` method now accepts `source` option.
+
+ -  Added `Source` class to Activity Vocabulary API.  [[#114]]
+
  -  Improved the performance of `Object.toJsonLd()` method.
 
      -  `Object.toJsonLd()` method no longer guarantees that the returned
@@ -23,6 +32,8 @@ To be released.
  -  Now `fedify init` generates a default *tsconfig.json* file on Node.js and
     Bun, and fills the *deno.json* file with the default `compilerOptions` on
     Deno.
+
+[#114]: https://github.com/dahlia/fedify/issues/114
 
 
 Version 0.13.0

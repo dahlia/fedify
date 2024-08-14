@@ -330,6 +330,19 @@ properties:
   range:
   - "http://www.w3.org/2001/XMLSchema#boolean"
 
+- singularName: source
+  functional: true
+  compactName: source
+  uri: "https://www.w3.org/ns/activitystreams#source"
+  description: |
+    The `source` property is intended to convey some sort of source from which
+    the `content` markup was derived, as a form of provenance, or to support
+    future editing by clients.  In general, clients do the conversion from
+    `source` to `content`, not the other way around. 
+  untyped: true
+  range:
+  - "https://www.w3.org/ns/activitystreams#Source"
+
 - singularName: proof
   pluralName: proofs
   singularAccessor: true

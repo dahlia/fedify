@@ -30,6 +30,7 @@ snapshot[`Deno.inspect(Emoji) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {}
 }'
 `;
@@ -64,6 +65,7 @@ snapshot[`Deno.inspect(Emoji) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/"
 }'
 `;
@@ -98,6 +100,7 @@ snapshot[`Deno.inspect(Emoji) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
 }'
 `;
@@ -132,6 +135,7 @@ snapshot[`Deno.inspect(ChatMessage) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {}
 }'
 `;
@@ -166,6 +170,7 @@ snapshot[`Deno.inspect(ChatMessage) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/"
 }'
 `;
@@ -200,6 +205,7 @@ snapshot[`Deno.inspect(ChatMessage) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
 }'
 `;
@@ -387,6 +393,7 @@ snapshot[`Deno.inspect(Accept) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -427,6 +434,7 @@ snapshot[`Deno.inspect(Accept) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -467,6 +475,7 @@ snapshot[`Deno.inspect(Accept) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -507,6 +516,7 @@ snapshot[`Deno.inspect(Activity) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -547,6 +557,7 @@ snapshot[`Deno.inspect(Activity) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -587,6 +598,7 @@ snapshot[`Deno.inspect(Activity) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -627,6 +639,7 @@ snapshot[`Deno.inspect(Add) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -667,6 +680,7 @@ snapshot[`Deno.inspect(Add) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -707,6 +721,7 @@ snapshot[`Deno.inspect(Add) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -747,6 +762,7 @@ snapshot[`Deno.inspect(Announce) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -787,6 +803,7 @@ snapshot[`Deno.inspect(Announce) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -827,6 +844,7 @@ snapshot[`Deno.inspect(Announce) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -867,6 +885,7 @@ snapshot[`Deno.inspect(Application) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: CryptographicKey {},
@@ -918,6 +937,7 @@ snapshot[`Deno.inspect(Application) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: URL "https://example.com/",
@@ -969,6 +989,7 @@ snapshot[`Deno.inspect(Application) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   preferredUsernames: [ "hello", "hello" ],
   publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
@@ -1020,6 +1041,7 @@ snapshot[`Deno.inspect(Arrive) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -1060,6 +1082,7 @@ snapshot[`Deno.inspect(Arrive) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -1100,6 +1123,7 @@ snapshot[`Deno.inspect(Arrive) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -1140,6 +1164,7 @@ snapshot[`Deno.inspect(Article) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {}
 }'
 `;
@@ -1174,6 +1199,7 @@ snapshot[`Deno.inspect(Article) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/"
 }'
 `;
@@ -1208,6 +1234,7 @@ snapshot[`Deno.inspect(Article) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
 }'
 `;
@@ -1242,6 +1269,7 @@ snapshot[`Deno.inspect(Audio) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   width: 123,
   height: 123
@@ -1278,6 +1306,7 @@ snapshot[`Deno.inspect(Audio) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   width: 123,
   height: 123
@@ -1314,6 +1343,7 @@ snapshot[`Deno.inspect(Audio) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   width: 123,
   height: 123
@@ -1350,6 +1380,7 @@ snapshot[`Deno.inspect(Block) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -1390,6 +1421,7 @@ snapshot[`Deno.inspect(Block) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -1430,6 +1462,7 @@ snapshot[`Deno.inspect(Block) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -1470,6 +1503,7 @@ snapshot[`Deno.inspect(Collection) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   totalItems: 123,
   current: CollectionPage {},
@@ -1509,6 +1543,7 @@ snapshot[`Deno.inspect(Collection) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   totalItems: 123,
   current: URL "https://example.com/",
@@ -1548,6 +1583,7 @@ snapshot[`Deno.inspect(Collection) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   totalItems: 123,
   current: CollectionPage {},
@@ -1587,6 +1623,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   totalItems: 123,
   current: CollectionPage {},
@@ -1629,6 +1666,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   totalItems: 123,
   current: URL "https://example.com/",
@@ -1671,6 +1709,7 @@ snapshot[`Deno.inspect(CollectionPage) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   totalItems: 123,
   current: CollectionPage {},
@@ -1713,6 +1752,7 @@ snapshot[`Deno.inspect(Create) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -1753,6 +1793,7 @@ snapshot[`Deno.inspect(Create) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -1793,6 +1834,7 @@ snapshot[`Deno.inspect(Create) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -1833,6 +1875,7 @@ snapshot[`Deno.inspect(Delete) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -1873,6 +1916,7 @@ snapshot[`Deno.inspect(Delete) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -1913,6 +1957,7 @@ snapshot[`Deno.inspect(Delete) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -1953,6 +1998,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -1993,6 +2039,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -2033,6 +2080,7 @@ snapshot[`Deno.inspect(Dislike) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -2073,6 +2121,7 @@ snapshot[`Deno.inspect(Document) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   width: 123,
   height: 123
@@ -2109,6 +2158,7 @@ snapshot[`Deno.inspect(Document) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   width: 123,
   height: 123
@@ -2145,6 +2195,7 @@ snapshot[`Deno.inspect(Document) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   width: 123,
   height: 123
@@ -2217,6 +2268,7 @@ snapshot[`Deno.inspect(Event) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {}
 }'
 `;
@@ -2251,6 +2303,7 @@ snapshot[`Deno.inspect(Event) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/"
 }'
 `;
@@ -2285,6 +2338,7 @@ snapshot[`Deno.inspect(Event) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
 }'
 `;
@@ -2319,6 +2373,7 @@ snapshot[`Deno.inspect(Flag) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -2359,6 +2414,7 @@ snapshot[`Deno.inspect(Flag) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -2399,6 +2455,7 @@ snapshot[`Deno.inspect(Flag) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -2439,6 +2496,7 @@ snapshot[`Deno.inspect(Follow) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -2479,6 +2537,7 @@ snapshot[`Deno.inspect(Follow) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -2519,6 +2578,7 @@ snapshot[`Deno.inspect(Follow) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -2559,6 +2619,7 @@ snapshot[`Deno.inspect(Group) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: CryptographicKey {},
@@ -2610,6 +2671,7 @@ snapshot[`Deno.inspect(Group) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: URL "https://example.com/",
@@ -2661,6 +2723,7 @@ snapshot[`Deno.inspect(Group) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   preferredUsernames: [ "hello", "hello" ],
   publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
@@ -2772,6 +2835,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -2812,6 +2876,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -2852,6 +2917,7 @@ snapshot[`Deno.inspect(Ignore) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -2892,6 +2958,7 @@ snapshot[`Deno.inspect(Image) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   width: 123,
   height: 123
@@ -2928,6 +2995,7 @@ snapshot[`Deno.inspect(Image) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   width: 123,
   height: 123
@@ -2964,6 +3032,7 @@ snapshot[`Deno.inspect(Image) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   width: 123,
   height: 123
@@ -3000,6 +3069,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -3040,6 +3110,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -3080,6 +3151,7 @@ snapshot[`Deno.inspect(IntransitiveActivity) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -3120,6 +3192,7 @@ snapshot[`Deno.inspect(Invite) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -3160,6 +3233,7 @@ snapshot[`Deno.inspect(Invite) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -3200,6 +3274,7 @@ snapshot[`Deno.inspect(Invite) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -3240,6 +3315,7 @@ snapshot[`Deno.inspect(Join) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -3280,6 +3356,7 @@ snapshot[`Deno.inspect(Join) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -3320,6 +3397,7 @@ snapshot[`Deno.inspect(Join) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -3360,6 +3438,7 @@ snapshot[`Deno.inspect(Leave) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -3400,6 +3479,7 @@ snapshot[`Deno.inspect(Leave) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -3440,6 +3520,7 @@ snapshot[`Deno.inspect(Leave) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -3480,6 +3561,7 @@ snapshot[`Deno.inspect(Like) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -3520,6 +3602,7 @@ snapshot[`Deno.inspect(Like) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -3560,6 +3643,7 @@ snapshot[`Deno.inspect(Like) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -3660,6 +3744,7 @@ snapshot[`Deno.inspect(Listen) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -3700,6 +3785,7 @@ snapshot[`Deno.inspect(Listen) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -3740,6 +3826,7 @@ snapshot[`Deno.inspect(Listen) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -3840,6 +3927,7 @@ snapshot[`Deno.inspect(Move) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -3880,6 +3968,7 @@ snapshot[`Deno.inspect(Move) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -3920,6 +4009,7 @@ snapshot[`Deno.inspect(Move) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -3960,6 +4050,7 @@ snapshot[`Deno.inspect(Note) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {}
 }'
 `;
@@ -3994,6 +4085,7 @@ snapshot[`Deno.inspect(Note) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/"
 }'
 `;
@@ -4028,6 +4120,7 @@ snapshot[`Deno.inspect(Note) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
 }'
 `;
@@ -4062,6 +4155,7 @@ snapshot[`Deno.inspect(Object) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {}
 }'
 `;
@@ -4096,6 +4190,7 @@ snapshot[`Deno.inspect(Object) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/"
 }'
 `;
@@ -4130,6 +4225,7 @@ snapshot[`Deno.inspect(Object) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
 }'
 `;
@@ -4164,6 +4260,7 @@ snapshot[`Deno.inspect(Offer) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -4204,6 +4301,7 @@ snapshot[`Deno.inspect(Offer) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -4244,6 +4342,7 @@ snapshot[`Deno.inspect(Offer) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -4284,6 +4383,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   totalItems: 123,
   current: CollectionPage {},
@@ -4323,6 +4423,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   totalItems: 123,
   current: URL "https://example.com/",
@@ -4362,6 +4463,7 @@ snapshot[`Deno.inspect(OrderedCollection) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   totalItems: 123,
   current: CollectionPage {},
@@ -4401,6 +4503,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   totalItems: 123,
   current: CollectionPage {},
@@ -4444,6 +4547,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   totalItems: 123,
   current: URL "https://example.com/",
@@ -4487,6 +4591,7 @@ snapshot[`Deno.inspect(OrderedCollectionPage) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   totalItems: 123,
   current: CollectionPage {},
@@ -4530,6 +4635,7 @@ snapshot[`Deno.inspect(Organization) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: CryptographicKey {},
@@ -4581,6 +4687,7 @@ snapshot[`Deno.inspect(Organization) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: URL "https://example.com/",
@@ -4632,6 +4739,7 @@ snapshot[`Deno.inspect(Organization) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   preferredUsernames: [ "hello", "hello" ],
   publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
@@ -4683,6 +4791,7 @@ snapshot[`Deno.inspect(Page) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   width: 123,
   height: 123
@@ -4719,6 +4828,7 @@ snapshot[`Deno.inspect(Page) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   width: 123,
   height: 123
@@ -4755,6 +4865,7 @@ snapshot[`Deno.inspect(Page) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   width: 123,
   height: 123
@@ -4791,6 +4902,7 @@ snapshot[`Deno.inspect(Person) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: CryptographicKey {},
@@ -4842,6 +4954,7 @@ snapshot[`Deno.inspect(Person) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: URL "https://example.com/",
@@ -4893,6 +5006,7 @@ snapshot[`Deno.inspect(Person) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   preferredUsernames: [ "hello", "hello" ],
   publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
@@ -4944,6 +5058,7 @@ snapshot[`Deno.inspect(Place) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   accuracy: 12.34,
   altitude: 12.34,
@@ -4984,6 +5099,7 @@ snapshot[`Deno.inspect(Place) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   accuracy: 12.34,
   altitude: 12.34,
@@ -5024,6 +5140,7 @@ snapshot[`Deno.inspect(Place) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   accuracy: 12.34,
   altitude: 12.34,
@@ -5064,6 +5181,7 @@ snapshot[`Deno.inspect(Profile) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   describes: Object {}
 }'
@@ -5099,6 +5217,7 @@ snapshot[`Deno.inspect(Profile) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   describes: URL "https://example.com/"
 }'
@@ -5134,6 +5253,7 @@ snapshot[`Deno.inspect(Profile) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   describes: Object {}
 }'
@@ -5169,6 +5289,7 @@ snapshot[`Deno.inspect(Question) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -5213,6 +5334,7 @@ snapshot[`Deno.inspect(Question) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -5257,6 +5379,7 @@ snapshot[`Deno.inspect(Question) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -5301,6 +5424,7 @@ snapshot[`Deno.inspect(Read) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -5341,6 +5465,7 @@ snapshot[`Deno.inspect(Read) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -5381,6 +5506,7 @@ snapshot[`Deno.inspect(Read) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -5421,6 +5547,7 @@ snapshot[`Deno.inspect(Reject) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -5461,6 +5588,7 @@ snapshot[`Deno.inspect(Reject) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -5501,6 +5629,7 @@ snapshot[`Deno.inspect(Reject) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -5541,6 +5670,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   subject: Object {},
   object: Object {},
@@ -5578,6 +5708,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   subject: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -5615,6 +5746,7 @@ snapshot[`Deno.inspect(Relationship) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   subject: Object {},
   objects: [ Object {}, Object {} ],
@@ -5652,6 +5784,7 @@ snapshot[`Deno.inspect(Remove) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -5692,6 +5825,7 @@ snapshot[`Deno.inspect(Remove) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -5732,6 +5866,7 @@ snapshot[`Deno.inspect(Remove) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -5772,6 +5907,7 @@ snapshot[`Deno.inspect(Service) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: CryptographicKey {},
@@ -5823,6 +5959,7 @@ snapshot[`Deno.inspect(Service) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   preferredUsernames: [ "hello", <en> "hello" ],
   publicKey: URL "https://example.com/",
@@ -5874,6 +6011,7 @@ snapshot[`Deno.inspect(Service) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   preferredUsernames: [ "hello", "hello" ],
   publicKeys: [ CryptographicKey {}, CryptographicKey {} ],
@@ -5892,6 +6030,30 @@ snapshot[`Deno.inspect(Service) [auto] 3`] = `
   suspended: true,
   memorial: true,
   indexable: true
+}'
+`;
+
+snapshot[`Deno.inspect(Source) [auto] 1`] = `
+'Source {
+  id: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  mediaType: "hello"
+}'
+`;
+
+snapshot[`Deno.inspect(Source) [auto] 2`] = `
+'Source {
+  id: URL "https://example.com/",
+  contents: [ "hello", <en> "hello" ],
+  mediaType: "hello"
+}'
+`;
+
+snapshot[`Deno.inspect(Source) [auto] 3`] = `
+'Source {
+  id: URL "https://example.com/",
+  contents: [ "hello", "hello" ],
+  mediaType: "hello"
 }'
 `;
 
@@ -5925,6 +6087,7 @@ snapshot[`Deno.inspect(TentativeAccept) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -5965,6 +6128,7 @@ snapshot[`Deno.inspect(TentativeAccept) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -6005,6 +6169,7 @@ snapshot[`Deno.inspect(TentativeAccept) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -6045,6 +6210,7 @@ snapshot[`Deno.inspect(TentativeReject) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -6085,6 +6251,7 @@ snapshot[`Deno.inspect(TentativeReject) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -6125,6 +6292,7 @@ snapshot[`Deno.inspect(TentativeReject) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -6165,6 +6333,7 @@ snapshot[`Deno.inspect(Tombstone) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   deleted: 2024-03-03T08:30:06.796196096Z
 }'
@@ -6200,6 +6369,7 @@ snapshot[`Deno.inspect(Tombstone) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   deleted: 2024-03-03T08:30:06.796196096Z
 }'
@@ -6235,6 +6405,7 @@ snapshot[`Deno.inspect(Tombstone) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   deleted: 2024-03-03T08:30:06.796196096Z
 }'
@@ -6270,6 +6441,7 @@ snapshot[`Deno.inspect(Travel) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -6310,6 +6482,7 @@ snapshot[`Deno.inspect(Travel) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -6350,6 +6523,7 @@ snapshot[`Deno.inspect(Travel) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -6390,6 +6564,7 @@ snapshot[`Deno.inspect(Undo) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -6430,6 +6605,7 @@ snapshot[`Deno.inspect(Undo) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -6470,6 +6646,7 @@ snapshot[`Deno.inspect(Undo) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -6510,6 +6687,7 @@ snapshot[`Deno.inspect(Update) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -6550,6 +6728,7 @@ snapshot[`Deno.inspect(Update) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -6590,6 +6769,7 @@ snapshot[`Deno.inspect(Update) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
@@ -6630,6 +6810,7 @@ snapshot[`Deno.inspect(Video) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   width: 123,
   height: 123
@@ -6666,6 +6847,7 @@ snapshot[`Deno.inspect(Video) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   width: 123,
   height: 123
@@ -6702,6 +6884,7 @@ snapshot[`Deno.inspect(Video) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   width: 123,
   height: 123
@@ -6738,6 +6921,7 @@ snapshot[`Deno.inspect(View) [auto] 1`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: DataIntegrityProof {},
   actors: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
   object: Object {},
@@ -6778,6 +6962,7 @@ snapshot[`Deno.inspect(View) [auto] 2`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proof: URL "https://example.com/",
   actor: URL "https://example.com/",
   object: URL "https://example.com/",
@@ -6818,6 +7003,7 @@ snapshot[`Deno.inspect(View) [auto] 3`] = `
   mediaType: "hello",
   duration: PT1H,
   sensitive: true,
+  source: Source {},
   proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
   actors: [ Application {}, Application {} ],
   objects: [ Object {}, Object {} ],
