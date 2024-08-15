@@ -741,16 +741,21 @@ Deno.serve(
 );
 `,
         },
-        compilerOptions: runtime === "deno" ? undefined : {
-          "lib": ["ESNext", "DOM"],
-          "target": "ESNext",
-          "module": "NodeNext",
-          "moduleResolution": "NodeNext",
-          "allowImportingTsExtensions": true,
-          "verbatimModuleSyntax": true,
-          "noEmit": true,
-          "strict": true,
-        },
+        compilerOptions: runtime === "deno"
+          ? {
+            "jsx": "precompile",
+            "jsxImportSource": "hono/jsx",
+          }
+          : {
+            "lib": ["ESNext", "DOM"],
+            "target": "ESNext",
+            "module": "NodeNext",
+            "moduleResolution": "NodeNext",
+            "allowImportingTsExtensions": true,
+            "verbatimModuleSyntax": true,
+            "noEmit": true,
+            "strict": true,
+          },
         tasks: {
           "dev": runtime === "deno"
             ? "deno run -A --watch ./main.ts"
