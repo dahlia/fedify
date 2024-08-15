@@ -84,7 +84,7 @@ interface WebFrameworkInitializer {
   loggingFile: string;
   files?: Record<string, string>;
   prependFiles?: Record<string, string>;
-  compilerOptions?: Record<string, string | boolean | number | null>;
+  compilerOptions?: Record<string, string | boolean | number | string[] | null>;
   tasks?: Record<string, string>;
   instruction: string;
 }
@@ -252,10 +252,14 @@ Deno.serve(
 `,
       },
       compilerOptions: runtime === "deno" ? undefined : {
+        "lib": ["ESNext", "DOM"],
+        "target": "ESNext",
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
         "noEmit": true,
+        "strict": true,
         "jsx": "react-jsx",
         "jsxImportSource": "hono/jsx",
       },
@@ -334,10 +338,14 @@ app.listen(8000, () => {
 `,
       },
       compilerOptions: runtime === "deno" ? undefined : {
+        "lib": ["ESNext", "DOM"],
+        "target": "ESNext",
         "module": "NodeNext",
         "moduleResolution": "NodeNext",
         "allowImportingTsExtensions": true,
+        "verbatimModuleSyntax": true,
         "noEmit": true,
+        "strict": true,
       },
       tasks: {
         "dev": runtime === "bun"
@@ -734,10 +742,14 @@ Deno.serve(
 `,
         },
         compilerOptions: runtime === "deno" ? undefined : {
+          "lib": ["ESNext", "DOM"],
+          "target": "ESNext",
           "module": "NodeNext",
           "moduleResolution": "NodeNext",
           "allowImportingTsExtensions": true,
+          "verbatimModuleSyntax": true,
           "noEmit": true,
+          "strict": true,
         },
         tasks: {
           "dev": runtime === "deno"
