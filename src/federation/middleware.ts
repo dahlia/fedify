@@ -417,8 +417,17 @@ export interface Federation<TContextData> {
    */
   setInboxDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Activity, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void>;
+    dispatcher: CollectionDispatcher<
+      Activity,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
 
   /**
    * Registers an outbox dispatcher.
@@ -445,8 +454,17 @@ export interface Federation<TContextData> {
    */
   setOutboxDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Activity, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void>;
+    dispatcher: CollectionDispatcher<
+      Activity,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
 
   /**
    * Registers a following collection dispatcher.
@@ -461,8 +479,17 @@ export interface Federation<TContextData> {
    */
   setFollowingDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Actor | URL, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void>;
+    dispatcher: CollectionDispatcher<
+      Actor | URL,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
 
   /**
    * Registers a followers collection dispatcher.
@@ -479,10 +506,11 @@ export interface Federation<TContextData> {
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Recipient,
+      Context<TContextData>,
       TContextData,
       URL
     >,
-  ): CollectionCallbackSetters<TContextData, URL>;
+  ): CollectionCallbackSetters<Context<TContextData>, TContextData, URL>;
 
   /**
    * Registers a liked collection dispatcher.
@@ -497,8 +525,17 @@ export interface Federation<TContextData> {
    */
   setLikedDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Like, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void>;
+    dispatcher: CollectionDispatcher<
+      Like,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
 
   /**
    * Registers a featured collection dispatcher.
@@ -513,8 +550,17 @@ export interface Federation<TContextData> {
    */
   setFeaturedDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Object, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void>;
+    dispatcher: CollectionDispatcher<
+      Object,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
 
   /**
    * Registers a featured tags collection dispatcher.
@@ -529,8 +575,17 @@ export interface Federation<TContextData> {
    */
   setFeaturedTagsDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Hashtag, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void>;
+    dispatcher: CollectionDispatcher<
+      Hashtag,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
 
   /**
    * Assigns the URL path for the inbox and starts setting inbox listeners.
@@ -614,13 +669,48 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
     (new (...args: any[]) => Object) & { typeId: URL }
   >;
   inboxPath?: string;
-  inboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
-  outboxCallbacks?: CollectionCallbacks<Activity, TContextData, void>;
-  followingCallbacks?: CollectionCallbacks<Actor | URL, TContextData, void>;
-  followersCallbacks?: CollectionCallbacks<Recipient, TContextData, URL>;
-  likedCallbacks?: CollectionCallbacks<Like, TContextData, void>;
-  featuredCallbacks?: CollectionCallbacks<Object, TContextData, void>;
-  featuredTagsCallbacks?: CollectionCallbacks<Hashtag, TContextData, void>;
+  inboxCallbacks?: CollectionCallbacks<
+    Activity,
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
+  outboxCallbacks?: CollectionCallbacks<
+    Activity,
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
+  followingCallbacks?: CollectionCallbacks<
+    Actor | URL,
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
+  followersCallbacks?: CollectionCallbacks<
+    Recipient,
+    Context<TContextData>,
+    TContextData,
+    URL
+  >;
+  likedCallbacks?: CollectionCallbacks<
+    Like,
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
+  featuredCallbacks?: CollectionCallbacks<
+    Object,
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
+  featuredTagsCallbacks?: CollectionCallbacks<
+    Hashtag,
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  >;
   inboxListeners?: InboxListenerSet<TContextData>;
   inboxErrorHandler?: InboxErrorHandler<TContextData>;
   sharedInboxKeyDispatcher?: SharedInboxKeyDispatcher<TContextData>;
@@ -1253,8 +1343,17 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
 
   setInboxDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Activity, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void> {
+    dispatcher: CollectionDispatcher<
+      Activity,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  > {
     if (this.inboxCallbacks != null) {
       throw new RouterError("Inbox dispatcher already set.");
     }
@@ -1273,20 +1372,39 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
       }
       this.inboxPath = path;
     }
-    const callbacks: CollectionCallbacks<Activity, TContextData, void> = {
-      dispatcher,
-    };
+    const callbacks: CollectionCallbacks<
+      Activity,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = { dispatcher };
     this.inboxCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData, void> = {
+    const setters: CollectionCallbackSetters<
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+      setFirstCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+      setLastCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -1300,8 +1418,17 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
 
   setOutboxDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Activity, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void> {
+    dispatcher: CollectionDispatcher<
+      Activity,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  > {
     if (this.router.has("outbox")) {
       throw new RouterError("Outbox dispatcher already set.");
     }
@@ -1311,20 +1438,39 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         "Path for outbox dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: CollectionCallbacks<Activity, TContextData, void> = {
-      dispatcher,
-    };
+    const callbacks: CollectionCallbacks<
+      Activity,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = { dispatcher };
     this.outboxCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData, void> = {
+    const setters: CollectionCallbackSetters<
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+      setFirstCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+      setLastCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -1338,8 +1484,17 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
 
   setFollowingDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Actor | URL, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void> {
+    dispatcher: CollectionDispatcher<
+      Actor | URL,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  > {
     if (this.router.has("following")) {
       throw new RouterError("Following collection dispatcher already set.");
     }
@@ -1349,20 +1504,39 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         "Path for following collection dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: CollectionCallbacks<Actor | URL, TContextData, void> = {
-      dispatcher,
-    };
+    const callbacks: CollectionCallbacks<
+      Actor | URL,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = { dispatcher };
     this.followingCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData, void> = {
+    const setters: CollectionCallbackSetters<
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+      setFirstCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+      setLastCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -1378,10 +1552,11 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Recipient,
+      Context<TContextData>,
       TContextData,
       URL
     >,
-  ): CollectionCallbackSetters<TContextData, URL> {
+  ): CollectionCallbackSetters<Context<TContextData>, TContextData, URL> {
     if (this.router.has("followers")) {
       throw new RouterError("Followers collection dispatcher already set.");
     }
@@ -1393,22 +1568,29 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     const callbacks: CollectionCallbacks<
       Recipient,
+      Context<TContextData>,
+      TContextData,
+      URL
+    > = { dispatcher };
+    this.followersCallbacks = callbacks;
+    const setters: CollectionCallbackSetters<
+      Context<TContextData>,
       TContextData,
       URL
     > = {
-      dispatcher,
-    };
-    this.followersCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData, URL> = {
       setCounter(counter: CollectionCounter<TContextData, URL>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData, URL>) {
+      setFirstCursor(
+        cursor: CollectionCursor<Context<TContextData>, TContextData, URL>,
+      ) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData, URL>) {
+      setLastCursor(
+        cursor: CollectionCursor<Context<TContextData>, TContextData, URL>,
+      ) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -1422,8 +1604,17 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
 
   setLikedDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Like, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void> {
+    dispatcher: CollectionDispatcher<
+      Like,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  > {
     if (this.router.has("liked")) {
       throw new RouterError("Liked collection dispatcher already set.");
     }
@@ -1433,20 +1624,39 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         "Path for liked collection dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: CollectionCallbacks<Like, TContextData, void> = {
-      dispatcher,
-    };
+    const callbacks: CollectionCallbacks<
+      Like,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = { dispatcher };
     this.likedCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData, void> = {
+    const setters: CollectionCallbackSetters<
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+      setFirstCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+      setLastCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -1460,8 +1670,17 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
 
   setFeaturedDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Object, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void> {
+    dispatcher: CollectionDispatcher<
+      Object,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  > {
     if (this.router.has("featured")) {
       throw new RouterError("Featured collection dispatcher already set.");
     }
@@ -1471,20 +1690,39 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         "Path for featured collection dispatcher must have one variable: {handle}",
       );
     }
-    const callbacks: CollectionCallbacks<Object, TContextData, void> = {
-      dispatcher,
-    };
+    const callbacks: CollectionCallbacks<
+      Object,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = { dispatcher };
     this.featuredCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData, void> = {
+    const setters: CollectionCallbackSetters<
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+      setFirstCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+      setLastCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -1498,8 +1736,17 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
 
   setFeaturedTagsDispatcher(
     path: `${string}{handle}${string}`,
-    dispatcher: CollectionDispatcher<Hashtag, TContextData, void>,
-  ): CollectionCallbackSetters<TContextData, void> {
+    dispatcher: CollectionDispatcher<
+      Hashtag,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    >,
+  ): CollectionCallbackSetters<
+    RequestContext<TContextData>,
+    TContextData,
+    void
+  > {
     if (this.router.has("featuredTags")) {
       throw new RouterError("Featured tags collection dispatcher already set.");
     }
@@ -1510,20 +1757,39 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
           "variable: {handle}",
       );
     }
-    const callbacks: CollectionCallbacks<Hashtag, TContextData, void> = {
-      dispatcher,
-    };
+    const callbacks: CollectionCallbacks<
+      Hashtag,
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = { dispatcher };
     this.featuredTagsCallbacks = callbacks;
-    const setters: CollectionCallbackSetters<TContextData, void> = {
+    const setters: CollectionCallbackSetters<
+      RequestContext<TContextData>,
+      TContextData,
+      void
+    > = {
       setCounter(counter: CollectionCounter<TContextData, void>) {
         callbacks.counter = counter;
         return setters;
       },
-      setFirstCursor(cursor: CollectionCursor<TContextData, void>) {
+      setFirstCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.firstCursor = cursor;
         return setters;
       },
-      setLastCursor(cursor: CollectionCursor<TContextData, void>) {
+      setLastCursor(
+        cursor: CollectionCursor<
+          RequestContext<TContextData>,
+          TContextData,
+          void
+        >,
+      ) {
         callbacks.lastCursor = cursor;
         return setters;
       },
@@ -2261,7 +2527,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       }
       expandedRecipients = [];
       for await (
-        const recipient of this.getFollowers(sender.handle)
+        const recipient of this.#getFollowers(sender.handle)
       ) {
         expandedRecipients.push(recipient);
       }
@@ -2280,45 +2546,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     );
   }
 
-  protected getFollowers(_handle: string): AsyncIterable<Recipient> {
-    throw new Error(
-      '"followers" recipients are not supported in Context.  ' +
-        "Use RequestContext instead.",
-    );
-  }
-}
-
-interface RequestContextOptions<TContextData>
-  extends ContextOptions<TContextData> {
-  request: Request;
-  invokedFromActorDispatcher?: { handle: string };
-  invokedFromObjectDispatcher?: {
-    // deno-lint-ignore no-explicit-any
-    cls: (new (...args: any[]) => Object) & { typeId: URL };
-    values: Record<string, string>;
-  };
-}
-
-class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
-  implements RequestContext<TContextData> {
-  readonly #invokedFromActorDispatcher?: { handle: string };
-  readonly #invokedFromObjectDispatcher?: {
-    // deno-lint-ignore no-explicit-any
-    cls: (new (...args: any[]) => Object) & { typeId: URL };
-    values: Record<string, string>;
-  };
-  readonly request: Request;
-  readonly url: URL;
-
-  constructor(options: RequestContextOptions<TContextData>) {
-    super(options);
-    this.#invokedFromActorDispatcher = options.invokedFromActorDispatcher;
-    this.#invokedFromObjectDispatcher = options.invokedFromObjectDispatcher;
-    this.request = options.request;
-    this.url = options.url;
-  }
-
-  protected async *getFollowers(handle: string): AsyncIterable<Recipient> {
+  async *#getFollowers(handle: string): AsyncIterable<Recipient> {
     if (this.federation.followersCallbacks == null) {
       throw new Error("No followers collection dispatcher registered.");
     }
@@ -2350,6 +2578,37 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
       for (const recipient of result.items) yield recipient;
       cursor = result.nextCursor ?? null;
     }
+  }
+}
+
+interface RequestContextOptions<TContextData>
+  extends ContextOptions<TContextData> {
+  request: Request;
+  invokedFromActorDispatcher?: { handle: string };
+  invokedFromObjectDispatcher?: {
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => Object) & { typeId: URL };
+    values: Record<string, string>;
+  };
+}
+
+class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
+  implements RequestContext<TContextData> {
+  readonly #invokedFromActorDispatcher?: { handle: string };
+  readonly #invokedFromObjectDispatcher?: {
+    // deno-lint-ignore no-explicit-any
+    cls: (new (...args: any[]) => Object) & { typeId: URL };
+    values: Record<string, string>;
+  };
+  readonly request: Request;
+  readonly url: URL;
+
+  constructor(options: RequestContextOptions<TContextData>) {
+    super(options);
+    this.#invokedFromActorDispatcher = options.invokedFromActorDispatcher;
+    this.#invokedFromObjectDispatcher = options.invokedFromObjectDispatcher;
+    this.request = options.request;
+    this.url = options.url;
   }
 
   async getActor(handle: string): Promise<Actor | null> {
@@ -2544,10 +2803,16 @@ export interface ObjectCallbackSetters<
 /**
  * Additional settings for a collection dispatcher.
  *
+ * @typeParam TContext The type of the context.  {@link Context} or
+ *                     {@link RequestContext}.
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @typeParam TFilter The type of filter for the collection.
  */
-export interface CollectionCallbackSetters<TContextData, TFilter> {
+export interface CollectionCallbackSetters<
+  TContext extends Context<TContextData>,
+  TContextData,
+  TFilter,
+> {
   /**
    * Sets the counter for the collection.
    * @param counter A callback that returns the number of items in the collection.
@@ -2555,7 +2820,7 @@ export interface CollectionCallbackSetters<TContextData, TFilter> {
    */
   setCounter(
     counter: CollectionCounter<TContextData, TFilter>,
-  ): CollectionCallbackSetters<TContextData, TFilter>;
+  ): CollectionCallbackSetters<TContext, TContextData, TFilter>;
 
   /**
    * Sets the first cursor for the collection.
@@ -2563,8 +2828,8 @@ export interface CollectionCallbackSetters<TContextData, TFilter> {
    * @returns The setters object so that settings can be chained.
    */
   setFirstCursor(
-    cursor: CollectionCursor<TContextData, TFilter>,
-  ): CollectionCallbackSetters<TContextData, TFilter>;
+    cursor: CollectionCursor<TContext, TContextData, TFilter>,
+  ): CollectionCallbackSetters<TContext, TContextData, TFilter>;
 
   /**
    * Sets the last cursor for the collection.
@@ -2572,8 +2837,8 @@ export interface CollectionCallbackSetters<TContextData, TFilter> {
    * @returns The setters object so that settings can be chained.
    */
   setLastCursor(
-    cursor: CollectionCursor<TContextData, TFilter>,
-  ): CollectionCallbackSetters<TContextData, TFilter>;
+    cursor: CollectionCursor<TContext, TContextData, TFilter>,
+  ): CollectionCallbackSetters<TContext, TContextData, TFilter>;
 
   /**
    * Specifies the conditions under which requests are authorized.
@@ -2583,7 +2848,7 @@ export interface CollectionCallbackSetters<TContextData, TFilter> {
    */
   authorize(
     predicate: AuthorizePredicate<TContextData>,
-  ): CollectionCallbackSetters<TContextData, TFilter>;
+  ): CollectionCallbackSetters<TContext, TContextData, TFilter>;
 }
 
 /**

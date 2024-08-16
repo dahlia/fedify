@@ -8,6 +8,23 @@ Version 0.14.0
 
 To be released.
 
+ -  Removed the limitation that the `sendActivity({ handle: string },
+    "followers", Activity)` overload is only available for `RequestContext`
+    but not for `Context`.  Now it is available for both.  [[#115]]
+
+     -  Added `Context.sendActivity({ handle: string }, "followers", Activity)`
+        overload.
+     -  Added type parameter `TContext` to `CollectionsDispatcher` type's first
+        parameter to distinguish between `RequestContext` and `Context`.
+     -  The first parameter of `CollectionDispatcher` type became `TContext`
+        (was `RequestContext`).
+     -  Added type parameter `TContext` to `CollectionsCursor` type's first
+        parameter to distinguish between `RequestContext` and `Context`.
+     -  The first parameter of `CollectionCursor` type became `TContext`
+        (was `RequestContext`).
+     -  Added type parameter `TContext` to `CollectionsCallbackSetters` type's
+        first parameter to distinguish between `RequestContext` and `Context`.
+
  -  Added `source` property to `Object` class in Activity Vocabulary API.
     [[#114]]
 
@@ -34,6 +51,7 @@ To be released.
     Deno.
 
 [#114]: https://github.com/dahlia/fedify/issues/114
+[#115]: https://github.com/dahlia/fedify/issues/115
 
 
 Version 0.13.0

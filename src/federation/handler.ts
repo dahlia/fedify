@@ -25,7 +25,7 @@ import type {
   ObjectAuthorizePredicate,
   ObjectDispatcher,
 } from "./callback.ts";
-import type { RequestContext } from "./context.ts";
+import type { Context, RequestContext } from "./context.ts";
 import type { InboxListenerSet } from "./inbox.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
@@ -136,11 +136,16 @@ export async function handleObject<TContextData>(
 /**
  * Callbacks for handling a collection.
  */
-export interface CollectionCallbacks<TItem, TContextData, TFilter> {
+export interface CollectionCallbacks<
+  TItem,
+  TContext extends Context<TContextData>,
+  TContextData,
+  TFilter,
+> {
   /**
    * A callback that dispatches a collection.
    */
-  dispatcher: CollectionDispatcher<TItem, TContextData, TFilter>;
+  dispatcher: CollectionDispatcher<TItem, TContext, TContextData, TFilter>;
 
   /**
    * A callback that counts the number of items in a collection.
@@ -150,12 +155,12 @@ export interface CollectionCallbacks<TItem, TContextData, TFilter> {
   /**
    * A callback that returns the first cursor for a collection.
    */
-  firstCursor?: CollectionCursor<TContextData, TFilter>;
+  firstCursor?: CollectionCursor<TContext, TContextData, TFilter>;
 
   /**
    * A callback that returns the last cursor for a collection.
    */
-  lastCursor?: CollectionCursor<TContextData, TFilter>;
+  lastCursor?: CollectionCursor<TContext, TContextData, TFilter>;
 
   /**
    * A callback that determines if a request is authorized to access the collection.
@@ -163,13 +168,23 @@ export interface CollectionCallbacks<TItem, TContextData, TFilter> {
   authorizePredicate?: AuthorizePredicate<TContextData>;
 }
 
-export interface CollectionHandlerParameters<TItem, TContextData, TFilter> {
+export interface CollectionHandlerParameters<
+  TItem,
+  TContext extends RequestContext<TContextData>,
+  TContextData,
+  TFilter,
+> {
   name: string;
   handle: string;
   filter?: TFilter;
   filterPredicate?: (item: TItem) => boolean;
-  context: RequestContext<TContextData>;
-  collectionCallbacks?: CollectionCallbacks<TItem, TContextData, TFilter>;
+  context: TContext;
+  collectionCallbacks?: CollectionCallbacks<
+    TItem,
+    TContext,
+    TContextData,
+    TFilter
+  >;
   onUnauthorized(request: Request): Response | Promise<Response>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
@@ -177,6 +192,7 @@ export interface CollectionHandlerParameters<TItem, TContextData, TFilter> {
 
 export async function handleCollection<
   TItem extends URL | Object | Link | Recipient,
+  TContext extends RequestContext<TContextData>,
   TContextData,
   TFilter,
 >(
@@ -191,7 +207,7 @@ export async function handleCollection<
     onUnauthorized,
     onNotFound,
     onNotAcceptable,
-  }: CollectionHandlerParameters<TItem, TContextData, TFilter>,
+  }: CollectionHandlerParameters<TItem, TContext, TContextData, TFilter>,
 ): Promise<Response> {
   if (collectionCallbacks == null) return await onNotFound(request);
   const url = new URL(request.url);

@@ -22,6 +22,7 @@ import type {
   CollectionDispatcher,
   ObjectDispatcher,
 } from "./callback.ts";
+import type { RequestContext } from "./context.ts";
 import {
   acceptsJsonLd,
   handleActor,
@@ -552,7 +553,12 @@ test("handleCollection()", async () => {
       return new URL(`https://example.com/users/${handle}`);
     },
   });
-  const dispatcher: CollectionDispatcher<Activity, void, void> = (
+  const dispatcher: CollectionDispatcher<
+    Activity,
+    RequestContext<void>,
+    void,
+    void
+  > = (
     _ctx,
     handle,
     cursor,
@@ -575,10 +581,14 @@ test("handleCollection()", async () => {
   };
   const counter: CollectionCounter<void, void> = (_ctx, handle) =>
     handle === "someone" ? 3 : null;
-  const firstCursor: CollectionCursor<void, void> = (_ctx, handle) =>
-    handle === "someone" ? "0" : null;
-  const lastCursor: CollectionCursor<void, void> = (_ctx, handle) =>
-    handle === "someone" ? "2" : null;
+  const firstCursor: CollectionCursor<RequestContext<void>, void, void> = (
+    _ctx,
+    handle,
+  ) => handle === "someone" ? "0" : null;
+  const lastCursor: CollectionCursor<RequestContext<void>, void, void> = (
+    _ctx,
+    handle,
+  ) => handle === "someone" ? "2" : null;
   let onNotFoundCalled: Request | null = null;
   const onNotFound = (request: Request) => {
     onNotFoundCalled = request;
