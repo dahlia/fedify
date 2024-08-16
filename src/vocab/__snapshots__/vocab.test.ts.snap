@@ -903,7 +903,8 @@ snapshot[`Deno.inspect(Application) [auto] 1`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
 }'
 `;
 
@@ -955,7 +956,8 @@ snapshot[`Deno.inspect(Application) [auto] 2`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  alias: URL "https://example.com/"
 }'
 `;
 
@@ -1007,7 +1009,8 @@ snapshot[`Deno.inspect(Application) [auto] 3`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Application {} ]
 }'
 `;
 
@@ -2637,7 +2640,8 @@ snapshot[`Deno.inspect(Group) [auto] 1`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
 }'
 `;
 
@@ -2689,7 +2693,8 @@ snapshot[`Deno.inspect(Group) [auto] 2`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  alias: URL "https://example.com/"
 }'
 `;
 
@@ -2741,7 +2746,8 @@ snapshot[`Deno.inspect(Group) [auto] 3`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Application {} ]
 }'
 `;
 
@@ -4653,7 +4659,8 @@ snapshot[`Deno.inspect(Organization) [auto] 1`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
 }'
 `;
 
@@ -4705,7 +4712,8 @@ snapshot[`Deno.inspect(Organization) [auto] 2`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  alias: URL "https://example.com/"
 }'
 `;
 
@@ -4757,7 +4765,8 @@ snapshot[`Deno.inspect(Organization) [auto] 3`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Application {} ]
 }'
 `;
 
@@ -4920,7 +4929,8 @@ snapshot[`Deno.inspect(Person) [auto] 1`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
 }'
 `;
 
@@ -4972,7 +4982,8 @@ snapshot[`Deno.inspect(Person) [auto] 2`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  alias: URL "https://example.com/"
 }'
 `;
 
@@ -5024,7 +5035,8 @@ snapshot[`Deno.inspect(Person) [auto] 3`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Application {} ]
 }'
 `;
 
@@ -5925,7 +5937,8 @@ snapshot[`Deno.inspect(Service) [auto] 1`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
 }'
 `;
 
@@ -5977,7 +5990,8 @@ snapshot[`Deno.inspect(Service) [auto] 2`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  alias: URL "https://example.com/"
 }'
 `;
 
@@ -6029,7 +6043,8 @@ snapshot[`Deno.inspect(Service) [auto] 3`] = `
   discoverable: true,
   suspended: true,
   memorial: true,
-  indexable: true
+  indexable: true,
+  aliases: [ Application {}, Application {} ]
 }'
 `;
 

@@ -242,3 +242,20 @@ properties:
   description: Whether the actor allows to be indexed.
   range:
   - "http://www.w3.org/2001/XMLSchema#boolean"
+
+- pluralName: aliases
+  singularName: alias
+  singularAccessor: true
+  compactName: alsoKnownAs
+  uri: "https://www.w3.org/ns/activitystreams#alsoKnownAs"
+  description: |
+    The `aliases` (`alsoKnownAs`) property is used to specify alternative names
+    or aliases for an entity.  It can be used to provide additional identifiers
+    or labels for an entity, which can be useful in scenarios where an entity
+    may have multiple names or aliases.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Application"
+  - "https://www.w3.org/ns/activitystreams#Group"
+  - "https://www.w3.org/ns/activitystreams#Organization"
+  - "https://www.w3.org/ns/activitystreams#Person"
+  - "https://www.w3.org/ns/activitystreams#Service"

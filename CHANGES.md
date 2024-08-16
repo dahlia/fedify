@@ -34,6 +34,39 @@ To be released.
 
  -  Added `Source` class to Activity Vocabulary API.  [[#114]]
 
+ -  Added `aliases` property to `Actor` type in Activity Vocabulary API.
+
+     -  Added `Application.getAliases()` method.
+     -  Added `Application.getAlias()` method.
+     -  `new Application()` constructor now accepts `alias` option.
+     -  `new Application()` constructor now accepts `aliases` option.
+     -  `Application.clone()` method now accepts `alias` option.
+     -  `Application.clone()` method now accepts `aliases` option.
+     -  Added `Group.getAliases()` method.
+     -  Added `Group.getAlias()` method.
+     -  `new Group()` constructor now accepts `alias` option.
+     -  `new Group()` constructor now accepts `aliases` option.
+     -  `Group.clone()` method now accepts `alias` option.
+     -  `Group.clone()` method now accepts `aliases` option.
+     -  Added `Organization.getAliases()` method.
+     -  Added `Organization.getAlias()` method.
+     -  `new Organization()` constructor now accepts `alias` option.
+     -  `new Organization()` constructor now accepts `aliases` option.
+     -  `Organization.clone()` method now accepts `alias` option.
+     -  `Organization.clone()` method now accepts `aliases` option.
+     -  Added `Person.getAliases()` method.
+     -  Added `Person.getAlias()` method.
+     -  `new Person()` constructor now accepts `alias` option.
+     -  `new Person()` constructor now accepts `aliases` option.
+     -  `Person.clone()` method now accepts `alias` option.
+     -  `Person.clone()` method now accepts `aliases` option.
+     -  Added `Service.getAliases()` method.
+     -  Added `Service.getAlias()` method.
+     -  `new Service()` constructor now accepts `alias` option.
+     -  `new Service()` constructor now accepts `aliases` option.
+     -  `Service.clone()` method now accepts `alias` option.
+     -  `Service.clone()` method now accepts `aliases` option.
+
  -  Improved the performance of `Object.toJsonLd()` method.
 
      -  `Object.toJsonLd()` method no longer guarantees that the returned

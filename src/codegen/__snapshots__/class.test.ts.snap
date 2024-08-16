@@ -12343,6 +12343,7 @@ export class Application extends Object {
 #_2kGKkJtoFWg8c18PaVSqj9NKP4t7: (boolean)[] = [];
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk: (boolean)[] = [];
+#_3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
 
   /**
    * Constructs a new instance of Application with the given values.
@@ -12372,7 +12373,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 ,
     {
       documentLoader,
@@ -12654,6 +12656,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             );
           }
         }
+      
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot initialize both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -12685,7 +12721,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 
     = {},
     options: {
@@ -12962,6 +12999,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             throw new TypeError(
               \\"The indexable must be of type \\" +
               \\"boolean\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot update both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
             );
           }
         }
@@ -13920,6 +13991,161 @@ get indexable(): (boolean | null) {
         return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
+    async #fetchAlias(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Application | Group | Organization | Person | Service | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Application.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Group.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Organization.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Person.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Service.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Application.getAlias},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get aliasId(): URL | null {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async getAlias(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Application | Group | Organization | Person | Service | null> {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAlias(v, options);
+          if (fetched == null) return null;
+          this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Application.getAliases},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get aliasIds(): URL[] {
+        return this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async* getAliases(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Application | Group | Organization | Person | Service> {
+        const vs = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAlias(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -14266,6 +14492,40 @@ get indexable(): (boolean | null) {
           result[\\"indexable\\"] = compactItems[0];
         }
         
+      compactItems = [];
+      for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"alsoKnownAs\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"alsoKnownAs\\"] = compactItems[0];
+        }
+        
       result[\\"type\\"] = \\"Application\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
       result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
@@ -14505,6 +14765,19 @@ get indexable(): (boolean | null) {
     }
     if (array.length > 0) {
       values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
+    
+    array = [];
+    for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"] = (
     array
       );
     }
@@ -14911,6 +15184,42 @@ get indexable(): (boolean | null) {
     _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
     }
     instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
+
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY__array = values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"];
+    for (
+      const v of _3NV7TGNhuABbryNjNi4wib4DgNpY__array == null
+        ? []
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array.length === 1 && \\"@list\\" in _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0]
+        ? _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0][\\"@list\\"]
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _3NV7TGNhuABbryNjNi4wib4DgNpY.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\") ? await Application.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\") ? await Group.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\") ? await Organization.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\") ? await Person.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\") ? await Service.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3NV7TGNhuABbryNjNi4wib4DgNpY.push(decoded);
+      
+    }
+    instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY = _3NV7TGNhuABbryNjNi4wib4DgNpY;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -15285,6 +15594,32 @@ get indexable(): (boolean | null) {
     
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
+      const _3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length == 1) {
+        proxy.alias = _3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+      }
+      
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length > 1
+          || !(\\"alias\\" in proxy)
+          && _3NV7TGNhuABbryNjNi4wib4DgNpY.length > 0) {
+        proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY;
       }
       
     return proxy;
@@ -22146,6 +22481,7 @@ export class Group extends Object {
 #_2kGKkJtoFWg8c18PaVSqj9NKP4t7: (boolean)[] = [];
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk: (boolean)[] = [];
+#_3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
 
   /**
    * Constructs a new instance of Group with the given values.
@@ -22175,7 +22511,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 ,
     {
       documentLoader,
@@ -22457,6 +22794,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             );
           }
         }
+      
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot initialize both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -22488,7 +22859,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 
     = {},
     options: {
@@ -22765,6 +23137,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             throw new TypeError(
               \\"The indexable must be of type \\" +
               \\"boolean\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot update both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
             );
           }
         }
@@ -23723,6 +24129,161 @@ get indexable(): (boolean | null) {
         return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
+    async #fetchAlias(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Application | Group | Organization | Person | Service | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Application.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Group.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Organization.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Person.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Service.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Group.getAlias},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get aliasId(): URL | null {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async getAlias(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Application | Group | Organization | Person | Service | null> {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAlias(v, options);
+          if (fetched == null) return null;
+          this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Group.getAliases},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get aliasIds(): URL[] {
+        return this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async* getAliases(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Application | Group | Organization | Person | Service> {
+        const vs = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAlias(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -24069,6 +24630,40 @@ get indexable(): (boolean | null) {
           result[\\"indexable\\"] = compactItems[0];
         }
         
+      compactItems = [];
+      for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"alsoKnownAs\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"alsoKnownAs\\"] = compactItems[0];
+        }
+        
       result[\\"type\\"] = \\"Group\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
       result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
@@ -24308,6 +24903,19 @@ get indexable(): (boolean | null) {
     }
     if (array.length > 0) {
       values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
+    
+    array = [];
+    for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"] = (
     array
       );
     }
@@ -24714,6 +25322,42 @@ get indexable(): (boolean | null) {
     _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
     }
     instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
+
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY__array = values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"];
+    for (
+      const v of _3NV7TGNhuABbryNjNi4wib4DgNpY__array == null
+        ? []
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array.length === 1 && \\"@list\\" in _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0]
+        ? _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0][\\"@list\\"]
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _3NV7TGNhuABbryNjNi4wib4DgNpY.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\") ? await Application.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\") ? await Group.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\") ? await Organization.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\") ? await Person.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\") ? await Service.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3NV7TGNhuABbryNjNi4wib4DgNpY.push(decoded);
+      
+    }
+    instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY = _3NV7TGNhuABbryNjNi4wib4DgNpY;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -25088,6 +25732,32 @@ get indexable(): (boolean | null) {
     
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
+      const _3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length == 1) {
+        proxy.alias = _3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+      }
+      
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length > 1
+          || !(\\"alias\\" in proxy)
+          && _3NV7TGNhuABbryNjNi4wib4DgNpY.length > 0) {
+        proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY;
       }
       
     return proxy;
@@ -30672,6 +31342,7 @@ export class Organization extends Object {
 #_2kGKkJtoFWg8c18PaVSqj9NKP4t7: (boolean)[] = [];
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk: (boolean)[] = [];
+#_3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
 
   /**
    * Constructs a new instance of Organization with the given values.
@@ -30701,7 +31372,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 ,
     {
       documentLoader,
@@ -30983,6 +31655,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             );
           }
         }
+      
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot initialize both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -31014,7 +31720,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 
     = {},
     options: {
@@ -31291,6 +31998,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             throw new TypeError(
               \\"The indexable must be of type \\" +
               \\"boolean\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot update both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
             );
           }
         }
@@ -32249,6 +32990,161 @@ get indexable(): (boolean | null) {
         return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
+    async #fetchAlias(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Application | Group | Organization | Person | Service | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Application.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Group.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Organization.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Person.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Service.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Organization.getAlias},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get aliasId(): URL | null {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async getAlias(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Application | Group | Organization | Person | Service | null> {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAlias(v, options);
+          if (fetched == null) return null;
+          this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Organization.getAliases},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get aliasIds(): URL[] {
+        return this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async* getAliases(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Application | Group | Organization | Person | Service> {
+        const vs = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAlias(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -32595,6 +33491,40 @@ get indexable(): (boolean | null) {
           result[\\"indexable\\"] = compactItems[0];
         }
         
+      compactItems = [];
+      for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"alsoKnownAs\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"alsoKnownAs\\"] = compactItems[0];
+        }
+        
       result[\\"type\\"] = \\"Organization\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
       result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
@@ -32834,6 +33764,19 @@ get indexable(): (boolean | null) {
     }
     if (array.length > 0) {
       values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
+    
+    array = [];
+    for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"] = (
     array
       );
     }
@@ -33240,6 +34183,42 @@ get indexable(): (boolean | null) {
     _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
     }
     instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
+
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY__array = values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"];
+    for (
+      const v of _3NV7TGNhuABbryNjNi4wib4DgNpY__array == null
+        ? []
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array.length === 1 && \\"@list\\" in _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0]
+        ? _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0][\\"@list\\"]
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _3NV7TGNhuABbryNjNi4wib4DgNpY.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\") ? await Application.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\") ? await Group.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\") ? await Organization.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\") ? await Person.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\") ? await Service.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3NV7TGNhuABbryNjNi4wib4DgNpY.push(decoded);
+      
+    }
+    instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY = _3NV7TGNhuABbryNjNi4wib4DgNpY;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -33616,6 +34595,32 @@ get indexable(): (boolean | null) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
+      const _3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length == 1) {
+        proxy.alias = _3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+      }
+      
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length > 1
+          || !(\\"alias\\" in proxy)
+          && _3NV7TGNhuABbryNjNi4wib4DgNpY.length > 0) {
+        proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY;
+      }
+      
     return proxy;
   }
 
@@ -33950,6 +34955,7 @@ export class Person extends Object {
 #_2kGKkJtoFWg8c18PaVSqj9NKP4t7: (boolean)[] = [];
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk: (boolean)[] = [];
+#_3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
 
   /**
    * Constructs a new instance of Person with the given values.
@@ -33979,7 +34985,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 ,
     {
       documentLoader,
@@ -34261,6 +35268,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             );
           }
         }
+      
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot initialize both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -34292,7 +35333,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 
     = {},
     options: {
@@ -34569,6 +35611,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             throw new TypeError(
               \\"The indexable must be of type \\" +
               \\"boolean\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot update both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
             );
           }
         }
@@ -35527,6 +36603,161 @@ get indexable(): (boolean | null) {
         return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
+    async #fetchAlias(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Application | Group | Organization | Person | Service | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Application.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Group.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Organization.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Person.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Service.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Person.getAlias},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get aliasId(): URL | null {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async getAlias(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Application | Group | Organization | Person | Service | null> {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAlias(v, options);
+          if (fetched == null) return null;
+          this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Person.getAliases},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get aliasIds(): URL[] {
+        return this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async* getAliases(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Application | Group | Organization | Person | Service> {
+        const vs = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAlias(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -35873,6 +37104,40 @@ get indexable(): (boolean | null) {
           result[\\"indexable\\"] = compactItems[0];
         }
         
+      compactItems = [];
+      for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"alsoKnownAs\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"alsoKnownAs\\"] = compactItems[0];
+        }
+        
       result[\\"type\\"] = \\"Person\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
       result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
@@ -36112,6 +37377,19 @@ get indexable(): (boolean | null) {
     }
     if (array.length > 0) {
       values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
+    
+    array = [];
+    for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"] = (
     array
       );
     }
@@ -36518,6 +37796,42 @@ get indexable(): (boolean | null) {
     _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
     }
     instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
+
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY__array = values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"];
+    for (
+      const v of _3NV7TGNhuABbryNjNi4wib4DgNpY__array == null
+        ? []
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array.length === 1 && \\"@list\\" in _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0]
+        ? _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0][\\"@list\\"]
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _3NV7TGNhuABbryNjNi4wib4DgNpY.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\") ? await Application.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\") ? await Group.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\") ? await Organization.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\") ? await Person.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\") ? await Service.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3NV7TGNhuABbryNjNi4wib4DgNpY.push(decoded);
+      
+    }
+    instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY = _3NV7TGNhuABbryNjNi4wib4DgNpY;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -36892,6 +38206,32 @@ get indexable(): (boolean | null) {
     
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
+      const _3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length == 1) {
+        proxy.alias = _3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+      }
+      
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length > 1
+          || !(\\"alias\\" in proxy)
+          && _3NV7TGNhuABbryNjNi4wib4DgNpY.length > 0) {
+        proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY;
       }
       
     return proxy;
@@ -41052,6 +42392,7 @@ export class Service extends Object {
 #_2kGKkJtoFWg8c18PaVSqj9NKP4t7: (boolean)[] = [];
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk: (boolean)[] = [];
+#_3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
 
   /**
    * Constructs a new instance of Service with the given values.
@@ -41081,7 +42422,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 ,
     {
       documentLoader,
@@ -41363,6 +42705,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             );
           }
         }
+      
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot initialize both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -41394,7 +42770,8 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;}
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+aliases?: (Application | Group | Organization | Person | Service | URL)[];}
 
     = {},
     options: {
@@ -41671,6 +43048,40 @@ assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null
             throw new TypeError(
               \\"The indexable must be of type \\" +
               \\"boolean\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        if (\\"alias\\" in values &&             values.alias != null) {
+          if (values.alias instanceof Application || values.alias instanceof Group || values.alias instanceof Organization || values.alias instanceof Person || values.alias instanceof Service || values.alias instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = [values.alias];
+          } else {
+            throw new TypeError(
+              \\"The alias must be of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"aliases\\" in values &&             values.aliases != null) {
+      
+          if (\\"alias\\" in values &&
+              values.alias != null) {
+            throw new TypeError(
+              \\"Cannot update both alias and \\" +
+                \\"aliases at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.aliases) &&
+              values.aliases.every(v => v instanceof Application || v instanceof Group || v instanceof Organization || v instanceof Person || v instanceof Service || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_3NV7TGNhuABbryNjNi4wib4DgNpY = values.aliases;
+          } else {
+            throw new TypeError(
+              \\"The aliases must be an array of type \\" +
+              \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
             );
           }
         }
@@ -42629,6 +44040,161 @@ get indexable(): (boolean | null) {
         return this.#_2diCorzqPGQQqftp6e4SrCEwEnyk[0];
       }
       
+    async #fetchAlias(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<Application | Group | Organization | Person | Service | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await Application.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Group.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Organization.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Person.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      try {
+        return await Service.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Application\\",\\"https://www.w3.org/ns/activitystreams#Group\\",\\"https://www.w3.org/ns/activitystreams#Organization\\",\\"https://www.w3.org/ns/activitystreams#Person\\",\\"https://www.w3.org/ns/activitystreams#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Service.getAlias},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get aliasId(): URL | null {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async getAlias(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<Application | Group | Organization | Person | Service | null> {
+        if (this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.length < 1) return null;
+        const v = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchAlias(v, options);
+          if (fetched == null) return null;
+          this.#_3NV7TGNhuABbryNjNi4wib4DgNpY[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Service.getAliases},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get aliasIds(): URL[] {
+        return this.#_3NV7TGNhuABbryNjNi4wib4DgNpY.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** The \`aliases\` (\`alsoKnownAs\`) property is used to specify alternative names
+ * or aliases for an entity.  It can be used to provide additional identifiers
+ * or labels for an entity, which can be useful in scenarios where an entity
+ * may have multiple names or aliases.
+ * 
+ */
+
+      async* getAliases(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<Application | Group | Organization | Person | Service> {
+        const vs = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchAlias(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -42975,6 +44541,40 @@ get indexable(): (boolean | null) {
           result[\\"indexable\\"] = compactItems[0];
         }
         
+      compactItems = [];
+      for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+        const item = (
+      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Group ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Organization ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : v instanceof Person ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      
+        if (compactItems.length > 1) {
+          result[\\"alsoKnownAs\\"] = compactItems;
+        } else if (compactItems.length === 1) {
+          result[\\"alsoKnownAs\\"] = compactItems[0];
+        }
+        
       result[\\"type\\"] = \\"Service\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
       result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
@@ -43214,6 +44814,19 @@ get indexable(): (boolean | null) {
     }
     if (array.length > 0) {
       values[\\"http://joinmastodon.org/ns#indexable\\"] = (
+    array
+      );
+    }
+    
+    array = [];
+    for (const v of this.#_3NV7TGNhuABbryNjNi4wib4DgNpY) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof Application ? await v.toJsonLd(options) : v instanceof Group ? await v.toJsonLd(options) : v instanceof Organization ? await v.toJsonLd(options) : v instanceof Person ? await v.toJsonLd(options) : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"] = (
     array
       );
     }
@@ -43620,6 +45233,42 @@ get indexable(): (boolean | null) {
     _2diCorzqPGQQqftp6e4SrCEwEnyk.push(v[\\"@value\\"])
     }
     instance.#_2diCorzqPGQQqftp6e4SrCEwEnyk = _2diCorzqPGQQqftp6e4SrCEwEnyk;
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY: (Application | Group | Organization | Person | Service | URL)[] = [];
+
+    const _3NV7TGNhuABbryNjNi4wib4DgNpY__array = values[\\"https://www.w3.org/ns/activitystreams#alsoKnownAs\\"];
+    for (
+      const v of _3NV7TGNhuABbryNjNi4wib4DgNpY__array == null
+        ? []
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array.length === 1 && \\"@list\\" in _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0]
+        ? _3NV7TGNhuABbryNjNi4wib4DgNpY__array[0][\\"@list\\"]
+        : _3NV7TGNhuABbryNjNi4wib4DgNpY__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _3NV7TGNhuABbryNjNi4wib4DgNpY.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\") ? await Application.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\") ? await Group.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\") ? await Organization.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\") ? await Person.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\") ? await Service.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3NV7TGNhuABbryNjNi4wib4DgNpY.push(decoded);
+      
+    }
+    instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY = _3NV7TGNhuABbryNjNi4wib4DgNpY;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -43994,6 +45643,32 @@ get indexable(): (boolean | null) {
     
       if (_2diCorzqPGQQqftp6e4SrCEwEnyk.length == 1) {
         proxy.indexable = _2diCorzqPGQQqftp6e4SrCEwEnyk[0];
+      }
+      
+      const _3NV7TGNhuABbryNjNi4wib4DgNpY = this.#_3NV7TGNhuABbryNjNi4wib4DgNpY
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length == 1) {
+        proxy.alias = _3NV7TGNhuABbryNjNi4wib4DgNpY[0];
+      }
+      
+      if (_3NV7TGNhuABbryNjNi4wib4DgNpY.length > 1
+          || !(\\"alias\\" in proxy)
+          && _3NV7TGNhuABbryNjNi4wib4DgNpY.length > 0) {
+        proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY;
       }
       
     return proxy;
