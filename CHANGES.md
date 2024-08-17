@@ -104,7 +104,7 @@ Released on August 7, 2024.
      -  `new Question()` constructor now accepts `voters` option.
      -  `Question.clone()` method now accepts `voters` option.
 
- -  HTTP Signatures verficiation now can be optionally skipped for the sake of
+ -  HTTP Signatures verification now can be optionally skipped for the sake of
     testing.  [[#110]]
 
      -  The type of `CreateFederationOptions.signatureTimeWindow` property
@@ -1346,4 +1346,4 @@ Version 0.1.0
 
 Initial release.  Released on March 8, 2024.
 
-<!-- cSpell: ignore Dogeon Wressell -->
+<!-- cSpell: ignore Dogeon Fabien Wressell -->
