@@ -99,7 +99,7 @@ export async function exportJwk(key: CryptoKey): Promise<JsonWebKey> {
 /**
  * Imports a key from JWK format.
  * @param jwk The key in JWK format.
- * @param type Which type of key to import, either `"public"`" or `"private"`".
+ * @param type Which type of key to import, either `"public"` or `"private"`.
  * @returns The imported key.
  * @throws {TypeError} If the key is invalid or unsupported.
  */
