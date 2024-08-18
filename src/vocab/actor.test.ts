@@ -100,7 +100,7 @@ test("getActorHandle()", async (t) => {
     "GET@/.well-known/webfinger",
     (_) =>
       new Response(
-        JSON.stringify({ subject: "acct:john@example.com" }),
+        JSON.stringify({ subject: "acct:johndoe@foo.example.com" }),
         { headers: { "Content-Type": "application/jrd+json" } },
       ),
   );
@@ -112,15 +112,15 @@ test("getActorHandle()", async (t) => {
   });
 
   await t.step("WebFinger subject", async () => {
-    assertEquals(await getActorHandle(actor), "@john@example.com");
+    assertEquals(await getActorHandle(actor), "@johndoe@foo.example.com");
     assertEquals(
       await getActorHandle(actor, { trimLeadingAt: true }),
-      "john@example.com",
+      "johndoe@foo.example.com",
     );
-    assertEquals(await getActorHandle(actorId), "@john@example.com");
+    assertEquals(await getActorHandle(actorId), "@johndoe@foo.example.com");
     assertEquals(
       await getActorHandle(actorId, { trimLeadingAt: true }),
-      "john@example.com",
+      "johndoe@foo.example.com",
     );
   });
 
@@ -130,22 +130,25 @@ test("getActorHandle()", async (t) => {
       new Response(
         JSON.stringify({
           subject: "https://foo.example.com/@john",
-          aliases: ["acct:john@bar.example.com"],
+          aliases: [
+            "acct:john@bar.example.com",
+            "acct:johndoe@foo.example.com",
+          ],
         }),
         { headers: { "Content-Type": "application/jrd+json" } },
       ),
   );
 
   await t.step("WebFinger aliases", async () => {
-    assertEquals(await getActorHandle(actor), "@john@bar.example.com");
+    assertEquals(await getActorHandle(actor), "@johndoe@foo.example.com");
     assertEquals(
       await getActorHandle(actor, { trimLeadingAt: true }),
-      "john@bar.example.com",
+      "johndoe@foo.example.com",
     );
-    assertEquals(await getActorHandle(actorId), "@john@bar.example.com");
+    assertEquals(await getActorHandle(actorId), "@johndoe@foo.example.com");
     assertEquals(
       await getActorHandle(actorId, { trimLeadingAt: true }),
-      "john@bar.example.com",
+      "johndoe@foo.example.com",
     );
   });
 

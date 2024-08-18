@@ -8,6 +8,10 @@ Version 0.12.3
 
 To be released.
 
+ -  Fixed a vulnerability where the `getActorHandle()` function had trusted
+    the hostname of WebFinger aliases that had not matched the hostname of the
+    actor ID (URI).
+
 
 Version 0.12.2
 --------------
