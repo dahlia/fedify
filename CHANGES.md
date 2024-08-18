@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.13.1
 --------------
 
-To be released.
+Released on August 18, 2024.
 
  -  Fixed a vulnerability where the `getActorHandle()` function had trusted
     the hostname of WebFinger aliases that had not matched the hostname of the
