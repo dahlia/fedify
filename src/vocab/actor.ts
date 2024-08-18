@@ -114,6 +114,8 @@ export async function getActorHandle(
       for (const alias of aliases) {
         const match = alias.match(/^acct:([^@]+)@([^@]+)$/);
         if (match != null) {
+          const hostname = new URL(`https://${match[2]}/`).hostname;
+          if (hostname !== actorId.hostname) continue;
           return normalizeActorHandle(`@${match[1]}@${match[2]}`, options);
         }
       }

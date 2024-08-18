@@ -8,6 +8,10 @@ Version 0.13.1
 
 To be released.
 
+ -  Fixed a vulnerability where the `getActorHandle()` function had trusted
+    the hostname of WebFinger aliases that had not matched the hostname of the
+    actor ID (URI).
+
 
 Version 0.13.0
 --------------
@@ -81,6 +85,16 @@ Released on August 7, 2024.
 [#110]: https://github.com/dahlia/fedify/issues/110
 [Express]: https://expressjs.com/
 [Nitro]: https://nitro.unjs.io/
+
+
+Version 0.12.3
+--------------
+
+Released on August 18, 2024.
+
+ -  Fixed a vulnerability where the `getActorHandle()` function had trusted
+    the hostname of WebFinger aliases that had not matched the hostname of the
+    actor ID (URI).
 
 
 Version 0.12.2
