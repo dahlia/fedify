@@ -115,7 +115,12 @@ export async function getActorHandle(
         const match = alias.match(/^acct:([^@]+)@([^@]+)$/);
         if (match != null) {
           const hostname = new URL(`https://${match[2]}/`).hostname;
-          if (hostname !== actorId.hostname) continue;
+          if (
+            hostname !== actorId.hostname &&
+            !await verifyCrossOriginActorHandle(actorId.href, alias)
+          ) {
+            continue;
+          }
           return normalizeActorHandle(`@${match[1]}@${match[2]}`, options);
         }
       }
@@ -133,6 +138,18 @@ export async function getActorHandle(
   throw new TypeError(
     "Actor does not have enough information to get the handle.",
   );
+}
+
+async function verifyCrossOriginActorHandle(
+  actorId: string,
+  alias: string,
+): Promise<boolean> {
+  const response = await lookupWebFinger(alias);
+  if (response == null) return false;
+  for (const alias of response.aliases ?? []) {
+    if (new URL(alias).href === actorId) return true;
+  }
+  return false;
 }
 
 /**

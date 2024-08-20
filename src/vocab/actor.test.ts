@@ -154,6 +154,24 @@ test("getActorHandle()", async (t) => {
 
   mf.mock(
     "GET@/.well-known/webfinger",
+    (_) =>
+      new Response(
+        JSON.stringify({
+          subject: "acct:john@bar.example.com",
+          aliases: [
+            "https://foo.example.com/@john",
+          ],
+        }),
+        { headers: { "Content-Type": "application/jrd+json" } },
+      ),
+  );
+
+  await t.step("cross-origin WebFinger resources", async () => {
+    assertEquals(await getActorHandle(actor), "@john@bar.example.com");
+  });
+
+  mf.mock(
+    "GET@/.well-known/webfinger",
     (_) => new Response(null, { status: 404 }),
   );
 

@@ -79,6 +79,9 @@ To be released.
         applicable to `format: "compact"`.  Otherwise, it throws
         a `TypeError`.
 
+ -  The `getActorHandle()` function now supports cross-origin WebFinger
+    resources.
+
  -  The `lookupWebFinger()` and `getActorHandle()` functions no more throw
     an error when they fail to reach the WebFinger resource.
 
