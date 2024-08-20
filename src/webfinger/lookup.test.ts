@@ -5,8 +5,6 @@ import type { ResourceDescriptor } from "./jrd.ts";
 import { lookupWebFinger } from "./lookup.ts";
 
 test("lookupWebFinger()", async (t) => {
-  mf.install();
-
   await t.step("invalid resource", async () => {
     assertEquals(await lookupWebFinger("acct:johndoe"), null);
     assertEquals(await lookupWebFinger(new URL("acct:johndoe")), null);
@@ -14,6 +12,18 @@ test("lookupWebFinger()", async (t) => {
     assertEquals(await lookupWebFinger(new URL("acct:johndoe@")), null);
   });
 
+  await t.step("connection refused", async () => {
+    assertEquals(
+      await lookupWebFinger("acct:johndoe@fedify-test.internal"),
+      null,
+    );
+    assertEquals(
+      await lookupWebFinger("https://fedify-test.internal/foo"),
+      null,
+    );
+  });
+
+  mf.install();
   mf.mock("GET@/.well-known/webfinger", (req) => {
     assertEquals(new URL(req.url).host, "example.com");
     return new Response("", { status: 404 });

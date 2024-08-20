@@ -79,6 +79,9 @@ To be released.
         applicable to `format: "compact"`.  Otherwise, it throws
         a `TypeError`.
 
+ -  The `lookupWebFinger()` and `getActorHandle()` functions no more throw
+    an error when they fail to reach the WebFinger resource.
+
  -  Now `fedify init` generates a default *tsconfig.json* file on Node.js and
     Bun, and fills the *deno.json* file with the default `compilerOptions` on
     Deno.

@@ -31,10 +31,19 @@ export async function lookupWebFinger(
       "Fetching WebFinger resource descriptor from {url}...",
       { url: url.href },
     );
-    const response = await fetch(url, {
-      headers: { Accept: "application/jrd+json" },
-      redirect: "manual",
-    });
+    let response: Response;
+    try {
+      response = await fetch(url, {
+        headers: { Accept: "application/jrd+json" },
+        redirect: "manual",
+      });
+    } catch (error) {
+      logger.debug(
+        "Failed to fetch WebFinger resource descriptor: {error}",
+        { url: url.href, error },
+      );
+      return null;
+    }
     if (
       response.status >= 300 && response.status < 400 &&
       response.headers.has("Location")
