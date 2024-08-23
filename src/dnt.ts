@@ -57,7 +57,6 @@ await build({
     },
     funding: [
       "https://github.com/sponsors/dahlia",
-      "https://toss.me/hongminhee",
     ],
   },
   outDir: "./npm",
