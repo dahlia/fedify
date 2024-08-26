@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.14.0
 --------------
 
-To be released.
+Released on August 27, 2024.
 
  -  Removed the limitation that the `sendActivity({ handle: string },
     "followers", Activity)` overload is only available for `RequestContext`
