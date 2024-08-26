@@ -72,7 +72,7 @@ a single value, while <dfn>non-functional</dfn> properties are the properties
 that contain zero or multiple values.
 
 <dfn>Scalar properties</dfn> can contain only [scalar values](#scalar-types)
-(e.g., string, number, boolean, URI), while <dfn>non-scalar properties</dfn> 
+(e.g., string, number, boolean, URI), while <dfn>non-scalar properties</dfn>
 can contain both scalar and non-scalar values. Objects like `Create`, `Note`,
 and `Person` are non-scalar values.  Non-scalar properties can contain either
 objects or URIs (object ID) of the objects.
@@ -89,6 +89,33 @@ Some non-functional properties have both singular and plural accessors for
 the sake of convenience.  In such cases, the singular accessors return the first
 value of the property, while the plural accessors return all values of the
 property.
+
+> [!NOTE]
+> Some of the properties in Activity Vocabulary have been renamed in Fedify:
+>
+> | Original name          | Accessor in Fedify                |
+> |------------------------|-----------------------------------|
+> | [`alsoKnownAs`]        | `Actor.getAliases()`              |
+> | [`anyOf`]              | `Question.getInclusiveOptions()`  |
+> | [`attributedTo`]       | `Object.getAttributions()`        |
+> | [`hreflang`]           | `Link.language`                   |
+> | [`inReplyTo`]          | `Object.getReplyTargets()`        |
+> | [`oneOf`]              | `Question.getExclusiveOptions()`  |
+> | [`orderedItems`]       | `OrderedCollection.getItems()`    |
+> | [`publicKeyMultibase`] | `Multikey.publicKey`              |
+> | [`publicKeyPem`]       | `CryptographicKey.publicKey`      |
+> | [`votersCount`]        | `Question.voters`                 |
+
+[`alsoKnownAs`]: https://www.w3.org/TR/did-core/#dfn-alsoknownas
+[`anyOf`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-anyof
+[`attributedTo`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-attributedto
+[`hreflang`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-hreflang
+[`inReplyTo`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-inreplyto
+[`oneOf`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-oneof
+[`orderedItems`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-items
+[`publicKeyMultibase`]: https://www.w3.org/TR/controller-document/#dfn-publickeymultibase
+[`publicKeyPem`]: https://web.archive.org/web/20221218063101/https://web-payments.org/vocabs/security#publicKey
+[`votersCount`]: https://docs.joinmastodon.org/spec/activitypub/#poll-specific-properties
 
 
 Object IDs and remote objects
@@ -133,7 +160,7 @@ manner, both `a.objectId` and `b.objectId` return the equivalent URI.
 > Dereferencing accessors take option `documentLoader` to specify the method
 > to fetch the remote object.  By default, it uses the default document loader
 > which utilizes th  [`fetch()`] API.
-> 
+>
 > If you want to implement your own document loader, see the `DocumentLoader`
 > interface in the API reference.
 >

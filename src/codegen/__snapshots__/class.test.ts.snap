@@ -2601,8 +2601,8 @@ get endTime(): (Temporal.Instant | null) {
         return v.id;
       }
       
-/** 	Indicates one or more physical or logical locations associated with
- *  the object.
+/** Indicates one or more physical or logical locations associated with
+ * the object.
  * 
  */
 
@@ -2636,8 +2636,8 @@ get endTime(): (Temporal.Instant | null) {
         ).filter(id => id !== null);
       }
       
-/** 	Indicates one or more physical or logical locations associated with
- *  the object.
+/** Indicates one or more physical or logical locations associated with
+ * the object.
  * 
  */
 
