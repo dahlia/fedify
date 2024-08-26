@@ -59,8 +59,37 @@ that help you do that:
 <!-- cSpell: ignore serveo tailscale -->
 
 
-Inspecting ActivityPub messages
--------------------------------
+Inspecting ActivityPub objects
+------------------------------
+
+### BrowserPub
+
+[BrowserPub] is a browser for debugging ActivityPub and the fediverse.  You can
+punch in any ActivityPub discoverable web URL or fediverse handle, and it will
+discover and display the underlying ActivityPub.
+
+For example:
+
+ -  [hollo.social/@fedify](https://browser.pub/https://hollo.social/@fedify)
+ -  [@hongminhee@fosstodon.org](https://browser.pub/@hongminhee@fosstodon.org)
+
+If you want to know further details about BrowserPub,
+read the [creator's Mastodon thread].
+
+[BrowserPub]: https://browser.pub/
+[creator's Mastodon thread]: https://podcastindex.social/@js/113011966366461060
+
+### `fedify lookup` command
+
+Fedify provides a [CLI toolchain](../cli.md) for testing and debugging.
+The [`fedify
+lookup` command](../cli.md#fedify-lookup-looking-up-an-activitypub-object)
+is a simple tool for looking up an ActivityPub object by its URL or fediverse
+handle.
+
+
+Inspecting ActivityPub activities
+---------------------------------
 
 ### ActivityPub.Academy
 
