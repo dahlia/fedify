@@ -651,8 +651,6 @@ export function createFederation<TContextData>(
   return new FederationImpl<TContextData>(options);
 }
 
-const invokedByContext = Symbol("invokedByContext");
-
 class FederationImpl<TContextData> implements Federation<TContextData> {
   kv: KvStore;
   kvPrefixes: FederationKvPrefixes;
@@ -1864,12 +1862,6 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
     options: SendActivityInternalOptions<TContextData>,
   ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
-    if (!(invokedByContext in options) || !options[invokedByContext]) {
-      logger.warn(
-        "The Federation.sendActivity() method is deprecated.  Use " +
-          "Context.sendActivity() instead.",
-      );
-    }
     const {
       preferSharedInbox,
       immediate,
@@ -2520,8 +2512,6 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     const opts: SendActivityInternalOptions<TContextData> = {
       contextData: this.data,
       ...options,
-      // @ts-ignore: This is a private symbol
-      [invokedByContext]: true,
     };
     let expandedRecipients: Recipient[];
     if (Array.isArray(recipients)) {
