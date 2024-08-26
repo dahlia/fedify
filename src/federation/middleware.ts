@@ -2062,6 +2062,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         return await handleCollection(request, {
           name: "outbox",
           handle: route.values.handle,
+          uriGetter: context.getOutboxUri.bind(context),
           context,
           collectionCallbacks: this.outboxCallbacks,
           onUnauthorized,
@@ -2073,6 +2074,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
           return await handleCollection(request, {
             name: "inbox",
             handle: route.values.handle,
+            uriGetter: context.getInboxUri.bind(context),
             context,
             collectionCallbacks: this.inboxCallbacks,
             onUnauthorized,
@@ -2115,6 +2117,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         return await handleCollection(request, {
           name: "following",
           handle: route.values.handle,
+          uriGetter: context.getFollowingUri.bind(context),
           context,
           collectionCallbacks: this.followingCallbacks,
           onUnauthorized,
@@ -2130,6 +2133,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         return await handleCollection(request, {
           name: "followers",
           handle: route.values.handle,
+          uriGetter: context.getFollowersUri.bind(context),
           context,
           filter: baseUrl != null ? new URL(baseUrl) : undefined,
           filterPredicate: baseUrl != null
@@ -2148,6 +2152,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         return await handleCollection(request, {
           name: "liked",
           handle: route.values.handle,
+          uriGetter: context.getLikedUri.bind(context),
           context,
           collectionCallbacks: this.likedCallbacks,
           onUnauthorized,
@@ -2158,6 +2163,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         return await handleCollection(request, {
           name: "featured",
           handle: route.values.handle,
+          uriGetter: context.getFeaturedUri.bind(context),
           context,
           collectionCallbacks: this.featuredCallbacks,
           onUnauthorized,
@@ -2168,6 +2174,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         return await handleCollection(request, {
           name: "featured tags",
           handle: route.values.handle,
+          uriGetter: context.getFeaturedTagsUri.bind(context),
           context,
           collectionCallbacks: this.featuredTagsCallbacks,
           onUnauthorized,

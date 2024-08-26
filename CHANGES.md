@@ -85,6 +85,10 @@ To be released.
  -  The `lookupWebFinger()` and `getActorHandle()` functions no more throw
     an error when they fail to reach the WebFinger resource.
 
+ -  Collection dispatchers now set the `id` property of
+    the `OrderedCollection`/`OrderedCollectionPage` objects that they return
+    to the their canonical URI.
+
  -  Now `fedify init` generates a default *tsconfig.json* file on Node.js and
     Bun, and fills the *deno.json* file with the default `compilerOptions` on
     Deno.

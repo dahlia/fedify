@@ -176,6 +176,7 @@ export interface CollectionHandlerParameters<
 > {
   name: string;
   handle: string;
+  uriGetter: (handle: string) => URL;
   filter?: TFilter;
   filterPredicate?: (item: TItem) => boolean;
   context: TContext;
@@ -200,6 +201,7 @@ export async function handleCollection<
   {
     name,
     handle,
+    uriGetter,
     filter,
     filterPredicate,
     context,
@@ -213,6 +215,7 @@ export async function handleCollection<
   const url = new URL(request.url);
   const cursor = url.searchParams.get("cursor");
   let collection: OrderedCollection | OrderedCollectionPage;
+  const baseUri = uriGetter(handle);
   if (cursor == null) {
     const firstCursor = await collectionCallbacks.firstCursor?.(
       context,
@@ -229,6 +232,7 @@ export async function handleCollection<
       if (page == null) return await onNotFound(request);
       const { items } = page;
       collection = new OrderedCollection({
+        id: baseUri,
         totalItems: totalItems == null ? null : Number(totalItems),
         items: filterCollectionItems(items, name, filterPredicate),
       });
@@ -245,12 +249,15 @@ export async function handleCollection<
         last.searchParams.set("cursor", lastCursor);
       }
       collection = new OrderedCollection({
+        id: baseUri,
         totalItems: Number(totalItems),
         first,
         last,
       });
     }
   } else {
+    const uri = new URL(baseUri);
+    uri.searchParams.set("cursor", cursor);
     const page = await collectionCallbacks.dispatcher(
       context,
       handle,
@@ -272,6 +279,7 @@ export async function handleCollection<
     const partOf = new URL(context.url);
     partOf.searchParams.delete("cursor");
     collection = new OrderedCollectionPage({
+      id: uri,
       prev,
       next,
       items: filterCollectionItems(items, name, filterPredicate),

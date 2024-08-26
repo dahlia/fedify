@@ -77,6 +77,7 @@ see the [*Set Up Your Environment* section][1] in the Deno manual.
 Please run the following commands before opening a pull request:
 
 ~~~~ bash
+cd src/
 deno fmt
 deno task check
 deno task test-all

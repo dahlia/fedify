@@ -610,6 +610,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "someone",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       onNotFound,
       onNotAcceptable,
       onUnauthorized,
@@ -627,6 +630,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "someone",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: { dispatcher },
       onNotFound,
       onNotAcceptable,
@@ -645,6 +651,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "no-one",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: { dispatcher },
       onNotFound,
       onNotAcceptable,
@@ -671,6 +680,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "no-one",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: { dispatcher },
       onNotFound,
       onNotAcceptable,
@@ -689,6 +701,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "someone",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: { dispatcher },
       onNotFound,
       onNotAcceptable,
@@ -723,6 +738,7 @@ test("handleCollection()", async () => {
         toot: "http://joinmastodon.org/ns#",
       },
     ],
+    id: "https://example.com/users/someone",
     type: "OrderedCollection",
     orderedItems: [
       {
@@ -752,6 +768,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "someone",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: {
         dispatcher,
         authorizePredicate: (_ctx, _handle, key, keyOwner) =>
@@ -779,6 +798,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "someone",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: {
         dispatcher,
         authorizePredicate: (_ctx, _handle, key, keyOwner) =>
@@ -805,6 +827,7 @@ test("handleCollection()", async () => {
         toot: "http://joinmastodon.org/ns#",
       },
     ],
+    id: "https://example.com/users/someone",
     type: "OrderedCollection",
     orderedItems: [
       {
@@ -834,6 +857,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "someone",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: {
         dispatcher,
         counter,
@@ -861,6 +887,7 @@ test("handleCollection()", async () => {
         toot: "http://joinmastodon.org/ns#",
       },
     ],
+    id: "https://example.com/users/someone",
     type: "OrderedCollection",
     totalItems: 3,
     first: "https://example.com/?cursor=0",
@@ -886,6 +913,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "someone",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: {
         dispatcher,
         counter,
@@ -913,6 +943,7 @@ test("handleCollection()", async () => {
         toot: "http://joinmastodon.org/ns#",
       },
     ],
+    id: "https://example.com/users/someone?cursor=0",
     type: "OrderedCollectionPage",
     partOf: "https://example.com/",
     next: "https://example.com/?cursor=1",
@@ -942,6 +973,9 @@ test("handleCollection()", async () => {
       context,
       name: "collection",
       handle: "someone",
+      uriGetter(handle) {
+        return new URL(`https://example.com/users/${handle}`);
+      },
       collectionCallbacks: {
         dispatcher,
         counter,
@@ -969,6 +1003,7 @@ test("handleCollection()", async () => {
         toot: "http://joinmastodon.org/ns#",
       },
     ],
+    id: "https://example.com/users/someone?cursor=2",
     type: "OrderedCollectionPage",
     partOf: "https://example.com/",
     prev: "https://example.com/?cursor=1",
