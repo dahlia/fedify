@@ -163,7 +163,7 @@ properties:
   compactName: location
   uri: "https://www.w3.org/ns/activitystreams#location"
   description: |
-   	Indicates one or more physical or logical locations associated with
+    Indicates one or more physical or logical locations associated with
     the object.
   range:
   - "https://www.w3.org/ns/activitystreams#Object"
