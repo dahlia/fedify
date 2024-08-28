@@ -21,7 +21,7 @@ Fedify uses the [LogTape] package to log message.  You can enable logging in
 your federated server app by installing the `@logtape/logtape` package and
 configuring it in the entry point of your app.
 
-[LogTape]: https://github.com/dahlia/logtape
+[LogTape]: https://logtape.org/
 
 
 Setting up LogTape
@@ -74,7 +74,7 @@ The `configure()` function takes an object with three properties:
 `loggers` (mandatory)
 :   An array of logger configurations.  Each configuration is an object with
     four properties:
-    
+
 `loggers.category` (mandatory)
 :   The `category` property is an array of string or a string that specifies
     the logger category.  If a string is given, it is treated as an array
@@ -235,16 +235,18 @@ built-in sinks:
  -  [stream sink]
  -  [file sink]
  -  [rotating file sink]
+ -  [OpenTelemetry sink]
 
 However, you can create your own sink by implementing the [`Sink`] interface,
 e.g., to send log messages to a database or a cloud service.
 
 For more information about sinks, see the [*Sinks* section] in the LogTape docs.
 
-[console sink]: https://github.com/dahlia/logtape?tab=readme-ov-file#console-sink
-[stream sink]: https://github.com/dahlia/logtape?tab=readme-ov-file#stream-sink
-[file sink]: https://github.com/dahlia/logtape?tab=readme-ov-file#file-sink
-[rotating file sink]: https://github.com/dahlia/logtape?tab=readme-ov-file#rotating-file-sink
+[console sink]: https://logtape.org/manual/sinks#console-sink
+[stream sink]: https://logtape.org/manual/sinks#stream-sink
+[file sink]: https://logtape.org/manual/sinks#file-sink
+[rotating file sink]: https://logtape.org/manual/sinks#rotating-file-sink
+[OpenTelemetry sink]: https://logtape.org/manual/sinks#opentelemetry-sink
 [`Sink`]: https://jsr.io/@logtape/logtape/doc/~/Sink
 [*Sinks* section]: https://github.com/dahlia/logtape?tab=readme-ov-file#sinks
 
