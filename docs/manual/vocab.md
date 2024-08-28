@@ -23,7 +23,7 @@ list all of them here.  Instead, we'll show a few examples of the objects that
 are available in the library: `Create`, `Note`, and `Person`.  For the full
 list of the objects, please refer to the [API reference].
 
-[API reference]: https://jsr.io/@fedify/fedify/doc
+[API reference]: https://jsr.io/@fedify/fedify/doc/vocab/~
 
 
 Instantiation
