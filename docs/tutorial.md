@@ -339,7 +339,7 @@ to the next step.
 
 [@fedify/redis]: https://github.com/dahlia/fedify-redis
 [`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore
-[LogTape]: https://github.com/dahlia/logtape
+[LogTape]: https://logtape.org/
 [`configure()`]: https://jsr.io/@logtape/logtape/doc/~/configure
 
 
