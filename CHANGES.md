@@ -8,6 +8,11 @@ Version 0.13.2
 
 To be released.
 
+ -  Fixed `fedify inbox` command that had not been able to parse activities
+    even if they are valid JSON-LD.  [[#126]]
+
+[#126]: https://github.com/dahlia/fedify/issues/126
+
 
 Version 0.13.1
 --------------

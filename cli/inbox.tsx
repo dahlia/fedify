@@ -13,7 +13,6 @@ import {
   generateCryptoKeyPair,
   getActorHandle,
   Image,
-  InProcessMessageQueue,
   isActor,
   lookupObject,
   MemoryKvStore,
@@ -113,7 +112,6 @@ export const command = new Command()
 
 const federation = createFederation<number>({
   kv: new MemoryKvStore(),
-  queue: new InProcessMessageQueue(),
   documentLoader: await getDocumentLoader(),
 });
 
@@ -340,6 +338,9 @@ async function fetch(request: Request): Promise<Response> {
   const timestamp = Temporal.Now.instant();
   const idx = activities.length;
   const pathname = new URL(request.url).pathname;
+  if (pathname === "/r" || pathname.startsWith("/r/")) {
+    return app.fetch(request);
+  }
   const inboxRequest = pathname === "/inbox" || pathname.startsWith("/i/inbox");
   if (inboxRequest) {
     recordingSink.startRecording();
