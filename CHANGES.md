@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.14.1
 --------------
 
-To be released.
+Released on August 29, 2024.
 
  -  Fixed `fedify inbox` command that had not been able to parse activities
     even if they are valid JSON-LD.  [[#126]]
