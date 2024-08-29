@@ -9,6 +9,19 @@ Version 0.15.0
 To be released.
 
 
+Version 0.14.1
+--------------
+
+Released on August 29, 2024.
+
+ -  Fixed `fedify inbox` command that had not been able to parse activities
+    even if they are valid JSON-LD.  [[#126]]
+
+ -  Fixed a bug where the *Compact Activity* tab of `fedify inbox` command's
+    web interface had shown an expanded JSON-LD object instead of a compacted
+    one.
+
+
 Version 0.14.0
 --------------
 
@@ -101,6 +114,17 @@ Released on August 27, 2024.
 
 [#114]: https://github.com/dahlia/fedify/issues/114
 [#115]: https://github.com/dahlia/fedify/issues/115
+
+
+Version 0.13.2
+--------------
+
+Released on August 29, 2024.
+
+ -  Fixed `fedify inbox` command that had not been able to parse activities
+    even if they are valid JSON-LD.  [[#126]]
+
+[#126]: https://github.com/dahlia/fedify/issues/126
 
 
 Version 0.13.1
