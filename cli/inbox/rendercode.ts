@@ -44,7 +44,10 @@ export async function renderActivity(
   expand: boolean = false,
 ): Promise<string> {
   const contextLoader = await getContextLoader();
-  const jsonLd = await activity.toJsonLd({ contextLoader, expand });
+  const jsonLd = await activity.toJsonLd({
+    contextLoader,
+    format: expand ? "expand" : "compact",
+  });
   return JSON.stringify(jsonLd, null, 2);
 }
 

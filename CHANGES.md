@@ -11,6 +11,10 @@ To be released.
  -  Fixed `fedify inbox` command that had not been able to parse activities
     even if they are valid JSON-LD.  [[#126]]
 
+ -  Fixed a bug where the *Compact Activity* tab of `fedify inbox` command's
+    web interface had shown an expanded JSON-LD object instead of a compacted
+    one.
+
 
 Version 0.14.0
 --------------
