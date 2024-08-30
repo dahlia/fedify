@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.13.3
 --------------
 
-To be released.
+Released on August 30, 2024.
 
  -  Fixed an incompatibility with Meta's [Threads] where sent activities had not
     been verified by their inbox.  [[#125]]
