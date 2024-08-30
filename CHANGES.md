@@ -9,6 +9,15 @@ Version 0.15.0
 To be released.
 
 
+Version 0.14.2
+--------------
+
+Released on August 30, 2024.
+
+ -  Fixed an incompatibility with Meta's [Threads] where sent activities had not
+    been verified by their inbox.  [[#125]]
+
+
 Version 0.14.1
 --------------
 
@@ -114,6 +123,18 @@ Released on August 27, 2024.
 
 [#114]: https://github.com/dahlia/fedify/issues/114
 [#115]: https://github.com/dahlia/fedify/issues/115
+
+
+Version 0.13.3
+--------------
+
+Released on August 30, 2024.
+
+ -  Fixed an incompatibility with Meta's [Threads] where sent activities had not
+    been verified by their inbox.  [[#125]]
+
+[Threads]: https://www.threads.net/
+[#125]: https://github.com/dahlia/fedify/issues/125
 
 
 Version 0.13.2
