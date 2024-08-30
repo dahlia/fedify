@@ -8,6 +8,12 @@ Version 0.13.3
 
 To be released.
 
+ -  Fixed an incompatibility with Meta's [Threads] where sent activities had not
+    been verified by their inbox.  [[#125]]
+
+[Threads]: https://www.threads.net/
+[#125]: https://github.com/dahlia/fedify/issues/125
+
 
 Version 0.13.2
 --------------
@@ -47,7 +53,7 @@ Released on August 7, 2024.
      -  `new Question()` constructor now accepts `voters` option.
      -  `Question.clone()` method now accepts `voters` option.
 
- -  HTTP Signatures verficiation now can be optionally skipped for the sake of
+ -  HTTP Signatures verification now can be optionally skipped for the sake of
     testing.  [[#110]]
 
      -  The type of `CreateFederationOptions.signatureTimeWindow` property

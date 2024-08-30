@@ -34,7 +34,7 @@ export async function signRequest(
   }
   if (!headers.has("Digest") && body != null) {
     const digest = await crypto.subtle.digest("SHA-256", body);
-    headers.set("Digest", `sha-256=${encodeBase64(digest)}`);
+    headers.set("Digest", `SHA-256=${encodeBase64(digest)}`);
   }
   if (!headers.has("Date")) {
     headers.set("Date", new Date().toUTCString());
