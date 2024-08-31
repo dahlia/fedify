@@ -1,0 +1,19 @@
+{
+	"$schema": "https://swc.rs/schema.json",
+	"jsc": {
+		"target": "es2022",
+		"parser": {
+			"syntax": "typescript"
+		}
+	},
+	"exclude": [
+		"^dist\\/",
+		"^node_modules\\/",
+		"^codegen\\/",
+		"^testing\\/",
+		"\\/denokv\\.",
+		"\\/fresh\\.",
+		"dnt\\.ts$",
+		"\\.(?:test|bench)\\."
+	]
+}

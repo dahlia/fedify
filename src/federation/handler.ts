@@ -1,5 +1,4 @@
 import { getLogger } from "@logtape/logtape";
-import { accepts } from "@std/http/negotiation";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
 import type { KeyCache } from "../sig/key.ts";
@@ -30,6 +29,7 @@ import type { InboxListenerSet } from "./inbox.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
 import type { InboxMessage } from "./queue.ts";
+import { accepts } from "../vendor/@std/http/negotiation.ts";
 
 export function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);
