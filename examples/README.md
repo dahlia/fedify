@@ -12,6 +12,7 @@ added in the future.[^1]
   -  [Hollo: a federated single-user microblogging
      software](https://github.com/dahlia/hollo)
   -  [Hono integration sample](./hono-sample/)
+  -  [Fedify–Express integration example](./express/)
 
 [^1]: Contributions are welcome!  If you have built an application with the
       Fedify framework and want to share it with others, please consider adding
