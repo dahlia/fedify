@@ -13,6 +13,7 @@ added in the future.[^1]
      software](https://github.com/dahlia/hollo)
   -  [Hono integration sample](./hono-sample/)
   -  [Fedify–Express integration example](./express/)
+  -  [Fedify–Next.js integration example](./next-app-router/)
 
 [^1]: Contributions are welcome!  If you have built an application with the
       Fedify framework and want to share it with others, please consider adding
