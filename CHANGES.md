@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.13.4
 --------------
 
-To be released.
+Released on September 1, 2024.
 
  -  Fixed `fedify inbox` command where it had ignored `-a`/`--accept-follow`
     options when no `-f`/`--follow` option was provided.  [[#132]]
