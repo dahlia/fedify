@@ -8,6 +8,9 @@ Version 0.14.3
 
 To be released.
 
+ -  Fixed `fedify inbox` command where it had ignored `-a`/`--accept-follow`
+    options when no `-f`/`--follow` option was provided.  [[#132]]
+
 
 Version 0.14.2
 --------------
@@ -123,6 +126,17 @@ Released on August 27, 2024.
 
 [#114]: https://github.com/dahlia/fedify/issues/114
 [#115]: https://github.com/dahlia/fedify/issues/115
+
+
+Version 0.13.4
+--------------
+
+Released on September 1, 2024.
+
+ -  Fixed `fedify inbox` command where it had ignored `-a`/`--accept-follow`
+    options when no `-f`/`--follow` option was provided.  [[#132]]
+
+[#132]: https://github.com/dahlia/fedify/issues/132
 
 
 Version 0.13.3
