@@ -81,10 +81,12 @@ export const command = new Command()
     });
     spinner.start();
     const fedCtx = federation.createContext(server.url, -1);
+    if (options.acceptFollow != null && options.acceptFollow.length > 0) {
+      acceptFollows.push(...(options.acceptFollow ?? []));
+    }
     if (options.follow != null && options.follow.length > 0) {
       spinner.text = "Following actors...";
       const documentLoader = await fedCtx.getDocumentLoader({ handle: "i" });
-      acceptFollows.push(...(options.acceptFollow ?? []));
       for (const uri of options.follow) {
         spinner.text = `Following ${colors.green(uri)}...`;
         const actor = await lookupObject(uri, { documentLoader });
