@@ -97,9 +97,9 @@ export const command = new Command()
         Deno.exit(1);
       }
       if (options.compact) {
-        printJson(await object.toJsonLd({ contextLoader }));
+        printJson(await object.toJsonLd({ format: "compact", contextLoader }));
       } else if (options.expand) {
-        printJson(await object.toJsonLd({ expand: true, contextLoader }));
+        printJson(await object.toJsonLd({ format: "expand", contextLoader }));
       } else {
         console.log(object);
       }

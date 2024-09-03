@@ -28,22 +28,9 @@ export async function* generateEncoder(
    */
   async toJsonLd(options: {
     format?: "compact" | "expand",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          "The expand option, which is deprecated, cannot be used together " +
-          "with the format option."
-        );
-      }
-      getLogger(["fedify", "vocab"]).warn(
-        "The expand option is deprecated; use format: 'expand' instead.",
-      );
-      options = { ...options, format: "expand", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }

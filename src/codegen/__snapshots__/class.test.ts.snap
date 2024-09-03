@@ -3634,22 +3634,9 @@ get source(): (Source | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -6425,22 +6412,9 @@ proofs?: (DataIntegrityProof | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -6714,22 +6688,9 @@ proofs?: (DataIntegrityProof | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -7056,22 +7017,9 @@ get value(): (string | LanguageString | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -7724,22 +7672,9 @@ get created(): (Temporal.Instant | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -8396,22 +8331,9 @@ get publicKey(): (CryptoKey | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -9004,22 +8926,9 @@ get publicKey(): (CryptoKey | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -10613,22 +10522,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -11527,22 +11423,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -11831,22 +11714,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -12130,22 +12000,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -14158,22 +14015,9 @@ get indexable(): (boolean | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -15758,22 +15602,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -16069,22 +15900,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -16333,22 +16151,9 @@ proofs?: (DataIntegrityProof | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -16685,22 +16490,9 @@ get height(): (number | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -17113,22 +16905,9 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -17411,22 +17190,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -17715,22 +17481,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -18459,22 +18212,9 @@ get totalItems(): (number | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -19427,22 +19167,9 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -19943,22 +19670,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -20241,22 +19955,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -20537,22 +20238,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -21036,22 +20724,9 @@ get sharedInbox(): (URL | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -21669,22 +21344,9 @@ proofs?: (DataIntegrityProof | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -21968,22 +21630,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -22268,22 +21917,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -24296,22 +23932,9 @@ get indexable(): (boolean | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -26352,22 +25975,9 @@ get width(): (number | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -27156,22 +26766,9 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -27429,22 +27026,9 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -27728,22 +27312,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -28030,22 +27601,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -28328,22 +27886,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -28626,22 +28171,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -28924,22 +28456,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -29220,22 +28739,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -29476,22 +28982,9 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -29764,22 +29257,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -30050,22 +29530,9 @@ proofs?: (DataIntegrityProof | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -30453,22 +29920,9 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -30978,22 +30432,9 @@ get startIndex(): (number | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -33157,22 +32598,9 @@ get indexable(): (boolean | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -34742,22 +34170,9 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -36770,22 +36185,9 @@ get indexable(): (boolean | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -38562,22 +37964,9 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -39341,22 +38730,9 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -40003,22 +39379,9 @@ get voters(): (number | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -40585,22 +39948,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -40883,22 +40233,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -41653,22 +40990,9 @@ relationships?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -42179,22 +41503,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -44207,22 +43518,9 @@ get indexable(): (boolean | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -45902,22 +45200,9 @@ get mediaType(): (string | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -46331,22 +45616,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -46629,22 +45901,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -46950,22 +46209,9 @@ get deleted(): (Temporal.Instant | null) {
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -47314,22 +46560,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -47617,22 +46850,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -47918,22 +47138,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -48202,22 +47409,9 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }
@@ -48499,22 +47693,9 @@ instruments?: (Object | URL)[];}
    */
   async toJsonLd(options: {
     format?: \\"compact\\" | \\"expand\\",
-    expand?: boolean,
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.expand != null) {
-      if (options.format != null) {
-        throw new TypeError(
-          \\"The expand option, which is deprecated, cannot be used together \\" +
-          \\"with the format option.\\"
-        );
-      }
-      getLogger([\\"fedify\\", \\"vocab\\"]).warn(
-        \\"The expand option is deprecated; use format: 'expand' instead.\\",
-      );
-      options = { ...options, format: \\"expand\\", expand: undefined };
-    }
     if (options.format == null && this.#cachedJsonLd != null) {
       return this.#cachedJsonLd;
     }

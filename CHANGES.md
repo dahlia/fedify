@@ -8,6 +8,9 @@ Version 0.15.0
 
 To be released.
 
+ -  Removed `expand` option of `Object.toJsonLd()` method, which was deprecated
+    in version 0.14.0.  Use `format: "expand"` option instead.
+
 
 Version 0.14.3
 --------------
