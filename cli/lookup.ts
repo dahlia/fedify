@@ -22,7 +22,7 @@ export const command = new Command()
       "(e.g., @username@domain).",
   )
   .option("-a, --authorized-fetch", "Sign the request with an one-time key.")
-  .option("-c, --compact", "Compact the fetched JSON-LD document.", {
+  .option("-C, --compact", "Compact the fetched JSON-LD document.", {
     conflicts: ["expand"],
   })
   .option("-e, --expand", "Expand the fetched JSON-LD document.", {

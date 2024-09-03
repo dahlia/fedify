@@ -10,6 +10,8 @@ To be released.
 
  -  Removed `expand` option of `Object.toJsonLd()` method, which was deprecated
     in version 0.14.0.  Use `format: "expand"` option instead.
+ -  Renamed the short option `-c` for `--compact` of `fedify lookup` command to
+    `-C` to avoid conflict with the short option `-c` for `--cache-dir`.
 
 
 Version 0.14.3
