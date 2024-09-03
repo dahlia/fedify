@@ -12,6 +12,8 @@ To be released.
     in version 0.14.0.  Use `format: "expand"` option instead.
  -  Renamed the short option `-c` for `--compact` of `fedify lookup` command to
     `-C` to avoid conflict with the short option `-c` for `--cache-dir`.
+ -  Added `-r`/`--raw` option to `fedify lookup` command to output the raw JSON
+    object.
 
 
 Version 0.14.3

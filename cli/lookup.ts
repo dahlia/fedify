@@ -22,11 +22,14 @@ export const command = new Command()
       "(e.g., @username@domain).",
   )
   .option("-a, --authorized-fetch", "Sign the request with an one-time key.")
+  .option("-r, --raw", "Print the fetched JSON-LD document as is.", {
+    conflicts: ["compact", "expand"],
+  })
   .option("-C, --compact", "Compact the fetched JSON-LD document.", {
-    conflicts: ["expand"],
+    conflicts: ["raw", "expand"],
   })
   .option("-e, --expand", "Expand the fetched JSON-LD document.", {
-    conflicts: ["compact"],
+    conflicts: ["raw", "compact"],
   })
   .action(async (options, url: string) => {
     const spinner = ora({
@@ -96,7 +99,9 @@ export const command = new Command()
         }
         Deno.exit(1);
       }
-      if (options.compact) {
+      if (options.raw) {
+        printJson(await object.toJsonLd({ contextLoader }));
+      } else if (options.compact) {
         printJson(await object.toJsonLd({ format: "compact", contextLoader }));
       } else if (options.expand) {
         printJson(await object.toJsonLd({ format: "expand", contextLoader }));
