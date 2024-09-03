@@ -1086,6 +1086,18 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         const actor = await dispatcher(context, handle);
         if (actor == null) return null;
         const logger = getLogger(["fedify", "federation", "actor"]);
+        if (actor.id == null) {
+          logger.warn(
+            "Actor dispatcher returned an actor without an id property.  " +
+              "Set the property with Context.getActorUri(handle).",
+          );
+        } else if (actor.id.href != context.getActorUri(handle).href) {
+          logger.warn(
+            "Actor dispatcher returned an actor with an id property that " +
+              "does not match the actor URI.  Set the property with " +
+              "Context.getActorUri(handle).",
+          );
+        }
         if (
           this.followingCallbacks != null &&
           this.followingCallbacks.dispatcher != null
