@@ -122,6 +122,20 @@ export interface CreateFederationOptions {
   authenticatedDocumentLoaderFactory?: AuthenticatedDocumentLoaderFactory;
 
   /**
+   * Whether to allow fetching private network addresses in the document loader.
+   *
+   * If turned on, {@link CreateFederationOptions.documentLoader},
+   * {@link CreateFederationOptions.contextLoader}, and
+   * {@link CreateFederationOptions.authenticatedDocumentLoaderFactory}
+   * cannot be configured.
+   *
+   * Mostly useful for testing purposes.  *Do not use in production.*
+   *
+   * Turned off by default.
+   */
+  allowPrivateAddress?: boolean;
+
+  /**
    * A callback that handles errors during outbox processing.  Note that this
    * callback can be called multiple times for the same activity, because
    * the delivery is retried according to the backoff schedule until it
@@ -742,15 +756,35 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
     this.router.add("/.well-known/nodeinfo", "nodeInfoJrd");
     this.objectCallbacks = {};
     this.objectTypeIds = {};
+    if (options.allowPrivateAddress) {
+      if (options.documentLoader != null) {
+        throw new TypeError(
+          "Cannot set documentLoader with allowPrivateAddress turned on.",
+        );
+      } else if (options.contextLoader != null) {
+        throw new TypeError(
+          "Cannot set contextLoader with allowPrivateAddress turned on.",
+        );
+      } else if (options.authenticatedDocumentLoaderFactory != null) {
+        throw new TypeError(
+          "Cannot set authenticatedDocumentLoaderFactory with " +
+            "allowPrivateAddress turned on.",
+        );
+      }
+    }
     this.documentLoader = options.documentLoader ?? kvCache({
-      loader: fetchDocumentLoader,
+      loader: options.allowPrivateAddress
+        ? (url) => fetchDocumentLoader(url, true)
+        : fetchDocumentLoader,
       kv: options.kv,
       prefix: this.kvPrefixes.remoteDocument,
     });
     this.contextLoader = options.contextLoader ?? this.documentLoader;
     this.authenticatedDocumentLoaderFactory =
       options.authenticatedDocumentLoaderFactory ??
-        getAuthenticatedDocumentLoader;
+        (options.allowPrivateAddress
+          ? (identity) => getAuthenticatedDocumentLoader(identity, true)
+          : getAuthenticatedDocumentLoader);
     this.onOutboxError = options.onOutboxError;
     this.signatureTimeWindow = options.signatureTimeWindow ?? { minutes: 1 };
     this.skipSignatureVerification = options.skipSignatureVerification ?? false;

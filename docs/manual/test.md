@@ -111,3 +111,38 @@ Fedify provides a [CLI toolchain](../cli.md) for testing and debugging.
 The [`fedify inbox` command](../cli.md#fedify-inbox-ephemeral-inbox-server) is
 a simple tool for spinning up an ephemeral inbox server that receives and
 displays incoming ActivityPub messages.
+
+
+Allowing fetching private network addresses
+-------------------------------------------
+
+*This API is available since Fedify 0.15.0.*
+
+By default, Fedify disallows fetching private network addresses
+(e.g., localhost) in order to prevent [SSRF] attacks.  However, in some cases,
+you may want to allow fetching private network addresses for testing purposes
+(e.g., end-to-end testing).  In this case, you can set
+the [`allowPrivateAddress`](./federation.md#allowprivateaddress) option to
+`true` in the `createFederation()` function:
+
+~~~~ typescript
+const federation = createFederation({
+  // ... other options
+  allowPrivateAddress: true,
+});
+~~~~
+
+> [!NOTE]
+> By turning on the `allowPrivateAddress` option, you cannot configure other
+> options related to document loaders including
+> [`documentLoader`](./federation.md#documentloader),
+> [`contextLoader`](./federation.md#contextloader), and
+> [`authenticatedDocumentLoaderFactory`](./federation.md#authenticateddocumentloaderfactory)
+
+> [!WARNING]
+> Be careful when you allow fetching private network addresses.  It may cause
+> security vulnerabilities such as [SSRF].  Make sure to turn off the option
+> when you finish testing, or conditionally turn it on only in the testing
+> environment.
+
+[SSRF]: https://owasp.org/www-community/attacks/Server_Side_Request_Forgery

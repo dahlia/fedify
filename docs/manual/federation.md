@@ -181,6 +181,27 @@ load remote JSON-LD contexts.  The type of the function is the same as the
 [*Document loader vs. context loader*
 section](./context.md#document-loader-vs-context-loader)).
 
+### `allowPrivateAddress`
+
+*This API is available since Fedify 0.15.0.*
+
+> [!WARNING]
+> Do not turn on this option in production environments.  Disallowing fetching
+> private network addresses is a security feature to prevent [SSRF] attacks.
+
+Whether to allow fetching private network addresses in the document loader.
+
+If turned on, [`documentLoader`](#documentloader),
+[`contextLoader`](#contextloader),
+and [`authenticatedDocumentLoaderFactory`](#authenticateddocumentloaderfactory)
+cannot be configured.
+
+Mostly useful for testing purposes.
+
+Turned off by default.
+
+[SSRF]: https://owasp.org/www-community/attacks/Server_Side_Request_Forgery
+
 ### `outboxRetryPolicy`
 
 *This API is available since Fedify 0.12.0.*

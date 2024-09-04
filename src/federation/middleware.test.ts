@@ -30,6 +30,28 @@ import { MemoryKvStore } from "./kv.ts";
 import { createFederation } from "./middleware.ts";
 import { RouterError } from "./router.ts";
 
+test("createFederation()", () => {
+  const kv = new MemoryKvStore();
+  assertThrows(() =>
+    createFederation<number>({
+      kv,
+      documentLoader: mockDocumentLoader,
+      allowPrivateAddress: true,
+    }), TypeError);
+  assertThrows(() =>
+    createFederation<number>({
+      kv,
+      contextLoader: mockDocumentLoader,
+      allowPrivateAddress: true,
+    }), TypeError);
+  assertThrows(() =>
+    createFederation<number>({
+      kv,
+      authenticatedDocumentLoaderFactory: () => mockDocumentLoader,
+      allowPrivateAddress: true,
+    }), TypeError);
+});
+
 test("Federation.createContext()", async (t) => {
   const kv = new MemoryKvStore();
   const documentLoader = (url: string) => {
