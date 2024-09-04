@@ -359,7 +359,7 @@ Let's create an actor dispatcher for our server:
 ::: code-group
 
 ~~~~ typescript{7-16} [Deno]
-import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
+import { createFederation, MemoryKvStore, Person } from "@fedify/fedify";
 
 const federation = createFederation<void>({
   kv: new MemoryKvStore(),
@@ -382,7 +382,7 @@ Deno.serve(
 ~~~~
 
 ~~~~ typescript{7-16} [Bun]
-import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
+import { createFederation, MemoryKvStore, Person } from "@fedify/fedify";
 
 const federation = createFederation<void>({
   kv: new MemoryKvStore(),
@@ -408,7 +408,7 @@ Bun.serve({
 ~~~~
 
 ~~~~ typescript{8-17} [Node.js]
-import { Federation, MemoryKvStore, Person } from "@fedify/fedify";
+import { createFederation, MemoryKvStore, Person } from "@fedify/fedify";
 import { serve } from "@hono/node-server";
 
 const federation = createFederation<void>({
@@ -691,7 +691,12 @@ represents the `Follow` activity.  We will use the `Follow` class to handle
 incoming follow requests:
 
 ~~~~ typescript
-import { Federation, Follow, Person, MemoryKvStore } from "@fedify/fedify";
+import {
+  createFederation,
+  Follow,  // [!code highlight]
+  Person,
+  MemoryKvStore,
+} from "@fedify/fedify";
 ~~~~
 
 Then, we register an inbox listener for the `Follow` activity:
@@ -765,11 +770,15 @@ To send an activity, first, we need to generate a key pair for the actor *me*
 so that the server can sign the activity with the private key.  Fortunately,
 Fedify provides helper functions to generate and export/import keys:
 
-~~~~ typescript
+~~~~ typescript{3-5}
 import {
-  Federation, Follow, Person, MemoryKvStore,
-  // Import helper functions:
-  exportJwk, generateCryptoKeyPair, importJwk,  // [!code highlight]
+  createFederation,
+  exportJwk,
+  generateCryptoKeyPair,
+  importJwk,
+  Follow,
+  Person,
+  MemoryKvStore,
 } from "@fedify/fedify";
 ~~~~
 
@@ -985,9 +994,13 @@ Let's import the `Accept` class from the Fedify framework:
 
 ~~~~ typescript
 import {
-  Accept,  // Import the Accept class // [!code highlight]
-  Federation, Follow, Person,
-  exportJwk, generateCryptoKeyPair, importJwk,
+  createFederation,
+  exportJwk,
+  generateCryptoKeyPair,
+  importJwk,
+  Accept,  // [!code highlight]
+  Follow,
+  Person,
 } from "@fedify/fedify";
 ~~~~
 
