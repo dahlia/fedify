@@ -24,7 +24,7 @@ import {
 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
 import { lookupObject } from "../vocab/lookup.ts";
-import { Create, Multikey, Note, Person } from "../vocab/vocab.ts";
+import { Create, Multikey, Note, Object, Person } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
 import { createFederation } from "./middleware.ts";
@@ -183,6 +183,7 @@ test("Federation.createContext()", async (t) => {
       documentUrl: "https://example.com/object",
       document: true,
     });
+    assertEquals(await ctx.lookupObject("https://example.com/object"), null);
     assertRejects(
       () => ctx.sendActivity({ handle: "handle" }, [], new Create({})),
       TypeError,
@@ -193,6 +194,23 @@ test("Federation.createContext()", async (t) => {
       [],
       new Create({
         actor: new URL("https://example.com/users/handle"),
+      }),
+    );
+
+    const federation2 = createFederation<number>({
+      kv,
+      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
+    });
+    const ctx2 = federation2.createContext(
+      new URL("https://example.com/"),
+      123,
+    );
+    assertEquals(
+      await ctx2.lookupObject("https://example.com/object"),
+      new Object({
+        id: new URL("https://example.com/object"),
+        name: "Fetched object",
       }),
     );
 

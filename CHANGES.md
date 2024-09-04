@@ -10,6 +10,7 @@ To be released.
 
  -  Removed `expand` option of `Object.toJsonLd()` method, which was deprecated
     in version 0.14.0.  Use `format: "expand"` option instead.
+ -  Added `Context.lookupObject()` method.
  -  Renamed the short option `-c` for `--compact` of `fedify lookup` command to
     `-C` to avoid conflict with the short option `-c` for `--cache-dir`.
  -  Added `-r`/`--raw` option to `fedify lookup` command to output the raw JSON

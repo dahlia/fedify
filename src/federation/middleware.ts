@@ -11,6 +11,7 @@ import { verifyRequest } from "../sig/http.ts";
 import { exportJwk, importJwk, validateCryptoKey } from "../sig/key.ts";
 import { getKeyOwner } from "../sig/owner.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
+import { lookupObject, type LookupObjectOptions } from "../vocab/lookup.ts";
 import {
   Activity,
   CryptographicKey,
@@ -2497,6 +2498,16 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       );
     }
     return this.federation.authenticatedDocumentLoaderFactory(identity);
+  }
+
+  lookupObject(
+    identifier: string | URL,
+    options: LookupObjectOptions = {},
+  ): Promise<Object | null> {
+    return lookupObject(identifier, {
+      documentLoader: options.documentLoader ?? this.documentLoader,
+      contextLoader: options.contextLoader ?? this.contextLoader,
+    });
   }
 
   async sendActivity(

@@ -1,5 +1,6 @@
 import type { Context, RequestContext } from "../federation/context.ts";
 import { RouterError } from "../federation/router.ts";
+import { lookupObject as globalLookupObject } from "../vocab/lookup.ts";
 import { mockDocumentLoader } from "./docloader.ts";
 
 export function createContext<TContextData>(
@@ -21,6 +22,7 @@ export function createContext<TContextData>(
     parseUri,
     getActorKeyPairs,
     getDocumentLoader,
+    lookupObject,
     sendActivity,
   }: Partial<Context<TContextData>> & { url?: URL; data: TContextData },
 ): Context<TContextData> {
@@ -52,6 +54,14 @@ export function createContext<TContextData>(
       throw new Error("Not implemented");
     }),
     getActorKeyPairs: getActorKeyPairs ?? ((_handle) => Promise.resolve([])),
+    lookupObject: lookupObject ?? ((uri, options = {}) => {
+      return globalLookupObject(uri, {
+        documentLoader: options.documentLoader ?? documentLoader ??
+          mockDocumentLoader,
+        contextLoader: options.contextLoader ?? contextLoader ??
+          mockDocumentLoader,
+      });
+    }),
     sendActivity: sendActivity ?? ((_params) => {
       throw new Error("Not implemented");
     }),

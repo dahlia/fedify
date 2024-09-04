@@ -21,11 +21,13 @@ callbacks.
 The key features of the `Context` object are as follows:
 
  -  Carrying [`TContextData`](./federation.md#tcontextdata)
- -  Building the object URIs (e.g., actor URIs, shared inbox URI)
- -  Dispatching Activity Vocabulary objects
+ -  [Building the object URIs](#building-the-object-uris)
+    (e.g., actor URIs, shared inbox URI)
+ -  [Dispatching Activity Vocabulary objects](#dispatching-objects)
  -  Getting the current HTTP request
- -  Enqueuing an outgoing activity
- -  Getting a `DocumentLoader`
+ -  [Enqueuing an outgoing activity](#enqueuing-an-outgoing-activity)
+ -  [Getting a `DocumentLoader`](#getting-a-documentloader)
+ -  [Looking up remote objects](#looking-up-remote-objects)
 
 
 Where to get a `Context` object
@@ -268,3 +270,82 @@ type, but they are used for different purposes:
 Sometimes a document loader needs to be authenticated to load a remote document
 which requires authorization, but a context loader mostly needs to be highly
 cached and doesn't require authorization.
+
+
+Looking up remote objects
+-------------------------
+
+*This API is available since Fedify 0.15.0.*
+
+> [!TIP]
+> In most cases, you don't need to look up remote objects explicitly.
+> Instead, you can use the dereferencing accessors to fetch the remote objects
+> implicitly.
+>
+> For example, you can get the `object` from an `Activity` object directly:
+>
+> ~~~~ typescript
+> const object = await activity.getObject();
+> ~~~~
+>
+> … instead of:
+>
+> ~~~~ typescript
+> const object = activity.objectId == null
+>   ? null
+>   : await ctx.lookupObject(activity.objectId);
+> ~~~~
+
+Suppose your app has a search box that allows the user to look up a fediverse
+user by the handle or a post by the URI.  In such cases, you need to look up
+the object from a remote server that your app haven't interacted with yet.
+The `Context.lookupObject()` method plays a role in such cases.  The following
+shows an example of looking up an actor object from the handle:
+
+~~~~ typescript
+const actor = await ctx.lookupObject("@hongminhee@todon.eu");
+~~~~
+
+In the above example, the `~Context.lookupObject()` method queries the remote
+server's WebFinger endpoint to get the actor's URI from the handle,
+and then fetches the actor object from the URI.
+
+> [!TIP]
+> The `~Context.lookupObject()` method accepts a fediverse handle without
+> prefix `@` as well:
+>
+> ~~~~ typescript
+> const actor = await ctx.lookupObject("hongminhee@todon.eu");
+> ~~~~
+>
+> Also an `acct:` URI:
+>
+> ~~~~ typescript
+> const actor = await ctx.lookupObject("acct:hongminhee@todon.eu");
+> ~~~~
+
+The `~Context.lookupObject()` method is not limited to the actor object.
+It can look up any object in the Activity Vocabulary.  For example
+the following shows an example of looking up a `Note` object from the URI:
+
+~~~~ typescript
+const note = await ctx.lookupObject(
+  "https://todon.eu/@hongminhee/112060633798771581"
+);
+~~~~
+
+> [!NOTE]
+> Some objects require authentication to look up, such as a `Note` object with
+> a visibility of followers-only.  In such cases, you need to use
+> the `Context.getDocumentLoader()` method to get an authenticated
+> `DocumentLoader` object.  The `~Context.lookupObject()` method takes the
+> `documentLoader` option to specify the method to fetch the remote object:
+>
+> ~~~~ typescript
+> const documentLoader = await ctx.getDocumentLoader({ handle: "john" });
+> const note = await ctx.lookupObject("...", { documentLoader });
+> ~~~~
+>
+> See the [*Getting an authenticated
+> `DocumentLoader`*](#getting-an-authenticated-documentloader)
+> section for details.

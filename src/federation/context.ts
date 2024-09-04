@@ -1,5 +1,6 @@
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
+import type { LookupObjectOptions } from "../vocab/lookup.ts";
 import type {
   Activity,
   CryptographicKey,
@@ -188,6 +189,48 @@ export interface Context<TContextData> {
   getDocumentLoader(
     identity: { keyId: URL; privateKey: CryptoKey },
   ): DocumentLoader;
+
+  /**
+   * Looks up an ActivityStreams object by its URI (including `acct:` URIs)
+   * or a fediverse handle (e.g., `@user@server` or `user@server`).
+   *
+   * @example
+   * ``` typescript
+   * // Look up an actor by its fediverse handle:
+   * await ctx.lookupObject("@hongminhee@fosstodon.org");
+   * // returning a `Person` object.
+   *
+   * // A fediverse handle can omit the leading '@':
+   * await ctx.lookupObject("hongminhee@fosstodon.org");
+   * // returning a `Person` object.
+   *
+   * // A `acct:` URI can be used as well:
+   * await ctx.lookupObject("acct:hongminhee@fosstodon.org");
+   * // returning a `Person` object.
+   *
+   * // Look up an object by its URI:
+   * await ctx.lookupObject("https://todon.eu/@hongminhee/112060633798771581");
+   * // returning a `Note` object.
+   *
+   * // It can be a `URL` object as well:
+   * await ctx.lookupObject(
+   *   new URL("https://todon.eu/@hongminhee/112060633798771581")
+   * );
+   * // returning a `Note` object.
+   * ```
+   *
+   * It's almost the same as the {@link lookupObject} function, but it uses
+   * the context's document loader and context loader by default.
+   *
+   * @param identifier The URI or fediverse handle to look up.
+   * @param options Lookup options.
+   * @returns The object, or `null` if not found.
+   * @since 0.15.0
+   */
+  lookupObject(
+    identifier: string | URL,
+    options?: LookupObjectOptions,
+  ): Promise<Object | null>;
 
   /**
    * Sends an activity to recipients' inboxes.
