@@ -46,6 +46,18 @@ if (process.env.PLAUSIBLE_DOMAIN) {
   ];
 }
 
+const TUTORIAL = {
+  text: "Tutorials",
+  items: [
+    {
+      text: "Quick demo",
+      link: "https://dash.deno.com/playground/fedify-demo",
+    },
+    { text: "Learning the basics", link: "/tutorial/basics.md" },
+  ],
+  activeMatch: "/tutorial",
+};
+
 const MANUAL = {
   text: "Manual",
   items: [
@@ -75,8 +87,8 @@ export default withMermaid(defineConfig({
     nav: [
       { text: "Home", link: "/" },
       { text: "Installation", link: "/install.md" },
-      { text: "Tutorial", link: "/tutorial.md" },
       { text: "CLI", link: "/cli.md" },
+      TUTORIAL,
       MANUAL,
       { text: "API reference", link: "https://jsr.io/@fedify/fedify" },
       ...extraNav,
@@ -84,16 +96,12 @@ export default withMermaid(defineConfig({
 
     sidebar: [
       { text: "What is Fedify?", link: "/intro.md" },
-      {
-        text: "Quick demo",
-        link: "https://dash.deno.com/playground/fedify-demo",
-      },
       { text: "Installation", link: "/install.md" },
-      { text: "In-depth tutorial", link: "/tutorial.md" },
       {
         text: "CLI toolchain",
         link: "/cli.md",
       },
+      TUTORIAL,
       MANUAL,
       {
         text: "Examples",

@@ -24,7 +24,7 @@ hero:
     link: https://dash.deno.com/playground/fedify-demo
   - theme: alt
     text: Tutorial
-    link: /tutorial.md
+    link: /tutorial/basics.md
   - theme: alt
     text: GitHub
     link: https://github.com/dahlia/fedify

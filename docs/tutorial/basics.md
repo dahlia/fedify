@@ -3,13 +3,10 @@ description: >-
   This tutorial provides a step-by-step guide to building a small federated
   server with the Fedify framework.  It is intended for developers who want
   to build a federated server with the Fedify framework.
-prev:
-  text: Installation
-  link: ./install.md
 ---
 
-In-depth tutorial
-=================
+Learning the basics of Fedify
+=============================
 
 In this tutorial, we will build a small federated server that can only accept
 follow requests to understand the basic concepts of the Fedify framework.
@@ -743,7 +740,7 @@ on your Mastodon instance (or any other ActivityPub server you have account on).
 To look up the actor *me*, you need to search with the full handle of the actor
 (i.e., *@me@your-server-domain*):
 
-![Search results on Mastodon; the actor @me shows up.](./tutorial/search-result.png)
+![Search results on Mastodon; the actor @me shows up.](./basics/search-result.png)
 
 When you find the actor *me*, click on the actor's profile and then click on
 the *Follow* button.  You should see your Mastodon account sending a follow
