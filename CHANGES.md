@@ -10,12 +10,21 @@ To be released.
 
  -  Removed `expand` option of `Object.toJsonLd()` method, which was deprecated
     in version 0.14.0.  Use `format: "expand"` option instead.
+
  -  Added `Context.lookupObject()` method.
- -  Default document loaders now recognize `alternate` ActivityStreams objects
-    in the `Link` header.
+
+ -  Default document loaders now recognize ActivityStream objects in more ways:
+
+     -  Loaders now recognize `alternate` ActivityStreams objects in the `Link`
+        header.
+     -  Loaders now recognize `alternate` ActivityStreams objects in
+        the `<link>`/`<a>` HTML elements.
+
  -  Added `allowPrivateAddress` option to `CreateFederationOptions` interface.
+
  -  Renamed the short option `-c` for `--compact` of `fedify lookup` command to
     `-C` to avoid conflict with the short option `-c` for `--cache-dir`.
+
  -  Added `-r`/`--raw` option to `fedify lookup` command to output the raw JSON
     object.
 

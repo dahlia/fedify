@@ -146,6 +146,41 @@ async function getRemoteDocument(
       }
     }
   }
+  if (
+    !jsonLd &&
+    (contentType === "text/html" || contentType?.startsWith("text/html;") ||
+      contentType === "application/xhtml+xml" ||
+      contentType?.startsWith("application/xhtml+xml;"))
+  ) {
+    const p = /<(a|link)((\s+[a-z][a-z:_-]*=("[^"]*"|'[^']*'|[^\s>]+))+)\/?>/ig;
+    const p2 = /\s+([a-z][a-z:_-]*)=("([^"]*)"|'([^']*)'|([^\s>]+))/ig;
+    const html = await response.text();
+    let m: RegExpExecArray | null;
+    const rawAttribs: string[] = [];
+    while ((m = p.exec(html)) !== null) rawAttribs.push(m[2]);
+    for (const rawAttrs of rawAttribs) {
+      let m2: RegExpExecArray | null;
+      const attribs: Record<string, string> = {};
+      while ((m2 = p2.exec(rawAttrs)) !== null) {
+        const key = m2[1].toLowerCase();
+        const value = m2[3] ?? m2[4] ?? m2[5] ?? "";
+        attribs[key] = value;
+      }
+      if (
+        attribs.rel === "alternate" && "type" in attribs && (
+          attribs.type === "application/activity+json" ||
+          attribs.type === "application/ld+json" ||
+          attribs.type.startsWith("application/ld+json;")
+        ) && "href" in attribs
+      ) {
+        logger.debug(
+          "Found alternate document: {alternateUrl} from {url}",
+          { alternateUrl: attribs.href, url: documentUrl },
+        );
+        return await fetch(attribs.href);
+      }
+    }
+  }
   logger.debug(
     "Fetched document: {status} {url} {headers}",
     {

@@ -106,6 +106,68 @@ test("fetchDocumentLoader()", async (t) => {
     });
   });
 
+  mf.mock("GET@/html-link", (_req) =>
+    new Response(
+      `<html>
+        <head>
+          <meta charset=utf-8>
+          <link
+            rel=alternate
+            type='application/activity+json'
+            href="https://example.com/object">
+        </head>
+      </html>`,
+      {
+        status: 200,
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      },
+    ));
+
+  await t.step("HTML <link>", async () => {
+    assertEquals(await fetchDocumentLoader("https://example.com/html-link"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/object",
+        name: "Fetched object",
+        type: "Object",
+      },
+    });
+  });
+
+  mf.mock("GET@/html-a", (_req) =>
+    new Response(
+      `<html>
+        <head>
+          <meta charset=utf-8>
+        </head>
+        <body>
+          <a
+            rel=alternate
+            type=application/activity+json
+            href=https://example.com/object>test</a>
+        </body>
+      </html>`,
+      {
+        status: 200,
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      },
+    ));
+
+  await t.step("HTML <a>", async () => {
+    assertEquals(await fetchDocumentLoader("https://example.com/html-a"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/object",
+        name: "Fetched object",
+        type: "Object",
+      },
+    });
+  });
+
   mf.mock("GET@/404", (_req) => new Response("", { status: 404 }));
 
   await t.step("not ok", async () => {
