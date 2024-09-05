@@ -52,16 +52,17 @@ test("fetchDocumentLoader()", async (t) => {
     });
   });
 
-  mf.mock("GET@/object2", (_req) =>
+  mf.mock("GET@/link-ctx", (_req) =>
     new Response(
       JSON.stringify({
-        id: "https://example.com/object2",
+        id: "https://example.com/link-ctx",
         name: "Fetched object",
         type: "Object",
       }),
       {
         status: 200,
         headers: {
+          "Content-Type": "application/activity+json",
           Link: "<https://www.w3.org/ns/activitystreams>; " +
             'rel="http://www.w3.org/ns/json-ld#context"; ' +
             'type="application/ld+json"',
@@ -69,12 +70,36 @@ test("fetchDocumentLoader()", async (t) => {
       },
     ));
 
+  mf.mock("GET@/link-obj", (_req) =>
+    new Response(
+      "",
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          Link: '<https://example.com/object>; rel="alternate"; ' +
+            'type="application/activity+json"',
+        },
+      },
+    ));
+
   await t.step("Link header", async () => {
-    assertEquals(await fetchDocumentLoader("https://example.com/object2"), {
+    assertEquals(await fetchDocumentLoader("https://example.com/link-ctx"), {
       contextUrl: "https://www.w3.org/ns/activitystreams",
-      documentUrl: "https://example.com/object2",
+      documentUrl: "https://example.com/link-ctx",
       document: {
-        id: "https://example.com/object2",
+        id: "https://example.com/link-ctx",
+        name: "Fetched object",
+        type: "Object",
+      },
+    });
+
+    assertEquals(await fetchDocumentLoader("https://example.com/link-obj"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/object",
         name: "Fetched object",
         type: "Object",
       },

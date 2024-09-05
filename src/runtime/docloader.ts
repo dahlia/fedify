@@ -94,6 +94,7 @@ function logRequest(request: Request) {
 async function getRemoteDocument(
   url: string,
   response: Response,
+  fetch: (url: string) => Promise<RemoteDocument>,
 ): Promise<RemoteDocument> {
   const documentUrl = response.url === "" ? url : response.url;
   if (!response.ok) {
@@ -110,15 +111,38 @@ async function getRemoteDocument(
       `HTTP ${response.status}: ${documentUrl}`,
     );
   }
+  const contentType = response.headers.get("Content-Type");
+  const jsonLd = contentType == null ||
+    contentType === "application/activity+json" ||
+    contentType === "application/ld+json" ||
+    contentType.startsWith("application/ld+json;");
   const linkHeader = response.headers.get("Link");
   let contextUrl: string | null = null;
   if (linkHeader != null) {
     const link = new HTTPHeaderLink(linkHeader);
-    const entries = link.getByRel("http://www.w3.org/ns/json-ld#context");
-    for (const [uri, params] of entries) {
-      if ("type" in params && params.type === "application/ld+json") {
-        contextUrl = uri;
-        break;
+    if (jsonLd) {
+      const entries = link.getByRel("http://www.w3.org/ns/json-ld#context");
+      for (const [uri, params] of entries) {
+        if ("type" in params && params.type === "application/ld+json") {
+          contextUrl = uri;
+          break;
+        }
+      }
+    } else {
+      const entries = link.getByRel("alternate");
+      for (const [uri, params] of entries) {
+        if (
+          "type" in params &&
+          (params.type === "application/activity+json" ||
+            params.type === "application/ld+json" ||
+            params.type.startsWith("application/ld+json;"))
+        ) {
+          logger.debug(
+            "Found alternate document: {alternateUrl} from {url}",
+            { alternateUrl: uri, url: documentUrl },
+          );
+          return await fetch(uri);
+        }
       }
     }
   }
@@ -189,7 +213,11 @@ export async function fetchDocumentLoader(
   ) {
     return fetchDocumentLoader(response.headers.get("Location")!);
   }
-  return getRemoteDocument(url, response);
+  return getRemoteDocument(
+    url,
+    response,
+    (url) => fetchDocumentLoader(url, allowPrivateAddress),
+  );
 }
 
 /**
@@ -236,7 +264,7 @@ export function getAuthenticatedDocumentLoader(
     ) {
       return load(response.headers.get("Location")!);
     }
-    return getRemoteDocument(url, response);
+    return getRemoteDocument(url, response, load);
   }
   return load;
 }

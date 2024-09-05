@@ -11,6 +11,8 @@ To be released.
  -  Removed `expand` option of `Object.toJsonLd()` method, which was deprecated
     in version 0.14.0.  Use `format: "expand"` option instead.
  -  Added `Context.lookupObject()` method.
+ -  Default document loaders now recognize `alternate` ActivityStreams objects
+    in the `Link` header.
  -  Added `allowPrivateAddress` option to `CreateFederationOptions` interface.
  -  Renamed the short option `-c` for `--compact` of `fedify lookup` command to
     `-C` to avoid conflict with the short option `-c` for `--cache-dir`.
