@@ -1,4 +1,5 @@
 import { Presets, SingleBar } from "cli-progress";
+import abbr from "markdown-it-abbr";
 import deflist from "markdown-it-deflist";
 import footnote from "markdown-it-footnote";
 import { jsrRef } from "markdown-it-jsr-ref";
@@ -54,6 +55,7 @@ const TUTORIAL = {
       link: "https://dash.deno.com/playground/fedify-demo",
     },
     { text: "Learning the basics", link: "/tutorial/basics.md" },
+    { text: "Creating a microblog", link: "/tutorial/microblog.md" },
   ],
   activeMatch: "/tutorial",
 };
@@ -201,6 +203,7 @@ export default withMermaid(defineConfig({
   ignoreDeadLinks: true,
   markdown: {
     config: (md) => {
+      md.use(abbr);
       md.use(deflist);
       md.use(footnote);
       md.use(jsrRefPlugin);
