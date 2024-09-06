@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.14.4
 --------------
 
-To be released.
+Released on September 6, 2024.
 
  -  Fixed a bug of `Object.fromJsonLd()` method where it had thrown
     a `TypeError` when the given JSON-LD object had an `@id` property
