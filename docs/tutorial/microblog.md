@@ -1,6 +1,11 @@
 Creating your own federated microblog
 =====================================
 
+> [!TIP]
+>
+> This tutorial is also available in the following languages: [한국어] (Korean)
+> and [日本語] (Japanese).
+
 In this tutorial, we will build a small [microblog] that implements
 the ActivityPub protocol, similar to [Mastodon] or [Misskey], using [Fedify],
 an ActivityPub server framework. This tutorial will focus more on how to
@@ -9,6 +14,8 @@ use Fedify rather than understanding its underlying operating principles.
 If you have any questions, suggestions, or feedback, please feel free to join
 our [Matrix chat space] or [GitHub Discussions].
 
+[한국어]: https://hackmd.io/@hongminhee/fedify-tutorial-ko
+[日本語]: https://zenn.dev/hongminhee/books/4a38b6358a027b
 [microblog]: https://en.wikipedia.org/wiki/Microblogging
 [Mastodon]: https://joinmastodon.org/
 [Misskey]: https://misskey-hub.net/
