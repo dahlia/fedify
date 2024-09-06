@@ -8,6 +8,10 @@ Version 0.13.5
 
 To be released.
 
+ -  Fixed a bug of `Object.fromJsonLd()` method where it had thrown
+    a `TypeError` when the given JSON-LD object had an `@id` property
+    with an empty string.
+
 
 Version 0.13.4
 --------------
