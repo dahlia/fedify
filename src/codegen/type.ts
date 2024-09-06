@@ -140,7 +140,8 @@ const scalarTypes: Record<string, ScalarType> = {
     },
     dataCheck(v) {
       return `typeof ${v} === "object" && "@id" in ${v}
-        && typeof ${v}["@id"] === "string"`;
+        && typeof ${v}["@id"] === "string"
+        && ${v}["@id"] !== "" && ${v}["@id"] !== "/"`;
     },
     decoder(v) {
       return `new URL(${v}["@id"])`;
