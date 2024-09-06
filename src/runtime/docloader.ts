@@ -97,6 +97,7 @@ async function getRemoteDocument(
   fetch: (url: string) => Promise<RemoteDocument>,
 ): Promise<RemoteDocument> {
   const documentUrl = response.url === "" ? url : response.url;
+  const docUrl = new URL(documentUrl);
   if (!response.ok) {
     logger.error(
       "Failed to fetch document: {status} {url} {headers}",
@@ -114,6 +115,7 @@ async function getRemoteDocument(
   const contentType = response.headers.get("Content-Type");
   const jsonLd = contentType == null ||
     contentType === "application/activity+json" ||
+    contentType.startsWith("application/activity+json;") ||
     contentType === "application/ld+json" ||
     contentType.startsWith("application/ld+json;");
   const linkHeader = response.headers.get("Link");
@@ -135,7 +137,8 @@ async function getRemoteDocument(
           "type" in params &&
           (params.type === "application/activity+json" ||
             params.type === "application/ld+json" ||
-            params.type.startsWith("application/ld+json;"))
+            params.type.startsWith("application/ld+json;")) &&
+          new URL(uri).href !== docUrl.href
         ) {
           logger.debug(
             "Found alternate document: {alternateUrl} from {url}",
@@ -171,13 +174,14 @@ async function getRemoteDocument(
           attribs.type === "application/activity+json" ||
           attribs.type === "application/ld+json" ||
           attribs.type.startsWith("application/ld+json;")
-        ) && "href" in attribs
+        ) && "href" in attribs &&
+        new URL(attribs.href, docUrl).href !== docUrl.href
       ) {
         logger.debug(
           "Found alternate document: {alternateUrl} from {url}",
           { alternateUrl: attribs.href, url: documentUrl },
         );
-        return await fetch(attribs.href);
+        return await fetch(new URL(attribs.href, docUrl).href);
       }
     }
   }
