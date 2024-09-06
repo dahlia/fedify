@@ -5404,7 +5404,8 @@ get source(): (Source | null) {
     
       const decoded =
       typeof v === \\"object\\" && \\"@id\\" in v
-        && typeof v[\\"@id\\"] === \\"string\\" ? new URL(v[\\"@id\\"]) : typeof v === \\"object\\" && \\"@type\\" in v
+        && typeof v[\\"@id\\"] === \\"string\\"
+        && v[\\"@id\\"] !== \\"\\" && v[\\"@id\\"] !== \\"/\\" ? new URL(v[\\"@id\\"]) : typeof v === \\"object\\" && \\"@type\\" in v
       && Array.isArray(v[\\"@type\\"])&& [\\"https://www.w3.org/ns/activitystreams#Link\\",\\"https://www.w3.org/ns/activitystreams#Hashtag\\",\\"https://www.w3.org/ns/activitystreams#Mention\\"].some(
             t => v[\\"@type\\"].includes(t)) ? await Link.fromJsonLd(
       v, options) : undefined
@@ -38360,7 +38361,8 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       const decoded =
       typeof v === \\"object\\" && \\"@value\\" in v
       && (v[\\"@value\\"] == \\"cm\\" || v[\\"@value\\"] == \\"feet\\" || v[\\"@value\\"] == \\"inches\\" || v[\\"@value\\"] == \\"km\\" || v[\\"@value\\"] == \\"m\\" || v[\\"@value\\"] == \\"miles\\") ? v[\\"@value\\"] : typeof v === \\"object\\" && \\"@id\\" in v
-        && typeof v[\\"@id\\"] === \\"string\\" ? new URL(v[\\"@id\\"]) : undefined
+        && typeof v[\\"@id\\"] === \\"string\\"
+        && v[\\"@id\\"] !== \\"\\" && v[\\"@id\\"] !== \\"/\\" ? new URL(v[\\"@id\\"]) : undefined
       ;
       if (typeof decoded === \\"undefined\\") continue;
       _oKrwxU4V8wiKhMW1QEYQibcJh8c.push(decoded);

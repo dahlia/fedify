@@ -29,6 +29,16 @@ To be released.
     object.
 
 
+Version 0.14.4
+--------------
+
+Released on September 6, 2024.
+
+ -  Fixed a bug of `Object.fromJsonLd()` method where it had thrown
+    a `TypeError` when the given JSON-LD object had an `@id` property
+    with an empty string.
+
+
 Version 0.14.3
 --------------
 
@@ -152,6 +162,16 @@ Released on August 27, 2024.
 
 [#114]: https://github.com/dahlia/fedify/issues/114
 [#115]: https://github.com/dahlia/fedify/issues/115
+
+
+Version 0.13.5
+--------------
+
+Released on September 6, 2024.
+
+ -  Fixed a bug of `Object.fromJsonLd()` method where it had thrown
+    a `TypeError` when the given JSON-LD object had an `@id` property
+    with an empty string.
 
 
 Version 0.13.4
