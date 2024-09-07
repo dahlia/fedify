@@ -42,6 +42,19 @@ export type ActorKeyPairsDispatcher<TContextData> = (
 ) => CryptoKeyPair[] | Promise<CryptoKeyPair[]>;
 
 /**
+ * A callback that maps a WebFinger username to the corresponding actor's
+ * internal handle, or `null` if the username is not found.
+ * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @param context The context.
+ * @param username The WebFinger username.
+ * @since 0.15.0
+ */
+export type ActorHandleMapper<TContextData> = (
+  context: Context<TContextData>,
+  username: string,
+) => string | null | Promise<string | null>;
+
+/**
  * A callback that dispatches an object.
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.

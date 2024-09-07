@@ -1,5 +1,9 @@
 import { getLogger } from "@logtape/logtape";
-import type { ActorDispatcher } from "../federation/callback.ts";
+import { toASCII } from "node:punycode";
+import type {
+  ActorDispatcher,
+  ActorHandleMapper,
+} from "../federation/callback.ts";
 import type { RequestContext } from "../federation/context.ts";
 import { Link as LinkObject } from "../vocab/mod.ts";
 import type { Link, ResourceDescriptor } from "./jrd.ts";
@@ -21,6 +25,12 @@ export interface WebFingerHandlerParameters<TContextData> {
   actorDispatcher?: ActorDispatcher<TContextData>;
 
   /**
+   * The callback for mapping a WebFinger username to the corresponding actor's
+   * internal handle, or `null` if the username is not found.
+   */
+  actorHandleMapper?: ActorHandleMapper<TContextData>;
+
+  /**
    * The function to call when the actor is not found.
    */
   onNotFound(request: Request): Response | Promise<Response>;
@@ -38,6 +48,7 @@ export async function handleWebFinger<TContextData>(
   {
     context,
     actorDispatcher,
+    actorHandleMapper,
     onNotFound,
   }: WebFingerHandlerParameters<TContextData>,
 ): Promise<Response> {
@@ -55,20 +66,35 @@ export async function handleWebFinger<TContextData>(
     }
     throw new e();
   }
+  if (actorDispatcher == null) {
+    logger.error("Actor dispatcher is not set.");
+    return await onNotFound(request);
+  }
   let handle: string | null;
   const uriParsed = context.parseUri(resourceUrl);
   if (uriParsed?.type != "actor") {
     const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
-    if (match == null || match[2] != context.url.host) {
+    if (match == null || toASCII(match[2].toLowerCase()) != context.url.host) {
       return await onNotFound(request);
     }
-    handle = match[1];
+    const username = match[1];
+    if (actorHandleMapper == null) {
+      logger.error(
+        "No actor handle mapper is set; use the WebFinger username {username}" +
+          " as the actor's internal handle.",
+        { username },
+      );
+      handle = username;
+    } else {
+      handle = await actorHandleMapper(context, username);
+      if (handle == null) {
+        logger.error("Actor {username} not found.", { username });
+        return await onNotFound(request);
+      }
+    }
+    resourceUrl = new URL(`acct:${username}@${context.url.host}`);
   } else {
     handle = uriParsed.handle;
-  }
-  if (actorDispatcher == null) {
-    logger.error("Actor dispatcher is not set.", { handle });
-    return await onNotFound(request);
   }
   const actor = await actorDispatcher(context, handle);
   if (actor == null) {
@@ -97,8 +123,12 @@ export async function handleWebFinger<TContextData>(
     }
   }
   const jrd: ResourceDescriptor = {
-    subject: `acct:${handle}@${context.url.host}`,
-    aliases: [context.getActorUri(handle).href],
+    subject: resourceUrl.href,
+    aliases: resourceUrl.href === context.getActorUri(handle).href
+      ? (actor.preferredUsername == null
+        ? []
+        : [`acct:${actor.preferredUsername}@${context.url.host}`])
+      : [context.getActorUri(handle).href],
     links,
   };
   return new Response(JSON.stringify(jrd), {

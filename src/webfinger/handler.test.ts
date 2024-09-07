@@ -1,5 +1,8 @@
 import { assertEquals } from "@std/assert";
-import type { ActorDispatcher } from "../federation/callback.ts";
+import type {
+  ActorDispatcher,
+  ActorHandleMapper,
+} from "../federation/callback.ts";
 import { createRequestContext } from "../testing/context.ts";
 import { test } from "../testing/mod.ts";
 import type { Actor } from "../vocab/actor.ts";
@@ -27,14 +30,15 @@ test("handleWebFinger()", async () => {
     },
   });
   const actorDispatcher: ActorDispatcher<void> = (ctx, handle) => {
-    if (handle !== "someone") return null;
+    if (handle !== "someone" && handle !== "someone2") return null;
     return new Person({
       id: ctx.getActorUri(handle),
-      name: "Someone",
+      name: handle === "someone" ? "Someone" : "Someone 2",
+      preferredUsername: handle === "someone" ? null : handle,
       urls: [
-        new URL("https://example.com/@someone"),
+        new URL("https://example.com/@" + handle),
         new Link({
-          href: new URL("https://example.org/@someone"),
+          href: new URL("https://example.org/@" + handle),
           rel: "alternate",
           mediaType: "text/html",
         }),
@@ -118,7 +122,43 @@ test("handleWebFinger()", async () => {
     onNotFound,
   });
   assertEquals(response.status, 200);
-  assertEquals(await response.json(), expected);
+  assertEquals(await response.json(), {
+    ...expected,
+    aliases: [],
+    subject: "https://example.com/users/someone",
+  });
+
+  url.searchParams.set("resource", "https://example.com/users/someone2");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    onNotFound,
+  });
+  assertEquals(response.status, 200);
+  const expected2 = {
+    subject: "https://example.com/users/someone2",
+    aliases: [
+      "acct:someone2@example.com",
+    ],
+    links: [
+      {
+        href: "https://example.com/users/someone2",
+        rel: "self",
+        type: "application/activity+json",
+      },
+      {
+        href: "https://example.com/@someone2",
+        rel: "http://webfinger.net/rel/profile-page",
+      },
+      {
+        href: "https://example.org/@someone2",
+        rel: "alternate",
+        type: "text/html",
+      },
+    ],
+  };
+  assertEquals(await response.json(), expected2);
 
   url.searchParams.set("resource", "acct:no-one@example.com");
   request = new Request(url);
@@ -151,4 +191,66 @@ test("handleWebFinger()", async () => {
   });
   assertEquals(response.status, 404);
   assertEquals(onNotFoundCalled, request);
+
+  const actorHandleMapper: ActorHandleMapper<void> = (_ctx, username) => {
+    return username === "foo"
+      ? "someone"
+      : username === "bar"
+      ? "someone2"
+      : null;
+  };
+  url.searchParams.set("resource", "acct:foo@example.com");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    actorHandleMapper,
+    onNotFound,
+  });
+  assertEquals(response.status, 200);
+  assertEquals(await response.json(), {
+    ...expected,
+    aliases: ["https://example.com/users/someone"],
+    subject: "acct:foo@example.com",
+  });
+
+  url.searchParams.set("resource", "acct:bar@example.com");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    actorHandleMapper,
+    onNotFound,
+  });
+  assertEquals(response.status, 200);
+  assertEquals(await response.json(), {
+    ...expected2,
+    aliases: ["https://example.com/users/someone2"],
+    subject: "acct:bar@example.com",
+  });
+
+  url.searchParams.set("resource", "https://example.com/users/someone");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    actorHandleMapper,
+    onNotFound,
+  });
+  assertEquals(response.status, 200);
+  assertEquals(await response.json(), {
+    ...expected,
+    aliases: [],
+    subject: "https://example.com/users/someone",
+  });
+
+  url.searchParams.set("resource", "acct:baz@example.com");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    actorHandleMapper,
+    onNotFound,
+  });
+  assertEquals(response.status, 404);
 });

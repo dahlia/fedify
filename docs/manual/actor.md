@@ -325,3 +325,44 @@ dereferenceable URI of the actor with the bare handle `"john_doe"`.
 > The `Context.getActorUri()` method does not guarantee that the actor
 > URI is always dereferenceable for every argument.  Make sure that
 > the argument is a valid bare handle before calling the method.
+
+
+Decoupling actor URIs from WebFinger usernames
+----------------------------------------------
+
+*This API is available since Fedify 0.15.0.*
+
+> [!TIP]
+> The WebFinger username means the username part of the `acct:` URI or
+> the fediverse handle.  For example, the WebFinger username of the
+> `acct:fedify@hollo.social` URI or the `@fedify@hollo.social` handle
+> is `fedify`.
+
+By default, Fedify uses the bare handle as the WebFinger username.  However,
+you can decouple the WebFinger username from the bare handle by registering
+an actor handle mapper through the `~ActorCallbackSetters.mapHandle()` method:
+
+~~~~ typescript
+federation
+  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+    // Since we map a WebFinger handle to the corresponding user's UUID below,
+    // the `handle` parameter is the user's UUID, not the WebFinger username:
+    const user = await findUserByUuid(handle);
+    // Omitted for brevity; see the previous example for details.
+  })
+  .mapHandle(async (ctx, username) => {
+    // Work with the database to find the WebFinger username by the handle.
+    const user = await findUserByUsername(username);
+    if (user == null) return null;  // Return null if the actor is not found.
+    return user.uuid;
+  });
+~~~~
+
+Decoupling the WebFinger username from the bare handle is useful when you want
+to let users change their WebFinger username without breaking the existing
+network, because changing the WebFinger username does not affect the actor URI.
+
+> [!NOTE]
+> We highly recommend you to set the actor's `preferredUsername` property to
+> the corresponding WebFinger username so that peers can find the actor's
+> fediverse handle by fetching the actor object.

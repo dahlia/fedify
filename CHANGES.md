@@ -8,6 +8,13 @@ Version 0.15.0
 
 To be released.
 
+ -  Actors, collections, and objects now can have their URIs that do not consist
+    of a WebFinger username, which means actors can change their fediverse
+    handles.
+
+     -  Added `ActorCallbackSetters.mapHandle()` method.
+     -  Added `ActorHandleMapper` type.
+
  -  Removed `expand` option of `Object.toJsonLd()` method, which was deprecated
     in version 0.14.0.  Use `format: "expand"` option instead.
 
@@ -21,6 +28,10 @@ To be released.
         the `<link>`/`<a>` HTML elements.
 
  -  Added `allowPrivateAddress` option to `CreateFederationOptions` interface.
+
+ -  Fixed a bug where the WebFinger response had had a `subject` property
+    with an unmatched URI to the requested resource when a non-`acct:` URI
+    was given.
 
  -  Renamed the short option `-c` for `--compact` of `fedify lookup` command to
     `-C` to avoid conflict with the short option `-c` for `--cache-dir`.

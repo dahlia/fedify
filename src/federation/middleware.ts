@@ -23,6 +23,7 @@ import {
 import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
   ActorDispatcher,
+  ActorHandleMapper,
   ActorKeyPairsDispatcher,
   AuthorizePredicate,
   CollectionCounter,
@@ -1305,6 +1306,10 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
     const setters: ActorCallbackSetters<TContextData> = {
       setKeyPairsDispatcher(dispatcher: ActorKeyPairsDispatcher<TContextData>) {
         callbacks.keyPairsDispatcher = dispatcher;
+        return setters;
+      },
+      mapHandle(mapper: ActorHandleMapper<TContextData>) {
+        callbacks.handleMapper = mapper;
         return setters;
       },
       authorize(predicate: AuthorizePredicate<TContextData>) {
@@ -2791,6 +2796,7 @@ export interface FederationFetchOptions<TContextData> {
 interface ActorCallbacks<TContextData> {
   dispatcher?: ActorDispatcher<TContextData>;
   keyPairsDispatcher?: ActorKeyPairsDispatcher<TContextData>;
+  handleMapper?: ActorHandleMapper<TContextData>;
   authorizePredicate?: AuthorizePredicate<TContextData>;
 }
 
@@ -2816,6 +2822,18 @@ export interface ActorCallbackSetters<TContextData> {
    */
   setKeyPairsDispatcher(
     dispatcher: ActorKeyPairsDispatcher<TContextData>,
+  ): ActorCallbackSetters<TContextData>;
+
+  /**
+   * Sets the callback function that maps a WebFinger username to
+   * the corresponding actor's internal handle.  If it's omitted, the handle
+   * is assumed to be the same as the WebFinger username, which makes your
+   * actors have the immutable handles.  If you want to let your actors change
+   * their fediverse handles, you should set this dispatcher.
+   * @since 0.15.0
+   */
+  mapHandle(
+    mapper: ActorHandleMapper<TContextData>,
   ): ActorCallbackSetters<TContextData>;
 
   /**
