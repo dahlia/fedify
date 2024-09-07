@@ -37,7 +37,9 @@ If you want to know more about the project, please take a look at the following
 resources:
 
  -  [Installation](https://fedify.dev/install)
- -  [In-depth tutorial](https://fedify.dev/tutorial)
+ -  Tutorials:
+    [Learning the basics](https://fedify.dev/tutorial/basics) &
+    [Creating a microblog](https://fedify.dev/tutorial/microblog)
  -  [API reference][JSR]
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 

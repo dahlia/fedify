@@ -7,6 +7,9 @@ added in the future.[^1]
 
   -  [Actor lookup CLI](./actor-lookup-cli/)
   -  [Federated single-user blog](./blog/)
+  -  [Federated microblog](https://github.com/dahlia/microblog), which is
+     a final result of
+     the [Creating a microblog](https://fedify.dev/tutorial/microblog) tutorial
   -  [Fedi badge](https://github.com/dahlia/fedi-badge)
   -  [Ghost's ActivityPub server](https://github.com/TryGhost/ActivityPub)
   -  [Hollo: a federated single-user microblogging

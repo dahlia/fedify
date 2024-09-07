@@ -26,7 +26,8 @@
  * following resources:
  *
  * - [GitHub](https://github.com/dahlia/fedify)
- * - [Tutorial](https://fedify.dev/tutorial)
+ * - Tutorials: [Learning the basics](https://fedify.dev/tutorial/basics)
+ *   & [Creating a microblog](https://fedify.dev/tutorial/microblog)
  * - [Examples](https://github.com/dahlia/fedify/tree/main/examples)
  *
  * [ActivityPub]: https://www.w3.org/TR/activitypub/
