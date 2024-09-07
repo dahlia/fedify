@@ -428,7 +428,7 @@ and it helps define the type of the component. `FC` is a generic type,
 and the types that go inside the angle brackets after `FC` are type arguments.
 Here, we specify the props type as the type argument. Props refer to
 the parameters passed to the component. In the above code, we declared and
-used the `ContainerProps` interface as the props format for the `<Container>`
+used the `ContainerProps` interface as the props type for the `<Container>`
 component.
 
 > [!TIP]
@@ -1257,17 +1257,17 @@ CREATE TABLE IF NOT EXISTS keys (
 ~~~~
 
 If you look closely at the table, you can see that the `type` column only allows
-two types of values. One is the [RSA-PKCS#1-v1.5] format and the other is
-the [Ed25519] format. (What each of these means is not important for this
+two types of values. One is the [RSA-PKCS#1-v1.5] type and the other is
+the [Ed25519] type. (What each of these means is not important for this
 tutorial.) Since the primary key is on `(user_id, type)`, there can be a maximum
 of two key pairs for one user.
 
 > [!TIP]
 > We can't go into detail in this tutorial, but as of September 2024,
 > the ActivityPub network is in the process of transitioning from
-> the RSA-PKCS#1-v1.5 format to the Ed25519 format. Some software only
-> accepts the RSA-PKCS#1-v1.5 format, while some software accepts
-> the Ed25519 format. Therefore, to communicate with both sides,
+> the RSA-PKCS#1-v1.5 type to the Ed25519 type. Some software only
+> accepts the RSA-PKCS#1-v1.5 type, while some software accepts
+> the Ed25519 type. Therefore, to communicate with both sides,
 > both pairs of keys are needed.
 
 The `private_key` and `public_key` columns can receive strings,
@@ -1406,7 +1406,7 @@ the registered private keys when sending activities.
 
 The `generateCryptoKeyPair()` function generates a new private key and public
 key pair and returns it as a [`CryptoKeyPair`] object. For your reference,
-the [`CryptoKeyPair`] type has the format `{ privateKey: CryptoKey;
+the [`CryptoKeyPair`] type has the type `{ privateKey: CryptoKey;
 publicKey: CryptoKey; }`.
 
 The `exportJwk()` function returns an object representing the [`CryptoKey`]
@@ -1442,15 +1442,15 @@ interface ActorKeyPair {
 It's complex to explain here how [`CryptoKey`], `CryptographicKey`,
 and `Multikey` differ, and why there need to be so many formats. For now,
 let's just note that when initializing the `Person` object, the `publicKey`
-property accepts the `CryptographicKey` format and the `assertionMethods`
+property accepts the `CryptographicKey` type and the `assertionMethods`
 property accepts the `MultiKey[]` (TypeScript notation for an array of
-`Multikey`) format.
+`Multikey`) type.
 
 By the way, why are there two properties in the `Person` object that hold public
 keys, `publicKey` and `assertionMethods`? Originally in ActivityPub, there was
 only the `publicKey` property, but later the `assertionMethods` property was
 added to allow registration of multiple keys. Similar to how we generated both
-RSA-PKCS#1-v1.5 and Ed25519 format keys earlier, we're setting both properties
+RSA-PKCS#1-v1.5 and Ed25519 keys earlier, we're setting both properties
 for compatibility with various software. If you look closely, you can see that
 we're only registering the RSA-PKCS#1-v1.5 key to the legacy `publicKey`
 property (the first item in the array is the RSA-PKCS#1-v1.5 key pair,
@@ -1534,7 +1534,7 @@ Person {
 ~~~~
 
 You can see that the `Person` object's `publicKey` property contains one
-`CryptographicKey` object in RSA-PKCS#1-v1.5 format,
+`CryptographicKey` object in RSA-PKCS#1-v1.5 type,
 and the `assertionMethods` property contains two `Multikey` objects
 in RSA-PKCS#1-v1.5 and Ed25519 formats.
 
