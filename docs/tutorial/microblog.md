@@ -628,12 +628,63 @@ a database file:
 sqlite3 microblog.sqlite3 < src/schema.sql
 ~~~~
 
-> [!TIP]
-> We used `CREATE TABLE IF NOT EXISTS` when defining the `users` table,
-> so it's okay to run it multiple times.
+The above command will create a *microblog.sqlite3* file, which will store your
+SQLite data.
 
-Let's also define a type in *src/schema.ts* to represent the records stored in
-the `users` table in JavaScript:
+[get from the SQLite website]: https://www.sqlite.org/download.html
+
+### Connecting to the database in the app
+
+Now we need to use the SQLite database in our app. To use SQLite database in
+Node.js, we need a SQLite driver library, and we'll use the *[better-sqlite3]*
+package. You can easily install the package with the `npm` command:
+
+~~~~ sh
+npm add better-sqlite3
+npm add --save-dev @types/better-sqlite3
+~~~~
+
+> [!TIP]
+> The *[@types/better-sqlite3]* package contains type information about
+> the *better-sqlite3* package's API for TypeScript. You need to install this
+> package to enable auto-completion and type checking when editing in Visual
+> Studio Code.
+>
+> Packages like this in the *@types/* scope are called [Definitely Typed]
+> packages. When a library is not written in TypeScript, the community adds
+> type information and makes it into a package.
+
+Now that we've installed the package, let's write code to connect to
+the database using this package. Create a new file named *src/db.ts* and code
+it as follows:
+
+~~~~ typescript
+import Database from "better-sqlite3";
+
+const db = new Database("microblog.sqlite3");
+db.pragma("journal_mode = WAL");
+db.pragma("foreign_keys = ON");
+
+export default db;
+~~~~
+
+> [!TIP]
+> The settings made through the `db.pragma()` function have the following
+> effects:
+>
+> [`journal_mode = WAL`]
+> :   Adopts [Write-Ahead Logging] mode as a way to implement atomic commits and
+>     rollbacks in SQLite. This mode is generally more performant than
+>     the default [rollback journal] mode.
+>
+> [`foreign_keys = ON`]
+> :   By default, SQLite does not check foreign key constraints. Turning on this
+>     setting makes it check foreign key constraints, which helps maintain data
+>     integrity.
+
+Now let's declare a type in JavaScript to represent the record stored in
+the `users` table. Create a *src/schema.ts* file and define the `User` type
+as follows:
 
 ~~~~ typescript
 export interface User {
@@ -642,9 +693,15 @@ export interface User {
 }
 ~~~~
 
-[get from the SQLite website]: https://www.sqlite.org/download.html
+[better-sqlite3]: https://github.com/WiseLibs/better-sqlite3
+[@types/better-sqlite3]: https://www.npmjs.com/package/@types/better-sqlite3
+[Definitely Typed]: https://github.com/DefinitelyTyped/DefinitelyTyped
+[`journal_mode = WAL`]: https://www.sqlite.org/wal.html
+[Write-Ahead Logging]: https://en.wikipedia.org/wiki/Write-ahead_logging
+[rollback journal]: https://www.sqlite.org/lockingv3.html#rollback
+[`foreign_keys = ON`]: https://www.sqlite.org/foreignkeys.html#fk_enable
 
-### Connecting to the database in the app
+### Record insertion
 
 Now that we've connected to the database, it's time to write code to insert
 records.
