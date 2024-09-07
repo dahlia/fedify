@@ -248,8 +248,8 @@ its name is *john*, and its username is also *john*.
 > yield any results yet.)
 >
 > If you prefer `curl` over the `fedify lookup` command, you can also query
-> the actor with this command (note that we're sending the `Accept` header
-> with the `-H` option):
+> the actor with this command (note that we're sending the <code>Accept</code>
+> header with the `-H` option):
 >
 > ~~~~ sh
 > curl -H"Accept: application/activity+json" http://localhost:8000/users/john
@@ -1161,15 +1161,15 @@ profile URL match.
 > Sharp-eyed readers may have noticed that we're defining overlapping handlers
 > for `GET /users/{handle}` on both Hono and Fedify sides. So what happens when
 > an actual request is sent to this path? The answer is that it depends on
-> the `Accept` header of the request. If a request is sent with
+> the <code>Accept</code> header of the request. If a request is sent with
 > the `Accept: text/html` header, the request handler on the Hono side responds.
 > If a request is sent with the `Accept: application/activity+json` header,
 > the request handler on the Fedify side responds.
 >
-> This way of giving different responses according to the `Accept` header of
-> the request is called HTTP [content negotiation], and Fedify itself implements
-> content negotiation. More specifically, all requests go through Fedify once,
-> and if it's not an ActivityPub-related request, it's passed on to
+> This way of giving different responses according to the <code>Accept</code>
+> header of the request is called HTTP [content negotiation], and Fedify itself
+> implements content negotiation. More specifically, all requests go through
+> Fedify once, and if it's not an ActivityPub-related request, it's passed on to
 > the integrated framework, which in this tutorial is Hono.
 
 > [!TIP]
