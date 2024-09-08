@@ -84,8 +84,8 @@ test("createProof()", async () => {
   assertEquals(
     proof.proofValue,
     decodeHex(
-      "0bc7df9f6a0a7998d31b9ba140eb0d40508edf47a20ed403770a4e6224af619c" +
-        "633411e38322f175c2a74e3f1d6f44cc99f1ed3485cdd819586ec43a33bf1206",
+      "e8f4680c67ca538a7814fc50e8eba95d545e4cfd887e676022ea69fd255cbd2f" +
+        "ae7ae190da409aa35d6bdad12c2cf329c9bc1450a547d61340e793fb0ce5b104",
     ),
   );
   assertEquals(proof.created, created);

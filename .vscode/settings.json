@@ -79,6 +79,7 @@
     "docloader",
     "eddsa",
     "fedi",
+    "fedibird",
     "fedify",
     "fediverse",
     "followable",

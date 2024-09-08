@@ -15,6 +15,22 @@ To be released.
      -  Added `ActorCallbackSetters.mapHandle()` method.
      -  Added `ActorHandleMapper` type.
 
+ -  Added `quoteUrl` property to `Article`, `ChatMessage`, `Note`, and
+    `Question` classes in Activity Vocabulary API.
+
+     -  Added `Article.quoteUrl` property.
+     -  `new Article()` constructor now accepts `quoteUrl` option.
+     -  `Article.clone()` method now accepts `quoteUrl` option.
+     -  Added `ChatMessage.quoteUrl` property.
+     -  `new ChatMessage()` constructor now accepts `quoteUrl` option.
+     -  `ChatMessage.clone()` method now accepts `quoteUrl` option.
+     -  Added `Note.quoteUrl` property.
+     -  `new Note()` constructor now accepts `quoteUrl` option.
+     -  `Note.clone()` method now accepts `quoteUrl` option.
+     -  Added `Question.quoteUrl` property.
+     -  `new Question()` constructor now accepts `quoteUrl` option.
+     -  `Question.clone()` method now accepts `quoteUrl` option.
+
  -  Removed `expand` option of `Object.toJsonLd()` method, which was deprecated
     in version 0.14.0.  Use `format: "expand"` option instead.
 

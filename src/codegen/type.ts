@@ -273,6 +273,26 @@ const scalarTypes: Record<string, ScalarType> = {
       return `parseLanguageTag(${v}["@value"])`;
     },
   },
+  "fedify:url": {
+    name: "URL",
+    typeGuard(v) {
+      return `${v} instanceof URL`;
+    },
+    encoder(v) {
+      return `{ "@value": ${v}.href }`;
+    },
+    compactEncoder(v) {
+      return `${v}.href`;
+    },
+    dataCheck(v) {
+      return `typeof ${v} === "object" && "@value" in ${v}
+        && typeof ${v}["@value"] === "string"
+        && ${v}["@value"] !== "" && ${v}["@value"] !== "/"`;
+    },
+    decoder(v) {
+      return `new URL(${v}["@value"])`;
+    },
+  },
   "fedify:publicKey": {
     name: "CryptoKey",
     typeGuard(v) {

@@ -80,7 +80,7 @@ export interface PropertySchemaBase {
    * The property name used in the compacted JSON-LD document.  It is used as
    * the key of the property.
    */
-  compactName: string;
+  compactName?: string;
 
   /**
    * The qualified URI of the superproperty of the property (if any).
@@ -174,6 +174,25 @@ export type PropertySchema =
      * and `singularAccessor` should not be specified.
      */
     functional: true;
+
+    /**
+     * If it's present, those redundant properties are also filled with
+     * the same value altogether when the object is serialized into
+     * JSON-LD.  When it's deserialized from JSON-LD, it tries to
+     * parse the values of the specified properties in order.
+     */
+    redundantProperties?: {
+      /**
+       * The qualified URI of the property.
+       */
+      uri: string;
+
+      /**
+       * The property name used in the compacted JSON-LD document.  It is used
+       * as the key of the property.
+       */
+      compactName?: string;
+    }[];
   };
 
 /**

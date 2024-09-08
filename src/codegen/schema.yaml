@@ -45,6 +45,27 @@ $defs:
           functional:
             description: *functional-description
             const: true
+          redundantProperties::
+            description: >-
+              If it's present, those redundant properties are also filled with
+              the same value altogether when the object is serialized into
+              JSON-LD.  When it's deserialized from JSON-LD, it tries to
+              parse the values of the specified properties in order.
+            type: array
+            items:
+              type: object
+              properties:
+                uri:
+                  description: The qualified URI of the property.
+                  type: string
+                  format: uri
+                compactName:
+                  description: >-
+                    The property name used in the compacted JSON-LD document.
+                    It is used as the key of the property.
+                  type: string
+              required:
+              - uri
         required:
         - functional
 

@@ -278,7 +278,9 @@ test("Activity.fromJsonLd()", async () => {
         verificationMethod: "https://server.example/users/alice#ed25519-key",
         proofPurpose: "assertionMethod",
         proofValue:
+          // cSpell: disable
           "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+        // cSpell: enable
         created: "2023-02-24T23:36:38Z",
       },
     },
@@ -296,7 +298,9 @@ test("Activity.fromJsonLd()", async () => {
   assertEquals(
     proofs[0].proofValue,
     decode(
+      // cSpell: disable
       "z3sXaxjKs4M3BRicwWA9peyNPJvJqxtGsDmpt1jjoHCjgeUf71TRFz56osPSfDErszyLp5Ks1EhYSgpDaNM977Rg2",
+      // cSpell: enable
     ),
   );
   assertEquals(
@@ -466,6 +470,62 @@ test("Person.fromJsonLd()", async () => {
   );
 });
 
+test("Note.quoteUrl", async () => {
+  const note = new Note({
+    quoteUrl: new URL("https://example.com/object"),
+  });
+  const expected = {
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
+      {
+        Emoji: "toot:Emoji",
+        Hashtag: "as:Hashtag",
+        _misskey_quote: "misskey:_misskey_quote",
+        fedibird: "http://fedibird.com/ns#",
+        misskey: "https://misskey-hub.net/ns#",
+        quoteUri: "fedibird:quoteUri",
+        quoteUrl: "as:quoteUrl",
+        sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
+      },
+    ],
+    _misskey_quote: "https://example.com/object",
+    quoteUri: "https://example.com/object",
+    quoteUrl: "https://example.com/object",
+    type: "Note",
+  };
+  assertEquals(await note.toJsonLd(), expected);
+  assertEquals(await note.toJsonLd({ format: "compact" }), expected);
+
+  const jsonLd: Record<string, unknown> = {
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      {
+        _misskey_quote: "misskey:_misskey_quote",
+        fedibird: "http://fedibird.com/ns#",
+        misskey: "https://misskey-hub.net/ns#",
+        quoteUri: "fedibird:quoteUri",
+        quoteUrl: "as:quoteUrl",
+      },
+    ],
+    type: "Note",
+    quoteUrl: "https://example.com/object",
+    _misskey_quote: "https://example.com/object2",
+    quoteUri: "https://example.com/object3",
+  };
+  const loaded = await Note.fromJsonLd(jsonLd);
+  assertEquals(loaded.quoteUrl, new URL("https://example.com/object"));
+
+  delete jsonLd.quoteUrl;
+  const loaded2 = await Note.fromJsonLd(jsonLd);
+  assertEquals(loaded2.quoteUrl, new URL("https://example.com/object2"));
+
+  delete jsonLd._misskey_quote;
+  const loaded3 = await Note.fromJsonLd(jsonLd);
+  assertEquals(loaded3.quoteUrl, new URL("https://example.com/object3"));
+});
+
 test("Key.publicKey", async () => {
   const jwk = {
     kty: "RSA",
@@ -600,6 +660,7 @@ const sampleValues: Record<string, any> = {
     0x3f, 0xbd, 0xf3, 0x07,
   ]),
   "fedify:langTag": parseLanguageTag("en"),
+  "fedify:url": new URL("https://fedify.dev/"),
   "fedify:publicKey": rsaPublicKey1.publicKey,
   "fedify:multibaseKey": ed25519PublicKey.publicKey,
   "fedify:proofPurpose": "assertionMethod",

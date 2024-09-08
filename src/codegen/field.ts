@@ -10,7 +10,9 @@ export async function getFieldName(
     "SHA-1",
     new TextEncoder().encode(propertyUri),
   );
-  return `${prefix}_${encodeBase58(hashedUri)}`;
+  const match = propertyUri.match(/#([A-Za-z0-9_]+)$/);
+  const suffix = match == null ? "" : `_${match[1]}`;
+  return `${prefix}_${encodeBase58(hashedUri)}${suffix}`;
 }
 
 export async function generateField(

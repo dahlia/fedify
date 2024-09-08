@@ -104,22 +104,33 @@ export async function* generateEncoder(
         );
         compactItems.push(item);
       }
+      if (compactItems.length > 0) {
       `;
       if (property.functional || property.container !== "list") {
         yield `
-        if (compactItems.length > 1) {
-          result[${JSON.stringify(property.compactName)}] = compactItems;
-        } else if (compactItems.length === 1) {
-          result[${JSON.stringify(property.compactName)}] = compactItems[0];
-        }
+        result[${JSON.stringify(property.compactName)}]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
         `;
+        if (property.functional && property.redundantProperties != null) {
+          for (const prop of property.redundantProperties) {
+            yield `
+            result[${JSON.stringify(prop.compactName)}]
+              = compactItems.length > 1
+              ? compactItems
+              : compactItems[0];
+            `;
+          }
+        }
       } else {
         yield `
-        if (compactItems.length > 0) {
-          result[${JSON.stringify(property.compactName)}] = compactItems;
-        }
+        result[${JSON.stringify(property.compactName)}] = compactItems;
         `;
       }
+      yield `
+      }
+      `;
     }
     yield `
       result["type"] = ${JSON.stringify(type.compactName ?? type.uri)};
@@ -171,7 +182,7 @@ export async function* generateEncoder(
     yield `;
     }
     if (array.length > 0) {
-      values[${JSON.stringify(property.uri)}] = (
+      const propValue = (
     `;
     if (!property.functional && property.container === "list") {
       yield `{ "@list": array }`;
@@ -180,6 +191,16 @@ export async function* generateEncoder(
     }
     yield `
       );
+      values[${JSON.stringify(property.uri)}] = propValue;
+    `;
+    if (property.functional && property.redundantProperties != null) {
+      for (const prop of property.redundantProperties) {
+        yield `
+        values[${JSON.stringify(prop.uri)}] = propValue;
+        `;
+      }
+    }
+    yield `
     }
     `;
   }
@@ -317,7 +338,18 @@ export async function* generateDecoder(
     yield await generateField(property, types, "const ");
     const arrayVariable = `${variable}__array`;
     yield `
-    const ${arrayVariable} = values[${JSON.stringify(property.uri)}];
+    let ${arrayVariable} = values[${JSON.stringify(property.uri)}];
+    `;
+    if (property.functional && property.redundantProperties != null) {
+      for (const prop of property.redundantProperties) {
+        yield `
+        if (${arrayVariable} == null || ${arrayVariable}.length < 1) {
+          ${arrayVariable} = values[${JSON.stringify(prop.uri)}];
+        }
+        `;
+      }
+    }
+    yield `
     for (
       const v of ${arrayVariable} == null
         ? []

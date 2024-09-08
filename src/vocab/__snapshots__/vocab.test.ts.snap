@@ -136,7 +136,8 @@ snapshot[`Deno.inspect(ChatMessage) [auto] 1`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proof: DataIntegrityProof {}
+  proof: DataIntegrityProof {},
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -171,7 +172,8 @@ snapshot[`Deno.inspect(ChatMessage) [auto] 2`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proof: URL "https://example.com/"
+  proof: URL "https://example.com/",
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -206,7 +208,8 @@ snapshot[`Deno.inspect(ChatMessage) [auto] 3`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
+  proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -1168,7 +1171,8 @@ snapshot[`Deno.inspect(Article) [auto] 1`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proof: DataIntegrityProof {}
+  proof: DataIntegrityProof {},
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -1203,7 +1207,8 @@ snapshot[`Deno.inspect(Article) [auto] 2`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proof: URL "https://example.com/"
+  proof: URL "https://example.com/",
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -1238,7 +1243,8 @@ snapshot[`Deno.inspect(Article) [auto] 3`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
+  proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -4057,7 +4063,8 @@ snapshot[`Deno.inspect(Note) [auto] 1`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proof: DataIntegrityProof {}
+  proof: DataIntegrityProof {},
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -4092,7 +4099,8 @@ snapshot[`Deno.inspect(Note) [auto] 2`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proof: URL "https://example.com/"
+  proof: URL "https://example.com/",
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -4127,7 +4135,8 @@ snapshot[`Deno.inspect(Note) [auto] 3`] = `
   duration: PT1H,
   sensitive: true,
   source: Source {},
-  proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ]
+  proofs: [ DataIntegrityProof {}, DataIntegrityProof {} ],
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -5312,7 +5321,8 @@ snapshot[`Deno.inspect(Question) [auto] 1`] = `
   exclusiveOptions: [ Object {} ],
   inclusiveOptions: [ Object {} ],
   closed: 2024-03-03T08:30:06.796196096Z,
-  voters: 123
+  voters: 123,
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -5357,7 +5367,8 @@ snapshot[`Deno.inspect(Question) [auto] 2`] = `
   exclusiveOptions: [ URL "https://example.com/" ],
   inclusiveOptions: [ URL "https://example.com/" ],
   closed: 2024-03-03T08:30:06.796196096Z,
-  voters: 123
+  voters: 123,
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
@@ -5402,7 +5413,8 @@ snapshot[`Deno.inspect(Question) [auto] 3`] = `
   exclusiveOptions: [ Object {}, Object {} ],
   inclusiveOptions: [ Object {}, Object {} ],
   closed: 2024-03-03T08:30:06.796196096Z,
-  voters: 123
+  voters: 123,
+  quoteUrl: URL "https://fedify.dev/"
 }'
 `;
 
