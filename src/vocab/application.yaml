@@ -59,7 +59,7 @@ properties:
     Represents this actor's public keys.  It serves as equivalent to
     the `publicKeys` property, but is used for [FEP-521a] compliance.
 
-    [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+    [FEP-521a]: https://w3id.org/fep/521a
   range:
   - "https://w3id.org/security#Multikey"
 

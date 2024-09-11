@@ -7895,7 +7895,7 @@ get cryptosuite(): (\\"eddsa-jcs-2022\\" | null) {
 /** A key owned by an actor according to [FEP-521a: Representing actor's public
  * keys][1].
  * 
- * [1]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [1]: https://w3id.org/fep/521a
  * 
  */
 
@@ -8963,7 +8963,7 @@ get publicKey(): (CryptoKey | null) {
 /** Represents a key owned by an actor according to [FEP-521a: Representing
  * actor's public keys.][1]
  * 
- * [1]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [1]: https://w3id.org/fep/521a
  * 
  */
 export class Multikey {
@@ -13431,7 +13431,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -13468,7 +13468,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -23648,7 +23648,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -23685,7 +23685,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -32587,7 +32587,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -32624,7 +32624,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -36264,7 +36264,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -36301,7 +36301,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -43888,7 +43888,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 
@@ -43925,7 +43925,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
 /** Represents this actor's public keys.  It serves as equivalent to
  * the \`publicKeys\` property, but is used for [FEP-521a] compliance.
  * 
- * [FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
+ * [FEP-521a]: https://w3id.org/fep/521a
  * 
  */
 

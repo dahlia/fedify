@@ -908,8 +908,8 @@ is now distributed under the [MIT License] to encourage wider adoption.
 [#68]: https://github.com/dahlia/fedify/pull/68
 [AGPL 3.0]: https://www.gnu.org/licenses/agpl-3.0.en.html
 [MIT License]: https://minhee.mit-license.org/
-[FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
-[FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
+[FEP-521a]: https://w3id.org/fep/521a
+[FEP-8b32]: https://w3id.org/fep/8b32
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
 
 
@@ -1117,7 +1117,7 @@ Released on May 6, 2024.
 
 [@fedify/cli]: https://jsr.io/@fedify/cli
 [releases]: https://github.com/dahlia/fedify/releases
-[FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
+[FEP-8fcf]: https://w3id.org/fep/8fcf
 [#47]: https://github.com/dahlia/fedify/issues/47
 
 

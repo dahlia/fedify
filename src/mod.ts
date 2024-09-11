@@ -35,7 +35,7 @@
  * [Activity Vocabulary]: https://www.w3.org/TR/activitystreams-vocabulary/
  * [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
  * [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
- * [FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
+ * [FEP-8b32]: https://w3id.org/fep/8b32
  * [NodeInfo]: https://nodeinfo.diaspora.software/
  *
  * @module

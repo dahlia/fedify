@@ -57,9 +57,8 @@ features:
 - icon: 🪪
   title: Object Integrity Proofs (FEP-8b32)
   details: >-
-    Creating and verifying <a
-    href="https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md"
-    >Object Integrity Proofs</a>
+    Creating and verifying <a href="https://w3id.org/fep/8b32">Object Integrity
+    Proofs</a>
   link: /manual/send.md#object-integrity-proofs
 - icon: ℹ️
   title: NodeInfo

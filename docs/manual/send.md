@@ -240,7 +240,7 @@ the digest of the followers collection in the payload.
 > the `PUBLIC_COLLECTION`, the activity is visible to everyone regardless of
 > the recipients parameter.
 
-[FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
+[FEP-8fcf]: https://w3id.org/fep/8fcf
 
 
 Excluding same-server recipients
@@ -348,6 +348,6 @@ equal to the number of Ed25519 key pairs.
 > generate both RSA-PKCS#1-v1.5 and Ed25519 key pairs for each actor, and
 > store them in the database.
 
-[FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
+[FEP-8b32]: https://w3id.org/fep/8b32
 [forwarding from inbox]: https://www.w3.org/TR/activitypub/#inbox-forwarding
 [several other cases]: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/79?u=hongminhee

@@ -28,13 +28,13 @@ Supported FEPs
  -  [FEP-5feb][]: Search indexing consent for actors
  -  [FEP-c7d3][]: Ownership
 
-[FEP-67ff]: https://codeberg.org/fediverse/fep/src/branch/main/fep/67ff/fep-67ff.md
-[FEP-8fcf]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8fcf/fep-8fcf.md
-[FEP-f1d5]: https://codeberg.org/fediverse/fep/src/branch/main/fep/f1d5/fep-f1d5.md
-[FEP-8b32]: https://codeberg.org/fediverse/fep/src/branch/main/fep/8b32/fep-8b32.md
-[FEP-521a]: https://codeberg.org/fediverse/fep/src/branch/main/fep/521a/fep-521a.md
-[FEP-5feb]: https://codeberg.org/fediverse/fep/src/branch/main/fep/5feb/fep-5feb.md
-[FEP-c7d3]: https://codeberg.org/silverpill/feps/src/branch/main/c7d3/fep-c7d3.md
+[FEP-67ff]: https://w3id.org/fep/67ff
+[FEP-8fcf]: https://w3id.org/fep/8fcf
+[FEP-f1d5]: https://w3id.org/fep/f1d5
+[FEP-8b32]: https://w3id.org/fep/8b32
+[FEP-521a]: https://w3id.org/fep/521a
+[FEP-5feb]: https://w3id.org/fep/5feb
+[FEP-c7d3]: https://w3id.org/fep/c7d3
 
 
 ActivityPub
