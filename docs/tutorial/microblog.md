@@ -1649,6 +1649,12 @@ results to go to their profile page:
 
 But this is as far as we can go. Don't try to follow yet! For our actor to be followable from other servers, we need to implement an inbox.
 
+> [!NOTE]
+> The `fedify tunnel` command automatically disconnects after a while if not
+> used. When this happens, you need to press <kbd>Ctrl</kbd>+<kbd>C</kbd> to
+> stop it, then run the `fedify tunnel 8000` command again to establish a new
+> connection.
+
 
 Inbox
 -----
@@ -2795,12 +2801,6 @@ gave a `404 Not Found` error earlier in your web browser:
 Now, can we check if the post can be viewed from other Mastodon servers?
 First, use `fedify tunnel` to expose the local server to the public internet.
 
-> [!NOTE]
-> The `fedify tunnel` command automatically disconnects after a while if not
-> used. When this happens, you need to press <kbd>Ctrl</kbd>+<kbd>C</kbd> to
-> stop it, then run the `fedify tunnel 8000` command again to establish a new
-> connection.
-
 In that state, try entering the post's permalink
 <https://temp-address.serveo.net/users/johndoe/posts/1> (replace with your
 temporary domain name) in the Mastodon search box:
@@ -2939,11 +2939,30 @@ import { Create, Note } from "@fedify/fedify";
 
 Then modify the `POST /users/{username}/posts` request handler as follows:
 
-~~~~ typescript{3,7-21}
+~~~~ typescript{4,24,26-40}
 app.post("/users/:username/posts", async (c) => {
   // ... omitted ...
+  const ctx = fedi.createContext(c.req.raw, undefined);
   const post: Post | null = db.transaction(() => {
-    // ... omitted ...
+    const post = db
+      .prepare<unknown[], Post>(
+        `
+        INSERT INTO posts (uri, actor_id, content)
+        VALUES ('https://localhost/', ?, ?)
+        RETURNING *
+        `,
+      )
+      .get(actor.id, stringifyEntities(content, { escapeOnly: true }));
+    if (post == null) return null;
+    const url = ctx.getObjectUri(Note, {
+      handle: username,
+      id: post.id.toString(),
+    }).href;
+    db.prepare("UPDATE posts SET uri = ?, url = ? WHERE id = ?").run(
+      url,
+      url,
+      post.id,
+    );
     return post;
   })();
   if (post == null) return c.text("Failed to create post", 500);
@@ -3689,9 +3708,10 @@ feature.
 
 First, open the *src/views.tsx* file and modify the `<Home>` component:
 
-~~~~ tsx
+~~~~ tsx{3,9}
 export interface HomeProps extends PostListProps {
   user: User & Actor;
+  posts: Post[];
 }
 
 export const Home: FC<HomeProps> = ({ user, posts }) => (
