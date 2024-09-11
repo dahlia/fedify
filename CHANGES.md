@@ -31,6 +31,15 @@ To be released.
      -  `new Question()` constructor now accepts `quoteUrl` option.
      -  `Question.clone()` method now accepts `quoteUrl` option.
 
+ -  The element type of the liked collection is now `Object` or `URL` instead of
+    `Like`.
+
+     -  Changed the type of `Federation.setLikedDispatcher()` method's second
+        parameter to `CollectionDispatcher<Object | URL,
+        RequestContext<TContextData>, TContextData, void>` (was
+        `CollectionDispatcher<Like, RequestContext<TContextData>, TContextData,
+        void>`).
+
  -  Removed `expand` option of `Object.toJsonLd()` method, which was deprecated
     in version 0.14.0.  Use `format: "expand"` option instead.
 

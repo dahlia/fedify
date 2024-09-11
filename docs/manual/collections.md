@@ -553,11 +553,11 @@ ctx.getFollowersUri("alice")
 Liked
 -----
 
-*This API is available since Fedify 0.11.0.*
+*This API is available since Fedify 0.15.0.*
 
 The liked collection is a collection of objects that an actor has liked.
 The liked collection is similar to the outbox collection, but it's a collection
-of `Like` activities instead of any activities.
+of `Object`s instead of `Activity` objects.
 
 Cursors and counters for the liked collection are implemented in the same way as
 the outbox collection, so we don't repeat the explanation here.
@@ -565,22 +565,33 @@ the outbox collection, so we don't repeat the explanation here.
 The below example shows how to construct a liked collection:
 
 ~~~~ typescript
+import type { Object } from "@fedify/fedify";
+
 federation
   .setLikedDispatcher("/users/{handle}/liked", async (ctx, handle, cursor) => {
     // Work with the database to find the objects that the actor has liked
     // (the below `getLikedPostsByUserHandle` is a hypothetical function):
-    const objects = await getLikedByUserHandle(handle);
-    // Turn the ActivityStreams objects into `Like` activities:
-    const items = objects.map(object =>
-      new Like({
-        id: new URL(`#post-${object.id}`, ctx.url),
-        actor: ctx.getActorUri(handle),
-        object: new URL(object.uri),
-      })
-    );
+    const items: Object[] = await getLikedByUserHandle(handle);
     return { items };
   });
 ~~~~
+
+Or you can yield the object URIs instead of the objects:
+
+~~~~ typescript
+import type { Object } from "@fedify/fedify";
+
+federation
+  .setLikedDispatcher("/users/{handle}/liked", async (ctx, handle, cursor) => {
+    // Work with the database to find the objects that the actor has liked
+    // (the below `getLikedPostsByUserHandle` is a hypothetical function):
+    const objects: Object[] = await getLikedByUserHandle(handle);
+    // Turn the objects into `URL` objects:
+    const items: URL[] = objects.map(obj => obj.id).filter(id => id != null);
+    return { items };
+  });
+~~~~
+
 
 ### Constructing liked collection URIs
 

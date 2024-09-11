@@ -542,7 +542,7 @@ export interface Federation<TContextData> {
   setLikedDispatcher(
     path: `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
-      Like,
+      Object | URL,
       RequestContext<TContextData>,
       TContextData,
       void
