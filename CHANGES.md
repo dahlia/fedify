@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.15.0
 --------------
 
-To be released.
+Released on September 11, 2024.
 
  -  Actors, collections, and objects now can have their URIs that do not consist
     of a WebFinger username, which means actors can change their fediverse
