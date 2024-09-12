@@ -95,7 +95,7 @@ property.
 >
 > | Original name          | Accessor in Fedify                |
 > |------------------------|-----------------------------------|
-> | [`alsoKnownAs`]        | `Actor.getAliases()`              |
+> | [`alsoKnownAs`]        | `Application.getAliases()`/`Group.getAliases()`/`Organization.getAliases()`/`Person.getAliases()`/`Service.getAliases()` |
 > | [`anyOf`]              | `Question.getInclusiveOptions()`  |
 > | [`attributedTo`]       | `Object.getAttributions()`        |
 > | [`hreflang`]           | `Link.language`                   |
@@ -104,7 +104,9 @@ property.
 > | [`orderedItems`]       | `OrderedCollection.getItems()`    |
 > | [`publicKeyMultibase`] | `Multikey.publicKey`              |
 > | [`publicKeyPem`]       | `CryptographicKey.publicKey`      |
+> | [`quoteUri`]           | `Article.quoteUrl`/`ChatMessage.quoteUrl`/`Note.quoteUrl`/`Question.quoteUrl` |
 > | [`votersCount`]        | `Question.voters`                 |
+> | [`_misskey_quote`]     | `Article.quoteUrl`/`ChatMessage.quoteUrl`/`Note.quoteUrl`/`Question.quoteUrl` |
 
 [`alsoKnownAs`]: https://www.w3.org/TR/did-core/#dfn-alsoknownas
 [`anyOf`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-anyof
@@ -115,7 +117,96 @@ property.
 [`orderedItems`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-items
 [`publicKeyMultibase`]: https://www.w3.org/TR/controller-document/#dfn-publickeymultibase
 [`publicKeyPem`]: https://web.archive.org/web/20221218063101/https://web-payments.org/vocabs/security#publicKey
+[`quoteUri`]: https://github.com/fedibird/mastodon?tab=readme-ov-file#quotes
 [`votersCount`]: https://docs.joinmastodon.org/spec/activitypub/#poll-specific-properties
+[`_misskey_quote`]: https://misskey-hub.net/ns#_misskey_quote
+
+
+Property hydration
+------------------
+
+The `get*()` accessor methods for non-scalar properties automatically populate
+the property with the remote object when the methods are called even if
+the property internally contains only the URI of the object.  This is called
+<dfn>property hydration</dfn>.
+
+For example, the following code hydrates the `object` property of the `Create`
+object:
+
+~~~~ typescript
+const create = new Create({
+  object: new URL(
+    "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
+  ),
+});
+
+// Hydrates the `object` property:
+const note = await create.getObject();
+
+// Returns the hydrated `object` property; therefore, the following code does
+// not make any HTTP request:
+const note2 = await create.getObject();
+~~~~
+
+Hydrating the property also affects the JSON-LD representation of the object.
+
+For example, since the following code does not hydrate the `object` property,
+the JSON-LD representation of the `Create` object has the `object` property
+with the URI of the object:
+
+~~~~ typescript
+const create = new Create({
+  object: new URL(
+    "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
+  ),
+});
+
+const jsonLd = await create.toJsonLd();
+console.log(JSON.stringify(jsonLd));
+~~~~
+
+The above code outputs the following JSON-LD document (`"@context"` is
+simplified for readability):
+
+~~~~ json
+{
+  "@context": ["https://www.w3.org/ns/activitystreams"],
+  "type": "Create",
+  "object": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4"
+}
+~~~~
+
+However, if the property is once hydrated, the JSON-LD representation of the
+object has the `object` property with the full object:
+
+~~~~ typescript
+// Hydrates the `object` property:
+await create.getObject();
+
+const jsonLd = await create.toJsonLd();
+console.log(JSON.stringify(jsonLd));
+~~~~
+
+The above code outputs the following JSON-LD document (`"@context"` and some
+attributes are simplified or omitted for readability):
+
+~~~~ json
+{
+  "type": "Create",
+  "@context": ["https://www.w3.org/ns/activitystreams"],
+  "object": {
+    "id": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
+    "type": "Note",
+    "attributedTo": "https://hollo.social/@fedify",
+    "content": "<p>...</p>\n",
+    "published": "2024-09-12T06:37:23.593Z",
+    "sensitive": false,
+    "tag": [],
+    "to": "as:Public",
+    "url": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4"
+  }
+}
+~~~~
 
 
 Object IDs and remote objects
