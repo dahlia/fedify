@@ -1,5 +1,8 @@
+import { getLogger } from "@logtape/logtape";
 import { dirname, fromFileUrl, join } from "@std/path";
 import type { RemoteDocument } from "../runtime/docloader.ts";
+
+const logger = getLogger(["fedify", "testing", "docloader"]);
 
 /**
  * A mock of the document loader.  This does not make any actual HTTP requests
@@ -21,7 +24,16 @@ export function mockDocumentLoader(
     ...path,
   );
 
-  const content = Deno.readTextFileSync(filePath);
+  let content: string;
+  try {
+    content = Deno.readTextFileSync(filePath);
+  } catch (error) {
+    logger.error("Failed to read fixture file {filePath}: {error}", {
+      filePath,
+      error,
+    });
+    throw error;
+  }
   return Promise.resolve({
     contextUrl: null,
     document: JSON.parse(content),

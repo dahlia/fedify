@@ -14,6 +14,7 @@ export {
   importJwk,
   type KeyCache,
 } from "./key.ts";
+export * from "./ld.ts";
 export {
   doesActorOwnKey,
   type DoesActorOwnKeyOptions,

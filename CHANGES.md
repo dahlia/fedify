@@ -8,6 +8,20 @@ Version 1.0.0
 
 To be released.
 
+ -  Fedify now supports [Linked Data Signatures], which is outdated but still
+    widely used in the fediverse.
+
+     -  Added `verifySignature()` function.
+     -  Added `VerifySignatureOptions` interface.
+     -  Added `detachSignature()` function.
+
+ -  Added more log messages using the [LogTape] library.  Currently the below
+    logger categories are used:
+
+     -  `["fedify", "sig", "ld"]`
+
+[Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
+
 
 Version 0.15.0
 --------------

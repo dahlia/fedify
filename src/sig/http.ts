@@ -162,7 +162,16 @@ export async function verifyRequest(
     for (let [algo, digestBase64] of digests) {
       algo = algo.trim().toLowerCase();
       if (!(algo in supportedHashAlgorithms)) continue;
-      const digest = decodeBase64(digestBase64);
+      let digest: Uint8Array;
+      try {
+        digest = decodeBase64(digestBase64);
+      } catch (error) {
+        logger.debug("Failed to verify; invalid base64 encoding: {digest}.", {
+          digest: digestBase64,
+          error,
+        });
+        return null;
+      }
       const expectedDigest = await crypto.subtle.digest(
         supportedHashAlgorithms[algo],
         body,

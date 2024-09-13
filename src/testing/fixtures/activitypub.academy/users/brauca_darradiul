@@ -1,0 +1,83 @@
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    "https://w3id.org/security/v1",
+    {
+      "manuallyApprovesFollowers": "as:manuallyApprovesFollowers",
+      "toot": "http://joinmastodon.org/ns#",
+      "featured": {
+        "@id": "toot:featured",
+        "@type": "@id"
+      },
+      "featuredTags": {
+        "@id": "toot:featuredTags",
+        "@type": "@id"
+      },
+      "alsoKnownAs": {
+        "@id": "as:alsoKnownAs",
+        "@type": "@id"
+      },
+      "movedTo": {
+        "@id": "as:movedTo",
+        "@type": "@id"
+      },
+      "schema": "http://schema.org#",
+      "PropertyValue": "schema:PropertyValue",
+      "value": "schema:value",
+      "discoverable": "toot:discoverable",
+      "Device": "toot:Device",
+      "Ed25519Signature": "toot:Ed25519Signature",
+      "Ed25519Key": "toot:Ed25519Key",
+      "Curve25519Key": "toot:Curve25519Key",
+      "EncryptedMessage": "toot:EncryptedMessage",
+      "publicKeyBase64": "toot:publicKeyBase64",
+      "deviceId": "toot:deviceId",
+      "claim": {
+        "@type": "@id",
+        "@id": "toot:claim"
+      },
+      "fingerprintKey": {
+        "@type": "@id",
+        "@id": "toot:fingerprintKey"
+      },
+      "identityKey": {
+        "@type": "@id",
+        "@id": "toot:identityKey"
+      },
+      "devices": {
+        "@type": "@id",
+        "@id": "toot:devices"
+      },
+      "messageFranking": "toot:messageFranking",
+      "messageType": "toot:messageType",
+      "cipherText": "toot:cipherText",
+      "suspended": "toot:suspended"
+    }
+  ],
+  "id": "https://activitypub.academy/users/brauca_darradiul",
+  "type": "Person",
+  "following": "https://activitypub.academy/users/brauca_darradiul/following",
+  "followers": "https://activitypub.academy/users/brauca_darradiul/followers",
+  "inbox": "https://activitypub.academy/users/brauca_darradiul/inbox",
+  "outbox": "https://activitypub.academy/users/brauca_darradiul/outbox",
+  "featured": "https://activitypub.academy/users/brauca_darradiul/collections/featured",
+  "featuredTags": "https://activitypub.academy/users/brauca_darradiul/collections/tags",
+  "preferredUsername": "brauca_darradiul",
+  "name": "Brauca Darradiul",
+  "summary": "",
+  "url": "https://activitypub.academy/@brauca_darradiul",
+  "manuallyApprovesFollowers": false,
+  "discoverable": false,
+  "published": "2024-09-12T00:00:00Z",
+  "devices": "https://activitypub.academy/users/brauca_darradiul/collections/devices",
+  "publicKey": {
+    "id": "https://activitypub.academy/users/brauca_darradiul#main-key",
+    "owner": "https://activitypub.academy/users/brauca_darradiul",
+    "publicKeyPem": "-----BEGIN PUBLIC KEY----- MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA5W/9rYXddIjKo9Ury/LK XqQYbj0cOx/c+T1uRHJzced8JbvXdiBCNZXVVrIaygy3G/MOvxMW4kbA1bqeiSYY V9TXBMI6gVVDnl5VG64uGxswcvUWqQU5Q1mwuwyGCPhexAq3BKe/7uH64AZgx11e KLl3W3WcIMKmunYn8+z6hm0003hMensXMNpMVfqLoXaeuro7pYnwOSWoHFS3AxWK llMwAoa5waulgai8gD7/uA5Y9Hvguk/OBYBh9YnIX5N5jScsmY/EYuesNIH2Ct9s E3aVkTjZUt55JtXnk8Q9eTnrcB/98RtLWH4pJTKJhzxv19i3aZT3yDApPk0Q/biI JQIDAQAB -----END PUBLIC KEY----- "
+  },
+  "tag": [],
+  "attachment": [],
+  "endpoints": {
+    "sharedInbox": "https://activitypub.academy/inbox"
+  }
+}
