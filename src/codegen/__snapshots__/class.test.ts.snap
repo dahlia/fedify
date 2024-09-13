@@ -11012,7 +11012,7 @@ instruments?: (Object | URL)[];}
       
       result[\\"type\\"] = \\"Activity\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -11128,7 +11128,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -11807,7 +11807,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Accept\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -11833,7 +11833,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -12098,7 +12098,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Add\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -12124,7 +12124,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -12384,7 +12384,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Announce\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
       return result;
     }
     
@@ -12410,7 +12410,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -16076,7 +16076,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"IntransitiveActivity\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -16102,7 +16102,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -16380,7 +16380,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -17804,7 +17804,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Ignore\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -17830,7 +17830,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -18095,7 +18095,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Block\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -18121,7 +18121,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -20324,7 +20324,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Create\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
       return result;
     }
     
@@ -20350,7 +20350,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -20609,7 +20609,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Delete\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
       return result;
     }
     
@@ -20635,7 +20635,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -20892,7 +20892,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Dislike\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -20918,7 +20918,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -22314,7 +22314,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Flag\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -22340,7 +22340,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -22601,7 +22601,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Follow\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -22627,7 +22627,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -28126,7 +28126,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Offer\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -28152,7 +28152,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -28415,7 +28415,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Invite\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -28441,7 +28441,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -28700,7 +28700,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Join\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -28726,7 +28726,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -28985,7 +28985,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Leave\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -29011,7 +29011,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -29270,7 +29270,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Like\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -29296,7 +29296,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -29553,7 +29553,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Listen\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -29579,7 +29579,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -30071,7 +30071,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Move\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -30097,7 +30097,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -40692,7 +40692,7 @@ get quoteUrl(): (URL | null) {
       
       result[\\"type\\"] = \\"Question\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
       return result;
     }
     
@@ -40803,7 +40803,7 @@ get quoteUrl(): (URL | null) {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -41271,7 +41271,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Read\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -41297,7 +41297,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -41556,7 +41556,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Reject\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -41582,7 +41582,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -42841,7 +42841,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Remove\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -42867,7 +42867,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -47054,7 +47054,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"TentativeAccept\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -47080,7 +47080,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -47339,7 +47339,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"TentativeReject\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -47365,7 +47365,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -48003,7 +48003,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Travel\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -48029,7 +48029,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -48293,7 +48293,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Undo\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -48319,7 +48319,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -48581,7 +48581,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Update\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
       return result;
     }
     
@@ -48607,7 +48607,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -49136,7 +49136,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"View\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
       return result;
     }
     
@@ -49162,7 +49162,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,

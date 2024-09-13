@@ -3,6 +3,7 @@ import { accepts } from "@std/http/negotiation";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
 import type { KeyCache } from "../sig/key.ts";
+import { detachSignature, verifyJsonLd } from "../sig/ld.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { verifyObject } from "../sig/proof.ts";
 import type { Recipient } from "../vocab/actor.ts";
@@ -424,27 +425,51 @@ export async function handleInbox<TContextData>(
       await kv.set([...kvPrefixes.publicKey, keyId.href], serialized);
     },
   };
-  let activity: Activity | null;
-  try {
-    activity = await verifyObject(Activity, json, {
-      contextLoader: context.contextLoader,
-      documentLoader: context.documentLoader,
-      keyCache,
-    });
-  } catch (error) {
-    logger.error("Failed to parse activity:\n{error}", { handle, json, error });
+  const ldSigVerified = await verifyJsonLd(json, {
+    contextLoader: context.contextLoader,
+    documentLoader: context.documentLoader,
+    keyCache,
+  });
+  const jsonWithoutSig = detachSignature(json);
+  let activity: Activity | null = null;
+  if (ldSigVerified) {
+    logger.debug("Linked Data Signatures are verified.", { handle, json });
+    activity = await Activity.fromJsonLd(jsonWithoutSig, context);
+  } else {
+    logger.debug("Linked Data Signatures are not verified.", { handle, json });
     try {
-      await inboxErrorHandler?.(context, error);
+      activity = await verifyObject(Activity, jsonWithoutSig, {
+        contextLoader: context.contextLoader,
+        documentLoader: context.documentLoader,
+        keyCache,
+      });
     } catch (error) {
-      logger.error(
-        "An unexpected error occurred in inbox error handler:\n{error}",
-        { error, activity: json },
-      );
+      logger.error("Failed to parse activity:\n{error}", {
+        handle,
+        json,
+        error,
+      });
+      try {
+        await inboxErrorHandler?.(context, error);
+      } catch (error) {
+        logger.error(
+          "An unexpected error occurred in inbox error handler:\n{error}",
+          { error, activity: json },
+        );
+      }
+      return new Response("Invalid activity.", {
+        status: 400,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
     }
-    return new Response("Invalid activity.", {
-      status: 400,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
+    if (activity == null) {
+      logger.debug(
+        "Object Integrity Proofs are not verified.",
+        { handle, json },
+      );
+    } else {
+      logger.debug("Object Integrity Proofs are verified.", { handle, json });
+    }
   }
   let httpSigKey: CryptographicKey | null = null;
   if (activity == null) {
@@ -456,7 +481,10 @@ export async function handleInbox<TContextData>(
         keyCache,
       });
       if (key == null) {
-        logger.error("Failed to verify the request signature.", { handle });
+        logger.error(
+          "Failed to verify the request's HTTP Signatures.",
+          { handle },
+        );
         const response = new Response(
           "Failed to verify the request signature.",
           {
@@ -465,10 +493,12 @@ export async function handleInbox<TContextData>(
           },
         );
         return response;
+      } else {
+        logger.debug("HTTP Signatures are verified.", { handle });
       }
       httpSigKey = key;
     }
-    activity = await Activity.fromJsonLd(json, context);
+    activity = await Activity.fromJsonLd(jsonWithoutSig, context);
   }
   const cacheKey = activity.id == null
     ? null

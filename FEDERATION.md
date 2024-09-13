@@ -9,11 +9,13 @@ Supported federation protocols and standards
  -  [ActivityPub] (S2S)
  -  [WebFinger]
  -  [HTTP Signatures]
+ -  [Linked Data Signatures]
  -  [NodeInfo]
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 [HTTP Signatures]: https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures
+[Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
 [NodeInfo]: https://nodeinfo.diaspora.software/
 
 

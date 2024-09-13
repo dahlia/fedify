@@ -174,14 +174,32 @@ related to the document loader.  When you are curious about what specific
 requests are made by the document loader, you can check the log messages in
 this category with the `"debug"` level.
 
+### `["fedify", "sig", "http"]`
+
+*This category is available since Fedify 0.9.0.*
+
+The `["fedify", "sig", "ld"]` category is used for logging messages related
+to [HTTP Signatures](./send.md#http-signatures).  When you are curious about
+the signature verification process, you can check the log messages in this
+category with the `"debug"` level.
+
+### `["fedify", "sig", "ld"]`
+
+*This category is available since Fedify 1.0.0.*
+
+The `["fedify", "sig", "ld"]` category is used for logging messages related to
+[Linked Data Signatures](./send.md#linked-data-signatures).  When you are
+curious about the signature verification process, you can check the log
+messages in this category with the `"debug"` level.
+
 ### `["fedify", "sig", "proof"]`
 
 *This category is available since Fedify 0.10.0.*
 
 The `["fedify", "sig", "proof"]` category is used for logging messages related
-to Object Integrity Proofs.  When you are curious about the proof verification
-process, you can check the log messages in this category with the `"debug"`
-level.
+to [Object Integrity Proofs](./send.md#object-integrity-proofs).  When you are
+curious about the proof verification process, you can check the log messages in
+this category with the `"debug"` level.
 
 ### `["fedify", "sig", "key"]`
 

@@ -1,11 +1,7 @@
-import {
-  assertEquals,
-  assertNotEquals,
-  assertRejects,
-  assertStrictEquals,
-} from "@std/assert";
+import { assertEquals, assertNotEquals, assertRejects } from "@std/assert";
 import * as mf from "mock_fetch";
 import { verifyRequest } from "../sig/http.ts";
+import { detachSignature, verifyJsonLd } from "../sig/ld.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { verifyObject } from "../sig/proof.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
@@ -13,7 +9,9 @@ import {
   ed25519Multikey,
   ed25519PrivateKey,
   rsaPrivateKey2,
+  rsaPrivateKey3,
   rsaPublicKey2,
+  rsaPublicKey3,
 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
 import type { Actor } from "../vocab/actor.ts";
@@ -125,28 +123,31 @@ test("extractInboxes()", () => {
 test("sendActivity()", async (t) => {
   mf.install();
 
-  let verified: "http-sig" | "proof" | false | null = null;
+  let verified: ("http-sig" | "proof" | "ld-sig")[] | null = null;
   let request: Request | null = null;
   mf.mock("POST@/inbox", async (req) => {
+    verified = [];
     request = req.clone();
     const options = {
       documentLoader: mockDocumentLoader,
       contextLoader: mockDocumentLoader,
     };
     const reqClone = req.clone();
-    const jsonLd = await req.json();
+    let jsonLd = await req.json();
+    if (await verifyJsonLd(jsonLd, options)) {
+      verified.push("ld-sig");
+    }
+    jsonLd = detachSignature(jsonLd);
     const verifiedObject = await verifyObject(Activity, jsonLd, options);
     if (verifiedObject != null) {
-      verified = "proof";
-      return new Response("", { status: 202 });
+      verified.push("proof");
     }
     const key = await verifyRequest(reqClone, options);
     const activity = await Activity.fromJsonLd(await reqClone.json(), options);
     if (key != null && await doesActorOwnKey(activity, key, options)) {
-      verified = "http-sig";
-      return new Response("", { status: 202 });
+      verified.push("http-sig");
     }
-    verified = false;
+    if (verified.length > 0) return new Response("", { status: 202 });
     return new Response("", { status: 401 });
   });
 
@@ -165,7 +166,7 @@ test("sendActivity()", async (t) => {
         "X-Test": "test",
       }),
     });
-    assertStrictEquals(verified, "http-sig");
+    assertEquals(verified, ["http-sig"]);
     assertNotEquals(request, null);
     assertEquals(request?.method, "POST");
     assertEquals(request?.url, "https://example.com/inbox");
@@ -184,7 +185,46 @@ test("sendActivity()", async (t) => {
       inbox: new URL("https://example.com/inbox"),
       contextLoader: mockDocumentLoader,
     });
-    assertStrictEquals(verified, "proof");
+    assertEquals(verified, ["proof"]);
+    assertNotEquals(request, null);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    verified = null;
+    await sendActivity({
+      activity: activity.clone({
+        actor: new URL("https://example.com/person2"),
+      }),
+      keys: [{ privateKey: rsaPrivateKey3, keyId: rsaPublicKey3.id! }],
+      inbox: new URL("https://example.com/inbox"),
+      contextLoader: mockDocumentLoader,
+    });
+    assertEquals(verified, ["ld-sig", "http-sig"]);
+    assertNotEquals(request, null);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    verified = null;
+    await sendActivity({
+      activity: activity.clone({
+        actor: new URL("https://example.com/person2"),
+      }),
+      keys: [
+        { privateKey: rsaPrivateKey3, keyId: rsaPublicKey3.id! },
+        { privateKey: ed25519PrivateKey, keyId: ed25519Multikey.id! },
+      ],
+      inbox: new URL("https://example.com/inbox"),
+      contextLoader: mockDocumentLoader,
+    });
+    assertEquals(verified, ["ld-sig", "proof", "http-sig"]);
     assertNotEquals(request, null);
     assertEquals(request?.method, "POST");
     assertEquals(request?.url, "https://example.com/inbox");

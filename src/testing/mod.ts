@@ -44,10 +44,15 @@ export function test(
             ) return;
             records.push(record);
           },
+          console: getConsoleSink(),
         },
         filters: {},
         loggers: [
-          { category: [], sinks: ["buffer"], level: "debug" },
+          {
+            category: [],
+            sinks: [Deno.env.get("LOG") === "always" ? "console" : "buffer"],
+            level: "debug",
+          },
         ],
       });
       try {

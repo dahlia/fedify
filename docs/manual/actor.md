@@ -245,18 +245,20 @@ await kv.set(["keypair", "ed25519", handle], {
 > Fedify currently supports two key types:
 >
 >  -  RSA-PKCS#1-v1.5 (`"RSASSA-PKCS1-v1_5"`) is used for [HTTP
->     Signatures](./send.md#http-signatures).
+>     Signatures](./send.md#http-signatures) and [Linked Data
+>     Signatures](./send.md#linked-data-signatures).
 >  -  Ed25519 (`"Ed25519"`) is used for [Object Integrity
 >     Proofs](./send.md#object-integrity-proofs).
 >
-> HTTP Signatures is a de facto standard for signing ActivityPub activities,
-> and Object Integrity Proofs is a new standard for verifying the integrity
-> of the objects in the fediverse.  While HTTP Signatures is widely supported
-> in the fediverse, it's limited to the RSA-PKCS#1-v1.5 algorithm,
-> and unusable for [forwarding from inbox][1] and [several other cases][2].
+> HTTP Signatures and Linked Data Signatures are de facto standards for signing
+> ActivityPub activities, and Object Integrity Proofs is a new standard for
+> verifying the integrity of the objects in the fediverse.  While HTTP
+> Signatures and Linked Data Signatures are widely supported in the fediverse,
+> it's limited to the RSA-PKCS#1-v1.5 algorithm.
 >
-> If your federated app needs to support both HTTP Signatures and Object
-> Integrity Proofs, you need to generate both RSA-PKCS#1-v1.5 and Ed25519 key
+> If your federated app needs to support HTTP Signatures, Linked Data
+> Signatures, and Object Integrity Proofs at the same time,
+> you need to generate both RSA-PKCS#1-v1.5 and Ed25519 key
 > pairs for each actor, and store them in the database—and we recommend
 > you to support both key types.
 
@@ -299,8 +301,6 @@ federation
   });
 ~~~~
 
-[1]: https://www.w3.org/TR/activitypub/#inbox-forwarding
-[2]: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/79?u=hongminhee
 [`CryptoKeyPair`]: https://developer.mozilla.org/en-US/docs/Web/API/CryptoKeyPair
 [Deno KV]: https://deno.com/kv
 

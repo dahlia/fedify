@@ -2,6 +2,7 @@ import { getLogger } from "@logtape/logtape";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { signRequest } from "../sig/http.ts";
 import { validateCryptoKey } from "../sig/key.ts";
+import { signJsonLd } from "../sig/ld.ts";
 import { signObject } from "../sig/proof.ts";
 import type { Recipient } from "../vocab/actor.ts";
 import type { Activity } from "../vocab/mod.ts";
@@ -144,8 +145,13 @@ export async function sendActivity(
   }
   const activityId = activity.id.href;
   let proofCreated = false;
+  let rsaKey: { keyId: URL; privateKey: CryptoKey } | null = null;
   for (const { keyId, privateKey } of keys) {
     validateCryptoKey(privateKey, "private");
+    if (rsaKey == null && privateKey.algorithm.name === "RSASSA-PKCS1-v1_5") {
+      rsaKey = { keyId, privateKey };
+      continue;
+    }
     if (privateKey.algorithm.name === "Ed25519") {
       activity = await signObject(activity, privateKey, keyId, {
         documentLoader,
@@ -153,6 +159,29 @@ export async function sendActivity(
       });
       proofCreated = true;
     }
+  }
+  let jsonLd = await activity.toJsonLd({
+    format: "compact",
+    contextLoader,
+  });
+  if (rsaKey == null) {
+    logger.warn(
+      "No supported key found to create a Linked Data signature for " +
+        "the activity {activityId}.  The activity will be sent without " +
+        "a Linked Data signature.  In order to create a Linked Data " +
+        "signature, at least one RSASSA-PKCS1-v1_5 key must be provided.",
+      {
+        activityId,
+        keys: keys.map((pair) => ({
+          keyId: pair.keyId.href,
+          privateKey: pair.privateKey,
+        })),
+      },
+    );
+  } else {
+    jsonLd = await signJsonLd(jsonLd, rsaKey.privateKey, rsaKey.keyId, {
+      contextLoader,
+    });
   }
   if (!proofCreated) {
     logger.warn(
@@ -168,10 +197,6 @@ export async function sendActivity(
       },
     );
   }
-  const jsonLd = await activity.toJsonLd({
-    format: "compact",
-    contextLoader,
-  });
   headers = new Headers(headers);
   headers.set("Content-Type", "application/activity+json");
   let request = new Request(inbox, {
@@ -179,15 +204,7 @@ export async function sendActivity(
     headers,
     body: JSON.stringify(jsonLd),
   });
-  let requestSigned = false;
-  for (const { privateKey, keyId } of keys) {
-    if (privateKey.algorithm.name === "RSASSA-PKCS1-v1_5") {
-      request = await signRequest(request, privateKey, keyId);
-      requestSigned = true;
-      break;
-    }
-  }
-  if (!requestSigned) {
+  if (rsaKey == null) {
     logger.warn(
       "No supported key found to sign the request to {inbox}.  " +
         "The request will be sent without a signature.  " +
@@ -201,6 +218,8 @@ export async function sendActivity(
         })),
       },
     );
+  } else {
+    request = await signRequest(request, rsaKey.privateKey, rsaKey.keyId);
   }
   const response = await fetch(request);
   if (!response.ok) {

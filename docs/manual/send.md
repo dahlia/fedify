@@ -318,6 +318,52 @@ Fedify selects the first RSA-PKCS#1-v1.5 key pair among them.
 [HTTP Signatures]: https://datatracker.ietf.org/doc/html/draft-cavage-http-signatures
 
 
+Linked Data Signatures
+----------------------
+
+*This API is available since Fedify 1.0.0.*
+
+[Linked Data Signatures] is a more advanced and widely used, but *obsolete*,
+mechanism for signing portable ActivityPub activities.  As of September 2024,
+major ActivityPub implementations, such as Mastodon, et al., still rely on
+Linked Data Signatures for signing portable activities, despite they declare
+that Linked Data Signatures is outdated.
+
+It shares the similar concept with [HTTP Signatures](#http-signatures),
+but unlike HTTP Signatures, it can be used for signing portable activities.
+For example, it can be used for [forwarding from inbox] and several other
+cases that HTTP Signatures cannot handle.
+
+Fedify automatically includes the Linked Data Signature of activities by
+signing them with the sender's private key if the [actor keys dispatcher is
+set](./actor.md#public-keys-of-an-actor) and the actor has any RSA-PKCS#1-v1.5
+key pair.  If there are multiple key pairs, Fedify uses the first
+RSA-PKCS#1-v1.5 key pair among them.
+
+> [!TIP]
+> The combination of HTTP Signatures and Linked Data Signatures is the most
+> widely supported way to sign activities in the fediverse, as of September
+> 2024.  Despite Linked Data Signatures is outdated and not recommended for
+> new implementations, it is still widely used in the fediverse due to Mastodon
+> and other major implementations' reliance on it.
+>
+> However, for new implementations, you should consider using *both* [Object
+> Integrity Proofs](#object-integrity-proofs) and Linked Data Signatures
+> for maximum compatibility and future-proofing.  Fortunately, Fedify supports
+> both Object Integrity Proofs and Linked Data Signatures simultaneously,
+> in addition to HTTP Signatures.
+
+> [!NOTE]
+> If an activity is signed with both HTTP Signatures and Linked Data Signatures,
+> the recipient verifies the Linked Data Signatures first when it is supported,
+> and ignores the HTTP Signatures if the Linked Data Signatures are valid.
+> If the recipient does not support Linked Data Signatures, it falls back to
+> verifying the HTTP Signatures.
+
+[Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
+[forwarding from inbox]: https://www.w3.org/TR/activitypub/#inbox-forwarding
+
+
 Object Integrity Proofs
 -----------------------
 
@@ -325,10 +371,9 @@ Object Integrity Proofs
 
 [Object Integrity Proofs][FEP-8b32] is a mechanism to ensure the integrity
 of ActivityPub objects (not only activities!) in the fediverse.  It shares
-the similar concept with [HTTP Signatures](#http-signatures), but it has more
-functionalities and is more flexible.  For example, it can be used for
-[forwarding from inbox] and [several other cases] that HTTP Signatures cannot
-handle.  However, as it is relatively new, it is not widely supported yet.
+the similar concept with [Linked Data Signatures](#linked-data-signatures),
+but it has more functionalities and is more flexible.  However, as it is
+relatively new, it is not widely supported yet.
 
 Fedify automatically includes the integrity proof of activities by signing
 them with the sender's private key if the [actor keys dispatcher is
@@ -337,17 +382,19 @@ If there are multiple key pairs, Fedify creates the number of integrity proofs
 equal to the number of Ed25519 key pairs.
 
 > [!TIP]
-> HTTPS Signatures and Object Integrity Proofs can coexist in an application.
-> If an activity is signed with HTTP Signatures and Object Integrity Proofs,
-> the recipient verifies the Object Integrity Proofs first when it is supported,
-> and ignores the HTTP Signatures if the Object Integrity Proofs are valid.
-> If the recipient does not support Object Integrity Proofs, it falls back to
-> verifying the HTTP Signatures.
+> HTTPS Signatures, Linked Data Signatures, and Object Integrity Proofs can
+> coexist in an application and be used together for maximum compatibility.
 >
-> To support both HTTP Signatures and Object Integrity Proofs, you need to
-> generate both RSA-PKCS#1-v1.5 and Ed25519 key pairs for each actor, and
-> store them in the database.
+> If an activity is signed with HTTP Signatures, Linked Data Signatures,
+> and Object Integrity Proofs, the recipient verifies the Object Integrity
+> Proofs first when it is supported, and ignores the HTTP Signatures and
+> Linked Data Signatures if the Object Integrity Proofs are valid.
+> If the recipient does not support Object Integrity Proofs, it falls back to
+> verifying the HTTP Signatures and Linked Data Signatures.
+>
+> To support HTTP Signatures, Linked Data Signatures, and Object Integrity
+> Proofs simultaneously, you need to generate both RSA-PKCS#1-v1.5 and Ed25519
+> key pairs for each actor, and store them in the database.
 
 [FEP-8b32]: https://w3id.org/fep/8b32
-[forwarding from inbox]: https://www.w3.org/TR/activitypub/#inbox-forwarding
 [several other cases]: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/79?u=hongminhee

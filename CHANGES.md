@@ -11,6 +11,11 @@ To be released.
  -  Fedify now supports [Linked Data Signatures], which is outdated but still
     widely used in the fediverse.
 
+     -  A `Federation` object became to verify an activity's Linked Data
+        Signatures if it has one.  If Linked Data Signatures are verified,
+        Object Integrity Proofs and HTTP Signatures are not verified.
+     -  `Context.sendActivity()` method became to sign an activity with Linked
+        Data Signatures if there is at least one RSA-PKCS#1-v1.5 key pair.
      -  Added `Signature` interface.
      -  Added `signJsonLd()` function.
      -  Added `SignJsonLdOptions` interface.

@@ -1,6 +1,7 @@
 import { getLogger } from "@logtape/logtape";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import { encodeHex } from "@std/encoding/hex";
+// @ts-ignore TS7016
 import jsonld from "jsonld";
 import {
   type DocumentLoader,
