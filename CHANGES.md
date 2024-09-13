@@ -11,8 +11,16 @@ To be released.
  -  Fedify now supports [Linked Data Signatures], which is outdated but still
     widely used in the fediverse.
 
+     -  Added `Signature` interface.
+     -  Added `signJsonLd()` function.
+     -  Added `SignJsonLdOptions` interface.
+     -  Added `createSignature()` function.
+     -  Added `CreateSignatureOptions` interface.
+     -  Added `verifyJsonLd()` function.
+     -  Added `VerifyJsonLdOptions` interface.
      -  Added `verifySignature()` function.
      -  Added `VerifySignatureOptions` interface.
+     -  Added `attachSignature()` function.
      -  Added `detachSignature()` function.
 
  -  Added more log messages using the [LogTape] library.  Currently the below

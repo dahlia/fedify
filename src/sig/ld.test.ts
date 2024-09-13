@@ -1,11 +1,98 @@
 import { assert } from "@std/assert/assert";
 import { assertEquals } from "@std/assert/assert-equals";
+import { assertFalse } from "@std/assert/assert-false";
+import { assertRejects } from "@std/assert/assert-rejects";
+import { assertThrows } from "@std/assert/assert-throws";
 import { encodeBase64 } from "@std/encoding/base64";
 import { mockDocumentLoader } from "../testing/docloader.ts";
+import {
+  ed25519Multikey,
+  ed25519PrivateKey,
+  rsaPrivateKey2,
+  rsaPrivateKey3,
+  rsaPublicKey2,
+  rsaPublicKey3,
+} from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
 import { CryptographicKey } from "../vocab/vocab.ts";
 import { generateCryptoKeyPair } from "./key.ts";
-import { detachSignature, verifyJsonLd, verifySignature } from "./ld.ts";
+import {
+  attachSignature,
+  createSignature,
+  detachSignature,
+  type Signature,
+  signJsonLd,
+  verifyJsonLd,
+  verifySignature,
+} from "./ld.ts";
+
+test("attachSignature()", () => {
+  const sig: Signature = {
+    "@context": "https://w3id.org/identity/v1",
+    type: "RsaSignature2017",
+    creator: "https://activitypub.academy/users/brauca_darradiul#main-key",
+    created: "2024-09-12T16:50:46Z",
+    signatureValue: "asdf",
+  };
+  const doc = {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    id: "https://example.com/1",
+  };
+  assertEquals(attachSignature(doc, sig), {
+    ...doc,
+    signature: sig,
+  });
+  assertThrows(() => attachSignature(null, sig), TypeError);
+  assertThrows(() => attachSignature(1234, sig), TypeError);
+});
+
+test("createSignature()", async () => {
+  const doc = {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    id: "https://example.com/1",
+    type: "Create",
+  };
+  const sig = await createSignature(doc, rsaPrivateKey2, rsaPublicKey2.id!, {
+    contextLoader: mockDocumentLoader,
+  });
+  const key = await verifySignature(attachSignature(doc, sig), {
+    documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
+  });
+  assertEquals(key, rsaPublicKey2);
+
+  assertRejects(
+    () =>
+      createSignature(doc, rsaPublicKey2.publicKey!, rsaPublicKey2.id!, {
+        contextLoader: mockDocumentLoader,
+      }),
+    TypeError,
+  );
+  assertRejects(
+    () =>
+      createSignature(doc, ed25519PrivateKey, ed25519Multikey.id!, {
+        contextLoader: mockDocumentLoader,
+      }),
+    TypeError,
+  );
+});
+
+test("signJsonLd()", async () => {
+  const doc = {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    id: "https://example.com/1",
+    type: "Create",
+    actor: "https://example.com/person2",
+  };
+  const signed = await signJsonLd(doc, rsaPrivateKey3, rsaPublicKey3.id!, {
+    contextLoader: mockDocumentLoader,
+  });
+  const verified = await verifyJsonLd(signed, {
+    documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
+  });
+  assert(verified);
+});
 
 const document = {
   "@context": [
@@ -171,7 +258,21 @@ test("verifyJsonLd()", async () => {
   });
   assert(verified);
 
-  // TODO: Test a correctly signed document, but with a different key.
+  const doc = {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    id: "https://example.com/1",
+    type: "Create",
+    actor: "https://example.com/person2",
+  };
+  // rsaPublicKey2 has no owner
+  const signed = await signJsonLd(doc, rsaPrivateKey2, rsaPublicKey2.id!, {
+    contextLoader: mockDocumentLoader,
+  });
+  const verified2 = await verifyJsonLd(signed, {
+    documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
+  });
+  assertFalse(verified2);
 });
 
 // cSpell: ignore ostatus
