@@ -33,8 +33,9 @@ actor.
 With Fedify, you can register an inbox listener for both types of inboxes at
 a time.  The following shows how to register an inbox listener:
 
-~~~~ typescript{7-18}
-import { createFederation, Follow } from "@fedify/fedify";
+~~~~ typescript{7-20} twoslash
+// @noErrors: 2345
+import { createFederation, Accept, Follow } from "@fedify/fedify";
 
 const federation = createFederation({
   // Omitted for brevity; see the related section for details.
@@ -43,9 +44,11 @@ const federation = createFederation({
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
+    if (follow.objectId == null) return;
     const parsed = ctx.parseUri(follow.objectId);
     if (parsed?.type !== "actor") return;
     const recipient = await follow.getActor(ctx);
+    if (recipient == null) return;
     await ctx.sendActivity(
       { handle: parsed.handle },
       recipient,
@@ -113,7 +116,10 @@ for the authentication using `~InboxListenerSetters.setSharedKeyDispatcher()`
 method.  For example, the following shows how to implement the [instance actor]
 pattern:
 
-~~~~ typescript{5-9,13-18}
+~~~~ typescript{5-9,13-18} twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { Application, Person } from "@fedify/fedify";
 
 federation
@@ -143,7 +149,30 @@ federation
 Or you can manually configure the key pair instead of referring to an actor
 by its handle:
 
-~~~~ typescript{11-18}
+~~~~ typescript{11-18} twoslash
+// @noErrors: 2391
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents an instance actor.
+ */
+interface InstanceActor {
+  /**
+   * The private key of the instance actor in JWK format.
+   */
+  privateKey: JsonWebKey;
+  /**
+   * The URI of the public key of the instance actor.
+   */
+  publicKeyUri: string;
+}
+/**
+ * A hypothetical function that fetches information about the instance actor
+ * from a database or some other storage.
+ * @returns Information about the instance actor.
+ */
+function getInstanceActor(): InstanceActor;
+// ---cut-before---
 import { importJwk } from "@fedify/fedify";
 
 interface InstanceActor {
@@ -183,7 +212,8 @@ they may involve long-running tasks.  Fortunately, you can easily turn inbox
 listeners into non-blocking by providing a [`queue`](./federation.md#queue)
 option to `createFederation()` function:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2345
 import { createFederation, InProcessMessageQueue } from "@fedify/fedify";
 
 const federation = createFederation({
@@ -228,7 +258,10 @@ The `~InboxListenerSetters.onError()` method registers a callback
 function that takes a `Context` object and an error object.  The following shows
 an example of handling errors:
 
-~~~~ typescript{6-8}
+~~~~ typescript{6-8} twoslash
+import { type Federation, Follow } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -254,7 +287,10 @@ the shared inbox URI.
 
 The following shows how to construct an inbox URI of an actor named `"alice"`:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getInboxUri("alice")
 ~~~~
 
@@ -266,6 +302,9 @@ ctx.getInboxUri("alice")
 
 The following shows how to construct a shared inbox URI:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getInboxUri()
 ~~~~

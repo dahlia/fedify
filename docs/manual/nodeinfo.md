@@ -42,7 +42,8 @@ To expose a NodeInfo endpoint, you need to register a NodeInfo dispatcher with
 `Federation.setNodeInfoDispatcher()` method.  The following shows how to expose
 a NodeInfo endpoint:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2345
 import { createFederation } from "@fedify/fedify";
 
 const federation = createFederation({
@@ -55,7 +56,7 @@ federation.setNodeInfoDispatcher("/nodeinfo/2.1", async (ctx) => {
       name: "your-software-name",  // Lowercase, digits, and hyphens only.
       version: { major: 1, minor: 0, patch: 0 },
       homepage: new URL("https://your-software.com/"),
-    }
+    },
     protocols: ["activitypub"],
     usage: {
       // Usage statistics is hard-coded here for demonstration purposes.

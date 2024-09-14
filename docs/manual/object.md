@@ -29,7 +29,10 @@ specified in the path pattern of the object dispatcher, e.g., `/notes/{id}`,
 
 The below example shows how to register an object dispatcher:
 
-~~~~ typescript {7-19}
+~~~~ typescript{7-19} twoslash
+// @noErrors: 2345
+const note: { id: string; content: string } = { id: "", content: "" };
+// ---cut-before---
 import { createFederation, Note } from "@fedify/fedify";
 
 const federation = createFederation({
@@ -68,7 +71,10 @@ of the object.
 
 The below example shows how to construct an object URI:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Context, Note } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getObjectUri(Note, { handle: "alice", id: "123" });
 ~~~~
 

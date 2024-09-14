@@ -60,7 +60,9 @@ Those five types of actors have the same set of properties, e.g., `name`,
 If an actor is represented as an `Application` or `Service` object, it is
 considered an automated actor by Mastodon and a bot actor by Misskey.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Application } from "@fedify/fedify";
+// ---cut-before---
 new Application({  // [!code highlight]
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -79,7 +81,9 @@ Mastodon like the following:
 If an actor is represented as a `Group` object, it is considered a group actor
 by Mastodon.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Group } from "@fedify/fedify";
+// ---cut-before---
 new Group({  // [!code highlight]
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -107,7 +111,9 @@ ActivityPub implementations.  The display name is usually a full name or
 a nickname of a person, or a title of a group or an organization.
 It is displayed in the profile page of an actor and the timeline.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Person } from "@fedify/fedify";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",  // [!code highlight]
   preferredUsername: "demo",
@@ -130,7 +136,9 @@ implementations.  The bio is displayed in the profile page of the actor.
 > The `summary` property expects an HTML string, so you should escape HTML
 > entities if it contains characters like `<`, `>`, and `&`.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Person } from "@fedify/fedify";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -154,7 +162,10 @@ The date joined is displayed in the profile page of the actor.
 > as a date only in Mastodon and Misskey.  However, there may be ActivityPub
 > implementations that display the date and time.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Person } from "@fedify/fedify";
+import { Temporal } from "@js-temporal/polyfill";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -175,7 +186,9 @@ The `icon` property is used as an avatar image in Mastodon and the most
 ActivityPub implementations.  The avatar image is displayed next to the name
 of the actor in the profile page and the timeline.
 
-~~~~ typescript{5-8}
+~~~~ typescript{5-8} twoslash
+import { Image, Person } from "@fedify/fedify";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -198,7 +211,9 @@ Mastodon](pragmatics/mastodon-avatar.png)
 The `image` property is used as a header image in Mastodon and Misskey.
 The header image is displayed on the top of the profile page.
 
-~~~~ typescript{5-8}
+~~~~ typescript{5-8} twoslash
+import { Image, Person } from "@fedify/fedify";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -221,7 +236,9 @@ Mastodon](pragmatics/mastodon-header.png)
 The `attachments` property is used as custom fields in Mastodon and Misskey.
 The custom fields are displayed as a table in the profile page.
 
-~~~~ typescript{5-18}
+~~~~ typescript{5-18} twoslash
+import { Person, PropertyValue } from "@fedify/fedify";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -268,7 +285,9 @@ a locked account if the `manuallyApprovesFollowers` property is `true`.
 > owner explicitly clicks the *Accept* button, the actor behaves as a locked
 > account.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Person } from "@fedify/fedify";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -289,7 +308,9 @@ The `suspended` property is used to suspend an actor in Mastodon.
 If the `suspended` property is `true`, the profile page of the actor is
 displayed as suspended.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Person } from "@fedify/fedify";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -310,7 +331,9 @@ The `memorial` property is used to memorialize an actor in Mastodon.
 If the `memorial` property is `true`, the profile page of the actor is
 displayed as memorialized.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Person } from "@fedify/fedify";
+// ---cut-before---
 new Person({
   name: "Fedify Demo",
   preferredUsername: "demo",
@@ -332,7 +355,10 @@ the collection of actors that the actor follows.  The number of the collection
 is displayed in the profile page of the actor.  Each item in the collection is
 a URI of the actor that the actor follows, or an actor object itself.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation
   .setFollowingDispatcher(
     "/users/{handle}/following", async (ctx, handle, cursor) => {
@@ -364,17 +390,22 @@ Mastodon](pragmatics/mastodon-following.png)
 The `Federation.setFollowersDispatcher()` method registers a dispatcher for
 the collection of actors that follow the actor.  The number of the collection
 is displayed in the profile page of the actor.  Each item in the collection is
-a URI of the actor that follows the actor, or an actor object itself.
+a `Recipient` or an `Actor` that follows the actor.
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation, Recipient } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation
   .setFollowersDispatcher(
     "/users/{handle}/followers", async (ctx, handle, cursor) => {
       // Loads the list of actors that follow the actor...
       return {
         items: [
-          new URL("..."),
-          new URL("..."),
+          {
+            id: new URL("..."),
+            inboxId: new URL("..."),
+          } satisfies Recipient,
           // ...
         ]
       };

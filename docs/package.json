@@ -1,13 +1,25 @@
 {
   "devDependencies": {
+    "@deno/kv": "^0.8.2",
+    "@fedify/fedify": "^1.0.0-dev.388",
+    "@hono/node-server": "^1.12.2",
+    "@js-temporal/polyfill": "^0.4.4",
+    "@logtape/logtape": "^0.5.1",
+    "@shikijs/vitepress-twoslash": "^1.17.6",
+    "@teidesu/deno-types": "^1.46.3",
+    "@types/better-sqlite3": "^7.6.11",
+    "@types/bun": "^1.1.9",
     "cli-progress": "^3.12.0",
+    "hono": "^4.6.1",
     "markdown-it-abbr": "^2.0.0",
     "markdown-it-deflist": "^3.0.0",
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-jsr-ref": "^0.3.2",
     "mermaid": "^10.9.1",
+    "stringify-entities": "^4.0.4",
     "vitepress": "^1.3.1",
-    "vitepress-plugin-mermaid": "^2.0.16"
+    "vitepress-plugin-mermaid": "^2.0.16",
+    "x-forwarded-fetch": "^0.2.0"
   },
   "scripts": {
     "dev": "vitepress dev",

@@ -53,11 +53,15 @@ Those are not all; there are more callbacks that take a `Context` object.
 You can also get a `Context` object from the `Federation` object by calling the
 `~Federation.createContext()` method.  The following shows an example:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { federation } from "../federation.ts"; // Import the `Federation` object
 
 export async function handler(request: Request) {
-  const ctx = federation.createContext(request, undefined);
+  const ctx = federation.createContext(request, undefined);  // [!code highlight]
   // Work with the `ctx` object...
 };
 ~~~~
@@ -103,8 +107,13 @@ the URIs because the URIs are subject to change in the future.
 Here's an example of using the `~Context.getActorUri()` method in the actor
 dispatcher:
 
-~~~~ typescript
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+~~~~ typescript twoslash
+import { type Federation, Person } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+interface User { }
+const user: User | null = true ? { } : null;
+// ---cut-before---
+federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   // Work with the database to find the actor by the handle.
   if (user == null) return null;
   return new Person({
@@ -127,16 +136,21 @@ The `Context` object can enqueue an outgoing activity to the actor's outbox
 by calling the `~Context.sendActivity()` method.  The following shows an
 example in an [inbox listener](./inbox.md):
 
-~~~~ typescript{10-14}
+~~~~ typescript{12-16} twoslash
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { Accept, Follow } from "@fedify/fedify";
 
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     // In order to send an activity, we need the bare handle of the sender:
+    if (follow.objectId == null) return;
     const parsed = ctx.parseUri(follow.objectId);
     if (parsed?.type !== "actor") return;
     const recipient = await follow.getActor(ctx);
+    if (recipient == null) return;
     await ctx.sendActivity(
       { handle: parsed.handle }, // sender
       recipient,
@@ -176,14 +190,21 @@ The `RequestContext` object has a method to dispatch an Activity Vocabulary
 object from the URL arguments.  The following shows an example of using
 the `RequestContext.getActor()` method:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Federation, Update } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+const request = new Request("");
+const handle: string = "";
+// ---cut-before---
 const ctx = federation.createContext(request, undefined);
 const actor = await ctx.getActor(handle);  // [!code highlight]
-await ctx.sendActivity(
-  { handle },
-  followers,
-  new Update({ actor: actor.id, object: actor }),
-);
+if (actor != null) {
+  await ctx.sendActivity(
+    { handle },
+    "followers",
+    new Update({ actor: actor.id, object: actor }),
+  );
+}
 ~~~~
 
 > [!NOTE]
@@ -194,7 +215,13 @@ await ctx.sendActivity(
 In the same way, you can use the `RequestContext.getObject()` method to dispatch
 an object from the URL arguments.  The following shows an example:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Federation, Note } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+const request = new Request("");
+const handle: string = "";
+const id: string = "";
+// ---cut-before---
 const ctx = federation.createContext(request, undefined);
 const note = await ctx.getObject(Note, { handle, id });  // [!code highlight]
 ~~~~
@@ -218,7 +245,11 @@ All of those methods take options in the form of
 compatible with `Context`.  So you can just pass a `Context` object to those
 methods:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import {  type Context, Object } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+const jsonLd: unknown = {};
+// ---cut-before---
 const object = await Object.fromJsonLd(jsonLd, ctx);
 const json = await object.toJsonLd(ctx);
 ~~~~
@@ -234,7 +265,11 @@ such as an actor's following collection that is configured as private.
 In such cases, you can use the `Context.getDocumentLoader()` method to get
 an authenticated `DocumentLoader` object.  The following shows an example:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Actor, type Context, Person } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+const actor = new Person({}) as Actor;
+// ---cut-before---
 const documentLoader = await ctx.getDocumentLoader({ handle: "john" });
 const following = await actor.getFollowing({ documentLoader });
 ~~~~
@@ -284,13 +319,20 @@ Looking up remote objects
 >
 > For example, you can get the `object` from an `Activity` object directly:
 >
-> ~~~~ typescript
+> ~~~~ typescript twoslash
+> import { Activity } from "@fedify/fedify";
+> const activity = new Activity({});
+> // ---cut-before---
 > const object = await activity.getObject();
 > ~~~~
 >
 > … instead of:
 >
-> ~~~~ typescript
+> ~~~~ typescript twoslash
+> import { Activity, type Context } from "@fedify/fedify";
+> const ctx = null as unknown as Context<void>;
+> const activity = new Activity({});
+> // ---cut-before---
 > const object = activity.objectId == null
 >   ? null
 >   : await ctx.lookupObject(activity.objectId);
@@ -302,7 +344,10 @@ the object from a remote server that your app haven't interacted with yet.
 The `Context.lookupObject()` method plays a role in such cases.  The following
 shows an example of looking up an actor object from the handle:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 const actor = await ctx.lookupObject("@hongminhee@todon.eu");
 ~~~~
 
@@ -314,13 +359,19 @@ and then fetches the actor object from the URI.
 > The `~Context.lookupObject()` method accepts a fediverse handle without
 > prefix `@` as well:
 >
-> ~~~~ typescript
+> ~~~~ typescript twoslash
+> import { type Context } from "@fedify/fedify";
+> const ctx = null as unknown as Context<void>;
+> // ---cut-before---
 > const actor = await ctx.lookupObject("hongminhee@todon.eu");
 > ~~~~
 >
 > Also an `acct:` URI:
 >
-> ~~~~ typescript
+> ~~~~ typescript twoslash
+> import { type Context } from "@fedify/fedify";
+> const ctx = null as unknown as Context<void>;
+> // ---cut-before---
 > const actor = await ctx.lookupObject("acct:hongminhee@todon.eu");
 > ~~~~
 
@@ -328,7 +379,10 @@ The `~Context.lookupObject()` method is not limited to the actor object.
 It can look up any object in the Activity Vocabulary.  For example
 the following shows an example of looking up a `Note` object from the URI:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 const note = await ctx.lookupObject(
   "https://todon.eu/@hongminhee/112060633798771581"
 );
@@ -341,7 +395,10 @@ const note = await ctx.lookupObject(
 > `DocumentLoader` object.  The `~Context.lookupObject()` method takes the
 > `documentLoader` option to specify the method to fetch the remote object:
 >
-> ~~~~ typescript
+> ~~~~ typescript twoslash
+> import { type Context } from "@fedify/fedify";
+> const ctx = null as unknown as Context<void>;
+> // ---cut-before---
 > const documentLoader = await ctx.getDocumentLoader({ handle: "john" });
 > const note = await ctx.lookupObject("...", { documentLoader });
 > ~~~~

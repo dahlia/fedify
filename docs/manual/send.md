@@ -38,8 +38,8 @@ Sending an activity
 To send an activity to another actor, you can use the `Context.sendActivity()`
 method.  The following shows how to send a `Follow` activity to another actor:
 
-~~~~ typescript{8-15}
-import { Context, Follow, Recipient } from "@fedify/fedify";
+~~~~ typescript{8-15} twoslash
+import { type Context, Follow, type Recipient } from "@fedify/fedify";
 
 async function sendFollow(
   ctx: Context<void>,
@@ -74,7 +74,8 @@ the recipient's inbox if possible; the system retries the delivery on failure.
 This queueing mechanism is enabled only if a [`queue`](./federation.md#queue)
 option is set to the `createFederation()` function:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2345
 import { createFederation, InProcessMessageQueue } from "@fedify/fedify";
 
 const federation = createFederation({
@@ -112,8 +113,8 @@ You can do this by calling the `~Context.sendActivity()` method with the
 `immediate` option:
 
 
-~~~~ typescript
-import { Context, Follow, Recipient } from "@fedify/fedify";
+~~~~ typescript twoslash
+import { type Context, Follow, type Recipient } from "@fedify/fedify";
 
 async function sendFollow(
   ctx: Context<void>,
@@ -143,12 +144,12 @@ By default, `~Context.sendActivity()` method delivers an activity to the
 recipient's personal inbox.  To deliver an activity to the shared inbox,
 you can pass the `preferSharedInbox` option:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import {
-  Context,
+  type Context,
   Create,
   Note,
-  Recipient,
+  type Recipient,
   PUBLIC_COLLECTION,
 } from "@fedify/fedify";
 
@@ -213,7 +214,11 @@ of the followers collection in the activity delivery request by specifying
 the recipients parameter of the `~Context.sendActivity()` method as
 the `"followers"` string:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Context, Create, Note } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+const senderHandle: string = "";
+// ---cut-before---
 await ctx.sendActivity(
   { handle: senderHandle },
   "followers",  // [!code highlight]
@@ -253,7 +258,12 @@ recipients on the same server with the sender.  To exclude same-server
 recipients, you can pass the `excludeBaseUris` option to the
 `~Context.sendActivity()` method:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Activity, type Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+const senderHandle: string = "";
+const activity = new Activity({});
+// ---cut-before---
 await ctx.sendActivity(
   { handle: senderHandle },
   "followers",
@@ -284,7 +294,8 @@ and retried later.
 If you want to handle the delivery failure, you can register an error handler
 to the queue:
 
-~~~~ typescript{6-9}
+~~~~ typescript{6-9} twoslash
+// @noErrors: 2345
 import { createFederation, InProcessMessageQueue } from "@fedify/fedify";
 
 const federation = createFederation({

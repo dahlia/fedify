@@ -98,13 +98,13 @@ For Markdown, we have the following conventions:
  -  Wrap file paths in asterisks.
  -  Wrap code in backticks.
 
-In order to build the docs, as a prerequisite, you need to install [Bun] first.
-Then you can run the following commands:
+In order to build the docs, as a prerequisite, you need to install [Node.js] and
+[pnpm] first. Then you can run the following commands:
 
 ~~~~ bash
 cd docs/
-bun install
-bun dev
+pnpm install
+pnpm dev
 ~~~~
 
 Once the development server is running, you can open your browser and navigate
@@ -114,6 +114,7 @@ to *http://localhost:5173/* to view the docs.
 [inline links]: https://spec.commonmark.org/0.31.2/#inline-link
 [setext headings]: https://spec.commonmark.org/0.31.2/#setext-headings
 [ATX headings]: https://spec.commonmark.org/0.31.2/#atx-headings
+[pnpm]: https://pnpm.io/
 
 ### Bug fix
 

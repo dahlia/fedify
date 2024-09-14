@@ -37,7 +37,11 @@ own URI, the outbox collection has its own URI, too.  The URI of the outbox
 collection is determined by the first parameter of
 the `Federation.setOutboxDispatcher()` method:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2345
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation
   .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle) => {
     // Work with the database to find the activities that the actor has sent.
@@ -53,7 +57,33 @@ Since the outbox is a collection of activities, the outbox dispatcher should
 return an array of activities.  The following example shows how to construct
 an outbox collection:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents a post.
+ */
+interface Post {
+  /**
+   * The ID of the post.
+   */
+  id: string;
+  /**
+   * The title of the post.
+   */
+  title: string;
+  /**
+   * The content of the post.
+   */
+  content: string;
+}
+/**
+ * A hypothetical function that returns the posts that an actor has sent.
+ * @param handle The actor's handle.
+ * @returns The posts that the actor has sent.
+ */
+function getPostsByUserHandle(handle: string): Post[] { return []; }
+// ---cut-before---
 import { Article, Create } from "@fedify/fedify";
 
 federation
@@ -146,7 +176,70 @@ is `null` (that the previous example assumes).
 Here's an example of how to implement collection pages for the outbox collection
 with assuming that the database system supports cursor-based pagination:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Article, Create, type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents a post.
+ */
+interface Post {
+  /**
+   * The ID of the post.
+   */
+  id: string;
+  /**
+   * The title of the post.
+   */
+  title: string;
+  /**
+   * The content of the post.
+   */
+  content: string;
+}
+/**
+ * A hypothetical type that represents the result set of the posts.
+ */
+interface PostResultSet {
+  /**
+   * The posts that the actor has sent.
+   */
+  posts: Post[];
+  /**
+   * The next cursor that represents the position of the next page.
+   */
+  nextCursor: string | null;
+  /**
+   * Whether the current page is the last page.
+   */
+  last: boolean;
+}
+/**
+ * A hypothetical type that represents the options for
+ * the `getPostsByUserHandle` function.
+ */
+interface GetPostsByUserHandleOptions {
+  /**
+   * The cursor that represents the position of the current page.
+   */
+  cursor?: string | null;
+  /**
+   * The number of items per page.
+   */
+  limit: number;
+}
+/**
+ * A hypothetical function that returns the posts that an actor has sent.
+ * @param handle The actor's handle.
+ * @returns The result set that contains the posts, the next cursor, and whether
+ *          the current page is the last page.
+ */
+function getPostsByUserHandle(
+  handle: string,
+  options: GetPostsByUserHandleOptions,
+): PostResultSet {
+  return { posts: [], nextCursor: null, last: true };
+}
+// ---cut-before---
 federation
   .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle, cursor) => {
     // If a whole collection is requested, returns nothing as we prefer
@@ -195,7 +288,70 @@ cursor is `null` if the collection is empty.
 The value for the first cursor is determined by
 `~CollectionCallbackSetters.setFirstCursor()` method:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Article, Create, type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents a post.
+ */
+interface Post {
+  /**
+   * The ID of the post.
+   */
+  id: string;
+  /**
+   * The title of the post.
+   */
+  title: string;
+  /**
+   * The content of the post.
+   */
+  content: string;
+}
+/**
+ * A hypothetical type that represents the result set of the posts.
+ */
+interface PostResultSet {
+  /**
+   * The posts that the actor has sent.
+   */
+  posts: Post[];
+  /**
+   * The next cursor that represents the position of the next page.
+   */
+  nextCursor: string | null;
+  /**
+   * Whether the current page is the last page.
+   */
+  last: boolean;
+}
+/**
+ * A hypothetical type that represents the options for
+ * the `getPostsByUserHandle` function.
+ */
+interface GetPostsByUserHandleOptions {
+  /**
+   * The cursor that represents the position of the current page.
+   */
+  cursor?: string | null;
+  /**
+   * The number of items per page.
+   */
+  limit: number;
+}
+/**
+ * A hypothetical function that returns the posts that an actor has sent.
+ * @param handle The actor's handle.
+ * @returns The result set that contains the posts, the next cursor, and whether
+ *          the current page is the last page.
+ */
+function getPostsByUserHandle(
+  handle: string,
+  options: GetPostsByUserHandleOptions,
+): PostResultSet {
+  return { posts: [], nextCursor: null, last: true };
+}
+// ---cut-before---
 // The number of items per page:
 const window = 10;
 
@@ -249,7 +405,20 @@ the total number of articles a user has posted.
 The following example shows how to implement the counter for the outbox
 collection:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2345
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical function that counts the number of posts that an actor has
+ * sent.
+ * @param handle The actor's handle.
+ * @returns The number of posts that the actor has sent.
+ */
+async function countPostsByUserHandle(handle: string): Promise<number> {
+  return 0;
+}
+// ---cut-before---
 federation
   .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle, cursor) => {
     // Omitted for brevity.
@@ -276,7 +445,62 @@ collection forwards, which is fine in most cases.
 So, the below example assumes that the database system supports offset-based
 pagination, which is easy to implement backward pagination:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Article, Create, type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents a post.
+ */
+interface Post {
+  /**
+   * The ID of the post.
+   */
+  id: string;
+  /**
+   * The title of the post.
+   */
+  title: string;
+  /**
+   * The content of the post.
+   */
+  content: string;
+}
+/**
+ * A hypothetical type that represents the options for
+ * the `getPostsByUserHandle` function.
+ */
+interface GetPostsByUserHandleOptions {
+  /**
+   * The offset of the current page.
+   */
+  offset: number;
+  /**
+   * The number of items per page.
+   */
+  limit: number;
+}
+/**
+ * A hypothetical function that returns the posts that an actor has sent.
+ * @param handle The actor's handle.
+ * @returns The result set that contains the posts, the next cursor, and whether
+ *          the current page is the last page.
+ */
+function getPostsByUserHandle(
+  handle: string,
+  options: GetPostsByUserHandleOptions,
+): Post[] {
+  return [];
+}
+/**
+ * A hypothetical function that counts the number of posts that an actor has
+ * sent.
+ * @param handle The actor's handle.
+ * @returns The number of posts that the actor has sent.
+ */
+async function countPostsByUserHandle(handle: string): Promise<number> {
+  return 0;
+}
+// ---cut-before---
 // The number of items per page:
 const window = 10;
 
@@ -322,7 +546,10 @@ URI of the outbox collection of the actor.
 The following shows how to construct an outbox collection URI of an actor named
 `"alice"`:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getOutboxUri("alice")
 ~~~~
 
@@ -347,7 +574,28 @@ the outbox collection, so we don't repeat the explanation here.
 
 The below example shows how to construct an inbox collection:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical function that returns the activities that an actor has
+ * received.
+ * @param handle The actor's handle.
+ * @returns The activities that the actor has received.
+ */
+async function getInboxByUserHandle(handle: string): Promise<Activity[]> {
+  return [];
+}
+/**
+ * A hypothetical function that counts the number of activities that an actor
+ * has received.
+ * @param handle The actor's handle.
+ * @returns The number of activities that the actor has received.
+ */
+async function countInboxByUserHandle(handle: string): Promise<number> {
+  return 0;
+}
+// ---cut-before---
 import { Activity } from "@fedify/fedify";
 
 federation
@@ -376,7 +624,10 @@ URI of the inbox collection of the actor.
 The following shows how to construct an inbox collection URI of an actor named
 `"alice"`:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getInboxUri("alice")
 ~~~~
 
@@ -402,7 +653,50 @@ way as the outbox collection, so we don't repeat the explanation here.
 
 The below example shows how to construct a following collection:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents an actor in the database.
+ */
+interface User {
+  /**
+   * The URI of the actor.
+   */
+  uri: string;
+}
+/**
+ * A hypothetical type that represents the result set of the actors that
+ * an actor is following.
+ */
+interface ResultSet {
+  /**
+   * The actors that the actor is following.
+   */
+  users: User[];
+  /**
+   * The next cursor that represents the position of the next page.
+   */
+  nextCursor: string | null;
+  /**
+   * Whether the current page is the last page.
+   */
+  last: boolean;
+}
+/**
+ * A hypothetical function that returns the actors that an actor is following.
+ * @param handle The actor's handle.
+ * @param options The options for the query.
+ * @returns The actors that the actor is following, the next cursor, and whether
+ *          the current page is the last page.
+ */
+async function getFollowingByUserHandle(
+  handle: string,
+  options: { cursor?: string | null; limit: number },
+): Promise<ResultSet> {
+  return { users: [], nextCursor: null, last: true };
+}
+// ---cut-before---
 federation
   .setFollowingDispatcher("/users/{handle}/following", async (ctx, handle, cursor) => {
     // If a whole collection is requested, returns nothing as we prefer
@@ -415,7 +709,7 @@ federation
       cursor === "" ? { limit: 10 } : { cursor, limit: 10 }
     );
     // Turn the users into `URL` objects:
-    const items = users.map(actor => actor.uri);
+    const items = users.map(actor => new URL(actor.uri));
     return { items, nextCursor: last ? null : nextCursor }
   })
   // The first cursor is an empty string:
@@ -431,7 +725,10 @@ and returns the dereferenceable URI of the following collection of the actor.
 The following shows how to construct a following collection URI of an actor
 named `"alice"`:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getFollowingUri("alice")
 ~~~~
 
@@ -451,7 +748,68 @@ has to consist of `Recipient` objects that represent the actors.
 
 The below example shows how to construct a followers collection:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation, Recipient } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents an actor in the database.
+ */
+interface User {
+  /**
+   * The URI of the actor.
+   */
+  uri: string;
+  /**
+   * The inbox URI of the actor.
+   */
+  inboxUri: string;
+}
+/**
+ * A hypothetical type that represents the result set of the actors that
+ * are following an actor.
+ */
+interface ResultSet {
+  /**
+   * The actors that are following the actor.
+   */
+  users: User[];
+  /**
+   * The next cursor that represents the position of the next page.
+   */
+  nextCursor: string | null;
+  /**
+   * Whether the current page is the last page.
+   */
+  last: boolean;
+}
+/**
+ * A hypothetical type that represents the options for
+ * the `getFollowersByUserHandle` function.
+ */
+interface GetFollowersByUserHandleOptions {
+  /**
+   * The cursor that represents the position of the current page.
+   */
+  cursor?: string | null;
+  /**
+   * The number of items per page.
+   */
+  limit: number;
+}
+/**
+ * A hypothetical function that returns the actors that are following an actor.
+ * @param handle The actor's handle.
+ * @param options The options for the query.
+ * @returns The actors that are following the actor, the next cursor, and
+ *          whether the current page is the last page.
+ */
+async function getFollowersByUserHandle(
+  handle: string,
+  options: GetFollowersByUserHandleOptions,
+): Promise<ResultSet> {
+    return { users: [], nextCursor: null, last: true };
+}
+// ---cut-before---
 federation
   .setFollowersDispatcher(
     "/users/{handle}/followers",
@@ -466,7 +824,7 @@ federation
         cursor === "" ? { limit: 10 } : { cursor, limit: 10 }
       );
       // Turn the users into `Recipient` objects:
-      const items = users.map(actor => ({
+      const items: Recipient[] = users.map(actor => ({
         id: new URL(actor.uri),
         inboxId: new URL(actor.inboxUri),
       }));
@@ -505,7 +863,32 @@ is `null`, the dispatcher should return all the actors.
 The following example shows how to filter the followers collection by the
 server:
 
-~~~~ typescript {8-11}
+~~~~ typescript{8-11} twoslash
+import type { Federation, Recipient } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents an actor in the database.
+ */
+interface User {
+  /**
+   * The URI of the actor.
+   */
+  uri: URL;
+
+  /**
+   * The inbox URI of the actor.
+   */
+  inboxUri: URL;
+}
+/**
+ * A hypothetical function that returns the actors that are following an actor.
+ * @param handle The actor's handle.
+ * @returns The actors that are following the actor.
+ */
+async function getFollowersByUserHandle(handle: string): Promise<User[]> {
+  return [];
+}
+// ---cut-before---
 federation
   .setFollowersDispatcher(
     "/users/{handle}/followers",
@@ -517,8 +900,11 @@ federation
       if (baseUri != null) {
         users = users.filter(actor => actor.uri.href.startsWith(baseUri.href));
       }
-      // Turn the users into `URL` objects:
-      const items = users.map(actor => actor.uri);
+      // Turn the users into `Recipient` objects:
+      const items: Recipient[] = users.map(actor => ({
+        id: actor.uri,
+        inboxId: actor.inboxUri,
+      }));
       return { items };
     }
   );
@@ -538,7 +924,10 @@ and returns the dereferenceable URI of the followers collection of the actor.
 The following shows how to construct a followers collection URI of an actor
 named `"alice"`:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getFollowersUri("alice")
 ~~~~
 
@@ -564,7 +953,18 @@ the outbox collection, so we don't repeat the explanation here.
 
 The below example shows how to construct a liked collection:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical function that returns the objects that an actor has liked.
+ * @param handle The actor's handle.
+ * @returns The objects that the actor has liked.
+ */
+async function getLikedByUserHandle(handle: string): Promise<Object[]> {
+  return [];
+}
+// ---cut-before---
 import type { Object } from "@fedify/fedify";
 
 federation
@@ -578,7 +978,18 @@ federation
 
 Or you can yield the object URIs instead of the objects:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical function that returns the objects that an actor has liked.
+ * @param handle The actor's handle.
+ * @returns The objects that the actor has liked.
+ */
+async function getLikedByUserHandle(handle: string): Promise<Object[]> {
+  return [];
+}
+// ---cut-before---
 import type { Object } from "@fedify/fedify";
 
 federation
@@ -602,7 +1013,10 @@ URI of the liked collection of the actor.
 The following shows how to construct a liked collection URI of an actor named
 `"alice"`:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getLikedUri("alice")
 ~~~~
 
@@ -629,7 +1043,18 @@ as the outbox collection, so we don't repeat the explanation here.
 
 The below example shows how to construct a featured collection:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Object, Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical function that returns the objects that an actor has featured.
+ * @param handle The actor's handle.
+ * @returns The objects that the actor has featured.
+ */
+async function getFeaturedByUserHandle(handle: string): Promise<Object[]> {
+  return [];
+}
+// ---cut-before---
 federation
   .setFeaturedDispatcher("/users/{handle}/featured", async (ctx, handle, cursor) => {
     // Work with the database to find the objects that the actor has featured
@@ -648,7 +1073,10 @@ and returns the dereferenceable URI of the featured collection of the actor.
 The following shows how to construct a featured collection URI of an actor named
 `"alice"`:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getFeaturedUri("alice")
 ~~~~
 
@@ -676,7 +1104,18 @@ way as the outbox collection, so we don't repeat the explanation here.
 
 The below example shows how to construct a featured tags collection:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Hashtag, type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical function that returns the tags that an actor has featured.
+ * @param handle The actor's handle.
+ * @returns The tags that the actor has featured.
+ */
+async function getFeaturedTagsByUserHandle(handle: string): Promise<string[]> {
+  return [];
+}
+// ---cut-before---
 federation
   .setFeaturedTagsDispatcher("/users/{handle}/tags", async (ctx, handle, cursor) => {
     // Work with the database to find the tags that the actor has featured
@@ -702,7 +1141,10 @@ the actor.
 The following shows how to construct a featured tags collection URI of an actor
 named `"alice"`:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getFeaturedTagsUri("alice")
 ~~~~
 

@@ -32,7 +32,13 @@ the following:
 
 The below example shows how to register an actor dispatcher:
 
-~~~~ typescript{7-15}
+~~~~ typescript{7-15} twoslash
+// @noErrors: 2451 2345
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+interface User { }
+const user = null as User | null;
+// ---cut-before---
 import { createFederation, Person } from "@fedify/fedify";
 
 const federation = createFederation({
@@ -136,7 +142,10 @@ The `endpoints` property is an `Endpoints` instance, an object that contains
 the URIs of the actor's endpoints.  The most important endpoint is the `sharedInbox`.  You can use the `Context.getInboxUri()` method with no arguments
 to generate the URI of the actor's shared inbox:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Endpoints, Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 new Endpoints({ sharedInbox: ctx.getInboxUri() })
 ~~~~
 
@@ -182,13 +191,22 @@ manually.  Instead, you can register a key pairs dispatcher through
 the `~ActorCallbackSetters.setKeyPairsDispatcher()` method so that Fedify can
 dispatch appropriate key pairs by the actor's bare handle:
 
-~~~~ typescript{4-6,10-14,17-26}
+~~~~ typescript{4-6,10-14,17-26} twoslash
+import { type Federation, Person } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+interface User {}
+const user = null as User | null;
+const publicKey1 = null as unknown as CryptoKey;
+const privateKey1 = null as unknown as CryptoKey;
+const publicKey2 = null as unknown as CryptoKey;
+const privateKey2 = null as unknown as CryptoKey;
+// ---cut-before---
 federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   // Work with the database to find the actor by the handle.
   if (user == null) return null;  // Return null if the actor is not found.
   // Context.getActorKeyPairs() method dispatches the key pairs of an actor
   // by the handle, and returns an array of key pairs in various formats:
-  const keys = ctx.getActorKeyPairs(handle);
+  const keys = await ctx.getActorKeyPairs(handle);
   return new Person({
     id: ctx.getActorUri(handle),
     preferredUsername: handle,
@@ -204,8 +222,8 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     if (user == null) return [];  // Return null if the key pair is not found.
     // Return the loaded key pair.  See the below example for details.
     return [
-      { publicKey1, privateKey1 },
-      { publicKey2, privateKey2 },
+      { publicKey: publicKey1, privateKey: privateKey1 },
+      { publicKey: publicKey2, privateKey: privateKey2 },
       // ...
     ];
   });
@@ -225,7 +243,9 @@ How to generate key pairs and store them in the database is out of the scope of
 this document, but here's a simple example of how to generate key pairs and
 store them in a [Deno KV] database in form of JWK:
 
-~~~~ typescript
+~~~~ typescript twoslash
+const handle: string = "";
+// ---cut-before---
 import { generateCryptoKeyPair, exportJwk } from "@fedify/fedify";
 
 const kv = await Deno.openKv();
@@ -264,7 +284,11 @@ await kv.set(["keypair", "ed25519", handle], {
 
 Here's an example of how to load key pairs from the database too:
 
-~~~~ typescript{12-34}
+~~~~ typescript{12-34} twoslash
+// @noErrors: 2345
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { importJwk } from "@fedify/fedify";
 
 interface KeyPairEntry {
@@ -293,8 +317,8 @@ federation
     );
     if (ed25519Pair?.value != null) {
       result.push({
-        privateKey: await importJwk(ed25519.value.privateKey, "private"),
-        publicKey: await importJwk(ed25519.value.publicKey, "public"),
+        privateKey: await importJwk(ed25519Pair.value.privateKey, "private"),
+        publicKey: await importJwk(ed25519Pair.value.publicKey, "public"),
       });
     }
     return result;
@@ -313,7 +337,10 @@ This method takes a bare handle and returns a dereferenceable URI of the actor.
 
 The below example shows how to construct an actor URI:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
 ctx.getActorUri("john_doe")
 ~~~~
 
@@ -342,7 +369,24 @@ By default, Fedify uses the bare handle as the WebFinger username.  However,
 you can decouple the WebFinger username from the bare handle by registering
 an actor handle mapper through the `~ActorCallbackSetters.mapHandle()` method:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2391 2345
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+interface User { uuid: string; }
+/**
+ * It's a hypothetical function that finds a user by the UUID.
+ * @param uuid The UUID of the user.
+ * @returns The user object.
+ */
+function findUserByUuid(uuid: string): User;
+/**
+ * It's a hypothetical function that finds a user by the username.
+ * @param username The username of the user.
+ * @returns The user object.
+ */
+function findUserByUsername(username: string): User;
+// ---cut-before---
 federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // Since we map a WebFinger handle to the corresponding user's UUID below,

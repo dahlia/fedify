@@ -33,7 +33,9 @@ You can instantiate an object by calling the constructor function with an object
 that contains the properties of the object.  The following shows an example of
 instantiating a `Create` object:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Temporal } from "@js-temporal/polyfill";
+// ---cut-before---
 import { Create, Note } from "@fedify/fedify";
 
 const create = new Create({
@@ -122,93 +124,6 @@ property.
 [`_misskey_quote`]: https://misskey-hub.net/ns#_misskey_quote
 
 
-Property hydration
-------------------
-
-The `get*()` accessor methods for non-scalar properties automatically populate
-the property with the remote object when the methods are called even if
-the property internally contains only the URI of the object.  This is called
-<dfn>property hydration</dfn>.
-
-For example, the following code hydrates the `object` property of the `Create`
-object:
-
-~~~~ typescript
-const create = new Create({
-  object: new URL(
-    "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
-  ),
-});
-
-// Hydrates the `object` property:
-const note = await create.getObject();
-
-// Returns the hydrated `object` property; therefore, the following code does
-// not make any HTTP request:
-const note2 = await create.getObject();
-~~~~
-
-Hydrating the property also affects the JSON-LD representation of the object.
-
-For example, since the following code does not hydrate the `object` property,
-the JSON-LD representation of the `Create` object has the `object` property
-with the URI of the object:
-
-~~~~ typescript
-const create = new Create({
-  object: new URL(
-    "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
-  ),
-});
-
-const jsonLd = await create.toJsonLd();
-console.log(JSON.stringify(jsonLd));
-~~~~
-
-The above code outputs the following JSON-LD document (`"@context"` is
-simplified for readability):
-
-~~~~ json
-{
-  "@context": ["https://www.w3.org/ns/activitystreams"],
-  "type": "Create",
-  "object": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4"
-}
-~~~~
-
-However, if the property is once hydrated, the JSON-LD representation of the
-object has the `object` property with the full object:
-
-~~~~ typescript
-// Hydrates the `object` property:
-await create.getObject();
-
-const jsonLd = await create.toJsonLd();
-console.log(JSON.stringify(jsonLd));
-~~~~
-
-The above code outputs the following JSON-LD document (`"@context"` and some
-attributes are simplified or omitted for readability):
-
-~~~~ json
-{
-  "type": "Create",
-  "@context": ["https://www.w3.org/ns/activitystreams"],
-  "object": {
-    "id": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
-    "type": "Note",
-    "attributedTo": "https://hollo.social/@fedify",
-    "content": "<p>...</p>\n",
-    "published": "2024-09-12T06:37:23.593Z",
-    "sensitive": false,
-    "tag": [],
-    "to": "as:Public",
-    "url": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4"
-  }
-}
-~~~~
-
-
 Object IDs and remote objects
 -----------------------------
 
@@ -218,7 +133,10 @@ of the object.  It is used to identify and dereference the object.
 For example, the following two objects are equivalent (where dereferencing URI
 *https://example.com/notes/456* returns the `Note` object):
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Create, Note } from "@fedify/fedify";
+import { Temporal } from "@js-temporal/polyfill";
+// ---cut-before---
 const a = new Create({
   id: new URL("https://example.com/activities/123"),
   actor: new URL("https://example.com/users/alice"),
@@ -262,6 +180,100 @@ manner, both `a.objectId` and `b.objectId` return the equivalent URI.
 [`fetch()`]: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 
 
+Property hydration
+------------------
+
+The `get*()` accessor methods for non-scalar properties automatically populate
+the property with the remote object when the methods are called even if
+the property internally contains only the URI of the object.  This is called
+<dfn>property hydration</dfn>.
+
+For example, the following code hydrates the `object` property of the `Create`
+object:
+
+~~~~ typescript twoslash
+import { Create } from "@fedify/fedify";
+// ---cut-before---
+const create = new Create({
+  object: new URL(
+    "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
+  ),
+});
+
+// Hydrates the `object` property:
+const note = await create.getObject();
+
+// Returns the hydrated `object` property; therefore, the following code does
+// not make any HTTP request:
+const note2 = await create.getObject();
+~~~~
+
+Hydrating the property also affects the JSON-LD representation of the object.
+
+For example, since the following code does not hydrate the `object` property,
+the JSON-LD representation of the `Create` object has the `object` property
+with the URI of the object:
+
+~~~~ typescript twoslash
+import { Create } from "@fedify/fedify";
+// ---cut-before---
+const create = new Create({
+  object: new URL(
+    "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
+  ),
+});
+
+const jsonLd = await create.toJsonLd();
+console.log(JSON.stringify(jsonLd));
+~~~~
+
+The above code outputs the following JSON-LD document (`"@context"` is
+simplified for readability):
+
+~~~~ json
+{
+  "@context": ["https://www.w3.org/ns/activitystreams"],
+  "type": "Create",
+  "object": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4"
+}
+~~~~
+
+However, if the property is once hydrated, the JSON-LD representation of the
+object has the `object` property with the full object:
+
+~~~~ typescript twoslash
+import { Create } from "@fedify/fedify";
+const create = new Create({ });
+// ---cut-before---
+// Hydrates the `object` property:
+await create.getObject();
+
+const jsonLd = await create.toJsonLd();
+console.log(JSON.stringify(jsonLd));
+~~~~
+
+The above code outputs the following JSON-LD document (`"@context"` and some
+attributes are simplified or omitted for readability):
+
+~~~~ json
+{
+  "type": "Create",
+  "@context": ["https://www.w3.org/ns/activitystreams"],
+  "object": {
+    "id": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4",
+    "type": "Note",
+    "attributedTo": "https://hollo.social/@fedify",
+    "content": "<p>...</p>\n",
+    "published": "2024-09-12T06:37:23.593Z",
+    "sensitive": false,
+    "tag": [],
+    "to": "as:Public",
+    "url": "https://hollo.social/@fedify/0191e4f3-6b08-7003-9d33-f07d1e33d7b4"
+  }
+}
+~~~~
+
+
 Immutability
 ------------
 
@@ -276,7 +288,9 @@ takes an object with the new properties and returns a new object with the new
 properties.  The following shows an example of changing the `~Object.content`
 property of a `Note` object:
 
-~~~~ typescript{8-10}
+~~~~ typescript{8-10} twoslash
+import { Temporal } from "@js-temporal/polyfill";
+// ---cut-before---
 import { LanguageString, Note } from "@fedify/fedify";
 
 const noteInEnglish = new Note({
@@ -327,7 +341,7 @@ If you want to instantiate an object from a JSON-LD document, you can use the
 `fromJsonLd()` method of the object.  The following shows an example of
 instantiating a `Create` object from the JSON-LD document:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { Create } from "@fedify/fedify";
 
 const create = await Create.fromJsonLd({
@@ -348,7 +362,7 @@ Note that the `fromJsonLd()` method can parse a subtype as well.  For example,
 since `Create` is a subtype of `Activity`, the `Activity.fromJsonLd()` method
 can parse a `Create` object as well:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { Activity } from "@fedify/fedify";
 
 const create = await Activity.fromJsonLd({
@@ -368,7 +382,10 @@ const create = await Activity.fromJsonLd({
 On the other way around, you can use the `toJsonLd()` method to get the JSON-LD
 representation of the object:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Create } from "@fedify/fedify";
+const create = new Create({});
+// ---cut-before---
 const jsonLd = await create.toJsonLd();
 ~~~~
 
@@ -381,7 +398,10 @@ For example, you can compact the JSON-LD document with a custom context.
 In this case, the `toJsonLd()` method returns the compacted JSON-LD document
 which is processed by the proper JSON-LD processor:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Create } from "@fedify/fedify";
+const create = new Create({});
+// ---cut-before---
 const jsonLd = await create.toJsonLd({
   format: "compact",
   context: "https://example.com/context",

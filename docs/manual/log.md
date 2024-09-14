@@ -48,7 +48,7 @@ bun add @logtape/logtape
 
 Then, you can [`configure()`] the logger in the entry point of your app:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { configure, getConsoleSink } from "@logtape/logtape";
 
 await configure({
