@@ -242,10 +242,12 @@ jobs:
         set -ex
         bun install
         if [[ "$GITHUB_EVENT_NAME" = "push" && "$GITHUB_REF_TYPE" = "tag" ]]; then
+          bun add -Df --no-cache "@fedify/fedify@$GITHUB_REF_NAME"
           EXTRA_NAV_TEXT=Unstable \
           EXTRA_NAV_LINK="$UNSTABLE_DOCS_URL" \
           bun run build
         else
+          bun add -Df --no-cache @fedify/fedify@dev
           EXTRA_NAV_TEXT=Stable \
           EXTRA_NAV_LINK="$STABLE_DOCS_URL" \
           bun run build

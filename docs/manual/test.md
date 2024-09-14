@@ -125,7 +125,10 @@ you may want to allow fetching private network addresses for testing purposes
 the [`allowPrivateAddress`](./federation.md#allowprivateaddress) option to
 `true` in the `createFederation()` function:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2345
+import { createFederation } from "@fedify/fedify";
+// ---cut-before---
 const federation = createFederation({
   // ... other options
   allowPrivateAddress: true,

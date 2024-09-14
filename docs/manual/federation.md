@@ -25,7 +25,7 @@ The key features of the `Federation` object are as follows:
 You can create a `Federation` object by calling `createFederation()` function
 with a configuration object:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { createFederation, MemoryKvStore } from "@fedify/fedify";
 
 const federation = createFederation<void>({
@@ -227,7 +227,7 @@ attempts and a maximum delay of 12 hours.
 
 In the same way as the `outboxRetryPolicy` option, you can fully customize
 the retry policy by providing a custom function that satisfies the `RetryPolicy`
-type.  Or you can adjust the parameters of the built-in 
+type.  Or you can adjust the parameters of the built-in
 `createExponentialBackoffRetryPolicy()` function.
 
 ### `trailingSlashInsensitive`
@@ -259,13 +259,22 @@ the [`Bun.serve()`] function in [Bun]:
 
 ::: code-group
 
-~~~~ typescript [Deno]
+~~~~ typescript twoslash [Deno]
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+const request = new Request("");
+// ---cut-before---
 Deno.serve(
   (request) => federation.fetch(request, { contextData: undefined })
 );
 ~~~~
 
-~~~~ typescript [Bun]
+~~~~ typescript twoslash [Bun]
+import "@types/bun";
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+const request = new Request("");
+// ---cut-before---
 Bun.serve({
   fetch: (request) => federation.fetch(request, { contextData: undefined }),
 })
@@ -290,7 +299,11 @@ And then, you can use the [`serve()`] function from the package:
 
 ::: code-group
 
-~~~~ typescript [Node.js]
+~~~~ typescript twoslash [Node.js]
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+const request = new Request("");
+// ---cut-before---
 import { serve } from "@hono/node-server";
 
 serve({
@@ -356,7 +369,12 @@ the `Federation.fetch()` method:
 
 ::: code-group
 
-~~~~ typescript{1,4} [Deno]
+~~~~ typescript{1,4} twoslash [Deno]
+// @noErrors: 2300 2307
+import { behindProxy } from "x-forwarded-fetch";
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { behindProxy } from "@hongminhee/x-forwarded-fetch";
 
 Deno.serve(
@@ -364,16 +382,23 @@ Deno.serve(
 );
 ~~~~
 
-~~~~ typescript{2,5} [Node.js]
+~~~~ typescript{2,5} twoslash [Node.js]
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { serve } from "@hono/node-server";
 import { behindProxy } from "x-forwarded-fetch";
 
 serve({
-  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined }),
+  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined })),
 });
 ~~~~
 
-~~~~ typescript{1,4} [Bun]
+~~~~ typescript{1,4} twoslash [Bun]
+import "@types/bun";
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { behindProxy } from "x-forwarded-fetch";
 
 Bun.serve({
@@ -433,8 +458,12 @@ export async function handler(request: Request, context: FreshContext) {
 The `Context.data` is passed to registered callback functions as their first
 parameter within the `Context` object:
 
-~~~~ typescript
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+~~~~ typescript twoslash
+// @noErrors: 2345
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
+federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   // There is a database connection in `ctx.data`.
 });
 ~~~~
@@ -453,7 +482,11 @@ You may want to support multiple domains on the same server, so-called
 incoming HTTP request, you can use `Context.host` that contains
 the virtual host information:
 
-~~~~ typescript{2}
+~~~~ typescript{2} twoslash
+// @noErrors: 2345
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation.setActorDispatcher("/@{handle}", (ctx, handle) => {
   const fullHandle = `${handle}@${ctx.host}`;
   // Omitted for brevity

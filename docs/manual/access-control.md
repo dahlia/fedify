@@ -39,22 +39,55 @@ callback with `ActorCallbackSetters.authorize()` or
 with `ObjectCallbackSetters.authorize()`.  The below example shows how to enable
 authorized fetch for the actor dispatcher:
 
-~~~~ typescript{8-10}
+~~~~ typescript{8-10} twoslash
+// @noErrors: 2307 2345
+import type { Actor, Federation } from "@fedify/fedify";
+/**
+ * A hypothetical `Federation` instance.
+ */
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical function that checks if the user blocks the actor.
+ * @param handle The handle of the user to check if the actor is blocked.
+ * @param signedKeyOwner The actor who signed the request.
+ * @returns `true` if the actor is blocked; otherwise, `false`.
+ */
+async function isBlocked(handle: string, signedKeyOwner: Actor): Promise<boolean> {
+  return false;
+}
+// ---cut-before---
 import { federation } from "./your-federation.ts";
 import { isBlocked } from "./your-blocklist.ts";
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // Omitted for brevity; see the related section for details.
   })
   .authorize(async (ctx, handle, signedKey, signedKeyOwner) => {
-    return !isBlocked(handle, signedKeyOwner);
+    if (signedKeyOwner == null) return false;
+    return !await isBlocked(handle, signedKeyOwner);
   });
 ~~~~
 
 The equivalent method is available for collections as well:
 
-~~~~ typescript{8-10}
+~~~~ typescript{8-10} twoslash
+// @noErrors: 2307 2345
+import type { Actor, Federation } from "@fedify/fedify";
+/**
+ * A hypothetical `Federation` instance.
+ */
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical function that checks if the user blocks the actor.
+ * @param handle The handle of the user to check if the actor is blocked.
+ * @param signedKeyOwner The actor who signed the request.
+ * @returns `true` if the actor is blocked; otherwise, `false`.
+ */
+async function isBlocked(handle: string, signedKeyOwner: Actor): Promise<boolean> {
+  return false;
+}
+// ---cut-before---
 import { federation } from "./your-federation.ts";
 import { isBlocked } from "./your-blocklist.ts";
 
@@ -63,7 +96,8 @@ federation
     // Omitted for brevity; see the related section for details.
   })
   .authorize(async (ctx, handle, signedKey, signedKeyOwner) => {
-    return !isBlocked(handle, signedKeyOwner);
+    if (signedKeyOwner == null) return false;
+    return !await isBlocked(handle, signedKeyOwner);
   });
 ~~~~
 
@@ -84,7 +118,35 @@ The method returns the `Actor` object who signed the request (more precisely,
 the owner of the key that signed the request, if the key is associated with an
 actor).  The below pseudo code shows how to filter out private posts:
 
-~~~~ typescript{7,9}
+~~~~ typescript{7,9} twoslash
+// @noErrors: 2307
+import type { Actor, Create, Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+interface Post {
+  /**
+   * A hypothetical method that checks if the post is visible to the actor.
+   * @param actor The actor who wants to access the post.
+   * @returns `true` if the post is visible; otherwise, `false`.
+   */
+  isVisibleTo(actor: Actor): boolean;
+}
+/**
+ * A hypothetical function that gets posts from the database.
+ * @param handle The handle of the user to get posts.
+ * @returns The posts of the user.
+ */
+async function getPosts(handle: string): Promise<Post[]> {
+  return [];
+}
+/**
+ * A hypothetical function that converts a model object to an ActivityStreams object.
+ * @param post The model object to convert.
+ * @returns The ActivityStreams object.
+ */
+function toCreate(post: Post): Create {
+  return {} as unknown as Create;
+}
+// ---cut-before---
 import { federation } from "./your-federation.ts";
 import { getPosts, toCreate } from "./your-model.ts";
 
@@ -92,6 +154,7 @@ federation
   .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle) => {
     const posts = await getPosts(handle);  // Get posts from the database
     const keyOwner = await ctx.getSignedKeyOwner();  // Get the actor who signed the request
+    if (keyOwner == null) return { items: [] };  // Return an empty array if the actor is not found
     const items = posts
       .filter(post => post.isVisibleTo(keyOwner))
       .map(toCreate);  // Convert model objects to ActivityStreams objects

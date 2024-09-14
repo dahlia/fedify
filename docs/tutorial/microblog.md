@@ -318,7 +318,7 @@ after the variable or parameter.
 
 For example, the following code indicates that the `foo` variable is a `string`:
 
-~~~~ typescript
+~~~~ typescript twoslash
 let foo: string;
 ~~~~
 
@@ -326,8 +326,11 @@ If you try to assign a value of a different type to a variable declared like
 this, Visual Studio Code will show a red underline *before you even run it* and
 display a type error:
 
-~~~~ typescript
-foo = 123;  // ts(2322): Type 'number' is not assignable to type 'string'.
+~~~~ typescript twoslash
+// @errors: 2322
+let foo: string;
+// ---cut-before---
+foo = 123;
 ~~~~
 
 When coding, don't ignore red underlines. If you ignore them and run
@@ -337,15 +340,21 @@ The most common type of error you'll encounter when coding in TypeScript is
 the `null` possibility error. For example, in the following code, the `bar`
 variable can be either a `string` or `null` (`string | null`):
 
-~~~~ typescript
+~~~~ typescript twoslash
+function someFunction(): string | null { return ""; }
+// ---cut-before---
 const bar: string | null = someFunction();
 ~~~~
 
 What happens if you try to get the first character of this variable's content
 like this?
 
-~~~~ typescript
-const firstChar = bar.charAt(0);  // ts(18047): Object is possibly 'null'.
+~~~~ typescript twoslash
+// @errors: 18047
+function someFunction(): string | null { return ""; }
+const bar: string | null = someFunction();
+// ---cut-before---
+const firstChar = bar.charAt(0);
 ~~~~
 
 You'll get a type error like above. It's saying that `bar` might sometimes be
@@ -353,7 +362,10 @@ You'll get a type error like above. It's saying that `bar` might sometimes be
 so you need to fix the code. In such cases, you need to add handling for
 the `null` case like this:
 
-~~~~ typescript
+~~~~ typescript twoslash
+function someFunction(): string | null { return ""; }
+const bar: string | null = someFunction();
+// ---cut-before---
 const firstChar = bar === null ? "" : bar.charAt(0);
 ~~~~
 
@@ -383,7 +395,7 @@ section.
 For example, the following code assigns an HTML tree with a `<div>` element
 at the top to the `html` variable:
 
-~~~~ tsx
+~~~~ tsx twoslash
 const html = <div>
   <p id="greet">Hello, <strong>JSX</strong>!</p>
 </div>;
@@ -392,7 +404,12 @@ const html = <div>
 You can also insert JavaScript expressions using curly braces (the following
 code assumes, of course, that there's a `getName()` function):
 
-~~~~ tsx
+~~~~ tsx twoslash
+/**
+ * A hypothetical function that returns a name.
+ */
+function getName(): string { return ""; }
+// ---cut-before---
 const html = <div title={"Hello, " + getName() + "!"}>
   <p id="greet">Hello, <strong>{getName()}</strong>!</p>
 </div>;
@@ -403,8 +420,8 @@ components. Components can be defined as ordinary JavaScript functions.
 For example, the following code defines and uses a `<Container>` component
 (component names typically follow PascalCase style):
 
-~~~~ tsx
-import type { FC } from "hono/jsx";
+~~~~ tsx twoslash
+import type { Child, FC } from "hono/jsx";
 
 function getName() {
   return "JSX";
@@ -412,6 +429,7 @@ function getName() {
 
 interface ContainerProps {
   name: string;
+  children: Child;
 }
 
 const Container: FC<ContainerProps> = (props) => {
@@ -474,7 +492,7 @@ the visible part.
 First, let's create a file named *src/views.tsx*. Inside this file, we'll define
 a `<Layout>` component using JSX:
 
-~~~~ tsx
+~~~~ tsx twoslash
 import type { FC } from "hono/jsx";
 
 export const Layout: FC = (props) => (
@@ -509,7 +527,9 @@ To avoid spending too much time on design, we'll use a CSS framework called
 Next, in the same file, let's define a `<SetupForm>` component that will go
 inside the layout:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import type { FC } from "hono/jsx";
+// ---cut-before---
 export const SetupForm: FC = () => (
   <>
     <h1>Set up your microblog</h1>
@@ -539,13 +559,24 @@ with `<>` and `</>`. This is called a fragment.
 Now it's time to use the components we've defined. Open the *src/app.tsx* file
 and `import` the two components we just defined:
 
-~~~~ typescript
+~~~~ tsx twoslash
+// @noErrors: 2395 2307
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const SetupForm: FC = () => <></>;
+// ---cut-before---
 import { Layout, SetupForm } from "./views.tsx";
 ~~~~
 
 Then, display the account creation form we just made on the */setup* page:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const SetupForm: FC = () => <></>;
+// ---cut-before---
 app.get("/setup", (c) =>
   c.html(
     <Layout>
@@ -607,15 +638,15 @@ sudo apt install sqlite3
 sudo dnf install sqlite
 ~~~~
 
-~~~~ pwsh [Chocolatey]
+~~~~ powershell [Chocolatey]
 choco install sqlite
 ~~~~
 
-~~~~ pwsh [Scoop]
+~~~~ powershell [Scoop]
 scoop install sqlite
 ~~~~
 
-~~~~ pwsh [Windows Package Manager]
+~~~~ powershell [Windows Package Manager]
 winget install SQLite.SQLite
 ~~~~
 
@@ -658,7 +689,7 @@ Now that we've installed the package, let's write code to connect to
 the database using this package. Create a new file named *src/db.ts* and code
 it as follows:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import Database from "better-sqlite3";
 
 const db = new Database("microblog.sqlite3");
@@ -686,7 +717,7 @@ Now let's declare a type in JavaScript to represent the record stored in
 the `users` table. Create a *src/schema.ts* file and define the `User` type
 as follows:
 
-~~~~ typescript
+~~~~ typescript twoslash
 export interface User {
   id: number;
   username: string;
@@ -709,14 +740,25 @@ records.
 Open the *src/app.tsx* file and `import` the `db` object and `User` type that
 will be used for record insertion:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User {}
+// ---cut-before---
 import db from "./db.ts";
 import type { User } from "./schema.ts";
 ~~~~
 
 Implement the `POST /setup` handler:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User {}
+// ---cut-before---
 app.post("/setup", async (c) => {
   // Check if an account already exists
   const user = db.prepare<unknown[], User>("SELECT * FROM users LIMIT 1").get();
@@ -735,7 +777,16 @@ app.post("/setup", async (c) => {
 Add code to check if an account already exists to the `GET /setup` handler
 we created earlier:
 
-~~~~ typescript{2-4}
+~~~~ tsx{2-4} twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const SetupForm: FC = () => <></>;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User {}
+// ---cut-before---
 app.get("/setup", (c) => {
   // Check if an account already exists
   const user = db.prepare<unknown[], User>("SELECT * FROM users LIMIT 1").get();
@@ -781,7 +832,9 @@ the account information. Although we don't have much information to show yet.
 Let's start with the visible part again. Open the *src/views.tsx* file and
 define a `<Profile>` component:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import type { FC } from "hono/jsx";
+// ---cut-before---
 export interface ProfileProps {
   name: string;
   handle: string;
@@ -799,14 +852,31 @@ export const Profile: FC<ProfileProps> = ({ name, handle }) => (
 
 Then, open the *src/app.tsx* file and `import` the component we just defined:
 
-~~~~ typescript
+~~~~ tsx twoslash
+// @noErrors: 2395 2307
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const Profile: FC = () => <></>;
+export const SetupForm: FC = () => <></>;
+// ---cut-before---
 import { Layout, Profile, SetupForm } from "./views.tsx";
 ~~~~
 
 And add a `GET /users/{username}` request handler that displays the `<Profile>`
 component:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const Profile: FC = () => <></>;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User {
+  username: string;
+}
+// ---cut-before---
 app.get("/users/:username", async (c) => {
   const user = db
     .prepare<unknown[], User>("SELECT * FROM users WHERE username = ?")
@@ -867,7 +937,7 @@ Misskey, we need to implement the actor more properly.
 First, let's take a look at the current implementation.
 Open the *src/federation.ts* file:
 
-~~~~ typescript{12-18}
+~~~~ typescript{12-18} twoslash
 import { Person, createFederation } from "@fedify/fedify";
 import { InProcessMessageQueue, MemoryKvStore } from "@fedify/fedify";
 import { getLogger } from "@logtape/logtape";
@@ -981,7 +1051,7 @@ sqlite3 microblog.sqlite3 < src/schema.sql
 And let's define a type in *src/schema.ts* to represent records stored in 
 the `actors` table in JavaScript:
 
-~~~~ typescript
+~~~~ typescript twoslash
 export interface Actor {
   id: number;
   user_id: number | null;
@@ -1005,7 +1075,9 @@ the account creation code to add records to both `users` and `actors`.
 First, let's modify the `SetupForm` in *src/views.tsx* to also input a name
 that will go into the `actors.name` column along with the username:
 
-~~~~ tsx {16-18}
+~~~~ tsx{16-18} twoslash
+import type { FC } from "hono/jsx";
+// ---cut-before---
 export const SetupForm: FC = () => (
   <>
     <h1>Set up your microblog</h1>
@@ -1040,7 +1112,15 @@ import type { Actor, User } from "./schema.ts";
 Now let's add code to the `POST /setup` handler to create a record in
 the `actors` table with the input name and other necessary information:
 
-~~~~ typescript{7,19-24,26,30-44}
+~~~~ typescript{7,19-24,26,30-44} twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User {}
+import type { Federation } from "@fedify/fedify";
+const fedi = null as unknown as Federation<void>;
+// ---cut-before---
 app.post("/setup", async (c) => {
   // Check if an account already exists
   const user = db
@@ -1094,7 +1174,16 @@ there's no account yet not only when there's no record in the `users` table,
 but also when there's no matching record in the `actors` table. Apply the same
 condition to the `GET /setup` handler and the `GET /users/{username}` handler:
 
-~~~~ typescript{7}
+~~~~ tsx{7} twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User {}
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const SetupForm: FC = () => <></>;
+// ---cut-before---
 app.get("/setup", (c) => {
   // Check if the user already exists
   const user = db
@@ -1116,7 +1205,17 @@ app.get("/setup", (c) => {
 });
 ~~~~
 
-~~~~ typescript{6}
+~~~~ tsx{6} twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor { name: string; }
+interface User { username: string; }
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const Profile: FC = () => <></>;
+// ---cut-before---
 app.get("/users/:username", async (c) => {
   const user = db
     .prepare<unknown[], User & Actor>(
@@ -1148,7 +1247,10 @@ app.get("/users/:username", async (c) => {
 Finally, open the *src/federation.ts* file and add the following code below
 the actor dispatcher:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
 ~~~~
 
@@ -1167,7 +1269,8 @@ in your browser and create an account again:
 Now that we've created the `actors` table and filled in a record, let's modify
 *src/federation.ts* again. First, `import` `Endpoints` and <code>Actor</code>:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import { Endpoints, Person, createFederation } from "@fedify/fedify";
 import type { Actor, User } from "./schema.ts";
 ~~~~
@@ -1175,7 +1278,14 @@ import type { Actor, User } from "./schema.ts";
 Now that we've `import`ed what we need, let's modify
 the `~Federation.setActorDispatcher()` method:
 
-~~~~ typescript{2-11,16-21}
+~~~~ typescript{2-11,16-21} twoslash
+import { Endpoints, Person, type Federation } from "@fedify/fedify";
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User {}
+interface Actor { name: string; }
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   const user = db
     .prepare<unknown[], User & Actor>(
@@ -1340,7 +1450,7 @@ sqlite3 microblog.sqlite3 < src/schema.sql
 Let's also define a `Key` type in the *src/schema.ts* file to represent records
 stored in the `keys` table in JavaScript:
 
-~~~~ typescript
+~~~~ typescript twoslash
 export interface Key {
   user_id: number;
   type: "RSASSA-PKCS1-v1_5" | "Ed25519";
@@ -1361,7 +1471,8 @@ Open the *src/federation.ts* file and `import` the `exportJwk()`,
 `generateCryptoKeyPair()`, `importJwk()` functions provided by Fedify and
 the `Key` type we defined earlier:
 
-~~~~ typescript{5-7,9}
+~~~~ typescript{5-7,9} twoslash
+// @noErrors: 2307
 import {
   Endpoints,
   Person,
@@ -1375,7 +1486,28 @@ import type { Actor, Key, User } from "./schema.ts";
 
 Now let's modify the actor dispatcher part as follows:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import {
+  Endpoints,
+  type Federation,
+  Person,
+  exportJwk,
+  generateCryptoKeyPair,
+  importJwk,
+} from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+import { type Logger } from "@logtape/logtape";
+const logger = null as unknown as Logger;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User { id: number; }
+interface Actor { name: string; }
+interface Key {
+  type: "RSASSA-PKCS1-v1_5" | "Ed25519";
+  private_key: string;
+  public_key: string;
+}
+// ---cut-before---
 federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     const user = db
@@ -1486,7 +1618,9 @@ so the `~Context.getActorKeyPairs()` method returns an array of two key pairs.
 Each element of the array is an object representing the key pair in various
 formats, which looks like this:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { CryptographicKey, Multikey } from "@fedify/fedify";
+// ---cut-before---
 interface ActorKeyPair {
   privateKey: CryptoKey;              // Private key
   publicKey: CryptoKey;               // Public key
@@ -1695,7 +1829,7 @@ sqlite3 microblog.sqlite3 < src/schema.sql
 Open the *src/schema.ts* file and define a type to represent records stored
 in the `follows` table in JavaScript:
 
-~~~~ typescript
+~~~~ typescript twoslash
 export interface Follow {
   following_id: number;
   follower_id: number;
@@ -1708,14 +1842,17 @@ export interface Follow {
 Now it's time to implement the inbox. Actually, we've already written
 the following code in the *src/federation.ts* file earlier:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
 ~~~~
 
 Before modifying this code, let's `import` the `Accept` and `Follow` classes
 and the `getActorHandle()` function provided by Fedify:
 
-```typescript{2,4,9}
+```typescript{2,4,9} twoslash
 import {
   Accept,
   Endpoints,
@@ -1732,7 +1869,25 @@ import {
 Now let's modify the code calling the `~Federation.setInboxListeners()` method
 as follows:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import {
+  Accept,
+  Endpoints,
+  type Federation,
+  Follow,
+  Person,
+  exportJwk,
+  generateCryptoKeyPair,
+  getActorHandle,
+  importJwk,
+} from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+import type { Logger } from "@logtape/logtape";
+const logger = null as unknown as Logger;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor { id: number; }
+// ---cut-before---
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -1947,7 +2102,7 @@ an `Undo(Follow)` activity, nothing has happened.
 To implement unfollow, open the *src/federation.ts* file and `import` the `Undo`
 class provided by Fedify:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import {
   Accept,
   Endpoints,
@@ -1964,7 +2119,13 @@ import {
 
 Then add `on(Undo, ...)` in succession after `on(Follow, ...)`:
 
-~~~~ typescript{6-23}
+~~~~ typescript{6-23} twoslash
+// @errors: 1160
+import { type Federation, Follow, Undo } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+import Database from "better-sqlite3";
+const db = new Database("");
+// ---cut-before---
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -2046,13 +2207,23 @@ time, so let's make it possible to view the followers list on the web.
 Let's start by adding a new component to the *src/views.tsx* file.
 First, `import` the <code>Actor</code> type:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import type { Actor } from "./schema.ts";
 ~~~~
 
 Then define the `<FollowerList>` component and the `<ActorLink>` component:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import type { FC } from "hono/jsx";
+interface Actor {
+  id: number;
+  uri: string;
+  name: string | null;
+  handle: string;
+  url: string | null;
+}
+// ---cut-before---
 export interface FollowerListProps {
   followers: Actor[];
 }
@@ -2104,13 +2275,23 @@ and the [`Array.map()`] method.
 Now let's create an endpoint to display the followers list.
 Open the *src/app.tsx* file and `import` the `<FollowerList>` component:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import { FollowerList, Layout, Profile, SetupForm } from "./views.tsx";
 ~~~~
 
 Then add a request handler for `GET /users/{username}/followers`:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const FollowerList: FC = () => <></>;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor {}
+// ---cut-before---
 app.get("/users/:username/followers", async (c) => {
   const followers = db
     .prepare<unknown[], Actor>(
@@ -2145,7 +2326,9 @@ Now that we've created the followers list, it would be nice to display
 the number of followers on the profile page as well. Open the *src/views.tsx*
 file again and modify the `<Profile>` component as follows:
 
-~~~~ tsx{20-23}
+~~~~ tsx{20-23} twoslash
+import type { FC } from "hono/jsx";
+// ---cut-before---
 export interface ProfileProps {
   name: string;
   username: string;   // [!code highlight]
@@ -2182,7 +2365,28 @@ the username that will go into the URL to link to the followers list.
 Now go back to the *src/app.tsx* file and modify the `GET /users/{username}`
 request handler as follows:
 
-~~~~ tsx{5-15,21,23}
+~~~~ tsx{5-15,21,23} twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export interface ProfileProps {
+  name: string;
+  username: string;
+  handle: string;
+  followers: number;
+}
+export const Profile: FC<ProfileProps> = () => <></>;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User {
+  id: number;
+  username: string;
+}
+interface Actor { name: string; }
+const user = {} as unknown as User & Actor;
+const handle = "" as string;
+// ---cut-before---
 app.get("/users/:username", async (c) => {
   // ... omitted ...
   if (user == null) return c.notFound();
@@ -2240,7 +2444,7 @@ ActivityPub, we need to define a followers collection.
 Open the *src/federation.ts* file and `import` the `Recipient` type provided
 by Fedify:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import {
   Accept,
   Endpoints,
@@ -2258,7 +2462,17 @@ import {
 
 Then add a followers collection dispatcher at the bottom:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Federation, type Recipient } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor {
+  uri: string;
+  inbox_url: string;
+  shared_inbox_url: string | null;
+}
+// ---cut-before---
 federation
   .setFollowersDispatcher(
     "/users/{handle}/followers",
@@ -2309,7 +2523,7 @@ comes in. Although the SQL is a bit long, it essentially gets the list of
 actors following the actor with the `handle` parameter. The `items` contains
 `Recipient` objects, and the `Recipient` type looks like this:
 
-~~~~ typescript
+~~~~ typescript twoslash
 export interface Recipient {
   readonly id: URL | null;
   readonly inboxId: URL | null;
@@ -2350,7 +2564,10 @@ However, just creating a followers collection like this doesn't let other
 servers know where the followers collection is. So we need to link to
 the followers collection in the actor dispatcher:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Federation, Person } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation
   .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // ... omitted ...
@@ -2454,7 +2671,7 @@ sqlite3 microblog.sqlite3 < src/schema.sql
 Also define a `Post` type in the *src/schema.ts* file to represent records
 that will be stored in the `posts` table in JavaScript:
 
-~~~~ typescript
+~~~~ typescript twoslash
 export interface Post {
   id: number;
   uri: string;
@@ -2473,13 +2690,22 @@ the home page.
 
 First, open the *src/views.tsx* file and `import` the `User` type:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import type { Actor, User } from "./schema.ts";
 ~~~~
 
 Then define the `<Home>` component:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import type { FC } from "hono/jsx";
+interface User {
+  username: string;
+}
+interface Actor {
+  name: string;
+}
+// ---cut-before---
 export interface HomeProps {
   user: User & Actor;
 }
@@ -2507,13 +2733,24 @@ export const Home: FC<HomeProps> = ({ user }) => (
 Then open the *src/app.tsx* file and `import` the `<Home>` component we just
 defined:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import { FollowerList, Home, Layout, Profile, SetupForm } from "./views.tsx";
 ~~~~
 
 And modify the existing `GET /` request handler:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor {}
+interface User {}
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export const Home: FC = () => <></>;
+// ---cut-before---
 app.get("/", (c) => {
   const user = db
     .prepare<unknown[], User & Actor>(
@@ -2549,7 +2786,7 @@ the post content to the `posts` table.
 First, open the *src/federation.ts* file and `import` the `Note` class provided
 by Fedify:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import {
   Accept,
   Endpoints,
@@ -2568,7 +2805,10 @@ import {
 
 Add the following code:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Federation, Note } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation.setObjectDispatcher(
   Note,
   "/users/{handle}/posts/{id}",
@@ -2592,20 +2832,31 @@ npm add stringify-entities
 
 Then open the *src/app.tsx* file and `import` the installed package:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { stringifyEntities } from "stringify-entities";
 ~~~~
 
 Also `import` the `Post` type and the `Note` class provided by Fedify:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import type { Actor, Post, User } from "./schema.ts";
 import { Note } from "@fedify/fedify";
 ~~~~
 
 And implement the `POST /users/{username}/posts` request handler:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { stringifyEntities } from "stringify-entities";
+import { type Federation, Note } from "@fedify/fedify";
+const fedi = null as unknown as Federation<void>;
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor { id: number; }
+interface Post { id: number; }
+// ---cut-before---
 app.post("/users/:username/posts", async (c) => {
   const username = c.req.param("username");
   const actor = db
@@ -2692,13 +2943,31 @@ the post page.
 
 Open the *src/views.tsx* file and `import` the `Post` type:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import type { Actor, Post, User } from "./schema.ts";
 ~~~~
 
 Then define the `<PostPage>` component and the `<PostView>` component:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import type { FC } from "hono/jsx";
+export interface ProfileProps {
+  name: string;
+  username: string;
+  handle: string;
+  followers: number;
+}
+interface Actor { } interface Post {
+  uri: string;
+  url: string | null;
+  content: string;
+  created: string;
+}
+const Profile: FC<ProfileProps> = () => <></>;
+export interface ActorLinkProps { actor: Actor; }
+const ActorLink: FC<ActorLinkProps> = () => <></>;
+// ---cut-before---
 export interface PostPageProps extends ProfileProps, PostViewProps {}
 
 export const PostPage: FC<PostPageProps> = (props) => (
@@ -2739,7 +3008,8 @@ Now let's load the post data from the database and render it with
 the `<PostPage>` component. Open the *src/app.tsx* file and `import`
 the `<PostPage>` component we just defined:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import {
   FollowerList,
   Home,
@@ -2752,7 +3022,26 @@ import {
 
 And implement the `GET /users/{username}/posts/{id}` request handler:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor { name: string | null; handle: string; }
+interface Post { id: number; actor_id: number; }
+interface User { username: string; }
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export interface ProfileProps {
+  name: string;
+  username: string;
+  handle: string;
+  followers: number;
+}
+export interface PostViewProps { post: Post & Actor; }
+export interface PostPageProps extends ProfileProps, PostViewProps {}
+export const PostPage: FC<PostPageProps> = () => <></>;
+// ---cut-before---
 app.get("/users/:username/posts/:id", (c) => {
   const post = db
     .prepare<unknown[], Post & Actor & User>(
@@ -2821,14 +3110,15 @@ npm add @js-temporal/polyfill
 
 Open the *src/federation.ts* file and `import` the installed package:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { Temporal } from "@js-temporal/polyfill";
 ~~~~
 
 Also `import` the `Post` type and the `PUBLIC_COLLECTION` constant provided by
 Fedify:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import {
   Accept,
   Endpoints,
@@ -2856,7 +3146,10 @@ Short posts like microblog posts are usually represented as `Note` in
 ActivityPub. We've already created an empty implementation of the object
 dispatcher for the `Note` class:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Federation, Note } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation.setObjectDispatcher(
   Note,
   "/users/{handle}/posts/{id}",
@@ -2868,7 +3161,14 @@ federation.setObjectDispatcher(
 
 Let's modify this as follows:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { Temporal } from "@js-temporal/polyfill";
+import { type Federation, Note, PUBLIC_COLLECTION } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Post { id: number; content: string; created: string; }
+// ---cut-before---
 federation.setObjectDispatcher(
   Note,
   "/users/{handle}/posts/{id}",
@@ -2933,13 +3233,26 @@ to send a `Create(Note)` activity to notify that a new post has been created.
 Let's modify the code to send a `Create(Note)` activity when creating a post.
 Open the *src/app.tsx* file and `import` the `Create` class provided by Fedify:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { Create, Note } from "@fedify/fedify";
 ~~~~
 
 Then modify the `POST /users/{username}/posts` request handler as follows:
 
-~~~~ typescript{4,24,26-40}
+~~~~ typescript{4,24,26-40} twoslash
+import { stringifyEntities } from "stringify-entities";
+import { Create, type Federation, Note } from "@fedify/fedify";
+const fedi = null as unknown as Federation<void>;
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Post { id: number; }
+interface Actor { id: number; }
+const actor = {} as unknown as Actor;
+const content = "" as string;
+const username = "" as string;
+// ---cut-before---
 app.post("/users/:username/posts", async (c) => {
   // ... omitted ...
   const ctx = fedi.createContext(c.req.raw, undefined);
@@ -3036,7 +3349,13 @@ the profile page.
 
 First, open the *src/views.tsx* file and add a `<PostList>` component:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import type { FC } from "hono/jsx";
+interface Post { id: number; }
+interface Actor {}
+interface PostViewProps { post: Post & Actor; }
+const PostView: FC<PostViewProps> = () => <></>;
+// ---cut-before---
 export interface PostListProps {
   posts: (Post & Actor)[];
 }
@@ -3055,7 +3374,8 @@ export const PostList: FC<PostListProps> = ({ posts }) => (
 Then, open the *src/app.tsx* file and `import` the `<PostList>` component
 we just defined:
 
-~~~~ typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import {
   FollowerList,
   Home,
@@ -3069,7 +3389,20 @@ import {
 
 Modify the existing `GET /users/{username}` request handler as follows:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User { }
+interface Actor { user_id: number | null; }
+interface Post {}
+const user = {} as unknown as User & Actor;
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export interface PostListProps { posts: (Post & Actor)[]; }
+export const PostList: FC<PostListProps> = () => <></>;
+// ---cut-before---
 app.get("/users/:username", async (c) => {
   // ... omitted ...
   const posts = db
@@ -3112,7 +3445,11 @@ the functionality to send follow requests to actors on other servers.
 Let's start with the UI. Open the *src/views.tsx* file and modify the existing
 `<Home>` component as follows:
 
-~~~~ tsx{6-17}
+~~~~ tsx{6-17} twoslash
+import type { FC } from "hono/jsx";
+interface User { username: string; }
+interface HomeProps { user: User; }
+// ---cut-before---
 export const Home: FC<HomeProps> = ({ user }) => (
   <>
     <hgroup>
@@ -3150,7 +3487,7 @@ the `Follow` activity.
 Open the *src/app.tsx* file and `import` the `Follow` class and the `isActor()`
 and `lookupObject()` functions provided by Fedify:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import {
   Create,
   Follow,        // [!code highlight]
@@ -3162,7 +3499,12 @@ import {
 
 Then add a `POST /users/{username}/following` request handler:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Federation, Follow, isActor, lookupObject } from "@fedify/fedify";
+const fedi = null as unknown as Federation<void>;
+import { Hono } from "hono";
+const app = new Hono();
+// ---cut-before---
 app.post("/users/:username/following", async (c) => {
   const username = c.req.param("username");
   const form = await c.req.formData();
@@ -3242,7 +3584,7 @@ yet, so we need to implement this part.
 Open the *src/federation.ts* file and `import` the `isActor()` function and
 `Actor` type provided by Fedify:
 
-```typescript
+~~~~ typescript twoslash
 import {
   Accept,
   Endpoints,
@@ -3260,7 +3602,7 @@ import {
   type Actor as APActor,  // [!code highlight]
   type Recipient,
 } from "@fedify/fedify";
-```
+~~~~
 
 We've given the alias `APActor` to the `Actor` type because
 the <code>Actor</code> type name is already used in this source file.
@@ -3269,7 +3611,14 @@ Before implementation, let's refactor the code that adds actor information to
 the `actors` table when first encountered to make it reusable. Add the following
 function:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { getActorHandle, isActor, type Actor as APActor } from "@fedify/fedify";
+import type { Logger } from "@logtape/logtape";
+const logger = {} as unknown as Logger;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor {}
+// ---cut-before---
 async function persistActor(actor: APActor): Promise<Actor | null> {
   if (actor.id == null || actor.inboxId == null) {
     logger.debug("Actor is missing required fields: {actor}", { actor });
@@ -3312,7 +3661,26 @@ a corresponding record in the table, it updates the record.
 Change the code doing the same role in the `on(Follow, ...)` part of the inbox
 to use the `persistActor()` function:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import {
+  type Actor as APActor,
+  type Federation,
+  Follow,
+  type ParseUriResult,
+} from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+import type { Logger } from "@logtape/logtape";
+const logger = {} as unknown as Logger;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor { id: number; }
+async function persistActor(actor: APActor): Promise<Actor | null> {
+  return null;
+}
+const object = {} as unknown as ParseUriResult;
+const followingId = 0 as number;
+const follower = {} as unknown as APActor;
+// ---cut-before---
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -3334,7 +3702,24 @@ federation
 Now that we've finished refactoring, let's implement the behavior when receiving
 an `Accept(Follow)` activity in the inbox:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import {
+  Accept,
+  type Actor as APActor,
+  type Federation,
+  Follow,
+  isActor,
+} from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor { id: number; }
+async function persistActor(actor: APActor): Promise<Actor | null> {
+  return null;
+}
+federation
+  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+// ---cut-before---
   .on(Accept, async (ctx, accept) => {
     const follow = await accept.getObject();
     if (!(follow instanceof Follow)) return;
@@ -3410,7 +3795,12 @@ Let's create a page that displays the list of actors our actor is following.
 
 First, open the *src/views.tsx* file and add a `<FollowingList>` component:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import type { FC } from "hono/jsx";
+interface Actor { id: number; }
+export interface ActorLinkProps { actor: Actor; }
+const ActorLink: FC<ActorLinkProps> = () => <></>;
+// ---cut-before---
 export interface FollowingListProps {
   following: Actor[];
 }
@@ -3432,7 +3822,8 @@ export const FollowingList: FC<FollowingListProps> = ({ following }) => (
 Then, open the *src/app.tsx* file and `import` the `<FollowingList>` component
 we just defined:
 
-```typescript
+~~~~ typescript twoslash
+// @noErrors: 2307
 import {
   FollowerList,
   FollowingList,  // [!code highlight]
@@ -3443,11 +3834,21 @@ import {
   Profile,
   SetupForm,
 } from "./views.tsx";
-```
+~~~~
 
 And add a handler for the `GET /users/{username}/following` request:
 
-~~~~ tsx
+~~~~ tsx twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor {}
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export interface FollowingListProps { following: Actor[]; }
+export const FollowingList: FC<FollowingListProps> = () => <></>;
+// ---cut-before---
 app.get("/users/:username/following", async (c) => {
   const following = db
     .prepare<unknown[], Actor>(
@@ -3485,7 +3886,9 @@ of accounts the user is following.
 
 Open the *src/views.tsx* file and modify the `<Profile>` component as follows:
 
-~~~~ tsx{23-24}
+~~~~ tsx{23-24} twoslash
+import type { FC } from "hono/jsx";
+// ---cut-before---
 export interface ProfileProps {
   name: string;
   username: string;
@@ -3521,7 +3924,21 @@ export const Profile: FC<ProfileProps> = ({
 
 Also modify the `<PostPage>` component as follows:
 
-~~~~ tsx{9}
+~~~~ tsx{9} twoslash
+import type { FC } from "hono/jsx";
+interface ProfileProps {
+  name: string;
+  username: string;
+  handle: string;
+  following: number;
+  followers: number;
+}
+interface Post {}
+interface Actor {}
+interface PostViewProps { post: Post & Actor; }
+const PostView: FC<PostViewProps> = () => <></>;
+const Profile: FC<ProfileProps> = () => <></>;
+// ---cut-before---
 export interface PostPageProps extends ProfileProps, PostViewProps {}
 
 export const PostPage: FC<PostPageProps> = (props) => (
@@ -3544,7 +3961,31 @@ of following accounts.
 Open the *src/app.tsx* file and modify the `GET /users/{username}` request
 handler as follows:
 
-~~~~ tsx{5-15,23}
+~~~~ tsx{5-15,23} twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User { id: number; username: string; }
+interface Actor { name: string | null; }
+interface Post {}
+const user = {} as unknown as User & Actor;
+const handle = "" as string;
+const followers = 0 as number;
+const posts = [] as (Post & Actor)[];
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export interface ProfileProps {
+  name: string;
+  username: string;
+  handle: string;
+  following: number;
+  followers: number;
+}
+export const Profile: FC<ProfileProps> = () => <></>;
+export interface PostListProps { posts: (Post & Actor)[]; }
+export const PostList: FC<PostListProps> = () => <></>;
+// ---cut-before---
 app.get("/users/:username", async (c) => {
   // ... omitted ...
   if (user == null) return c.notFound();
@@ -3578,7 +4019,28 @@ app.get("/users/:username", async (c) => {
 
 Also modify the `GET /users/{username}/posts/{id}` request handler:
 
-~~~~ tsx{5-14,21}
+~~~~ tsx{5-14,21} twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User { id: number; username: string; }
+interface Actor { name: string | null; handle: string; }
+interface Post { actor_id: number; }
+const post = {} as unknown as Post & User & Actor;
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+interface ProfileProps {
+  name: string;
+  username: string;
+  handle: string;
+  following: number;
+  followers: number;
+}
+interface PostViewProps { post: Post & Actor; }
+interface PostPageProps extends ProfileProps, PostViewProps {}
+const PostPage: FC<PostPageProps> = () => <></>;
+// ---cut-before---
 app.get("/users/:username/posts/:id", (c) => {
   // ... omitted ...
   if (post == null) return c.notFound();
@@ -3640,7 +4102,7 @@ Now we need to write code to receive this sent `Create(Note)` activity.
 Open the *src/federation.ts* file and `import` the `Create` class provided by
 Fedify:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import {
   Accept,
   Create,  // [!code highlight]
@@ -3663,7 +4125,24 @@ import {
 
 And add `on(Create, ...)` to the inbox code:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import {
+  type Actor as APActor,
+  type Federation,
+  Create,
+  Note,
+  isActor,
+} from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+import Database from "better-sqlite3";
+const db = new Database("");
+interface Actor { id: number; }
+async function persistActor(actor: APActor): Promise<Actor | null> {
+  return null;
+}
+federation
+  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+// ---cut-before---
   .on(Create, async (ctx, create) => {
     const object = await create.getObject();
     if (!(object instanceof Note)) return;
@@ -3708,7 +4187,14 @@ feature.
 
 First, open the *src/views.tsx* file and modify the `<Home>` component:
 
-~~~~ tsx{3,9}
+~~~~ tsx{3,9} twoslash
+import type { FC } from "hono/jsx";
+interface User {}
+interface Actor {}
+interface Post {}
+interface PostListProps { posts: Post[]; }
+const PostList: FC<PostListProps> = () => <></>;
+// ---cut-before---
 export interface HomeProps extends PostListProps {
   user: User & Actor;
   posts: Post[];
@@ -3724,7 +4210,21 @@ export const Home: FC<HomeProps> = ({ user, posts }) => (
 
 Then, open the *src/app.tsx* file and modify the `GET /` request handler:
 
-~~~~ tsx{5-19,22}
+~~~~ tsx{5-19,22} twoslash
+import { Hono } from "hono";
+const app = new Hono();
+import Database from "better-sqlite3";
+const db = new Database("");
+interface User { id: number; }
+interface Actor {}
+interface Post {}
+const user = {} as unknown as User & Actor;
+import type { FC } from "hono/jsx";
+export const Layout: FC = (props) => <html/>;
+export interface PostListProps { posts: Post[]; }
+export interface HomeProps extends PostListProps { user: User & Actor; }
+export const Home: FC<HomeProps> = () => <></>;
+// ---cut-before---
 app.get("/", (c) => {
   // ... omitted ...
   if (user == null) return c.redirect("/setup");

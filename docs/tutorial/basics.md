@@ -149,7 +149,7 @@ project directory and write the following code:
 
 ::: code-group
 
-~~~~ typescript [Deno]
+~~~~ typescript twoslash [Deno]
 Deno.serve(request =>
   new Response("Hello, world", {
     headers: { "Content-Type": "text/plain" }
@@ -157,7 +157,9 @@ Deno.serve(request =>
 );
 ~~~~
 
-~~~~ typescript [Bun]
+~~~~ typescript twoslash [Bun]
+import "@types/bun";
+// ---cut-before---
 Bun.serve({
   port: 8000,
   fetch(request) {
@@ -168,7 +170,7 @@ Bun.serve({
 });
 ~~~~
 
-~~~~ typescript [Node.js]
+~~~~ typescript twoslash [Node.js]
 import { serve } from "@hono/node-server";
 
 serve({
@@ -228,7 +230,7 @@ Fedify framework.  The `Federation` object is the main object that handles
 ActivityPub activities and actors.  Let's modify the server script to use the
 `Federation` object:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { createFederation, MemoryKvStore } from "@fedify/fedify";
 
 const federation = createFederation<void>({
@@ -252,13 +254,20 @@ Then, we pass the incoming `Request` to the `Federation.fetch()` method:
 
 ::: code-group
 
-~~~~ typescript{2} [Deno]
+~~~~ typescript{2} twoslash [Deno]
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 Deno.serve(
   request => federation.fetch(request, { contextData: undefined })
 );
 ~~~~
 
-~~~~ typescript{4} [Bun]
+~~~~ typescript{4} twoslash [Bun]
+import "@types/bun";
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 Bun.serve({
   port: 8000,
   fetch(request) {
@@ -267,7 +276,10 @@ Bun.serve({
 });
 ~~~~
 
-~~~~ typescript{6} [Node.js]
+~~~~ typescript{6} twoslash [Node.js]
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { serve } from "@hono/node-server";
 
 serve({
@@ -322,7 +334,7 @@ to the next step.
 > Then, you can set up loggers by calling [`configure()`] function at the
 > top of the *server.ts* file:
 >
-> ~~~~ typescript
+> ~~~~ typescript twoslash
 > import { configure, getConsoleSink } from "@logtape/logtape";
 >
 > await configure({
@@ -355,7 +367,7 @@ Let's create an actor dispatcher for our server:
 
 ::: code-group
 
-~~~~ typescript{7-16} [Deno]
+~~~~ typescript{7-16} twoslash [Deno]
 import { createFederation, MemoryKvStore, Person } from "@fedify/fedify";
 
 const federation = createFederation<void>({
@@ -378,7 +390,9 @@ Deno.serve(
 );
 ~~~~
 
-~~~~ typescript{7-16} [Bun]
+~~~~ typescript{7-16} twoslash [Bun]
+import "@types/bun";
+// ---cut-before---
 import { createFederation, MemoryKvStore, Person } from "@fedify/fedify";
 
 const federation = createFederation<void>({
@@ -404,7 +418,7 @@ Bun.serve({
 });
 ~~~~
 
-~~~~ typescript{8-17} [Node.js]
+~~~~ typescript{8-17} twoslash [Node.js]
 import { createFederation, MemoryKvStore, Person } from "@fedify/fedify";
 import { serve } from "@hono/node-server";
 
@@ -607,7 +621,12 @@ the `Federation.fetch()` method:
 
 ::: code-group
 
-~~~~ typescript{1,4} [Deno]
+~~~~ typescript{1,4} twoslash [Deno]
+// @noErrors: 2300 2307
+import { behindProxy } from "x-forwarded-fetch";
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { behindProxy } from "@hongminhee/x-forwarded-fetch";
 
 Deno.serve(
@@ -615,7 +634,11 @@ Deno.serve(
 );
 ~~~~
 
-~~~~ typescript{1,5} [Bun]
+~~~~ typescript{1,5} twoslash [Bun]
+import "@types/bun";
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { behindProxy } from "x-forwarded-fetch";
 
 Bun.serve({
@@ -624,13 +647,16 @@ Bun.serve({
 });
 ~~~~
 
-~~~~ typescript{2,6} [Node.js]
+~~~~ typescript{2,6} twoslash [Node.js]
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { serve } from "@hono/node-server";
 import { behindProxy } from "x-forwarded-fetch";
 
 serve({
   port: 8000,
-  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined }),
+  fetch: behindProxy((request) => federation.fetch(request, { contextData: undefined })),
 });
 ~~~~
 
@@ -687,7 +713,7 @@ activity is represented as a class in the Fedify framework.  The `Follow` class
 represents the `Follow` activity.  We will use the `Follow` class to handle
 incoming follow requests:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import {
   createFederation,
   Follow,  // [!code highlight]
@@ -698,7 +724,10 @@ import {
 
 Then, we register an inbox listener for the `Follow` activity:
 
-~~~~ typescript{3-11}
+~~~~ typescript{3-11} twoslash
+import { type Federation, Follow } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -721,7 +750,10 @@ In order to test the inbox listener, the actor *me* needs to point out its inbox
 URI in the actor object.  Let's modify the actor dispatcher to include the inbox
 URI:
 
-~~~~ typescript
+~~~~ typescript twoslash
+import { type Federation, Person } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
   if (handle !== "me") return null;
   return new Person({
@@ -767,7 +799,7 @@ To send an activity, first, we need to generate a key pair for the actor *me*
 so that the server can sign the activity with the private key.  Fortunately,
 Fedify provides helper functions to generate and export/import keys:
 
-~~~~ typescript{3-5}
+~~~~ typescript{3-5} twoslash
 import {
   createFederation,
   exportJwk,
@@ -792,7 +824,16 @@ method should be chained after the `Federation.setActorDispatcher()` method:
 
 ::: code-group
 
-~~~~ typescript{13-14,17-37} [Deno]
+~~~~ typescript{13-14,17-37} twoslash [Deno]
+import {
+  exportJwk,
+  generateCryptoKeyPair,
+  importJwk,
+  type Federation,
+  Person,
+} from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 const kv = await Deno.openKv();  // Open the key-value store
 
 federation
@@ -813,7 +854,10 @@ federation
   })
   .setKeyPairsDispatcher(async (ctx, handle) => {
     if (handle != "me") return [];  // Other than "me" is not found.
-    const entry = await kv.get<{ privateKey: unknown, publicKey: unknown }>(["key"]);
+    const entry = await kv.get<{
+      privateKey: JsonWebKey;
+      publicKey: JsonWebKey;
+    }>(["key"]);
     if (entry == null || entry.value == null) {
       // Generate a new key pair at the first time:
       const { privateKey, publicKey } =
@@ -835,7 +879,16 @@ federation
   });
 ~~~~
 
-~~~~ typescript{15-16,19-39} [Bun]
+~~~~ typescript{15-16,19-39} twoslash [Bun]
+import {
+  exportJwk,
+  generateCryptoKeyPair,
+  importJwk,
+  type Federation,
+  Person,
+} from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { serialize as encodeV8, deserialize as decodeV8 } from "node:v8";
 import { openKv } from "@deno/kv";
 
@@ -843,7 +896,7 @@ import { openKv } from "@deno/kv";
 const kv = await openKv("kv.db", { encodeV8, decodeV8 });
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     if (handle !== "me") return null;
     return new Person({
       id: ctx.getActorUri(handle),
@@ -860,7 +913,10 @@ federation
   })
   .setKeyPairsDispatcher(async (ctx, handle) => {
     if (handle != "me") return [];  // Other than "me" is not found.
-    const entry = await kv.get<{ privateKey: unknown, publicKey: unknown }>(["key"]);
+    const entry = await kv.get<{
+      privateKey: JsonWebKey;
+      publicKey: JsonWebKey;
+    }>(["key"]);
     if (entry == null || entry.value == null) {
       // Generate a new key pair at the first time:
       const { privateKey, publicKey } =
@@ -882,13 +938,22 @@ federation
   });
 ~~~~
 
-~~~~ typescript{15-16,19-39} [Node.js]
+~~~~ typescript{15-16,19-39} twoslash [Node.js]
+import {
+  exportJwk,
+  generateCryptoKeyPair,
+  importJwk,
+  type Federation,
+  Person,
+} from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 import { openKv } from "@deno/kv";
 
 const kv = await openKv("kv.db");  // Open the key-value store
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
+  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     if (handle !== "me") return null;
     return new Person({
       id: ctx.getActorUri(handle),
@@ -905,7 +970,10 @@ federation
   })
   .setKeyPairsDispatcher(async (ctx, handle) => {
     if (handle != "me") return [];  // Other than "me" is not found.
-    const entry = await kv.get<{ privateKey: unknown, publicKey: unknown }>(["key"]);
+    const entry = await kv.get<{
+      privateKey: JsonWebKey;
+      publicKey: JsonWebKey;
+    }>(["key"]);
     if (entry == null || entry.value == null) {
       // Generate a new key pair at the first time:
       const { privateKey, publicKey } =
@@ -989,7 +1057,7 @@ the follow request and indicates that the follow request is accepted.
 
 Let's import the `Accept` class from the Fedify framework:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import {
   createFederation,
   exportJwk,
@@ -1004,7 +1072,10 @@ import {
 Then, we modify the inbox listener to send an `Accept` activity back to the
 follower when we receive a follow request:
 
-~~~~ typescript{10-17}
+~~~~ typescript{10-17} twoslash
+import { Accept, type Federation, Follow } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -1014,6 +1085,7 @@ federation
     const parsed = ctx.parseUri(follow.objectId);
     if (parsed?.type !== "actor" || parsed.handle !== "me") return;
     const follower = await follow.getActor(ctx);
+    if (follower == null) return;
     // Note that if a server receives a `Follow` activity, it should reply
     // with either an `Accept` or a `Reject` activity.  In this case, the
     // server automatically accepts the follow request:
@@ -1037,7 +1109,11 @@ The server should list the actor's followers on the home page.  To do this,
 we need to store the followers in the key-value store.  We will store each
 `Follow` activity's ID as the key and the follower's actor ID as the value:
 
-~~~~ typescript{15-16}
+~~~~ typescript{15-16} twoslash
+import { Accept, type Federation, Follow } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+const kv = await Deno.openKv();
+// ---cut-before---
 federation
   .setInboxListeners("/users/{handle}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
@@ -1047,6 +1123,7 @@ federation
     const parsed = ctx.parseUri(follow.objectId);
     if (parsed?.type !== "actor" || parsed.handle !== "me") return;
     const follower = await follow.getActor(ctx);
+    if (follower == null) return;
     await ctx.sendActivity(
       { handle: parsed.handle },
       follower,
@@ -1062,7 +1139,11 @@ the script inside the fetch function:
 
 ::: code-group
 
-~~~~ typescript{2-16} [Deno]
+~~~~ typescript{2-16} twoslash [Deno]
+import type { Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+const kv = await Deno.openKv();
+// ---cut-before---
 Deno.serve(async (request) => {
   const url = new URL(request.url);
   // The home page:
@@ -1085,7 +1166,13 @@ Deno.serve(async (request) => {
 });
 ~~~~
 
-~~~~ typescript{4-18} [Bun]
+~~~~ typescript{4-18} twoslash [Bun]
+import "@types/bun";
+import type { Federation } from "@fedify/fedify";
+import { openKv } from "@deno/kv";
+const federation = null as unknown as Federation<void>;
+const kv = await openKv();
+// ---cut-before---
 Bun.serve({
   port: 8000,
   async fetch(request) {
@@ -1111,7 +1198,13 @@ Bun.serve({
 });
 ~~~~
 
-~~~~ typescript{4-18} [Node.js]
+~~~~ typescript{4-18} twoslash [Node.js]
+import { serve } from "@hono/node-server";
+import type { Federation } from "@fedify/fedify";
+import { openKv } from "@deno/kv";
+const federation = null as unknown as Federation<void>;
+const kv = await openKv();
+// ---cut-before---
 serve({
   port: 8000,
   async fetch(request) {

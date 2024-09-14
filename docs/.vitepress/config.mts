@@ -6,6 +6,7 @@ import { jsrRef } from "markdown-it-jsr-ref";
 import process from "node:process";
 import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
+import { transformerTwoslash } from "@shikijs/vitepress-twoslash";
 
 const progress = new SingleBar({}, Presets.shades_classic);
 let started = false;
@@ -202,6 +203,23 @@ export default withMermaid(defineConfig({
   cleanUrls: true,
   ignoreDeadLinks: true,
   markdown: {
+    codeTransformers: [
+      transformerTwoslash({
+        twoslashOptions: {
+          compilerOptions: {
+            lib: ["dom", "dom.iterable", "esnext"],
+            types: [
+              "dom",
+              "dom.iterable",
+              "esnext",
+              "@teidesu/deno-types/full",
+            ],
+            jsx: ["react-jsx"],
+            jsxImportSource: "hono/jsx",
+          }
+        }
+      })
+    ],
     config: (md) => {
       md.use(abbr);
       md.use(deflist);
