@@ -6,7 +6,12 @@ Fedify changelog
 Version 0.15.1
 --------------
 
-To be released.
+Released on September 15, 2024.
+
+ -  Fixed a bug where even if the `ActorCallbackSetters.mapHandle()` method was
+    called, a WebFinger username was used as an actor's handle.  [[#136]]
+
+[#136]: https://github.com/dahlia/fedify/pull/136
 
 
 Version 0.15.0
