@@ -2063,6 +2063,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         return await handleWebFinger(request, {
           context,
           actorDispatcher: this.actorCallbacks?.dispatcher,
+          handleMapper: this.actorCallbacks?.handleMapper,
           onNotFound,
         });
       case "nodeInfoJrd":
