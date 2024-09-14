@@ -36,6 +36,17 @@ To be released.
 [Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
 
 
+Version 0.15.1
+--------------
+
+Released on September 15, 2024.
+
+ -  Fixed a bug where even if the `ActorCallbackSetters.mapHandle()` method was
+    called, a WebFinger username was used as an actor's handle.  [[#136]]
+
+[#136]: https://github.com/dahlia/fedify/pull/136
+
+
 Version 0.15.0
 --------------
 
