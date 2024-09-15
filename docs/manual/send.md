@@ -253,10 +253,16 @@ Excluding same-server recipients
 
 *This API is available since Fedify 0.9.0.*
 
-In most cases, you will not want to deliver activities via ActivityPub to
-recipients on the same server with the sender.  To exclude same-server
-recipients, you can pass the `excludeBaseUris` option to the
-`~Context.sendActivity()` method:
+Usually, you don't want to send messages through ActivityPub to followers on
+the same server because they share the same database, so there's no need to.
+
+For example, if *@foo@example.com* creates a post, it's already stored in
+the database at *example.com*, so there's no need to send a `Create(Note)`
+activity to *@bar@example.com*, because *@bar@example.com* already has access
+to the post in the database.
+
+To exclude same-server recipients, you can pass the `excludeBaseUris` option
+to the `~Context.sendActivity()` method:
 
 ~~~~ typescript twoslash
 import { Activity, type Context } from "@fedify/fedify";
