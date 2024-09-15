@@ -28,12 +28,17 @@ To be released.
      -  Added `attachSignature()` function.
      -  Added `detachSignature()` function.
 
+ -  The `fedify inbox` command now sends `Delete(Application)` activities when
+    it's terminated so that the peers can clean up data related to the temporary
+    actor.  [[#135]]
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
      -  `["fedify", "sig", "ld"]`
 
 [Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
+[#135]: https://github.com/dahlia/fedify/issues/135
 
 
 Version 0.15.1

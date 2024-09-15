@@ -8,6 +8,7 @@ import {
   Application,
   type Context,
   createFederation,
+  Delete,
   Endpoints,
   Follow,
   generateCryptoKeyPair,
@@ -16,6 +17,7 @@ import {
   isActor,
   lookupObject,
   MemoryKvStore,
+  PUBLIC_COLLECTION,
   type Recipient,
 } from "@fedify/fedify";
 import { getLogger } from "@logtape/logtape";
@@ -28,7 +30,7 @@ import type { ActivityEntry } from "./inbox/entry.ts";
 import { ActivityEntryPage, ActivityListPage } from "./inbox/view.tsx";
 import { recordingSink } from "./log.ts";
 import { tableStyle } from "./table.ts";
-import { spawnTemporaryServer } from "./tempserver.ts";
+import { spawnTemporaryServer, type TemporaryServer } from "./tempserver.ts";
 
 const logger = getLogger(["fedify", "cli", "inbox"]);
 
@@ -73,10 +75,18 @@ export const command = new Command()
     );
     Deno.addSignalListener("SIGINT", () => {
       spinner.stop();
-      spinner.start("Stopping server...");
-      server.close().then(() => {
-        spinner.succeed("Server stopped.");
-        Deno.exit(0);
+      const peersCnt = Object.keys(peers).length;
+      spinner.start(
+        `Sending Delete(Application) activities to the ${peersCnt} ${
+          peersCnt === 1 ? "peer" : "peers"
+        }...`,
+      );
+      sendDeleteToPeers(server).then(() => {
+        spinner.text = "Stopping server...";
+        server.close().then(() => {
+          spinner.succeed("Server stopped.");
+          Deno.exit(0);
+        });
       });
     });
     spinner.start();
@@ -95,6 +105,7 @@ export const command = new Command()
           spinner.start();
           continue;
         }
+        if (actor.id != null) peers[actor.id?.href] = actor;
         await fedCtx.sendActivity(
           { handle: "i" },
           actor,
@@ -178,6 +189,23 @@ async function acceptsFollowFrom(actor: Actor): Promise<boolean> {
   return false;
 }
 
+const peers: Record<string, Actor> = {};
+
+async function sendDeleteToPeers(server: TemporaryServer): Promise<void> {
+  const ctx = federation.createContext(server.url, -1);
+  const actorId = ctx.getActorUri("i");
+  await ctx.sendActivity(
+    { handle: "i" },
+    Object.values(peers),
+    new Delete({
+      id: new URL(`#delete`, actorId),
+      actor: actorId,
+      to: PUBLIC_COLLECTION,
+      object: actorId,
+    }),
+  );
+}
+
 const followers: Record<string, Actor> = {};
 
 federation
@@ -185,6 +213,12 @@ federation
   .setSharedKeyDispatcher((_) => ({ handle: "i" }))
   .on(Activity, async (ctx, activity) => {
     activities[ctx.data].activity = activity;
+    for await (const actor of activity.getActors()) {
+      if (actor.id != null) peers[actor.id.href] = actor;
+    }
+    for await (const actor of activity.getAttributions()) {
+      if (actor.id != null) peers[actor.id.href] = actor;
+    }
     if (activity instanceof Follow) {
       if (acceptFollows.length < 1) return;
       const objectId = activity.objectId;
