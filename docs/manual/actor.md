@@ -410,3 +410,32 @@ network, because changing the WebFinger username does not affect the actor URI.
 > We highly recommend you to set the actor's `preferredUsername` property to
 > the corresponding WebFinger username so that peers can find the actor's
 > fediverse handle by fetching the actor object.
+
+
+WebFinger links
+---------------
+
+Some properties of an `Actor` returned by the actor dispatcher affect
+responses to WebFinger requests.
+
+### `preferredUsername`
+
+*This API is available since Fedify 0.15.0.*
+
+The `preferredUsername` property is the bare handle of the actor.  It is
+used as the WebFinger username, used in the `acct:` URI of the `aliases`
+property of the WebFinger response.
+
+### `url`
+
+The `url` property usually refers to the actor's profile page.  It is
+used as the `links` property of the WebFinger response, with the `rel`
+property set to <http://webfinger.net/rel/profile-page>.
+
+### `icon`
+
+*This API is available since Fedify 1.0.0.*
+
+The `icon` property is an `Image` object that represents the actor's
+icon (i.e., avatar).  It is used as the `links` property of the WebFinger
+response, with the `rel` property set to <http://webfinger.net/rel/avatar>.

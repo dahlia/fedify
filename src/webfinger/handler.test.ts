@@ -6,7 +6,7 @@ import type {
 import { createRequestContext } from "../testing/context.ts";
 import { test } from "../testing/mod.ts";
 import type { Actor } from "../vocab/actor.ts";
-import { Link, Person } from "../vocab/vocab.ts";
+import { Image, Link, Person } from "../vocab/vocab.ts";
 import { handleWebFinger } from "./handler.ts";
 
 test("handleWebFinger()", async () => {
@@ -35,6 +35,10 @@ test("handleWebFinger()", async () => {
       id: ctx.getActorUri(handle),
       name: handle === "someone" ? "Someone" : "Someone 2",
       preferredUsername: handle === "someone" ? null : handle,
+      icon: new Image({
+        url: new URL("https://example.com/icon.jpg"),
+        mediaType: "image/jpeg",
+      }),
       urls: [
         new URL("https://example.com/@" + handle),
         new Link({
@@ -110,6 +114,11 @@ test("handleWebFinger()", async () => {
         rel: "alternate",
         type: "text/html",
       },
+      {
+        href: "https://example.com/icon.jpg",
+        rel: "http://webfinger.net/rel/avatar",
+        type: "image/jpeg",
+      },
     ],
   };
   assertEquals(await response.json(), expected);
@@ -155,6 +164,11 @@ test("handleWebFinger()", async () => {
         href: "https://example.org/@someone2",
         rel: "alternate",
         type: "text/html",
+      },
+      {
+        href: "https://example.com/icon.jpg",
+        rel: "http://webfinger.net/rel/avatar",
+        type: "image/jpeg",
       },
     ],
   };

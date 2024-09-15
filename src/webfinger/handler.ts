@@ -122,6 +122,15 @@ export async function handleWebFinger<TContextData>(
       });
     }
   }
+  for await (const image of actor.getIcons()) {
+    if (image.url?.href == null) continue;
+    const link: Link = {
+      rel: "http://webfinger.net/rel/avatar",
+      href: image.url.href.toString(),
+    };
+    if (image.mediaType != null) link.type = image.mediaType;
+    links.push(link);
+  }
   const jrd: ResourceDescriptor = {
     subject: resourceUrl.href,
     aliases: resourceUrl.href === context.getActorUri(handle).href

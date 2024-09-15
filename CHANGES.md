@@ -28,6 +28,10 @@ To be released.
      -  Added `attachSignature()` function.
      -  Added `detachSignature()` function.
 
+ -  WebFinger responses now include <http://webfinger.net/rel/avatar> links
+    if the `Actor` object returned by the actor dispatcher has `icon`/`icons`
+    property.
+
  -  The `fedify inbox` command now sends `Delete(Application)` activities when
     it's terminated so that the peers can clean up data related to the temporary
     actor.  [[#135]]
