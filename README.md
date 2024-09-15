@@ -25,7 +25,7 @@ Currently, Fedify provides the following features out of the box:
     extensions)
  -  [WebFinger] client and server
  -  [HTTP Signatures]
- -  [Object Integrity Proofs][FEP-8b32]
+ -  [Object Integrity Proofs][FEP-8b32] & [Linked Data Signatures]
  -  Middlewares for handling webhooks
  -  [NodeInfo] protocol
  -  Special touch for interoperability with Mastodon and few other popular
@@ -67,6 +67,7 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].  Or tag
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
 [HTTP Signatures]: https://tools.ietf.org/html/draft-cavage-http-signatures-12
 [FEP-8b32]: https://w3id.org/fep/8b32
+[Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
 [NodeInfo]: https://nodeinfo.diaspora.software/
 [GitHub Discussions]: https://github.com/dahlia/fedify/discussions
 [#Fedify]: https://mastodon.social/tags/fedify
