@@ -1,0 +1,31 @@
+hr.footnotes-sep {
+  margin-top: 48px;
+}
+
+section.footnotes:before {
+  content: "Footnotes";
+  font-weight: bolder;
+}
+
+section.footnotes {
+  font-size: smaller;
+}
+
+section.footnotes > ol {
+  margin-top: 10px;
+  padding-top: 0;
+}
+
+section.footnotes > ol > li {
+  margin-top: 0;
+}
+
+section.footnotes > ol > li > p:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+section.footnotes > ol > li > p:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}

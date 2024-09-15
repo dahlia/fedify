@@ -3,6 +3,7 @@ import type { EnhanceAppContext } from "vitepress";
 import Theme from "vitepress/theme";
 
 import "@shikijs/vitepress-twoslash/style.css";
+import "./style.css";
 
 export default {
   extends: Theme,
