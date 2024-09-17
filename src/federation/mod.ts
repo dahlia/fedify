@@ -6,6 +6,7 @@
 export * from "./callback.ts";
 export * from "./collection.ts";
 export * from "./context.ts";
+export * from "./federation.ts";
 export {
   respondWithObject,
   respondWithObjectIfAcceptable,

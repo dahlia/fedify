@@ -12,7 +12,7 @@
 import type {
   Federation,
   FederationFetchOptions,
-} from "../federation/middleware.ts";
+} from "../federation/federation.ts";
 
 interface HonoRequest {
   raw: Request;

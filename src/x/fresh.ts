@@ -13,7 +13,7 @@
 import type {
   Federation,
   FederationFetchOptions,
-} from "../federation/middleware.ts";
+} from "../federation/federation.ts";
 
 interface FreshContext {
   next(): Promise<Response>;
