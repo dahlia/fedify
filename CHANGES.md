@@ -36,6 +36,9 @@ To be released.
      -  The first parameter of the `InboxListener` callback type became
         `InboxContext` (was `Context`).
 
+ -  The `Context.parseUri()` method's parameter type became `URL | null`
+    (was `URL`).
+
  -  `Context.sendActivity()` method now adds Object Integrity Proofs to
     the activity to be sent only once.  It had added Object Integrity Proofs
     to the activity for every recipient before.

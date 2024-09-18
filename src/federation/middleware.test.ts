@@ -120,6 +120,7 @@ test("Federation.createContext()", async (t) => {
     assertThrows(() => ctx.getFeaturedUri("handle"), RouterError);
     assertThrows(() => ctx.getFeaturedTagsUri("handle"), RouterError);
     assertEquals(ctx.parseUri(new URL("https://example.com/")), null);
+    assertEquals(ctx.parseUri(null), null);
     assertEquals(await ctx.getActorKeyPairs("handle"), []);
     assertRejects(
       () => ctx.getDocumentLoader({ handle: "handle" }),
@@ -172,6 +173,7 @@ test("Federation.createContext()", async (t) => {
       ctx.parseUri(new URL("https://example.com/users/handle")),
       { type: "actor", handle: "handle" },
     );
+    assertEquals(ctx.parseUri(null), null);
     assertEquals(
       await ctx.getActorKeyPairs("handle"),
       [
@@ -274,6 +276,7 @@ test("Federation.createContext()", async (t) => {
         values: { handle: "john", id: "123" },
       },
     );
+    assertEquals(ctx.parseUri(null), null);
 
     federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
     ctx = federation.createContext(new URL("https://example.com/"), 123);
@@ -290,6 +293,7 @@ test("Federation.createContext()", async (t) => {
       ctx.parseUri(new URL("https://example.com/users/handle/inbox")),
       { type: "inbox", handle: "handle" },
     );
+    assertEquals(ctx.parseUri(null), null);
 
     federation.setOutboxDispatcher(
       "/users/{handle}/outbox",
@@ -304,6 +308,7 @@ test("Federation.createContext()", async (t) => {
       ctx.parseUri(new URL("https://example.com/users/handle/outbox")),
       { type: "outbox", handle: "handle" },
     );
+    assertEquals(ctx.parseUri(null), null);
 
     federation.setFollowingDispatcher(
       "/users/{handle}/following",
@@ -318,6 +323,7 @@ test("Federation.createContext()", async (t) => {
       ctx.parseUri(new URL("https://example.com/users/handle/following")),
       { type: "following", handle: "handle" },
     );
+    assertEquals(ctx.parseUri(null), null);
 
     federation.setFollowersDispatcher(
       "/users/{handle}/followers",
@@ -332,6 +338,7 @@ test("Federation.createContext()", async (t) => {
       ctx.parseUri(new URL("https://example.com/users/handle/followers")),
       { type: "followers", handle: "handle" },
     );
+    assertEquals(ctx.parseUri(null), null);
 
     federation.setLikedDispatcher(
       "/users/{handle}/liked",
@@ -346,6 +353,7 @@ test("Federation.createContext()", async (t) => {
       ctx.parseUri(new URL("https://example.com/users/handle/liked")),
       { type: "liked", handle: "handle" },
     );
+    assertEquals(ctx.parseUri(null), null);
 
     federation.setFeaturedDispatcher(
       "/users/{handle}/featured",
@@ -360,6 +368,7 @@ test("Federation.createContext()", async (t) => {
       ctx.parseUri(new URL("https://example.com/users/handle/featured")),
       { type: "featured", handle: "handle" },
     );
+    assertEquals(ctx.parseUri(null), null);
 
     federation.setFeaturedTagsDispatcher(
       "/users/{handle}/tags",
@@ -374,6 +383,7 @@ test("Federation.createContext()", async (t) => {
       ctx.parseUri(new URL("https://example.com/users/handle/tags")),
       { type: "featuredTags", handle: "handle" },
     );
+    assertEquals(ctx.parseUri(null), null);
   });
 
   await t.step("RequestContext", async () => {

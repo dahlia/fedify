@@ -151,9 +151,11 @@ export interface Context<TContextData> {
   /**
    * Determines the type of the URI and extracts the associated data.
    * @param uri The URI to parse.
+   * @returns The result of parsing the URI.  If `null` is given or
+   *          the URI is not recognized, `null` is returned.
    * @since 0.9.0
    */
-  parseUri(uri: URL): ParseUriResult | null;
+  parseUri(uri: URL | null): ParseUriResult | null;
 
   /**
    * Gets the key pairs for an actor.

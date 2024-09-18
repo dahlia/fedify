@@ -12,8 +12,8 @@ importers:
         specifier: ^0.8.2
         version: 0.8.2
       '@fedify/fedify':
-        specifier: ^1.0.0-dev.388
-        version: 1.0.0-dev.388(web-streams-polyfill@3.3.3)
+        specifier: ^1.0.0-dev.398
+        version: 1.0.0-dev.398(web-streams-polyfill@3.3.3)
       '@hono/node-server':
         specifier: ^1.12.2
         version: 1.12.2(hono@4.6.1)
@@ -361,8 +361,8 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
-  '@fedify/fedify@1.0.0-dev.388':
-    resolution: {integrity: sha512-/z+VC6ZlOYwkAvN6P5BRYQ4irHD1jMCCTa0HPJT66rJ8XhRu3MyZDOiULlsAz5NJza4rnmU/0ArQ3mDWCj1GDg==}
+  '@fedify/fedify@1.0.0-dev.398':
+    resolution: {integrity: sha512-3e2MDIIqZ0vv2UA6Wc/EjzdGvoKh+uaofMI0DEaN5szb4JLjjl1Y4WycJ3U60oOvHx6drZFKDCUc0DdcmW6jrw==}
 
   '@floating-ui/core@1.6.7':
     resolution: {integrity: sha512-yDzVT/Lm101nQ5TCVeK65LtdN7Tj4Qpr9RTXJ2vPFLqtLxwOrpoxAHAJI8J3yYWUc40J0BDBheaitK5SJmno2g==}
@@ -1911,7 +1911,7 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@fedify/fedify@1.0.0-dev.388(web-streams-polyfill@3.3.3)':
+  '@fedify/fedify@1.0.0-dev.398(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-crypto': 0.3.1
       '@deno/shim-deno': 0.18.2

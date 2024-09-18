@@ -24,6 +24,7 @@ test("handleWebFinger()", async () => {
       );
     },
     parseUri(uri) {
+      if (uri == null) return null;
       if (uri.protocol === "acct:") return null;
       const paths = uri.pathname.split("/");
       return { type: "actor", handle: paths[paths.length - 1] };

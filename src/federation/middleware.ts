@@ -2029,7 +2029,8 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return new URL(path, this.url);
   }
 
-  parseUri(uri: URL): ParseUriResult | null {
+  parseUri(uri: URL | null): ParseUriResult | null {
+    if (uri == null) return null;
     if (uri.origin !== this.url.origin) return null;
     const route = this.federation.router.route(uri.pathname);
     if (route == null) return null;
