@@ -3,7 +3,7 @@ import type { Actor } from "../vocab/actor.ts";
 import type { Activity, CryptographicKey } from "../vocab/mod.ts";
 import type { Object } from "../vocab/vocab.ts";
 import type { PageItems } from "./collection.ts";
-import type { Context, RequestContext } from "./context.ts";
+import type { Context, InboxContext, RequestContext } from "./context.ts";
 import type { SenderKeyPair } from "./send.ts";
 
 /**
@@ -134,9 +134,11 @@ export type CollectionCursor<
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @typeParam TActivity The type of activity to listen for.
+ * @param context The inbox context.
+ * @param activity The activity that was received.
  */
 export type InboxListener<TContextData, TActivity extends Activity> = (
-  context: Context<TContextData>,
+  context: InboxContext<TContextData>,
   activity: TActivity,
 ) => void | Promise<void>;
 
@@ -144,6 +146,7 @@ export type InboxListener<TContextData, TActivity extends Activity> = (
  * A callback that handles errors in an inbox.
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @param context The inbox context.
  */
 export type InboxErrorHandler<TContextData> = (
   context: Context<TContextData>,

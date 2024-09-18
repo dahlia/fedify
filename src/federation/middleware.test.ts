@@ -1,5 +1,6 @@
 import {
   assertEquals,
+  assertInstanceOf,
   assertRejects,
   assertStrictEquals,
   assertThrows,
@@ -7,11 +8,14 @@ import {
 import { dirname, join } from "@std/path";
 import * as mf from "mock_fetch";
 import {
+  fetchDocumentLoader,
   FetchError,
   getAuthenticatedDocumentLoader,
 } from "../runtime/docloader.ts";
 import { signRequest, verifyRequest } from "../sig/http.ts";
-import { signObject } from "../sig/proof.ts";
+import { detachSignature, signJsonLd, verifyJsonLd } from "../sig/ld.ts";
+import { doesActorOwnKey } from "../sig/owner.ts";
+import { signObject, verifyObject } from "../sig/proof.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
   ed25519Multikey,
@@ -24,10 +28,21 @@ import {
 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
 import { lookupObject } from "../vocab/lookup.ts";
-import { Create, Multikey, Note, Object, Person } from "../vocab/vocab.ts";
+import {
+  Activity,
+  Create,
+  Multikey,
+  Note,
+  Object,
+  Person,
+} from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
-import { createFederation } from "./middleware.ts";
+import {
+  createFederation,
+  FederationImpl,
+  InboxContextImpl,
+} from "./middleware.ts";
 import { RouterError } from "./router.ts";
 
 test("createFederation()", () => {
@@ -816,4 +831,271 @@ test("Federation.setInboxDispatcher()", async (t) => {
       RouterError,
     );
   });
+});
+
+test("FederationImpl.sendActivity()", async (t) => {
+  mf.install();
+
+  let verified: ("http" | "ld" | "proof")[] | null = null;
+  let request: Request | null = null;
+  mf.mock("POST@/inbox", async (req) => {
+    verified = [];
+    request = req.clone();
+    const options = {
+      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
+    };
+    let json = await req.json();
+    if (await verifyJsonLd(json, options)) verified.push("ld");
+    json = detachSignature(json);
+    let activity = await verifyObject(Activity, json, options);
+    if (activity == null) {
+      activity = await Activity.fromJsonLd(json, options);
+    } else {
+      verified.push("proof");
+    }
+    const key = await verifyRequest(request, options);
+    if (key != null && await doesActorOwnKey(activity, key, options)) {
+      verified.push("http");
+    }
+    if (verified.length > 0) return new Response(null, { status: 202 });
+    return new Response(null, { status: 401 });
+  });
+
+  const kv = new MemoryKvStore();
+  const federation = new FederationImpl<void>({
+    kv,
+    contextLoader: mockDocumentLoader,
+  });
+
+  await t.step("success", async () => {
+    const activity = new Create({
+      actor: new URL("https://example.com/person"),
+    });
+    const recipient = {
+      id: new URL("https://example.com/recipient"),
+      inboxId: new URL("https://example.com/inbox"),
+    };
+    await federation.sendActivity(
+      [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
+      recipient,
+      activity,
+      { contextData: undefined },
+    );
+    assertEquals(verified, ["http"]);
+    assertInstanceOf(request, Request);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    verified = null;
+    await federation.sendActivity(
+      [{ privateKey: rsaPrivateKey3, keyId: rsaPublicKey3.id! }],
+      recipient,
+      activity.clone({
+        actor: new URL("https://example.com/person2"),
+      }),
+      { contextData: undefined },
+    );
+    assertEquals(verified, ["ld", "http"]);
+    assertInstanceOf(request, Request);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    verified = null;
+    await federation.sendActivity(
+      [
+        { privateKey: ed25519PrivateKey, keyId: ed25519Multikey.id! },
+      ],
+      recipient,
+      activity.clone({
+        actor: new URL("https://example.com/person2"),
+      }),
+      { contextData: undefined },
+    );
+    assertEquals(verified, ["proof"]);
+    assertInstanceOf(request, Request);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    verified = null;
+    await federation.sendActivity(
+      [
+        { privateKey: rsaPrivateKey3, keyId: rsaPublicKey3.id! },
+        { privateKey: ed25519PrivateKey, keyId: ed25519Multikey.id! },
+      ],
+      recipient,
+      activity.clone({
+        actor: new URL("https://example.com/person2"),
+      }),
+      { contextData: undefined },
+    );
+    assertEquals(verified, ["ld", "proof", "http"]);
+    assertInstanceOf(request, Request);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+  });
+
+  mf.uninstall();
+});
+
+test("InboxContextImpl.forwardActivity()", async (t) => {
+  mf.install();
+
+  let verified: ("http" | "ld" | "proof")[] | null = null;
+  let request: Request | null = null;
+  mf.mock("POST@/inbox", async (req) => {
+    verified = [];
+    request = req.clone();
+    const options = {
+      documentLoader: mockDocumentLoader,
+      contextLoader: mockDocumentLoader,
+    };
+    let json = await req.json();
+    if (await verifyJsonLd(json, options)) verified.push("ld");
+    json = detachSignature(json);
+    let activity = await verifyObject(Activity, json, options);
+    if (activity == null) {
+      activity = await Activity.fromJsonLd(json, options);
+    } else {
+      verified.push("proof");
+    }
+    const key = await verifyRequest(request, options);
+    if (key != null && await doesActorOwnKey(activity, key, options)) {
+      verified.push("http");
+    }
+    if (verified.length > 0) return new Response(null, { status: 202 });
+    return new Response(null, { status: 401 });
+  });
+
+  const kv = new MemoryKvStore();
+  const federation = new FederationImpl<void>({
+    kv,
+    contextLoader: mockDocumentLoader,
+  });
+
+  await t.step("skip", async () => {
+    const activity = {
+      "@context": "https://www.w3.org/ns/activitystreams",
+      "type": "Create",
+      "id": "https://example.com/activity",
+      "actor": "https://example.com/person2",
+    };
+    const ctx = new InboxContextImpl(activity, {
+      data: undefined,
+      federation,
+      url: new URL("https://example.com/"),
+      documentLoader: fetchDocumentLoader,
+    });
+    await ctx.forwardActivity(
+      [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
+      {
+        id: new URL("https://example.com/recipient"),
+        inboxId: new URL("https://example.com/inbox"),
+      },
+      { skipIfUnsigned: true },
+    );
+    assertEquals(verified, null);
+  });
+
+  await t.step("unsigned", async () => {
+    const activity = {
+      "@context": "https://www.w3.org/ns/activitystreams",
+      "type": "Create",
+      "id": "https://example.com/activity",
+      "actor": "https://example.com/person2",
+    };
+    const ctx = new InboxContextImpl(activity, {
+      data: undefined,
+      federation,
+      url: new URL("https://example.com/"),
+      documentLoader: fetchDocumentLoader,
+    });
+    await assertRejects(() =>
+      ctx.forwardActivity(
+        [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
+        {
+          id: new URL("https://example.com/recipient"),
+          inboxId: new URL("https://example.com/inbox"),
+        },
+      )
+    );
+    assertEquals(verified, []);
+  });
+
+  await t.step("Object Integrity Proofs", async () => {
+    const activity = await signObject(
+      new Create({
+        id: new URL("https://example.com/activity"),
+        actor: new URL("https://example.com/person2"),
+      }),
+      ed25519PrivateKey,
+      ed25519Multikey.id!,
+      { contextLoader: mockDocumentLoader, documentLoader: mockDocumentLoader },
+    );
+    const ctx = new InboxContextImpl(
+      await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
+      {
+        data: undefined,
+        federation,
+        url: new URL("https://example.com/"),
+        documentLoader: fetchDocumentLoader,
+      },
+    );
+    await ctx.forwardActivity(
+      [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
+      {
+        id: new URL("https://example.com/recipient"),
+        inboxId: new URL("https://example.com/inbox"),
+      },
+      { skipIfUnsigned: true },
+    );
+    assertEquals(verified, ["proof"]);
+  });
+
+  await t.step("LD Signatures", async () => {
+    const activity = await signJsonLd(
+      {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        "type": "Create",
+        "id": "https://example.com/activity",
+        "actor": "https://example.com/person2",
+      },
+      rsaPrivateKey3,
+      rsaPublicKey3.id!,
+      { contextLoader: mockDocumentLoader },
+    );
+    const ctx = new InboxContextImpl(activity, {
+      data: undefined,
+      federation,
+      url: new URL("https://example.com/"),
+      documentLoader: fetchDocumentLoader,
+    });
+    await ctx.forwardActivity(
+      [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
+      {
+        id: new URL("https://example.com/recipient"),
+        inboxId: new URL("https://example.com/inbox"),
+      },
+      { skipIfUnsigned: true },
+    );
+    assertEquals(verified, ["ld"]);
+  });
+
+  mf.uninstall();
 });

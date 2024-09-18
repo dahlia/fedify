@@ -9,6 +9,7 @@ export interface OutboxMessage {
   type: "outbox";
   keys: SenderKeyJwkPair[];
   activity: unknown;
+  activityId?: string;
   inbox: string;
   started: string;
   attempt: number;

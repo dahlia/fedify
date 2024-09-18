@@ -9,7 +9,9 @@ import {
 } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
 import { exportJwk, importJwk, validateCryptoKey } from "../sig/key.ts";
+import { hasSignature, signJsonLd } from "../sig/ld.ts";
 import { getKeyOwner } from "../sig/owner.ts";
+import { signObject } from "../sig/proof.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
 import { lookupObject, type LookupObjectOptions } from "../vocab/lookup.ts";
 import {
@@ -41,6 +43,8 @@ import { buildCollectionSynchronizationHeader } from "./collection.ts";
 import type {
   ActorKeyPair,
   Context,
+  ForwardActivityOptions,
+  InboxContext,
   ParseUriResult,
   RequestContext,
   SendActivityOptions,
@@ -233,7 +237,7 @@ export function createFederation<TContextData>(
   return new FederationImpl<TContextData>(options);
 }
 
-class FederationImpl<TContextData> implements Federation<TContextData> {
+export class FederationImpl<TContextData> implements Federation<TContextData> {
   kv: KvStore;
   kvPrefixes: FederationKvPrefixes;
   queue?: MessageQueue;
@@ -387,47 +391,46 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
       keyIds: message.keys.map((pair) => pair.keyId),
       inbox: message.inbox,
       activity: message.activity,
+      activityId: message.activityId,
       attempt: message.attempt,
       headers: message.headers,
     };
-    let activity: Activity | null = null;
-    try {
-      const keys: SenderKeyPair[] = [];
-      let rsaKeyPair: SenderKeyPair | null = null;
-      for (const { keyId, privateKey } of message.keys) {
-        const pair: SenderKeyPair = {
-          keyId: new URL(keyId),
-          privateKey: await importJwk(privateKey, "private"),
-        };
-        if (
-          rsaKeyPair == null &&
-          pair.privateKey.algorithm.name === "RSASSA-PKCS1-v1_5"
-        ) {
-          rsaKeyPair = pair;
-        }
-        keys.push(pair);
+    const keys: SenderKeyPair[] = [];
+    let rsaKeyPair: SenderKeyPair | null = null;
+    for (const { keyId, privateKey } of message.keys) {
+      const pair: SenderKeyPair = {
+        keyId: new URL(keyId),
+        privateKey: await importJwk(privateKey, "private"),
+      };
+      if (
+        rsaKeyPair == null &&
+        pair.privateKey.algorithm.name === "RSASSA-PKCS1-v1_5"
+      ) {
+        rsaKeyPair = pair;
       }
-      const documentLoader = rsaKeyPair == null
-        ? this.documentLoader
-        : this.authenticatedDocumentLoaderFactory(rsaKeyPair);
-      activity = await Activity.fromJsonLd(message.activity, {
-        documentLoader,
-        contextLoader: this.contextLoader,
-      });
+      keys.push(pair);
+    }
+    try {
       await sendActivity({
         keys,
-        activity,
+        activity: message.activity,
+        activityId: message.activityId,
         inbox: new URL(message.inbox),
-        contextLoader: this.contextLoader,
         headers: new Headers(message.headers),
       });
     } catch (error) {
+      const activity = await Activity.fromJsonLd(message.activity, {
+        contextLoader: this.contextLoader,
+        documentLoader: rsaKeyPair == null
+          ? this.documentLoader
+          : this.authenticatedDocumentLoaderFactory(rsaKeyPair),
+      });
       try {
         this.onOutboxError?.(error, activity);
       } catch (error) {
         logger.error(
           "An unexpected error occurred in onError handler:\n{error}",
-          { ...logData, error, activityId: activity?.id?.href },
+          { ...logData, error },
         );
       }
       const delay = this.outboxRetryPolicy({
@@ -440,7 +443,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         logger.error(
           "Failed to send activity {activityId} to {inbox} (attempt " +
             "#{attempt}); retry...:\n{error}",
-          { ...logData, error, activityId: activity?.id?.href },
+          { ...logData, error },
         );
         this.queue?.enqueue(
           {
@@ -457,14 +460,14 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         logger.error(
           "Failed to send activity {activityId} to {inbox} after {attempt} " +
             "attempts; giving up:\n{error}",
-          { ...logData, error, activityId: activity?.id?.href },
+          { ...logData, error },
         );
       }
       return;
     }
     logger.info(
       "Successfully sent activity {activityId} to {inbox}.",
-      { ...logData, activityId: activity?.id?.href },
+      { ...logData },
     );
   }
 
@@ -515,7 +518,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
       return;
     }
     try {
-      await listener(context, activity);
+      await listener(context.toInboxContext(message.activity), activity);
     } catch (error) {
       try {
         await this.inboxErrorHandler?.(context, error);
@@ -1502,7 +1505,6 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         "The activity to send must have at least one actor property.",
       );
     }
-    if (!this.manuallyStartQueue) this.#startQueue(contextData);
     if (activity.id == null) {
       activity = activity.clone({
         id: new URL(`urn:uuid:${crypto.randomUUID()}`),
@@ -1518,17 +1520,80 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
       activityId: activity.id?.href,
       activity,
     });
+    if (activity.id == null) {
+      throw new TypeError("The activity to send must have an id.");
+    }
+    if (activity.actorId == null) {
+      throw new TypeError(
+        "The activity to send must have at least one actor property.",
+      );
+    } else if (keys.length < 1) {
+      throw new TypeError("The keys must not be empty.");
+    }
+    const activityId = activity.id.href;
+    let proofCreated = false;
+    let rsaKey: { keyId: URL; privateKey: CryptoKey } | null = null;
+    for (const { keyId, privateKey } of keys) {
+      validateCryptoKey(privateKey, "private");
+      if (rsaKey == null && privateKey.algorithm.name === "RSASSA-PKCS1-v1_5") {
+        rsaKey = { keyId, privateKey };
+        continue;
+      }
+      if (privateKey.algorithm.name === "Ed25519") {
+        activity = await signObject(activity, privateKey, keyId, {
+          contextLoader: this.contextLoader,
+        });
+        proofCreated = true;
+      }
+    }
+    let jsonLd = await activity.toJsonLd({
+      format: "compact",
+      contextLoader: this.contextLoader,
+    });
+    if (rsaKey == null) {
+      logger.warn(
+        "No supported key found to create a Linked Data signature for " +
+          "the activity {activityId}.  The activity will be sent without " +
+          "a Linked Data signature.  In order to create a Linked Data " +
+          "signature, at least one RSASSA-PKCS1-v1_5 key must be provided.",
+        {
+          activityId,
+          keys: keys.map((pair) => ({
+            keyId: pair.keyId.href,
+            privateKey: pair.privateKey,
+          })),
+        },
+      );
+    } else {
+      jsonLd = await signJsonLd(jsonLd, rsaKey.privateKey, rsaKey.keyId, {
+        contextLoader: this.contextLoader,
+      });
+    }
+    if (!proofCreated) {
+      logger.warn(
+        "No supported key found to create a proof for the activity {activityId}.  " +
+          "The activity will be sent without a proof.  " +
+          "In order to create a proof, at least one Ed25519 key must be provided.",
+        {
+          activityId,
+          keys: keys.map((pair) => ({
+            keyId: pair.keyId.href,
+            privateKey: pair.privateKey,
+          })),
+        },
+      );
+    }
     if (immediate || this.queue == null) {
       if (immediate) {
         logger.debug(
           "Sending activity immediately without queue since immediate option " +
             "is set.",
-          { activityId: activity.id?.href, activity },
+          { activityId: activity.id!.href, activity: jsonLd },
         );
       } else {
         logger.debug(
           "Sending activity immediately without queue since queue is not set.",
-          { activityId: activity.id?.href, activity },
+          { activityId: activity.id!.href, activity: jsonLd },
         );
       }
       const promises: Promise<void>[] = [];
@@ -1536,9 +1601,9 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         promises.push(
           sendActivity({
             keys,
-            activity,
+            activity: jsonLd,
+            activityId: activity.id?.href,
             inbox: new URL(inbox),
-            contextLoader: this.contextLoader,
             headers: collectionSync == null ? undefined : new Headers({
               "Collection-Synchronization":
                 await buildCollectionSynchronizationHeader(
@@ -1554,21 +1619,20 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     logger.debug(
       "Enqueuing activity {activityId} to send later.",
-      { activityId: activity.id?.href, activity },
+      { activityId: activity.id!.href, activity: jsonLd },
     );
     const keyJwkPairs: SenderKeyJwkPair[] = [];
     for (const { keyId, privateKey } of keys) {
       const privateKeyJwk = await exportJwk(privateKey);
       keyJwkPairs.push({ keyId: keyId.href, privateKey: privateKeyJwk });
     }
-    const activityJson = await activity.toJsonLd({
-      contextLoader: this.contextLoader,
-    });
+    if (!this.manuallyStartQueue) this.#startQueue(contextData);
     for (const inbox in inboxes) {
       const message: OutboxMessage = {
         type: "outbox",
         keys: keyJwkPairs,
-        activity: activityJson,
+        activity: jsonLd,
+        activityId: activity.id?.href,
         inbox,
         started: new Date().toISOString(),
         attempt: 0,
@@ -1714,6 +1778,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
         return await handleInbox(request, {
           handle: route.values.handle ?? null,
           context,
+          inboxContextFactory: context.toInboxContext.bind(context),
           kv: this.kv,
           kvPrefixes: this.kvPrefixes,
           queue: this.queue,
@@ -1830,6 +1895,17 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     this.documentLoader = documentLoader;
     this.invokedFromActorKeyPairsDispatcher =
       invokedFromActorKeyPairsDispatcher;
+  }
+
+  toInboxContext(activity: unknown): InboxContextImpl<TContextData> {
+    return new InboxContextImpl(activity, {
+      url: this.url,
+      federation: this.federation,
+      data: this.data,
+      documentLoader: this.documentLoader,
+      invokedFromActorKeyPairsDispatcher:
+        this.invokedFromActorKeyPairsDispatcher,
+    });
   }
 
   get hostname(): string {
@@ -2153,7 +2229,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       }
       expandedRecipients = [];
       for await (
-        const recipient of this.#getFollowers(sender.handle)
+        const recipient of this.getFollowers(sender.handle)
       ) {
         expandedRecipients.push(recipient);
       }
@@ -2172,7 +2248,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     );
   }
 
-  async *#getFollowers(handle: string): AsyncIterable<Recipient> {
+  async *getFollowers(handle: string): AsyncIterable<Recipient> {
     if (this.federation.followersCallbacks == null) {
       throw new Error("No followers collection dispatcher registered.");
     }
@@ -2319,6 +2395,152 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     const key = await this.getSignedKey();
     if (key == null) return this.#signedKeyOwner = null;
     return this.#signedKeyOwner = await getKeyOwner(key, this);
+  }
+}
+
+export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
+  implements InboxContext<TContextData> {
+  readonly activity: unknown;
+
+  constructor(activity: unknown, options: ContextOptions<TContextData>) {
+    super(options);
+    this.activity = activity;
+  }
+
+  forwardActivity(
+    forwarder: SenderKeyPair | SenderKeyPair[] | { handle: string },
+    recipients: Recipient | Recipient[],
+    options?: ForwardActivityOptions,
+  ): Promise<void>;
+  forwardActivity(
+    forwarder: { handle: string },
+    recipients: "followers",
+    options?: ForwardActivityOptions,
+  ): Promise<void>;
+  async forwardActivity(
+    forwarder: SenderKeyPair | SenderKeyPair[] | { handle: string },
+    recipients: Recipient | Recipient[] | "followers",
+    options?: ForwardActivityOptions,
+  ): Promise<void> {
+    const logger = getLogger(["fedify", "federation", "inbox"]);
+    let keys: SenderKeyPair[];
+    if ("handle" in forwarder) {
+      keys = await this.getKeyPairsFromHandle(forwarder.handle);
+      if (keys.length < 1) {
+        throw new Error(
+          `No key pair found for actor ${JSON.stringify(forwarder.handle)}.`,
+        );
+      }
+    } else if (Array.isArray(forwarder)) {
+      if (forwarder.length < 1) {
+        throw new Error("The forwarder's key pairs are empty.");
+      }
+      keys = forwarder;
+    } else {
+      keys = [forwarder];
+    }
+    let activityId: string | undefined = undefined;
+    if (!hasSignature(this.activity)) {
+      let hasProof: boolean;
+      try {
+        const activity = await Activity.fromJsonLd(this.activity, this);
+        activityId = activity.id?.href;
+        hasProof = await activity.getProof() != null;
+      } catch {
+        hasProof = false;
+      }
+      if (!hasProof) {
+        if (options?.skipIfUnsigned) return;
+        logger.warn(
+          "The received activity {activityId} is not signed; even if it is " +
+            "forwarded to other servers as is, it may not be accepted by " +
+            "them due to the lack of a signature/proof.",
+        );
+      }
+    }
+    if (
+      activityId == null && typeof this.activity === "object" &&
+      this.activity != null
+    ) {
+      activityId =
+        "@id" in this.activity && typeof this.activity["@id"] === "string"
+          ? this.activity["@id"]
+          : "id" in this.activity && typeof this.activity.id === "string"
+          ? this.activity.id
+          : undefined;
+    }
+    if (recipients === "followers") {
+      if (!("handle" in forwarder)) {
+        throw new Error(
+          "If recipients is 'followers', forwarder must be an actor handle.",
+        );
+      }
+      const followers: Recipient[] = [];
+      for await (
+        const recipient of this.getFollowers(forwarder.handle)
+      ) {
+        followers.push(recipient);
+      }
+      recipients = followers;
+    }
+    const inboxes = extractInboxes({
+      recipients: Array.isArray(recipients) ? recipients : [recipients],
+      preferSharedInbox: options?.preferSharedInbox,
+      excludeBaseUris: options?.excludeBaseUris,
+    });
+    logger.debug("Forwarding activity {activityId} to inboxes:\n{inboxes}", {
+      inboxes: globalThis.Object.keys(inboxes),
+      activityId,
+      activity: this.activity,
+    });
+    if (options?.immediate || this.federation.queue == null) {
+      if (options?.immediate) {
+        logger.debug(
+          "Forwarding activity immediately without queue since immediate " +
+            "option is set.",
+        );
+      } else {
+        logger.debug(
+          "Forwarding activity immediately without queue since queue is not " +
+            "set.",
+        );
+      }
+      const promises: Promise<void>[] = [];
+      for (const inbox in inboxes) {
+        promises.push(
+          sendActivity({
+            keys,
+            activity: this.activity,
+            activityId: activityId,
+            inbox: new URL(inbox),
+          }),
+        );
+      }
+      await Promise.all(promises);
+      return;
+    }
+    logger.debug(
+      "Enqueuing activity {activityId} to forward later.",
+      { activityId, activity: this.activity },
+    );
+    const keyJwkPairs: SenderKeyJwkPair[] = [];
+    for (const { keyId, privateKey } of keys) {
+      const privateKeyJwk = await exportJwk(privateKey);
+      keyJwkPairs.push({ keyId: keyId.href, privateKey: privateKeyJwk });
+    }
+    for (const inbox in inboxes) {
+      const message: OutboxMessage = {
+        type: "outbox",
+        keys: keyJwkPairs,
+        activity: this.activity,
+        activityId,
+        inbox,
+        started: new Date().toISOString(),
+        attempt: 0,
+        headers: {},
+      };
+      this.federation.queue.enqueue(message);
+    }
   }
 }
 

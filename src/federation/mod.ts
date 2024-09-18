@@ -13,7 +13,11 @@ export {
   type RespondWithObjectOptions,
 } from "./handler.ts";
 export * from "./kv.ts";
-export * from "./middleware.ts";
+export {
+  createFederation,
+  type CreateFederationOptions,
+  type FederationKvPrefixes,
+} from "./middleware.ts";
 export * from "./mq.ts";
 export * from "./retry.ts";
 export * from "./router.ts";

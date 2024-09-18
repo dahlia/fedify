@@ -26,7 +26,7 @@ import type {
   ObjectAuthorizePredicate,
   ObjectDispatcher,
 } from "./callback.ts";
-import type { Context, RequestContext } from "./context.ts";
+import type { Context, InboxContext, RequestContext } from "./context.ts";
 import type { InboxListenerSet } from "./inbox.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
@@ -343,6 +343,9 @@ function filterCollectionItems<TItem extends Object | Link | Recipient | URL>(
 export interface InboxHandlerParameters<TContextData> {
   handle: string | null;
   context: RequestContext<TContextData>;
+  inboxContextFactory(
+    activity: unknown,
+  ): InboxContext<TContextData>;
   kv: KvStore;
   kvPrefixes: {
     activityIdempotence: KvKey;
@@ -362,6 +365,7 @@ export async function handleInbox<TContextData>(
   {
     handle,
     context,
+    inboxContextFactory,
     kv,
     kvPrefixes,
     queue,
@@ -556,7 +560,7 @@ export async function handleInbox<TContextData>(
       } satisfies InboxMessage,
     );
     logger.info(
-      "Activity {activityId} is eunqueued.",
+      "Activity {activityId} is enqueued.",
       { activityId: activity.id?.href, activity: json },
     );
     return new Response("Activity is enqueued.", {
@@ -576,7 +580,7 @@ export async function handleInbox<TContextData>(
     });
   }
   try {
-    await listener(context, activity);
+    await listener(inboxContextFactory(json), activity);
   } catch (error) {
     try {
       await inboxErrorHandler?.(context, error);

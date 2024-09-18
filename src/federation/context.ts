@@ -333,6 +333,48 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
 }
 
 /**
+ * A context for inbox listeners.
+ * @since 1.0.0
+ */
+export interface InboxContext<TContextData> extends Context<TContextData> {
+  /**
+   * Forwards a received activity to the recipients' inboxes.  The forwarded
+   * activity will be signed in HTTP Signatures by the forwarder, but its
+   * payload will not be modified, i.e., Linked Data Signatures and Object
+   * Integrity Proofs will not be added.  Therefore, if the activity is not
+   * signed (i.e., it has neither Linked Data Signatures nor Object Integrity
+   * Proofs), the recipient probably will not trust the activity.
+   * @param forwarder The forwarder's handle or the forwarder's key pair(s).
+   * @param recipients The recipients of the activity.
+   * @param options Options for forwarding the activity.
+   * @since 1.0.0
+   */
+  forwardActivity(
+    forwarder: SenderKeyPair | SenderKeyPair[] | { handle: string },
+    recipients: Recipient | Recipient[],
+    options?: ForwardActivityOptions,
+  ): Promise<void>;
+
+  /**
+   * Forwards a received activity to the recipients' inboxes.  The forwarded
+   * activity will be signed in HTTP Signatures by the forwarder, but its
+   * payload will not be modified, i.e., Linked Data Signatures and Object
+   * Integrity Proofs will not be added.  Therefore, if the activity is not
+   * signed (i.e., it has neither Linked Data Signatures nor Object Integrity
+   * Proofs), the recipient probably will not trust the activity.
+   * @param forwarder The forwarder's handle.
+   * @param recipients In this case, it must be `"followers"`.
+   * @param options Options for forwarding the activity.
+   * @since 1.0.0
+   */
+  forwardActivity(
+    forwarder: { handle: string },
+    recipients: "followers",
+    options?: ForwardActivityOptions,
+  ): Promise<void>;
+}
+
+/**
  * A result of parsing an URI.
  */
 export type ParseUriResult =
@@ -384,8 +426,7 @@ export type ParseUriResult =
   | { type: "featuredTags"; handle: string };
 
 /**
- * Options for {@link Context.sendActivity} method and
- * {@link Federation.sendActivity} method.
+ * Options for {@link Context.sendActivity} method.
  */
 export interface SendActivityOptions {
   /**
@@ -411,6 +452,22 @@ export interface SendActivityOptions {
    * @since 0.9.0
    */
   excludeBaseUris?: URL[];
+}
+
+/**
+ * Options for {@link InboxContext.forwardActivity} method.
+ * @since 1.0.0
+ */
+export interface ForwardActivityOptions extends SendActivityOptions {
+  /**
+   * Whether to skip forwarding the activity if it is not signed, i.e., it has
+   * neither Linked Data Signatures nor Object Integrity Proofs.
+   *
+   * If the activity is not signed, the recipient probably will not trust the
+   * activity.  Therefore, it is recommended to skip forwarding the activity
+   * if it is not signed.
+   */
+  skipIfUnsigned: boolean;
 }
 
 /**

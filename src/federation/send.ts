@@ -1,11 +1,6 @@
 import { getLogger } from "@logtape/logtape";
-import type { DocumentLoader } from "../runtime/docloader.ts";
 import { signRequest } from "../sig/http.ts";
-import { validateCryptoKey } from "../sig/key.ts";
-import { signJsonLd } from "../sig/ld.ts";
-import { signObject } from "../sig/proof.ts";
 import type { Recipient } from "../vocab/actor.ts";
-import type { Activity } from "../vocab/mod.ts";
 
 /**
  * Parameters for {@link extractInboxes}.
@@ -84,7 +79,13 @@ export interface SendActivityParameters {
   /**
    * The activity to send.
    */
-  activity: Activity;
+  activity: unknown;
+
+  /**
+   * The activity ID to send.
+   * @since 1.0.0
+   */
+  activityId?: string | null;
 
   /**
    * The key pairs of the sender to sign the request.  It must not be empty.
@@ -96,18 +97,6 @@ export interface SendActivityParameters {
    * The inbox URL to send the activity to.
    */
   inbox: URL;
-
-  /**
-   * The context loader to use for JSON-LD context retrieval.
-   * @since 0.8.0
-   */
-  contextLoader?: DocumentLoader;
-
-  /**
-   * The document loader for loading remote JSON-LD documents.
-   * @since 0.10.0
-   */
-  documentLoader?: DocumentLoader;
 
   /**
    * Additional headers to include in the request.
@@ -125,85 +114,27 @@ export interface SendActivityParameters {
 export async function sendActivity(
   {
     activity,
+    activityId,
     keys,
     inbox,
-    contextLoader,
-    documentLoader,
     headers,
   }: SendActivityParameters,
 ): Promise<void> {
   const logger = getLogger(["fedify", "federation", "outbox"]);
-  if (activity.id == null) {
-    throw new TypeError("The activity to send must have an id.");
-  }
-  if (activity.actorId == null) {
-    throw new TypeError(
-      "The activity to send must have at least one actor property.",
-    );
-  } else if (keys.length < 1) {
-    throw new TypeError("The keys must not be empty.");
-  }
-  const activityId = activity.id.href;
-  let proofCreated = false;
-  let rsaKey: { keyId: URL; privateKey: CryptoKey } | null = null;
-  for (const { keyId, privateKey } of keys) {
-    validateCryptoKey(privateKey, "private");
-    if (rsaKey == null && privateKey.algorithm.name === "RSASSA-PKCS1-v1_5") {
-      rsaKey = { keyId, privateKey };
-      continue;
-    }
-    if (privateKey.algorithm.name === "Ed25519") {
-      activity = await signObject(activity, privateKey, keyId, {
-        documentLoader,
-        contextLoader,
-      });
-      proofCreated = true;
-    }
-  }
-  let jsonLd = await activity.toJsonLd({
-    format: "compact",
-    contextLoader,
-  });
-  if (rsaKey == null) {
-    logger.warn(
-      "No supported key found to create a Linked Data signature for " +
-        "the activity {activityId}.  The activity will be sent without " +
-        "a Linked Data signature.  In order to create a Linked Data " +
-        "signature, at least one RSASSA-PKCS1-v1_5 key must be provided.",
-      {
-        activityId,
-        keys: keys.map((pair) => ({
-          keyId: pair.keyId.href,
-          privateKey: pair.privateKey,
-        })),
-      },
-    );
-  } else {
-    jsonLd = await signJsonLd(jsonLd, rsaKey.privateKey, rsaKey.keyId, {
-      contextLoader,
-    });
-  }
-  if (!proofCreated) {
-    logger.warn(
-      "No supported key found to create a proof for the activity {activityId}.  " +
-        "The activity will be sent without a proof.  " +
-        "In order to create a proof, at least one Ed25519 key must be provided.",
-      {
-        activityId,
-        keys: keys.map((pair) => ({
-          keyId: pair.keyId.href,
-          privateKey: pair.privateKey,
-        })),
-      },
-    );
-  }
   headers = new Headers(headers);
   headers.set("Content-Type", "application/activity+json");
   let request = new Request(inbox, {
     method: "POST",
     headers,
-    body: JSON.stringify(jsonLd),
+    body: JSON.stringify(activity),
   });
+  let rsaKey: SenderKeyPair | null = null;
+  for (const key of keys) {
+    if (key.privateKey.algorithm.name === "RSASSA-PKCS1-v1_5") {
+      rsaKey = key;
+      break;
+    }
+  }
   if (rsaKey == null) {
     logger.warn(
       "No supported key found to sign the request to {inbox}.  " +

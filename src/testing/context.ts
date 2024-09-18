@@ -1,4 +1,8 @@
-import type { Context, RequestContext } from "../federation/context.ts";
+import type {
+  Context,
+  InboxContext,
+  RequestContext,
+} from "../federation/context.ts";
 import { RouterError } from "../federation/router.ts";
 import { lookupObject as globalLookupObject } from "../vocab/lookup.ts";
 import { mockDocumentLoader } from "./docloader.ts";
@@ -83,6 +87,17 @@ export function createRequestContext<TContextData>(
     getSignedKey: args.getSignedKey ?? (() => Promise.resolve(null)),
     getSignedKeyOwner: args.getSignedKeyOwner ?? (() => Promise.resolve(null)),
     sendActivity: args.sendActivity ?? ((_params) => {
+      throw new Error("Not implemented");
+    }),
+  };
+}
+
+export function createInboxContext<TContextData>(
+  args: Partial<InboxContext<TContextData>> & { url?: URL; data: TContextData },
+): InboxContext<TContextData> {
+  return {
+    ...createContext(args),
+    forwardActivity: args.forwardActivity ?? ((_params) => {
       throw new Error("Not implemented");
     }),
   };

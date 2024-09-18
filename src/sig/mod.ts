@@ -14,7 +14,18 @@ export {
   importJwk,
   type KeyCache,
 } from "./key.ts";
-export * from "./ld.ts";
+export {
+  attachSignature,
+  createSignature,
+  type CreateSignatureOptions,
+  detachSignature,
+  signJsonLd,
+  type SignJsonLdOptions,
+  verifyJsonLd,
+  type VerifyJsonLdOptions,
+  verifySignature,
+  type VerifySignatureOptions,
+} from "./ld.ts";
 export {
   doesActorOwnKey,
   type DoesActorOwnKeyOptions,

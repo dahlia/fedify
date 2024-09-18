@@ -140,7 +140,13 @@ interface SignedJsonLd {
   signature: Signature;
 }
 
-function hasSignature(jsonLd: unknown): jsonLd is SignedJsonLd {
+/**
+ * Checks if the given JSON-LD document has a Linked Data Signature.
+ * @param jsonLd The JSON-LD document to check.
+ * @returns `true` if the document has a signature; `false` otherwise.
+ * @since 1.0.0
+ */
+export function hasSignature(jsonLd: unknown): jsonLd is SignedJsonLd {
   if (typeof jsonLd !== "object" || jsonLd == null) return false;
   if ("signature" in jsonLd) {
     const signature = jsonLd.signature;

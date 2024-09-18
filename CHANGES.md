@@ -28,6 +28,18 @@ To be released.
      -  Added `attachSignature()` function.
      -  Added `detachSignature()` function.
 
+ -  In inbox listeners, a received activity now can be forwarded to another
+    server.  [[#137]]
+
+     -  Added `InboxContext` interface.
+     -  Added `ForwardActivityOptions` interface.
+     -  The first parameter of the `InboxListener` callback type became
+        `InboxContext` (was `Context`).
+
+ -  `Context.sendActivity()` method now adds Object Integrity Proofs to
+    the activity to be sent only once.  It had added Object Integrity Proofs
+    to the activity for every recipient before.
+
  -  WebFinger responses now include <http://webfinger.net/rel/avatar> links
     if the `Actor` object returned by the actor dispatcher has `icon`/`icons`
     property.
@@ -43,6 +55,7 @@ To be released.
 
 [Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
 [#135]: https://github.com/dahlia/fedify/issues/135
+[#137]: https://github.com/dahlia/fedify/issues/137
 
 
 Version 0.15.1

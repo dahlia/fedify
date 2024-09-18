@@ -1,6 +1,9 @@
 import { assert, assertEquals, assertFalse } from "@std/assert";
 import { signRequest } from "../sig/http.ts";
-import { createRequestContext } from "../testing/context.ts";
+import {
+  createInboxContext,
+  createRequestContext,
+} from "../testing/context.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import {
   rsaPrivateKey3,
@@ -1076,6 +1079,9 @@ test("handleInbox()", async () => {
   let response = await handleInbox(unsignedRequest, {
     handle: null,
     context: unsignedContext,
+    inboxContextFactory(_activity) {
+      return createInboxContext(unsignedContext);
+    },
     ...inboxOptions,
     actorDispatcher: undefined,
   });
@@ -1086,6 +1092,9 @@ test("handleInbox()", async () => {
   response = await handleInbox(unsignedRequest, {
     handle: "nobody",
     context: unsignedContext,
+    inboxContextFactory(_activity) {
+      return createInboxContext(unsignedContext);
+    },
     ...inboxOptions,
   });
   assertEquals(onNotFoundCalled, unsignedRequest);
@@ -1095,6 +1104,9 @@ test("handleInbox()", async () => {
   response = await handleInbox(unsignedRequest, {
     handle: null,
     context: unsignedContext,
+    inboxContextFactory(_activity) {
+      return createInboxContext(unsignedContext);
+    },
     ...inboxOptions,
   });
   assertEquals(onNotFoundCalled, null);
@@ -1103,6 +1115,9 @@ test("handleInbox()", async () => {
   response = await handleInbox(unsignedRequest, {
     handle: "someone",
     context: unsignedContext,
+    inboxContextFactory(_activity) {
+      return createInboxContext(unsignedContext);
+    },
     ...inboxOptions,
   });
   assertEquals(onNotFoundCalled, null);
@@ -1123,6 +1138,9 @@ test("handleInbox()", async () => {
   response = await handleInbox(signedRequest, {
     handle: null,
     context: signedContext,
+    inboxContextFactory(_activity) {
+      return createInboxContext(unsignedContext);
+    },
     ...inboxOptions,
   });
   assertEquals(onNotFoundCalled, null);
@@ -1131,6 +1149,9 @@ test("handleInbox()", async () => {
   response = await handleInbox(signedRequest, {
     handle: "someone",
     context: signedContext,
+    inboxContextFactory(_activity) {
+      return createInboxContext(unsignedContext);
+    },
     ...inboxOptions,
   });
   assertEquals(onNotFoundCalled, null);
@@ -1139,6 +1160,9 @@ test("handleInbox()", async () => {
   response = await handleInbox(unsignedRequest, {
     handle: null,
     context: unsignedContext,
+    inboxContextFactory(_activity) {
+      return createInboxContext(unsignedContext);
+    },
     ...inboxOptions,
     skipSignatureVerification: true,
   });
@@ -1148,6 +1172,9 @@ test("handleInbox()", async () => {
   response = await handleInbox(unsignedRequest, {
     handle: "someone",
     context: unsignedContext,
+    inboxContextFactory(_activity) {
+      return createInboxContext(unsignedContext);
+    },
     ...inboxOptions,
     skipSignatureVerification: true,
   });

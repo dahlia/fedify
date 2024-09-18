@@ -277,6 +277,74 @@ federation
 > to the error handler.
 
 
+Forwarding activities to another server
+---------------------------------------
+
+*This API is available since Fedify 1.0.0.*
+
+Sometimes, you may want to forward incoming activities to another server.
+For example, you may want to forward `Flag` activities to a moderation server.
+Or you may want to forward `Create` activities which reply to your server to
+your followers so that they can see the replies.
+
+The problem is that the recipients of the forwarded activities will not trust
+the forwarded activities unless they are signed by the original sender, not by
+you.  You might think that you can just `~Context.sendActivity()` the received
+activity to the recipient in your inbox listener, but it doesn't work because
+the signature made by the original sender is stripped when the received activity
+is passed to the inbox listener, and `~Context.sendActivity()` will sign the
+activity with your key.
+
+To solve this problem, you can use the `~InboxContext.forwardActivity()` method
+in your inbox listener.  It forwards the received activity without any
+modification, so the signature made by the original sender is preserved
+(if the activity is signed using by the original sender).
+
+The following shows an example of forwarding `Create` activities to followers:
+
+~~~~ typescript twoslash
+import { Create, type Federation } from "@fedify/fedify";
+const federation: Federation<void> = null as unknown as Federation<void>;
+federation.setInboxListeners("/{handle}/inbox", "/inbox")
+// ---cut-before---
+.on(Create, async (ctx, create) => {
+  if (create.toId == null) return;
+  const to = ctx.parseUri(create.toId);
+  if (to?.type !== "actor") return;
+  const forwarder = to.handle;
+  await ctx.forwardActivity({ handle: forwarder }, "followers");
+})
+~~~~
+
+> [!NOTE]
+> The `~InboxContext.forwardActivity()` method does not guarantee that the
+> forwarded activity is successfully delivered to the recipient, since
+> the original sender might  neither sign the activity using [Linked Data
+> Signatures](./send.md#linked-data-signatures) nor [Object Integrity
+> Proofs](./send.md#object-integrity-proofs).  In such cases, the recipient
+> probably won't trust the forwarded activity.[^2]
+>
+> If you don't want to forward unsigned activities, you can turn on
+> the `~ForwardActivityOptions.skipIfUnsigned` option in
+> the `~InboxContext.forwardActivity()` method:
+>
+> ~~~~ typescript twoslash
+> import { type InboxContext } from "@fedify/fedify";
+> const ctx = null as unknown as InboxContext<void>;
+> // ---cut-before---
+> await ctx.forwardActivity(
+>   { handle: "alice" },
+>   "followers",
+>   { skipIfUnsigned: true },
+> );
+> ~~~~
+
+[^2]: Some implementations may try to verify the unsigned activity by fetching
+      the original object from the original sender's server even if they
+      don't trust the forwarded activity.  However, it is not guaranteed
+      that all implementations do so.
+
+
 Constructing inbox URIs
 -----------------------
 
