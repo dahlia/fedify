@@ -3,12 +3,6 @@ description: >-
   This section explains the pragmatic aspects of using Fedify, such as
   how to utilize the vocabulary API and the de facto norms of ActivityPub
   implementations.
-prev:
-  text: NodeInfo
-  link: ./nodeinfo.md
-next:
-  text: Integration
-  link: ./integration.md
 ---
 
 Pragmatics

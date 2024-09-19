@@ -2,12 +2,6 @@
 description: >-
   Fedify is designed to be used together with web frameworks.  This document
   explains how to integrate Fedify with web frameworks.
-prev:
-  text: Pragmatics
-  link: ./pragmatics.md
-next:
-  text: Testing
-  link: ./test.md
 ---
 
 Integration

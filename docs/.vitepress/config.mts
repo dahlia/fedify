@@ -76,6 +76,7 @@ const MANUAL = {
     { text: "NodeInfo", link: "/manual/nodeinfo.md" },
     { text: "Pragmatics", link: "/manual/pragmatics.md" },
     { text: "Key–value store", link: "/manual/kv.md" },
+    { text: "Message queue", link: "/manual/mq.md" },
     { text: "Integration", link: "/manual/integration.md" },
     { text: "Testing", link: "/manual/test.md" },
     { text: "Logging", link: "/manual/log.md" },
