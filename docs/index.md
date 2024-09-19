@@ -36,7 +36,7 @@ features:
     <a href="https://www.w3.org/TR/activitypub/">ActivityPub</a> server and
     client
 - icon: 📚
-  title: Vocabulary
+  title: Activity Vocabulary
   details: >-
     Type-safe objects for <a
     href="https://www.w3.org/TR/activitystreams-vocabulary/">Activity
@@ -54,6 +54,13 @@ features:
     href="https://tools.ietf.org/html/draft-cavage-http-signatures-12">HTTP
     Signatures</a>
   link: /manual/send.md#http-signatures
+- icon: 🔗
+  title: Linked Data Signatures
+  details: >-
+    Creating and verifying <a
+    href="https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/">Linked
+    Data Signatures</a>
+  link: /manual/send.md#linked-data-signatures
 - icon: 🪪
   title: Object Integrity Proofs (FEP-8b32)
   details: >-
@@ -65,4 +72,8 @@ features:
   details: >-
     <a href="https://nodeinfo.diaspora.software/">NodeInfo</a> server
   link: /manual/nodeinfo.md
+- icon: 🧩
+  title: Integration
+  details: Integration with various web frameworks
+  link: /manual/integration.md
 ---
