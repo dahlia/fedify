@@ -2,12 +2,6 @@
 description: >-
   Fedify provides a generic way to construct and handle collections.
   This section explains how to work with collections in Fedify.
-prev:
-  text: Sending activities
-  link: ./send.md
-next:
-  text: Object dispatcher
-  link: ./object.md
 ---
 
 Collections

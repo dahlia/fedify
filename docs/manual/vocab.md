@@ -3,12 +3,6 @@ description: >-
   The Activity Vocabulary is a collection of type-safe objects that represent
   the Activity Vocabulary and the vendor-specific extensions.  This section
   explains the key features of the objects.
-prev:
-  text: Context
-  link: ./context.md
-next:
-  text: Actor dispatcher
-  link: ./actor.md
 ---
 
 Vocabulary

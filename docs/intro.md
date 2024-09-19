@@ -1,8 +1,3 @@
----
-next:
-  text: Installation
-  link: ./install.md
----
 What is Fedify?
 ===============
 

@@ -3,12 +3,6 @@ description: >-
   Fedify provides a way to register inbox listeners so that you can handle
   incoming activities from other actors.  This section explains how to
   register an inbox listener and how to handle errors.
-prev:
-  text: Actor dispatcher
-  link: ./actor.md
-next:
-  text: Sending activities
-  link: ./send.md
 ---
 
 Inbox listeners
@@ -228,6 +222,8 @@ const federation = createFederation({
 > consider using a more robust message queue, such as `DenoKvMessageQueue`
 > from `@fedify/fedify/x/deno` module or [`RedisMessageQueue`] from
 > [`@fedify/redis`] package.
+>
+> For more information, see the [*Message queue* section](./mq.md).
 
 If it is not present, incoming activities are processed immediately and block
 the response to the sender until the processing is done.

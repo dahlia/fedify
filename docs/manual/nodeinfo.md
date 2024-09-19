@@ -4,12 +4,6 @@ description: >-
   a standardized way of exposing metadata about a server running one of the
   distributed social networks.  This section explains how to expose a NodeInfo
   endpoint and the key properties of a NodeInfo object.
-prev:
-  text: Access control
-  link: ./access-control.md
-next:
-  text: Pragmatics
-  link: ./pragmatics.md
 ---
 
 NodeInfo

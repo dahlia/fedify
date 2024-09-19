@@ -2,12 +2,6 @@
 description: >-
   Fedify provides a way to send activities to other actors' inboxes.
   This section explains how to send activities to others.
-prev:
-  text: Inbox listeners
-  link: ./inbox.md
-next:
-  text: Collections
-  link: ./collections.md
 ---
 
 Sending activities
@@ -90,6 +84,8 @@ const federation = createFederation({
 > consider using a more robust message queue, such as `DenoKvMessageQueue`
 > from `@fedify/fedify/x/deno` module or [`RedisMessageQueue`] from
 > [`@fedify/redis`] package.
+>
+> For further information, see the [*Message queue* section](./mq.md).
 
 The failed activities are automatically retried after a certain period of time.
 The default retry strategy is exponential backoff with a maximum of 10 retries,

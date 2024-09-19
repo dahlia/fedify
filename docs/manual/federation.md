@@ -2,9 +2,6 @@
 description: >-
   The Federation object is the main entry point of the Fedify library.
   This section explains the key features of the Federation object.
-next:
-  text: Context
-  link: ./context.md
 ---
 
 Federation
@@ -102,8 +99,7 @@ runtime).
 As a separate package, [@fedify/redis] provides [`RedisMessageQueue`] class,
 which is a Redis-backed implementation for production use.
 
-You can define your own `MessageQueue` implementation if you want to use
-a different message queue.[^1]
+Further details are explained in the [*Message queue* section](./mq.md).
 
 > [!IMPORTANT]
 > While the `queue` option is optional, it is highly recommended to provide

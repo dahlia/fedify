@@ -3,12 +3,6 @@ description: >-
   Fedify provides a flexible access control system that allows you to control
   who can access your resources.  This section explains how to use the access
   control system.
-prev:
-  text: Object dispatcher
-  link: ./object.md
-next:
-  text: NodeInfo
-  link: ./nodeinfo.md
 ---
 
 Access control

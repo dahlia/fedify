@@ -2,10 +2,6 @@
 description: >-
   Logging is a useful tool for debugging your federated server app.  This
   section explains how to enable logging in your federated server app.
-prev:
-  text: Testing
-  link: ./test.md
-next: false
 ---
 
 Logging

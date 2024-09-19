@@ -2,12 +2,6 @@
 description: >-
   The Context object is a container that holds the information of the current
   request.  This section explains the key features of the Context object.
-prev:
-  text: Federation
-  link: ./federation.md
-next:
-  text: Vocabulary
-  link: ./vocab.md
 ---
 
 Context

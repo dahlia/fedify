@@ -1,11 +1,5 @@
 ---
 description: How to install Fedify.
-prev:
-  text: What is Fedify?
-  link: ./intro.md
-next:
-  text: In-depth tutorial
-  link: ./tutorial.md
 ---
 Installation
 ============

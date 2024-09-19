@@ -3,12 +3,6 @@ description: >-
   You can register an actor dispatcher so that Fedify can dispatch
   an appropriate actor by its bare handle.  This section explains
   how to register an actor dispatcher and the key properties of an actor.
-prev:
-  text: Vocabulary
-  link: ./vocab.md
-next:
-  text: Inbox listeners
-  link: ./inbox.md
 ---
 
 Actor dispatcher

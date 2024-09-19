@@ -46,7 +46,7 @@ const federation = createFederation<void>({
 ### `DenoKvStore` (Deno only)
 
 `DenoKvStore` is a key–value store implementation for [Deno] runtime that uses
-Deno's built-in `Deno.openKv()` API. It provides persistent storage and good
+Deno's built-in [`Deno.openKv()`] API. It provides persistent storage and good
 performance for Deno environments.  It's suitable for production use in Deno
 applications.
 
@@ -54,7 +54,7 @@ Best for
 :   Production use in Deno environments.
 
 Pros
-:   Persistent storage, good performance.
+:   Persistent storage, good performance, easy to set up.
 
 Cons
 :   Only available in Deno runtime.
@@ -71,6 +71,7 @@ const federation = createFederation<void>({
 ~~~~
 
 [Deno]: https://deno.com/
+[`Deno.openKv()`]: https://docs.deno.com/api/deno/~/Deno.openKv
 
 ### [`RedisKvStore`]
 

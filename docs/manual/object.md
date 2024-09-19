@@ -3,12 +3,6 @@ description: >-
   You can register an object dispatcher so that Fedify can dispatch an
   appropriate object by its class and URL arguments.  This section explains
   how to register an object dispatcher.
-prev:
-  text: Collections
-  link: ./collections.md
-next:
-  text: Access control
-  link: ./access-control.md
 ---
 
 Object dispatcher

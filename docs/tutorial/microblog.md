@@ -1,3 +1,10 @@
+---
+description: >-
+  In this tutorial, we will build a small microblog that implements the
+  ActivityPub protocol, similar to Mastodon or Misskey, using Fedify, an
+  ActivityPub server framework.
+---
+
 Creating your own federated microblog
 =====================================
 
