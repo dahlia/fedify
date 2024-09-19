@@ -249,6 +249,8 @@ a key-value store.
 > Since `MemoryKvStore` is for testing and development purposes, you should
 > use a persistent key-value store like `DenoKvStore` (in Deno) or
 > [`RedisKvStore`] (from [@fedify/redis] package) for production use.
+>
+> For further details, see the [*Key–value store* section](../manual/kv.md).
 
 Then, we pass the incoming `Request` to the `Federation.fetch()` method:
 

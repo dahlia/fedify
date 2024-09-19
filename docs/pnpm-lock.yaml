@@ -14,6 +14,9 @@ importers:
       '@fedify/fedify':
         specifier: ^1.0.0-dev.398
         version: 1.0.0-dev.398(web-streams-polyfill@3.3.3)
+      '@fedify/redis':
+        specifier: ^0.1.1
+        version: 0.1.1(web-streams-polyfill@3.3.3)
       '@hono/node-server':
         specifier: ^1.12.2
         version: 1.12.2(hono@4.6.1)
@@ -41,6 +44,9 @@ importers:
       hono:
         specifier: ^4.6.1
         version: 4.6.1
+      ioredis:
+        specifier: ^5.4.1
+        version: 5.4.1
       markdown-it-abbr:
         specifier: ^2.0.0
         version: 2.0.0
@@ -361,8 +367,14 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
+  '@fedify/fedify@0.10.2':
+    resolution: {integrity: sha512-GKxm+NZ1zNPJ9HTbTW+Y2o/HT3Rk6ly+j/GJfjXBFiwm391Ni56VYC8ON/KQsFdFYIp+eNMn1hWr0RbFtMwoOg==}
+
   '@fedify/fedify@1.0.0-dev.398':
     resolution: {integrity: sha512-3e2MDIIqZ0vv2UA6Wc/EjzdGvoKh+uaofMI0DEaN5szb4JLjjl1Y4WycJ3U60oOvHx6drZFKDCUc0DdcmW6jrw==}
+
+  '@fedify/redis@0.1.1':
+    resolution: {integrity: sha512-oKhOVYLRwkRf/tuePoT3CnwXUKm5rTE7hDg8/qfVo/txmydPPptXzPG10kL24zCv8t18FwmyaE0LlcrUrxd6FQ==}
 
   '@floating-ui/core@1.6.7':
     resolution: {integrity: sha512-yDzVT/Lm101nQ5TCVeK65LtdN7Tj4Qpr9RTXJ2vPFLqtLxwOrpoxAHAJI8J3yYWUc40J0BDBheaitK5SJmno2g==}
@@ -386,6 +398,9 @@ packages:
   '@hugoalh/is-string-singleline@1.0.2':
     resolution: {integrity: sha512-58tr/0q1D+2sB37ghYKPGR82XpNp/Lo2lbxumCX9KXQ6u0aZm1p4KIl3XW5R23m11znflKbsuZZyWv7cOqkm9Q==}
     engines: {node: '>=16.13.0'}
+
+  '@ioredis/commands@1.2.0':
+    resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
 
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
@@ -750,6 +765,10 @@ packages:
     resolution: {integrity: sha512-tRkV3HJ1ASwm19THiiLIXLO7Im7wlTuKnvkYaTkyoAPefqjNg7W7DHKUlGRxy9vxDvbyCYQkQozvptuMkGCg8A==}
     engines: {node: '>=4'}
 
+  cluster-key-slot@1.1.2:
+    resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
+    engines: {node: '>=0.10.0'}
+
   comma-separated-tokens@2.0.3:
     resolution: {integrity: sha512-Fu4hJdvzeylCfQPp9SGWidpzrMs7tTrlu6Vb8XGaRGck8QSNZJJp538Wrb60Lax4fPwR64ViY468OIUTbRlGZg==}
 
@@ -958,6 +977,10 @@ packages:
   delaunator@5.0.1:
     resolution: {integrity: sha512-8nvh+XBe96aCESrGOqMp/84b13H9cdKbG5P2ejQCh4d4sK9RL4371qou9drQjMhvnPmhWl5hnmqbEE0fXr9Xnw==}
 
+  denque@2.1.0:
+    resolution: {integrity: sha512-HVQE3AAb/pxF8fQAoiqpvg9i3evqug3hoiwakOyZAwJm+6vZehbkYXZ0l4JxS+I3QxM97v5aaRNhj8v5oBhekw==}
+    engines: {node: '>=0.10'}
+
   dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
@@ -1054,6 +1077,10 @@ packages:
     resolution: {integrity: sha512-5Hh7Y1wQbvY5ooGgPbDaL5iYLAPzMTUrjMulskHLH6wnv/A+1q5rgEaiuqEjB+oxGXIVZs1FF+R/KPN3ZSQYYg==}
     engines: {node: '>=12'}
 
+  ioredis@5.4.1:
+    resolution: {integrity: sha512-2YZsvl7jopIa1gaePkeMtd9rAcSjOOjPtpcLlOeusyO+XH2SK5ZcT+UCrElPP+WVIInh2TzeI4XW9ENaSLVVHA==}
+    engines: {node: '>=12.22.0'}
+
   is-fullwidth-code-point@3.0.0:
     resolution: {integrity: sha512-zymm5+u+sCsSWyD9qNaejV3DFvhCKclKdizYaJUuHA83RLjb7nSuGnddCHGv0hk+KY7BMAlsWeK4Ueg6EV6XQg==}
     engines: {node: '>=8'}
@@ -1112,6 +1139,12 @@ packages:
 
   lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+
+  lodash.defaults@4.2.0:
+    resolution: {integrity: sha512-qjxPLHd3r5DnsdGacqOMU6pb/avJzdh9tFX2ymgoZE27BmjXrNy/y4LoaiTeAb+O3gL8AfpJGtqfX/ae2leYYQ==}
+
+  lodash.isarguments@3.1.0:
+    resolution: {integrity: sha512-chi4NHZlZqZD18a0imDHnZPrDeBbTtVN7GXMwuGdRH9qotxAjYs3aVLKc7zNOG9eddR5Ksd8rvFEBc9SsggPpg==}
 
   longest-streak@3.1.0:
     resolution: {integrity: sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g==}
@@ -1408,6 +1441,14 @@ packages:
     resolution: {integrity: sha512-fUeWjrkOO0t1rg7B2fdyDTvngj+9RlUyL92vOdiB7c0FPguWVsniIMjEtHH+meLBO9rzkUlUzBVXgWrjI8P9LA==}
     engines: {node: '>=12'}
 
+  redis-errors@1.2.0:
+    resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
+    engines: {node: '>=4'}
+
+  redis-parser@3.0.0:
+    resolution: {integrity: sha512-DJnGAeenTdpMEH6uAJRK/uiyEIH9WVsUmoLwzudwGJUwZPp80PDBWPHXSAGNPwNvIXAbe7MSUB1zQFugFml66A==}
+    engines: {node: '>=4'}
+
   regex@4.3.2:
     resolution: {integrity: sha512-kK/AA3A9K6q2js89+VMymcboLOlF5lZRCYJv3gzszXFHBr6kO6qLGzbm+UIugBEV8SMMKCTR59txoY6ctRHYVw==}
 
@@ -1451,6 +1492,9 @@ packages:
   speakingurl@14.0.1:
     resolution: {integrity: sha512-1POYv7uv2gXoyGFpBCmpDVSNV74IfsWlDW216UPjbWufNf+bSU6GdbDsxdcxtfwb4xlI3yxzOTKClUosxARYrQ==}
     engines: {node: '>=0.10.0'}
+
+  standard-as-callback@2.1.0:
+    resolution: {integrity: sha512-qoRRSyROncaz1z0mvYqIE4lCd9p2R90i6GxW3uZv5ucSu8tU7B5HXUP1gG8pVZsYNVaXjk8ClXHPttLyxAL48A==}
 
   string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
@@ -1911,6 +1955,25 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
+  '@fedify/fedify@0.10.2(web-streams-polyfill@3.3.3)':
+    dependencies:
+      '@deno/shim-crypto': 0.3.1
+      '@deno/shim-deno': 0.18.2
+      '@js-temporal/polyfill': 0.4.4
+      '@logtape/logtape': 0.4.3
+      '@phensley/language-tag': 1.9.0
+      asn1js: 3.0.5
+      json-canon: 1.0.1
+      jsonld: 8.3.2(web-streams-polyfill@3.3.3)
+      multibase: 4.0.6
+      multicodec: 3.2.1
+      pkijs: 3.2.4
+      uri-template-router: 0.0.16
+      url-template: 3.1.1
+      urlpattern-polyfill: 10.0.0
+    transitivePeerDependencies:
+      - web-streams-polyfill
+
   '@fedify/fedify@1.0.0-dev.398(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-crypto': 0.3.1
@@ -1929,6 +1992,16 @@ snapshots:
       url-template: 3.1.1
       urlpattern-polyfill: 10.0.0
     transitivePeerDependencies:
+      - web-streams-polyfill
+
+  '@fedify/redis@0.1.1(web-streams-polyfill@3.3.3)':
+    dependencies:
+      '@deno/shim-deno': 0.18.2
+      '@fedify/fedify': 0.10.2(web-streams-polyfill@3.3.3)
+      '@js-temporal/polyfill': 0.4.4
+      ioredis: 5.4.1
+    transitivePeerDependencies:
+      - supports-color
       - web-streams-polyfill
 
   '@floating-ui/core@1.6.7':
@@ -1950,6 +2023,8 @@ snapshots:
       '@hugoalh/is-string-singleline': 1.0.2
 
   '@hugoalh/is-string-singleline@1.0.2': {}
+
+  '@ioredis/commands@1.2.0': {}
 
   '@jridgewell/sourcemap-codec@1.5.0': {}
 
@@ -2346,6 +2421,8 @@ snapshots:
     dependencies:
       string-width: 4.2.3
 
+  cluster-key-slot@1.1.2: {}
+
   comma-separated-tokens@2.0.3: {}
 
   commander@7.2.0: {}
@@ -2572,6 +2649,8 @@ snapshots:
     dependencies:
       robust-predicates: 3.0.2
 
+  denque@2.1.0: {}
+
   dequal@2.0.3: {}
 
   devlop@1.1.0:
@@ -2676,6 +2755,20 @@ snapshots:
 
   internmap@2.0.3: {}
 
+  ioredis@5.4.1:
+    dependencies:
+      '@ioredis/commands': 1.2.0
+      cluster-key-slot: 1.1.2
+      debug: 4.3.7
+      denque: 2.1.0
+      lodash.defaults: 4.2.0
+      lodash.isarguments: 3.1.0
+      redis-errors: 1.2.0
+      redis-parser: 3.0.0
+      standard-as-callback: 2.1.0
+    transitivePeerDependencies:
+      - supports-color
+
   is-fullwidth-code-point@3.0.0: {}
 
   is-what@4.1.16: {}
@@ -2723,6 +2816,10 @@ snapshots:
       uc.micro: 2.1.0
 
   lodash-es@4.17.21: {}
+
+  lodash.defaults@4.2.0: {}
+
+  lodash.isarguments@3.1.0: {}
 
   longest-streak@3.1.0: {}
 
@@ -3263,6 +3360,12 @@ snapshots:
     dependencies:
       setimmediate: 1.0.5
 
+  redis-errors@1.2.0: {}
+
+  redis-parser@3.0.0:
+    dependencies:
+      redis-errors: 1.2.0
+
   regex@4.3.2: {}
 
   rfdc@1.4.1: {}
@@ -3317,6 +3420,8 @@ snapshots:
   space-separated-tokens@2.0.2: {}
 
   speakingurl@14.0.1: {}
+
+  standard-as-callback@2.1.0: {}
 
   string-width@4.2.3:
     dependencies:

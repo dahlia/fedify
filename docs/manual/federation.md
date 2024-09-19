@@ -57,11 +57,7 @@ available in Deno runtime).
 As a separate package, [@fedify/redis] provides [`RedisKvStore`] class, which is
 a Redis-backed implementation for production use.
 
-You can define your own `KvStore` implementation if you want to use a different
-key-value store.[^1]
-
-[^1]: We are welcome to contributions of `KvStore` implementations for other
-      key-value stores.
+Further details are explained in the [*Key–value store* section](./kv.md).
 
 [@fedify/redis]: https://github.com/dahlia/fedify-redis
 [`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore

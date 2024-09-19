@@ -1,3 +1,4 @@
+import { transformerTwoslash } from "@shikijs/vitepress-twoslash";
 import { Presets, SingleBar } from "cli-progress";
 import abbr from "markdown-it-abbr";
 import deflist from "markdown-it-deflist";
@@ -6,7 +7,6 @@ import { jsrRef } from "markdown-it-jsr-ref";
 import process from "node:process";
 import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
-import { transformerTwoslash } from "@shikijs/vitepress-twoslash";
 
 const progress = new SingleBar({}, Presets.shades_classic);
 let started = false;
@@ -75,6 +75,7 @@ const MANUAL = {
     { text: "Access control", link: "/manual/access-control.md" },
     { text: "NodeInfo", link: "/manual/nodeinfo.md" },
     { text: "Pragmatics", link: "/manual/pragmatics.md" },
+    { text: "Key–value store", link: "/manual/kv.md" },
     { text: "Integration", link: "/manual/integration.md" },
     { text: "Testing", link: "/manual/test.md" },
     { text: "Logging", link: "/manual/log.md" },
@@ -216,9 +217,9 @@ export default withMermaid(defineConfig({
             ],
             jsx: ["react-jsx"],
             jsxImportSource: "hono/jsx",
-          }
-        }
-      })
+          },
+        },
+      }),
     ],
     config: (md) => {
       md.use(abbr);
