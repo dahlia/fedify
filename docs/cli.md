@@ -215,7 +215,68 @@ Note {
 }
 ~~~~
 
+### Looking up an actor by handle
+
+You can also look up an actor by its handle or URL.  For example, the below
+command looks up an actor with the given handle:
+
+~~~~ sh
+fedify lookup @fedify-example@fedify-blog.deno.dev
+~~~~
+
+The output will be like the below:
+
+~~~~
+Person {
+  id: URL "https://fedify-blog.deno.dev/users/fedify-example",
+  name: "Fedify Example Blog",
+  published: 2024-03-03T13:18:11.857384756Z,
+  summary: "This blog is powered by Fedify, a fediverse server framework.",
+  url: URL "https://fedify-blog.deno.dev/",
+  preferredUsername: "fedify-example",
+  publicKey: CryptographicKey {
+    id: URL "https://fedify-blog.deno.dev/users/fedify-example#main-key",
+    owner: URL "https://fedify-blog.deno.dev/users/fedify-example",
+    publicKey: CryptoKey {
+      type: "public",
+      extractable: true,
+      algorithm: {
+        name: "RSASSA-PKCS1-v1_5",
+        modulusLength: 4096,
+        publicExponent: Uint8Array(3) [ 1, 0, 1 ],
+        hash: { name: "SHA-256" }
+      },
+      usages: [ "verify" ]
+    }
+  },
+  inbox: URL "https://fedify-blog.deno.dev/users/fedify-example/inbox",
+  outbox: URL "https://fedify-blog.deno.dev/users/fedify-example/outbox",
+  following: URL "https://fedify-blog.deno.dev/users/fedify-example/following",
+  followers: URL "https://fedify-blog.deno.dev/users/fedify-example/followers",
+  endpoints: Endpoints { sharedInbox: URL "https://fedify-blog.deno.dev/inbox" },
+  discoverable: true,
+  suspended: false,
+  memorial: false,
+  indexable: true
+}
+~~~~
+
+You can omit the `@` prefix when looking up an actor by handle:
+
+~~~~ sh
+fedify lookup fedify-example@fedify-blog.deno.dev
+~~~~
+
+Or you can look up an actor by `acct:` URL:
+
+~~~~ sh
+fedify lookup acct:fedify-example@fedify-blog.deno.dev
+~~~~
+
 ### `-c`/`--compact`: Compact JSON-LD
+
+> [!NOTE]
+> This option is mutually exclusive with `-e`/`--expanded` and `-r`/`--raw`.
 
 You can also output the object in the [compacted JSON-LD] format by using the
 `-c`/`--compact` option:
@@ -263,6 +324,9 @@ The output will be like the below:
 [compacted JSON-LD]: https://www.w3.org/TR/json-ld/#compacted-document-form
 
 ### `-e`/`--expanded`: Expanded JSON-LD
+
+> [!NOTE]
+> This option is mutually exclusive with `-c`/`--compact` and `-r`/`--raw`.
 
 You can also output the object in the [expanded JSON-LD] format by using the
 `-e`/`--expanded` option:
@@ -378,62 +442,104 @@ The output will be like the below:
 
 [expanded JSON-LD]: https://www.w3.org/TR/json-ld/#expanded-document-form
 
-### Looking up an actor by handle
+### `-r`/`--raw`: Raw JSON
 
-You can also look up an actor by its handle or URL.  For example, the below
-command looks up an actor with the given handle:
+*This option is available since Fedify 0.15.0.*
+
+> [!NOTE]
+> This option is mutually exclusive with `-c`/`--compact` and `-e`/`--expanded`.
+
+You can also output the fetched object in the raw JSON format by using
+the `-r`/`--raw` option:
 
 ~~~~ sh
-fedify lookup @fedify-example@fedify-blog.deno.dev
+fedify lookup --raw https://todon.eu/@hongminhee/112341925069749583
 ~~~~
 
 The output will be like the below:
 
-~~~~
-Person {
-  id: URL "https://fedify-blog.deno.dev/users/fedify-example",
-  name: "Fedify Example Blog",
-  published: 2024-03-03T13:18:11.857384756Z,
-  summary: "This blog is powered by Fedify, a fediverse server framework.",
-  url: URL "https://fedify-blog.deno.dev/",
-  preferredUsername: "fedify-example",
-  publicKey: CryptographicKey {
-    id: URL "https://fedify-blog.deno.dev/users/fedify-example#main-key",
-    owner: URL "https://fedify-blog.deno.dev/users/fedify-example",
-    publicKey: CryptoKey {
-      type: "public",
-      extractable: true,
-      algorithm: {
-        name: "RSASSA-PKCS1-v1_5",
-        modulusLength: 4096,
-        publicExponent: Uint8Array(3) [ 1, 0, 1 ],
-        hash: { name: "SHA-256" }
+~~~~ json
+{
+  "@context": [
+    "https://www.w3.org/ns/activitystreams",
+    {
+      "ostatus": "http://ostatus.org#",
+      "atomUri": "ostatus:atomUri",
+      "inReplyToAtomUri": "ostatus:inReplyToAtomUri",
+      "conversation": "ostatus:conversation",
+      "sensitive": "as:sensitive",
+      "toot": "http://joinmastodon.org/ns#",
+      "votersCount": "toot:votersCount",
+      "blurhash": "toot:blurhash",
+      "focalPoint": {
+        "@container": "@list",
+        "@id": "toot:focalPoint"
       },
-      usages: [ "verify" ]
+      "Hashtag": "as:Hashtag"
     }
+  ],
+  "id": "https://todon.eu/users/hongminhee/statuses/112341925069749583",
+  "type": "Note",
+  "summary": null,
+  "inReplyTo": null,
+  "published": "2024-04-27T07:08:57Z",
+  "url": "https://todon.eu/@hongminhee/112341925069749583",
+  "attributedTo": "https://todon.eu/users/hongminhee",
+  "to": [
+    "https://www.w3.org/ns/activitystreams#Public"
+  ],
+  "cc": [
+    "https://todon.eu/users/hongminhee/followers"
+  ],
+  "sensitive": false,
+  "atomUri": "https://todon.eu/users/hongminhee/statuses/112341925069749583",
+  "inReplyToAtomUri": null,
+  "conversation": "tag:todon.eu,2024-04-27:objectId=90184788:objectType=Conversation",
+  "content": "<p>I&#39;m working on adding a CLI toolchain to <a href=\"https://todon.eu/tags/Fedify\" class=\"mention hashtag\" rel=\"tag\">#<span>Fedify</span></a> to help with debugging.  The first feature I implemented is the ActivityPub object lookup.</p><p>Here&#39;s a demo.</p><p><a href=\"https://todon.eu/tags/fedidev\" class=\"mention hashtag\" rel=\"tag\">#<span>fedidev</span></a> <a href=\"https://todon.eu/tags/ActivityPub\" class=\"mention hashtag\" rel=\"tag\">#<span>ActivityPub</span></a></p>",
+  "contentMap": {
+    "en": "<p>I&#39;m working on adding a CLI toolchain to <a href=\"https://todon.eu/tags/Fedify\" class=\"mention hashtag\" rel=\"tag\">#<span>Fedify</span></a> to help with debugging.  The first feature I implemented is the ActivityPub object lookup.</p><p>Here&#39;s a demo.</p><p><a href=\"https://todon.eu/tags/fedidev\" class=\"mention hashtag\" rel=\"tag\">#<span>fedidev</span></a> <a href=\"https://todon.eu/tags/ActivityPub\" class=\"mention hashtag\" rel=\"tag\">#<span>ActivityPub</span></a></p>"
   },
-  inbox: URL "https://fedify-blog.deno.dev/users/fedify-example/inbox",
-  outbox: URL "https://fedify-blog.deno.dev/users/fedify-example/outbox",
-  following: URL "https://fedify-blog.deno.dev/users/fedify-example/following",
-  followers: URL "https://fedify-blog.deno.dev/users/fedify-example/followers",
-  endpoints: Endpoints { sharedInbox: URL "https://fedify-blog.deno.dev/inbox" },
-  discoverable: true,
-  suspended: false,
-  memorial: false,
-  indexable: true
+  "attachment": [
+    {
+      "type": "Document",
+      "mediaType": "video/mp4",
+      "url": "https://todon.eu/system/media_attachments/files/112/341/916/300/016/369/original/f83659866f94054f.mp4",
+      "name": "The demo video on my terminal",
+      "blurhash": "U87_4lWB_3WBt7bHazWV~qbHaybFozj[ayfj",
+      "width": 1092,
+      "height": 954
+    }
+  ],
+  "tag": [
+    {
+      "type": "Hashtag",
+      "href": "https://todon.eu/tags/fedify",
+      "name": "#fedify"
+    },
+    {
+      "type": "Hashtag",
+      "href": "https://todon.eu/tags/fedidev",
+      "name": "#fedidev"
+    },
+    {
+      "type": "Hashtag",
+      "href": "https://todon.eu/tags/activitypub",
+      "name": "#activitypub"
+    }
+  ],
+  "replies": {
+    "id": "https://todon.eu/users/hongminhee/statuses/112341925069749583/replies",
+    "type": "Collection",
+    "first": {
+      "type": "CollectionPage",
+      "next": "https://todon.eu/users/hongminhee/statuses/112341925069749583/replies?min_id=112343493232608516&page=true",
+      "partOf": "https://todon.eu/users/hongminhee/statuses/112341925069749583/replies",
+      "items": [
+        "https://todon.eu/users/hongminhee/statuses/112343493232608516"
+      ]
+    }
+  }
 }
-~~~~
-
-You can omit the `@` prefix when looking up an actor by handle:
-
-~~~~ sh
-fedify lookup fedify-example@fedify-blog.deno.dev
-~~~~
-
-Or you can look up an actor by `acct:` URL:
-
-~~~~ sh
-fedify lookup acct:fedify-example@fedify-blog.deno.dev
 ~~~~
 
 ### `-a`/`--authorized-fetch`: Authorized fetch
@@ -730,3 +836,5 @@ To enable Zsh completions add the following line to your profile file
 ~~~~ zsh
 source <(fedify completions zsh)
 ~~~~
+
+<!-- cSpell: ignore mentio fedidev Indieweb noreferre tchambers ostatus blurhash todon HaybFozj ayfj serveo psub -->
