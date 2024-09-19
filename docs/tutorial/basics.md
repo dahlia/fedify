@@ -15,7 +15,7 @@ ActivityPub protocol and the Fedify framework, such as actors, sending and
 receiving activities, and the inbox.
 
 This tutorial will not use the quick start project template created by the
-[`fedify init`](./cli.md#fedify-init-initializing-a-fedify-project) command.
+[`fedify init`](../cli.md#fedify-init-initializing-a-fedify-project) command.
 Instead, we will start from scratch to understand how the Fedify framework
 works without any boilerplate code.
 
@@ -306,7 +306,7 @@ need to share any context data here.
 > need to share any context data, but it can be any type if you need to share
 > context data.
 >
-> See [*`TContextData`* section](./manual/federation.md#tcontextdata) for more
+> See [*`TContextData`* section](../manual/federation.md#tcontextdata) for more
 > details.
 
 The `Federation` object is now ready to handle incoming requests.  Let's move on
@@ -551,7 +551,7 @@ this in the next section.
 
 > [!TIP]
 > If you are curious about the actor dispatcher further, see the
-> [*Actor dispatcher* section](./manual/actor.md) in the manual.
+> [*Actor dispatcher* section](../manual/actor.md) in the manual.
 
 [^3]: It assumes that you have [curl] installed on your system.  If you don't
       have curl, you need to install it first.
@@ -564,12 +564,13 @@ Exposing the server to the public internet
 
 To expose the server to the public internet, generally, you need a proper domain
 name configured with a DNS record pointing to your server's IP address.
-However, for local development, you can use the `fedify tunnel` command to
-temporarily expose your server to the public internet.
+However, for local development, you can use the [`fedify
+tunnel`](../cli.md#fedify-tunnel-exposing-a-local-http-server-to-the-public-internet)
+command to temporarily expose your server to the public internet.
 
 To use `fedify tunnel`, first make sure you have the `fedify` command installed.
 If you haven't installed it yet, please follow the installation instructions in
-the [*`fedify`: CLI toolchain* section](./cli.md#installation).
+the [*`fedify`: CLI toolchain* section](../cli.md#installation).
 
 After installing the `fedify` command, you can expose your server to the public
 internet by running the following command (note that you need to run this
@@ -697,7 +698,7 @@ ActivityPub servers because our server doesn't accept follow requests yet.
 
 > [!TIP]
 > There are alternatives to `fedify tunnel`.  See also the [*Exposing a local
-> server to the public* section](./manual/test.md#exposing-a-local-server-to-the-public)
+> server to the public* section](../manual/test.md#exposing-a-local-server-to-the-public)
 > in the manual for more details.
 
 [x-forwarded-fetch]: https://github.com/dahlia/x-forwarded-fetch
@@ -790,6 +791,10 @@ Person {
 
 However, the server doesn't send an accept activity back to the sender yet.
 We will cover this in the next section.
+
+> [!TIP]
+> If you are curious about the inbox listener further, see the
+> [*Inbox listeners* section](../manual/inbox.md) in the manual.
 
 [inbox]: https://www.w3.org/TR/activitypub/#inbox
 
@@ -1049,6 +1054,11 @@ Alright, we have the public key of the actor *me*.  Let's move on to the next
 section to send an accept activity back to the sender when we receive a follow
 request.
 
+> [!TIP]
+> If you are curious about the key pairs dispatcher further, see the
+> [*Public keys of an `Actor`*
+> section](../manual/actor.md#public-keys-of-an-actor) in the manual.
+
 
 Sending an `Accept` activity
 ----------------------------
@@ -1103,6 +1113,10 @@ Restart the server, and make a follow request from your Mastodon account to
 the actor *me*.  You should see the server immediately accept the follow
 request.
 
+> [!TIP]
+> If you are curious about sending activities further, see the [*Sending
+> activities* section](../manual/send.md) in the manual.
+
 
 Listing followers
 -----------------
@@ -1111,7 +1125,7 @@ The server should list the actor's followers on the home page.  To do this,
 we need to store the followers in the key-value store.  We will store each
 `Follow` activity's ID as the key and the follower's actor ID as the value:
 
-~~~~ typescript{15-16} twoslash
+~~~~ typescript{16-17} twoslash
 import { Accept, type Federation, Follow } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 const kv = await Deno.openKv();
