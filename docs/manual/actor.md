@@ -30,7 +30,7 @@ The below example shows how to register an actor dispatcher:
 // @noErrors: 2451 2345
 import type { Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
-interface User { }
+interface User { username: string }
 const user = null as User | null;
 // ---cut-before---
 import { createFederation, Person } from "@fedify/fedify";
@@ -39,19 +39,19 @@ const federation = createFederation({
   // Omitted for brevity; see the related section for details.
 });
 
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  // Work with the database to find the actor by the handle.
+federation.setActorDispatcher("/actors/{actorId}", async (ctx, actorId) => {
+  // Work with the database to find the actor by the actorId.
   if (user == null) return null;  // Return null if the actor is not found.
   return new Person({
-    id: ctx.getActorUri(handle),
-    preferredUsername: handle,
+    id: ctx.getActorUri(actorId),
+    preferredUsername: user.username,
     // Many more properties; see the next section for details.
   });
 });
 ~~~~
 
 In the above example, the `~Federation.setActorDispatcher()` method registers
-an actor dispatcher for the `/users/{handle}` path.  This pattern syntax
+an actor dispatcher for the `/actors/{actorId}` path.  This pattern syntax
 follows the [URI Template] specification.
 
 > [!TIP]
@@ -81,8 +81,7 @@ the dereferenceable URI of the actor by its bare handle.
 ### `preferredUsername`
 
 The `preferredUsername` property is the bare handle of the actor.  For the most
-cases, it is okay to set the `preferredUsername` property to the string taken
-from the `handle` parameter of the actor dispatcher.
+cases, this is set to `username` property to the `User` database record.
 
 ### `name`
 
@@ -188,22 +187,22 @@ dispatch appropriate key pairs by the actor's bare handle:
 ~~~~ typescript{4-6,10-14,17-26} twoslash
 import { type Federation, Person } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
-interface User {}
+interface User { username: string }
 const user = null as User | null;
 const publicKey1 = null as unknown as CryptoKey;
 const privateKey1 = null as unknown as CryptoKey;
 const publicKey2 = null as unknown as CryptoKey;
 const privateKey2 = null as unknown as CryptoKey;
 // ---cut-before---
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  // Work with the database to find the actor by the handle.
+federation.setActorDispatcher("/actors/{actorId}", async (ctx, actorId) => {
+  // Work with the database to find the actor by the actorId.
   if (user == null) return null;  // Return null if the actor is not found.
   // Context.getActorKeyPairs() method dispatches the key pairs of an actor
   // by the handle, and returns an array of key pairs in various formats:
   const keys = await ctx.getActorKeyPairs(handle);
   return new Person({
-    id: ctx.getActorUri(handle),
-    preferredUsername: handle,
+    id: ctx.getActorUri(actorId),
+    preferredUsername: user.username,
     // For the publicKey property, we only use first CryptographicKey:
     publicKey: keys[0].cryptographicKey,
     // For the assertionMethods property, we use all Multikey instances:
@@ -211,8 +210,8 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // Many more properties; see the previous section for details.
   });
 })
-  .setKeyPairsDispatcher(async (ctx, handle) => {
-    // Work with the database to find the key pair by the handle.
+  .setKeyPairsDispatcher(async (ctx, actorId) => {
+    // Work with the database to find the key pair by the actorId.
     if (user == null) return [];  // Return null if the key pair is not found.
     // Return the loaded key pair.  See the below example for details.
     return [
@@ -238,18 +237,18 @@ this document, but here's a simple example of how to generate key pairs and
 store them in a [Deno KV] database in form of JWK:
 
 ~~~~ typescript twoslash
-const handle: string = "";
+const actorId: string = "";
 // ---cut-before---
 import { generateCryptoKeyPair, exportJwk } from "@fedify/fedify";
 
 const kv = await Deno.openKv();
 const rsaPair = await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
 const ed25519Pair = await generateCryptoKeyPair("Ed25519");
-await kv.set(["keypair", "rsa", handle], {
+await kv.set(["keypair", "rsa", actorId], {
   privateKey: await exportJwk(rsaPair.privateKey),
   publicKey: await exportJwk(rsaPair.publicKey),
 });
-await kv.set(["keypair", "ed25519", handle], {
+await kv.set(["keypair", "ed25519", actorId], {
   privateKey: await exportJwk(ed25519Pair.privateKey),
   publicKey: await exportJwk(ed25519Pair.publicKey),
 });
@@ -291,14 +290,14 @@ interface KeyPairEntry {
 }
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  .setActorDispatcher("/actors/{actorId}", async (ctx, actorId) => {
     // Omitted for brevity; see the previous example for details.
   })
-  .setKeyPairsDispatcher(async (ctx, handle) => {
+  .setKeyPairsDispatcher(async (ctx, actorId) => {
     const kv = await Deno.openKv();
     const result: CryptoKeyPair[] = [];
     const rsaPair = await kv.get<KeyPairEntry>(
-      ["keypair", "rsa", handle],
+      ["keypair", "rsa", actorId],
     );
     if (rsaPair?.value != null) {
       result.push({
@@ -307,7 +306,7 @@ federation
       });
     }
     const ed25519Pair = await kv.get<KeyPairEntry>(
-      ["keypair", "ed25519", handle],
+      ["keypair", "ed25519", actorId],
     );
     if (ed25519Pair?.value != null) {
       result.push({
@@ -335,11 +334,11 @@ The below example shows how to construct an actor URI:
 import type { Context } from "@fedify/fedify";
 const ctx = null as unknown as Context<void>;
 // ---cut-before---
-ctx.getActorUri("john_doe")
+ctx.getActorUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4") // john_doe
 ~~~~
 
 In the above example, the `Context.getActorUri()` method generates the
-dereferenceable URI of the actor with the bare handle `"john_doe"`.
+dereferenceable URI of the actor with the bare handle `"2bd304f9-36b3-44f0-bf0b-29124aafcbb4"`.
 
 > [!NOTE]
 >
@@ -367,7 +366,7 @@ an actor handle mapper through the `~ActorCallbackSetters.mapHandle()` method:
 // @noErrors: 2391 2345
 import { type Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
-interface User { uuid: string; }
+interface User { uuid: string; username: string }
 /**
  * It's a hypothetical function that finds a user by the UUID.
  * @param uuid The UUID of the user.
@@ -382,10 +381,10 @@ function findUserByUuid(uuid: string): User;
 function findUserByUsername(username: string): User;
 // ---cut-before---
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  .setActorDispatcher("/actors/{actorId}", async (ctx, actorId) => {
     // Since we map a WebFinger handle to the corresponding user's UUID below,
-    // the `handle` parameter is the user's UUID, not the WebFinger username:
-    const user = await findUserByUuid(handle);
+    // the `actorId` parameter is the user's UUID, not the WebFinger username:
+    const user = await findUserByUuid(actorId);
     // Omitted for brevity; see the previous example for details.
   })
   .mapHandle(async (ctx, username) => {
