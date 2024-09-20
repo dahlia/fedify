@@ -59,12 +59,12 @@ export interface Context<TContextData> {
   getNodeInfoUri(): URL;
 
   /**
-   * Builds the URI of an actor with the given handle.
-   * @param handle The actor's handle.
+   * Builds the URI of an actor with the given identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor's URI.
    * @throws {RouterError} If no actor dispatcher is available.
    */
-  getActorUri(handle: string): URL;
+  getActorUri(identifier: string): URL;
 
   /**
    * Builds the URI of an object with the given class and values.
@@ -82,12 +82,12 @@ export interface Context<TContextData> {
   ): URL;
 
   /**
-   * Builds the URI of an actor's outbox with the given handle.
-   * @param handle The actor's handle.
+   * Builds the URI of an actor's outbox with the given identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor's outbox URI.
    * @throws {RouterError} If no outbox dispatcher is available.
    */
-  getOutboxUri(handle: string): URL;
+  getOutboxUri(identifier: string): URL;
 
   /**
    * Builds the URI of the shared inbox.
@@ -97,56 +97,58 @@ export interface Context<TContextData> {
   getInboxUri(): URL;
 
   /**
-   * Builds the URI of an actor's inbox with the given handle.
-   * @param handle The actor's handle.
+   * Builds the URI of an actor's inbox with the given identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor's inbox URI.
    * @throws {RouterError} If no inbox listener is available.
    */
-  getInboxUri(handle: string): URL;
+  getInboxUri(identifier: string): URL;
 
   /**
-   * Builds the URI of an actor's following collection with the given handle.
-   * @param handle The actor's handle.
+   * Builds the URI of an actor's following collection with the given
+   * identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor's following collection URI.
    * @throws {RouterError} If no following collection is available.
    */
-  getFollowingUri(handle: string): URL;
+  getFollowingUri(identifier: string): URL;
 
   /**
-   * Builds the URI of an actor's followers collection with the given handle.
-   * @param handle The actor's handle.
+   * Builds the URI of an actor's followers collection with the given
+   * identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor's followers collection URI.
    * @throws {RouterError} If no followers collection is available.
    */
-  getFollowersUri(handle: string): URL;
+  getFollowersUri(identifier: string): URL;
 
   /**
-   * Builds the URI of an actor's liked collection with the given handle.
-   * @param handle The actor's handle.
+   * Builds the URI of an actor's liked collection with the given identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor's liked collection URI.
    * @throws {RouterError} If no liked collection is available.
    * @since 0.11.0
    */
-  getLikedUri(handle: string): URL;
+  getLikedUri(identifier: string): URL;
 
   /**
-   * Builds the URI of an actor's featured collection with the given handle.
-   * @param handle The actor's handle.
+   * Builds the URI of an actor's featured collection with the given identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor's featured collection URI.
    * @throws {RouterError} If no featured collection is available.
    * @since 0.11.0
    */
-  getFeaturedUri(handle: string): URL;
+  getFeaturedUri(identifier: string): URL;
 
   /**
    * Builds the URI of an actor's featured tags collection with the given
-   * handle.
-   * @param handle The actor's handle.
+   * identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor's featured tags collection URI.
    * @throws {RouterError} If no featured tags collection is available.
    * @since 0.11.0
    */
-  getFeaturedTagsUri(handle: string): URL;
+  getFeaturedTagsUri(identifier: string): URL;
 
   /**
    * Determines the type of the URI and extracts the associated data.
@@ -159,24 +161,29 @@ export interface Context<TContextData> {
 
   /**
    * Gets the key pairs for an actor.
-   * @param handle The actor's handle.
+   * @param identifier The actor's identifier.
    * @returns An async iterable of the actor's key pairs.  It can be empty.
    * @since 0.10.0
    */
-  getActorKeyPairs(handle: string): Promise<ActorKeyPair[]>;
+  getActorKeyPairs(identifier: string): Promise<ActorKeyPair[]>;
 
   /**
    * Gets an authenticated {@link DocumentLoader} for the given identity.
    * Note that an authenticated document loader intentionally does not cache
    * the fetched documents.
    * @param identity The identity to get the document loader for.
-   *                 The actor's handle.
+   *                 The actor's identifier or username.
    * @returns The authenticated document loader.
    * @throws {Error} If the identity is not valid.
    * @throws {TypeError} If the key is invalid or unsupported.
    * @since 0.4.0
    */
-  getDocumentLoader(identity: { handle: string }): Promise<DocumentLoader>;
+  getDocumentLoader(
+    identity:
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
+  ): Promise<DocumentLoader>;
 
   /**
    * Gets an authenticated {@link DocumentLoader} for the given identity.
@@ -236,13 +243,19 @@ export interface Context<TContextData> {
 
   /**
    * Sends an activity to recipients' inboxes.
-   * @param sender The sender's handle or the sender's key pair(s).
+   * @param sender The sender's identifier or the sender's username or
+   *               the sender's key pair(s).
    * @param recipients The recipients of the activity.
    * @param activity The activity to send.
    * @param options Options for sending the activity.
    */
   sendActivity(
-    sender: SenderKeyPair | SenderKeyPair[] | { handle: string },
+    sender:
+      | SenderKeyPair
+      | SenderKeyPair[]
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
     recipients: Recipient | Recipient[],
     activity: Activity,
     options?: SendActivityOptions,
@@ -250,7 +263,7 @@ export interface Context<TContextData> {
 
   /**
    * Sends an activity to the outboxes of the sender's followers.
-   * @param sender The sender's handle.
+   * @param sender The sender's identifier or the sender's username.
    * @param recipients In this case, it must be `"followers"`.
    * @param activity The activity to send.
    * @param options Options for sending the activity.
@@ -258,7 +271,7 @@ export interface Context<TContextData> {
    * @since 0.14.0
    */
   sendActivity(
-    sender: { handle: string },
+    sender: { identifier: string } | { username: string } | { handle: string },
     recipients: "followers",
     activity: Activity,
     options?: SendActivityOptions,
@@ -280,13 +293,13 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
   readonly url: URL;
 
   /**
-   * Gets an {@link Actor} object for the given handle.
-   * @param handle The actor's handle.
+   * Gets an {@link Actor} object for the given identifier.
+   * @param identifier The actor's identifier.
    * @returns The actor object, or `null` if the actor is not found.
    * @throws {Error} If no actor dispatcher is available.
    * @since 0.7.0
    */
-  getActor(handle: string): Promise<Actor | null>;
+  getActor(identifier: string): Promise<Actor | null>;
 
   /**
    * Gets an object of the given class with the given values.
@@ -346,13 +359,19 @@ export interface InboxContext<TContextData> extends Context<TContextData> {
    * Integrity Proofs will not be added.  Therefore, if the activity is not
    * signed (i.e., it has neither Linked Data Signatures nor Object Integrity
    * Proofs), the recipient probably will not trust the activity.
-   * @param forwarder The forwarder's handle or the forwarder's key pair(s).
+   * @param forwarder The forwarder's identifier or the forwarder's username
+   *                  or the forwarder's key pair(s).
    * @param recipients The recipients of the activity.
    * @param options Options for forwarding the activity.
    * @since 1.0.0
    */
   forwardActivity(
-    forwarder: SenderKeyPair | SenderKeyPair[] | { handle: string },
+    forwarder:
+      | SenderKeyPair
+      | SenderKeyPair[]
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
     recipients: Recipient | Recipient[],
     options?: ForwardActivityOptions,
   ): Promise<void>;
@@ -364,13 +383,16 @@ export interface InboxContext<TContextData> extends Context<TContextData> {
    * Integrity Proofs will not be added.  Therefore, if the activity is not
    * signed (i.e., it has neither Linked Data Signatures nor Object Integrity
    * Proofs), the recipient probably will not trust the activity.
-   * @param forwarder The forwarder's handle.
+   * @param forwarder The forwarder's identifier or the forwarder's username.
    * @param recipients In this case, it must be `"followers"`.
    * @param options Options for forwarding the activity.
    * @since 1.0.0
    */
   forwardActivity(
-    forwarder: { handle: string },
+    forwarder:
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
     recipients: "followers",
     options?: ForwardActivityOptions,
   ): Promise<void>;
@@ -383,49 +405,88 @@ export type ParseUriResult =
   /**
    * The case of an actor URI.
    */
-  | { type: "actor"; handle: string }
+  | {
+    readonly type: "actor";
+    readonly identifier: string;
+    readonly handle: string;
+  }
   /**
    * The case of an object URI.
    */
   | {
-    type: "object";
+    readonly type: "object";
     // deno-lint-ignore no-explicit-any
-    class: (new (...args: any[]) => Object) & { typeId: URL };
-    typeId: URL;
-    values: Record<string, string>;
+    readonly class: (new (...args: any[]) => Object) & { typeId: URL };
+    readonly typeId: URL;
+    readonly values: Record<string, string>;
   }
   /**
-   * The case of an inbox URI.  If `handle` is `undefined`,
-   * it is a shared inbox.
+   * The case of an shared inbox URI.
    */
-  | { type: "inbox"; handle?: string }
+  | {
+    readonly type: "inbox";
+    readonly identifier: undefined;
+    readonly handle: undefined;
+  }
+  /**
+   * The case of an personal inbox URI.
+   */
+  | {
+    readonly type: "inbox";
+    readonly identifier: string;
+    readonly handle: string;
+  }
   /**
    * The case of an outbox collection URI.
    */
-  | { type: "outbox"; handle: string }
+  | {
+    readonly type: "outbox";
+    readonly identifier: string;
+    readonly handle: string;
+  }
   /**
    * The case of a following collection URI.
    */
-  | { type: "following"; handle: string }
+  | {
+    readonly type: "following";
+    readonly identifier: string;
+    readonly handle: string;
+  }
   /**
    * The case of a followers collection URI.
    */
-  | { type: "followers"; handle: string }
+  | {
+    readonly type: "followers";
+    readonly identifier: string;
+    readonly handle: string;
+  }
   /**
    * The case of a liked collection URI.
    * @since 0.11.0
    */
-  | { type: "liked"; handle: string }
+  | {
+    readonly type: "liked";
+    readonly identifier: string;
+    readonly handle: string;
+  }
   /**
    * The case of a featured collection URI.
    * @since 0.11.0
    */
-  | { type: "featured"; handle: string }
+  | {
+    readonly type: "featured";
+    readonly identifier: string;
+    readonly handle: string;
+  }
   /**
    * The case of a featured tags collection URI.
    * @since 0.11.0
    */
-  | { type: "featuredTags"; handle: string };
+  | {
+    readonly type: "featuredTags";
+    readonly identifier: string;
+    readonly handle: string;
+  };
 
 /**
  * Options for {@link Context.sendActivity} method.

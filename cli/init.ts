@@ -845,11 +845,11 @@ const federation = createFederation({
   queue: ${mqDesc.object},
 });
 
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
   return new Person({
-    id: ctx.getActorUri(handle),
-    preferredUsername: handle,
-    name: handle,
+    id: ctx.getActorUri(identifier),
+    preferredUsername: identifier,
+    name: identifier,
   });
 });
 

@@ -42,11 +42,11 @@ import type { Actor, Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 /**
  * A hypothetical function that checks if the user blocks the actor.
- * @param handle The handle of the user to check if the actor is blocked.
+ * @param userId The ID of the user to check if the actor is blocked.
  * @param signedKeyOwner The actor who signed the request.
  * @returns `true` if the actor is blocked; otherwise, `false`.
  */
-async function isBlocked(handle: string, signedKeyOwner: Actor): Promise<boolean> {
+async function isBlocked(userId: string, signedKeyOwner: Actor): Promise<boolean> {
   return false;
 }
 // ---cut-before---
@@ -54,12 +54,12 @@ import { federation } from "./your-federation.ts";
 import { isBlocked } from "./your-blocklist.ts";
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
     // Omitted for brevity; see the related section for details.
   })
-  .authorize(async (ctx, handle, signedKey, signedKeyOwner) => {
+  .authorize(async (ctx, identifier, signedKey, signedKeyOwner) => {
     if (signedKeyOwner == null) return false;
-    return !await isBlocked(handle, signedKeyOwner);
+    return !await isBlocked(identifier, signedKeyOwner);
   });
 ~~~~
 
@@ -74,11 +74,11 @@ import type { Actor, Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 /**
  * A hypothetical function that checks if the user blocks the actor.
- * @param handle The handle of the user to check if the actor is blocked.
+ * @param userId The ID of the user to check if the actor is blocked.
  * @param signedKeyOwner The actor who signed the request.
  * @returns `true` if the actor is blocked; otherwise, `false`.
  */
-async function isBlocked(handle: string, signedKeyOwner: Actor): Promise<boolean> {
+async function isBlocked(userId: string, signedKeyOwner: Actor): Promise<boolean> {
   return false;
 }
 // ---cut-before---
@@ -86,12 +86,12 @@ import { federation } from "./your-federation.ts";
 import { isBlocked } from "./your-blocklist.ts";
 
 federation
-  .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle) => {
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier) => {
     // Omitted for brevity; see the related section for details.
   })
-  .authorize(async (ctx, handle, signedKey, signedKeyOwner) => {
+  .authorize(async (ctx, identifier, signedKey, signedKeyOwner) => {
     if (signedKeyOwner == null) return false;
-    return !await isBlocked(handle, signedKeyOwner);
+    return !await isBlocked(identifier, signedKeyOwner);
   });
 ~~~~
 
@@ -126,10 +126,10 @@ interface Post {
 }
 /**
  * A hypothetical function that gets posts from the database.
- * @param handle The handle of the user to get posts.
+ * @param userId The ID of the user to get posts.
  * @returns The posts of the user.
  */
-async function getPosts(handle: string): Promise<Post[]> {
+async function getPosts(userId: string): Promise<Post[]> {
   return [];
 }
 /**
@@ -145,8 +145,8 @@ import { federation } from "./your-federation.ts";
 import { getPosts, toCreate } from "./your-model.ts";
 
 federation
-  .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle) => {
-    const posts = await getPosts(handle);  // Get posts from the database
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier) => {
+    const posts = await getPosts(identifier);  // Get posts from the database
     const keyOwner = await ctx.getSignedKeyOwner();  // Get the actor who signed the request
     if (keyOwner == null) return { items: [] };  // Return an empty array if the actor is not found
     const items = posts
@@ -155,3 +155,5 @@ federation
     return { items };
   });
 ~~~~
+
+<!-- cSpell: ignore blocklist -->

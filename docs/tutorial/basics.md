@@ -362,8 +362,8 @@ from other servers.  The actor dispatcher is a function that is called when
 an incoming activity is addressed to an actor on the server.
 
 As mentioned earlier, there will be only one actor (i.e., account) on
-the server.  We will name its handle as *me* (you can choose any handle you
-like).
+the server.  We will name its identifier as *me* (you can choose any identifier
+you like).
 
 Let's create an actor dispatcher for our server:
 
@@ -376,13 +376,13 @@ const federation = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  if (handle !== "me") return null;  // Other than "me" is not found.
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+  if (identifier !== "me") return null;  // Other than "me" is not found.
   return new Person({
-    id: ctx.getActorUri(handle),
+    id: ctx.getActorUri(identifier),
     name: "Me",  // Display name
     summary: "This is me!",  // Bio
-    preferredUsername: handle,  // Bare handle
+    preferredUsername: identifier,  // Bare handle
     url: new URL("/", ctx.url),
   });
 });
@@ -401,13 +401,13 @@ const federation = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  if (handle !== "me") return null;  // Other than "me" is not found.
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+  if (identifier !== "me") return null;  // Other than "me" is not found.
   return new Person({
-    id: ctx.getActorUri(handle),
+    id: ctx.getActorUri(identifier),
     name: "Me",  // Display name
     summary: "This is me!",  // Bio
-    preferredUsername: handle,  // Bare handle
+    preferredUsername: identifier,  // Bare handle
     url: new URL("/", ctx.url),
   });
 });
@@ -428,13 +428,13 @@ const federation = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  if (handle !== "me") return null;  // Other than "me" is not found.
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+  if (identifier !== "me") return null;  // Other than "me" is not found.
   return new Person({
-    id: ctx.getActorUri(handle),
+    id: ctx.getActorUri(identifier),
     name: "Me",  // Display name
     summary: "This is me!",  // Bio
-    preferredUsername: handle,  // Bare handle
+    preferredUsername: identifier,  // Bare handle
     url: new URL("/", ctx.url),
   });
 });
@@ -452,9 +452,9 @@ serve({
 In the above code, we use the `Federation.setActorDispatcher()` method to set
 an actor dispatcher for the server.  The first argument is the path pattern
 for the actor, and the second argument is a callback function that takes
-a `Context` object and the actor's handle.  The callback function should return
-an `Actor` object or `null` if the actor is not found.  In this case, we return
-a `Person` object for the actor *me*.
+a `Context` object and the actor's identifier.  The callback function should
+return an `Actor` object or `null` if the actor is not found.  In this case,
+we return a `Person` object for the actor *me*.
 
 Alright, we have an actor on the server.  Let's see if it works by querying
 WebFinger for the actor.  Run the server by executing the following command:
@@ -732,13 +732,13 @@ import { type Federation, Follow } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     if (follow.id == null || follow.actorId == null || follow.objectId == null) {
       return;
     }
     const parsed = ctx.parseUri(follow.objectId);
-    if (parsed?.type !== "actor" || parsed.handle !== "me") return;
+    if (parsed?.type !== "actor" || parsed.identifier !== "me") return;
     const follower = await follow.getActor(ctx);
     console.debug(follower);
   });
@@ -757,15 +757,15 @@ URI:
 import { type Federation, Person } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  if (handle !== "me") return null;
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+  if (identifier !== "me") return null;
   return new Person({
-    id: ctx.getActorUri(handle),
+    id: ctx.getActorUri(identifier),
     name: "Me",
     summary: "This is me!",
-    preferredUsername: handle,
+    preferredUsername: identifier,
     url: new URL("/", ctx.url),
-    inbox: ctx.getInboxUri(handle),  // Inbox URI // [!code highlight]
+    inbox: ctx.getInboxUri(identifier),  // Inbox URI // [!code highlight]
   });
 });
 ~~~~
@@ -844,23 +844,23 @@ const federation = null as unknown as Federation<void>;
 const kv = await Deno.openKv();  // Open the key-value store
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-    if (handle !== "me") return null;
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+    if (identifier !== "me") return null;
     return new Person({
-      id: ctx.getActorUri(handle),
+      id: ctx.getActorUri(identifier),
       name: "Me",
       summary: "This is me!",
-      preferredUsername: handle,
+      preferredUsername: identifier,
       url: new URL("/", ctx.url),
-      inbox: ctx.getInboxUri(handle),
+      inbox: ctx.getInboxUri(identifier),
       // The public keys of the actor; they are provided by the key pairs
       // dispatcher we define below:
-      publicKeys: (await ctx.getActorKeyPairs(handle))
+      publicKeys: (await ctx.getActorKeyPairs(identifier))
         .map(keyPair => keyPair.cryptographicKey),
     });
   })
-  .setKeyPairsDispatcher(async (ctx, handle) => {
-    if (handle != "me") return [];  // Other than "me" is not found.
+  .setKeyPairsDispatcher(async (ctx, identifier) => {
+    if (identifier != "me") return [];  // Other than "me" is not found.
     const entry = await kv.get<{
       privateKey: JsonWebKey;
       publicKey: JsonWebKey;
@@ -903,23 +903,23 @@ import { openKv } from "@deno/kv";
 const kv = await openKv("kv.db", { encodeV8, decodeV8 });
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-    if (handle !== "me") return null;
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+    if (identifier !== "me") return null;
     return new Person({
-      id: ctx.getActorUri(handle),
+      id: ctx.getActorUri(identifier),
       name: "Me",
       summary: "This is me!",
-      preferredUsername: handle,
+      preferredUsername: identifier,
       url: new URL("/", ctx.url),
-      inbox: ctx.getInboxUri(handle),
+      inbox: ctx.getInboxUri(identifier),
       // The public keys of the actor; they are provided by the key pairs
       // dispatcher we define below:
-      publicKeys: (await ctx.getActorKeyPairs(handle))
+      publicKeys: (await ctx.getActorKeyPairs(identifier))
         .map(keyPair => keyPair.cryptographicKey),
     });
   })
-  .setKeyPairsDispatcher(async (ctx, handle) => {
-    if (handle != "me") return [];  // Other than "me" is not found.
+  .setKeyPairsDispatcher(async (ctx, identifier) => {
+    if (identifier != "me") return [];  // Other than "me" is not found.
     const entry = await kv.get<{
       privateKey: JsonWebKey;
       publicKey: JsonWebKey;
@@ -960,23 +960,23 @@ import { openKv } from "@deno/kv";
 const kv = await openKv("kv.db");  // Open the key-value store
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-    if (handle !== "me") return null;
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+    if (identifier !== "me") return null;
     return new Person({
-      id: ctx.getActorUri(handle),
+      id: ctx.getActorUri(identifier),
       name: "Me",
       summary: "This is me!",
-      preferredUsername: handle,
+      preferredUsername: identifier,
       url: new URL("/", ctx.url),
-      inbox: ctx.getInboxUri(handle),
+      inbox: ctx.getInboxUri(identifier),
       // The public keys of the actor; they are provided by the key pairs
       // dispatcher we define below:
-      publicKeys: (await ctx.getActorKeyPairs(handle))
+      publicKeys: (await ctx.getActorKeyPairs(identifier))
         .map(keyPair => keyPair.cryptographicKey),
     });
   })
-  .setKeyPairsDispatcher(async (ctx, handle) => {
-    if (handle != "me") return [];  // Other than "me" is not found.
+  .setKeyPairsDispatcher(async (ctx, identifier) => {
+    if (identifier != "me") return [];  // Other than "me" is not found.
     const entry = await kv.get<{
       privateKey: JsonWebKey;
       publicKey: JsonWebKey;
@@ -1089,20 +1089,20 @@ import { Accept, type Federation, Follow } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     if (follow.id == null || follow.actorId == null || follow.objectId == null) {
       return;
     }
     const parsed = ctx.parseUri(follow.objectId);
-    if (parsed?.type !== "actor" || parsed.handle !== "me") return;
+    if (parsed?.type !== "actor" || parsed.identifier !== "me") return;
     const follower = await follow.getActor(ctx);
     if (follower == null) return;
     // Note that if a server receives a `Follow` activity, it should reply
     // with either an `Accept` or a `Reject` activity.  In this case, the
     // server automatically accepts the follow request:
     await ctx.sendActivity(
-      { handle: parsed.handle },
+      { identifier: parsed.identifier },
       follower,
       new Accept({ actor: follow.objectId, object: follow }),
     );
@@ -1131,17 +1131,17 @@ const federation = null as unknown as Federation<void>;
 const kv = await Deno.openKv();
 // ---cut-before---
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     if (follow.id == null || follow.actorId == null || follow.objectId == null) {
       return;
     }
     const parsed = ctx.parseUri(follow.objectId);
-    if (parsed?.type !== "actor" || parsed.handle !== "me") return;
+    if (parsed?.type !== "actor" || parsed.identifier !== "me") return;
     const follower = await follow.getActor(ctx);
     if (follower == null) return;
     await ctx.sendActivity(
-      { handle: parsed.handle },
+      { identifier: parsed.identifier },
       follower,
       new Accept({ actor: follow.objectId, object: follow }),
     );

@@ -45,45 +45,48 @@ export const federation = createFederation<void>({
 // `Actor` object (`Person` in this case) for a given actor URI.
 // The actor dispatch is not only used for the actor URI, but also for
 // the WebFinger resource:
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  const blog = await getBlog();
-  if (blog == null) return null;
-  else if (blog.handle !== handle) return null;
-  // A `Context<TContextData>` object has several purposes, and one of
-  // them is to provide a way to get the key pairs for the actor in various
-  // formats:
-  const keyPairs = await ctx.getActorKeyPairs(handle);
-  return new Person({
-    id: ctx.getActorUri(handle),
-    name: blog.title,
-    summary: blog.description,
-    preferredUsername: handle,
-    url: new URL("/", ctx.url),
-    published: blog.published,
-    discoverable: true,
-    suspended: false,
-    indexable: true,
-    memorial: false,
+federation.setActorDispatcher(
+  "/users/{identifier}",
+  async (ctx, identifier) => {
+    const blog = await getBlog();
+    if (blog == null) return null;
+    else if (blog.handle !== identifier) return null;
     // A `Context<TContextData>` object has several purposes, and one of
-    // them is to provide a way to generate URIs for the dispatchers and
-    // the collections:
-    outbox: ctx.getOutboxUri(handle),
-    inbox: ctx.getInboxUri(handle),
-    endpoints: new Endpoints({
-      sharedInbox: ctx.getInboxUri(),
-    }),
-    following: ctx.getFollowingUri(handle),
-    followers: ctx.getFollowersUri(handle),
-    // The `publicKey` and `assertionMethods` are used by peer servers
-    // to verify the signature of the actor:
-    publicKey: keyPairs[0].cryptographicKey,
-    assertionMethods: keyPairs.map((keyPair) => keyPair.multikey),
-  });
-})
-  .setKeyPairsDispatcher(async (_ctx, handle) => {
+    // them is to provide a way to get the key pairs for the actor in various
+    // formats:
+    const keyPairs = await ctx.getActorKeyPairs(identifier);
+    return new Person({
+      id: ctx.getActorUri(identifier),
+      name: blog.title,
+      summary: blog.description,
+      preferredUsername: identifier,
+      url: new URL("/", ctx.url),
+      published: blog.published,
+      discoverable: true,
+      suspended: false,
+      indexable: true,
+      memorial: false,
+      // A `Context<TContextData>` object has several purposes, and one of
+      // them is to provide a way to generate URIs for the dispatchers and
+      // the collections:
+      outbox: ctx.getOutboxUri(identifier),
+      inbox: ctx.getInboxUri(identifier),
+      endpoints: new Endpoints({
+        sharedInbox: ctx.getInboxUri(),
+      }),
+      following: ctx.getFollowingUri(identifier),
+      followers: ctx.getFollowersUri(identifier),
+      // The `publicKey` and `assertionMethods` are used by peer servers
+      // to verify the signature of the actor:
+      publicKey: keyPairs[0].cryptographicKey,
+      assertionMethods: keyPairs.map((keyPair) => keyPair.multikey),
+    });
+  },
+)
+  .setKeyPairsDispatcher(async (_ctx, identifier) => {
     const blog = await getBlog();
     if (blog == null) return [];
-    else if (blog.handle !== handle) return [];
+    else if (blog.handle !== identifier) return [];
     return [
       {
         publicKey: blog.publicKey,
@@ -114,12 +117,12 @@ federation.setObjectDispatcher(
 // Registers the outbox dispatcher, which is responsible for listing
 // activities in the outbox:
 federation.setOutboxDispatcher(
-  "/users/{handle}/outbox",
-  async (ctx, handle, cursor) => {
+  "/users/{identifier}/outbox",
+  async (ctx, identifier, cursor) => {
     if (cursor == null) return null;
     const blog = await getBlog();
     if (blog == null) return null;
-    else if (blog.handle !== handle) return null;
+    else if (blog.handle !== identifier) return null;
     const activities: Activity[] = [];
     const { posts, nextCursor } = await getPosts(
       undefined,
@@ -130,7 +133,7 @@ federation.setOutboxDispatcher(
       const comments = await getComments(post.uuid);
       const activity = new Create({
         id: new URL(`/posts/${post.uuid}#activity`, ctx.request.url),
-        actor: ctx.getActorUri(handle),
+        actor: ctx.getActorUri(identifier),
         to: new URL("https://www.w3.org/ns/activitystreams#Public"),
         object: toArticle(ctx, blog, post, comments),
       });
@@ -144,25 +147,25 @@ federation.setOutboxDispatcher(
 )
   // Registers the outbox counter, which is responsible for counting the
   // total number of activities in the outbox:
-  .setCounter(async (_ctx, handle) => {
+  .setCounter(async (_ctx, identifier) => {
     const blog = await getBlog();
     if (blog == null) return null;
-    else if (blog.handle !== handle) return null;
+    else if (blog.handle !== identifier) return null;
     return countPosts();
   })
   // Registers the first cursor.  The cursor value here is arbitrary, but
   // it must be parsable by the outbox dispatcher:
-  .setFirstCursor(async (_ctx, handle) => {
+  .setFirstCursor(async (_ctx, identifier) => {
     const blog = await getBlog();
     if (blog == null) return null;
-    else if (blog.handle !== handle) return null;
+    else if (blog.handle !== identifier) return null;
     // Treat the empty string as the first cursor:
     return "";
   });
 
 // Registers the inbox listeners, which are responsible for handling
 // incoming activities in the inbox:
-federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
+federation.setInboxListeners("/users/{identifier}/inbox", "/inbox")
   // The `Follow` activity is handled by adding the follower to the
   // follower list:
   .on(Follow, async (ctx, follow) => {
@@ -170,7 +173,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
     if (blog == null) return;
     if (follow.id == null || follow.objectId == null) return;
     const parsed = ctx.parseUri(follow.objectId);
-    if (parsed?.type !== "actor" || parsed.handle !== blog.handle) return;
+    if (parsed?.type !== "actor" || parsed.identifier !== blog.handle) return;
     const recipient = await follow.getActor(ctx);
     if (
       recipient == null || recipient.id == null ||
@@ -192,7 +195,7 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
     // with either an `Accept` or a `Reject` activity.  In this case, the
     // server automatically accepts the follow request:
     await ctx.sendActivity(
-      { handle: blog.handle },
+      { identifier: blog.handle },
       recipient,
       new Accept({
         id: new URL(`#accept/${handle}`, ctx.getActorUri(blog.handle)),
@@ -257,11 +260,11 @@ federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
 // Since the blog does not follow anyone, the following dispatcher is
 // implemented to return just an empty list:
 federation.setFollowingDispatcher(
-  "/users/{handle}/following",
-  async (_ctx, handle, _cursor) => {
+  "/users/{identifier}/following",
+  async (_ctx, identifier, _cursor) => {
     const blog = await getBlog();
     if (blog == null) return null;
-    else if (blog.handle !== handle) return null;
+    else if (blog.handle !== identifier) return null;
     return { items: [] };
   },
 );
@@ -270,11 +273,11 @@ federation.setFollowingDispatcher(
 // listing the followers of the blog:
 federation
   .setFollowersDispatcher(
-    "/users/{handle}/followers",
-    async (_ctx, handle, cursor) => {
+    "/users/{identifier}/followers",
+    async (_ctx, identifier, cursor) => {
       const blog = await getBlog();
       if (blog == null) return null;
-      else if (blog.handle !== handle) return null;
+      else if (blog.handle !== identifier) return null;
       if (cursor == null) return null;
       const { followers, nextCursor } = await getFollowers(
         undefined,
@@ -289,18 +292,18 @@ federation
   )
   // Registers the followers counter, which is responsible for counting
   // the total number of followers:
-  .setCounter(async (_ctx, handle) => {
+  .setCounter(async (_ctx, identifier) => {
     const blog = await getBlog();
     if (blog == null) return null;
-    else if (blog.handle !== handle) return null;
+    else if (blog.handle !== identifier) return null;
     return await countFollowers();
   })
   // Registers the first cursor.  The cursor value here is arbitrary, but
   // it must be parsable by the followers collection dispatcher:
-  .setFirstCursor(async (_ctx, handle) => {
+  .setFirstCursor(async (_ctx, identifier) => {
     const blog = await getBlog();
     if (blog == null) return null;
-    else if (blog.handle !== handle) return null;
+    else if (blog.handle !== identifier) return null;
     // Treat the empty string as the first cursor:
     return "";
   });

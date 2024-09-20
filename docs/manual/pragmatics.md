@@ -355,7 +355,7 @@ const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation
   .setFollowingDispatcher(
-    "/users/{handle}/following", async (ctx, handle, cursor) => {
+    "/users/{identifier}/following", async (ctx, identifier, cursor) => {
       // Loads the list of actors that the actor follows...
       return {
         items: [
@@ -366,7 +366,7 @@ federation
       };
     }
   )
-  .setCounter((ctx, handle) => 123);
+  .setCounter((ctx, identifier) => 123);
 ~~~~
 
 For example, the above following collection is displayed like the below
@@ -392,7 +392,7 @@ const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation
   .setFollowersDispatcher(
-    "/users/{handle}/followers", async (ctx, handle, cursor) => {
+    "/users/{identifier}/followers", async (ctx, identifier, cursor) => {
       // Loads the list of actors that follow the actor...
       return {
         items: [
@@ -405,7 +405,7 @@ federation
       };
     }
   )
-  .setCounter((ctx, handle) => 456);
+  .setCounter((ctx, identifier) => 456);
 ~~~~
 
 For example, the above followers collection is displayed like the below

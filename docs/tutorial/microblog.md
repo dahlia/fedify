@@ -956,11 +956,11 @@ const federation = createFederation({
   queue: new InProcessMessageQueue(),
 });
 
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
   return new Person({
-    id: ctx.getActorUri(handle),
-    preferredUsername: handle,
-    name: handle,
+    id: ctx.getActorUri(identifier),
+    preferredUsername: identifier,
+    name: identifier,
   });
 });
 
@@ -970,7 +970,7 @@ export default federation;
 The part we should focus on is the `~Federation.setActorDispatcher()` method.
 This method defines the URL and behavior that other ActivityPub software will
 use when querying an actor on our server. For example, if we query
-*/users/johndoe* as we did earlier, the `handle` parameter of the callback
+*/users/johndoe* as we did earlier, the `identifier` parameter of the callback
 function will receive the string value `"johndoe"`. And the callback function
 returns an instance of the `Person` class to convey the information of
 the queried actor.
@@ -978,12 +978,12 @@ the queried actor.
 The `ctx` parameter receives a `Context` object, which contains various
 functions related to the ActivityPub protocol. For example,
 the `~Context.getActorUri()` method used in the above code returns the unique
-URI of the actor with the `handle` passed as a parameter. This URI is being used
-as the unique identifier of the `Person` object.
+URI of the actor with the `identifier` passed as a parameter. This URI is
+being used as the unique identifier of the `Person` object.
 
 As you can see from the implementation code, currently it's *making up* actor
-information and returning it for any handle that comes after the */users/* path.
-But what we want is to only allow queries for accounts that are actually
+information and returning it for any identifier that comes after the */users/*
+path.  But what we want is to only allow queries for accounts that are actually
 registered. Let's modify this part to only return for accounts in the database.
 
 ### Table creation
@@ -1258,7 +1258,7 @@ the actor dispatcher:
 import type { Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
-federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
+federation.setInboxListeners("/users/{identifier}/inbox", "/inbox");
 ~~~~
 
 Don't worry about the `~Federation.setInboxListeners()` method for now.
@@ -1293,7 +1293,7 @@ interface User {}
 interface Actor { name: string; }
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
   const user = db
     .prepare<unknown[], User & Actor>(
       `
@@ -1302,18 +1302,18 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
       WHERE users.username = ?
       `,
     )
-    .get(handle);
+    .get(identifier);
   if (user == null) return null;
 
   return new Person({
-    id: ctx.getActorUri(handle),
-    preferredUsername: handle,
+    id: ctx.getActorUri(identifier),
+    preferredUsername: identifier,
     name: user.name,
-    inbox: ctx.getInboxUri(handle),
+    inbox: ctx.getInboxUri(identifier),
     endpoints: new Endpoints({
       sharedInbox: ctx.getInboxUri(),
     }),
-    url: ctx.getActorUri(handle),
+    url: ctx.getActorUri(identifier),
   });
 });
 ~~~~
@@ -1333,8 +1333,8 @@ profile URL match.
 
 > [!TIP]
 > Sharp-eyed readers may have noticed that we're defining overlapping handlers
-> for `GET /users/{handle}` on both Hono and Fedify sides. So what happens when
-> an actual request is sent to this path? The answer is that it depends on
+> for `GET /users/{identifier}` on both Hono and Fedify sides. So what happens
+> when an actual request is sent to this path? The answer is that it depends on
 > the <code>Accept</code> header of the request. If a request is sent with
 > the `Accept: text/html` header, the request handler on the Hono side responds.
 > If a request is sent with the `Accept: application/activity+json` header,
@@ -1516,7 +1516,7 @@ interface Key {
 }
 // ---cut-before---
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
     const user = db
       .prepare<unknown[], User & Actor>(
         `
@@ -1525,27 +1525,27 @@ federation
         WHERE users.username = ?
         `,
       )
-      .get(handle);
+      .get(identifier);
     if (user == null) return null;
 
-    const keys = await ctx.getActorKeyPairs(handle);
+    const keys = await ctx.getActorKeyPairs(identifier);
     return new Person({
-      id: ctx.getActorUri(handle),
-      preferredUsername: handle,
+      id: ctx.getActorUri(identifier),
+      preferredUsername: identifier,
       name: user.name,
-      inbox: ctx.getInboxUri(handle),
+      inbox: ctx.getInboxUri(identifier),
       endpoints: new Endpoints({
         sharedInbox: ctx.getInboxUri(),
       }),
-      url: ctx.getActorUri(handle),
+      url: ctx.getActorUri(identifier),
       publicKey: keys[0].cryptographicKey,
       assertionMethods: keys.map((k) => k.multikey),
     });
   })
-  .setKeyPairsDispatcher(async (ctx, handle) => {
+  .setKeyPairsDispatcher(async (ctx, identifier) => {
     const user = db
       .prepare<unknown[], User>("SELECT * FROM users WHERE username = ?")
-      .get(handle);
+      .get(identifier);
     if (user == null) return [];
     const rows = db
       .prepare<unknown[], Key>("SELECT * FROM keys WHERE keys.user_id = ?")
@@ -1560,8 +1560,8 @@ federation
     for (const keyType of ["RSASSA-PKCS1-v1_5", "Ed25519"] as const) {
       if (keys[keyType] == null) {
         logger.debug(
-          "The user {handle} does not have an {keyType} key; creating one...",
-          { handle, keyType },
+          "The user {identifier} does not have an {keyType} key; creating one...",
+          { identifier, keyType },
         );
         const { privateKey, publicKey } = await generateCryptoKeyPair(keyType);
         db.prepare(
@@ -1853,7 +1853,7 @@ the following code in the *src/federation.ts* file earlier:
 import type { Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
-federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
+federation.setInboxListeners("/users/{identifier}/inbox", "/inbox");
 ~~~~
 
 Before modifying this code, let's `import` the `Accept` and `Follow` classes
@@ -1896,7 +1896,7 @@ const db = new Database("");
 interface Actor { id: number; }
 // ---cut-before---
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     if (follow.objectId == null) {
       logger.debug("The Follow object does not have an object: {follow}", {
@@ -1926,7 +1926,7 @@ federation
         WHERE users.username = ?
         `,
       )
-      .get(object.handle)?.id;
+      .get(object.identifier)?.id;
     if (followingId == null) {
       logger.debug(
         "Failed to find the actor to follow in the database: {object}",
@@ -2134,7 +2134,7 @@ import Database from "better-sqlite3";
 const db = new Database("");
 // ---cut-before---
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     // ... omitted ...
   })
@@ -2154,7 +2154,7 @@ federation
         WHERE users.username = ?
       ) AND follower_id = (SELECT id FROM actors WHERE uri = ?)
       `,
-    ).run(parsed.handle, undo.actorId.href);
+    ).run(parsed.identifier, undo.actorId.href);
   });
 ~~~~
 
@@ -2482,8 +2482,8 @@ interface Actor {
 // ---cut-before---
 federation
   .setFollowersDispatcher(
-    "/users/{handle}/followers",
-    (ctx, handle, cursor) => {
+    "/users/{identifier}/followers",
+    (ctx, identifier, cursor) => {
       const followers = db
         .prepare<unknown[], Actor>(
           `
@@ -2496,7 +2496,7 @@ federation
           ORDER BY follows.created DESC
           `,
         )
-        .all(handle);
+        .all(identifier);
       const items: Recipient[] = followers.map((f) => ({
         id: new URL(f.uri),
         inboxId: new URL(f.inbox_url),
@@ -2508,7 +2508,7 @@ federation
       return { items };
     },
   )
-  .setCounter((ctx, handle) => {
+  .setCounter((ctx, identifier) => {
     const result = db
       .prepare<unknown[], { cnt: number }>(
         `
@@ -2519,16 +2519,16 @@ federation
         WHERE users.username = ?
         `,
       )
-      .get(handle);
+      .get(identifier);
     return result == null ? 0 : result.cnt;
   });
 ~~~~
 
 The `~Federation.setFollowersDispatcher()` method creates a followers
-collection object to respond to when a `GET /users/{handle}/followers` request
-comes in. Although the SQL is a bit long, it essentially gets the list of
-actors following the actor with the `handle` parameter. The `items` contains
-`Recipient` objects, and the `Recipient` type looks like this:
+collection object to respond to when a `GET /users/{identifier}/followers`
+request comes in. Although the SQL is a bit long, it essentially gets the list
+of actors following the actor with the `identifier` parameter. The `items`
+contains `Recipient` objects, and the `Recipient` type looks like this:
 
 ~~~~ typescript twoslash
 export interface Recipient {
@@ -2547,7 +2547,7 @@ our `actors` table, we can fill the `items` array with that information.
 
 The `~CollectionCallbackSetters.setCounter()` method gets the total number of
 the followers collection. Here too, the SQL is a bit complex, but in summary,
-it's counting the number of actors following the actor with the `handle`
+it's counting the number of actors following the actor with the `identifier`
 parameter.
 
 Now, let's check if the followers collection is working properly by using
@@ -2576,11 +2576,11 @@ import { type Federation, Person } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
     // ... omitted ...
     return new Person({
       // ... omitted ...
-      followers: ctx.getFollowersUri(handle),  // [!code highlight]
+      followers: ctx.getFollowersUri(identifier),  // [!code highlight]
     });
   })
 ~~~~
@@ -2818,7 +2818,7 @@ const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation.setObjectDispatcher(
   Note,
-  "/users/{handle}/posts/{id}",
+  "/users/{identifier}/posts/{id}",
   (ctx, values) => {
     return null;
   },
@@ -2895,7 +2895,7 @@ app.post("/users/:username/posts", async (c) => {
       .get(actor.id, stringifyEntities(content, { escapeOnly: true }));
     if (post == null) return null;
     const url = ctx.getObjectUri(Note, {
-      handle: username,
+      identifier: username,
       id: post.id.toString(),
     }).href;
     db.prepare("UPDATE posts SET uri = ?, url = ? WHERE id = ?").run(
@@ -3159,7 +3159,7 @@ const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation.setObjectDispatcher(
   Note,
-  "/users/{handle}/posts/{id}",
+  "/users/{identifier}/posts/{id}",
   (ctx, values) => {
     return null;
   },
@@ -3178,7 +3178,7 @@ interface Post { id: number; content: string; created: string; }
 // ---cut-before---
 federation.setObjectDispatcher(
   Note,
-  "/users/{handle}/posts/{id}",
+  "/users/{identifier}/posts/{id}",
   (ctx, values) => {
     const post = db
       .prepare<unknown[], Post>(
@@ -3190,13 +3190,13 @@ federation.setObjectDispatcher(
         WHERE users.username = ? AND posts.id = ?
         `,
       )
-      .get(values.handle, values.id);
+      .get(values.identifier, values.id);
     if (post == null) return null;
     return new Note({
       id: ctx.getObjectUri(Note, values),
-      attribution: ctx.getActorUri(values.handle),
+      attribution: ctx.getActorUri(values.identifier),
       to: PUBLIC_COLLECTION,
-      cc: ctx.getFollowersUri(values.handle),
+      cc: ctx.getFollowersUri(values.identifier),
       content: post.content,
       mediaType: "text/html",
       published: Temporal.Instant.from(`${post.created.replace(" ", "T")}Z`),
@@ -3209,15 +3209,15 @@ federation.setObjectDispatcher(
 The property values filled when creating the `Note` object have the following
 roles:
 
- -  Putting `ctx.getActorUri(values.handle)` in the `attribution` property
+ -  Putting `ctx.getActorUri(values.identifier)` in the `attribution` property
     indicates that the author of this post is the actor we created.
 
  -  Putting `PUBLIC_COLLECTION` in the `to` property indicates that this
     post is a public post.
 
- -  Putting `ctx.getFollowersUri(values.handle)` in the `cc` property indicates
-    that this post is delivered to followers, but this itself doesn't have much
-    meaning.
+ -  Putting `ctx.getFollowersUri(values.identifier)` in the `cc` property
+    indicates that this post is delivered to followers, but this itself doesn't
+    have much meaning.
 
 Now, let's try entering the post's permalink
 <https://temp-address.serveo.net/users/johndoe/posts/1> (replace with your
@@ -3275,7 +3275,7 @@ app.post("/users/:username/posts", async (c) => {
       .get(actor.id, stringifyEntities(content, { escapeOnly: true }));
     if (post == null) return null;
     const url = ctx.getObjectUri(Note, {
-      handle: username,
+      identifier: username,
       id: post.id.toString(),
     }).href;
     db.prepare("UPDATE posts SET uri = ?, url = ? WHERE id = ?").run(
@@ -3286,10 +3286,10 @@ app.post("/users/:username/posts", async (c) => {
     return post;
   })();
   if (post == null) return c.text("Failed to create post", 500);
-  const noteArgs = { handle: username, id: post.id.toString() };
+  const noteArgs = { identifier: username, id: post.id.toString() };
   const note = await ctx.getObject(Note, noteArgs);
   await ctx.sendActivity(
-    { handle: username },
+    { identifier: username },
     "followers",
     new Create({
       id: new URL("#activity", note?.id ?? undefined),
@@ -3525,7 +3525,7 @@ app.post("/users/:username/following", async (c) => {
   }
   const ctx = fedi.createContext(c.req.raw, undefined);
   await ctx.sendActivity(
-    { handle: username },
+    { identifier: username },
     actor,
     new Follow({
       actor: ctx.getActorUri(username),
@@ -3689,7 +3689,7 @@ const followingId = 0 as number;
 const follower = {} as unknown as APActor;
 // ---cut-before---
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     // ... omitted ...
     if (followingId == null) {
@@ -3725,7 +3725,7 @@ async function persistActor(actor: APActor): Promise<Actor | null> {
   return null;
 }
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
 // ---cut-before---
   .on(Accept, async (ctx, accept) => {
     const follow = await accept.getObject();
@@ -3751,7 +3751,7 @@ federation
         )
       )
       `,
-    ).run(followingId, parsed.handle);
+    ).run(followingId, parsed.identifier);
   });
 ~~~~
 
@@ -4148,7 +4148,7 @@ async function persistActor(actor: APActor): Promise<Actor | null> {
   return null;
 }
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
 // ---cut-before---
   .on(Create, async (ctx, create) => {
     const object = await create.getObject();

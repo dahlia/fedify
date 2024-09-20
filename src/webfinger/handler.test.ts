@@ -14,8 +14,8 @@ test("handleWebFinger()", async () => {
   const context = createRequestContext<void>({
     url,
     data: undefined,
-    getActorUri(handle) {
-      return new URL(`https://example.com/users/${handle}`);
+    getActorUri(identifier) {
+      return new URL(`https://example.com/users/${identifier}`);
     },
     async getActor(handle): Promise<Actor | null> {
       return await actorDispatcher(
@@ -27,7 +27,14 @@ test("handleWebFinger()", async () => {
       if (uri == null) return null;
       if (uri.protocol === "acct:") return null;
       const paths = uri.pathname.split("/");
-      return { type: "actor", handle: paths[paths.length - 1] };
+      const identifier = paths[paths.length - 1];
+      return {
+        type: "actor",
+        identifier,
+        get handle(): string {
+          throw new Error("ParseUriResult.handle is deprecated!");
+        },
+      };
     },
   });
   const actorDispatcher: ActorDispatcher<void> = (ctx, handle) => {

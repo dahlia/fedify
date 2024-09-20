@@ -44,7 +44,7 @@ export function acceptsJsonLd(request: Request): boolean {
 }
 
 export interface ActorHandlerParameters<TContextData> {
-  handle: string;
+  identifier: string;
   context: RequestContext<TContextData>;
   actorDispatcher?: ActorDispatcher<TContextData>;
   authorizePredicate?: AuthorizePredicate<TContextData>;
@@ -56,7 +56,7 @@ export interface ActorHandlerParameters<TContextData> {
 export async function handleActor<TContextData>(
   request: Request,
   {
-    handle,
+    identifier,
     context,
     actorDispatcher,
     authorizePredicate,
@@ -67,19 +67,19 @@ export async function handleActor<TContextData>(
 ): Promise<Response> {
   const logger = getLogger(["fedify", "federation", "actor"]);
   if (actorDispatcher == null) {
-    logger.debug("Actor dispatcher is not set.", { handle });
+    logger.debug("Actor dispatcher is not set.", { identifier });
     return await onNotFound(request);
   }
-  const actor = await actorDispatcher(context, handle);
+  const actor = await actorDispatcher(context, identifier);
   if (actor == null) {
-    logger.debug("Actor {handle} not found.", { handle });
+    logger.debug("Actor {identifier} not found.", { identifier });
     return await onNotFound(request);
   }
   if (!acceptsJsonLd(request)) return await onNotAcceptable(request);
   if (authorizePredicate != null) {
     const key = await context.getSignedKey();
     const keyOwner = await context.getSignedKeyOwner();
-    if (!await authorizePredicate(context, handle, key, keyOwner)) {
+    if (!await authorizePredicate(context, identifier, key, keyOwner)) {
       return await onUnauthorized(request);
     }
   }
@@ -176,7 +176,7 @@ export interface CollectionHandlerParameters<
   TFilter,
 > {
   name: string;
-  handle: string;
+  identifier: string;
   uriGetter: (handle: string) => URL;
   filter?: TFilter;
   filterPredicate?: (item: TItem) => boolean;
@@ -201,7 +201,7 @@ export async function handleCollection<
   request: Request,
   {
     name,
-    handle,
+    identifier,
     uriGetter,
     filter,
     filterPredicate,
@@ -216,17 +216,17 @@ export async function handleCollection<
   const url = new URL(request.url);
   const cursor = url.searchParams.get("cursor");
   let collection: OrderedCollection | OrderedCollectionPage;
-  const baseUri = uriGetter(handle);
+  const baseUri = uriGetter(identifier);
   if (cursor == null) {
     const firstCursor = await collectionCallbacks.firstCursor?.(
       context,
-      handle,
+      identifier,
     );
-    const totalItems = await collectionCallbacks.counter?.(context, handle);
+    const totalItems = await collectionCallbacks.counter?.(context, identifier);
     if (firstCursor == null) {
       const page = await collectionCallbacks.dispatcher(
         context,
-        handle,
+        identifier,
         null,
         filter,
       );
@@ -240,7 +240,7 @@ export async function handleCollection<
     } else {
       const lastCursor = await collectionCallbacks.lastCursor?.(
         context,
-        handle,
+        identifier,
       );
       const first = new URL(context.url);
       first.searchParams.set("cursor", firstCursor);
@@ -261,7 +261,7 @@ export async function handleCollection<
     uri.searchParams.set("cursor", cursor);
     const page = await collectionCallbacks.dispatcher(
       context,
-      handle,
+      identifier,
       cursor,
       filter,
     );
@@ -294,7 +294,7 @@ export async function handleCollection<
     if (
       !await collectionCallbacks.authorizePredicate(
         context,
-        handle,
+        identifier,
         key,
         keyOwner,
       )
@@ -341,7 +341,7 @@ function filterCollectionItems<TItem extends Object | Link | Recipient | URL>(
 }
 
 export interface InboxHandlerParameters<TContextData> {
-  handle: string | null;
+  identifier: string | null;
   context: RequestContext<TContextData>;
   inboxContextFactory(
     activity: unknown,
@@ -363,7 +363,7 @@ export interface InboxHandlerParameters<TContextData> {
 export async function handleInbox<TContextData>(
   request: Request,
   {
-    handle,
+    identifier,
     context,
     inboxContextFactory,
     kv,
@@ -379,12 +379,12 @@ export async function handleInbox<TContextData>(
 ): Promise<Response> {
   const logger = getLogger(["fedify", "federation", "inbox"]);
   if (actorDispatcher == null) {
-    logger.error("Actor dispatcher is not set.", { handle });
+    logger.error("Actor dispatcher is not set.", { identifier });
     return await onNotFound(request);
-  } else if (handle != null) {
-    const actor = await actorDispatcher(context, handle);
+  } else if (identifier != null) {
+    const actor = await actorDispatcher(context, identifier);
     if (actor == null) {
-      logger.error("Actor {handle} not found.", { handle });
+      logger.error("Actor {identifier} not found.", { identifier });
       return await onNotFound(request);
     }
   }
@@ -392,7 +392,7 @@ export async function handleInbox<TContextData>(
   try {
     json = await request.clone().json();
   } catch (error) {
-    logger.error("Failed to parse JSON:\n{error}", { handle, error });
+    logger.error("Failed to parse JSON:\n{error}", { identifier, error });
     try {
       await inboxErrorHandler?.(context, error);
     } catch (error) {
@@ -437,10 +437,13 @@ export async function handleInbox<TContextData>(
   const jsonWithoutSig = detachSignature(json);
   let activity: Activity | null = null;
   if (ldSigVerified) {
-    logger.debug("Linked Data Signatures are verified.", { handle, json });
+    logger.debug("Linked Data Signatures are verified.", { identifier, json });
     activity = await Activity.fromJsonLd(jsonWithoutSig, context);
   } else {
-    logger.debug("Linked Data Signatures are not verified.", { handle, json });
+    logger.debug(
+      "Linked Data Signatures are not verified.",
+      { identifier, json },
+    );
     try {
       activity = await verifyObject(Activity, jsonWithoutSig, {
         contextLoader: context.contextLoader,
@@ -449,7 +452,7 @@ export async function handleInbox<TContextData>(
       });
     } catch (error) {
       logger.error("Failed to parse activity:\n{error}", {
-        handle,
+        identifier,
         json,
         error,
       });
@@ -469,10 +472,13 @@ export async function handleInbox<TContextData>(
     if (activity == null) {
       logger.debug(
         "Object Integrity Proofs are not verified.",
-        { handle, json },
+        { identifier, json },
       );
     } else {
-      logger.debug("Object Integrity Proofs are verified.", { handle, json });
+      logger.debug(
+        "Object Integrity Proofs are verified.",
+        { identifier, json },
+      );
     }
   }
   let httpSigKey: CryptographicKey | null = null;
@@ -487,7 +493,7 @@ export async function handleInbox<TContextData>(
       if (key == null) {
         logger.error(
           "Failed to verify the request's HTTP Signatures.",
-          { handle },
+          { identifier },
         );
         const response = new Response(
           "Failed to verify the request signature.",
@@ -498,7 +504,7 @@ export async function handleInbox<TContextData>(
         );
         return response;
       } else {
-        logger.debug("HTTP Signatures are verified.", { handle });
+        logger.debug("HTTP Signatures are verified.", { identifier });
       }
       httpSigKey = key;
     }
@@ -554,7 +560,7 @@ export async function handleInbox<TContextData>(
         type: "inbox",
         baseUrl: request.url,
         activity: json,
-        handle,
+        identifier,
         attempt: 0,
         started: new Date().toISOString(),
       } satisfies InboxMessage,

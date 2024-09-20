@@ -107,19 +107,19 @@ const federation = null as unknown as Federation<void>;
 interface User { }
 const user: User | null = true ? { } : null;
 // ---cut-before---
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  // Work with the database to find the actor by the handle.
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+  // Work with the database to find the actor by the identifier.
   if (user == null) return null;
   return new Person({
-    id: ctx.getActorUri(handle),  // [!code highlight]
-    preferredUsername: handle,
+    id: ctx.getActorUri(identifier),  // [!code highlight]
+    preferredUsername: identifier,
     // Many more properties...
   });
 });
 ~~~~
 
 On the other way around, you can use the `~Context.parseUri()` method to
-determine the type of the URI and extract the handle or other values from
+determine the type of the URI and extract the identifier or other values from
 the URI.
 
 
@@ -137,16 +137,16 @@ const federation = null as unknown as Federation<void>;
 import { Accept, Follow } from "@fedify/fedify";
 
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
-    // In order to send an activity, we need the bare handle of the sender:
+    // In order to send an activity, we need the identifier of the sender actor:
     if (follow.objectId == null) return;
     const parsed = ctx.parseUri(follow.objectId);
     if (parsed?.type !== "actor") return;
     const recipient = await follow.getActor(ctx);
     if (recipient == null) return;
     await ctx.sendActivity(
-      { handle: parsed.handle }, // sender
+      { identifier: parsed.identifier }, // sender
       recipient,
       new Accept({ actor: follow.objectId, object: follow }),
     );
@@ -188,13 +188,13 @@ the `RequestContext.getActor()` method:
 import { type Federation, Update } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 const request = new Request("");
-const handle: string = "";
+const identifier: string = "";
 // ---cut-before---
 const ctx = federation.createContext(request, undefined);
-const actor = await ctx.getActor(handle);  // [!code highlight]
+const actor = await ctx.getActor(identifier);  // [!code highlight]
 if (actor != null) {
   await ctx.sendActivity(
-    { handle },
+    { identifier },
     "followers",
     new Update({ actor: actor.id, object: actor }),
   );
@@ -213,11 +213,11 @@ an object from the URL arguments.  The following shows an example:
 import { type Federation, Note } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 const request = new Request("");
-const handle: string = "";
+const identifier: string = "";
 const id: string = "";
 // ---cut-before---
 const ctx = federation.createContext(request, undefined);
-const note = await ctx.getObject(Note, { handle, id });  // [!code highlight]
+const note = await ctx.getObject(Note, { identifier, id });  // [!code highlight]
 ~~~~
 
 
@@ -264,13 +264,16 @@ import { type Actor, type Context, Person } from "@fedify/fedify";
 const ctx = null as unknown as Context<void>;
 const actor = new Person({}) as Actor;
 // ---cut-before---
-const documentLoader = await ctx.getDocumentLoader({ handle: "john" });
+const documentLoader = await ctx.getDocumentLoader({
+  identifier: "2bd304f9-36b3-44f0-bf0b-29124aafcbb4",
+});
 const following = await actor.getFollowing({ documentLoader });
 ~~~~
 
 In the above example, the `getFollowing()` method takes the `documentLoader`
-which is authenticated as the actor with a handle of `john`.
-If the `actor` allows `john` to see the following collection,
+which is authenticated as the actor with an identifier of
+`2bd304f9-36b3-44f0-bf0b-29124aafcbb4`.  If the `actor` allows
+actor `2bd304f9-36b3-44f0-bf0b-29124aafcbb4` to see the following collection,
 the `getFollowing()` method returns the following collection.
 
 > [!TIP]
@@ -393,7 +396,7 @@ const note = await ctx.lookupObject(
 > import { type Context } from "@fedify/fedify";
 > const ctx = null as unknown as Context<void>;
 > // ---cut-before---
-> const documentLoader = await ctx.getDocumentLoader({ handle: "john" });
+> const documentLoader = await ctx.getDocumentLoader({ identifier: "john" });
 > const note = await ctx.lookupObject("...", { documentLoader });
 > ~~~~
 >

@@ -36,7 +36,7 @@ const federation = createFederation({
 });
 
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     if (follow.objectId == null) return;
     const parsed = ctx.parseUri(follow.objectId);
@@ -44,7 +44,7 @@ federation
     const recipient = await follow.getActor(ctx);
     if (recipient == null) return;
     await ctx.sendActivity(
-      { handle: parsed.handle },
+      { identifier: parsed.identifier },
       recipient,
       new Accept({ actor: follow.objectId, object: follow }),
     );
@@ -69,9 +69,9 @@ multiple inbox listeners for different activity types.
 > [!TIP]
 > You can get a personal or shared inbox URI by calling
 > the `~Context.getInboxUri()` method.  It takes an optional parameter
-> `handle` to get the personal inbox URI for the actor with the bare handle.
-> If the `handle` parameter is not provided, the method returns the shared
-> inbox URI.
+> `identifier` to get the personal inbox URI for the actor with the given
+> identifier.  If the `identifier` parameter is not provided, the method
+> returns the shared inbox URI.
 
 [shared inbox]: https://www.w3.org/TR/activitypub/#shared-inbox-delivery
 
@@ -117,16 +117,16 @@ const federation = null as unknown as Federation<void>;
 import { Application, Person } from "@fedify/fedify";
 
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   // The following line assumes that there is an instance actor named `~actor`
   // for the server.  The leading tilde (`~`) is just for avoiding conflicts
   // with regular actor handles, but you don't have to necessarily follow this
   // convention:
-  .setSharedKeyDispatcher((_ctx) => ({ handle: "~actor" }));
+  .setSharedKeyDispatcher((_ctx) => ({ identifier: "~actor" }));
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-    if (handle === "~actor") {
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+    if (identifier === "~actor") {
       // Returns an Application object for the instance actor:
       return new Application({
         // ...
@@ -141,7 +141,7 @@ federation
 ~~~~
 
 Or you can manually configure the key pair instead of referring to an actor
-by its handle:
+by its identifier:
 
 ~~~~ typescript{11-18} twoslash
 // @noErrors: 2391
@@ -175,7 +175,7 @@ interface InstanceActor {
 }
 
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .setSharedKeyDispatcher(async (_ctx) => {
     // The following getInstanceActor() is just a hypothetical function that
     // fetches information about the instance actor from a database or some
@@ -259,7 +259,7 @@ import { type Federation, Follow } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (ctx, follow) => {
     // Omitted for brevity
   })
@@ -301,14 +301,14 @@ The following shows an example of forwarding `Create` activities to followers:
 ~~~~ typescript twoslash
 import { Create, type Federation } from "@fedify/fedify";
 const federation: Federation<void> = null as unknown as Federation<void>;
-federation.setInboxListeners("/{handle}/inbox", "/inbox")
+federation.setInboxListeners("/{identifier}/inbox", "/inbox")
 // ---cut-before---
 .on(Create, async (ctx, create) => {
   if (create.toId == null) return;
   const to = ctx.parseUri(create.toId);
   if (to?.type !== "actor") return;
-  const forwarder = to.handle;
-  await ctx.forwardActivity({ handle: forwarder }, "followers");
+  const forwarder = to.identifier;
+  await ctx.forwardActivity({ identifier: forwarder }, "followers");
 })
 ~~~~
 
@@ -329,7 +329,7 @@ federation.setInboxListeners("/{handle}/inbox", "/inbox")
 > const ctx = null as unknown as InboxContext<void>;
 > // ---cut-before---
 > await ctx.forwardActivity(
->   { handle: "alice" },
+>   { identifier: "alice" },
 >   "followers",
 >   { skipIfUnsigned: true },
 > );
@@ -345,23 +345,24 @@ Constructing inbox URIs
 -----------------------
 
 To construct an inbox URI, you can use the `~Context.getInboxUri()` method.
-This method optionally takes a handle of an actor and returns a dereferenceable
-URI of the inbox of the actor.  If no argument is provided, the method returns
-the shared inbox URI.
+This method optionally takes an identifier of an actor and returns
+a dereferenceable URI of the inbox of the actor.  If no argument is provided,
+the method returns the shared inbox URI.
 
-The following shows how to construct an inbox URI of an actor named `"alice"`:
+The following shows how to construct an inbox URI of an actor identified by
+`5fefc9bb-397d-4949-86bb-33487bf233fb`:
 
 ~~~~ typescript twoslash
 import type { Context } from "@fedify/fedify";
 const ctx = null as unknown as Context<void>;
 // ---cut-before---
-ctx.getInboxUri("alice")
+ctx.getInboxUri("5fefc9bb-397d-4949-86bb-33487bf233fb")
 ~~~~
 
 > [!NOTE]
 > The `~Context.getInboxUri()` method does not guarantee that the inbox
-> actually exists.  It only constructs a URI based on the given handle,
-> which may respond with `404 Not Found`.  Make sure to check if the handle
+> actually exists.  It only constructs a URI based on the given identifier,
+> which may respond with `404 Not Found`.  Make sure to check if the identifier
 > is valid before calling the method.
 
 The following shows how to construct a shared inbox URI:

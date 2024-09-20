@@ -20,11 +20,11 @@ export type NodeInfoDispatcher<TContextData> = (
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @param context The request context.
- * @param handle The actor's handle.
+ * @param identifier The actor's internal identifier or username.
  */
 export type ActorDispatcher<TContextData> = (
   context: RequestContext<TContextData>,
-  handle: string,
+  identifier: string,
 ) => Actor | null | Promise<Actor | null>;
 
 /**
@@ -32,21 +32,23 @@ export type ActorDispatcher<TContextData> = (
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @param context The context.
- * @param handle The actor's handle.
+ * @param identifier The actor's internal identifier or username.
  * @returns The key pairs.
  * @since 0.10.0
  */
 export type ActorKeyPairsDispatcher<TContextData> = (
   context: Context<TContextData>,
-  handle: string,
+  identifier: string,
 ) => CryptoKeyPair[] | Promise<CryptoKeyPair[]>;
 
 /**
  * A callback that maps a WebFinger username to the corresponding actor's
- * internal handle, or `null` if the username is not found.
+ * internal identifier, or `null` if the username is not found.
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @param context The context.
  * @param username The WebFinger username.
+ * @returns The actor's internal identifier, or `null` if the username is not
+ *          found.
  * @since 0.15.0
  */
 export type ActorHandleMapper<TContextData> = (
@@ -80,7 +82,8 @@ export type ObjectDispatcher<
  * @typeParam TContextData The context data to pass to the `TContext`.
  * @typeParam TFilter The type of the filter, if any.
  * @param context The context.
- * @param handle The handle of the collection owner.
+ * @param identifier The internal identifier or the username of the collection
+ *                   owner.
  * @param cursor The cursor to start the collection from, or `null` to dispatch
  *               the entire collection without pagination.
  * @param filter The filter to apply to the collection, if any.
@@ -92,7 +95,7 @@ export type CollectionDispatcher<
   TFilter,
 > = (
   context: TContext,
-  handle: string,
+  identifier: string,
   cursor: string | null,
   filter?: TFilter,
 ) => PageItems<TItem> | null | Promise<PageItems<TItem> | null>;
@@ -101,10 +104,14 @@ export type CollectionDispatcher<
  * A callback that counts the number of items in a collection.
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @param context The context.
+ * @param identifier The internal identifier or the username of the collection
+ *                   owner.
+ * @param filter The filter to apply to the collection, if any.
  */
 export type CollectionCounter<TContextData, TFilter> = (
   context: RequestContext<TContextData>,
-  handle: string,
+  identifier: string,
   filter?: TFilter,
 ) => number | bigint | null | Promise<number | bigint | null>;
 
@@ -116,7 +123,8 @@ export type CollectionCounter<TContextData, TFilter> = (
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @typeParam TFilter The type of the filter, if any.
  * @param context The context.
- * @param handle The handle of the collection owner.
+ * @param identifier The internal identifier or the username of the collection
+ *                   owner.
  * @param filter The filter to apply to the collection, if any.
  */
 export type CollectionCursor<
@@ -125,7 +133,7 @@ export type CollectionCursor<
   TFilter,
 > = (
   context: TContext,
-  handle: string,
+  identifier: string,
   filter?: TFilter,
 ) => string | null | Promise<string | null>;
 
@@ -159,18 +167,27 @@ export type InboxErrorHandler<TContextData> = (
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @param context The context.
- * @returns The handle of the actor or the key pair for the authenticated
- *          document loader of the {@link Context} passed to the shared inbox
- *          listener.  If `null` is returned, the request is not authorized.
+ * @returns The username or the internal identifier of the actor or the key pair
+ *          for the authenticated document loader of the {@link Context} passed
+ *          to the shared inbox listener.  If `null` is returned, the request is
+ *          not authorized.
  * @since 0.11.0
  */
 export type SharedInboxKeyDispatcher<TContextData> = (
   context: Context<TContextData>,
 ) =>
   | SenderKeyPair
+  | { identifier: string }
+  | { username: string }
   | { handle: string }
   | null
-  | Promise<SenderKeyPair | { handle: string } | null>;
+  | Promise<
+    | SenderKeyPair
+    | { identifier: string }
+    | { username: string }
+    | { handle: string }
+    | null
+  >;
 
 /**
  * A callback that handles errors during outbox processing.
@@ -190,7 +207,7 @@ export type OutboxErrorHandler = (
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.
  * @param context The request context.
- * @param handle The handle of the actor that is being requested.
+ * @param identifier The internal identifier of the actor that is being requested.
  * @param signedKey The key that was used to sign the request, or `null` if
  *                  the request was not signed or the signature was invalid.
  * @param signedKeyOwner The actor that owns the key that was used to sign the
@@ -202,7 +219,7 @@ export type OutboxErrorHandler = (
  */
 export type AuthorizePredicate<TContextData> = (
   context: RequestContext<TContextData>,
-  handle: string,
+  identifier: string,
   signedKey: CryptographicKey | null,
   signedKeyOwner: Actor | null,
 ) => boolean | Promise<boolean>;

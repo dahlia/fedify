@@ -1,7 +1,7 @@
 ---
 description: >-
   You can register an actor dispatcher so that Fedify can dispatch
-  an appropriate actor by its bare handle.  This section explains
+  an appropriate actor by its identifier.  This section explains
   how to register an actor dispatcher and the key properties of an actor.
 ---
 
@@ -10,12 +10,11 @@ Actor dispatcher
 
 In ActivityPub, [actors] are entities that can perform [activities].  You can
 register an actor dispatcher so that Fedify can dispatch an appropriate actor
-by its bare handle (i.e., handle without @ prefix and domain suffix).
-Since the actor dispatcher is the most significant part of the Fedify,
-it is the first thing you need to do to make Fedify work.
+by its identifier.  Since the actor dispatcher is the most significant part of
+the Fedify, it is the first thing you need to do to make Fedify work.
 
 An actor dispatcher is a callback function that takes a `Context` object and
-a bare handle, and returns an actor object.  The actor object can be one of
+an identifier, and returns an actor object.  The actor object can be one of
 the following:
 
  -  `Application`
@@ -39,29 +38,81 @@ const federation = createFederation({
   // Omitted for brevity; see the related section for details.
 });
 
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  // Work with the database to find the actor by the handle.
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+  // Work with the database to find the actor by the identifier.
   if (user == null) return null;  // Return null if the actor is not found.
   return new Person({
-    id: ctx.getActorUri(handle),
-    preferredUsername: handle,
+    id: ctx.getActorUri(identifier),
+    preferredUsername: identifier,
     // Many more properties; see the next section for details.
   });
 });
 ~~~~
 
 In the above example, the `~Federation.setActorDispatcher()` method registers
-an actor dispatcher for the `/users/{handle}` path.  This pattern syntax
+an actor dispatcher for the `/users/{identifier}` path.  This pattern syntax
 follows the [URI Template] specification.
 
 > [!TIP]
 > By registering the actor dispatcher, `Federation.fetch()` automatically
 > deals with [WebFinger] requests for the actor.
 
+> [!TIP]
+> By default, Fedify assumes that the actor's identifier is the WebFinger
+> username.  If you want to decouple the WebFinger username from the actor's
+> identifier, you can register an actor handle mapper through the
+> `~ActorCallbackSetters.mapHandle()` method.
+>
+> See the [next section](#decoupling-actor-uris-from-webfinger-usernames)
+> for details.
+
 [actors]: https://www.w3.org/TR/activitystreams-core/#actors
 [activities]: https://www.w3.org/TR/activitystreams-core/#activities
 [URI Template]: https://datatracker.ietf.org/doc/html/rfc6570
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
+
+
+Actor identifier and WebFinger username
+---------------------------------------
+
+An actor *identifier* is a unique string that identifies the actor.  It can be
+a username, a UUID, or any other unique string.  The actor identifier is used
+as a URL parameter in the actor dispatcher and other dispatchers.  It's usually
+used to find the actor in your database, i.e., primary key.
+
+A WebFinger *username* is a string that comes before the domain part of the
+fediverse handle, e.g., `hongminhee` in `@hongminhee@fosstodon.org`.
+The WebFinger username is also used as the `preferredUsername` property of
+the actor.  It's usually displayed in the user interface, and used to find
+the actor by the WebFinger protocol, i.e., looking up the fediverse handle
+in the search box.  It's also called the *bare handle*.
+
+By default, Fedify assumes that the actor's identifier is the WebFinger username, but you can decouple the WebFinger username from the actor's identifier if you want.   You can think of the difference between these
+two approaches as analogous to [natural key] vs. [surrogate key] in the database
+design.
+
+There are pros and cons to using the WebFinger username as the actor's identifier (which is Fedify's default):
+
+Pros
+:    -  The actor URI is more predictable and human-readable,
+        which makes debugging easier.
+     -  The internal ID of the actor can be hidden from the public.
+
+Cons
+:    -  Changing the WebFinger username may break the existing network.
+        Hence, the fediverse handle is immutable in practice.
+     -  It's usually treated as an anti-pattern in the fediverse.
+
+You need to choose the best approach for you before implementing the actor
+dispatcher.  If you decided to use the WebFinger username as the actor's
+identifier, there's nothing to do—Fedify assumes it by default.
+
+If you decided to decouple the WebFinger username from the actor's identifier,
+see the [next section](#decoupling-actor-uris-from-webfinger-usernames) for
+details.
+
+[natural key]: https://en.wikipedia.org/wiki/Natural_key
+[surrogate key]: https://en.wikipedia.org/wiki/Surrogate_key
 
 
 Key properties of an `Actor`
@@ -76,13 +127,14 @@ the key properties of an `Actor` object:
 
 The `~Object.id` property is the URI of the actor.  It is a required property
 in ActivityPub.  You can use the `Context.getActorUri()` method to generate
-the dereferenceable URI of the actor by its bare handle.
+the dereferenceable URI of the actor by its identifier.
 
 ### `preferredUsername`
 
-The `preferredUsername` property is the bare handle of the actor.  For the most
-cases, it is okay to set the `preferredUsername` property to the string taken
-from the `handle` parameter of the actor dispatcher.
+The `preferredUsername` property is the WebFinger username of the actor.
+Unless [you decouple the WebFinger username from the actor's
+identifier](#decoupling-actor-uris-from-webfinger-usernames), it is okay to
+set the `preferredUsername` property to the actor's identifier.
 
 ### `name`
 
@@ -183,7 +235,7 @@ a `CryptographicKey` instance, and the `assertionMethods` property contains
 an array of `Multikey` instances.  Usually you don't have to create them
 manually.  Instead, you can register a key pairs dispatcher through
 the `~ActorCallbackSetters.setKeyPairsDispatcher()` method so that Fedify can
-dispatch appropriate key pairs by the actor's bare handle:
+dispatch appropriate key pairs by the actor's identifier:
 
 ~~~~ typescript{4-6,10-14,17-26} twoslash
 import { type Federation, Person } from "@fedify/fedify";
@@ -195,15 +247,15 @@ const privateKey1 = null as unknown as CryptoKey;
 const publicKey2 = null as unknown as CryptoKey;
 const privateKey2 = null as unknown as CryptoKey;
 // ---cut-before---
-federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-  // Work with the database to find the actor by the handle.
+federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+  // Work with the database to find the actor by the identifier.
   if (user == null) return null;  // Return null if the actor is not found.
   // Context.getActorKeyPairs() method dispatches the key pairs of an actor
-  // by the handle, and returns an array of key pairs in various formats:
-  const keys = await ctx.getActorKeyPairs(handle);
+  // by the identifier, and returns an array of key pairs in various formats:
+  const keys = await ctx.getActorKeyPairs(identifier);
   return new Person({
-    id: ctx.getActorUri(handle),
-    preferredUsername: handle,
+    id: ctx.getActorUri(identifier),
+    preferredUsername: identifier,
     // For the publicKey property, we only use first CryptographicKey:
     publicKey: keys[0].cryptographicKey,
     // For the assertionMethods property, we use all Multikey instances:
@@ -211,8 +263,8 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
     // Many more properties; see the previous section for details.
   });
 })
-  .setKeyPairsDispatcher(async (ctx, handle) => {
-    // Work with the database to find the key pair by the handle.
+  .setKeyPairsDispatcher(async (ctx, identifier) => {
+    // Work with the database to find the key pair by the identifier.
     if (user == null) return [];  // Return null if the key pair is not found.
     // Return the loaded key pair.  See the below example for details.
     return [
@@ -225,7 +277,7 @@ federation.setActorDispatcher("/users/{handle}", async (ctx, handle) => {
 
 In the above example, the `~ActorCallbackSetters.setKeyPairsDispatcher()` method
 registers a key pairs dispatcher.  The key pairs dispatcher is a callback
-function that takes context data and a bare handle, and returns an array of
+function that takes context data and an identifier, and returns an array of
 [`CryptoKeyPair`] object which is defined in the Web Cryptography API.
 
 Usually, you need to generate key pairs for each actor when the actor is
@@ -238,18 +290,18 @@ this document, but here's a simple example of how to generate key pairs and
 store them in a [Deno KV] database in form of JWK:
 
 ~~~~ typescript twoslash
-const handle: string = "";
+const identifier: string = "";
 // ---cut-before---
 import { generateCryptoKeyPair, exportJwk } from "@fedify/fedify";
 
 const kv = await Deno.openKv();
 const rsaPair = await generateCryptoKeyPair("RSASSA-PKCS1-v1_5");
 const ed25519Pair = await generateCryptoKeyPair("Ed25519");
-await kv.set(["keypair", "rsa", handle], {
+await kv.set(["keypair", "rsa", identifier], {
   privateKey: await exportJwk(rsaPair.privateKey),
   publicKey: await exportJwk(rsaPair.publicKey),
 });
-await kv.set(["keypair", "ed25519", handle], {
+await kv.set(["keypair", "ed25519", identifier], {
   privateKey: await exportJwk(ed25519Pair.privateKey),
   publicKey: await exportJwk(ed25519Pair.publicKey),
 });
@@ -291,14 +343,14 @@ interface KeyPairEntry {
 }
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
     // Omitted for brevity; see the previous example for details.
   })
-  .setKeyPairsDispatcher(async (ctx, handle) => {
+  .setKeyPairsDispatcher(async (ctx, identifier) => {
     const kv = await Deno.openKv();
     const result: CryptoKeyPair[] = [];
     const rsaPair = await kv.get<KeyPairEntry>(
-      ["keypair", "rsa", handle],
+      ["keypair", "rsa", identifier],
     );
     if (rsaPair?.value != null) {
       result.push({
@@ -307,7 +359,7 @@ federation
       });
     }
     const ed25519Pair = await kv.get<KeyPairEntry>(
-      ["keypair", "ed25519", handle],
+      ["keypair", "ed25519", identifier],
     );
     if (ed25519Pair?.value != null) {
       result.push({
@@ -327,7 +379,7 @@ Constructing actor URIs
 -----------------------
 
 To construct an actor URI, you can use the `Context.getActorUri()` method.
-This method takes a bare handle and returns a dereferenceable URI of the actor.
+This method takes an identifier and returns a dereferenceable URI of the actor.
 
 The below example shows how to construct an actor URI:
 
@@ -339,13 +391,25 @@ ctx.getActorUri("john_doe")
 ~~~~
 
 In the above example, the `Context.getActorUri()` method generates the
-dereferenceable URI of the actor with the bare handle `"john_doe"`.
+dereferenceable URI of the actor with the identifier `"john_doe"`.
+
+If you [decouple the WebFinger username from the actor's
+identifier](#decoupling-actor-uris-from-webfinger-usernames),
+you should pass the identifier that is used in the actor dispatcher to
+the `Context.getActorUri()` method, not the WebFinger username:
+
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+ctx.getActorUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4")
+~~~~
 
 > [!NOTE]
 >
 > The `Context.getActorUri()` method does not guarantee that the actor
 > URI is always dereferenceable for every argument.  Make sure that
-> the argument is a valid bare handle before calling the method.
+> the argument is a valid identifier before calling the method.
 
 
 Decoupling actor URIs from WebFinger usernames
@@ -359,8 +423,8 @@ Decoupling actor URIs from WebFinger usernames
 > `acct:fedify@hollo.social` URI or the `@fedify@hollo.social` handle
 > is `fedify`.
 
-By default, Fedify uses the bare handle as the WebFinger username.  However,
-you can decouple the WebFinger username from the bare handle by registering
+By default, Fedify uses the identifier as the WebFinger username.  However,
+you can decouple the WebFinger username from the identifier by registering
 an actor handle mapper through the `~ActorCallbackSetters.mapHandle()` method:
 
 ~~~~ typescript twoslash
@@ -382,21 +446,22 @@ function findUserByUuid(uuid: string): User;
 function findUserByUsername(username: string): User;
 // ---cut-before---
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-    // Since we map a WebFinger handle to the corresponding user's UUID below,
-    // the `handle` parameter is the user's UUID, not the WebFinger username:
-    const user = await findUserByUuid(handle);
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+    // Since we map a WebFinger username to the corresponding user's UUID below,
+    // the `identifier` parameter is the user's UUID, not the WebFinger
+    // username:
+    const user = await findUserByUuid(identifier);
     // Omitted for brevity; see the previous example for details.
   })
   .mapHandle(async (ctx, username) => {
-    // Work with the database to find the WebFinger username by the handle.
+    // Work with the database to find the user's UUID by the WebFinger username.
     const user = await findUserByUsername(username);
     if (user == null) return null;  // Return null if the actor is not found.
     return user.uuid;
   });
 ~~~~
 
-Decoupling the WebFinger username from the bare handle is useful when you want
+Decoupling the WebFinger username from the identifier is useful when you want
 to let users change their WebFinger username without breaking the existing
 network, because changing the WebFinger username does not affect the actor URI.
 

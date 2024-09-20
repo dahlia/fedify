@@ -96,7 +96,9 @@ export const command = new Command()
     }
     if (options.follow != null && options.follow.length > 0) {
       spinner.text = "Following actors...";
-      const documentLoader = await fedCtx.getDocumentLoader({ handle: "i" });
+      const documentLoader = await fedCtx.getDocumentLoader({
+        identifier: "i",
+      });
       for (const uri of options.follow) {
         spinner.text = `Following ${colors.green(uri)}...`;
         const actor = await lookupObject(uri, { documentLoader });
@@ -107,7 +109,7 @@ export const command = new Command()
         }
         if (actor.id != null) peers[actor.id?.href] = actor;
         await fedCtx.sendActivity(
-          { handle: "i" },
+          { identifier: "i" },
           actor,
           new Follow({
             id: new URL(`#follows/${actor.id?.href}`, fedCtx.getActorUri("i")),
@@ -132,34 +134,34 @@ const time = Temporal.Now.instant();
 let actorKeyPairs: CryptoKeyPair[] | undefined = undefined;
 
 federation
-  .setActorDispatcher("/{handle}", async (ctx, handle) => {
-    if (handle !== "i") return null;
+  .setActorDispatcher("/{identifier}", async (ctx, identifier) => {
+    if (identifier !== "i") return null;
     return new Application({
-      id: ctx.getActorUri(handle),
-      preferredUsername: handle,
+      id: ctx.getActorUri(identifier),
+      preferredUsername: identifier,
       name: "Fedify Ephemeral Inbox",
       summary: "An ephemeral ActivityPub inbox for testing purposes.",
-      inbox: ctx.getInboxUri(handle),
+      inbox: ctx.getInboxUri(identifier),
       endpoints: new Endpoints({
         sharedInbox: ctx.getInboxUri(),
       }),
-      followers: ctx.getFollowersUri(handle),
-      following: ctx.getFollowingUri(handle),
-      outbox: ctx.getOutboxUri(handle),
+      followers: ctx.getFollowersUri(identifier),
+      following: ctx.getFollowingUri(identifier),
+      outbox: ctx.getOutboxUri(identifier),
       manuallyApprovesFollowers: true,
       published: time,
       icon: new Image({
         url: new URL("https://fedify.dev/logo.png"),
         mediaType: "image/png",
       }),
-      publicKey: (await ctx.getActorKeyPairs(handle))[0].cryptographicKey,
-      assertionMethods: (await ctx.getActorKeyPairs(handle))
+      publicKey: (await ctx.getActorKeyPairs(identifier))[0].cryptographicKey,
+      assertionMethods: (await ctx.getActorKeyPairs(identifier))
         .map((pair) => pair.multikey),
-      url: ctx.getActorUri(handle),
+      url: ctx.getActorUri(identifier),
     });
   })
-  .setKeyPairsDispatcher(async (_ctxData, handle) => {
-    if (handle !== "i") return [];
+  .setKeyPairsDispatcher(async (_ctxData, identifier) => {
+    if (identifier !== "i") return [];
     if (actorKeyPairs == null) {
       actorKeyPairs = [
         await generateCryptoKeyPair("RSASSA-PKCS1-v1_5"),
@@ -195,7 +197,7 @@ async function sendDeleteToPeers(server: TemporaryServer): Promise<void> {
   const ctx = federation.createContext(server.url, -1);
   const actorId = ctx.getActorUri("i");
   await ctx.sendActivity(
-    { handle: "i" },
+    { identifier: "i" },
     Object.values(peers),
     new Delete({
       id: new URL(`#delete`, actorId),
@@ -209,8 +211,8 @@ async function sendDeleteToPeers(server: TemporaryServer): Promise<void> {
 const followers: Record<string, Actor> = {};
 
 federation
-  .setInboxListeners("/{handle}/inbox", "/inbox")
-  .setSharedKeyDispatcher((_) => ({ handle: "i" }))
+  .setInboxListeners("/{identifier}/inbox", "/inbox")
+  .setSharedKeyDispatcher((_) => ({ identifier: "i" }))
   .on(Activity, async (ctx, activity) => {
     activities[ctx.data].activity = activity;
     for await (const actor of activity.getActors()) {
@@ -224,8 +226,8 @@ federation
       const objectId = activity.objectId;
       if (objectId == null) return;
       const parsed = ctx.parseUri(objectId);
-      if (parsed?.type !== "actor" || parsed.handle !== "i") return;
-      const { handle } = parsed;
+      if (parsed?.type !== "actor" || parsed.identifier !== "i") return;
+      const { identifier } = parsed;
       const follower = await activity.getActor();
       if (!isActor(follower)) return;
       const accepts = await acceptsFollowFrom(follower);
@@ -240,11 +242,11 @@ federation
       });
       followers[activity.id.href] = follower;
       await ctx.sendActivity(
-        { handle },
+        { identifier },
         follower,
         new Accept({
           id: new URL(`#accepts/${follower.id?.href}`, ctx.getActorUri("i")),
-          actor: ctx.getActorUri(handle),
+          actor: ctx.getActorUri(identifier),
           object: activity.id,
         }),
       );
@@ -252,8 +254,8 @@ federation
   });
 
 federation
-  .setFollowersDispatcher("/{handle}/followers", (_ctx, handle) => {
-    if (handle !== "i") return null;
+  .setFollowersDispatcher("/{identifier}/followers", (_ctx, identifier) => {
+    if (identifier !== "i") return null;
     const items: Recipient[] = [];
     for (const follower of Object.values(followers)) {
       if (follower.id == null) continue;
@@ -261,18 +263,21 @@ federation
     }
     return { items };
   })
-  .setCounter((_ctx, handle) => {
-    if (handle !== "i") return null;
+  .setCounter((_ctx, identifier) => {
+    if (identifier !== "i") return null;
     return Object.keys(followers).length;
   });
 
 federation
-  .setFollowingDispatcher("/{handle}/following", (_ctx, _handle) => null)
-  .setCounter((_ctx, _handle) => 0);
+  .setFollowingDispatcher(
+    "/{identifier}/following",
+    (_ctx, _identifier) => null,
+  )
+  .setCounter((_ctx, _identifier) => 0);
 
 federation
-  .setOutboxDispatcher("/{handle}/outbox", (_ctx, _handle) => null)
-  .setCounter((_ctx, _handle) => 0);
+  .setOutboxDispatcher("/{identifier}/outbox", (_ctx, _identifier) => null)
+  .setCounter((_ctx, _identifier) => 0);
 
 federation.setNodeInfoDispatcher("/nodeinfo/2.1", (_ctx) => {
   return {

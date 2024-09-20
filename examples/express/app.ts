@@ -2,13 +2,13 @@ import express from "express";
 import { integrateFederation } from "@fedify/express";
 import {
   Accept,
+  createFederation,
   Endpoints,
   Follow,
-  Person,
-  Undo,
-  createFederation,
   generateCryptoKeyPair,
   MemoryKvStore,
+  Person,
+  Undo,
 } from "@fedify/fedify";
 import { configure, getConsoleSink } from "@logtape/logtape";
 
@@ -35,18 +35,18 @@ const federation = createFederation<void>({
 });
 
 federation
-  .setActorDispatcher("/users/{handle}", async (ctx, handle) => {
-    if (handle != "demo") {
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+    if (identifier != "demo") {
       return null;
     }
-    const keyPairs = await ctx.getActorKeyPairs(handle);
+    const keyPairs = await ctx.getActorKeyPairs(identifier);
     return new Person({
-      id: ctx.getActorUri(handle),
+      id: ctx.getActorUri(identifier),
       name: "Fedify Demo",
       summary: "This is a Fedify Demo account.",
-      preferredUsername: handle,
+      preferredUsername: identifier,
       url: new URL("/", ctx.url),
-      inbox: ctx.getInboxUri(handle),
+      inbox: ctx.getInboxUri(identifier),
       endpoints: new Endpoints({
         sharedInbox: ctx.getInboxUri(),
       }),
@@ -54,21 +54,21 @@ federation
       assertionMethods: keyPairs.map((keyPair) => keyPair.multikey),
     });
   })
-  .setKeyPairsDispatcher(async (_, handle) => {
-    if (handle != "demo") {
+  .setKeyPairsDispatcher(async (_, identifier) => {
+    if (identifier != "demo") {
       return [];
     }
-    const keyPairs = keyPairsStore.get(handle);
+    const keyPairs = keyPairsStore.get(identifier);
     if (keyPairs) {
       return keyPairs;
     }
     const { privateKey, publicKey } = await generateCryptoKeyPair();
-    keyPairsStore.set(handle, [{ privateKey, publicKey }]);
+    keyPairsStore.set(identifier, [{ privateKey, publicKey }]);
     return [{ privateKey, publicKey }];
   });
 
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (context, follow) => {
     if (
       follow.id == null ||
@@ -78,7 +78,7 @@ federation
       return;
     }
     const result = context.parseUri(follow.objectId);
-    if (result?.type !== "actor" || result.handle !== "demo") {
+    if (result?.type !== "actor" || result.identifier !== "demo") {
       return;
     }
     const follower = await follow.getActor(context);
@@ -86,16 +86,16 @@ federation
       throw new Error("follower is null");
     }
     await context.sendActivity(
-      { handle: result.handle },
+      { identifier: result.identifier },
       follower,
       new Accept({
         id: new URL(
           `#accepts/${follower.id.href}`,
-          context.getActorUri("demo")
+          context.getActorUri("demo"),
         ),
         actor: follow.objectId,
         object: follow,
-      })
+      }),
     );
     relationStore.set(follower.id.href, follow.actorId.href);
   })

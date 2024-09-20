@@ -37,14 +37,14 @@ import type { Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
 federation
-  .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle) => {
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier) => {
     // Work with the database to find the activities that the actor has sent.
     // Omitted for brevity.  See the next example for details.
   });
 ~~~~
 
 Each actor has its own outbox collection, so the URI pattern of the outbox
-dispatcher should include the actor's bare `{handle}`.  The URI pattern syntax
+dispatcher should include the actor's `{identifier}`.  The URI pattern syntax
 follows the [URI Template] specification.
 
 Since the outbox is a collection of activities, the outbox dispatcher should
@@ -73,23 +73,23 @@ interface Post {
 }
 /**
  * A hypothetical function that returns the posts that an actor has sent.
- * @param handle The actor's handle.
+ * @param identifier The actor's identifier.
  * @returns The posts that the actor has sent.
  */
-function getPostsByUserHandle(handle: string): Post[] { return []; }
+function getPostsByUserId(userId: string): Post[] { return []; }
 // ---cut-before---
 import { Article, Create } from "@fedify/fedify";
 
 federation
-  .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle) => {
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier) => {
     // Work with the database to find the activities that the actor has sent
-    // (the following `getPostsByUserHandle` is a hypothetical function):
-    const posts = await getPostsByUserHandle(handle);
+    // (the following `getPostsByUserId` is a hypothetical function):
+    const posts = await getPostsByUserId(identifier);
     // Turn the posts into `Create` activities:
     const items = posts.map(post =>
       new Create({
         id: new URL(`/posts/${post.id}#activity`, ctx.url),
-        actor: ctx.getActorUri(handle),
+        actor: ctx.getActorUri(identifier),
         object: new Article({
           id: new URL(`/posts/${post.id}`, ctx.url),
           summary: post.title,
@@ -209,9 +209,9 @@ interface PostResultSet {
 }
 /**
  * A hypothetical type that represents the options for
- * the `getPostsByUserHandle` function.
+ * the `getPostsByUserId` function.
  */
-interface GetPostsByUserHandleOptions {
+interface GetPostsByUserIdOptions {
   /**
    * The cursor that represents the position of the current page.
    */
@@ -223,25 +223,25 @@ interface GetPostsByUserHandleOptions {
 }
 /**
  * A hypothetical function that returns the posts that an actor has sent.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The result set that contains the posts, the next cursor, and whether
  *          the current page is the last page.
  */
-function getPostsByUserHandle(
-  handle: string,
-  options: GetPostsByUserHandleOptions,
+function getPostsByUserId(
+  userId: string,
+  options: GetPostsByUserIdOptions,
 ): PostResultSet {
   return { posts: [], nextCursor: null, last: true };
 }
 // ---cut-before---
 federation
-  .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle, cursor) => {
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier, cursor) => {
     // If a whole collection is requested, returns nothing as we prefer
     // collection pages over the whole collection:
     if (cursor == null) return null;
     // Work with the database to find the activities that the actor has sent
-    // (the following `getPostsByUserHandle` is a hypothetical function):
-    const { posts, nextCursor, last } = await getPostsByUserHandle(handle, {
+    // (the following `getPostsByUserId` is a hypothetical function):
+    const { posts, nextCursor, last } = await getPostsByUserId(identifier, {
       cursor,
       limit: 10,
     });
@@ -249,7 +249,7 @@ federation
     const items = posts.map(post =>
       new Create({
         id: new URL(`/posts/${post.id}#activity`, ctx.url),
-        actor: ctx.getActorUri(handle),
+        actor: ctx.getActorUri(identifier),
         object: new Article({
           id: new URL(`/posts/${post.id}`, ctx.url),
           summary: post.title,
@@ -265,7 +265,7 @@ federation
   });
 ~~~~
 
-In the above example, the hypothetical `getPostsByUserHandle()` function returns
+In the above example, the hypothetical `getPostsByUserId()` function returns
 the `nextCursor` along with the `items`.  The `nextCursor` represents the
 position of the next page, which is provided by the database system.  If the
 `last` is `true`, it means that the current page is the last page, so the
@@ -321,9 +321,9 @@ interface PostResultSet {
 }
 /**
  * A hypothetical type that represents the options for
- * the `getPostsByUserHandle` function.
+ * the `getPostsByUserId` function.
  */
-interface GetPostsByUserHandleOptions {
+interface GetPostsByUserIdOptions {
   /**
    * The cursor that represents the position of the current page.
    */
@@ -335,13 +335,13 @@ interface GetPostsByUserHandleOptions {
 }
 /**
  * A hypothetical function that returns the posts that an actor has sent.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The result set that contains the posts, the next cursor, and whether
  *          the current page is the last page.
  */
-function getPostsByUserHandle(
-  handle: string,
-  options: GetPostsByUserHandleOptions,
+function getPostsByUserId(
+  userId: string,
+  options: GetPostsByUserIdOptions,
 ): PostResultSet {
   return { posts: [], nextCursor: null, last: true };
 }
@@ -350,18 +350,18 @@ function getPostsByUserHandle(
 const window = 10;
 
 federation
-  .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle, cursor) => {
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier, cursor) => {
     if (cursor == null) return null;
-    // The following `getPostsByUserHandle` is a hypothetical function:
-    const { posts, nextCursor, last } = await getPostsByUserHandle(
-      handle,
+    // The following `getPostsByUserId` is a hypothetical function:
+    const { posts, nextCursor, last } = await getPostsByUserId(
+      identifier,
       cursor === "" ? { limit: window } : { cursor, limit: window }
     );
     // Turn the posts into `Create` activities:
     const items = posts.map(post =>
       new Create({
         id: new URL(`/posts/${post.id}#activity`, ctx.url),
-        actor: ctx.getActorUri(handle),
+        actor: ctx.getActorUri(identifier),
         object: new Article({
           id: new URL(`/posts/${post.id}`, ctx.url),
           summary: post.title,
@@ -371,7 +371,7 @@ federation
     );
     return { items, nextCursor: last ? null : nextCursor }
   })
-  .setFirstCursor(async (ctx, handle) => {
+  .setFirstCursor(async (ctx, identifier) => {
     // Let's assume that an empty string represents the beginning of the
     // collection:
     return "";  // Note that it's not `null`.
@@ -406,20 +406,20 @@ const federation = null as unknown as Federation<void>;
 /**
  * A hypothetical function that counts the number of posts that an actor has
  * sent.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The number of posts that the actor has sent.
  */
-async function countPostsByUserHandle(handle: string): Promise<number> {
+async function countPostsByUserId(userId: string): Promise<number> {
   return 0;
 }
 // ---cut-before---
 federation
-  .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle, cursor) => {
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier, cursor) => {
     // Omitted for brevity.
   })
-  .setCounter(async (ctx, handle) => {
-    // The following `countPostsByUserHandle` is a hypothetical function:
-    return await countPostsByUserHandle(handle);
+  .setCounter(async (ctx, identifier) => {
+    // The following `countPostsByUserId` is a hypothetical function:
+    return await countPostsByUserId(identifier);
   });
 ~~~~
 
@@ -461,9 +461,9 @@ interface Post {
 }
 /**
  * A hypothetical type that represents the options for
- * the `getPostsByUserHandle` function.
+ * the `getPostsByUserId` function.
  */
-interface GetPostsByUserHandleOptions {
+interface GetPostsByUserIdOptions {
   /**
    * The offset of the current page.
    */
@@ -475,23 +475,23 @@ interface GetPostsByUserHandleOptions {
 }
 /**
  * A hypothetical function that returns the posts that an actor has sent.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The result set that contains the posts, the next cursor, and whether
  *          the current page is the last page.
  */
-function getPostsByUserHandle(
-  handle: string,
-  options: GetPostsByUserHandleOptions,
+function getPostsByUserId(
+  userId: string,
+  options: GetPostsByUserIdOptions,
 ): Post[] {
   return [];
 }
 /**
  * A hypothetical function that counts the number of posts that an actor has
  * sent.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The number of posts that the actor has sent.
  */
-async function countPostsByUserHandle(handle: string): Promise<number> {
+async function countPostsByUserId(userId: string): Promise<number> {
   return 0;
 }
 // ---cut-before---
@@ -499,20 +499,20 @@ async function countPostsByUserHandle(handle: string): Promise<number> {
 const window = 10;
 
 federation
-  .setOutboxDispatcher("/users/{handle}/outbox", async (ctx, handle, cursor) => {
+  .setOutboxDispatcher("/users/{identifier}/outbox", async (ctx, identifier, cursor) => {
     if (cursor == null) return null;
     // Here we use the offset numeric value as the cursor:
     const offset = parseInt(cursor);
-    // The following `getPostsByUserHandle` is a hypothetical function:
-    const posts = await getPostsByUserHandle(
-      handle,
+    // The following `getPostsByUserId` is a hypothetical function:
+    const posts = await getPostsByUserId(
+      identifier,
       { offset, limit: window }
     );
     // Turn the posts into `Create` activities:
     const items = posts.map(post =>
       new Create({
         id: new URL(`/posts/${post.id}#activity`, ctx.url),
-        actor: ctx.getActorUri(handle),
+        actor: ctx.getActorUri(identifier),
         object: new Article({
           id: new URL(`/posts/${post.id}`, ctx.url),
           summary: post.title,
@@ -522,10 +522,10 @@ federation
     );
     return { items, nextCursor: (offset + window).toString() }
   })
-  .setFirstCursor(async (ctx, handle) => "0")
-  .setLastCursor(async (ctx, handle) => {
-    // The following `countPostsByUserHandle` is a hypothetical function:
-    const total = await countPostsByUserHandle(handle);
+  .setFirstCursor(async (ctx, identifier) => "0")
+  .setLastCursor(async (ctx, identifier) => {
+    // The following `countPostsByUserId` is a hypothetical function:
+    const total = await countPostsByUserId(identifier);
     // The last cursor is the offset of the last page:
     return (total - (total % window)).toString();
   });
@@ -534,8 +534,8 @@ federation
 ### Constructing outbox collection URIs
 
 To construct an outbox collection URI, you can use the `Context.getOutboxUri()`
-method.  This method takes the actor's handle and returns the dereferenceable
-URI of the outbox collection of the actor.
+method.  This method takes the actor's identifier and returns
+the dereferenceable URI of the outbox collection of the actor.
 
 The following shows how to construct an outbox collection URI of an actor named
 `"alice"`:
@@ -547,12 +547,25 @@ const ctx = null as unknown as Context<void>;
 ctx.getOutboxUri("alice")
 ~~~~
 
+If you [decouple the WebFinger username from the actor's
+identifier](./actor.md#decoupling-actor-uris-from-webfinger-usernames),
+you should pass the identifier that is used in
+the [actor dispatcher](./actor.md) to the `Context.getOutboxUri()` method,
+not the WebFinger username:
+
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+ctx.getOutboxUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4")
+~~~~
+
 > [!NOTE]
 >
 > The `Context.getOutboxUri()` method does not guarantee that the outbox
 > collection actually exists.  It only constructs a URI based on the given
-> handle, which may respond with `404 Not Found`.  Make sure to check if the
-> handle is valid before calling the method.
+> identifier, which may respond with `404 Not Found`.  Make sure to check if
+> the identifier is valid before calling the method.
 
 
 Inbox
@@ -574,34 +587,34 @@ const federation = null as unknown as Federation<void>;
 /**
  * A hypothetical function that returns the activities that an actor has
  * received.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The activities that the actor has received.
  */
-async function getInboxByUserHandle(handle: string): Promise<Activity[]> {
+async function getInboxByUserId(userId: string): Promise<Activity[]> {
   return [];
 }
 /**
  * A hypothetical function that counts the number of activities that an actor
  * has received.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The number of activities that the actor has received.
  */
-async function countInboxByUserHandle(handle: string): Promise<number> {
+async function countInboxByUserId(userId: string): Promise<number> {
   return 0;
 }
 // ---cut-before---
 import { Activity } from "@fedify/fedify";
 
 federation
-  .setInboxDispatcher("/users/{handle}/inbox", async (ctx, handle) => {
+  .setInboxDispatcher("/users/{identifier}/inbox", async (ctx, identifier) => {
     // Work with the database to find the activities that the actor has received
-    // (the following `getInboxByUserHandle` is a hypothetical function):
-    const items: Activity[] = await getInboxByUserHandle(handle);
+    // (the following `getInboxByUserId` is a hypothetical function):
+    const items: Activity[] = await getInboxByUserId(identifier);
     return { items };
   })
-  .setCounter(async (ctx, handle) => {
-    // The following `countInboxByUserHandle` is a hypothetical function:
-    return await countInboxByUserHandle(handle);
+  .setCounter(async (ctx, identifier) => {
+    // The following `countInboxByUserId` is a hypothetical function:
+    return await countInboxByUserId(identifier);
   });
 ~~~~
 
@@ -612,8 +625,8 @@ federation
 ### Constructing inbox collection URIs
 
 To construct an inbox collection URI, you can use the `Context.getInboxUri()`
-method.  This method takes the actor's handle and returns the dereferenceable
-URI of the inbox collection of the actor.
+method.  This method takes the actor's identifier and returns
+the dereferenceable URI of the inbox collection of the actor.
 
 The following shows how to construct an inbox collection URI of an actor named
 `"alice"`:
@@ -625,12 +638,25 @@ const ctx = null as unknown as Context<void>;
 ctx.getInboxUri("alice")
 ~~~~
 
+If you [decouple the WebFinger username from the actor's
+identifier](./actor.md#decoupling-actor-uris-from-webfinger-usernames),
+you should pass the identifier that is used in
+the [actor dispatcher](./actor.md) to the `Context.getInboxUri()` method,
+not the WebFinger username:
+
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+ctx.getInboxUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4")
+~~~~
+
 > [!NOTE]
 >
 > The `Context.getInboxUri()` method does not guarantee that the inbox
 > collection actually exists.  It only constructs a URI based on the given
-> handle, which may respond with `404 Not Found`.  Make sure to check if the
-> handle is valid before calling the method.
+> identifier, which may respond with `404 Not Found`.  Make sure to check if
+> the identifier is valid before calling the method.
 
 
 Following
@@ -679,27 +705,27 @@ interface ResultSet {
 }
 /**
  * A hypothetical function that returns the actors that an actor is following.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @param options The options for the query.
  * @returns The actors that the actor is following, the next cursor, and whether
  *          the current page is the last page.
  */
-async function getFollowingByUserHandle(
-  handle: string,
+async function getFollowingByUserId(
+  identifier: string,
   options: { cursor?: string | null; limit: number },
 ): Promise<ResultSet> {
   return { users: [], nextCursor: null, last: true };
 }
 // ---cut-before---
 federation
-  .setFollowingDispatcher("/users/{handle}/following", async (ctx, handle, cursor) => {
+  .setFollowingDispatcher("/users/{identifier}/following", async (ctx, identifier, cursor) => {
     // If a whole collection is requested, returns nothing as we prefer
     // collection pages over the whole collection:
     if (cursor == null) return null;
     // Work with the database to find the actors that the actor is following
-    // (the below `getFollowingByUserHandle` is a hypothetical function):
-    const { users, nextCursor, last } = await getFollowingByUserHandle(
-      handle,
+    // (the below `getFollowingByUserId` is a hypothetical function):
+    const { users, nextCursor, last } = await getFollowingByUserId(
+      identifier,
       cursor === "" ? { limit: 10 } : { cursor, limit: 10 }
     );
     // Turn the users into `URL` objects:
@@ -707,14 +733,15 @@ federation
     return { items, nextCursor: last ? null : nextCursor }
   })
   // The first cursor is an empty string:
-  .setFirstCursor(async (ctx, handle) => "");
+  .setFirstCursor(async (ctx, identifier) => "");
 ~~~~
 
 ### Constructing following collection URIs
 
 To construct a following collection URI, you can use
-the `Context.getFollowingUri()` method.  This method takes the actor's handle
-and returns the dereferenceable URI of the following collection of the actor.
+the `Context.getFollowingUri()` method.  This method takes the actor's
+identifier and returns the dereferenceable URI of the following collection
+of the actor.
 
 The following shows how to construct a following collection URI of an actor
 named `"alice"`:
@@ -726,11 +753,24 @@ const ctx = null as unknown as Context<void>;
 ctx.getFollowingUri("alice")
 ~~~~
 
+If you [decouple the WebFinger username from the actor's
+identifier](./actor.md#decoupling-actor-uris-from-webfinger-usernames),
+you should pass the identifier that is used in
+the [actor dispatcher](./actor.md) to the `Context.getFollowingUri()` method,
+not the WebFinger username:
+
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+ctx.getFollowingUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4")
+~~~~
+
 > [!NOTE]
 > The `Context.getFollowingUri()` method does not guarantee that the following
 > collection actually exists.  It only constructs a URI based on the given
-> handle, which may respond with `404 Not Found`.  Make sure to check if the
-> handle is valid before calling the method.
+> identifier, which may respond with `404 Not Found`.  Make sure to check if
+> the identifier is valid before calling the method.
 
 
 Followers
@@ -778,9 +818,9 @@ interface ResultSet {
 }
 /**
  * A hypothetical type that represents the options for
- * the `getFollowersByUserHandle` function.
+ * the `getFollowersByUserId` function.
  */
-interface GetFollowersByUserHandleOptions {
+interface GetFollowersByUserIdOptions {
   /**
    * The cursor that represents the position of the current page.
    */
@@ -792,29 +832,29 @@ interface GetFollowersByUserHandleOptions {
 }
 /**
  * A hypothetical function that returns the actors that are following an actor.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @param options The options for the query.
  * @returns The actors that are following the actor, the next cursor, and
  *          whether the current page is the last page.
  */
-async function getFollowersByUserHandle(
-  handle: string,
-  options: GetFollowersByUserHandleOptions,
+async function getFollowersByUserId(
+  userId: string,
+  options: GetFollowersByUserIdOptions,
 ): Promise<ResultSet> {
     return { users: [], nextCursor: null, last: true };
 }
 // ---cut-before---
 federation
   .setFollowersDispatcher(
-    "/users/{handle}/followers",
-    async (ctx, handle, cursor) => {
+    "/users/{identifier}/followers",
+    async (ctx, identifier, cursor) => {
       // If a whole collection is requested, returns nothing as we prefer
       // collection pages over the whole collection:
       if (cursor == null) return null;
       // Work with the database to find the actors that are following the actor
-      // (the below `getFollowersByUserHandle` is a hypothetical function):
-      const { users, nextCursor, last } = await getFollowersByUserHandle(
-        handle,
+      // (the below `getFollowersByUserId` is a hypothetical function):
+      const { users, nextCursor, last } = await getFollowersByUserId(
+        identifier,
         cursor === "" ? { limit: 10 } : { cursor, limit: 10 }
       );
       // Turn the users into `Recipient` objects:
@@ -826,7 +866,7 @@ federation
     }
   )
   // The first cursor is an empty string:
-  .setFirstCursor(async (ctx, handle) => "");
+  .setFirstCursor(async (ctx, identifier) => "");
 ~~~~
 
 > [!TIP]
@@ -876,20 +916,20 @@ interface User {
 }
 /**
  * A hypothetical function that returns the actors that are following an actor.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The actors that are following the actor.
  */
-async function getFollowersByUserHandle(handle: string): Promise<User[]> {
+async function getFollowersByUserId(userId: string): Promise<User[]> {
   return [];
 }
 // ---cut-before---
 federation
   .setFollowersDispatcher(
-    "/users/{handle}/followers",
-    async (ctx, handle, cursor, baseUri) => {
+    "/users/{identifier}/followers",
+    async (ctx, identifier, cursor, baseUri) => {
       // Work with the database to find the actors that are following the actor
-      // (the below `getFollowersByUserHandle` is a hypothetical function):
-      let users = await getFollowersByUserHandle(handle);
+      // (the below `getFollowersByUserId` is a hypothetical function):
+      let users = await getFollowersByUserId(identifier);
       // Filter the actors by the base URI:
       if (baseUri != null) {
         users = users.filter(actor => actor.uri.href.startsWith(baseUri.href));
@@ -912,8 +952,9 @@ federation
 ### Constructing followers collection URIs
 
 To construct a followers collection URI, you can use
-the `Context.getFollowersUri()` method.  This method takes the actor's handle
-and returns the dereferenceable URI of the followers collection of the actor.
+the `Context.getFollowersUri()` method.  This method takes the actor's
+identifier and returns the dereferenceable URI of the followers collection
+of the actor.
 
 The following shows how to construct a followers collection URI of an actor
 named `"alice"`:
@@ -925,12 +966,25 @@ const ctx = null as unknown as Context<void>;
 ctx.getFollowersUri("alice")
 ~~~~
 
+If you [decouple the WebFinger username from the actor's
+identifier](./actor.md#decoupling-actor-uris-from-webfinger-usernames),
+you should pass the identifier that is used in
+the [actor dispatcher](./actor.md) to the `Context.getFollowersUri()` method,
+not the WebFinger username:
+
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+ctx.getFollowersUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4")
+~~~~
+
 > [!NOTE]
 >
 > The `Context.getFollowersUri()` method does not guarantee that the followers
 > collection actually exists.  It only constructs a URI based on the given
-> handle, which may respond with `404 Not Found`.  Make sure to check if the
-> handle is valid before calling the method.
+> identifier, which may respond with `404 Not Found`.  Make sure to check if
+> the identifier is valid before calling the method.
 
 
 Liked
@@ -952,20 +1006,20 @@ import type { Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 /**
  * A hypothetical function that returns the objects that an actor has liked.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The objects that the actor has liked.
  */
-async function getLikedByUserHandle(handle: string): Promise<Object[]> {
+async function getLikedByUserId(userId: string): Promise<Object[]> {
   return [];
 }
 // ---cut-before---
 import type { Object } from "@fedify/fedify";
 
 federation
-  .setLikedDispatcher("/users/{handle}/liked", async (ctx, handle, cursor) => {
+  .setLikedDispatcher("/users/{identifier}/liked", async (ctx, identifier, cursor) => {
     // Work with the database to find the objects that the actor has liked
-    // (the below `getLikedPostsByUserHandle` is a hypothetical function):
-    const items: Object[] = await getLikedByUserHandle(handle);
+    // (the below `getLikedPostsByUserId` is a hypothetical function):
+    const items: Object[] = await getLikedByUserId(identifier);
     return { items };
   });
 ~~~~
@@ -977,20 +1031,20 @@ import type { Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 /**
  * A hypothetical function that returns the objects that an actor has liked.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The objects that the actor has liked.
  */
-async function getLikedByUserHandle(handle: string): Promise<Object[]> {
+async function getLikedByUserId(userId: string): Promise<Object[]> {
   return [];
 }
 // ---cut-before---
 import type { Object } from "@fedify/fedify";
 
 federation
-  .setLikedDispatcher("/users/{handle}/liked", async (ctx, handle, cursor) => {
+  .setLikedDispatcher("/users/{identifier}/liked", async (ctx, identifier, cursor) => {
     // Work with the database to find the objects that the actor has liked
-    // (the below `getLikedPostsByUserHandle` is a hypothetical function):
-    const objects: Object[] = await getLikedByUserHandle(handle);
+    // (the below `getLikedPostsByUserId` is a hypothetical function):
+    const objects: Object[] = await getLikedByUserId(identifier);
     // Turn the objects into `URL` objects:
     const items: URL[] = objects.map(obj => obj.id).filter(id => id != null);
     return { items };
@@ -1001,8 +1055,8 @@ federation
 ### Constructing liked collection URIs
 
 To construct a liked collection URI, you can use the `Context.getLikedUri()`
-method.  This method takes the actor's handle and returns the dereferenceable
-URI of the liked collection of the actor.
+method.  This method takes the actor's identifier and returns
+the dereferenceable URI of the liked collection of the actor.
 
 The following shows how to construct a liked collection URI of an actor named
 `"alice"`:
@@ -1014,12 +1068,25 @@ const ctx = null as unknown as Context<void>;
 ctx.getLikedUri("alice")
 ~~~~
 
+If you [decouple the WebFinger username from the actor's
+identifier](./actor.md#decoupling-actor-uris-from-webfinger-usernames),
+you should pass the identifier that is used in
+the [actor dispatcher](./actor.md) to the `Context.getLikedUri()` method,
+not the WebFinger username:
+
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+ctx.getLikedUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4")
+~~~~
+
 > [!NOTE]
 >
 > The `Context.getLikedUri()` method does not guarantee that the liked
 > collection actually exists.  It only constructs a URI based on the given
-> handle, which may respond with `404 Not Found`.  Make sure to check if the
-> handle is valid before calling the method.
+> identifier, which may respond with `404 Not Found`.  Make sure to check if
+> the identifier is valid before calling the method.
 
 
 Featured
@@ -1042,18 +1109,18 @@ import type { Object, Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 /**
  * A hypothetical function that returns the objects that an actor has featured.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The objects that the actor has featured.
  */
-async function getFeaturedByUserHandle(handle: string): Promise<Object[]> {
+async function getFeaturedByUserId(userId: string): Promise<Object[]> {
   return [];
 }
 // ---cut-before---
 federation
-  .setFeaturedDispatcher("/users/{handle}/featured", async (ctx, handle, cursor) => {
+  .setFeaturedDispatcher("/users/{identifier}/featured", async (ctx, identifier, cursor) => {
     // Work with the database to find the objects that the actor has featured
-    // (the below `getFeaturedPostsByUserHandle` is a hypothetical function):
-    const items = await getFeaturedByUserHandle(handle);
+    // (the below `getFeaturedPostsByUserId` is a hypothetical function):
+    const items = await getFeaturedByUserId(identifier);
     return { items };
   });
 ~~~~
@@ -1061,7 +1128,7 @@ federation
 ### Constructing featured collection URIs
 
 To construct a featured collection URI, you can use
-the `Context.getFeaturedUri()` method.  This method takes the actor's handle
+the `Context.getFeaturedUri()` method.  This method takes the actor's identifier
 and returns the dereferenceable URI of the featured collection of the actor.
 
 The following shows how to construct a featured collection URI of an actor named
@@ -1074,12 +1141,25 @@ const ctx = null as unknown as Context<void>;
 ctx.getFeaturedUri("alice")
 ~~~~
 
+If you [decouple the WebFinger username from the actor's
+identifier](./actor.md#decoupling-actor-uris-from-webfinger-usernames),
+you should pass the identifier that is used in
+the [actor dispatcher](./actor.md) to the `Context.getFeaturedUri()` method,
+not the WebFinger username:
+
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+ctx.getFeaturedUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4")
+~~~~
+
 > [!NOTE]
 >
 > The `Context.getFeaturedUri()` method does not guarantee that the featured
 > collection actually exists.  It only constructs a URI based on the given
-> handle, which may respond with `404 Not Found`.  Make sure to check if the
-> handle is valid before calling the method.
+> identifier, which may respond with `404 Not Found`.  Make sure to check if
+> the identifier is valid before calling the method.
 
 
 
@@ -1103,18 +1183,18 @@ import { Hashtag, type Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 /**
  * A hypothetical function that returns the tags that an actor has featured.
- * @param handle The actor's handle.
+ * @param userId The actor's identifier.
  * @returns The tags that the actor has featured.
  */
-async function getFeaturedTagsByUserHandle(handle: string): Promise<string[]> {
+async function getFeaturedTagsByUserId(userId: string): Promise<string[]> {
   return [];
 }
 // ---cut-before---
 federation
-  .setFeaturedTagsDispatcher("/users/{handle}/tags", async (ctx, handle, cursor) => {
+  .setFeaturedTagsDispatcher("/users/{identifier}/tags", async (ctx, identifier, cursor) => {
     // Work with the database to find the tags that the actor has featured
-    // (the below `getFeaturedTagsByUserHandle` is a hypothetical function):
-    const hashtags = await getFeaturedTagsByUserHandle(handle);
+    // (the below `getFeaturedTagsByUserId` is a hypothetical function):
+    const hashtags = await getFeaturedTagsByUserId(identifier);
     const items = hashtags.map(hashtag =>
       new Hashtag({
         href: new URL(`/tags/${encodeURIComponent(hashtag)}`, ctx.url),
@@ -1128,9 +1208,9 @@ federation
 ### Constructing featured tags collection URIs
 
 To construct a featured tags collection URI, you can use
-the `Context.getFeaturedTagsUri()` method.  This method takes the actor's handle
-and returns the dereferenceable URI of the featured tags collection of
-the actor.
+the `Context.getFeaturedTagsUri()` method.  This method takes the actor's
+identifier and returns the dereferenceable URI of the featured tags collection
+of the actor.
 
 The following shows how to construct a featured tags collection URI of an actor
 named `"alice"`:
@@ -1142,9 +1222,22 @@ const ctx = null as unknown as Context<void>;
 ctx.getFeaturedTagsUri("alice")
 ~~~~
 
+If you [decouple the WebFinger username from the actor's
+identifier](./actor.md#decoupling-actor-uris-from-webfinger-usernames),
+you should pass the identifier that is used in
+the [actor dispatcher](./actor.md) to the `Context.getFeaturedTagsUri()` method,
+not the WebFinger username:
+
+~~~~ typescript twoslash
+import type { Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+ctx.getFeaturedTagsUri("2bd304f9-36b3-44f0-bf0b-29124aafcbb4")
+~~~~
+
 > [!NOTE]
 >
 > The `Context.getFeaturedTagsUri()` method does not guarantee that the featured
 > tags collection actually exists.  It only constructs a URI based on the given
-> handle, which may respond with `404 Not Found`.  Make sure to check
-> if the handle is valid before calling the method.
+> identifier, which may respond with `404 Not Found`.  Make sure to check
+> if the identifier is valid before calling the method.

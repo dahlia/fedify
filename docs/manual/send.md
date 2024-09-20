@@ -37,14 +37,14 @@ import { type Context, Follow, type Recipient } from "@fedify/fedify";
 
 async function sendFollow(
   ctx: Context<void>,
-  senderHandle: string,
+  senderId: string,
   recipient: Recipient,
 ) {
   await ctx.sendActivity(
-    { handle: senderHandle },
+    { identifier: senderId },
     recipient,
     new Follow({
-      actor: ctx.getActorUri(senderHandle),
+      actor: ctx.getActorUri(senderId),
       object: recipient.id,
     }),
   );
@@ -55,6 +55,79 @@ async function sendFollow(
 > Wonder where you can acquire a `Context` object?  See the [*Where to get a
 > `Context` object* section](./context.md#where-to-get-a-context-object) in
 > the *Context* section.
+
+
+Specifying a sender
+-------------------
+
+The first argument of the `~Context.sendActivity()` method is the sender
+of the activity.  It can be three types of values:
+
+### `{ identifier: string }`
+
+If you specify an object with the `identifier` property, the sender is
+the actor with the given identifier.  The identifier is used to find the
+actor's key pairs to sign the activity:
+
+~~~~ typescript twoslash
+import { Activity, type Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+const activity = new Activity({});
+// ---cut-before---
+await ctx.sendActivity(
+  { identifier: "2bd304f9-36b3-44f0-bf0b-29124aafcbb4" },  // [!code highlight]
+  "followers",
+  activity,
+);
+~~~~
+
+### `{ username: string }`
+
+If you specify an object with the `username` property, the sender is
+the actor with the given WebFinger username.  The username is used to find
+the actor's key pairs to sign the activity:
+
+~~~~ typescript twoslash
+import { Activity, type Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+const activity = new Activity({});
+// ---cut-before---
+await ctx.sendActivity(
+  { username: "john" },  // [!code highlight]
+  "followers",
+  activity,
+);
+~~~~
+
+If you don't [decouple the username from the
+identifier](./actor.md#decoupling-actor-uris-from-webfinger-usernames),
+this is the same as the `{ identifier: string }` case.
+
+### `SenderKeyPair | SenderKeyPair[]`
+
+If you specify a `SenderKeyPair` object or an array of `SenderKeyPair` objects,
+the sender is the set of the given key pairs:
+
+~~~~ typescript twoslash
+import {
+  Activity,
+  type Actor,
+  type Context,
+  SenderKeyPair,
+} from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+const activity = new Activity({});
+const recipients: Actor[] = [];
+// ---cut-before---
+await ctx.sendActivity(
+  await ctx.getActorKeyPairs("2bd304f9-36b3-44f0-bf0b-29124aafcbb4"),  // [!code highlight]
+  recipients,  // You need to specify the recipients manually
+  activity,
+);
+~~~~
+
+However, you probably don't want to use this option directly; instead,
+you should use above two options to specify the sender.
 
 
 Enqueuing an outgoing activity
@@ -114,14 +187,14 @@ import { type Context, Follow, type Recipient } from "@fedify/fedify";
 
 async function sendFollow(
   ctx: Context<void>,
-  senderHandle: string,
+  senderId: string,
   recipient: Recipient,
 ) {
   await ctx.sendActivity(
-    { handle: senderHandle },
+    { identifier: senderId },
     recipient,
     new Follow({
-      actor: ctx.getActorUri(senderHandle),
+      actor: ctx.getActorUri(senderId),
       object: recipient.id,
     }),
     { immediate: true },  // [!code highlight]
@@ -151,17 +224,17 @@ import {
 
 async function sendNote(
   ctx: Context<void>,
-  senderHandle: string,
+  senderId: string,
   recipient: Recipient,
 ) {
   await ctx.sendActivity(
-    { handle: senderHandle },
+    { identifier: senderId },
     recipient,
     new Create({
-      actor: ctx.getActorUri(senderHandle),
+      actor: ctx.getActorUri(senderId),
       to: PUBLIC_COLLECTION,
       object: new Note({
-        attribution: ctx.getActorUri(senderHandle),
+        attribution: ctx.getActorUri(senderId),
         to: PUBLIC_COLLECTION,
       }),
     }),
@@ -213,17 +286,17 @@ the `"followers"` string:
 ~~~~ typescript twoslash
 import { type Context, Create, Note } from "@fedify/fedify";
 const ctx = null as unknown as Context<void>;
-const senderHandle: string = "";
+const senderId : string = "";
 // ---cut-before---
 await ctx.sendActivity(
-  { handle: senderHandle },
+  { identifier: senderId },
   "followers",  // [!code highlight]
   new Create({
-    actor: ctx.getActorUri(senderHandle),
-    to: ctx.getFollowersUri(senderHandle),
+    actor: ctx.getActorUri(senderId),
+    to: ctx.getFollowersUri(senderId),
     object: new Note({
-      attribution: ctx.getActorUri(senderHandle),
-      to: ctx.getFollowersUri(senderHandle),
+      attribution: ctx.getActorUri(senderId),
+      to: ctx.getFollowersUri(senderId),
     }),
   }),
   { preferSharedInbox: true },  // [!code highlight]
@@ -263,11 +336,11 @@ to the `~Context.sendActivity()` method:
 ~~~~ typescript twoslash
 import { Activity, type Context } from "@fedify/fedify";
 const ctx = null as unknown as Context<void>;
-const senderHandle: string = "";
+const senderId: string = "";
 const activity = new Activity({});
 // ---cut-before---
 await ctx.sendActivity(
-  { handle: senderHandle },
+  { identifier: senderId },
   "followers",
   activity,
   { excludeBaseUris: [ctx.getInboxUri()] },  // [!code highlight]

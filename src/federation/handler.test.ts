@@ -71,8 +71,8 @@ test("handleActor()", async () => {
   let context = createRequestContext<void>({
     data: undefined,
     url: new URL("https://example.com/"),
-    getActorUri(handle) {
-      return new URL(`https://example.com/users/${handle}`);
+    getActorUri(identifier) {
+      return new URL(`https://example.com/users/${identifier}`);
     },
   });
   const actorDispatcher: ActorDispatcher<void> = (ctx, handle) => {
@@ -101,7 +101,7 @@ test("handleActor()", async () => {
     context.request,
     {
       context,
-      handle: "someone",
+      identifier: "someone",
       onNotFound,
       onNotAcceptable,
       onUnauthorized,
@@ -123,7 +123,7 @@ test("handleActor()", async () => {
     context.request,
     {
       context,
-      handle: "someone",
+      identifier: "someone",
       actorDispatcher,
       onNotFound,
       onNotAcceptable,
@@ -140,7 +140,7 @@ test("handleActor()", async () => {
     context.request,
     {
       context,
-      handle: "no-one",
+      identifier: "no-one",
       actorDispatcher,
       onNotFound,
       onNotAcceptable,
@@ -165,7 +165,7 @@ test("handleActor()", async () => {
     context.request,
     {
       context,
-      handle: "someone",
+      identifier: "someone",
       actorDispatcher,
       onNotFound,
       onNotAcceptable,
@@ -216,7 +216,7 @@ test("handleActor()", async () => {
     context.request,
     {
       context,
-      handle: "no-one",
+      identifier: "no-one",
       actorDispatcher,
       onNotFound,
       onNotAcceptable,
@@ -233,7 +233,7 @@ test("handleActor()", async () => {
     context.request,
     {
       context,
-      handle: "someone",
+      identifier: "someone",
       actorDispatcher,
       authorizePredicate: (_ctx, _handle, signedKey, signedKeyOwner) =>
         signedKey != null && signedKeyOwner != null,
@@ -257,7 +257,7 @@ test("handleActor()", async () => {
     context.request,
     {
       context,
-      handle: "someone",
+      identifier: "someone",
       actorDispatcher,
       authorizePredicate: (_ctx, _handle, signedKey, signedKeyOwner) =>
         signedKey != null && signedKeyOwner != null,
@@ -562,8 +562,8 @@ test("handleCollection()", async () => {
   let context = createRequestContext<void>({
     data: undefined,
     url: new URL("https://example.com/"),
-    getActorUri(handle) {
-      return new URL(`https://example.com/users/${handle}`);
+    getActorUri(identifier) {
+      return new URL(`https://example.com/users/${identifier}`);
     },
   });
   const dispatcher: CollectionDispatcher<
@@ -622,9 +622,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "someone",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "someone",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       onNotFound,
       onNotAcceptable,
@@ -642,9 +642,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "someone",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "someone",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: { dispatcher },
       onNotFound,
@@ -663,9 +663,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "no-one",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "no-one",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: { dispatcher },
       onNotFound,
@@ -692,9 +692,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "no-one",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "no-one",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: { dispatcher },
       onNotFound,
@@ -713,9 +713,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "someone",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "someone",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: { dispatcher },
       onNotFound,
@@ -786,9 +786,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "someone",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "someone",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: {
         dispatcher,
@@ -816,9 +816,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "someone",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "someone",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: {
         dispatcher,
@@ -875,9 +875,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "someone",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "someone",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: {
         dispatcher,
@@ -931,9 +931,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "someone",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "someone",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: {
         dispatcher,
@@ -991,9 +991,9 @@ test("handleCollection()", async () => {
     {
       context,
       name: "collection",
-      handle: "someone",
-      uriGetter(handle) {
-        return new URL(`https://example.com/users/${handle}`);
+      identifier: "someone",
+      uriGetter(identifier) {
+        return new URL(`https://example.com/users/${identifier}`);
       },
       collectionCallbacks: {
         dispatcher,
@@ -1061,8 +1061,8 @@ test("handleInbox()", async () => {
     onNotFoundCalled = request;
     return new Response("Not found", { status: 404 });
   };
-  const actorDispatcher: ActorDispatcher<void> = (_ctx, handle) => {
-    if (handle !== "someone") return null;
+  const actorDispatcher: ActorDispatcher<void> = (_ctx, identifier) => {
+    if (identifier !== "someone") return null;
     return new Person({ name: "Someone" });
   };
   const inboxOptions = {
@@ -1077,7 +1077,7 @@ test("handleInbox()", async () => {
     skipSignatureVerification: false,
   } as const;
   let response = await handleInbox(unsignedRequest, {
-    handle: null,
+    identifier: null,
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1090,7 +1090,7 @@ test("handleInbox()", async () => {
 
   onNotFoundCalled = null;
   response = await handleInbox(unsignedRequest, {
-    handle: "nobody",
+    identifier: "nobody",
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1102,7 +1102,7 @@ test("handleInbox()", async () => {
 
   onNotFoundCalled = null;
   response = await handleInbox(unsignedRequest, {
-    handle: null,
+    identifier: null,
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1113,7 +1113,7 @@ test("handleInbox()", async () => {
   assertEquals(response.status, 401);
 
   response = await handleInbox(unsignedRequest, {
-    handle: "someone",
+    identifier: "someone",
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1136,7 +1136,7 @@ test("handleInbox()", async () => {
     documentLoader: mockDocumentLoader,
   });
   response = await handleInbox(signedRequest, {
-    handle: null,
+    identifier: null,
     context: signedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1147,7 +1147,7 @@ test("handleInbox()", async () => {
   assertEquals(response.status, 202);
 
   response = await handleInbox(signedRequest, {
-    handle: "someone",
+    identifier: "someone",
     context: signedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1158,7 +1158,7 @@ test("handleInbox()", async () => {
   assertEquals(response.status, 202);
 
   response = await handleInbox(unsignedRequest, {
-    handle: null,
+    identifier: null,
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1170,7 +1170,7 @@ test("handleInbox()", async () => {
   assertEquals(response.status, 202);
 
   response = await handleInbox(unsignedRequest, {
-    handle: "someone",
+    identifier: "someone",
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);

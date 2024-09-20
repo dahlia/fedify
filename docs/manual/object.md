@@ -19,7 +19,7 @@ An object dispatcher is a callback function that takes a `Context` object and
 URL arguments, and returns an object.  Every object dispatcher has one or more
 URL parameters that are used to dispatch the object.  The URL parameters are
 specified in the path pattern of the object dispatcher, e.g., `/notes/{id}`,
-`/users/{handle}/articles/{id}`.
+`/users/{userId}/articles/{articleId}`.
 
 The below example shows how to register an object dispatcher:
 
@@ -35,12 +35,12 @@ const federation = createFederation({
 
 federation.setObjectDispatcher(
   Note,
-  "/users/{handle}/notes/{id}",
-  async (ctx, { handle, id }) => {
-    // Work with the database to find the note by the author's handle and the note ID.
+  "/users/{userId}/notes/{noteId}",
+  async (ctx, { userId, noteId }) => {
+    // Work with the database to find the note by the author ID and the note ID.
     if (note == null) return null;  // Return null if the note is not found.
     return new Note({
-      id: ctx.getObjectUri(Note, { handle, id }),
+      id: ctx.getObjectUri(Note, { userId, noteId }),
       content: note.content,
       // Many more properties...
     });
@@ -49,8 +49,9 @@ federation.setObjectDispatcher(
 ~~~~
 
 In the above example, the `~Federation.setObjectDispatcher()` method registers
-an object dispatcher for the `Note` class and the `/users/{handle}/notes/{id}`
-path.  This pattern syntax follows the [URI Template] specification.
+an object dispatcher for the `Note` class and
+the `/users/{userId}/notes/{noteId}` path.  This pattern syntax follows
+the [URI Template] specification.
 
 [objects]: https://www.w3.org/TR/activitystreams-core/#object
 [URI Template]: https://datatracker.ietf.org/doc/html/rfc6570
@@ -69,7 +70,10 @@ The below example shows how to construct an object URI:
 import { type Context, Note } from "@fedify/fedify";
 const ctx = null as unknown as Context<void>;
 // ---cut-before---
-ctx.getObjectUri(Note, { handle: "alice", id: "123" });
+ctx.getObjectUri(Note, {
+  userId: "2bd304f9-36b3-44f0-bf0b-29124aafcbb4",
+  noteId: "9f60274d-f6c2-4e3f-8eae-447f4416c0fb",
+})
 ~~~~
 
 > [!NOTE]

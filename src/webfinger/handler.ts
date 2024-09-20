@@ -38,7 +38,7 @@ export interface WebFingerHandlerParameters<TContextData> {
 
 /**
  * Handles a WebFinger request.  You would not typically call this function
- * directly, but instead use {@link Federation.handle} method.
+ * directly, but instead use {@link Federation.fetch} method.
  * @param request The WebFinger request to handle.
  * @param parameters The parameters for handling the request.
  * @returns The response to the request.
@@ -70,7 +70,7 @@ export async function handleWebFinger<TContextData>(
     logger.error("Actor dispatcher is not set.");
     return await onNotFound(request);
   }
-  let handle: string | null;
+  let identifier: string | null;
   const uriParsed = context.parseUri(resourceUrl);
   if (uriParsed?.type != "actor") {
     const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
@@ -81,30 +81,30 @@ export async function handleWebFinger<TContextData>(
     if (actorHandleMapper == null) {
       logger.error(
         "No actor handle mapper is set; use the WebFinger username {username}" +
-          " as the actor's internal handle.",
+          " as the actor's internal identifier.",
         { username },
       );
-      handle = username;
+      identifier = username;
     } else {
-      handle = await actorHandleMapper(context, username);
-      if (handle == null) {
+      identifier = await actorHandleMapper(context, username);
+      if (identifier == null) {
         logger.error("Actor {username} not found.", { username });
         return await onNotFound(request);
       }
     }
     resourceUrl = new URL(`acct:${username}@${context.url.host}`);
   } else {
-    handle = uriParsed.handle;
+    identifier = uriParsed.identifier;
   }
-  const actor = await actorDispatcher(context, handle);
+  const actor = await actorDispatcher(context, identifier);
   if (actor == null) {
-    logger.error("Actor {handle} not found.", { handle });
+    logger.error("Actor {identifier} not found.", { identifier });
     return await onNotFound(request);
   }
   const links: Link[] = [
     {
       rel: "self",
-      href: context.getActorUri(handle).href,
+      href: context.getActorUri(identifier).href,
       type: "application/activity+json",
     },
   ];
@@ -133,11 +133,11 @@ export async function handleWebFinger<TContextData>(
   }
   const jrd: ResourceDescriptor = {
     subject: resourceUrl.href,
-    aliases: resourceUrl.href === context.getActorUri(handle).href
+    aliases: resourceUrl.href === context.getActorUri(identifier).href
       ? (actor.preferredUsername == null
         ? []
         : [`acct:${actor.preferredUsername}@${context.url.host}`])
-      : [context.getActorUri(handle).href],
+      : [context.getActorUri(identifier).href],
     links,
   };
   return new Response(JSON.stringify(jrd), {

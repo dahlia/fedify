@@ -478,17 +478,18 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     const logger = getLogger(["fedify", "federation", "inbox"]);
     const baseUrl = new URL(message.baseUrl);
     let context = this.#createContext(baseUrl, ctxData);
-    if (message.handle) {
+    if (message.identifier != null) {
       context = this.#createContext(baseUrl, ctxData, {
         documentLoader: await context.getDocumentLoader({
-          handle: message.handle,
+          identifier: message.identifier,
         }),
       });
     } else if (this.sharedInboxKeyDispatcher != null) {
       const identity = await this.sharedInboxKeyDispatcher(context);
       if (identity != null) {
         context = this.#createContext(baseUrl, ctxData, {
-          documentLoader: "handle" in identity
+          documentLoader: "identifier" in identity || "username" in identity ||
+              "handle" in identity
             ? await context.getDocumentLoader(identity)
             : context.getDocumentLoader(identity),
         });
@@ -611,7 +612,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     contextData: TContextData,
     opts?: {
       documentLoader?: DocumentLoader;
-      invokedFromActorDispatcher?: { handle: string };
+      invokedFromActorDispatcher?: { identifier: string };
       invokedFromObjectDispatcher?: {
         // deno-lint-ignore no-explicit-any
         cls: (new (...args: any[]) => Object) & { typeId: URL };
@@ -625,7 +626,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     contextData: TContextData,
     opts: {
       documentLoader?: DocumentLoader;
-      invokedFromActorDispatcher?: { handle: string };
+      invokedFromActorDispatcher?: { identifier: string };
       invokedFromObjectDispatcher?: {
         // deno-lint-ignore no-explicit-any
         cls: (new (...args: any[]) => Object) & { typeId: URL };
@@ -674,33 +675,42 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setActorDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: ActorDispatcher<TContextData>,
   ): ActorCallbackSetters<TContextData> {
     if (this.router.has("actor")) {
       throw new RouterError("Actor dispatcher already set.");
     }
     const variables = this.router.add(path, "actor");
-    if (variables.size !== 1 || !variables.has("handle")) {
+    if (
+      variables.size !== 1 ||
+      !(variables.has("identifier") || variables.has("handle"))
+    ) {
       throw new RouterError(
-        "Path for actor dispatcher must have one variable: {handle}",
+        "Path for actor dispatcher must have one variable: {identifier}",
+      );
+    }
+    if (variables.has("handle")) {
+      getLogger(["fedify", "federation", "actor"]).warn(
+        "The {handle} variable in the actor dispatcher path is deprecated. " +
+          "Use {identifier} instead.",
       );
     }
     const callbacks: ActorCallbacks<TContextData> = {
-      dispatcher: async (context, handle) => {
-        const actor = await dispatcher(context, handle);
+      dispatcher: async (context, identifier) => {
+        const actor = await dispatcher(context, identifier);
         if (actor == null) return null;
         const logger = getLogger(["fedify", "federation", "actor"]);
         if (actor.id == null) {
           logger.warn(
             "Actor dispatcher returned an actor without an id property.  " +
-              "Set the property with Context.getActorUri(handle).",
+              "Set the property with Context.getActorUri(identifier).",
           );
-        } else if (actor.id.href != context.getActorUri(handle).href) {
+        } else if (actor.id.href != context.getActorUri(identifier).href) {
           logger.warn(
             "Actor dispatcher returned an actor with an id property that " +
               "does not match the actor URI.  Set the property with " +
-              "Context.getActorUri(handle).",
+              "Context.getActorUri(identifier).",
           );
         }
         if (
@@ -711,16 +721,16 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             logger.warn(
               "You configured a following collection dispatcher, but the " +
                 "actor does not have a following property.  Set the property " +
-                "with Context.getFollowingUri(handle).",
+                "with Context.getFollowingUri(identifier).",
             );
           } else if (
-            actor.followingId.href != context.getFollowingUri(handle).href
+            actor.followingId.href != context.getFollowingUri(identifier).href
           ) {
             logger.warn(
               "You configured a following collection dispatcher, but the " +
                 "actor's following property does not match the following " +
                 "collection URI.  Set the property with " +
-                "Context.getFollowingUri(handle).",
+                "Context.getFollowingUri(identifier).",
             );
           }
         }
@@ -732,16 +742,16 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             logger.warn(
               "You configured a followers collection dispatcher, but the " +
                 "actor does not have a followers property.  Set the property " +
-                "with Context.getFollowersUri(handle).",
+                "with Context.getFollowersUri(identifier).",
             );
           } else if (
-            actor.followersId.href != context.getFollowersUri(handle).href
+            actor.followersId.href != context.getFollowersUri(identifier).href
           ) {
             logger.warn(
               "You configured a followers collection dispatcher, but the " +
                 "actor's followers property does not match the followers " +
                 "collection URI.  Set the property with " +
-                "Context.getFollowersUri(handle).",
+                "Context.getFollowersUri(identifier).",
             );
           }
         }
@@ -753,13 +763,15 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             logger.warn(
               "You configured an outbox collection dispatcher, but the " +
                 "actor does not have an outbox property.  Set the property " +
-                "with Context.getOutboxUri(handle).",
+                "with Context.getOutboxUri(identifier).",
             );
-          } else if (actor.outboxId.href != context.getOutboxUri(handle).href) {
+          } else if (
+            actor.outboxId.href != context.getOutboxUri(identifier).href
+          ) {
             logger.warn(
               "You configured an outbox collection dispatcher, but the " +
                 "actor's outbox property does not match the outbox collection " +
-                "URI.  Set the property with Context.getOutboxUri(handle).",
+                "URI.  Set the property with Context.getOutboxUri(identifier).",
             );
           }
         }
@@ -771,13 +783,15 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             logger.warn(
               "You configured a liked collection dispatcher, but the " +
                 "actor does not have a liked property.  Set the property " +
-                "with Context.getLikedUri(handle).",
+                "with Context.getLikedUri(identifier).",
             );
-          } else if (actor.likedId.href != context.getLikedUri(handle).href) {
+          } else if (
+            actor.likedId.href != context.getLikedUri(identifier).href
+          ) {
             logger.warn(
               "You configured a liked collection dispatcher, but the " +
                 "actor's liked property does not match the liked collection " +
-                "URI.  Set the property with Context.getLikedUri(handle).",
+                "URI.  Set the property with Context.getLikedUri(identifier).",
             );
           }
         }
@@ -789,15 +803,15 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             logger.warn(
               "You configured a featured collection dispatcher, but the " +
                 "actor does not have a featured property.  Set the property " +
-                "with Context.getFeaturedUri(handle).",
+                "with Context.getFeaturedUri(identifier).",
             );
           } else if (
-            actor.featuredId.href != context.getFeaturedUri(handle).href
+            actor.featuredId.href != context.getFeaturedUri(identifier).href
           ) {
             logger.warn(
               "You configured a featured collection dispatcher, but the " +
                 "actor's featured property does not match the featured collection " +
-                "URI.  Set the property with Context.getFeaturedUri(handle).",
+                "URI.  Set the property with Context.getFeaturedUri(identifier).",
             );
           }
         }
@@ -809,16 +823,17 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             logger.warn(
               "You configured a featured tags collection dispatcher, but the " +
                 "actor does not have a featuredTags property.  Set the property " +
-                "with Context.getFeaturedTagsUri(handle).",
+                "with Context.getFeaturedTagsUri(identifier).",
             );
           } else if (
-            actor.featuredTagsId.href != context.getFeaturedTagsUri(handle).href
+            actor.featuredTagsId.href !=
+              context.getFeaturedTagsUri(identifier).href
           ) {
             logger.warn(
               "You configured a featured tags collection dispatcher, but the " +
                 "actor's featuredTags property does not match the featured tags " +
                 "collection URI.  Set the property with " +
-                "Context.getFeaturedTagsUri(handle).",
+                "Context.getFeaturedTagsUri(identifier).",
             );
           }
         }
@@ -827,13 +842,15 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             logger.warn(
               "You configured inbox listeners, but the actor does not " +
                 "have an inbox property.  Set the property with " +
-                "Context.getInboxUri(handle).",
+                "Context.getInboxUri(identifier).",
             );
-          } else if (actor.inboxId.href != context.getInboxUri(handle).href) {
+          } else if (
+            actor.inboxId.href != context.getInboxUri(identifier).href
+          ) {
             logger.warn(
               "You configured inbox listeners, but the actor's inbox " +
                 "property does not match the inbox URI.  Set the property " +
-                "with Context.getInboxUri(handle).",
+                "with Context.getInboxUri(identifier).",
             );
           }
           if (actor.endpoints == null || actor.endpoints.sharedInbox == null) {
@@ -857,14 +874,14 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             logger.warn(
               "You configured a key pairs dispatcher, but the actor does " +
                 "not have a publicKey property.  Set the property with " +
-                "Context.getActorKeyPairs(handle).",
+                "Context.getActorKeyPairs(identifier).",
             );
           }
           if (actor.assertionMethodId == null) {
             logger.warn(
               "You configured a key pairs dispatcher, but the actor does " +
                 "not have an assertionMethod property.  Set the property " +
-                "with Context.getActorKeyPairs(handle).",
+                "with Context.getActorKeyPairs(identifier).",
             );
           }
         }
@@ -961,7 +978,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setInboxDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Activity,
       RequestContext<TContextData>,
@@ -984,9 +1001,18 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       }
     } else {
       const variables = this.router.add(path, "inbox");
-      if (variables.size !== 1 || !variables.has("handle")) {
+      if (
+        variables.size !== 1 ||
+        !(variables.has("identifier") || variables.has("handle"))
+      ) {
         throw new RouterError(
-          "Path for inbox dispatcher must have one variable: {handle}",
+          "Path for inbox dispatcher must have one variable: {identifier}",
+        );
+      }
+      if (variables.has("handle")) {
+        getLogger(["fedify", "federation", "inbox"]).warn(
+          "The {handle} variable in the inbox dispatcher path is deprecated. " +
+            "Use {identifier} instead.",
         );
       }
       this.inboxPath = path;
@@ -1036,7 +1062,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setOutboxDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Activity,
       RequestContext<TContextData>,
@@ -1052,9 +1078,18 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       throw new RouterError("Outbox dispatcher already set.");
     }
     const variables = this.router.add(path, "outbox");
-    if (variables.size !== 1 || !variables.has("handle")) {
+    if (
+      variables.size !== 1 ||
+      !(variables.has("identifier") || variables.has("handle"))
+    ) {
       throw new RouterError(
-        "Path for outbox dispatcher must have one variable: {handle}",
+        "Path for outbox dispatcher must have one variable: {identifier}",
+      );
+    }
+    if (variables.has("handle")) {
+      getLogger(["fedify", "federation", "outbox"]).warn(
+        "The {handle} variable in the outbox dispatcher path is deprecated. " +
+          "Use {identifier} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1102,7 +1137,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setFollowingDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Actor | URL,
       RequestContext<TContextData>,
@@ -1118,9 +1153,19 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       throw new RouterError("Following collection dispatcher already set.");
     }
     const variables = this.router.add(path, "following");
-    if (variables.size !== 1 || !variables.has("handle")) {
+    if (
+      variables.size !== 1 ||
+      !(variables.has("identifier") || variables.has("handle"))
+    ) {
       throw new RouterError(
-        "Path for following collection dispatcher must have one variable: {handle}",
+        "Path for following collection dispatcher must have one variable: " +
+          "{identifier}",
+      );
+    }
+    if (variables.has("handle")) {
+      getLogger(["fedify", "federation", "collection"]).warn(
+        "The {handle} variable in the following collection dispatcher path " +
+          "is deprecated. Use {identifier} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1168,7 +1213,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setFollowersDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Recipient,
       Context<TContextData>,
@@ -1180,9 +1225,19 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       throw new RouterError("Followers collection dispatcher already set.");
     }
     const variables = this.router.add(path, "followers");
-    if (variables.size !== 1 || !variables.has("handle")) {
+    if (
+      variables.size !== 1 ||
+      !(variables.has("identifier") || variables.has("handle"))
+    ) {
       throw new RouterError(
-        "Path for followers collection dispatcher must have one variable: {handle}",
+        "Path for followers collection dispatcher must have one variable: " +
+          "{identifier}",
+      );
+    }
+    if (variables.has("handle")) {
+      getLogger(["fedify", "federation", "collection"]).warn(
+        "The {handle} variable in the followers collection dispatcher path " +
+          "is deprecated. Use {identifier} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1222,7 +1277,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setLikedDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Like,
       RequestContext<TContextData>,
@@ -1238,9 +1293,19 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       throw new RouterError("Liked collection dispatcher already set.");
     }
     const variables = this.router.add(path, "liked");
-    if (variables.size !== 1 || !variables.has("handle")) {
+    if (
+      variables.size !== 1 ||
+      !(variables.has("identifier") || variables.has("handle"))
+    ) {
       throw new RouterError(
-        "Path for liked collection dispatcher must have one variable: {handle}",
+        "Path for liked collection dispatcher must have one variable: " +
+          "{identifier}",
+      );
+    }
+    if (variables.has("handle")) {
+      getLogger(["fedify", "federation", "collection"]).warn(
+        "The {handle} variable in the liked collection dispatcher path " +
+          "is deprecated. Use {identifier} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1288,7 +1353,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setFeaturedDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Object,
       RequestContext<TContextData>,
@@ -1304,9 +1369,19 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       throw new RouterError("Featured collection dispatcher already set.");
     }
     const variables = this.router.add(path, "featured");
-    if (variables.size !== 1 || !variables.has("handle")) {
+    if (
+      variables.size !== 1 ||
+      !(variables.has("identifier") || variables.has("handle"))
+    ) {
       throw new RouterError(
-        "Path for featured collection dispatcher must have one variable: {handle}",
+        "Path for featured collection dispatcher must have one variable: " +
+          "{identifier}",
+      );
+    }
+    if (variables.has("handle")) {
+      getLogger(["fedify", "federation", "collection"]).warn(
+        "The {handle} variable in the featured collection dispatcher path " +
+          "is deprecated. Use {identifier} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1354,7 +1429,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setFeaturedTagsDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Hashtag,
       RequestContext<TContextData>,
@@ -1370,10 +1445,19 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       throw new RouterError("Featured tags collection dispatcher already set.");
     }
     const variables = this.router.add(path, "featuredTags");
-    if (variables.size !== 1 || !variables.has("handle")) {
+    if (
+      variables.size !== 1 ||
+      !(variables.has("identifier") || variables.has("handle"))
+    ) {
       throw new RouterError(
         "Path for featured tags collection dispatcher must have one " +
-          "variable: {handle}",
+          "variable: {identifier}",
+      );
+    }
+    if (variables.has("handle")) {
+      getLogger(["fedify", "federation", "collection"]).warn(
+        "The {handle} variable in the featured tags collection dispatcher " +
+          "path is deprecated. Use {identifier} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1421,7 +1505,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   }
 
   setInboxListeners(
-    inboxPath: `${string}{handle}${string}`,
+    inboxPath: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     sharedInboxPath?: string,
   ): InboxListenerSetters<TContextData> {
     if (this.inboxListeners != null) {
@@ -1435,12 +1519,21 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       }
     } else {
       const variables = this.router.add(inboxPath, "inbox");
-      if (variables.size !== 1 || !variables.has("handle")) {
+      if (
+        variables.size !== 1 ||
+        !(variables.has("identifier") || variables.has("handle"))
+      ) {
         throw new RouterError(
-          "Path for inbox must have one variable: {handle}",
+          "Path for inbox must have one variable: {identifier}",
         );
       }
       this.inboxPath = inboxPath;
+      if (variables.has("handle")) {
+        getLogger(["fedify", "federation", "inbox"]).warn(
+          "The {handle} variable in the inbox path is deprecated. " +
+            "Use {identifier} instead.",
+        );
+      }
     }
     if (sharedInboxPath != null) {
       const siVars = this.router.add(sharedInboxPath, "sharedInbox");
@@ -1705,10 +1798,12 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         });
       case "actor":
         context = this.#createContext(request, contextData, {
-          invokedFromActorDispatcher: { handle: route.values.handle },
+          invokedFromActorDispatcher: {
+            identifier: route.values.identifier ?? route.values.handle,
+          },
         });
         return await handleActor(request, {
-          handle: route.values.handle,
+          identifier: route.values.identifier ?? route.values.handle,
           context,
           actorDispatcher: this.actorCallbacks?.dispatcher,
           authorizePredicate: this.actorCallbacks?.authorizePredicate,
@@ -1736,7 +1831,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       case "outbox":
         return await handleCollection(request, {
           name: "outbox",
-          handle: route.values.handle,
+          identifier: route.values.identifier ?? route.values.handle,
           uriGetter: context.getOutboxUri.bind(context),
           context,
           collectionCallbacks: this.outboxCallbacks,
@@ -1748,7 +1843,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         if (request.method !== "POST") {
           return await handleCollection(request, {
             name: "inbox",
-            handle: route.values.handle,
+            identifier: route.values.identifier ?? route.values.handle,
             uriGetter: context.getInboxUri.bind(context),
             context,
             collectionCallbacks: this.inboxCallbacks,
@@ -1759,7 +1854,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         }
         context = this.#createContext(request, contextData, {
           documentLoader: await context.getDocumentLoader({
-            handle: route.values.handle,
+            identifier: route.values.identifier ?? route.values.handle,
           }),
         });
         // falls through
@@ -1768,15 +1863,17 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
           const identity = await this.sharedInboxKeyDispatcher(context);
           if (identity != null) {
             context = this.#createContext(request, contextData, {
-              documentLoader: "handle" in identity
-                ? await context.getDocumentLoader(identity)
-                : context.getDocumentLoader(identity),
+              documentLoader:
+                "identifier" in identity || "username" in identity ||
+                  "handle" in identity
+                  ? await context.getDocumentLoader(identity)
+                  : context.getDocumentLoader(identity),
             });
           }
         }
         if (!this.manuallyStartQueue) this.#startQueue(contextData);
         return await handleInbox(request, {
-          handle: route.values.handle ?? null,
+          identifier: route.values.identifier ?? route.values.handle ?? null,
           context,
           inboxContextFactory: context.toInboxContext.bind(context),
           kv: this.kv,
@@ -1792,7 +1889,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       case "following":
         return await handleCollection(request, {
           name: "following",
-          handle: route.values.handle,
+          identifier: route.values.identifier ?? route.values.handle,
           uriGetter: context.getFollowingUri.bind(context),
           context,
           collectionCallbacks: this.followingCallbacks,
@@ -1808,7 +1905,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         }
         return await handleCollection(request, {
           name: "followers",
-          handle: route.values.handle,
+          identifier: route.values.identifier ?? route.values.handle,
           uriGetter: context.getFollowersUri.bind(context),
           context,
           filter: baseUrl != null ? new URL(baseUrl) : undefined,
@@ -1827,7 +1924,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       case "liked":
         return await handleCollection(request, {
           name: "liked",
-          handle: route.values.handle,
+          identifier: route.values.identifier ?? route.values.handle,
           uriGetter: context.getLikedUri.bind(context),
           context,
           collectionCallbacks: this.likedCallbacks,
@@ -1838,7 +1935,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       case "featured":
         return await handleCollection(request, {
           name: "featured",
-          handle: route.values.handle,
+          identifier: route.values.identifier ?? route.values.handle,
           uriGetter: context.getFeaturedUri.bind(context),
           context,
           collectionCallbacks: this.featuredCallbacks,
@@ -1849,7 +1946,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       case "featuredTags":
         return await handleCollection(request, {
           name: "featured tags",
-          handle: route.values.handle,
+          identifier: route.values.identifier ?? route.values.handle,
           uriGetter: context.getFeaturedTagsUri.bind(context),
           context,
           collectionCallbacks: this.featuredTagsCallbacks,
@@ -1870,15 +1967,15 @@ interface ContextOptions<TContextData> {
   federation: FederationImpl<TContextData>;
   data: TContextData;
   documentLoader: DocumentLoader;
-  invokedFromActorKeyPairsDispatcher?: { handle: string };
+  invokedFromActorKeyPairsDispatcher?: { identifier: string };
 }
 
-class ContextImpl<TContextData> implements Context<TContextData> {
+export class ContextImpl<TContextData> implements Context<TContextData> {
   readonly url: URL;
   readonly federation: FederationImpl<TContextData>;
   readonly data: TContextData;
   readonly documentLoader: DocumentLoader;
-  readonly invokedFromActorKeyPairsDispatcher?: { handle: string };
+  readonly invokedFromActorKeyPairsDispatcher?: { identifier: string };
 
   constructor(
     {
@@ -1932,8 +2029,11 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return new URL(path, this.url);
   }
 
-  getActorUri(handle: string): URL {
-    const path = this.federation.router.build("actor", { handle });
+  getActorUri(identifier: string): URL {
+    const path = this.federation.router.build(
+      "actor",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       throw new RouterError("No actor dispatcher registered.");
     }
@@ -1964,8 +2064,11 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return new URL(path, this.url);
   }
 
-  getOutboxUri(handle: string): URL {
-    const path = this.federation.router.build("outbox", { handle });
+  getOutboxUri(identifier: string): URL {
+    const path = this.federation.router.build(
+      "outbox",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       throw new RouterError("No outbox dispatcher registered.");
     }
@@ -1973,56 +2076,74 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   }
 
   getInboxUri(): URL;
-  getInboxUri(handle: string): URL;
-  getInboxUri(handle?: string): URL {
-    if (handle == null) {
+  getInboxUri(identifier: string): URL;
+  getInboxUri(identifier?: string): URL {
+    if (identifier == null) {
       const path = this.federation.router.build("sharedInbox", {});
       if (path == null) {
         throw new RouterError("No shared inbox path registered.");
       }
       return new URL(path, this.url);
     }
-    const path = this.federation.router.build("inbox", { handle });
+    const path = this.federation.router.build(
+      "inbox",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       throw new RouterError("No inbox path registered.");
     }
     return new URL(path, this.url);
   }
 
-  getFollowingUri(handle: string): URL {
-    const path = this.federation.router.build("following", { handle });
+  getFollowingUri(identifier: string): URL {
+    const path = this.federation.router.build(
+      "following",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       throw new RouterError("No following collection path registered.");
     }
     return new URL(path, this.url);
   }
 
-  getFollowersUri(handle: string): URL {
-    const path = this.federation.router.build("followers", { handle });
+  getFollowersUri(identifier: string): URL {
+    const path = this.federation.router.build(
+      "followers",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       throw new RouterError("No followers collection path registered.");
     }
     return new URL(path, this.url);
   }
 
-  getLikedUri(handle: string): URL {
-    const path = this.federation.router.build("liked", { handle });
+  getLikedUri(identifier: string): URL {
+    const path = this.federation.router.build(
+      "liked",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       throw new RouterError("No liked collection path registered.");
     }
     return new URL(path, this.url);
   }
 
-  getFeaturedUri(handle: string): URL {
-    const path = this.federation.router.build("featured", { handle });
+  getFeaturedUri(identifier: string): URL {
+    const path = this.federation.router.build(
+      "featured",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       throw new RouterError("No featured collection path registered.");
     }
     return new URL(path, this.url);
   }
 
-  getFeaturedTagsUri(handle: string): URL {
-    const path = this.federation.router.build("featuredTags", { handle });
+  getFeaturedTagsUri(identifier: string): URL {
+    const path = this.federation.router.build(
+      "featuredTags",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       throw new RouterError("No featured tags collection path registered.");
     }
@@ -2033,9 +2154,36 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     if (uri == null) return null;
     if (uri.origin !== this.url.origin) return null;
     const route = this.federation.router.route(uri.pathname);
+    const logger = getLogger(["fedify", "federation"]);
     if (route == null) return null;
-    else if (route.name === "actor") {
-      return { type: "actor", handle: route.values.handle };
+    else if (route.name === "sharedInbox") {
+      return {
+        type: "inbox",
+        identifier: undefined,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return undefined;
+        },
+      };
+    }
+    const identifier = "identifier" in route.values
+      ? route.values.identifier
+      : route.values.handle;
+    if (route.name === "actor") {
+      return {
+        type: "actor",
+        identifier,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return identifier;
+        },
+      };
     } else if (route.name.startsWith("object:")) {
       const typeId = route.name.replace(/^object:/, "");
       return {
@@ -2045,47 +2193,116 @@ class ContextImpl<TContextData> implements Context<TContextData> {
         values: route.values,
       };
     } else if (route.name === "inbox") {
-      return { type: "inbox", handle: route.values.handle };
-    } else if (route.name === "sharedInbox") {
-      return { type: "inbox" };
+      return {
+        type: "inbox",
+        identifier,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return identifier;
+        },
+      };
     } else if (route.name === "outbox") {
-      return { type: "outbox", handle: route.values.handle };
+      return {
+        type: "outbox",
+        identifier,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return identifier;
+        },
+      };
     } else if (route.name === "following") {
-      return { type: "following", handle: route.values.handle };
+      return {
+        type: "following",
+        identifier,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return identifier;
+        },
+      };
     } else if (route.name === "followers") {
-      return { type: "followers", handle: route.values.handle };
+      return {
+        type: "followers",
+        identifier,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return identifier;
+        },
+      };
     } else if (route.name === "liked") {
-      return { type: "liked", handle: route.values.handle };
+      return {
+        type: "liked",
+        identifier,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return identifier;
+        },
+      };
     } else if (route.name === "featured") {
-      return { type: "featured", handle: route.values.handle };
+      return {
+        type: "featured",
+        identifier,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return identifier;
+        },
+      };
     } else if (route.name === "featuredTags") {
-      return { type: "featuredTags", handle: route.values.handle };
+      return {
+        type: "featuredTags",
+        identifier,
+        get handle() {
+          logger.warn(
+            "The ParseUriResult.handle property is deprecated; " +
+              "use ParseUriResult.identifier instead.",
+          );
+          return identifier;
+        },
+      };
     }
     return null;
   }
 
-  async getActorKeyPairs(handle: string): Promise<ActorKeyPair[]> {
+  async getActorKeyPairs(identifier: string): Promise<ActorKeyPair[]> {
     const logger = getLogger(["fedify", "federation", "actor"]);
     if (this.invokedFromActorKeyPairsDispatcher != null) {
       logger.warn(
-        "Context.getActorKeyPairs({getActorKeyPairsHandle}) method is " +
+        "Context.getActorKeyPairs({getActorKeyPairsIdentifier}) method is " +
           "invoked from the actor key pairs dispatcher " +
-          "({actorKeyPairsDispatcherHandle}); this may cause an infinite loop.",
+          "({actorKeyPairsDispatcherIdentifier}); this may cause " +
+          "an infinite loop.",
         {
-          getActorKeyPairsHandle: handle,
-          actorKeyPairsDispatcherHandle:
-            this.invokedFromActorKeyPairsDispatcher.handle,
+          getActorKeyPairsIdentifier: identifier,
+          actorKeyPairsDispatcherIdentifier:
+            this.invokedFromActorKeyPairsDispatcher.identifier,
         },
       );
     }
     let keyPairs: (CryptoKeyPair & { keyId: URL })[];
     try {
-      keyPairs = await this.getKeyPairsFromHandle(handle);
+      keyPairs = await this.getKeyPairsFromIdentifier(identifier);
     } catch (_) {
       logger.warn("No actor key pairs dispatcher registered.");
       return [];
     }
-    const owner = this.getActorUri(handle);
+    const owner = this.getActorUri(identifier);
     const result = [];
     for (const keyPair of keyPairs) {
       const newPair: ActorKeyPair = {
@@ -2106,14 +2323,17 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return result;
   }
 
-  protected async getKeyPairsFromHandle(
-    handle: string,
+  protected async getKeyPairsFromIdentifier(
+    identifier: string,
   ): Promise<(CryptoKeyPair & { keyId: URL })[]> {
     const logger = getLogger(["fedify", "federation", "actor"]);
     if (this.federation.actorCallbacks?.keyPairsDispatcher == null) {
       throw new Error("No actor key pairs dispatcher registered.");
     }
-    const path = this.federation.router.build("actor", { handle });
+    const path = this.federation.router.build(
+      "actor",
+      { identifier, handle: identifier },
+    );
     if (path == null) {
       logger.warn("No actor dispatcher registered.");
       return [];
@@ -2122,12 +2342,12 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     const keyPairs = await this.federation.actorCallbacks?.keyPairsDispatcher(
       new ContextImpl({
         ...this,
-        invokedFromActorKeyPairsDispatcher: { handle },
+        invokedFromActorKeyPairsDispatcher: { identifier },
       }),
-      handle,
+      identifier,
     );
     if (keyPairs.length < 1) {
-      logger.warn("No key pairs found for actor {handle}.", { handle });
+      logger.warn("No key pairs found for actor {identifier}.", { identifier });
     }
     let i = 0;
     const result = [];
@@ -2145,10 +2365,10 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     return result;
   }
 
-  protected async getRsaKeyPairFromHandle(
-    handle: string,
+  protected async getRsaKeyPairFromIdentifier(
+    identifier: string,
   ): Promise<CryptoKeyPair & { keyId: URL } | null> {
-    const keyPairs = await this.getKeyPairsFromHandle(handle);
+    const keyPairs = await this.getKeyPairsFromIdentifier(identifier);
     for (const keyPair of keyPairs) {
       const { privateKey } = keyPair;
       if (
@@ -2161,24 +2381,63 @@ class ContextImpl<TContextData> implements Context<TContextData> {
       }
     }
     getLogger(["fedify", "federation", "actor"]).warn(
-      "No RSA-PKCS#1-v1.5 SHA-256 key found for actor {handle}.",
-      { handle },
+      "No RSA-PKCS#1-v1.5 SHA-256 key found for actor {identifier}.",
+      { identifier },
     );
     return null;
   }
 
-  getDocumentLoader(identity: { handle: string }): Promise<DocumentLoader>;
+  getDocumentLoader(
+    identity:
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
+  ): Promise<DocumentLoader>;
   getDocumentLoader(identity: SenderKeyPair): DocumentLoader;
   getDocumentLoader(
-    identity: SenderKeyPair | { handle: string },
+    identity:
+      | SenderKeyPair
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
   ): DocumentLoader | Promise<DocumentLoader> {
-    if ("handle" in identity) {
-      const keyPair = this.getRsaKeyPairFromHandle(identity.handle);
-      return keyPair.then((pair) =>
-        pair == null
-          ? this.documentLoader
-          : this.federation.authenticatedDocumentLoaderFactory(pair)
-      );
+    if (
+      "identifier" in identity || "username" in identity || "handle" in identity
+    ) {
+      let identifierPromise: Promise<string | null>;
+      if ("username" in identity || "handle" in identity) {
+        let username: string;
+        if ("username" in identity) {
+          username = identity.username;
+        } else {
+          username = identity.handle;
+          getLogger(["fedify", "runtime", "docloader"]).warn(
+            'The "handle" property is deprecated; use "identifier" or ' +
+              '"username" instead.',
+            { identity },
+          );
+        }
+        const mapper = this.federation.actorCallbacks?.handleMapper;
+        if (mapper == null) {
+          identifierPromise = Promise.resolve(username);
+        } else {
+          const identifier = mapper(this, username);
+          identifierPromise = identifier instanceof Promise
+            ? identifier
+            : Promise.resolve(identifier);
+        }
+      } else {
+        identifierPromise = Promise.resolve(identity.identifier);
+      }
+      return identifierPromise.then((identifier) => {
+        if (identifier == null) return this.documentLoader;
+        const keyPair = this.getRsaKeyPairFromIdentifier(identifier);
+        return keyPair.then((pair) =>
+          pair == null
+            ? this.documentLoader
+            : this.federation.authenticatedDocumentLoaderFactory(pair)
+        );
+      });
     }
     return this.federation.authenticatedDocumentLoaderFactory(identity);
   }
@@ -2194,17 +2453,54 @@ class ContextImpl<TContextData> implements Context<TContextData> {
   }
 
   async sendActivity(
-    sender: SenderKeyPair | SenderKeyPair[] | { handle: string },
+    sender:
+      | SenderKeyPair
+      | SenderKeyPair[]
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
     recipients: Recipient | Recipient[] | "followers",
     activity: Activity,
     options: SendActivityOptions = {},
   ): Promise<void> {
     let keys: SenderKeyPair[];
-    if ("handle" in sender) {
-      keys = await this.getKeyPairsFromHandle(sender.handle);
+    let identifier: string | null = null;
+    if ("identifier" in sender || "username" in sender || "handle" in sender) {
+      if ("identifier" in sender) {
+        identifier = sender.identifier;
+      } else {
+        let username: string;
+        if ("username" in sender) {
+          username = sender.username;
+        } else {
+          username = sender.handle;
+          getLogger(["fedify", "federation", "outbox"]).warn(
+            'The "handle" property for the sender parameter is deprecated; ' +
+              'use "identifier" or "username" instead.',
+            { sender },
+          );
+        }
+        if (this.federation.actorCallbacks?.handleMapper == null) {
+          identifier = username;
+        } else {
+          const mapped = await this.federation.actorCallbacks.handleMapper(
+            this,
+            username,
+          );
+          if (mapped == null) {
+            throw new Error(
+              `No actor found for the given username ${
+                JSON.stringify(username)
+              }.`,
+            );
+          }
+          identifier = mapped;
+        }
+      }
+      keys = await this.getKeyPairsFromIdentifier(identifier);
       if (keys.length < 1) {
         throw new Error(
-          `No key pair found for actor ${JSON.stringify(sender.handle)}.`,
+          `No key pair found for actor ${JSON.stringify(identifier)}.`,
         );
       }
     } else if (Array.isArray(sender)) {
@@ -2223,18 +2519,22 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     if (Array.isArray(recipients)) {
       expandedRecipients = recipients;
     } else if (recipients === "followers") {
-      if (!("handle" in sender)) {
+      if (identifier == null) {
         throw new Error(
-          "If recipients is 'followers', sender must be an actor handle.",
+          'If recipients is "followers", ' +
+            "sender must be an actor identifier or username.",
         );
       }
       expandedRecipients = [];
       for await (
-        const recipient of this.getFollowers(sender.handle)
+        const recipient of this.getFollowers(identifier)
       ) {
         expandedRecipients.push(recipient);
       }
-      const collectionId = this.federation.router.build("followers", sender);
+      const collectionId = this.federation.router.build(
+        "followers",
+        { identifier, handle: identifier },
+      );
       opts.collectionSync = collectionId == null
         ? undefined
         : new URL(collectionId, this.url).href;
@@ -2249,13 +2549,13 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     );
   }
 
-  async *getFollowers(handle: string): AsyncIterable<Recipient> {
+  async *getFollowers(identifier: string): AsyncIterable<Recipient> {
     if (this.federation.followersCallbacks == null) {
       throw new Error("No followers collection dispatcher registered.");
     }
     const result = await this.federation.followersCallbacks.dispatcher(
       this,
-      handle,
+      identifier,
       null,
     );
     if (result != null) {
@@ -2269,12 +2569,12 @@ class ContextImpl<TContextData> implements Context<TContextData> {
     }
     let cursor = await this.federation.followersCallbacks.firstCursor(
       this,
-      handle,
+      identifier,
     );
     while (cursor != null) {
       const result = await this.federation.followersCallbacks.dispatcher(
         this,
-        handle,
+        identifier,
         cursor,
       );
       if (result == null) break;
@@ -2287,7 +2587,7 @@ class ContextImpl<TContextData> implements Context<TContextData> {
 interface RequestContextOptions<TContextData>
   extends ContextOptions<TContextData> {
   request: Request;
-  invokedFromActorDispatcher?: { handle: string };
+  invokedFromActorDispatcher?: { identifier: string };
   invokedFromObjectDispatcher?: {
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => Object) & { typeId: URL };
@@ -2297,7 +2597,7 @@ interface RequestContextOptions<TContextData>
 
 class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
   implements RequestContext<TContextData> {
-  readonly #invokedFromActorDispatcher?: { handle: string };
+  readonly #invokedFromActorDispatcher?: { identifier: string };
   readonly #invokedFromObjectDispatcher?: {
     // deno-lint-ignore no-explicit-any
     cls: (new (...args: any[]) => Object) & { typeId: URL };
@@ -2314,7 +2614,7 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     this.url = options.url;
   }
 
-  async getActor(handle: string): Promise<Actor | null> {
+  async getActor(identifier: string): Promise<Actor | null> {
     if (
       this.federation.actorCallbacks == null ||
       this.federation.actorCallbacks.dispatcher == null
@@ -2323,21 +2623,22 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     }
     if (this.#invokedFromActorDispatcher != null) {
       getLogger(["fedify", "federation", "actor"]).warn(
-        "RequestContext.getActor({getActorHandle}) is invoked from " +
-          "the actor dispatcher ({actorDispatcherHandle}); " +
+        "RequestContext.getActor({getActorIdentifier}) is invoked from " +
+          "the actor dispatcher ({actorDispatcherIdentifier}); " +
           "this may cause an infinite loop.",
         {
-          getActorHandle: handle,
-          actorDispatcherHandle: this.#invokedFromActorDispatcher.handle,
+          getActorIdentifier: identifier,
+          actorDispatcherIdentifier:
+            this.#invokedFromActorDispatcher.identifier,
         },
       );
     }
     return await this.federation.actorCallbacks.dispatcher(
       new RequestContextImpl({
         ...this,
-        invokedFromActorDispatcher: { handle },
+        invokedFromActorDispatcher: { identifier },
       }),
-      handle,
+      identifier,
     );
   }
 
@@ -2409,27 +2710,75 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
   }
 
   forwardActivity(
-    forwarder: SenderKeyPair | SenderKeyPair[] | { handle: string },
+    forwarder:
+      | SenderKeyPair
+      | SenderKeyPair[]
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
     recipients: Recipient | Recipient[],
     options?: ForwardActivityOptions,
   ): Promise<void>;
   forwardActivity(
-    forwarder: { handle: string },
+    forwarder:
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
     recipients: "followers",
     options?: ForwardActivityOptions,
   ): Promise<void>;
   async forwardActivity(
-    forwarder: SenderKeyPair | SenderKeyPair[] | { handle: string },
+    forwarder:
+      | SenderKeyPair
+      | SenderKeyPair[]
+      | { identifier: string }
+      | { username: string }
+      | { handle: string },
     recipients: Recipient | Recipient[] | "followers",
     options?: ForwardActivityOptions,
   ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "inbox"]);
     let keys: SenderKeyPair[];
-    if ("handle" in forwarder) {
-      keys = await this.getKeyPairsFromHandle(forwarder.handle);
+    let identifier: string | null = null;
+    if (
+      "identifier" in forwarder || "username" in forwarder ||
+      "handle" in forwarder
+    ) {
+      if ("identifier" in forwarder) {
+        identifier = forwarder.identifier;
+      } else {
+        let username: string;
+        if ("username" in forwarder) {
+          username = forwarder.username;
+        } else {
+          username = forwarder.handle;
+          logger.warn(
+            'The "handle" property for the forwarder parameter is deprecated; ' +
+              'use "identifier" or "username" instead.',
+            { forwarder },
+          );
+        }
+        if (this.federation.actorCallbacks?.handleMapper == null) {
+          identifier = username;
+        } else {
+          const mapped = await this.federation.actorCallbacks.handleMapper(
+            this,
+            username,
+          );
+          if (mapped == null) {
+            throw new Error(
+              `No actor found for the given username ${
+                JSON.stringify(username)
+              }.`,
+            );
+          }
+          identifier = mapped;
+        }
+      }
+      keys = await this.getKeyPairsFromIdentifier(identifier);
       if (keys.length < 1) {
         throw new Error(
-          `No key pair found for actor ${JSON.stringify(forwarder.handle)}.`,
+          `No key pair found for actor ${JSON.stringify(identifier)}.`,
         );
       }
     } else if (Array.isArray(forwarder)) {
@@ -2471,15 +2820,14 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
           : undefined;
     }
     if (recipients === "followers") {
-      if (!("handle" in forwarder)) {
+      if (identifier == null) {
         throw new Error(
-          "If recipients is 'followers', forwarder must be an actor handle.",
+          'If recipients is "followers", ' +
+            "forwarder must be an actor identifier or username.",
         );
       }
       const followers: Recipient[] = [];
-      for await (
-        const recipient of this.getFollowers(forwarder.handle)
-      ) {
+      for await (const recipient of this.getFollowers(identifier)) {
         followers.push(recipient);
       }
       recipients = followers;

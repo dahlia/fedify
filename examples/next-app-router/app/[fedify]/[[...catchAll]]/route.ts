@@ -1,12 +1,12 @@
 import {
   Accept,
+  createFederation,
   Endpoints,
   Follow,
-  Person,
-  Undo,
-  createFederation,
   generateCryptoKeyPair,
   MemoryKvStore,
+  Person,
+  Undo,
 } from "@fedify/fedify";
 import { keyPairsStore, relationStore } from "~/data/store";
 import { integrateFederation } from "~/shared/integrate-fedify";
@@ -18,26 +18,26 @@ const federation = createFederation<void>({
 const requestHanlder = integrateFederation(federation, () => {});
 
 export {
+  requestHanlder as DELETE,
   requestHanlder as GET,
+  requestHanlder as PATCH,
   requestHanlder as POST,
   requestHanlder as PUT,
-  requestHanlder as PATCH,
-  requestHanlder as DELETE,
 };
 
 federation
-  .setActorDispatcher("/users/{handle}", async (context, handle) => {
-    if (handle != "demo") {
+  .setActorDispatcher("/users/{identifier}", async (context, identifier) => {
+    if (identifier != "demo") {
       return null;
     }
-    const keyPairs = await context.getActorKeyPairs(handle);
+    const keyPairs = await context.getActorKeyPairs(identifier);
     return new Person({
-      id: context.getActorUri(handle),
+      id: context.getActorUri(identifier),
       name: "Fedify Demo",
       summary: "This is a Fedify Demo account.",
-      preferredUsername: handle,
+      preferredUsername: identifier,
       url: new URL("/", context.url),
-      inbox: context.getInboxUri(handle),
+      inbox: context.getInboxUri(identifier),
       endpoints: new Endpoints({
         sharedInbox: context.getInboxUri(),
       }),
@@ -45,21 +45,21 @@ federation
       assertionMethods: keyPairs.map((keyPair) => keyPair.multikey),
     });
   })
-  .setKeyPairsDispatcher(async (_, handle) => {
-    if (handle != "demo") {
+  .setKeyPairsDispatcher(async (_, identifier) => {
+    if (identifier != "demo") {
       return [];
     }
-    const keyPairs = keyPairsStore.get(handle);
+    const keyPairs = keyPairsStore.get(identifier);
     if (keyPairs) {
       return keyPairs;
     }
     const { privateKey, publicKey } = await generateCryptoKeyPair();
-    keyPairsStore.set(handle, [{ privateKey, publicKey }]);
+    keyPairsStore.set(identifier, [{ privateKey, publicKey }]);
     return [{ privateKey, publicKey }];
   });
 
 federation
-  .setInboxListeners("/users/{handle}/inbox", "/inbox")
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
   .on(Follow, async (context, follow) => {
     if (
       follow.id == null ||
@@ -69,7 +69,7 @@ federation
       return;
     }
     const result = context.parseUri(follow.objectId);
-    if (result?.type !== "actor" || result.handle !== "demo") {
+    if (result?.type !== "actor" || result.identifier !== "demo") {
       return;
     }
     const follower = await follow.getActor(context);
@@ -77,16 +77,16 @@ federation
       throw new Error("follower is null");
     }
     await context.sendActivity(
-      { handle: result.handle },
+      { identifier: result.identifier },
       follower,
       new Accept({
         id: new URL(
           `#accepts/${follower.id.href}`,
-          context.getActorUri("demo")
+          context.getActorUri("demo"),
         ),
         actor: follow.objectId,
         object: follow,
-      })
+      }),
     );
     relationStore.set(follower.id.href, follow.actorId.href);
   })

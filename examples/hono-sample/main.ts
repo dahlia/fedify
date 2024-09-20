@@ -7,12 +7,12 @@ const fedi = createFederation<void>({
   kv: new MemoryKvStore(),
 });
 
-fedi.setActorDispatcher("/{handle}", (ctx, handle, _key) => {
-  if (handle !== "sample") return null;
+fedi.setActorDispatcher("/{identifier}", (ctx, identifier) => {
+  if (identifier !== "sample") return null;
   return new Person({
-    id: ctx.getActorUri(handle),
+    id: ctx.getActorUri(identifier),
     name: "Sample",
-    preferredUsername: handle,
+    preferredUsername: identifier,
   });
 });
 

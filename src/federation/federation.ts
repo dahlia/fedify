@@ -76,11 +76,10 @@ export interface Federation<TContextData> {
    * @example
    * ``` typescript
    * federation.setActorDispatcher(
-   *   "/users/{handle}",
-   *   async (ctx, handle) => {
+   *   "/users/{identifier}",
+   *   async (ctx, identifier) => {
    *     return new Person({
-   *       id: ctx.getActorUri(handle),
-   *       preferredUsername: handle,
+   *       id: ctx.getActorUri(identifier),
    *       // ...
    *     });
    *   }
@@ -90,13 +89,13 @@ export interface Federation<TContextData> {
    * @param path The URI path pattern for the actor dispatcher.  The syntax is
    *             based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
+   *             must have one variable: `{identifier}`.
    * @param dispatcher An actor dispatcher callback to register.
    * @returns An object with methods to set other actor dispatcher callbacks.
    * @throws {RouterError} Thrown if the path pattern is invalid.
    */
   setActorDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: ActorDispatcher<TContextData>,
   ): ActorCallbackSetters<TContextData>;
 
@@ -227,16 +226,16 @@ export interface Federation<TContextData> {
   /**
    * Registers an inbox dispatcher.
    *
-   * @param path The URI path pattern for the outbox dispatcher.  The syntax is
+   * @param path The URI path pattern for the inbox dispatcher.  The syntax is
    *             based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`, and must match the inbox
-   *             listener path.
+   *             must have one variable: `{identifier}`, and must match
+   *             the inbox listener path.
    * @param dispatcher An inbox dispatcher callback to register.
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setInboxDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Activity,
       RequestContext<TContextData>,
@@ -255,8 +254,8 @@ export interface Federation<TContextData> {
    * @example
    * ``` typescript
    * federation.setOutboxDispatcher(
-   *   "/users/{handle}/outbox",
-   *   async (ctx, handle, options) => {
+   *   "/users/{identifier}/outbox",
+   *   async (ctx, identifier, options) => {
    *     let items: Activity[];
    *     let nextCursor: string;
    *     // ...
@@ -268,12 +267,12 @@ export interface Federation<TContextData> {
    * @param path The URI path pattern for the outbox dispatcher.  The syntax is
    *             based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
+   *             must have one variable: `{identifier}`.
    * @param dispatcher An outbox dispatcher callback to register.
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setOutboxDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Activity,
       RequestContext<TContextData>,
@@ -291,14 +290,14 @@ export interface Federation<TContextData> {
    * @param path The URI path pattern for the following collection.  The syntax
    *             is based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
+   *             must have one variable: `{identifier}`.
    * @param dispatcher A following collection callback to register.
    * @returns An object with methods to set other following collection
    *          callbacks.
    * @throws {RouterError} Thrown if the path pattern is invalid.
    */
   setFollowingDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Actor | URL,
       RequestContext<TContextData>,
@@ -316,14 +315,14 @@ export interface Federation<TContextData> {
    * @param path The URI path pattern for the followers collection.  The syntax
    *             is based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
+   *             must have one variable: `{identifier}`.
    * @param dispatcher A followers collection callback to register.
    * @returns An object with methods to set other followers collection
    *          callbacks.
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setFollowersDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Recipient,
       Context<TContextData>,
@@ -337,14 +336,14 @@ export interface Federation<TContextData> {
    * @param path The URI path pattern for the liked collection.  The syntax
    *             is based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
+   *             must have one variable: `{identifier}`.
    * @param dispatcher A liked collection callback to register.
    * @returns An object with methods to set other liked collection
    *          callbacks.
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setLikedDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Object | URL,
       RequestContext<TContextData>,
@@ -362,14 +361,14 @@ export interface Federation<TContextData> {
    * @param path The URI path pattern for the featured collection.  The syntax
    *             is based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
+   *             must have one variable: `{identifier}`.
    * @param dispatcher A featured collection callback to register.
    * @returns An object with methods to set other featured collection
    *          callbacks.
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setFeaturedDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Object,
       RequestContext<TContextData>,
@@ -387,14 +386,14 @@ export interface Federation<TContextData> {
    * @param path The URI path pattern for the featured tags collection.
    *             The syntax is based on URI Template
    *             ([RFC 6570](https://tools.ietf.org/html/rfc6570)).  The path
-   *             must have one variable: `{handle}`.
+   *             must have one variable: `{identifier}`.
    * @param dispatcher A featured tags collection callback to register.
    * @returns An object with methods to set other featured tags collection
    *          callbacks.
    * @throws {@link RouterError} Thrown if the path pattern is invalid.
    */
   setFeaturedTagsDispatcher(
-    path: `${string}{handle}${string}`,
+    path: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     dispatcher: CollectionDispatcher<
       Hashtag,
       RequestContext<TContextData>,
@@ -413,12 +412,11 @@ export interface Federation<TContextData> {
    * @example
    * ``` typescript
    * federation
-   *   .setInboxListeners("/users/{handle/inbox", "/inbox")
+   *   .setInboxListeners("/users/{identifier}/inbox", "/inbox")
    *   .on(Follow, async (ctx, follow) => {
    *     const from = await follow.getActor(ctx);
    *     if (!isActor(from)) return;
    *     // ...
-   *     await ctx.sendActivity({ })
    *   })
    *   .on(Undo, async (ctx, undo) => {
    *     // ...
@@ -428,7 +426,7 @@ export interface Federation<TContextData> {
    * @param inboxPath The URI path pattern for the inbox.  The syntax is based
    *                  on URI Template
    *                  ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
-   *                  The path must have one variable: `{handle}`, and must
+   *                  The path must have one variable: `{identifier}`, and must
    *                  match the inbox dispatcher path.
    * @param sharedInboxPath An optional URI path pattern for the shared inbox.
    *                        The syntax is based on URI Template
@@ -438,7 +436,7 @@ export interface Federation<TContextData> {
    * @throws {RouteError} Thrown if the path pattern is invalid.
    */
   setInboxListeners(
-    inboxPath: `${string}{handle}${string}`,
+    inboxPath: `${string}{identifier}${string}` | `${string}{handle}${string}`,
     sharedInboxPath?: string,
   ): InboxListenerSetters<TContextData>;
 
@@ -464,11 +462,12 @@ export interface Federation<TContextData> {
  *
  * ``` typescript
  * const federation = createFederation<void>({ ... });
- * federation.setActorDispatcher("/users/{handle}", async (ctx, handle, key) => {
- *   ...
- * })
- *   .setKeyPairsDispatcher(async (ctxData, handle) => {
- *     ...
+ * federation
+ *   .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+ *     // ...
+ *   })
+ *   .setKeyPairsDispatcher(async (ctxData, identifier) => {
+ *     // ...
  *   });
  * ```
  */
@@ -485,7 +484,7 @@ export interface ActorCallbackSetters<TContextData> {
 
   /**
    * Sets the callback function that maps a WebFinger username to
-   * the corresponding actor's internal handle.  If it's omitted, the handle
+   * the corresponding actor's identifier.  If it's omitted, the identifier
    * is assumed to be the same as the WebFinger username, which makes your
    * actors have the immutable handles.  If you want to let your actors change
    * their fediverse handles, you should set this dispatcher.

@@ -22,5 +22,5 @@ export interface InboxMessage {
   activity: unknown;
   started: string;
   attempt: number;
-  handle: string | null;
+  identifier: string | null;
 }

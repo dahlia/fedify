@@ -8,6 +8,72 @@ Version 1.0.0
 
 To be released.
 
+ -  The term `handle` for dispatching actors is deprecated in favor of
+    `identifier`.
+
+     -  The URI template for the following methods now accepts variable
+        `{identifier}` instead of `{handle}`:
+
+         -  `Federation.setActorDispatcher()`
+         -  `Federation.setInboxDispatcher()`
+         -  `Federation.setOutboxDispatcher()`
+         -  `Federation.setFollowingDispatcher()`
+         -  `Federation.setFollowersDispatcher()`
+         -  `Federation.setLikedDispatcher()`
+         -  `Federation.setFeaturedDispatcher()`
+         -  `Federation.setFeaturedTagsDispatcher()`
+         -  `Federation.setInboxListeners()`
+
+        The `{handle}` variable is deprecated, and it will be removed in
+        the future.
+     -  The type of `Federation.setActorDispatcher()` method's first parameter
+        became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Federation.setInboxDispatcher()` method's first parameter
+        became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Federation.setOutboxDispatcher()` method's first parameter
+        became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Federation.setFollowingDispatcher()` method's first
+        parameter became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Federation.setFollowersDispatcher()` method's first
+        parameter became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Federation.setLikedDispatcher()` method's first parameter
+        became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Federation.setFeaturedDispatcher()` method's first
+        parameter became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Federation.setFeaturedTagsDispatcher()` method's first
+        parameter became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Federation.setInboxListeners()` method's first parameter
+        became ```${string}{identifier}${string}` |
+        `${string}{handle}${string}``` (was ```${string}{handle}${string}```).
+     -  The type of `Context.getDocumentLoader()` method's first parameter
+        became `{ identifier: string } | { username: string } | { handle:
+        string } | { keyId: URL; privateKey: CryptoKey }` (was `{ handle:
+        string } | { keyId: URL; privateKey: CryptoKey }`).
+     -  Passing `{ handle: string }` to `Context.getDocumentLoader()` method is
+        deprecated in favor of `{ username: string }`.
+     -  The type of `Context.sendActivity()` method's first parameter became
+        `SenderKeyPair | SenderKeyPair[] | { identifier: string } | {
+        username: string } | { handle: string }` (was `SenderKeyPair | SenderKeyPair[] | { handle: string }`).
+     -  All properties of `ParseUriResult` type became readonly.
+     -  Added `identifier` properties next to `handle` properties in
+        `ParseUriResult` type.
+     -  The `handle` properties of `ParseUriResult` type are deprecated in favor
+        of `identifier` properties.
+     -  The return type of `SharedInboxKeyDispatcher` callback type became
+        `SenderKeyPair | { identifier: string } | { username: string } |
+        { handle: string } | null | Promise<SenderKeyPair | { identifier:
+        string } | { username: string } | { handle: string } | null>`
+        (was `SenderKeyPair | { handle: string } | null |
+        Promise<SenderKeyPair | { handle: string } | null>`).
+
  -  Fedify now supports [Linked Data Signatures], which is outdated but still
     widely used in the fediverse.
 

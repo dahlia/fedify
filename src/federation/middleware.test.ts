@@ -13,6 +13,7 @@ import {
   getAuthenticatedDocumentLoader,
 } from "../runtime/docloader.ts";
 import { signRequest, verifyRequest } from "../sig/http.ts";
+import type { KeyCache } from "../sig/key.ts";
 import { detachSignature, signJsonLd, verifyJsonLd } from "../sig/ld.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { signObject, verifyObject } from "../sig/proof.ts";
@@ -31,6 +32,7 @@ import { lookupObject } from "../vocab/lookup.ts";
 import {
   Activity,
   Create,
+  type CryptographicKey,
   Multikey,
   Note,
   Object,
@@ -39,6 +41,7 @@ import {
 import type { Context } from "./context.ts";
 import { MemoryKvStore } from "./kv.ts";
 import {
+  ContextImpl,
   createFederation,
   FederationImpl,
   InboxContextImpl,
@@ -122,13 +125,13 @@ test("Federation.createContext()", async (t) => {
     assertEquals(ctx.parseUri(new URL("https://example.com/")), null);
     assertEquals(ctx.parseUri(null), null);
     assertEquals(await ctx.getActorKeyPairs("handle"), []);
-    assertRejects(
-      () => ctx.getDocumentLoader({ handle: "handle" }),
+    await assertRejects(
+      () => ctx.getDocumentLoader({ identifier: "handle" }),
       Error,
       "No actor key pairs dispatcher registered",
     );
-    assertRejects(
-      () => ctx.sendActivity({ handle: "handle" }, [], new Create({})),
+    await assertRejects(
+      () => ctx.sendActivity({ identifier: "handle" }, [], new Create({})),
       Error,
       "No actor key pairs dispatcher registered",
     );
@@ -152,7 +155,7 @@ test("Federation.createContext()", async (t) => {
     );
 
     federation
-      .setActorDispatcher("/users/{handle}", () => new Person({}))
+      .setActorDispatcher("/users/{identifier}", () => new Person({}))
       .setKeyPairsDispatcher(() => [
         {
           privateKey: rsaPrivateKey2,
@@ -162,7 +165,8 @@ test("Federation.createContext()", async (t) => {
           privateKey: ed25519PrivateKey,
           publicKey: ed25519PublicKey.publicKey!,
         },
-      ]);
+      ])
+      .mapHandle((_, username) => username === "HANDLE" ? "handle" : null);
     ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(
       ctx.getActorUri("handle"),
@@ -171,7 +175,7 @@ test("Federation.createContext()", async (t) => {
     assertEquals(ctx.parseUri(new URL("https://example.com/")), null);
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle")),
-      { type: "actor", handle: "handle" },
+      { type: "actor", identifier: "handle", handle: "handle" },
     );
     assertEquals(ctx.parseUri(null), null);
     assertEquals(
@@ -207,29 +211,35 @@ test("Federation.createContext()", async (t) => {
         },
       ],
     );
-    const loader = await ctx.getDocumentLoader({ handle: "handle" });
+    const loader = await ctx.getDocumentLoader({ identifier: "handle" });
     assertEquals(await loader("https://example.com/object"), {
       contextUrl: null,
       documentUrl: "https://example.com/object",
       document: true,
     });
-    const loader2 = ctx.getDocumentLoader({
-      keyId: new URL("https://example.com/key2"),
-      privateKey: rsaPrivateKey2,
-    });
+    const loader2 = await ctx.getDocumentLoader({ username: "HANDLE" });
     assertEquals(await loader2("https://example.com/object"), {
       contextUrl: null,
       documentUrl: "https://example.com/object",
       document: true,
     });
+    const loader3 = ctx.getDocumentLoader({
+      keyId: new URL("https://example.com/key2"),
+      privateKey: rsaPrivateKey2,
+    });
+    assertEquals(await loader3("https://example.com/object"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: true,
+    });
     assertEquals(await ctx.lookupObject("https://example.com/object"), null);
-    assertRejects(
-      () => ctx.sendActivity({ handle: "handle" }, [], new Create({})),
+    await assertRejects(
+      () => ctx.sendActivity({ identifier: "handle" }, [], new Create({})),
       TypeError,
       "The activity to send must have at least one actor property.",
     );
     await ctx.sendActivity(
-      { handle: "handle" },
+      { identifier: "handle" },
       [],
       new Create({
         actor: new URL("https://example.com/users/handle"),
@@ -255,16 +265,16 @@ test("Federation.createContext()", async (t) => {
 
     federation.setObjectDispatcher(
       Note,
-      "/users/{handle}/notes/{id}",
+      "/users/{identifier}/notes/{id}",
       (_ctx, values) => {
         return new Note({
-          summary: `Note ${values.id} by ${values.handle}`,
+          summary: `Note ${values.id} by ${values.identifier}`,
         });
       },
     );
     ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(
-      ctx.getObjectUri(Note, { handle: "john", id: "123" }),
+      ctx.getObjectUri(Note, { identifier: "john", id: "123" }),
       new URL("https://example.com/users/john/notes/123"),
     );
     assertEquals(
@@ -273,12 +283,12 @@ test("Federation.createContext()", async (t) => {
         type: "object",
         class: Note,
         typeId: new URL("https://www.w3.org/ns/activitystreams#Note"),
-        values: { handle: "john", id: "123" },
+        values: { identifier: "john", id: "123" },
       },
     );
     assertEquals(ctx.parseUri(null), null);
 
-    federation.setInboxListeners("/users/{handle}/inbox", "/inbox");
+    federation.setInboxListeners("/users/{identifier}/inbox", "/inbox");
     ctx = federation.createContext(new URL("https://example.com/"), 123);
     assertEquals(ctx.getInboxUri(), new URL("https://example.com/inbox"));
     assertEquals(
@@ -287,16 +297,16 @@ test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       ctx.parseUri(new URL("https://example.com/inbox")),
-      { type: "inbox" },
+      { type: "inbox", identifier: undefined, handle: undefined },
     );
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle/inbox")),
-      { type: "inbox", handle: "handle" },
+      { type: "inbox", identifier: "handle", handle: "handle" },
     );
     assertEquals(ctx.parseUri(null), null);
 
     federation.setOutboxDispatcher(
-      "/users/{handle}/outbox",
+      "/users/{identifier}/outbox",
       () => ({ items: [] }),
     );
     ctx = federation.createContext(new URL("https://example.com/"), 123);
@@ -306,12 +316,12 @@ test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle/outbox")),
-      { type: "outbox", handle: "handle" },
+      { type: "outbox", identifier: "handle", handle: "handle" },
     );
     assertEquals(ctx.parseUri(null), null);
 
     federation.setFollowingDispatcher(
-      "/users/{handle}/following",
+      "/users/{identifier}/following",
       () => ({ items: [] }),
     );
     ctx = federation.createContext(new URL("https://example.com/"), 123);
@@ -321,12 +331,12 @@ test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle/following")),
-      { type: "following", handle: "handle" },
+      { type: "following", identifier: "handle", handle: "handle" },
     );
     assertEquals(ctx.parseUri(null), null);
 
     federation.setFollowersDispatcher(
-      "/users/{handle}/followers",
+      "/users/{identifier}/followers",
       () => ({ items: [] }),
     );
     ctx = federation.createContext(new URL("https://example.com/"), 123);
@@ -336,12 +346,12 @@ test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle/followers")),
-      { type: "followers", handle: "handle" },
+      { type: "followers", identifier: "handle", handle: "handle" },
     );
     assertEquals(ctx.parseUri(null), null);
 
     federation.setLikedDispatcher(
-      "/users/{handle}/liked",
+      "/users/{identifier}/liked",
       () => ({ items: [] }),
     );
     ctx = federation.createContext(new URL("https://example.com/"), 123);
@@ -351,12 +361,12 @@ test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle/liked")),
-      { type: "liked", handle: "handle" },
+      { type: "liked", identifier: "handle", handle: "handle" },
     );
     assertEquals(ctx.parseUri(null), null);
 
     federation.setFeaturedDispatcher(
-      "/users/{handle}/featured",
+      "/users/{identifier}/featured",
       () => ({ items: [] }),
     );
     ctx = federation.createContext(new URL("https://example.com/"), 123);
@@ -366,12 +376,12 @@ test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle/featured")),
-      { type: "featured", handle: "handle" },
+      { type: "featured", identifier: "handle", handle: "handle" },
     );
     assertEquals(ctx.parseUri(null), null);
 
     federation.setFeaturedTagsDispatcher(
-      "/users/{handle}/tags",
+      "/users/{identifier}/tags",
       () => ({ items: [] }),
     );
     ctx = federation.createContext(new URL("https://example.com/"), 123);
@@ -381,7 +391,7 @@ test("Federation.createContext()", async (t) => {
     );
     assertEquals(
       ctx.parseUri(new URL("https://example.com/users/handle/tags")),
-      { type: "featuredTags", handle: "handle" },
+      { type: "featuredTags", identifier: "handle", handle: "handle" },
     );
     assertEquals(ctx.parseUri(null), null);
   });
@@ -399,11 +409,11 @@ test("Federation.createContext()", async (t) => {
     assertEquals(ctx.host, "example.com");
     assertEquals(ctx.hostname, "example.com");
     assertEquals(ctx.data, 123);
-    assertRejects(
+    await assertRejects(
       () => ctx.getActor("someone"),
       Error,
     );
-    assertRejects(
+    await assertRejects(
       () => ctx.getObject(Note, { handle: "someone", id: "123" }),
       Error,
     );
@@ -412,7 +422,7 @@ test("Federation.createContext()", async (t) => {
     // Multiple calls should return the same result:
     assertEquals(await ctx.getSignedKey(), null);
     assertEquals(await ctx.getSignedKeyOwner(), null);
-    assertRejects(
+    await assertRejects(
       () => ctx.getActor("someone"),
       Error,
       "No actor dispatcher registered",
@@ -453,8 +463,8 @@ test("Federation.createContext()", async (t) => {
     assertEquals(await signedCtx2.getSignedKeyOwner(), expectedOwner);
 
     federation.setActorDispatcher(
-      "/users/{handle}",
-      (_ctx, handle) => new Person({ preferredUsername: handle }),
+      "/users/{identifier}",
+      (_ctx, identifier) => new Person({ preferredUsername: identifier }),
     );
     const ctx2 = federation.createContext(req, 789);
     assertEquals(ctx2.request, req);
@@ -467,10 +477,10 @@ test("Federation.createContext()", async (t) => {
 
     federation.setObjectDispatcher(
       Note,
-      "/users/{handle}/notes/{id}",
+      "/users/{identifier}/notes/{id}",
       (_ctx, values) => {
         return new Note({
-          summary: `Note ${values.id} by ${values.handle}`,
+          summary: `Note ${values.id} by ${values.identifier}`,
         });
       },
     );
@@ -479,7 +489,7 @@ test("Federation.createContext()", async (t) => {
     assertEquals(ctx3.url, new URL("https://example.com/"));
     assertEquals(ctx3.data, 123);
     assertEquals(
-      await ctx2.getObject(Note, { handle: "john", id: "123" }),
+      await ctx2.getObject(Note, { identifier: "john", id: "123" }),
       new Note({ summary: "Note 123 by john" }),
     );
   });
@@ -537,11 +547,11 @@ test("Federation.setInboxListeners()", async (t) => {
       documentLoader: mockDocumentLoader,
     });
     federation.setInboxDispatcher(
-      "/users/{handle}/inbox",
+      "/users/{identifier}/inbox",
       () => ({ items: [] }),
     );
     assertThrows(
-      () => federation.setInboxListeners("/users/{handle}/inbox2"),
+      () => federation.setInboxListeners("/users/{identifier}/inbox2"),
       RouterError,
     );
   });
@@ -554,18 +564,22 @@ test("Federation.setInboxListeners()", async (t) => {
     assertThrows(
       () =>
         federation.setInboxListeners(
-          "/users/inbox" as `${string}{handle}${string}`,
+          "/users/inbox" as `${string}{identifier}${string}`,
         ),
       RouterError,
     );
     assertThrows(
-      () => federation.setInboxListeners("/users/{handle}/inbox/{handle2}"),
+      () => federation.setInboxListeners("/users/{identifier}/inbox/{id2}"),
+      RouterError,
+    );
+    assertThrows(
+      () => federation.setInboxListeners("/users/{identifier}/inbox/{handle}"),
       RouterError,
     );
     assertThrows(
       () =>
         federation.setInboxListeners(
-          "/users/{handle2}/inbox" as `${string}{handle}${string}`,
+          "/users/{identifier2}/inbox" as `${string}{identifier}${string}`,
         ),
       RouterError,
     );
@@ -587,7 +601,7 @@ test("Federation.setInboxListeners()", async (t) => {
       },
     });
     const inbox: [Context<void>, Create][] = [];
-    federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
+    federation.setInboxListeners("/users/{identifier}/inbox", "/inbox")
       .on(Create, (ctx, create) => {
         inbox.push([ctx, create]);
       });
@@ -601,8 +615,8 @@ test("Federation.setInboxListeners()", async (t) => {
 
     federation
       .setActorDispatcher(
-        "/users/{handle}",
-        (_, handle) => handle === "john" ? new Person({}) : null,
+        "/users/{identifier}",
+        (_, identifier) => identifier === "john" ? new Person({}) : null,
       )
       .setKeyPairsDispatcher(() => [{
         privateKey: rsaPrivateKey2,
@@ -737,8 +751,8 @@ test("Federation.setInboxListeners()", async (t) => {
     });
     federation
       .setActorDispatcher(
-        "/users/{handle}",
-        (_, handle) => handle === "john" ? new Person({}) : null,
+        "/users/{identifier}",
+        (_, identifier) => identifier === "john" ? new Person({}) : null,
       )
       .setKeyPairsDispatcher(() => [{
         privateKey: rsaPrivateKey2,
@@ -746,7 +760,7 @@ test("Federation.setInboxListeners()", async (t) => {
       }]);
     const error = new Error("test");
     const errors: unknown[] = [];
-    federation.setInboxListeners("/users/{handle}/inbox", "/inbox")
+    federation.setInboxListeners("/users/{identifier}/inbox", "/inbox")
       .on(Create, () => {
         throw error;
       })
@@ -788,11 +802,11 @@ test("Federation.setInboxDispatcher()", async (t) => {
       kv,
       documentLoader: mockDocumentLoader,
     });
-    federation.setInboxListeners("/users/{handle}/inbox");
+    federation.setInboxListeners("/users/{identifier}/inbox");
     assertThrows(
       () =>
         federation.setInboxDispatcher(
-          "/users/{handle}/inbox2",
+          "/users/{identifier}/inbox2",
           () => ({ items: [] }),
         ),
       RouterError,
@@ -804,9 +818,9 @@ test("Federation.setInboxDispatcher()", async (t) => {
       kv,
       documentLoader: mockDocumentLoader,
     });
-    federation.setInboxListeners("/users/{handle}/inbox");
+    federation.setInboxListeners("/users/{identifier}/inbox");
     federation.setInboxDispatcher(
-      "/users/{handle}/inbox",
+      "/users/{identifier}/inbox",
       () => ({ items: [] }),
     );
   });
@@ -819,7 +833,7 @@ test("Federation.setInboxDispatcher()", async (t) => {
     assertThrows(
       () =>
         federation.setInboxDispatcher(
-          "/users/inbox" as `${string}{handle}${string}`,
+          "/users/inbox" as `${string}{identifier}${string}`,
           () => ({ items: [] }),
         ),
       RouterError,
@@ -827,7 +841,7 @@ test("Federation.setInboxDispatcher()", async (t) => {
     assertThrows(
       () =>
         federation.setInboxDispatcher(
-          "/users/{handle}/inbox/{handle2}",
+          "/users/{identifier}/inbox/{identifier2}",
           () => ({ items: [] }),
         ),
       RouterError,
@@ -835,7 +849,7 @@ test("Federation.setInboxDispatcher()", async (t) => {
     assertThrows(
       () =>
         federation.setInboxDispatcher(
-          "/users/{handle2}/inbox" as `${string}{handle}${string}`,
+          "/users/{identifier2}/inbox" as `${string}{identifier}${string}`,
           () => ({ items: [] }),
         ),
       RouterError,
@@ -962,6 +976,203 @@ test("FederationImpl.sendActivity()", async (t) => {
   });
 
   mf.uninstall();
+});
+
+test("ContextImpl.sendActivity()", async (t) => {
+  mf.install();
+
+  let verified: ("http" | "ld" | "proof")[] | null = null;
+  let request: Request | null = null;
+  mf.mock("POST@/inbox", async (req) => {
+    verified = [];
+    request = req.clone();
+    const options = {
+      async documentLoader(url: string) {
+        const response = await federation.fetch(
+          new Request(url),
+          { contextData: undefined },
+        );
+        if (response.ok) {
+          return {
+            contextUrl: null,
+            document: await response.json(),
+            documentUrl: response.url,
+          };
+        }
+        return await mockDocumentLoader(url);
+      },
+      contextLoader: mockDocumentLoader,
+      keyCache: {
+        async get(keyId: URL) {
+          const ctx = await federation.createContext(
+            new URL("https://example.com/"),
+            undefined,
+          );
+          const keys = await ctx.getActorKeyPairs("1");
+          for (const key of keys) {
+            if (key.keyId.href === keyId.href) {
+              if (key.publicKey.algorithm.name === "Ed25519") {
+                return key.multikey;
+              } else return key.cryptographicKey;
+            }
+          }
+          return null;
+        },
+        async set(_keyId: URL, _key: CryptographicKey | Multikey) {
+        },
+      } satisfies KeyCache,
+    };
+    let json = await req.json();
+    if (await verifyJsonLd(json, options)) verified.push("ld");
+    json = detachSignature(json);
+    let activity = await verifyObject(Activity, json, options);
+    if (activity == null) {
+      activity = await Activity.fromJsonLd(json, options);
+    } else {
+      verified.push("proof");
+    }
+    const key = await verifyRequest(request, options);
+    if (key != null && await doesActorOwnKey(activity, key, options)) {
+      verified.push("http");
+    }
+    if (verified.length > 0) return new Response(null, { status: 202 });
+    return new Response(null, { status: 401 });
+  });
+
+  const kv = new MemoryKvStore();
+  const federation = new FederationImpl<void>({
+    kv,
+    contextLoader: mockDocumentLoader,
+  });
+
+  federation
+    .setActorDispatcher("/{identifier}", async (ctx, identifier) => {
+      if (identifier !== "1") return null;
+      const keys = await ctx.getActorKeyPairs(identifier);
+      return new Person({
+        id: ctx.getActorUri(identifier),
+        preferredUsername: "john",
+        publicKey: keys[0].cryptographicKey,
+        assertionMethods: keys.map((k) => k.multikey),
+      });
+    })
+    .setKeyPairsDispatcher((_ctx, identifier) => {
+      if (identifier !== "1") return [];
+      return [
+        { privateKey: rsaPrivateKey2, publicKey: rsaPublicKey2.publicKey! },
+        {
+          privateKey: ed25519PrivateKey,
+          publicKey: ed25519PublicKey.publicKey!,
+        },
+      ];
+    })
+    .mapHandle((_ctx, username) => username === "john" ? "1" : null);
+
+  await t.step("success", async () => {
+    const activity = new Create({
+      actor: new URL("https://example.com/person"),
+    });
+    const ctx = new ContextImpl({
+      data: undefined,
+      federation,
+      url: new URL("https://example.com/"),
+      documentLoader: fetchDocumentLoader,
+    });
+    await ctx.sendActivity(
+      [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
+      {
+        id: new URL("https://example.com/recipient"),
+        inboxId: new URL("https://example.com/inbox"),
+      },
+      activity,
+    );
+    assertEquals(verified, ["http"]);
+    assertInstanceOf(request, Request);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    verified = null;
+    await ctx.sendActivity(
+      [{ privateKey: rsaPrivateKey3, keyId: rsaPublicKey3.id! }],
+      {
+        id: new URL("https://example.com/recipient"),
+        inboxId: new URL("https://example.com/inbox"),
+      },
+      activity.clone({
+        actor: new URL("https://example.com/person2"),
+      }),
+    );
+    assertEquals(verified, ["ld", "http"]);
+    assertInstanceOf(request, Request);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    verified = null;
+    await ctx.sendActivity(
+      { identifier: "1" },
+      {
+        id: new URL("https://example.com/recipient"),
+        inboxId: new URL("https://example.com/inbox"),
+      },
+      activity.clone({ actor: ctx.getActorUri("1") }),
+    );
+    assertEquals(verified, ["ld", "proof", "http"]);
+    assertInstanceOf(request, Request);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    verified = null;
+    await ctx.sendActivity(
+      { username: "john" },
+      {
+        id: new URL("https://example.com/recipient"),
+        inboxId: new URL("https://example.com/inbox"),
+      },
+      activity.clone({ actor: ctx.getActorUri("1") }),
+    );
+    assertEquals(verified, ["ld", "proof", "http"]);
+    assertInstanceOf(request, Request);
+    assertEquals(request?.method, "POST");
+    assertEquals(request?.url, "https://example.com/inbox");
+    assertEquals(
+      request?.headers.get("Content-Type"),
+      "application/activity+json",
+    );
+
+    await assertRejects(() =>
+      ctx.sendActivity(
+        { identifier: "not-found" },
+        {
+          id: new URL("https://example.com/recipient"),
+          inboxId: new URL("https://example.com/inbox"),
+        },
+        activity.clone({ actor: ctx.getActorUri("1") }),
+      )
+    );
+
+    await assertRejects(() =>
+      ctx.sendActivity(
+        { username: "not-found" },
+        {
+          id: new URL("https://example.com/recipient"),
+          inboxId: new URL("https://example.com/inbox"),
+        },
+        activity.clone({ actor: ctx.getActorUri("1") }),
+      )
+    );
+  });
 });
 
 test("InboxContextImpl.forwardActivity()", async (t) => {
