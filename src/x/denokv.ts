@@ -66,7 +66,7 @@ export class DenoKvStore implements KvStore {
 /**
  * Represents a message queue adapter that uses Deno KV store.
  */
-export class DenoKvMessageQueue implements MessageQueue {
+export class DenoKvMessageQueue implements MessageQueue, Disposable {
   #kv: Deno.Kv;
 
   /**
@@ -78,9 +78,6 @@ export class DenoKvMessageQueue implements MessageQueue {
     this.#kv = kv;
   }
 
-  /**
-   * {@inheritDoc MessageQueue.enqueue}
-   */
   async enqueue(
     // deno-lint-ignore no-explicit-any
     message: any,
@@ -94,11 +91,12 @@ export class DenoKvMessageQueue implements MessageQueue {
     );
   }
 
-  /**
-   * {@inheritDoc MessageQueue.listen}
-   */
   // deno-lint-ignore no-explicit-any
   listen(handler: (message: any) => void | Promise<void>): void {
     this.#kv.listenQueue(handler);
+  }
+
+  [Symbol.dispose](): void {
+    this.#kv.close();
   }
 }

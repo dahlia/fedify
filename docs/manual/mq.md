@@ -52,7 +52,7 @@ const federation = createFederation<void>({
 // ---cut-start---
   kv: null as unknown as KvStore,
 // ---cut-end---
-  queue: new InProcessMessageQueue(),
+  queue: new InProcessMessageQueue(),  // [!code highlight]
   // ... other options
 });
 ~~~~
@@ -79,7 +79,7 @@ import { DenoKvMessageQueue } from "@fedify/fedify/x/deno";
 
 const kv = await Deno.openKv();
 const federation = createFederation<void>({
-  queue: new DenoKvMessageQueue(kv),
+  queue: new DenoKvMessageQueue(kv),  // [!code highlight]
   // ... other options
 });
 ~~~~
@@ -116,7 +116,7 @@ const federation = createFederation<void>({
 // ---cut-start---
   kv: null as unknown as KvStore,
 // ---cut-end---
-  queue: new RedisMessageQueue(() => new Redis()),
+  queue: new RedisMessageQueue(() => new Redis()),  // [!code highlight]
   // ... other options
 });
 ~~~~
@@ -179,3 +179,46 @@ custom `MessageQueue`:
 
 However, you don't need to implement retry logic yourself, as Fedify handles
 retrying failed messages automatically.
+
+
+Parallel message processing
+---------------------------
+
+*This API is available since Fedify 1.0.0.*
+
+Fedify supports parallel message processing by running multiple workers
+concurrently.  To enable parallel processing, wrap your `MessageQueue` with
+`ParallelMessageQueue`, a special implementation of the `MessageQueue` interface
+designed to process messages in parallel.  It acts as a decorator for another
+`MessageQueue` implementation, allowing for concurrent processing of messages
+up to a specified number of workers:
+
+~~~~ typescript twoslash
+import type { KvStore } from "@fedify/fedify";
+// ---cut-before---
+import { createFederation, ParallelMessageQueue } from "@fedify/fedify";
+import { RedisMessageQueue } from "@fedify/redis";
+import Redis from "ioredis";
+
+const baseQueue = new RedisMessageQueue(() => new Redis());
+
+// Use parallelQueue in your Federation configuration
+const federation = createFederation<void>({
+  queue: new ParallelMessageQueue(baseQueue, 5),  // [!code highlight]
+  // ... other options
+  // ---cut-start---
+  kv: null as unknown as KvStore,
+  // ---cut-end---
+});
+~~~~
+
+> [!NOTE]
+> The workers do not run in truly parallel, in the sense that they are not
+> running in separate threads or processes.  They are running in the same
+> process, but are scheduled to run in parallel.  Hence, this is useful for
+> I/O-bound tasks, but not for CPU-bound tasks, which is okay for Fedify's
+> workloads.
+>
+> If your [inbox listeners](./inbox.md) are CPU-bound, you should consider
+> running multiple nodes of your application so that each node can process
+> messages in parallel with the shared message queue.

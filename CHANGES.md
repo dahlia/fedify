@@ -109,9 +109,13 @@ To be released.
     the activity to be sent only once.  It had added Object Integrity Proofs
     to the activity for every recipient before.
 
+ -  Added `ParallelMessageQueue` class.  [[#106]]
+
  -  WebFinger responses now include <http://webfinger.net/rel/avatar> links
     if the `Actor` object returned by the actor dispatcher has `icon`/`icons`
     property.
+
+ -  `DenoKvMessageQueue` now implements `Disposable` interface.
 
  -  The `fedify inbox` command now sends `Delete(Application)` activities when
     it's terminated so that the peers can clean up data related to the temporary
@@ -123,6 +127,7 @@ To be released.
      -  `["fedify", "sig", "ld"]`
 
 [Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
+[#106]: https://github.com/dahlia/fedify/issues/106
 [#135]: https://github.com/dahlia/fedify/issues/135
 [#137]: https://github.com/dahlia/fedify/issues/137
 

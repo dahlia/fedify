@@ -241,6 +241,16 @@ the `createFederation()` function.
 > [!NOTE]
 > Activities with invalid signatures/proofs are silently ignored and not queued.
 
+> [!TIP]
+> If your inbox listeners are mostly I/O-bound, consider parallelizing
+> message processing by using the `ParallelMessageQueue` class.  For more
+> information, see the [*Parallel message processing*
+> section](./mq.md#parallel-message-processing).
+>
+> If your inbox listeners are CPU-bound, consider running multiple nodes of
+> your application so that each node can process messages in parallel with
+> the shared message queue.
+
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
 [`@fedify/redis`]: https://github.com/dahlia/fedify-redis
 
