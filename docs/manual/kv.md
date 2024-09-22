@@ -107,6 +107,41 @@ const federation = createFederation<void>({
 [@fedify/redis]: https://github.com/dahlia/fedify-redis
 [`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore
 
+### [`PostgresKvStore`]
+
+> [!NOTE]
+> The [`PostgresKvStore`] class is available in the [@fedify/postgres] package.
+
+[`PostgresKvStore`] is a key–value store implementation that uses PostgreSQL as
+the backend storage. It provides scalability and high performance, making it
+suitable for production use in distributed systems.  It requires a PostgreSQL
+server setup and maintenance.
+
+Best for
+:   Production use, a system that already uses PostgreSQL.
+
+Pros
+:   Scalable, no additional setup required if already using PostgreSQL.
+
+Cons
+:   Requires PostgreSQL setup and maintenance.
+
+~~~~ typescript{6-8} twoslash
+import { createFederation } from "@fedify/fedify";
+import { PostgresKvStore } from "@fedify/postgres";
+import postgres from "postgres";
+
+const federation = createFederation<void>({
+  kv: new PostgresKvStore(
+    postgres("postgresql://user:pass@localhost/db"),
+  ),
+  // ... other options
+});
+~~~~
+
+[`PostgresKvStore`]: https://jsr.io/@fedify/postgres/doc/kv/~/PostgresKvStore
+[@fedify/postgres]: https://github.com/dahlia/fedify-postgres
+
 
 Implementing a custom `KvStore`
 -------------------------------

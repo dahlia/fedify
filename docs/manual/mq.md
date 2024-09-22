@@ -124,6 +124,50 @@ const federation = createFederation<void>({
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
 [@fedify/redis]: https://github.com/dahlia/fedify-redis
 
+### [`PostgresMessageQueue`]
+
+> [!NOTE]
+> The [`PostgresMessageQueue`] class is available in the [@fedify/postgres]
+> package.
+
+[`PostgresMessageQueue`] is a message queue implementation that uses
+a PostgreSQL database as the message queue backend.  Under the hood,
+it uses a table for maintaining the queue, and [`LISTEN`]/[`NOTIFY`] for
+real-time message delivery.  It's suitable for production use if you
+already rely on PostgreSQL in your application.
+
+Best for
+:   Production use, a system that already uses PostgreSQL.
+
+Pros
+:   Persistent, scalable, supports multiple workers.
+
+Cons
+:   Requires PostgreSQL setup.
+
+~~~~ typescript{6-8} twoslash
+import type { KvStore } from "@fedify/fedify";
+// ---cut-before---
+import { createFederation } from "@fedify/fedify";
+import { PostgresMessageQueue } from "@fedify/postgres";
+import postgres from "postgres";
+
+const federation = createFederation<void>({
+// ---cut-start---
+  kv: null as unknown as KvStore,
+// ---cut-end---
+  queue: new PostgresMessageQueue(
+    postgres("postgresql://user:pass@localhost/db"),
+  ),
+  // ... other options
+});
+~~~~
+
+[`PostgresMessageQueue`]: https://jsr.io/@fedify/postgres/doc/mq/~/PostgresMessageQueue
+[@fedify/postgres]: https://github.com/dahlia/fedify-postgres
+[`LISTEN`]: https://www.postgresql.org/docs/current/sql-listen.html
+[`NOTIFY`]: https://www.postgresql.org/docs/current/sql-notify.html
+
 
 Implementing a custom `MessageQueue`
 ------------------------------------
@@ -238,7 +282,7 @@ const federation = createFederation<void>({
 Separating message processing from the main process
 ---------------------------------------------------
 
-*This API is available since Fedify 0.12.0.*
+*This API is available since Fedify 1.0.0.*
 
 On high-traffic servers, it's common to separate message processing from
 the main server process to avoid blocking the main event loop.  To achieve this,

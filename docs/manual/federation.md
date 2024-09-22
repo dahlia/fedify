@@ -51,13 +51,17 @@ testing and development purposes, and the `DenoKvStore` class is Deno KV-backed
 implementation for production use (as you can guess from the name, it is only
 available in Deno runtime).
 
-As a separate package, [@fedify/redis] provides [`RedisKvStore`] class, which is
-a Redis-backed implementation for production use.
+As separate packages, [@fedify/redis] provides [`RedisKvStore`] class, which is
+a Redis-backed implementation for production use, and [@fedify/postgres]
+provides [`PostgresKvStore`] class, which is a PostgreSQL-backed implementation
+for production use.
 
 Further details are explained in the [*Key–value store* section](./kv.md).
 
 [@fedify/redis]: https://github.com/dahlia/fedify-redis
 [`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore
+[@fedify/postgres]: https://github.com/dahlia/fedify-postgres
+[`PostgresKvStore`]: https://jsr.io/@fedify/postgres/doc/kv/~/PostgresKvStore
 
 ### `kvPrefixes`
 
@@ -96,8 +100,10 @@ and the `DenoKvMessageQueue` class is a Deno KV-backed implementation for
 production use (as you can guess from the name, it is only available in Deno
 runtime).
 
-As a separate package, [@fedify/redis] provides [`RedisMessageQueue`] class,
-which is a Redis-backed implementation for production use.
+As separate packages, [@fedify/redis] provides [`RedisMessageQueue`] class,
+which is a Redis-backed implementation for production use,
+and [@fedify/postgres] provides [`PostgresMessageQueue`] class, which is a
+PostgreSQL-backed implementation for production use.
 
 Further details are explained in the [*Message queue* section](./mq.md).
 
@@ -109,6 +115,7 @@ Further details are explained in the [*Message queue* section](./mq.md).
 > and can cause performance issues.
 
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
+[`PostgresMessageQueue`]: https://jsr.io/@fedify/postgres/doc/mq/~/PostgresMessageQueue
 
 ### `manuallyStartQueue`
 

@@ -248,7 +248,8 @@ a key-value store.
 > [!IMPORTANT]
 > Since `MemoryKvStore` is for testing and development purposes, you should
 > use a persistent key-value store like `DenoKvStore` (in Deno) or
-> [`RedisKvStore`] (from [@fedify/redis] package) for production use.
+> [`RedisKvStore`] (from [@fedify/redis] package) or [`PostgresKvStore`]
+> (from [@fedify/postgres] package) for production use.
 >
 > For further details, see the [*Key–value store* section](../manual/kv.md).
 
@@ -350,6 +351,8 @@ to the next step.
 
 [@fedify/redis]: https://github.com/dahlia/fedify-redis
 [`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore
+[@fedify/postgres]: https://github.com/dahlia/fedify-postgres
+[`PostgresKvStore`]: https://jsr.io/@fedify/postgres/doc/kv/~/PostgresKvStore
 [LogTape]: https://logtape.org/
 [`configure()`]: https://jsr.io/@logtape/logtape/doc/~/configure
 
