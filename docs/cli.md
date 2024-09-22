@@ -151,7 +151,7 @@ You can specify the key-value store to use by using the `-k`/`--kv-store`
 option.  The available options are:
 
  -  `redis`: [Redis]
- -  `denokv`: [Deno KV]
+ -  `denokv`: [Deno KV] (if Deno)
 
 If it's omitted, the in-memory key-value store (which is for development
 purpose) will be used.
@@ -162,7 +162,7 @@ You can specify the message queue to use by using the `-q`/`--message-queue`
 option.  The available options are:
 
  -  `redis`: [Redis]
- -  `denokv`: [Deno KV]
+ -  `denokv`: [Deno KV] (if Deno)
 
 If it's omitted, the in-process message queue (which is for development purpose)
 will be used.
