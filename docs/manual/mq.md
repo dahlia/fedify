@@ -137,7 +137,11 @@ Create a class that implements the `MessageQueue` interface, which includes
 the `~MessageQueue.enqueue()` and `~MessageQueue.listen()` methods:
 
 ~~~~ typescript twoslash
-import type { MessageQueue, MessageQueueEnqueueOptions } from "@fedify/fedify";
+import type {
+  MessageQueue,
+  MessageQueueEnqueueOptions,
+  MessageQueueListenOptions,
+} from "@fedify/fedify";
 
 class CustomMessageQueue implements MessageQueue {
   async enqueue(
@@ -147,7 +151,10 @@ class CustomMessageQueue implements MessageQueue {
     // Implementation here
   }
 
-  listen(handler: (message: any) => Promise<void> | void): void {
+  async listen(
+    handler: (message: any) => Promise<void> | void,
+    options: MessageQueueListenOptions = {},
+  ): Promise<void> {
     // Implementation here
   }
 }
@@ -165,6 +172,10 @@ Handle the `~MessageQueueEnqueueOptions.delay` option if provided in
 This method should start a process that listens for new messages.
 When a message is received, it should call the provided `handler` function.
 Ensure proper error handling to prevent the listener from crashing.
+
+> [!NOTE]
+> A `Promise` object it returns should never resolve unless the given
+> `~MessageQueueListenOptions.signal` is triggered.
 
 ### Consider additional features
 
@@ -236,7 +247,7 @@ you can use the `~CreateFederationOptions.manuallyStartQueue` option and
 
 ::: code-group
 
-~~~~ typescript{11-15} twoslash [Deno]
+~~~~ typescript{11-17} twoslash [Deno]
 import type { KvStore } from "@fedify/fedify";
 // ---cut-before---
 import { createFederation } from "@fedify/fedify";
@@ -255,17 +266,19 @@ const federation = createFederation<void>({
 // Start the message queue manually only in worker nodes.
 // On non-worker nodes, the queue won't be started.
 if (Deno.env.get("NODE_TYPE") === "worker") {
-  await federation.startQueue();
+  const controller = new AbortController();
+  Deno.addSignalListener("SIGINT", () => controller.abort());
+  await federation.startQueue(undefined, { signal: controller.signal });
 }
 ~~~~
 
-~~~~ typescript{12-16} twoslash [Node.js/Bun]
+~~~~ typescript{12-18} twoslash [Node.js/Bun]
 import type { KvStore } from "@fedify/fedify";
 // ---cut-before---
 import { createFederation } from "@fedify/fedify";
 import { RedisMessageQueue } from "@fedify/redis";
 import Redis from "ioredis";
-import { env } from "node:process";
+import process from "node:process";
 
 const federation = createFederation<void>({
   queue: new RedisMessageQueue(() => new Redis()),
@@ -278,8 +291,10 @@ const federation = createFederation<void>({
 
 // Start the message queue manually only in worker nodes.
 // On non-worker nodes, the queue won't be started.
-if (env.NODE_TYPE === "worker") {
-  await federation.startQueue();
+if (process.env.NODE_TYPE === "worker") {
+  const controller = new AbortController();
+  process.on("SIGINT", () => controller.abort());
+  await federation.startQueue(undefined, { signal: controller.signal });
 }
 ~~~~
 

@@ -18,6 +18,17 @@ import type {
 import type { Context, RequestContext } from "./context.ts";
 
 /**
+ * Options for {@link Federation.startQueue} method.
+ * @since 1.0.0
+ */
+export interface FederationStartQueueOptions {
+  /**
+   * The signal to abort the task queue.
+   */
+  signal?: AbortSignal;
+}
+
+/**
  * An object that registers federation-related business logic and dispatches
  * requests to the appropriate handlers.
  *
@@ -33,8 +44,12 @@ export interface Federation<TContextData> {
    * This method is useful when you set the `manuallyStartQueue` option to
    * `true` in the {@link createFederation} function.
    * @param contextData The context data to pass to the context.
+   * @param options Additional options for starting the queue.
    */
-  startQueue(contextData: TContextData): Promise<void>;
+  startQueue(
+    contextData: TContextData,
+    options?: FederationStartQueueOptions,
+  ): Promise<void>;
 
   /**
    * Create a new context.

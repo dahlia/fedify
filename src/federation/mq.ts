@@ -15,6 +15,18 @@ export interface MessageQueueEnqueueOptions {
 }
 
 /**
+ * Additional options for listening to a message queue.
+ *
+ * @since 1.0.0
+ */
+export interface MessageQueueListenOptions {
+  /**
+   * The signal to abort listening to the message queue.
+   */
+  signal?: AbortSignal;
+}
+
+/**
  * An abstract interface for a message queue.
  *
  * @since 0.5.0
@@ -30,31 +42,102 @@ export interface MessageQueue {
   /**
    * Listens for messages in the queue.
    * @param handler The handler for messages in the queue.
+   * @param options Additional options for listening to the message queue.
+   * @returns A promise that resolves when the listening is done.  It never
+   *          rejects, and is resolved when the signal is aborted.  If no
+   *          signal is provided, it never resolves.
    */
-  listen(handler: (message: any) => Promise<void> | void): void;
+  listen(
+    handler: (message: any) => Promise<void> | void,
+    options?: MessageQueueListenOptions,
+  ): Promise<void>;
+}
+
+/**
+ * Additional options for {@link InProcessMessageQueue}.
+ * @since 1.0.0
+ */
+export interface InProcessMessageQueueOptions {
+  /**
+   * The interval to poll for messages in the queue.  5 seconds by default.
+   * @default `{ seconds: 5 }`
+   */
+  pollInterval?: Temporal.Duration | Temporal.DurationLike;
 }
 
 /**
  * A message queue that processes messages in the same process.
- * Do not use this in production as it does not persist messages.
+ * Do not use this in production as it does neither persist messages nor
+ * distribute them across multiple processes.
  *
  * @since 0.5.0
  */
 export class InProcessMessageQueue implements MessageQueue {
-  #handlers: ((message: any) => Promise<void> | void)[] = [];
+  #messages: any[];
+  #monitors: Record<ReturnType<typeof crypto.randomUUID>, () => void>;
+  #pollIntervalMs: number;
+
+  /**
+   * Constructs a new {@link InProcessMessageQueue} with the given options.
+   * @param options Additional options for the in-process message queue.
+   */
+  constructor(options: InProcessMessageQueueOptions = {}) {
+    this.#messages = [];
+    this.#monitors = {};
+    this.#pollIntervalMs = Temporal.Duration.from(
+      options.pollInterval ?? { seconds: 5 },
+    ).total("millisecond");
+  }
 
   enqueue(message: any, options?: MessageQueueEnqueueOptions): Promise<void> {
     const delay = options?.delay == null
       ? 0
       : Math.max(options.delay.total("millisecond"), 0);
-    setTimeout(() => {
-      for (const handler of this.#handlers) handler(message);
-    }, delay);
+    if (delay > 0) {
+      setTimeout(
+        () => this.enqueue(message, { ...options, delay: undefined }),
+        delay,
+      );
+      return Promise.resolve();
+    }
+    this.#messages.push(message);
+    for (const monitorId in this.#monitors) {
+      this.#monitors[monitorId as ReturnType<typeof crypto.randomUUID>]();
+    }
     return Promise.resolve();
   }
 
-  listen(handler: (message: any) => Promise<void> | void): void {
-    this.#handlers.push(handler);
+  async listen(
+    handler: (message: any) => Promise<void> | void,
+    options: MessageQueueListenOptions = {},
+  ): Promise<void> {
+    const signal = options.signal;
+    while (signal == null || !signal.aborted) {
+      while (this.#messages.length > 0) {
+        const message = this.#messages.shift();
+        await handler(message);
+      }
+      await this.#wait(this.#pollIntervalMs, signal);
+    }
+  }
+
+  #wait(ms: number, signal?: AbortSignal): Promise<void> {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    return Promise.any([
+      new Promise<void>((resolve) => {
+        signal?.addEventListener("abort", () => {
+          if (timer != null) clearTimeout(timer);
+          resolve();
+        }, { once: true });
+        const monitorId = crypto.randomUUID();
+        this.#monitors[monitorId] = () => {
+          delete this.#monitors[monitorId];
+          if (timer != null) clearTimeout(timer);
+          resolve();
+        };
+      }),
+      new Promise<void>((resolve) => timer = setTimeout(resolve, ms)),
+    ]);
   }
 }
 
@@ -100,9 +183,12 @@ export class ParallelMessageQueue implements MessageQueue {
     return this.queue.enqueue(message, options);
   }
 
-  listen(handler: (message: any) => Promise<void> | void): void {
+  listen(
+    handler: (message: any) => Promise<void> | void,
+    options: MessageQueueListenOptions = {},
+  ): Promise<void> {
     const workers = new Map<Uuid, Promise<Uuid>>();
-    this.queue.listen(async (message) => {
+    return this.queue.listen(async (message) => {
       while (workers.size >= this.workers) {
         const consumedId = await Promise.any(workers.values());
         workers.delete(consumedId);
@@ -110,7 +196,7 @@ export class ParallelMessageQueue implements MessageQueue {
       const workerId = crypto.randomUUID();
       const promise = this.#work(workerId, handler, message);
       workers.set(workerId, promise);
-    });
+    }, options);
   }
 
   async #work(

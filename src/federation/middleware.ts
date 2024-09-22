@@ -54,6 +54,7 @@ import type {
   CollectionCallbackSetters,
   Federation,
   FederationFetchOptions,
+  FederationStartQueueOptions,
   InboxListenerSetters,
   ObjectCallbackSetters,
 } from "./federation.ts";
@@ -365,12 +366,18 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       createExponentialBackoffPolicy();
   }
 
-  #startQueue(ctxData: TContextData) {
+  async #startQueue(
+    ctxData: TContextData,
+    signal?: AbortSignal,
+  ): Promise<void> {
     if (this.queue != null && !this.queueStarted) {
       const logger = getLogger(["fedify", "federation", "queue"]);
       logger.debug("Starting a task queue.");
-      this.queue?.listen((msg) => this.#listenQueue(ctxData, msg));
       this.queueStarted = true;
+      await this.queue?.listen(
+        (msg) => this.#listenQueue(ctxData, msg),
+        { signal },
+      );
     }
   }
 
@@ -582,9 +589,11 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     );
   }
 
-  startQueue(contextData: TContextData): Promise<void> {
-    this.#startQueue(contextData);
-    return Promise.resolve();
+  startQueue(
+    contextData: TContextData,
+    options: FederationStartQueueOptions = {},
+  ): Promise<void> {
+    return this.#startQueue(contextData, options.signal);
   }
 
   createContext(baseUrl: URL, contextData: TContextData): Context<TContextData>;

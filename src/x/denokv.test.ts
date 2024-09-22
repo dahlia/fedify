@@ -30,9 +30,10 @@ test("DenoKvMessageQueue", async (t) => {
   const mq = new DenoKvMessageQueue(kv);
 
   const messages: string[] = [];
-  mq.listen((message: string) => {
+  const controller = new AbortController();
+  const listening = mq.listen((message: string) => {
     messages.push(message);
-  });
+  }, controller);
 
   await t.step("enqueue()", async () => {
     await mq.enqueue("Hello, world!");
@@ -60,7 +61,9 @@ test("DenoKvMessageQueue", async (t) => {
     assertGreater(Date.now() - started, 3_000);
   });
 
-  kv.close();
+  controller.abort();
+  await listening;
+  mq[Symbol.dispose]();
 });
 
 async function waitFor(

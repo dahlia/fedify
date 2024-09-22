@@ -1,8 +1,8 @@
 {
   "devDependencies": {
     "@deno/kv": "^0.8.2",
-    "@fedify/fedify": "1.0.0-dev.408",
-    "@fedify/redis": "^0.1.1",
+    "@fedify/fedify": "1.0.0-dev.409",
+    "@fedify/redis": "0.2.0-dev.10",
     "@hono/node-server": "^1.12.2",
     "@js-temporal/polyfill": "^0.4.4",
     "@logtape/logtape": "^0.5.1",

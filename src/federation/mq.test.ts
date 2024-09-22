@@ -11,9 +11,10 @@ test("InProcessMessageQueue", async (t) => {
   const mq = new InProcessMessageQueue();
 
   const messages: string[] = [];
-  mq.listen((message: string) => {
+  const controller = new AbortController();
+  const listening = mq.listen((message: string) => {
     messages.push(message);
-  });
+  }, controller);
 
   await t.step("enqueue()", async () => {
     await mq.enqueue("Hello, world!");
@@ -32,6 +33,7 @@ test("InProcessMessageQueue", async (t) => {
       "Delayed message",
       { delay: Temporal.Duration.from({ seconds: 3 }) },
     );
+    assertEquals(messages, ["Hello, world!"]);
   });
 
   await waitFor(() => messages.length > 1, 15_000);
@@ -40,6 +42,9 @@ test("InProcessMessageQueue", async (t) => {
     assertEquals(messages, ["Hello, world!", "Delayed message"]);
     assertGreater(Date.now() - started, 3_000);
   });
+
+  controller.abort();
+  await listening;
 });
 
 const queues: Record<string, () => Promise<MessageQueue>> = {
@@ -58,7 +63,7 @@ if (
     new DenoKvMessageQueue(
       // @ts-ignore: Works on Deno
       // dnt-shim-ignore
-      await globalThis.Deno.openKv(),
+      await globalThis.Deno.openKv(":memory:"),
     );
 }
 
@@ -68,12 +73,13 @@ for (const mqName in queues) {
     const workers = new ParallelMessageQueue(mq, 5);
 
     const messages: string[] = [];
-    workers.listen(async (message: string) => {
+    const controller = new AbortController();
+    const listening = workers.listen(async (message: string) => {
       for (let i = 0, cnt = 5 + Math.random() * 5; i < cnt; i++) {
         await delay(250);
       }
       messages.push(message);
-    });
+    }, controller);
 
     await t.step("enqueue() [single]", async () => {
       await mq.enqueue("Hello, world!");
@@ -101,6 +107,9 @@ for (const mqName in queues) {
     });
 
     await waitFor(() => messages.length >= 20, 15_000);
+
+    controller.abort();
+    await listening;
 
     if (Symbol.dispose in mq) {
       const dispose = mq[Symbol.dispose];

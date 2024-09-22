@@ -12,11 +12,11 @@ importers:
         specifier: ^0.8.2
         version: 0.8.2
       '@fedify/fedify':
-        specifier: 1.0.0-dev.408
-        version: 1.0.0-dev.408(web-streams-polyfill@3.3.3)
+        specifier: 1.0.0-dev.409
+        version: 1.0.0-dev.409(web-streams-polyfill@3.3.3)
       '@fedify/redis':
-        specifier: ^0.1.1
-        version: 0.1.1(web-streams-polyfill@3.3.3)
+        specifier: 0.2.0-dev.10
+        version: 0.2.0-dev.10(web-streams-polyfill@3.3.3)
       '@hono/node-server':
         specifier: ^1.12.2
         version: 1.12.2(hono@4.6.1)
@@ -367,14 +367,11 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
-  '@fedify/fedify@0.10.2':
-    resolution: {integrity: sha512-GKxm+NZ1zNPJ9HTbTW+Y2o/HT3Rk6ly+j/GJfjXBFiwm391Ni56VYC8ON/KQsFdFYIp+eNMn1hWr0RbFtMwoOg==}
+  '@fedify/fedify@1.0.0-dev.409':
+    resolution: {integrity: sha512-Lbk8eiJZrH2u1JeOdjQp9lSt9CtZkBK3LHW5akoV7znVY9TMZ5E6BHWlzoi0HxYJPIpOHXaQOWHo9v3CBnz9QQ==}
 
-  '@fedify/fedify@1.0.0-dev.408':
-    resolution: {integrity: sha512-Lln5Ln0lCCgrskhVN4YibDBgTeuHA2nyT2r3szeXi81j6vNGxpRzdHQ+0wBSglrR17X+EtHlMltsrCCmXbDFsQ==}
-
-  '@fedify/redis@0.1.1':
-    resolution: {integrity: sha512-oKhOVYLRwkRf/tuePoT3CnwXUKm5rTE7hDg8/qfVo/txmydPPptXzPG10kL24zCv8t18FwmyaE0LlcrUrxd6FQ==}
+  '@fedify/redis@0.2.0-dev.10':
+    resolution: {integrity: sha512-OMaqK0Hpvl+HpGMTCjszM/DmYrljRGJaA9wTN4pWEtDBhwxwbMsuOlq8AdqsiFx7yJCxmosPL4iwuLRC21FxRg==}
 
   '@floating-ui/core@1.6.7':
     resolution: {integrity: sha512-yDzVT/Lm101nQ5TCVeK65LtdN7Tj4Qpr9RTXJ2vPFLqtLxwOrpoxAHAJI8J3yYWUc40J0BDBheaitK5SJmno2g==}
@@ -1955,26 +1952,7 @@ snapshots:
 
   '@fastify/busboy@2.1.1': {}
 
-  '@fedify/fedify@0.10.2(web-streams-polyfill@3.3.3)':
-    dependencies:
-      '@deno/shim-crypto': 0.3.1
-      '@deno/shim-deno': 0.18.2
-      '@js-temporal/polyfill': 0.4.4
-      '@logtape/logtape': 0.4.3
-      '@phensley/language-tag': 1.9.0
-      asn1js: 3.0.5
-      json-canon: 1.0.1
-      jsonld: 8.3.2(web-streams-polyfill@3.3.3)
-      multibase: 4.0.6
-      multicodec: 3.2.1
-      pkijs: 3.2.4
-      uri-template-router: 0.0.16
-      url-template: 3.1.1
-      urlpattern-polyfill: 10.0.0
-    transitivePeerDependencies:
-      - web-streams-polyfill
-
-  '@fedify/fedify@1.0.0-dev.408(web-streams-polyfill@3.3.3)':
+  '@fedify/fedify@1.0.0-dev.409(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-crypto': 0.3.1
       '@deno/shim-deno': 0.18.2
@@ -1994,10 +1972,10 @@ snapshots:
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  '@fedify/redis@0.1.1(web-streams-polyfill@3.3.3)':
+  '@fedify/redis@0.2.0-dev.10(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-deno': 0.18.2
-      '@fedify/fedify': 0.10.2(web-streams-polyfill@3.3.3)
+      '@fedify/fedify': 1.0.0-dev.409(web-streams-polyfill@3.3.3)
       '@js-temporal/polyfill': 0.4.4
       ioredis: 5.4.1
     transitivePeerDependencies:

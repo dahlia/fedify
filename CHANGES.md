@@ -109,6 +109,18 @@ To be released.
     the activity to be sent only once.  It had added Object Integrity Proofs
     to the activity for every recipient before.
 
+ -  The message queue is now able to be stopped manually by providing
+    an `AbortSignal` object to the `Federation.startQueue()` method.
+
+     -  Added the optional second parameter to `Federation.startQueue()` method,
+        which is a `FederationStartQueueOptions` object.
+     -  Added `FederationStartQueueOptions` interface.
+     -  Added the optional second parameter to `MessageQueue.listen()` method,
+        which is a `MessageQueueListenOptions` object.
+     -  Added `MessageQueueListenOptions` interface.
+     -  The return type of `MessageQueue.listen()` method became `Promise<void>`
+        (was `void`).
+
  -  Added `ParallelMessageQueue` class.  [[#106]]
 
  -  WebFinger responses now include <http://webfinger.net/rel/avatar> links

@@ -14,6 +14,7 @@ import type { KvKey, KvStore, KvStoreSetOptions } from "../federation/kv.ts";
 import type {
   MessageQueue,
   MessageQueueEnqueueOptions,
+  MessageQueueListenOptions,
 } from "../federation/mq.ts";
 
 /**
@@ -91,12 +92,26 @@ export class DenoKvMessageQueue implements MessageQueue, Disposable {
     );
   }
 
-  // deno-lint-ignore no-explicit-any
-  listen(handler: (message: any) => void | Promise<void>): void {
-    this.#kv.listenQueue(handler);
+  listen(
+    // deno-lint-ignore no-explicit-any
+    handler: (message: any) => void | Promise<void>,
+    options: MessageQueueListenOptions = {},
+  ): Promise<void> {
+    options.signal?.addEventListener("abort", () => {
+      try {
+        this.#kv.close();
+      } catch (e) {
+        if (!(e instanceof Deno.errors.BadResource)) throw e;
+      }
+    }, { once: true });
+    return this.#kv.listenQueue(handler);
   }
 
   [Symbol.dispose](): void {
-    this.#kv.close();
+    try {
+      this.#kv.close();
+    } catch (e) {
+      if (!(e instanceof Deno.errors.BadResource)) throw e;
+    }
   }
 }
