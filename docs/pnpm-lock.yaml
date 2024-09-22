@@ -12,8 +12,8 @@ importers:
         specifier: ^0.8.2
         version: 0.8.2
       '@fedify/fedify':
-        specifier: 1.0.0-dev.407
-        version: 1.0.0-dev.407(web-streams-polyfill@3.3.3)
+        specifier: 1.0.0-dev.408
+        version: 1.0.0-dev.408(web-streams-polyfill@3.3.3)
       '@fedify/redis':
         specifier: ^0.1.1
         version: 0.1.1(web-streams-polyfill@3.3.3)
@@ -370,8 +370,8 @@ packages:
   '@fedify/fedify@0.10.2':
     resolution: {integrity: sha512-GKxm+NZ1zNPJ9HTbTW+Y2o/HT3Rk6ly+j/GJfjXBFiwm391Ni56VYC8ON/KQsFdFYIp+eNMn1hWr0RbFtMwoOg==}
 
-  '@fedify/fedify@1.0.0-dev.407':
-    resolution: {integrity: sha512-VYbsOkaS+lsBg3JgOTXcG4GDyCD7GcOBvjn1f/K37EDqPUjmuqPJuhBquiTz+EffFpHKqJ10A0i78rHufa8U7g==}
+  '@fedify/fedify@1.0.0-dev.408':
+    resolution: {integrity: sha512-Lln5Ln0lCCgrskhVN4YibDBgTeuHA2nyT2r3szeXi81j6vNGxpRzdHQ+0wBSglrR17X+EtHlMltsrCCmXbDFsQ==}
 
   '@fedify/redis@0.1.1':
     resolution: {integrity: sha512-oKhOVYLRwkRf/tuePoT3CnwXUKm5rTE7hDg8/qfVo/txmydPPptXzPG10kL24zCv8t18FwmyaE0LlcrUrxd6FQ==}
@@ -1974,7 +1974,7 @@ snapshots:
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  '@fedify/fedify@1.0.0-dev.407(web-streams-polyfill@3.3.3)':
+  '@fedify/fedify@1.0.0-dev.408(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-crypto': 0.3.1
       '@deno/shim-deno': 0.18.2

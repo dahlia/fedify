@@ -222,3 +222,82 @@ const federation = createFederation<void>({
 > If your [inbox listeners](./inbox.md) are CPU-bound, you should consider
 > running multiple nodes of your application so that each node can process
 > messages in parallel with the shared message queue.
+
+
+Separating message processing from the main process
+---------------------------------------------------
+
+*This API is available since Fedify 0.12.0.*
+
+On high-traffic servers, it's common to separate message processing from
+the main server process to avoid blocking the main event loop.  To achieve this,
+you can use the `~CreateFederationOptions.manuallyStartQueue` option and
+`Federation.startQueue()` method:
+
+::: code-group
+
+~~~~ typescript{11-15} twoslash [Deno]
+import type { KvStore } from "@fedify/fedify";
+// ---cut-before---
+import { createFederation } from "@fedify/fedify";
+import { RedisMessageQueue } from "@fedify/redis";
+import Redis from "ioredis";
+
+const federation = createFederation<void>({
+  queue: new RedisMessageQueue(() => new Redis()),
+  manuallyStartQueue: true,  // [!code highlight]
+  // ... other options
+  // ---cut-start---
+  kv: null as unknown as KvStore,
+  // ---cut-end---
+});
+
+// Start the message queue manually only in worker nodes.
+// On non-worker nodes, the queue won't be started.
+if (Deno.env.get("NODE_TYPE") === "worker") {
+  await federation.startQueue();
+}
+~~~~
+
+~~~~ typescript{12-16} twoslash [Node.js/Bun]
+import type { KvStore } from "@fedify/fedify";
+// ---cut-before---
+import { createFederation } from "@fedify/fedify";
+import { RedisMessageQueue } from "@fedify/redis";
+import Redis from "ioredis";
+import { env } from "node:process";
+
+const federation = createFederation<void>({
+  queue: new RedisMessageQueue(() => new Redis()),
+  manuallyStartQueue: true,  // [!code highlight]
+  // ... other options
+  // ---cut-start---
+  kv: null as unknown as KvStore,
+  // ---cut-end---
+});
+
+// Start the message queue manually only in worker nodes.
+// On non-worker nodes, the queue won't be started.
+if (env.NODE_TYPE === "worker") {
+  await federation.startQueue();
+}
+~~~~
+
+:::
+
+The key point is to ensure that messages are enqueued only from
+the `NODE_TYPE=web` nodes, and messages are processed only from
+the `NODE_TYPE=worker` nodes:
+
+| `NODE_TYPE` | Process messages? | Enqueue messages? |
+|-------------|-------------------|-------------------|
+| `web`       | Do not process    | Enqueue           |
+| `worker`    | Process           | Do not enqueue    |
+
+This separation allows you to scale your application by running multiple worker
+nodes that process messages concurrently.  It also helps to keep the main
+server process responsive by offloading message processing to worker nodes.
+
+> [!NOTE]
+> To ensure that messages are enqueued only from the `NODE_TYPE=web` nodes,
+> you should not place the `NODE_TYPE=worker` nodes behind a load balancer.
