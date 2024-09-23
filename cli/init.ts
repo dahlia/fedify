@@ -2,6 +2,7 @@ import { colors } from "@cliffy/ansi";
 import { Command, EnumType } from "@cliffy/command";
 import { Select } from "@cliffy/prompt";
 import { getLogger } from "@logtape/logtape";
+import { stringify } from "@std/dotenv/stringify";
 import { exists } from "@std/fs";
 import { basename, dirname, join, normalize } from "@std/path";
 import { format, greaterThan, parse } from "@std/semver";
@@ -175,11 +176,13 @@ Then, try look up an actor from your server:
     init: (projectName, runtime, pm) => ({
       dependencies: runtime === "deno"
         ? {
+          "@std/dotenv": "^0.225.2",
           "@hono/hono": "^4.5.0",
           "@hongminhee/x-forwarded-fetch": "^0.2.0",
         } as Record<string, string>
         : runtime === "node"
         ? {
+          "@dotenvx/dotenvx": "^1.14.1",
           hono: "^4.5.0",
           "@hono/node-server": "^1.12.0",
           tsx: "^4.17.0",
@@ -237,6 +240,7 @@ const server = Bun.serve({
 console.log("Server started at", server.url.href);
 `
           : `\
+import "@std/dotenv/load";
 import { behindProxy } from "@hongminhee/x-forwarded-fetch";
 import app from "./app.tsx";
 import "./logging.ts";
@@ -268,12 +272,12 @@ Deno.serve(
           ? "deno run -A --watch ./src/index.ts"
           : runtime === "bun"
           ? "bun run --hot ./src/index.ts"
-          : "tsx watch ./src/index.ts",
+          : "dotenvx run -- tsx watch ./src/index.ts",
         "prod": runtime === "deno"
           ? "deno run -A ./src/index.ts"
           : runtime === "bun"
           ? "bun run ./src/index.ts"
-          : "node --import tsx ./src/index.ts",
+          : "dotenvx run -- node --import tsx ./src/index.ts",
       },
       instruction: `
 To start the server, run the following command:
@@ -301,7 +305,12 @@ Then, try look up an actor from your server:
       dependencies: {
         express: "^4.19.2",
         "@fedify/express": "^0.1.3",
-        ...(runtime === "node" ? { tsx: "^4.17.0" } : {}),
+        ...(runtime === "node"
+          ? {
+            "@dotenvx/dotenvx": "^1.14.1",
+            tsx: "^4.17.0",
+          }
+          : {}),
       },
       devDependencies: {
         "@types/express": "^4.17.21",
@@ -350,10 +359,10 @@ app.listen(8000, () => {
       tasks: {
         "dev": runtime === "bun"
           ? "bun run --hot ./src/index.ts"
-          : "tsx watch ./src/index.ts",
+          : "dotenvx run -- tsx watch ./src/index.ts",
         "prod": runtime === "bun"
           ? "bun run ./src/index.ts"
-          : "node --import tsx ./src/index.ts",
+          : "dotenvx run -- node --import tsx ./src/index.ts",
       },
       instruction: `
 To start the server, run the following command:
@@ -422,23 +431,50 @@ Then, try look up an actor from your server:
   },
 } as const;
 
-type KvStore = "redis" | "denokv";
+type KvStore = "redis" | "postgres" | "denokv";
 
 interface KvStoreDescription {
   label: string;
   runtimes?: Runtime[];
   dependencies?: Record<string, string>;
-  imports?: Record<string, string[]>;
-  object: string;
+  imports?: Record<string, string | string[]>;
+  object: string | Record<Runtime, string>;
   denoUnstable?: string[];
+  env?: Record<string, string>;
 }
 
 const kvStores: Record<KvStore, KvStoreDescription> = {
   redis: {
     label: "Redis",
-    dependencies: { "@fedify/redis": "^0.1.1", "npm:ioredis": "^5.4.1" },
+    dependencies: {
+      "@fedify/redis": "^0.2.0-dev.10+568b0ac5",
+      "npm:ioredis": "^5.4.1",
+    },
     imports: { "@fedify/redis": ["RedisKvStore"], ioredis: ["Redis"] },
-    object: "new RedisKvStore(new Redis())",
+    object: {
+      deno: 'new RedisKvStore(new Redis(Deno.env.get("REDIS_URL")))',
+      node: "new RedisKvStore(new Redis(process.env.REDIS_URL))",
+      bun: "new RedisKvStore(new Redis(process.env.REDIS_URL))",
+    },
+    env: {
+      REDIS_URL: "redis://localhost:6379",
+    },
+  },
+  postgres: {
+    label: "PostgreSQL",
+    dependencies: {
+      "@fedify/postgres": "^0.1.0-dev.4+d5239460",
+      "npm:postgres": "^3.4.4",
+    },
+    imports: { "@fedify/postgres": ["PostgresKvStore"], postgres: "postgres" },
+    object: {
+      deno: 'new PostgresKvStore(postgres(Deno.env.get("DATABASE_URL")))',
+      node: "new PostgresKvStore(postgres(process.env.DATABASE_URL))",
+      bun: "new PostgresKvStore(postgres(process.env.DATABASE_URL))",
+    },
+    env: {
+      DATABASE_URL: "postgres://postgres@localhost:5432/postgres",
+    },
   },
   denokv: {
     label: "Deno KV",
@@ -449,23 +485,53 @@ const kvStores: Record<KvStore, KvStoreDescription> = {
   },
 } as const;
 
-type MessageQueue = "redis" | "denokv";
+type MessageQueue = "redis" | "postgres" | "denokv";
 
 interface MessageQueueDescription {
   label: string;
   runtimes?: Runtime[];
   dependencies?: Record<string, string>;
-  imports?: Record<string, string[]>;
-  object: string;
+  imports?: Record<string, string | string[]>;
+  object: string | Record<Runtime, string>;
   denoUnstable?: string[];
+  env?: Record<string, string>;
 }
 
 const messageQueues: Record<MessageQueue, MessageQueueDescription> = {
   redis: {
     label: "Redis",
-    dependencies: { "@fedify/redis": "^0.1.1", "npm:ioredis": "^5.4.1" },
+    dependencies: {
+      "@fedify/redis": "^0.2.0-dev.10+568b0ac5",
+      "npm:ioredis": "^5.4.1",
+    },
     imports: { "@fedify/redis": ["RedisMessageQueue"], ioredis: ["Redis"] },
-    object: "new RedisMessageQueue(() => new Redis())",
+    object: {
+      deno: 'new RedisMessageQueue(() => new Redis(Deno.env.get("REDIS_URL")))',
+      node: "new RedisMessageQueue(() => new Redis(process.env.REDIS_URL))",
+      bun: "new RedisMessageQueue(() => new Redis(process.env.REDIS_URL))",
+    },
+    env: {
+      REDIS_URL: "redis://localhost:6379",
+    },
+  },
+  postgres: {
+    label: "PostgreSQL",
+    dependencies: {
+      "@fedify/postgres": "^0.1.0-dev.4+d5239460",
+      "npm:postgres": "^3.4.4",
+    },
+    imports: {
+      "@fedify/postgres": ["PostgresMessageQueue"],
+      postgres: "postgres",
+    },
+    object: {
+      deno: 'new PostgresMessageQueue(postgres(Deno.env.get("DATABASE_URL")))',
+      node: "new PostgresMessageQueue(postgres(process.env.DATABASE_URL))",
+      bun: "new PostgresMessageQueue(postgres(process.env.DATABASE_URL))",
+    },
+    env: {
+      DATABASE_URL: "postgres://postgres@localhost:5432/postgres",
+    },
   },
   denokv: {
     label: "Deno KV",
@@ -683,9 +749,13 @@ export const command = new Command()
         federationFile: "federation.ts",
         loggingFile: "logging.ts",
         dependencies: runtime === "deno"
-          ? { "@hongminhee/x-forwarded-fetch": "^0.2.0" }
+          ? {
+            "@std/dotenv": "^0.225.2",
+            "@hongminhee/x-forwarded-fetch": "^0.2.0",
+          }
           : runtime === "node"
           ? {
+            "@dotenvx/dotenvx": "^1.14.1",
             "@hono/node-server": "^1.12.0",
             tsx: "^4.17.0",
             "x-forwarded-fetch": "^0.2.0",
@@ -727,6 +797,7 @@ const server = Bun.serve({
 console.log("Server started at", server.url.href);
 `
             : `\
+import "@std/dotenv/load";
 import { behindProxy } from "@hongminhee/x-forwarded-fetch";
 import federation from "./federation.ts";
 import "./logging.ts";
@@ -761,12 +832,12 @@ Deno.serve(
             ? "deno run -A --watch ./main.ts"
             : runtime === "bun"
             ? "bun run --hot ./main.ts"
-            : "tsx watch ./main.ts",
+            : "dotenvx run -- tsx watch ./main.ts",
           "prod": runtime === "deno"
             ? "deno run -A ./main.ts"
             : runtime === "bun"
             ? "bun run ./main.ts"
-            : "node --import tsx ./main.ts",
+            : "dotenvx run -- node --import tsx ./main.ts",
         },
         instruction: `
 To start the server, run the following command:
@@ -812,7 +883,7 @@ Then, try look up an actor from your server:
         imports: { "@fedify/fedify": ["InProcessMessageQueue"] },
         object: "new InProcessMessageQueue()",
       };
-    const imports: Record<string, string[]> = {};
+    const imports: Record<string, { $: string | null; names: string[] }> = {};
     for (
       const [module, symbols] of [
         ...Object.entries(kvStoreDesc.imports ?? {}),
@@ -820,17 +891,36 @@ Then, try look up an actor from your server:
       ]
     ) {
       if (module in imports) {
-        for (const symbol of symbols) {
-          if (imports[module].includes(symbol)) continue;
-          imports[module].push(symbol);
+        if (Array.isArray(symbols)) {
+          for (const symbol of symbols) {
+            if (imports[module].names.includes(symbol)) continue;
+            imports[module].names.push(symbol);
+          }
+        } else if (imports[module].$ == null) {
+          imports[module].$ = symbols;
+        } else if (symbols !== imports[module].$) {
+          throw new Error(
+            "Multiple default imports from the same module; report this as a bug.",
+          );
         }
       } else {
-        imports[module] = symbols;
+        if (Array.isArray(symbols)) {
+          imports[module] = { $: null, names: symbols };
+        } else {
+          imports[module] = { $: symbols, names: [] };
+        }
       }
     }
     const importStatements = Object.entries(imports)
-      .map(([module, symbols]) =>
-        `import { ${symbols.join(", ")} } from ${JSON.stringify(module)};`
+      .map((
+        [module, { $, names }],
+      ) =>
+        [
+          $ == null ? null : `import ${$} from ${JSON.stringify(module)};`,
+          names.length > 0
+            ? `import { ${names.join(", ")} } from ${JSON.stringify(module)};`
+            : null,
+        ].filter((s) => s != null).join("\n")
       )
       .join("\n");
     const federation = `\
@@ -841,8 +931,14 @@ ${importStatements}
 const logger = getLogger(${JSON.stringify(projectName)});
 
 const federation = createFederation({
-  kv: ${kvStoreDesc.object},
-  queue: ${mqDesc.object},
+  kv: ${
+      typeof kvStoreDesc.object === "string"
+        ? kvStoreDesc.object
+        : kvStoreDesc.object[runtime]
+    },
+  queue: ${
+      typeof mqDesc.object === "string" ? mqDesc.object : mqDesc.object[runtime]
+    },
 });
 
 federation.setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
@@ -872,9 +968,11 @@ await configure({
   ],
 });
 `;
+    const env = { ...kvStoreDesc.env, ...mqDesc.env };
     const files = {
       [initializer.federationFile]: federation,
       [initializer.loggingFile]: logging,
+      ".env": stringify(env),
       ...initializer.files,
     };
     const { prependFiles } = initializer;
@@ -1134,6 +1232,18 @@ await configure({
       );
     }
     console.error(initializer.instruction);
+    if (Object.keys(env).length > 0) {
+      console.error(
+        `Note that you probably want to edit the ${
+          colors.bold.blue(".env")
+        } file.  It currently contains the following values:\n`,
+      );
+      for (const key in env) {
+        const value = stringify({ _: env[key] }).substring(2);
+        console.error(`  ${colors.green.bold(key)}${colors.gray("=")}${value}`);
+      }
+      console.error();
+    }
     console.error(`\
 Start by editing the ${colors.bold.blue(initializer.federationFile)} \
 file to define your federation!
@@ -1193,8 +1303,12 @@ async function addDependencies(
   const deps = Object.entries(dependencies)
     .map(([name, version]) =>
       `${
-        runtime != "deno" && name.startsWith("npm:") ? name.substring(4) : name
-      }@${version}`
+        runtime !== "deno" && name.startsWith("npm:") ? name.substring(4) : name
+      }@${
+        runtime !== "deno" && version.includes("+")
+          ? version.substring(0, version.indexOf("+"))
+          : version
+      }`
     );
   if (deps.length < 1) return;
   const cmd = new Deno.Command(
@@ -1264,4 +1378,4 @@ function uniqueArray<T extends boolean | number | string>(a: T[]): T[] {
   return result;
 }
 
-// cSpell: ignore denoland biomejs
+// cSpell: ignore asynciterable bunx giget denoland biomejs dotenvx

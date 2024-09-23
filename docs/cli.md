@@ -96,8 +96,8 @@ project.  It will ask you a few questions to set up the project:
  -  Package manager (if Node.js): [npm], [pnpm], or [Yarn]
  -  Web framework: Bare-bones, [Fresh] (if Deno), [Hono], [Express] (unless
     Deno), or [Nitro] (unless Deno)
- -  Key-value store: In-memory, [Redis], or [Deno KV] (if Deno)
- -  Message queue: In-memory, [Redis], or [Deno KV] (if Deno)
+ -  Key-value store: In-memory, [Redis], [PostgreSQL], or [Deno KV] (if Deno)
+ -  Message queue: In-memory, [Redis], [PostgreSQL], or [Deno KV] (if Deno)
 
 Alternatively, you can specify the options in the command line to skip some of
 interactive prompts:
@@ -110,6 +110,7 @@ interactive prompts:
 [Express]: https://expressjs.com/
 [Nitro]: https://nitro.unjs.io/
 [Redis]: https://redis.io/
+[PostgreSQL]: https://www.postgresql.org/
 [Deno KV]: https://deno.com/kv
 
 ### `-r`/`--runtime`: JavaScript runtime
@@ -151,6 +152,7 @@ You can specify the key-value store to use by using the `-k`/`--kv-store`
 option.  The available options are:
 
  -  `redis`: [Redis]
+ -  `postgres`: [PostgreSQL]
  -  `denokv`: [Deno KV] (if Deno)
 
 If it's omitted, the in-memory key-value store (which is for development
@@ -162,6 +164,7 @@ You can specify the message queue to use by using the `-q`/`--message-queue`
 option.  The available options are:
 
  -  `redis`: [Redis]
+ -  `postgres`: [PostgreSQL]
  -  `denokv`: [Deno KV] (if Deno)
 
 If it's omitted, the in-process message queue (which is for development purpose)

@@ -174,11 +174,13 @@ Select *Node.js*, *npm*, *Hono*, *In-memory*, and *In-process* in order:
 ? Choose the key-value store to use for caching
 ❯ In-memory
   Redis
+  PostgreSQL
   Deno KV
 
 ? Choose the message queue to use for background jobs
 ❯ In-process
   Redis
+  PostgreSQL
   Deno KV
 ~~~~
 

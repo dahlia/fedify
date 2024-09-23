@@ -133,6 +133,18 @@ To be released.
     it's terminated so that the peers can clean up data related to the temporary
     actor.  [[#135]]
 
+ -  Add options for PostgreSQL drivers to `fedify init` command.
+
+     -  Added `postgres` value to the `-k`/`--kv-store` option of the `fedify
+        init` command.
+     -  Added `postgres` value to the `-q`/`--message-queue` option of
+        the `fedify init` command.
+
+ -  The generated project by the `fedify init` command now enables dotenv
+    by default.
+
+ -  The `fedify init` command now generates *.env* file with default values.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 
