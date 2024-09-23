@@ -10,7 +10,7 @@ import {
   assertThrows,
 } from "@std/assert";
 import { assertSnapshot } from "@std/testing/snapshot";
-import { toPascalCase } from "@std/text";
+import { toPascalCase } from "@std/text/to-pascal-case";
 import { decode } from "multibase";
 import {
   loadSchemaFiles,
