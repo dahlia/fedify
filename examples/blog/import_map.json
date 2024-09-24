@@ -17,6 +17,7 @@
     "@fedify/fedify/x/fresh": "../../src/x/fresh.ts",
     "@fedify/fedify/x/denokv": "../../src/x/denokv.ts",
     "@hongminhee/x-forwarded-fetch": "jsr:@hongminhee/x-forwarded-fetch@^0.2.0",
+    "@logtape/logtape": "jsr:@logtape/logtape@^0.6.2",
     "markdown-it": "npm:markdown-it@^14.1.0",
     "preact": "https://esm.sh/preact@10.22.0",
     "preact/": "https://esm.sh/preact@10.22.0/",
