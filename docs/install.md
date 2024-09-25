@@ -121,7 +121,7 @@ Fedify is an ESM-only package, so you need to add `"type": "module"` to the
 {
   "type": "module",
   "dependencies": {
-    "@fedify/fedify": "^1.0.0"
+    "@fedify/fedify": "^1.1.0"
   }
 }
 ~~~~
