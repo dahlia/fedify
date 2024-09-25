@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.0.0
 --------------
 
-To be released.
+Released on September 26, 2024.
 
  -  The term `handle` for dispatching actors is deprecated in favor of
     `identifier`.

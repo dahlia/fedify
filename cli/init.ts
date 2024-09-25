@@ -447,7 +447,7 @@ const kvStores: Record<KvStore, KvStoreDescription> = {
   redis: {
     label: "Redis",
     dependencies: {
-      "@fedify/redis": "^0.2.0-dev.10+568b0ac5",
+      "@fedify/redis": "^0.2.0",
       "npm:ioredis": "^5.4.1",
     },
     imports: { "@fedify/redis": ["RedisKvStore"], ioredis: ["Redis"] },
@@ -463,7 +463,7 @@ const kvStores: Record<KvStore, KvStoreDescription> = {
   postgres: {
     label: "PostgreSQL",
     dependencies: {
-      "@fedify/postgres": "^0.1.0-dev.4+d5239460",
+      "@fedify/postgres": "^0.1.0",
       "npm:postgres": "^3.4.4",
     },
     imports: { "@fedify/postgres": ["PostgresKvStore"], postgres: "postgres" },
@@ -501,7 +501,7 @@ const messageQueues: Record<MessageQueue, MessageQueueDescription> = {
   redis: {
     label: "Redis",
     dependencies: {
-      "@fedify/redis": "^0.2.0-dev.10+568b0ac5",
+      "@fedify/redis": "^0.2.0",
       "npm:ioredis": "^5.4.1",
     },
     imports: { "@fedify/redis": ["RedisMessageQueue"], ioredis: ["Redis"] },
@@ -517,7 +517,7 @@ const messageQueues: Record<MessageQueue, MessageQueueDescription> = {
   postgres: {
     label: "PostgreSQL",
     dependencies: {
-      "@fedify/postgres": "^0.1.0-dev.4+d5239460",
+      "@fedify/postgres": "^0.1.0",
       "npm:postgres": "^3.4.4",
     },
     imports: {
