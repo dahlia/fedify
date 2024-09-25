@@ -77,7 +77,7 @@ Deno 1.41.0 or later installed on your system.  Then you can install Fedify
 via the following command:
 
 ~~~~ sh
-deno add @fedify/fedify
+deno add jsr:@fedify/fedify
 ~~~~
 
 Since Fedify requires [`Temporal`] API, which is an unstable feature in Deno as

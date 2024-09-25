@@ -29,7 +29,7 @@ To enable logging in your federated server app, you need to install the
 ::: code-group
 
 ~~~~ sh [Deno]
-deno add @logtape/logtape
+deno add jsr:@logtape/logtape
 ~~~~
 
 ~~~~ sh [Node.js]

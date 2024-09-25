@@ -350,7 +350,7 @@ install the package:
 ::: code-group
 
 ~~~~ sh [Deno]
-deno add @hongminhee/x-forwarded-fetch
+deno add jsr:@hongminhee/x-forwarded-fetch
 ~~~~
 
 ~~~~ sh [Node.js]

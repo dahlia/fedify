@@ -50,7 +50,7 @@ Let's create a new project directory and initialize a new project:
 mkdir follow-server
 cd follow-server/
 echo '{ "unstable": ["kv", "temporal"] }' > deno.json
-deno add @fedify/fedify
+deno add jsr:@fedify/fedify
 ~~~~
 
 ~~~~ sh [Bun]
@@ -321,7 +321,7 @@ to the next step.
 > ::: code-group
 >
 > ~~~~ sh [Deno]
-> deno add @logtape/logtape
+> deno add jsr:@logtape/logtape
 > ~~~~
 >
 > ~~~~ sh [Bun]
@@ -609,7 +609,7 @@ To do this, you need to install the package:
 ::: code-group
 
 ~~~~ sh [Deno]
-deno add @hongminhee/x-forwarded-fetch
+deno add jsr:@hongminhee/x-forwarded-fetch
 ~~~~
 
 ~~~~ sh [Bun]

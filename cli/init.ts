@@ -1303,7 +1303,11 @@ async function addDependencies(
   const deps = Object.entries(dependencies)
     .map(([name, version]) =>
       `${
-        runtime !== "deno" && name.startsWith("npm:") ? name.substring(4) : name
+        runtime !== "deno" && name.startsWith("npm:")
+          ? name.substring(4)
+          : runtime === "deno" && !name.startsWith("npm:")
+          ? `jsr:${name}`
+          : name
       }@${
         runtime !== "deno" && version.includes("+")
           ? version.substring(0, version.indexOf("+"))
