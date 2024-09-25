@@ -1,15 +1,12 @@
 {
   "lock": false,
   "tasks": {
-    "fedify-codegen": "cat ../../src/vocab/vocab.ts > /dev/null || (deno run --allow-read --allow-write --check ../../src/codegen/main.ts ../../src/vocab/ ../runtime/ > ../../src/vocab/vocab.ts && deno fmt ../../src/vocab/vocab.ts && deno cache ../../src/vocab/vocab.ts && deno check ../../src/vocab/vocab.ts)",
-    "generate-import-map": "deno run --allow-read --allow-write generate_import_map.ts",
-    "codegen": "deno task fedify-codegen && deno task generate-import-map",
-    "check": "deno task codegen && deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
-    "cli": "deno task codegen && echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
-    "manifest": "deno task codegen && deno task cli manifest $(pwd)",
-    "start": "deno task codegen && deno run -A --watch=static/,routes/ --unstable-kv dev.ts",
-    "build": "deno task codegen && deno run -A dev.ts build",
-    "preview": "deno task codegen && deno run -A main.ts",
+    "check": "deno fmt --check && deno lint && deno check **/*.ts && deno check **/*.tsx",
+    "cli": "echo \"import '\\$fresh/src/dev/cli.ts'\" | deno run --unstable -A -",
+    "manifest": "deno task cli manifest $(pwd)",
+    "start": "deno run -A --watch=static/,routes/ --unstable-kv dev.ts",
+    "build": "deno run -A dev.ts build",
+    "preview": "deno run -A main.ts",
     "update": "deno run -A -r https://fresh.deno.dev/update ."
   },
   "lint": {
@@ -23,7 +20,24 @@
   "exclude": [
     "**/_fresh/*"
   ],
-  "importMap": "./import_map.g.json",
+  "imports": {
+    "$fresh/": "https://deno.land/x/fresh@1.6.8/",
+    "@preact/signals": "https://esm.sh/*@preact/signals@1.2.2",
+    "@preact/signals-core": "https://esm.sh/*@preact/signals-core@1.5.1",
+    "@std/dotenv/load": "jsr:@std/dotenv@^0.224.0/load",
+    "@std/encoding/hex": "jsr:@std/encoding@^0.224.3/hex",
+    "@std/path": "jsr:@std/path@^0.225.2",
+    "@std/semver": "jsr:@std/semver@^0.224.3",
+    "@fedify/fedify": "jsr:@fedify/fedify@1.0.0-dev.414+f75c19cf",
+    "@hongminhee/x-forwarded-fetch": "jsr:@hongminhee/x-forwarded-fetch@^0.2.0",
+    "@logtape/logtape": "jsr:@logtape/logtape@^0.6.2",
+    "markdown-it": "npm:markdown-it@^14.1.0",
+    "preact": "https://esm.sh/preact@10.19.6",
+    "preact/": "https://esm.sh/preact@10.19.6/",
+    "scrypt": "jsr:@denorg/scrypt@4.4.4",
+    "sanitize-html": "npm:sanitize-html@^2.13.0",
+    "uuidv7": "npm:uuidv7@^1.0.0"
+  },
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "preact"
