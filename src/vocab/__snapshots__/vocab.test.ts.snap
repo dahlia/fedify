@@ -907,7 +907,8 @@ snapshot[`Deno.inspect(Application) [auto] 1`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  cat: true
 }'
 `;
 
@@ -960,7 +961,8 @@ snapshot[`Deno.inspect(Application) [auto] 2`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  alias: URL "https://example.com/"
+  alias: URL "https://example.com/",
+  cat: true
 }'
 `;
 
@@ -1013,7 +1015,8 @@ snapshot[`Deno.inspect(Application) [auto] 3`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Application {} ]
+  aliases: [ Application {}, Application {} ],
+  cat: true
 }'
 `;
 
@@ -2647,7 +2650,8 @@ snapshot[`Deno.inspect(Group) [auto] 1`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  cat: true
 }'
 `;
 
@@ -2700,7 +2704,8 @@ snapshot[`Deno.inspect(Group) [auto] 2`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  alias: URL "https://example.com/"
+  alias: URL "https://example.com/",
+  cat: true
 }'
 `;
 
@@ -2753,7 +2758,8 @@ snapshot[`Deno.inspect(Group) [auto] 3`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Application {} ]
+  aliases: [ Application {}, Application {} ],
+  cat: true
 }'
 `;
 
@@ -4669,7 +4675,8 @@ snapshot[`Deno.inspect(Organization) [auto] 1`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  cat: true
 }'
 `;
 
@@ -4722,7 +4729,8 @@ snapshot[`Deno.inspect(Organization) [auto] 2`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  alias: URL "https://example.com/"
+  alias: URL "https://example.com/",
+  cat: true
 }'
 `;
 
@@ -4775,7 +4783,8 @@ snapshot[`Deno.inspect(Organization) [auto] 3`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Application {} ]
+  aliases: [ Application {}, Application {} ],
+  cat: true
 }'
 `;
 
@@ -4939,7 +4948,8 @@ snapshot[`Deno.inspect(Person) [auto] 1`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  cat: true
 }'
 `;
 
@@ -4992,7 +5002,8 @@ snapshot[`Deno.inspect(Person) [auto] 2`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  alias: URL "https://example.com/"
+  alias: URL "https://example.com/",
+  cat: true
 }'
 `;
 
@@ -5045,7 +5056,8 @@ snapshot[`Deno.inspect(Person) [auto] 3`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Application {} ]
+  aliases: [ Application {}, Application {} ],
+  cat: true
 }'
 `;
 
@@ -5950,7 +5962,8 @@ snapshot[`Deno.inspect(Service) [auto] 1`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ]
+  aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  cat: true
 }'
 `;
 
@@ -6003,7 +6016,8 @@ snapshot[`Deno.inspect(Service) [auto] 2`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  alias: URL "https://example.com/"
+  alias: URL "https://example.com/",
+  cat: true
 }'
 `;
 
@@ -6056,7 +6070,8 @@ snapshot[`Deno.inspect(Service) [auto] 3`] = `
   suspended: true,
   memorial: true,
   indexable: true,
-  aliases: [ Application {}, Application {} ]
+  aliases: [ Application {}, Application {} ],
+  cat: true
 }'
 `;
 

@@ -12552,6 +12552,7 @@ export class Application extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
    * Constructs a new instance of Application with the given values.
@@ -12582,7 +12583,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -12898,6 +12899,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             );
           }
         }
+      
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -12930,7 +12943,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -13241,6 +13254,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
             );
           }
         }
@@ -14354,6 +14379,17 @@ get indexable(): (boolean | null) {
         }
       }
       
+/** Used on actors to indicate that they in some way identify as a cat,
+ * expressed as a boolean value. If this property is set to \`true\`,
+ * displaying the actor or their notes will have some special effects
+ * attached in some clients.
+ * 
+ */
+get cat(): (boolean | null) {
+        if (this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length < 1) return null;
+        return this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -14757,9 +14793,25 @@ get indexable(): (boolean | null) {
         
       }
       
+      compactItems = [];
+      for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"isCat\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
       result[\\"type\\"] = \\"Application\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -15049,6 +15101,21 @@ get indexable(): (boolean | null) {
     
     }
     
+    array = [];
+    for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#isCat\\"] = propValue;
+    
+    }
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Application\\"];
     if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
@@ -15058,7 +15125,7 @@ get indexable(): (boolean | null) {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -15505,6 +15572,21 @@ get indexable(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
+
+    let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
+    
+    for (
+      const v of _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array == null
+        ? []
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array.length === 1 && \\"@list\\" in _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0]
+        ? _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0][\\"@list\\"]
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array
+    ) {
+      if (v == null) continue;
+    _2xEU4QtkC53RAun67T81Egqt9vmL_isCat.push(v[\\"@value\\"])
+    }
+    instance.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -15905,6 +15987,26 @@ get indexable(): (boolean | null) {
           || !(\\"alias\\" in proxy)
           && _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.length > 0) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+      }
+      
+      const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length == 1) {
+        proxy.cat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
       }
       
     return proxy;
@@ -22769,6 +22871,7 @@ export class Group extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
    * Constructs a new instance of Group with the given values.
@@ -22799,7 +22902,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -23115,6 +23218,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             );
           }
         }
+      
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -23147,7 +23262,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -23458,6 +23573,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
             );
           }
         }
@@ -24571,6 +24698,17 @@ get indexable(): (boolean | null) {
         }
       }
       
+/** Used on actors to indicate that they in some way identify as a cat,
+ * expressed as a boolean value. If this property is set to \`true\`,
+ * displaying the actor or their notes will have some special effects
+ * attached in some clients.
+ * 
+ */
+get cat(): (boolean | null) {
+        if (this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length < 1) return null;
+        return this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -24974,9 +25112,25 @@ get indexable(): (boolean | null) {
         
       }
       
+      compactItems = [];
+      for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"isCat\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
       result[\\"type\\"] = \\"Group\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -25266,6 +25420,21 @@ get indexable(): (boolean | null) {
     
     }
     
+    array = [];
+    for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#isCat\\"] = propValue;
+    
+    }
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Group\\"];
     if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
@@ -25275,7 +25444,7 @@ get indexable(): (boolean | null) {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -25722,6 +25891,21 @@ get indexable(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
+
+    let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
+    
+    for (
+      const v of _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array == null
+        ? []
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array.length === 1 && \\"@list\\" in _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0]
+        ? _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0][\\"@list\\"]
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array
+    ) {
+      if (v == null) continue;
+    _2xEU4QtkC53RAun67T81Egqt9vmL_isCat.push(v[\\"@value\\"])
+    }
+    instance.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -26122,6 +26306,26 @@ get indexable(): (boolean | null) {
           || !(\\"alias\\" in proxy)
           && _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.length > 0) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+      }
+      
+      const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length == 1) {
+        proxy.cat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
       }
       
     return proxy;
@@ -31708,6 +31912,7 @@ export class Organization extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
    * Constructs a new instance of Organization with the given values.
@@ -31738,7 +31943,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -32054,6 +32259,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             );
           }
         }
+      
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -32086,7 +32303,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -32397,6 +32614,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
             );
           }
         }
@@ -33510,6 +33739,17 @@ get indexable(): (boolean | null) {
         }
       }
       
+/** Used on actors to indicate that they in some way identify as a cat,
+ * expressed as a boolean value. If this property is set to \`true\`,
+ * displaying the actor or their notes will have some special effects
+ * attached in some clients.
+ * 
+ */
+get cat(): (boolean | null) {
+        if (this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length < 1) return null;
+        return this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -33913,9 +34153,25 @@ get indexable(): (boolean | null) {
         
       }
       
+      compactItems = [];
+      for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"isCat\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
       result[\\"type\\"] = \\"Organization\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -34205,6 +34461,21 @@ get indexable(): (boolean | null) {
     
     }
     
+    array = [];
+    for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#isCat\\"] = propValue;
+    
+    }
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Organization\\"];
     if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
@@ -34214,7 +34485,7 @@ get indexable(): (boolean | null) {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -34661,6 +34932,21 @@ get indexable(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
+
+    let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
+    
+    for (
+      const v of _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array == null
+        ? []
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array.length === 1 && \\"@list\\" in _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0]
+        ? _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0][\\"@list\\"]
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array
+    ) {
+      if (v == null) continue;
+    _2xEU4QtkC53RAun67T81Egqt9vmL_isCat.push(v[\\"@value\\"])
+    }
+    instance.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -35063,6 +35349,26 @@ get indexable(): (boolean | null) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
       }
       
+      const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length == 1) {
+        proxy.cat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
+      }
+      
     return proxy;
   }
 
@@ -35385,6 +35691,7 @@ export class Person extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
    * Constructs a new instance of Person with the given values.
@@ -35415,7 +35722,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -35731,6 +36038,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             );
           }
         }
+      
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -35763,7 +36082,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -36074,6 +36393,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
             );
           }
         }
@@ -37187,6 +37518,17 @@ get indexable(): (boolean | null) {
         }
       }
       
+/** Used on actors to indicate that they in some way identify as a cat,
+ * expressed as a boolean value. If this property is set to \`true\`,
+ * displaying the actor or their notes will have some special effects
+ * attached in some clients.
+ * 
+ */
+get cat(): (boolean | null) {
+        if (this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length < 1) return null;
+        return this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -37590,9 +37932,25 @@ get indexable(): (boolean | null) {
         
       }
       
+      compactItems = [];
+      for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"isCat\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
       result[\\"type\\"] = \\"Person\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -37882,6 +38240,21 @@ get indexable(): (boolean | null) {
     
     }
     
+    array = [];
+    for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#isCat\\"] = propValue;
+    
+    }
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Person\\"];
     if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
@@ -37891,7 +38264,7 @@ get indexable(): (boolean | null) {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -38338,6 +38711,21 @@ get indexable(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
+
+    let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
+    
+    for (
+      const v of _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array == null
+        ? []
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array.length === 1 && \\"@list\\" in _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0]
+        ? _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0][\\"@list\\"]
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array
+    ) {
+      if (v == null) continue;
+    _2xEU4QtkC53RAun67T81Egqt9vmL_isCat.push(v[\\"@value\\"])
+    }
+    instance.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -38738,6 +39126,26 @@ get indexable(): (boolean | null) {
           || !(\\"alias\\" in proxy)
           && _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.length > 0) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+      }
+      
+      const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length == 1) {
+        proxy.cat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
       }
       
     return proxy;
@@ -43009,6 +43417,7 @@ export class Service extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
    * Constructs a new instance of Service with the given values.
@@ -43039,7 +43448,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -43355,6 +43764,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             );
           }
         }
+      
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
+            );
+          }
+        }
       }
 
   /**
@@ -43387,7 +43808,7 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -43698,6 +44119,18 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];}
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
+        if (\\"cat\\" in values &&             values.cat != null) {
+          if (typeof values.cat === \\"boolean\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = [values.cat];
+          } else {
+            throw new TypeError(
+              \\"The cat must be of type \\" +
+              \\"boolean\\" + \\".\\",
             );
           }
         }
@@ -44811,6 +45244,17 @@ get indexable(): (boolean | null) {
         }
       }
       
+/** Used on actors to indicate that they in some way identify as a cat,
+ * expressed as a boolean value. If this property is set to \`true\`,
+ * displaying the actor or their notes will have some special effects
+ * attached in some clients.
+ * 
+ */
+get cat(): (boolean | null) {
+        if (this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length < 1) return null;
+        return this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
+      }
+      
   /**
    * Converts this object to a JSON-LD structure.
    * @param options The options to use.
@@ -45214,9 +45658,25 @@ get indexable(): (boolean | null) {
         
       }
       
+      compactItems = [];
+      for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"isCat\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
       result[\\"type\\"] = \\"Service\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -45506,6 +45966,21 @@ get indexable(): (boolean | null) {
     
     }
     
+    array = [];
+    for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#isCat\\"] = propValue;
+    
+    }
+    
     values[\\"@type\\"] = [\\"https://www.w3.org/ns/activitystreams#Service\\"];
     if (this.id != null) values[\\"@id\\"] = this.id.href;
     if (options.format === \\"expand\\") {
@@ -45515,7 +45990,7 @@ get indexable(): (boolean | null) {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -45962,6 +46437,21 @@ get indexable(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
+
+    let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
+    
+    for (
+      const v of _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array == null
+        ? []
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array.length === 1 && \\"@list\\" in _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0]
+        ? _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array[0][\\"@list\\"]
+        : _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array
+    ) {
+      if (v == null) continue;
+    _2xEU4QtkC53RAun67T81Egqt9vmL_isCat.push(v[\\"@value\\"])
+    }
+    instance.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat;
     
     if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
       try {
@@ -46362,6 +46852,26 @@ get indexable(): (boolean | null) {
           || !(\\"alias\\" in proxy)
           && _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.length > 0) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+      }
+      
+      const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2xEU4QtkC53RAun67T81Egqt9vmL_isCat.length == 1) {
+        proxy.cat = _2xEU4QtkC53RAun67T81Egqt9vmL_isCat[0];
       }
       
     return proxy;
@@ -48581,7 +49091,7 @@ instruments?: (Object | URL)[];}
     
       result[\\"type\\"] = \\"Update\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"schema\\":\\"http://schema.org#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -48607,7 +49117,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"schema\\":\\"http://schema.org#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,

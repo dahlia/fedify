@@ -96,6 +96,7 @@ property.
 > | [`attributedTo`]       | `Object.getAttributions()`        |
 > | [`hreflang`]           | `Link.language`                   |
 > | [`inReplyTo`]          | `Object.getReplyTargets()`        |
+> | [`isCat`]              | `Application.cat`/`Group.cat`/`Organization.cat`/`Person.cat`/`Service.cat` |
 > | [`oneOf`]              | `Question.getExclusiveOptions()`  |
 > | [`orderedItems`]       | `OrderedCollection.getItems()`    |
 > | [`publicKeyMultibase`] | `Multikey.publicKey`              |
@@ -109,6 +110,7 @@ property.
 [`attributedTo`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-attributedto
 [`hreflang`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-hreflang
 [`inReplyTo`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-inreplyto
+[`isCat`]: https://misskey-hub.net/ns#iscat
 [`oneOf`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-oneof
 [`orderedItems`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-items
 [`publicKeyMultibase`]: https://www.w3.org/TR/controller-document/#dfn-publickeymultibase

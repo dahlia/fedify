@@ -102,6 +102,24 @@ To be released.
      -  The first parameter of the `InboxListener` callback type became
         `InboxContext` (was `Context`).
 
+ -  Added `cat` property to `Actor` type in Activity Vocabulary API.
+
+     -  Added `Application.cat` property.
+     -  `new Application()` constructor now accepts `cat` option.
+     -  `Application.clone()` method now accepts `cat` option.
+     -  Added `Group.cat` property.
+     -  `new Group()` constructor now accepts `cat` option.
+     -  `Group.clone()` method now accepts `cat` option.
+     -  Added `Organization.cat` property.
+     -  `new Organization()` constructor now accepts `cat` option.
+     -  `Organization.clone()` method now accepts `cat` option.
+     -  Added `Person.cat` property.
+     -  `new Person()` constructor now accepts `cat` option.
+     -  `Person.clone()` method now accepts `cat` option.
+     -  Added `Service.cat` property.
+     -  `new Service()` constructor now accepts `cat` option.
+     -  `Service.clone()` method now accepts `cat` option.
+
  -  The `Context.parseUri()` method's parameter type became `URL | null`
     (was `URL`).
 

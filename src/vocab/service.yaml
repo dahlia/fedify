@@ -26,6 +26,8 @@ defaultContext:
   schema: "http://schema.org#"
   PropertyValue: "schema:PropertyValue"
   value: "schema:value"
+  misskey: "https://misskey-hub.net/ns#"
+  isCat: "misskey:isCat"
 
 properties:
 - pluralName: preferredUsernames
@@ -259,3 +261,15 @@ properties:
   - "https://www.w3.org/ns/activitystreams#Organization"
   - "https://www.w3.org/ns/activitystreams#Person"
   - "https://www.w3.org/ns/activitystreams#Service"
+
+- singularName: cat
+  functional: true
+  compactName: isCat
+  uri: "https://misskey-hub.net/ns#isCat"
+  description: |
+    Used on actors to indicate that they in some way identify as a cat,
+    expressed as a boolean value. If this property is set to `true`,
+    displaying the actor or their notes will have some special effects
+    attached in some clients.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#boolean"
