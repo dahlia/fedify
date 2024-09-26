@@ -60,21 +60,7 @@ export async function* generateEncoder(
   `;
   if (isCompactableType(typeUri, types)) {
     yield `
-    if (
-      options.format == null
-    `;
-    for (const property of type.properties) {
-      if (!property.range.every((r) => isCompactableType(r, types))) {
-        yield `
-        && (
-          this.${await getFieldName(property.uri)} == null ||
-          this.${await getFieldName(property.uri)}.length < 1
-        )
-        `;
-      }
-    }
-    yield `
-    ) {
+    if (options.format == null && this.isCompactable()) {
     `;
     if (type.extends == null) {
       yield "const result: Record<string, unknown> = {};";
@@ -244,6 +230,22 @@ export async function* generateEncoder(
   yield `
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+`;
+  for (const property of type.properties) {
+    if (!property.range.every((r) => isCompactableType(r, types))) {
+      yield `
+      if (
+        this.${await getFieldName(property.uri)} != null &&
+        this.${await getFieldName(property.uri)}.length > 0
+      ) return false;
+      `;
+    }
+  }
+  yield `
+    return ${type.extends == null ? "true" : "super.isCompactable()"};
   }
   `;
 }

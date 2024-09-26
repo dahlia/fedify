@@ -422,6 +422,9 @@ export function isCompactableType(
   } else if (typeUri in types) {
     const type = types[typeUri];
     if (type.compactName == null) return false;
+    else if (type.extends != null && !isCompactableType(type.extends, types)) {
+      return false;
+    }
     const defaultContext = type.defaultContext;
     return defaultContext != null &&
         HEURISTICS_CONTEXTS.includes(defaultContext as string) ||
