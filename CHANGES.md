@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.0.1
 -------------
 
-To be released.
+Released on September 26, 2024.
 
  -  Fixed deprecation messages related to the `{handle}` variable in URL
     templates; they had had wrong placeholders in the message templates.
