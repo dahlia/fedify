@@ -3651,30 +3651,7 @@ get source(): (Source | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz_content == null ||
-          this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz_content.length < 1
-        )
-        
-        && (
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name == null ||
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name.length < 1
-        )
-        
-        && (
-          this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1_summary == null ||
-          this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1_summary.length < 1
-        )
-        
-        && (
-          this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8_proof == null ||
-          this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8_proof.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     const result: Record<string, unknown> = {};
       // deno-lint-ignore no-unused-vars
       let compactItems: unknown[];
@@ -4775,6 +4752,31 @@ get source(): (Source | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz_content != null &&
+        this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz_content.length > 0
+      ) return false;
+      
+      if (
+        this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name != null &&
+        this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name.length > 0
+      ) return false;
+      
+      if (
+        this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1_summary != null &&
+        this.#_4LqirZspQbFWWQEbFcXAxm7tTDN1_summary.length > 0
+      ) return false;
+      
+      if (
+        this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8_proof != null &&
+        this.#_42rPnotok1ivQ2RNCKNbeFJgx8b8_proof.length > 0
+      ) return false;
+      
+    return true;
   }
   
   /**
@@ -6575,10 +6577,7 @@ proofs?: (DataIntegrityProof | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -6639,6 +6638,11 @@ proofs?: (DataIntegrityProof | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -6893,10 +6897,7 @@ get quoteUrl(): (URL | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -7002,6 +7003,11 @@ get quoteUrl(): (URL | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -7310,20 +7316,7 @@ get value(): (string | LanguageString | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name == null ||
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name.length < 1
-        )
-        
-        && (
-          this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx_value == null ||
-          this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx_value.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     const result: Record<string, unknown> = {};
       // deno-lint-ignore no-unused-vars
       let compactItems: unknown[];
@@ -7431,6 +7424,21 @@ get value(): (string | LanguageString | null) {
   
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name != null &&
+        this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name.length > 0
+      ) return false;
+      
+      if (
+        this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx_value != null &&
+        this.#_2cSy2magg4iZ7zLaG8U7DiJMoCkx_value.length > 0
+      ) return false;
+      
+    return true;
   }
   
   /**
@@ -8082,6 +8090,11 @@ get created(): (Temporal.Instant | null) {
     }
     return compacted;
   }
+
+  protected isCompactable(): boolean {
+
+    return true;
+  }
   
   /**
    * Converts a JSON-LD structure to an object of this type.
@@ -8649,10 +8662,7 @@ get publicKey(): (CryptoKey | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     const result: Record<string, unknown> = {};
       // deno-lint-ignore no-unused-vars
       let compactItems: unknown[];
@@ -8768,6 +8778,11 @@ get publicKey(): (CryptoKey | null) {
   
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return true;
   }
   
   /**
@@ -9254,10 +9269,7 @@ get publicKey(): (CryptoKey | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     const result: Record<string, unknown> = {};
       // deno-lint-ignore no-unused-vars
       let compactItems: unknown[];
@@ -9376,6 +9388,11 @@ get publicKey(): (CryptoKey | null) {
   
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return true;
   }
   
   /**
@@ -10860,10 +10877,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -11150,6 +11164,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -11791,10 +11810,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -11855,6 +11871,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -12082,10 +12103,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -12146,6 +12164,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -12368,10 +12391,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -12432,6 +12452,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -14419,15 +14444,7 @@ get cat(): (boolean | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername == null ||
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -15147,6 +15164,16 @@ get cat(): (boolean | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+    return super.isCompactable();
   }
   
   /**
@@ -16162,10 +16189,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -16226,6 +16250,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -16505,6 +16534,11 @@ instruments?: (Object | URL)[];}
     }
     return compacted;
   }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
+  }
   
   /**
    * Converts a JSON-LD structure to an object of this type.
@@ -16753,10 +16787,7 @@ get quoteUrl(): (URL | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -16862,6 +16893,11 @@ get quoteUrl(): (URL | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -17180,10 +17216,7 @@ get height(): (number | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -17312,6 +17345,11 @@ get height(): (number | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -17605,10 +17643,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -17669,6 +17704,11 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -17890,10 +17930,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -17954,6 +17991,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -18181,10 +18223,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -18245,6 +18284,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -18912,10 +18956,7 @@ get totalItems(): (number | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -19154,6 +19195,11 @@ get totalItems(): (number | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -19892,10 +19938,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -20061,6 +20104,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -20410,10 +20458,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -20474,6 +20519,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -20695,10 +20745,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -20759,6 +20806,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -20978,10 +21030,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -21042,6 +21091,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -21464,10 +21518,7 @@ get sharedInbox(): (URL | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     const result: Record<string, unknown> = {};
       // deno-lint-ignore no-unused-vars
       let compactItems: unknown[];
@@ -21687,6 +21738,11 @@ get sharedInbox(): (URL | null) {
   
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return true;
   }
   
   /**
@@ -22114,10 +22170,7 @@ proofs?: (DataIntegrityProof | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -22178,6 +22231,11 @@ proofs?: (DataIntegrityProof | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -22400,10 +22458,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -22464,6 +22519,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -22687,10 +22747,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -22751,6 +22808,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -24738,15 +24800,7 @@ get cat(): (boolean | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername == null ||
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -25466,6 +25520,16 @@ get cat(): (boolean | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+    return super.isCompactable();
   }
   
   /**
@@ -26937,15 +27001,7 @@ get width(): (number | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name == null ||
-          this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     const result: Record<string, unknown> = {};
       // deno-lint-ignore no-unused-vars
       let compactItems: unknown[];
@@ -27247,6 +27303,16 @@ get width(): (number | null) {
   
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name != null &&
+        this.#_4ZHbBuK7PrsvGgrjM8wgc6KMWjav_name.length > 0
+      ) return false;
+      
+    return true;
   }
   
   /**
@@ -27768,10 +27834,7 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -27821,6 +27884,11 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
   
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -28028,10 +28096,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -28092,6 +28157,11 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -28314,10 +28384,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -28378,6 +28445,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -28603,10 +28675,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -28667,6 +28736,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -28888,10 +28962,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -28952,6 +29023,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -29173,10 +29249,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -29237,6 +29310,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -29458,10 +29536,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -29522,6 +29597,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -29741,10 +29821,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -29805,6 +29882,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -29984,10 +30066,7 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -30037,6 +30116,11 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
   
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -30259,10 +30343,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -30323,6 +30404,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -30574,10 +30660,7 @@ get quoteUrl(): (URL | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -30683,6 +30766,11 @@ get quoteUrl(): (URL | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -31052,10 +31140,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -31152,6 +31237,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -31568,10 +31658,7 @@ get startIndex(): (number | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -31702,6 +31789,11 @@ get startIndex(): (number | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -33779,15 +33871,7 @@ get cat(): (boolean | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername == null ||
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -34507,6 +34591,16 @@ get cat(): (boolean | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+    return super.isCompactable();
   }
   
   /**
@@ -35507,10 +35601,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -35571,6 +35662,11 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -37558,15 +37654,7 @@ get cat(): (boolean | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername == null ||
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -38286,6 +38374,16 @@ get cat(): (boolean | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+    return super.isCompactable();
   }
   
   /**
@@ -39493,10 +39591,7 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -39758,6 +39853,11 @@ get units(): (\\"cm\\" | \\"feet\\" | \\"inches\\" | \\"km\\" | \\"m\\" | \\"mil
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -40290,10 +40390,7 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -40389,6 +40486,11 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -40986,10 +41088,7 @@ get quoteUrl(): (URL | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -41233,6 +41332,11 @@ get quoteUrl(): (URL | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -41663,10 +41767,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -41727,6 +41828,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -41948,10 +42054,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -42012,6 +42115,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -42705,10 +42813,7 @@ relationships?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -42874,6 +42979,11 @@ relationships?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -43233,10 +43343,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -43297,6 +43404,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -45284,15 +45396,7 @@ get cat(): (boolean | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername == null ||
-          this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -46012,6 +46116,16 @@ get cat(): (boolean | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
+        this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+    return super.isCompactable();
   }
   
   /**
@@ -47122,15 +47236,7 @@ get mediaType(): (string | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-        && (
-          this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz_content == null ||
-          this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz_content.length < 1
-        )
-        
-    ) {
+    if (options.format == null && this.isCompactable()) {
     const result: Record<string, unknown> = {};
       // deno-lint-ignore no-unused-vars
       let compactItems: unknown[];
@@ -47232,6 +47338,16 @@ get mediaType(): (string | null) {
   
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+      if (
+        this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz_content != null &&
+        this.#_4HuuRSdSrXq8Jj2J9gcdYfoCzeuz_content.length > 0
+      ) return false;
+      
+    return true;
   }
   
   /**
@@ -47548,10 +47664,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -47612,6 +47725,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -47833,10 +47951,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -47897,6 +48012,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -48141,10 +48261,7 @@ get deleted(): (Temporal.Instant | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -48239,6 +48356,11 @@ get deleted(): (Temporal.Instant | null) {
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -48497,10 +48619,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -48561,6 +48680,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -48787,10 +48911,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -48851,6 +48972,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -49075,10 +49201,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -49139,6 +49262,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -49346,10 +49474,7 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -49410,6 +49535,11 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**
@@ -49630,10 +49760,7 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (
-      options.format == null
-    
-    ) {
+    if (options.format == null && this.isCompactable()) {
     
       const result = await super.toJsonLd({
         ...options,
@@ -49694,6 +49821,11 @@ instruments?: (Object | URL)[];}
       
     }
     return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
   }
   
   /**

@@ -30,6 +30,7 @@ import {
   CryptographicKey,
   type DataIntegrityProof,
   Follow,
+  Hashtag,
   Note,
   Object,
   Person,
@@ -233,6 +234,57 @@ test("Object.toJsonLd()", async () => {
       zh: "你好",
     },
   });
+});
+
+test("Note.toJsonLd()", async () => {
+  const note = new Note({
+    tags: [
+      new Hashtag({
+        name: "#Fedify",
+        href: new URL("https://fedify.dev/"),
+      }),
+    ],
+  });
+  assertEquals(await note.toJsonLd({ contextLoader: mockDocumentLoader }), {
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/data-integrity/v1",
+      {
+        Emoji: "toot:Emoji",
+        Hashtag: "as:Hashtag",
+        _misskey_quote: "misskey:_misskey_quote",
+        fedibird: "http://fedibird.com/ns#",
+        misskey: "https://misskey-hub.net/ns#",
+        quoteUri: "fedibird:quoteUri",
+        quoteUrl: "as:quoteUrl",
+        sensitive: "as:sensitive",
+        toot: "http://joinmastodon.org/ns#",
+      },
+    ],
+    tag: {
+      "@context": [
+        "https://www.w3.org/ns/activitystreams",
+        {
+          Hashtag: "as:Hashtag",
+        },
+      ],
+      href: "https://fedify.dev/",
+      name: "#Fedify",
+      type: "Hashtag",
+    },
+    type: "Note",
+  });
+
+  const noteWithName = note.clone({
+    name: "Test",
+  });
+  assertEquals(
+    await noteWithName.toJsonLd({ contextLoader: mockDocumentLoader }),
+    await noteWithName.toJsonLd({
+      contextLoader: mockDocumentLoader,
+      format: "compact",
+    }),
+  );
 });
 
 test("Activity.fromJsonLd()", async () => {
