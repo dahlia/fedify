@@ -8,6 +8,9 @@ Version 1.0.1
 
 To be released.
 
+ -  Fixed deprecation messages related to the `{handle}` variable in URL
+    templates; they had had wrong placeholders in the message templates.
+
 
 Version 1.0.0
 --------------
