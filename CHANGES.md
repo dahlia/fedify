@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.14.5
 --------------
 
-To be released.
+Released on September 26, 2024.
 
  -  Fixed a bug of `Object.toJsonLd()` method where it had not fall back to
     the proper compact form when the heuristic compact form was not available.
