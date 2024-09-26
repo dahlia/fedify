@@ -4,6 +4,24 @@ Fedify changelog
 ================
 
 Version 1.1.0
+-------------
+
+To be released.
+
+
+Version 1.0.1
+-------------
+
+Released on September 26, 2024.
+
+ -  Fixed deprecation messages related to the `{handle}` variable in URL
+    templates; they had had wrong placeholders in the message templates.
+
+ -  Fixed a bug of `Object.toJsonLd()` method where it had not fall back to
+    the proper compact form when the heuristic compact form was not available.
+
+
+Version 1.0.0
 --------------
 
 Released on September 26, 2024.
@@ -174,6 +192,15 @@ Released on September 26, 2024.
 [#137]: https://github.com/dahlia/fedify/issues/137
 
 
+Version 0.15.2
+--------------
+
+Released on September 26, 2024.
+
+ -  Fixed a bug of `Object.toJsonLd()` method where it had not fall back to
+    the proper compact form when the heuristic compact form was not available.
+
+
 Version 0.15.1
 --------------
 
@@ -245,6 +272,15 @@ Released on September 11, 2024.
 
  -  Added `-r`/`--raw` option to `fedify lookup` command to output the raw JSON
     object.
+
+
+Version 0.14.5
+--------------
+
+Released on September 26, 2024.
+
+ -  Fixed a bug of `Object.toJsonLd()` method where it had not fall back to
+    the proper compact form when the heuristic compact form was not available.
 
 
 Version 0.14.4

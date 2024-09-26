@@ -701,8 +701,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     if (variables.has("handle")) {
       getLogger(["fedify", "federation", "actor"]).warn(
-        "The {handle} variable in the actor dispatcher path is deprecated. " +
-          "Use {identifier} instead.",
+        "The {{handle}} variable in the actor dispatcher path is deprecated. " +
+          "Use {{identifier}} instead.",
       );
     }
     const callbacks: ActorCallbacks<TContextData> = {
@@ -1020,8 +1020,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       }
       if (variables.has("handle")) {
         getLogger(["fedify", "federation", "inbox"]).warn(
-          "The {handle} variable in the inbox dispatcher path is deprecated. " +
-            "Use {identifier} instead.",
+          "The {{handle}} variable in the inbox dispatcher path is deprecated. " +
+            "Use {{identifier}} instead.",
         );
       }
       this.inboxPath = path;
@@ -1097,8 +1097,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     if (variables.has("handle")) {
       getLogger(["fedify", "federation", "outbox"]).warn(
-        "The {handle} variable in the outbox dispatcher path is deprecated. " +
-          "Use {identifier} instead.",
+        "The {{handle}} variable in the outbox dispatcher path is deprecated. " +
+          "Use {{identifier}} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1173,8 +1173,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     if (variables.has("handle")) {
       getLogger(["fedify", "federation", "collection"]).warn(
-        "The {handle} variable in the following collection dispatcher path " +
-          "is deprecated. Use {identifier} instead.",
+        "The {{handle}} variable in the following collection dispatcher path " +
+          "is deprecated. Use {{identifier}} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1245,8 +1245,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     if (variables.has("handle")) {
       getLogger(["fedify", "federation", "collection"]).warn(
-        "The {handle} variable in the followers collection dispatcher path " +
-          "is deprecated. Use {identifier} instead.",
+        "The {{handle}} variable in the followers collection dispatcher path " +
+          "is deprecated. Use {{identifier}} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1313,8 +1313,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     if (variables.has("handle")) {
       getLogger(["fedify", "federation", "collection"]).warn(
-        "The {handle} variable in the liked collection dispatcher path " +
-          "is deprecated. Use {identifier} instead.",
+        "The {{handle}} variable in the liked collection dispatcher path " +
+          "is deprecated. Use {{identifier}} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1389,8 +1389,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     if (variables.has("handle")) {
       getLogger(["fedify", "federation", "collection"]).warn(
-        "The {handle} variable in the featured collection dispatcher path " +
-          "is deprecated. Use {identifier} instead.",
+        "The {{handle}} variable in the featured collection dispatcher path " +
+          "is deprecated. Use {{identifier}} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1465,8 +1465,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     if (variables.has("handle")) {
       getLogger(["fedify", "federation", "collection"]).warn(
-        "The {handle} variable in the featured tags collection dispatcher " +
-          "path is deprecated. Use {identifier} instead.",
+        "The {{handle}} variable in the featured tags collection dispatcher " +
+          "path is deprecated. Use {{identifier}} instead.",
       );
     }
     const callbacks: CollectionCallbacks<
@@ -1539,8 +1539,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       this.inboxPath = inboxPath;
       if (variables.has("handle")) {
         getLogger(["fedify", "federation", "inbox"]).warn(
-          "The {handle} variable in the inbox path is deprecated. " +
-            "Use {identifier} instead.",
+          "The {{handle}} variable in the inbox path is deprecated. " +
+            "Use {{identifier}} instead.",
         );
       }
     }
