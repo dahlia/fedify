@@ -129,7 +129,7 @@ the version of the `fedify` command with this command:
 fedify --version
 ~~~~
 
-Make sure the version number is 0.14.3 or higher. If it's an older version,
+Make sure the version number is 1.0.0 or higher. If it's an older version,
 you won't be able to properly follow this tutorial.
 
 ### `fedify init` to initialize the project
@@ -1276,11 +1276,13 @@ in your browser and create an account again:
 ### Actor dispatcher
 
 Now that we've created the `actors` table and filled in a record, let's modify
-*src/federation.ts* again. First, `import` `Endpoints` and <code>Actor</code>:
+*src/federation.ts* again. First, `import` the `db` object, and `Endpoints` and
+<code>Actor</code> types:
 
 ~~~~ typescript twoslash
 // @noErrors: 2307
 import { Endpoints, Person, createFederation } from "@fedify/fedify";
+import db from "./db.ts";
 import type { Actor, User } from "./schema.ts";
 ~~~~
 
