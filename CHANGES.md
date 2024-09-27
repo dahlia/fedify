@@ -9,6 +9,20 @@ Version 1.1.0
 To be released.
 
 
+Version 1.0.2
+-------------
+
+Released on September 27, 2024.
+
+ -  Fixed a bug of `Object.toJsonLd()` method where it had incorrectly compacted
+    the `name` property when it was not a language map.
+
+ -  The `Delete(Application)` activities sent by the `fedify inbox` command now
+    embed the entire actor object instead of just the actor's URI so that
+    the peers can verify the actor's signature without fetching the actor
+    object.
+
+
 Version 1.0.1
 -------------
 

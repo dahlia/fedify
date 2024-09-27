@@ -10877,159 +10877,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      compactItems = [];
-      for (const v of this.#_2DjTTboo3CNHU2a2JQqUSE2dbv9D_actor) {
-        const item = (
-      v instanceof URL ? v.href : v instanceof Application ? await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         }) : v instanceof Group ? await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         }) : v instanceof Organization ? await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         }) : v instanceof Person ? await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         }) : await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         })
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"actor\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_2MH19yxjn1wnHsNfa5n4JBhJzxyc_object) {
-        const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         })
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"object\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_3JQCmF2Ww56Ag9EWRYoSZRDNCYtF_target) {
-        const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         })
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"target\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_u4QGFbRFcYmPEKGbPv1hpBR9r5G_result) {
-        const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         })
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"result\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_25zu2s3VxVujgEKqrDycjE284XQR_origin) {
-        const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         })
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"origin\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_3c5t2x7DYRo2shwTxpkd4kYSS5WQ_instrument) {
-        const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         })
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"instrument\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      result[\\"type\\"] = \\"Activity\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -11142,7 +10989,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -11810,23 +11657,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Accept\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -11849,7 +11679,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -12103,23 +11933,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Add\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -12142,7 +11955,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -12391,23 +12204,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Announce\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -12430,7 +12226,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -16189,23 +15985,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"IntransitiveActivity\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -16228,7 +16007,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -16511,7 +16290,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -17930,23 +17709,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Ignore\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -17969,7 +17731,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -18223,23 +17985,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Block\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -18262,7 +18007,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -20458,23 +20203,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Create\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -20497,7 +20225,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -20745,23 +20473,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Delete\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -20784,7 +20495,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -21030,23 +20741,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Dislike\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -21069,7 +20763,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -22458,23 +22152,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Flag\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -22497,7 +22174,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -22747,23 +22424,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Follow\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -22786,7 +22446,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -28384,23 +28044,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Offer\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -28423,7 +28066,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -28675,23 +28318,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Invite\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -28714,7 +28340,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -28962,23 +28588,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Join\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -29001,7 +28610,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -29249,23 +28858,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Leave\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -29288,7 +28880,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -29536,23 +29128,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Like\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -29575,7 +29150,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -29821,23 +29396,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Listen\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -29860,7 +29418,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -30343,23 +29901,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Move\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -30382,7 +29923,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -41088,121 +40629,6 @@ get quoteUrl(): (URL | null) {
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      compactItems = [];
-      for (const v of this.#_2N5scKaVEcdYHFmfKYYacAwUhUgQ_oneOf) {
-        const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         })
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"oneOf\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_2mV6isMTPRKbWdLCjcpiEysq5dAY_anyOf) {
-        const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
-           ...(options),
-           format: undefined,
-           context: undefined,
-         })
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"anyOf\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_3KronwL8DiiKBRcJFKQPiEHm8xb6_closed) {
-        const item = (
-      v instanceof Temporal.Instant ? v.toString() : v
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"closed\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_3H4RdST7dxfmghccvE3rKD3KgcxG_votersCount) {
-        const item = (
-      v
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"votersCount\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-      }
-      
-      compactItems = [];
-      for (const v of this.#_K1zrMQkQjmciFAmGdGLfaDbG925_quoteUrl) {
-        const item = (
-      v.href
-        );
-        compactItems.push(item);
-      }
-      if (compactItems.length > 0) {
-      
-        result[\\"quoteUrl\\"]
-          = compactItems.length > 1
-          ? compactItems
-          : compactItems[0];
-        
-            result[\\"_misskey_quote\\"]
-              = compactItems.length > 1
-              ? compactItems
-              : compactItems[0];
-            
-            result[\\"quoteUri\\"]
-              = compactItems.length > 1
-              ? compactItems
-              : compactItems[0];
-            
-      }
-      
-      result[\\"type\\"] = \\"Question\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -41310,7 +40736,7 @@ get quoteUrl(): (URL | null) {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -41767,23 +41193,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Read\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -41806,7 +41215,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -42054,23 +41463,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Reject\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -42093,7 +41485,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -43343,23 +42735,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Remove\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -43382,7 +42757,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -47664,23 +47039,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"TentativeAccept\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -47703,7 +47061,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -47951,23 +47309,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"TentativeReject\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -47990,7 +47331,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -48619,23 +47960,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Travel\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -48658,7 +47982,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -48911,23 +48235,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Undo\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -48950,7 +48257,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -49201,23 +48508,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"Update\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"schema\\":\\"http://schema.org#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"isCat\\":\\"misskey:isCat\\"}];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -49240,7 +48530,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"schema\\":\\"http://schema.org#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"schema\\":\\"http://schema.org#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -49760,23 +49050,6 @@ instruments?: (Object | URL)[];}
       contextLoader: options.contextLoader ?? fetchDocumentLoader,
     };
   
-    if (options.format == null && this.isCompactable()) {
-    
-      const result = await super.toJsonLd({
-        ...options,
-        format: undefined,
-        context: undefined,
-      }) as Record<string, unknown>;
-      
-      // deno-lint-ignore no-unused-vars
-      let compactItems: unknown[];
-    
-      result[\\"type\\"] = \\"View\\";
-      if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
-      return result;
-    }
-    
     // deno-lint-ignore no-unused-vars prefer-const
     let array: unknown[];
   
@@ -49799,7 +49072,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://w3id.org/identity/v1\\"];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\"];
     const compacted = await jsonld.compact(
       values,
       docContext,
