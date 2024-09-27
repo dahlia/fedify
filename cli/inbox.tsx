@@ -194,18 +194,25 @@ async function acceptsFollowFrom(actor: Actor): Promise<boolean> {
 const peers: Record<string, Actor> = {};
 
 async function sendDeleteToPeers(server: TemporaryServer): Promise<void> {
-  const ctx = federation.createContext(server.url, -1);
-  const actorId = ctx.getActorUri("i");
-  await ctx.sendActivity(
-    { identifier: "i" },
-    Object.values(peers),
-    new Delete({
-      id: new URL(`#delete`, actorId),
-      actor: actorId,
-      to: PUBLIC_COLLECTION,
-      object: actorId,
-    }),
-  );
+  const ctx = federation.createContext(new Request(server.url), -1);
+  const actor = (await ctx.getActor("i"))!;
+  try {
+    await ctx.sendActivity(
+      { identifier: "i" },
+      Object.values(peers),
+      new Delete({
+        id: new URL(`#delete`, actor.id!),
+        actor: actor.id!,
+        to: PUBLIC_COLLECTION,
+        object: actor,
+      }),
+    );
+  } catch (error) {
+    logger.error(
+      "Failed to send Delete(Application) activities to peers:\n{error}",
+      { error },
+    );
+  }
 }
 
 const followers: Record<string, Actor> = {};
