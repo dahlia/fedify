@@ -8,6 +8,9 @@ Version 1.0.2
 
 To be released.
 
+ -  Fixed a bug of `Object.toJsonLd()` method where it had incorrectly compacted
+    the `name` property when it was not a language map.
+
 
 Version 1.0.1
 -------------

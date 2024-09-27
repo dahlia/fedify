@@ -733,9 +733,9 @@ test("handleCollection()", async () => {
     "application/activity+json",
   );
   const createCtx = [
+    "https://w3id.org/identity/v1",
     "https://www.w3.org/ns/activitystreams",
     "https://w3id.org/security/data-integrity/v1",
-    "https://w3id.org/identity/v1",
     {
       toot: "http://joinmastodon.org/ns#",
       misskey: "https://misskey-hub.net/ns#",
