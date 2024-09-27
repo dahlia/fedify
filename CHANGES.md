@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.0.2
 -------------
 
-To be released.
+Released on September 27, 2024.
 
  -  Fixed a bug of `Object.toJsonLd()` method where it had incorrectly compacted
     the `name` property when it was not a language map.
