@@ -9,8 +9,9 @@ export PNPM_VERSION="9.11.0"
 
 # Setup deno completions
 mkdir -p /usr/local/etc/bash_completion.d/
-cat << EOF >> ~/.bashrc
 deno completions bash > /usr/local/etc/bash_completion.d/deno.bash
+
+cat << EOF >> ~/.bashrc
 source /usr/local/etc/bash_completion.d/deno.bash
 EOF
 
