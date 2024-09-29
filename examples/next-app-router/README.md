@@ -22,7 +22,7 @@ Running the Example
  3. Start the server:
 
     ~~~~ sh
-    npm run dev & npx @fedify/cli tunnel 8000
+    npm run dev & npx @fedify/cli tunnel 3000
     ~~~~
 
  4. Open your browser tunneled URL and start interacting with the app.
