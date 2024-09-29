@@ -29,9 +29,9 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "@fedify/express": "^0.1.4",
-    "@fedify/fedify": "^0.14.2",
-    "@logtape/logtape": "^0.5.0",
-    "express": "^4.19.2"
+    "@fedify/express": "^0.2.0",
+    "@fedify/fedify": "^1.0.2",
+    "@logtape/logtape": "^0.6.2",
+    "express": "^4.21.0"
   }
 }
