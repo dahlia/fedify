@@ -11,24 +11,24 @@ export default function Page() {
       </p>
       <p>
         You can follow this demo app via the below handle:{" "}
-        <code className="pre px-2 py-1 bg-gray-100 rounded-md">
+        <code className="pre px-2 py-1 bg-gray-100 rounded-md select-all">
           @demo@{headers().get("host")}
         </code>
       </p>
       {relationStore.size === 0 ? (
         <p>
-          No followers yet. Add follower by using{" "}
+          No followers yet. Try to add a follower using{" "}
           <a
             href="https://activitypub.academy/"
             target="_blank"
             className="text-blue-600"
           >
-            ActivityPub
-          </a>
+            ActivityPub.Academy
+          </a>.
         </p>
       ) : (
-        <p>
-          This account has the below {relationStore.size} followers:
+        <>
+          <p>This account has the below {relationStore.size} followers:</p>
           <ul className="grid gap-1">
             {Array.from(relationStore.values()).map((address) => (
               <li
@@ -39,7 +39,7 @@ export default function Page() {
               </li>
             ))}
           </ul>
-        </p>
+        </>
       )}
     </div>
   );
