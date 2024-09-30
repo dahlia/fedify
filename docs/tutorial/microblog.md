@@ -483,7 +483,7 @@ As a result, in the above code, the `html` variable is assigned the HTML tree
 
 > [!TIP]
 > JSX was invented in the React project and started to be widely used.
-> If you want to know more about JSX, read the *[Writing Markup with JSX]* and 
+> If you want to know more about JSX, read the *[Writing Markup with JSX]* and
 > *[JavaScript in JSX with Curly Braces]* sections of the React documentation.
 
 [The TypeScript Handbook]: https://www.typescriptlang.org/docs/handbook/intro.html
@@ -623,7 +623,7 @@ CREATE TABLE IF NOT EXISTS users (
 );
 ~~~~
 
-Since the microblog we're creating can only have one account, we've put 
+Since the microblog we're creating can only have one account, we've put
 a constraint on the `id` column, which is the primary key, to not allow values
 other than `1`. This ensures that the `users` table can't contain more than one
 record. We've also put constraints on the `username` column to not allow empty
@@ -1057,7 +1057,7 @@ file:
 sqlite3 microblog.sqlite3 < src/schema.sql
 ~~~~
 
-And let's define a type in *src/schema.ts* to represent records stored in 
+And let's define a type in *src/schema.ts* to represent records stored in
 the `actors` table in JavaScript:
 
 ~~~~ typescript twoslash
@@ -4198,7 +4198,7 @@ feature.
 
 First, open the *src/views.tsx* file and modify the `<Home>` component:
 
-~~~~ tsx{3,9} twoslash
+~~~~ tsx{1,8} twoslash
 import type { FC } from "hono/jsx";
 interface User {}
 interface Actor {}
@@ -4208,7 +4208,6 @@ const PostList: FC<PostListProps> = () => <></>;
 // ---cut-before---
 export interface HomeProps extends PostListProps {
   user: User & Actor;
-  posts: Post[];
 }
 
 export const Home: FC<HomeProps> = ({ user, posts }) => (
@@ -4300,7 +4299,7 @@ want to try solving the following challenges:
     ~~~~ sql
     UPDATE actors SET name = 'Renamed' WHERE id = 1;
     ~~~~
-  
+
     When we change the actor's name like this, will the changed name be applied
     on other Mastodon servers? If not, what kind of activity should we send to
     apply the change?
