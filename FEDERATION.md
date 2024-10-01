@@ -29,6 +29,7 @@ Supported FEPs
  -  [FEP-521a][]: Representing actor's public keys
  -  [FEP-5feb][]: Search indexing consent for actors
  -  [FEP-c7d3][]: Ownership
+ -  [FEP-c0e0][]: Emoji reactions
 
 [FEP-67ff]: https://w3id.org/fep/67ff
 [FEP-8fcf]: https://w3id.org/fep/8fcf
@@ -37,6 +38,7 @@ Supported FEPs
 [FEP-521a]: https://w3id.org/fep/521a
 [FEP-5feb]: https://w3id.org/fep/5feb
 [FEP-c7d3]: https://w3id.org/fep/c7d3
+[FEP-c0e0]: https://w3id.org/fep/c0e0
 
 
 ActivityPub

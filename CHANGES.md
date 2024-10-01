@@ -8,6 +8,10 @@ Version 1.1.0
 
 To be released.
 
+ -  Added `EmojiReact` class to Activity Vocabulary API.  [[FEP-c0e0]]
+
+[FEP-c0e0]: https://w3id.org/fep/c0e0
+
 
 Version 1.0.2
 -------------
