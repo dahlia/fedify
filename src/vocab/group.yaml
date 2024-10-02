@@ -262,6 +262,19 @@ properties:
   - "https://www.w3.org/ns/activitystreams#Person"
   - "https://www.w3.org/ns/activitystreams#Service"
 
+- pluralName: services
+  singularName: service
+  singularAccessor: true
+  compactName: service
+  uri: "https://www.w3.org/ns/did#service"
+  description: |
+    Means of communicating or interacting with the DID subject or associated
+    entities via one or more service endpoints. Examples include discovery
+    services, agent services, social networking services, file storage services,
+    and verifiable credential repository services. 
+  range:
+  - "https://www.w3.org/ns/did#Service"
+
 - singularName: cat
   functional: true
   compactName: isCat

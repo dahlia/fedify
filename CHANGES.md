@@ -10,7 +10,49 @@ To be released.
 
  -  Added `EmojiReact` class to Activity Vocabulary API.  [[FEP-c0e0]]
 
+ -  Added `DidService` class to Activity Vocabulary API.
+    [[FEP-9091], [#146]]
+
+ -  Added `Export` class to Activity Vocabulary API.
+    [[FEP-9091], [#146]]
+
+ -  Added `service` property to the `Actor` types in the Activity
+    Vocabulary API.  [[FEP-9091], [#146]]
+
+     -  Added `Application.getService()` method.
+     -  Added `Application.getServices()` method.
+     -  `new Application()` constructor now accepts `service` option.
+     -  `new Application()` constructor now accepts `services` option.
+     -  `Application.clone()` method now accepts `service` option.
+     -  `Application.clone()` method now accepts `services` option.
+     -  Added `Group.getService()` method.
+     -  Added `Group.getServices()` method.
+     -  `new Group()` constructor now accepts `service` option.
+     -  `new Group()` constructor now accepts `services` option.
+     -  `Group.clone()` method now accepts `service` option.
+     -  `Group.clone()` method now accepts `services` option.
+     -  Added `Organization.getService()` method.
+     -  Added `Organization.getServices()` method.
+     -  `new Organization()` constructor now accepts `service` option.
+     -  `new Organization()` constructor now accepts `services` option.
+     -  `Organization.clone()` method now accepts `service` option.
+     -  `Organization.clone()` method now accepts `services` option.
+     -  Added `Person.getService()` method.
+     -  Added `Person.getServices()` method.
+     -  `new Person()` constructor now accepts `service` option.
+     -  `new Person()` constructor now accepts `services` option.
+     -  `Person.clone()` method now accepts `service` option.
+     -  `Person.clone()` method now accepts `services` option.
+     -  Added `Service.getService()` method.
+     -  Added `Service.getServices()` method.
+     -  `new Service()` constructor now accepts `service` option.
+     -  `new Service()` constructor now accepts `services` option.
+     -  `Service.clone()` method now accepts `service` option.
+     -  `Service.clone()` method now accepts `services` option.
+
 [FEP-c0e0]: https://w3id.org/fep/c0e0
+[FEP-9091]: https://w3id.org/fep/9091
+[#146]: https://github.com/dahlia/fedify/issues/146
 
 
 Version 1.0.2

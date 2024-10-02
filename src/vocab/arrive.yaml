@@ -1,6 +1,6 @@
 $schema: ../codegen/schema.yaml
 name: Arrive
-compact: Arrive
+compactName: Arrive
 uri: "https://www.w3.org/ns/activitystreams#Arrive"
 extends: "https://www.w3.org/ns/activitystreams#IntransitiveActivity"
 entity: true

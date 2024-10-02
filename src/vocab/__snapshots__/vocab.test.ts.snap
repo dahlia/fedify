@@ -342,6 +342,27 @@ snapshot[`Deno.inspect(PropertyValue) [auto] 2`] = `'PropertyValue { id: URL "ht
 
 snapshot[`Deno.inspect(PropertyValue) [auto] 3`] = `'PropertyValue { id: URL "https://example.com/", name: "hello", value: "hello" }'`;
 
+snapshot[`Deno.inspect(Export) [auto] 1`] = `
+'Export {
+  id: URL "https://example.com/",
+  endpoint: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Export) [auto] 2`] = `
+'Export {
+  id: URL "https://example.com/",
+  endpoint: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(Export) [auto] 3`] = `
+'Export {
+  id: URL "https://example.com/",
+  endpoints: [ URL "https://example.com/", URL "https://example.com/" ]
+}'
+`;
+
 snapshot[`Deno.inspect(DataIntegrityProof) [auto] 1`] = `
 'DataIntegrityProof {
   id: URL "https://example.com/",
@@ -1031,6 +1052,7 @@ snapshot[`Deno.inspect(Application) [auto] 1`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  service: DidService {},
   cat: true
 }'
 `;
@@ -1085,6 +1107,7 @@ snapshot[`Deno.inspect(Application) [auto] 2`] = `
   memorial: true,
   indexable: true,
   alias: URL "https://example.com/",
+  service: URL "https://example.com/",
   cat: true
 }'
 `;
@@ -1139,6 +1162,7 @@ snapshot[`Deno.inspect(Application) [auto] 3`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Application {} ],
+  services: [ DidService {}, DidService {} ],
   cat: true
 }'
 `;
@@ -2774,6 +2798,7 @@ snapshot[`Deno.inspect(Group) [auto] 1`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  service: DidService {},
   cat: true
 }'
 `;
@@ -2828,6 +2853,7 @@ snapshot[`Deno.inspect(Group) [auto] 2`] = `
   memorial: true,
   indexable: true,
   alias: URL "https://example.com/",
+  service: URL "https://example.com/",
   cat: true
 }'
 `;
@@ -2882,6 +2908,7 @@ snapshot[`Deno.inspect(Group) [auto] 3`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Application {} ],
+  services: [ DidService {}, DidService {} ],
   cat: true
 }'
 `;
@@ -4799,6 +4826,7 @@ snapshot[`Deno.inspect(Organization) [auto] 1`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  service: DidService {},
   cat: true
 }'
 `;
@@ -4853,6 +4881,7 @@ snapshot[`Deno.inspect(Organization) [auto] 2`] = `
   memorial: true,
   indexable: true,
   alias: URL "https://example.com/",
+  service: URL "https://example.com/",
   cat: true
 }'
 `;
@@ -4907,6 +4936,7 @@ snapshot[`Deno.inspect(Organization) [auto] 3`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Application {} ],
+  services: [ DidService {}, DidService {} ],
   cat: true
 }'
 `;
@@ -5072,6 +5102,7 @@ snapshot[`Deno.inspect(Person) [auto] 1`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  service: DidService {},
   cat: true
 }'
 `;
@@ -5126,6 +5157,7 @@ snapshot[`Deno.inspect(Person) [auto] 2`] = `
   memorial: true,
   indexable: true,
   alias: URL "https://example.com/",
+  service: URL "https://example.com/",
   cat: true
 }'
 `;
@@ -5180,6 +5212,7 @@ snapshot[`Deno.inspect(Person) [auto] 3`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Application {} ],
+  services: [ DidService {}, DidService {} ],
   cat: true
 }'
 `;
@@ -6086,6 +6119,7 @@ snapshot[`Deno.inspect(Service) [auto] 1`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Group {}, Organization {}, Person {}, Service {} ],
+  service: DidService {},
   cat: true
 }'
 `;
@@ -6140,6 +6174,7 @@ snapshot[`Deno.inspect(Service) [auto] 2`] = `
   memorial: true,
   indexable: true,
   alias: URL "https://example.com/",
+  service: URL "https://example.com/",
   cat: true
 }'
 `;
@@ -6194,6 +6229,7 @@ snapshot[`Deno.inspect(Service) [auto] 3`] = `
   memorial: true,
   indexable: true,
   aliases: [ Application {}, Application {} ],
+  services: [ DidService {}, DidService {} ],
   cat: true
 }'
 `;
@@ -7176,5 +7212,26 @@ snapshot[`Deno.inspect(View) [auto] 3`] = `
   results: [ Object {}, Object {} ],
   origins: [ Object {}, Object {} ],
   instruments: [ Object {}, Object {} ]
+}'
+`;
+
+snapshot[`Deno.inspect(DidService) [auto] 1`] = `
+'DidService {
+  id: URL "https://example.com/",
+  endpoint: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(DidService) [auto] 2`] = `
+'DidService {
+  id: URL "https://example.com/",
+  endpoint: URL "https://example.com/"
+}'
+`;
+
+snapshot[`Deno.inspect(DidService) [auto] 3`] = `
+'DidService {
+  id: URL "https://example.com/",
+  endpoints: [ URL "https://example.com/", URL "https://example.com/" ]
 }'
 `;

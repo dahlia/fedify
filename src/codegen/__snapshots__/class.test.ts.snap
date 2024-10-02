@@ -9844,6 +9844,613 @@ get value(): (string | LanguageString | null) {
   }
   }
 
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+export class DidService {
+
+    readonly #documentLoader?: DocumentLoader;
+    readonly #contextLoader?: DocumentLoader;
+    readonly id: URL | null;
+
+    protected get _documentLoader(): DocumentLoader | undefined {
+      return this.#documentLoader;
+    }
+
+    protected get _contextLoader(): DocumentLoader | undefined {
+      return this.#contextLoader;
+    }
+    
+    #cachedJsonLd?: unknown;
+
+    /**
+     * The type URI of {@link DidService}: \`https://www.w3.org/ns/did#Service\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://www.w3.org/ns/did#Service\\");
+    }
+  #_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint: (URL)[] = [];
+
+  /**
+   * Constructs a new instance of DidService with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+endpoint?: URL | null;
+endpoints?: (URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  
+    this.#documentLoader = documentLoader;
+    this.#contextLoader = contextLoader;
+    if (values.id == null || values.id instanceof URL) {
+      this.id = values.id ?? null;
+    } else {
+      throw new TypeError(\\"The id must be a URL.\\");
+    }
+    
+        if (\\"endpoint\\" in values &&             values.endpoint != null) {
+          if (values.endpoint instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint = [values.endpoint];
+          } else {
+            throw new TypeError(
+              \\"The endpoint must be of type \\" +
+              \\"URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"endpoints\\" in values &&             values.endpoints != null) {
+      
+          if (\\"endpoint\\" in values &&
+              values.endpoint != null) {
+            throw new TypeError(
+              \\"Cannot initialize both endpoint and \\" +
+                \\"endpoints at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.endpoints) &&
+              values.endpoints.every(v => v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint = values.endpoints;
+          } else {
+            throw new TypeError(
+              \\"The endpoints must be an array of type \\" +
+              \\"URL\\" + \\".\\",
+            );
+          }
+        }
+      }
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+endpoint?: URL | null;
+endpoints?: (URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): DidService {
+  
+    // @ts-ignore: this.constructor is not recognized as a constructor, but it is.
+    const clone: DidService = new this.constructor(
+      { id: values.id ?? this.id },
+      options
+    );
+    clone.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint = this.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint;
+        if (\\"endpoint\\" in values &&             values.endpoint != null) {
+          if (values.endpoint instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint = [values.endpoint];
+          } else {
+            throw new TypeError(
+              \\"The endpoint must be of type \\" +
+              \\"URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"endpoints\\" in values &&             values.endpoints != null) {
+      
+          if (\\"endpoint\\" in values &&
+              values.endpoint != null) {
+            throw new TypeError(
+              \\"Cannot update both endpoint and \\" +
+                \\"endpoints at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.endpoints) &&
+              values.endpoints.every(v => v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint = values.endpoints;
+          } else {
+            throw new TypeError(
+              \\"The endpoints must be an array of type \\" +
+              \\"URL\\" + \\".\\",
+            );
+          }
+        }
+      
+    return clone;
+  }
+  
+/** A network address, such as an HTTP URL, at which services operate on behalf
+ * of a DID subject.
+ * 
+ */
+get endpoint(): (URL | null) {
+        if (this.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint.length < 1) return null;
+        return this.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint[0];
+      }
+      
+/** A network address, such as an HTTP URL, at which services operate on behalf
+ * of a DID subject.
+ * 
+ */
+get endpoints(): (URL)[] {
+        return this.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint;
+      }
+      
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @param options The options to use.
+   *                - \`format\`: The format of the output: \`compact\` or
+                      \`expand\`.
+   *                - \`contextLoader\`: The loader for remote JSON-LD contexts.
+   *                - \`context\`: The JSON-LD context to use.  Not applicable
+                      when \`format\` is set to \`'expand'\`.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    format?: \\"compact\\" | \\"expand\\",
+    contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
+  } = {}): Promise<unknown> {
+    if (options.format == null && this.#cachedJsonLd != null) {
+      return this.#cachedJsonLd;
+    }
+    if (options.format !== \\"compact\\" && options.context != null) {
+      throw new TypeError(
+        \\"The context option can only be used when the format option is set \\" +
+        \\"to 'compact'.\\"
+      );
+    }
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+  
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  const values: Record<string, unknown[] | string> = {};
+    array = [];
+    for (const v of this.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint) {
+      const element = (
+    { \\"@id\\": v.href }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://www.w3.org/ns/did#serviceEndpoint\\"] = propValue;
+    
+    }
+    
+    values[\\"@type\\"] = [\\"https://www.w3.org/ns/did#Service\\"];
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
+    if (options.format === \\"expand\\") {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    const docContext = options.context ??
+      \\"https://www.w3.org/ns/did/v1\\";
+    const compacted = await jsonld.compact(
+      values,
+      docContext,
+      { documentLoader: options.contextLoader },
+    );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return true;
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<DidService> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (values[\\"@type\\"].includes(\\"https://w3id.org/fep/9091#Export\\")) {
+      return await Export.fromJsonLd(json, options);
+    }
+    
+    if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/did#Service\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    const instance = new this(
+      { id: \\"@id\\" in values ? new URL(values[\\"@id\\"] as string) : undefined },
+      options,
+    );
+    const _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint: (URL)[] = [];
+
+    let _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint__array = values[\\"https://www.w3.org/ns/did#serviceEndpoint\\"];
+    
+    for (
+      const v of _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint__array == null
+        ? []
+        : _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint__array.length === 1 && \\"@list\\" in _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint__array[0]
+        ? _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint__array[0][\\"@list\\"]
+        : _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint__array
+    ) {
+      if (v == null) continue;
+    _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint.push(new URL(v[\\"@id\\"]))
+    }
+    instance.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint = _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint;
+    
+    if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
+      try {
+        instance.#cachedJsonLd = structuredClone(json);
+      } catch {
+        getLogger([\\"fedify\\", \\"vocab\\"]).warn(
+          \\"Failed to cache JSON-LD: {json}\\",
+          { json },
+        );
+      }
+    }
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  
+    const proxy: Record<string, unknown> = {};
+    if (this.id != null) {
+      proxy.id = {
+        [Symbol.for(\\"Deno.customInspect\\")]: (
+          inspect: typeof Deno.inspect,
+          options: Deno.InspectOptions,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+        [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+          _depth: number,
+          options: unknown,
+          inspect: (value: unknown, options: unknown) => string,
+        ): string => \\"URL \\" + inspect(this.id!.href, options),
+      };
+    }
+    
+      const _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint = this.#_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint.length == 1) {
+        proxy.endpoint = _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint[0];
+      }
+      
+      if (_2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint.length > 1
+          || !(\\"endpoint\\" in proxy)
+          && _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint.length > 0) {
+        proxy.endpoints = _2KM4fetG6FTJ1cphj76rzJ8Dyv7p_serviceEndpoint;
+      }
+      
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"DidService \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"DidService \\" + inspect(proxy, options);
+  }
+  }
+
+/** \\"Export Actor\\" service.
+ * 
+ */
+export class Export extends DidService {
+
+    #cachedJsonLd?: unknown;
+
+    /**
+     * The type URI of {@link Export}: \`https://w3id.org/fep/9091#Export\`.
+     */
+    static get typeId(): URL {
+      return new URL(\\"https://w3id.org/fep/9091#Export\\");
+    }
+  
+  /**
+   * Constructs a new instance of Export with the given values.
+   * @param values The values to initialize the instance with.
+   * @param options The options to use for initialization.
+   */
+  constructor(
+    values:
+  {
+id?: URL | null;
+endpoint?: URL | null;
+endpoints?: (URL)[];}
+,
+    {
+      documentLoader,
+      contextLoader,
+    }: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ) {
+  super(values, { documentLoader, contextLoader });}
+
+  /**
+   * Clones this instance, optionally updating it with the given values.
+   * @param values The values to update the clone with.
+   * @options The options to use for cloning.
+   * @returns The cloned instance.
+   */
+  clone(
+    values:
+  {
+id?: URL | null;
+endpoint?: URL | null;
+endpoints?: (URL)[];}
+
+    = {},
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {}
+  ): Export {
+  const clone = super.clone(values, options) as unknown as Export;
+    return clone;
+  }
+  
+  /**
+   * Converts this object to a JSON-LD structure.
+   * @param options The options to use.
+   *                - \`format\`: The format of the output: \`compact\` or
+                      \`expand\`.
+   *                - \`contextLoader\`: The loader for remote JSON-LD contexts.
+   *                - \`context\`: The JSON-LD context to use.  Not applicable
+                      when \`format\` is set to \`'expand'\`.
+   * @returns The JSON-LD representation of this object.
+   */
+  async toJsonLd(options: {
+    format?: \\"compact\\" | \\"expand\\",
+    contextLoader?: DocumentLoader,
+    context?: string | Record<string, string> | (string | Record<string, string>)[],
+  } = {}): Promise<unknown> {
+    if (options.format == null && this.#cachedJsonLd != null) {
+      return this.#cachedJsonLd;
+    }
+    if (options.format !== \\"compact\\" && options.context != null) {
+      throw new TypeError(
+        \\"The context option can only be used when the format option is set \\" +
+        \\"to 'compact'.\\"
+      );
+    }
+    options = {
+      ...options,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+  
+    // deno-lint-ignore no-unused-vars prefer-const
+    let array: unknown[];
+  
+    const baseValues = await super.toJsonLd({
+      ...options,
+      format: \\"expand\\",
+      context: undefined,
+    }) as unknown[];
+    const values = baseValues[0] as Record<
+      string,
+      unknown[] | { \\"@list\\": unknown[] } | string
+    >;
+    
+    values[\\"@type\\"] = [\\"https://w3id.org/fep/9091#Export\\"];
+    if (this.id != null) values[\\"@id\\"] = this.id.href;
+    if (options.format === \\"expand\\") {
+      return await jsonld.expand(
+        values,
+        { documentLoader: options.contextLoader },
+      );
+    }
+    const docContext = options.context ??
+      \\"https://www.w3.org/ns/did/v1\\";
+    const compacted = await jsonld.compact(
+      values,
+      docContext,
+      { documentLoader: options.contextLoader },
+    );
+    if (docContext != null) {
+      // Embed context
+  
+    }
+    return compacted;
+  }
+
+  protected isCompactable(): boolean {
+
+    return super.isCompactable();
+  }
+  
+  /**
+   * Converts a JSON-LD structure to an object of this type.
+   * @param json The JSON-LD structure to convert.
+   * @returns The object of this type.
+   * @throws {TypeError} If the given \`json\` is invalid.
+   */
+  static async fromJsonLd(
+    json: unknown,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+    } = {},
+  ): Promise<Export> {
+    if (typeof json === \\"undefined\\") {
+      throw new TypeError(\\"Invalid JSON-LD: undefined.\\");
+    }
+    else if (json === null) throw new TypeError(\\"Invalid JSON-LD: null.\\");
+    options = {
+      ...options,
+      documentLoader: options.documentLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+    };
+    // deno-lint-ignore no-explicit-any
+    let values: Record<string, any[]> & { \\"@id\\"?: string };
+    if (globalThis.Object.keys(json).length == 0) {
+      values = {};
+    } else {
+      const expanded = await jsonld.expand(json, {
+        documentLoader: options.contextLoader,
+        keepFreeFloatingNodes: true,
+      });
+      values =
+        // deno-lint-ignore no-explicit-any
+        (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
+    }
+  if (\\"@type\\" in values) {
+
+    if (!values[\\"@type\\"].includes(\\"https://w3id.org/fep/9091#Export\\")) {
+      throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
+    }
+  }
+  
+    delete values[\\"@type\\"];
+    const instance = await super.fromJsonLd(values, {
+      ...options,
+      // @ts-ignore: an internal option
+      _fromSubclass: true,
+    });
+    if (!(instance instanceof Export)) {
+      throw new TypeError(\\"Unexpected type: \\" + instance.constructor.name);
+    }
+    
+    if (!(\\"_fromSubclass\\" in options) || !options._fromSubclass) {
+      try {
+        instance.#cachedJsonLd = structuredClone(json);
+      } catch {
+        getLogger([\\"fedify\\", \\"vocab\\"]).warn(
+          \\"Failed to cache JSON-LD: {json}\\",
+          { json },
+        );
+      }
+    }
+    return instance;
+  }
+  
+  protected _getCustomInspectProxy(): Record<string, unknown> {
+  const proxy: Record<string, unknown> = super._getCustomInspectProxy();
+    return proxy;
+  }
+
+  [Symbol.for(\\"Deno.customInspect\\")](
+    inspect: typeof Deno.inspect,
+    options: Deno.InspectOptions,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Export \\" + inspect(proxy, options);
+  }
+
+  [Symbol.for(\\"nodejs.util.inspect.custom\\")](
+    _depth: number,
+    options: unknown,
+    inspect: (value: unknown, options: unknown) => string,
+  ): string {
+    const proxy = this._getCustomInspectProxy();
+    return \\"Export \\" + inspect(proxy, options);
+  }
+  }
+
 /** A proof that can be added to any activity or object, allowing recipients to
  * verify the identity of the actor and the integrity of the data.
  * 
@@ -12650,6 +13257,7 @@ export class Application extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -12681,7 +13289,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -12998,6 +13607,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
           }
         }
       
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot initialize both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -13041,7 +13684,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -13352,6 +13996,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot update both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
             );
           }
         }
@@ -14477,6 +15155,125 @@ get indexable(): (boolean | null) {
         }
       }
       
+    async #fetchService(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<DidService | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await DidService.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/did#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Application.getService},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get serviceId(): URL | null {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async getService(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<DidService | null> {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchService(v, options);
+          if (fetched == null) return null;
+          this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Application.getServices},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get serviceIds(): URL[] {
+        return this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async* getServices(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<DidService> {
+        const vs = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchService(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -14884,6 +15681,26 @@ get cat(): (boolean | null) {
       }
       
       compactItems = [];
+      for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"service\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -15192,6 +16009,21 @@ get cat(): (boolean | null) {
     }
     
     array = [];
+    for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://www.w3.org/ns/did#service\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -15244,6 +16076,11 @@ get cat(): (boolean | null) {
       if (
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+      if (
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service != null &&
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0
       ) return false;
       
     return super.isCompactable();
@@ -15672,6 +16509,28 @@ get cat(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+
+    let _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array = values[\\"https://www.w3.org/ns/did#service\\"];
+    
+    for (
+      const v of _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array == null
+        ? []
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array.length === 1 && \\"@list\\" in _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0]
+        ? _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0][\\"@list\\"]
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
+      v, options))
+    }
+    instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -16087,6 +16946,32 @@ get cat(): (boolean | null) {
           || !(\\"alias\\" in proxy)
           && _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.length > 0) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+      }
+      
+      const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length == 1) {
+        proxy.service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+      }
+      
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 1
+          || !(\\"service\\" in proxy)
+          && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
+        proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
       }
       
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
@@ -22870,6 +23755,7 @@ export class Group extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -22901,7 +23787,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -23218,6 +24105,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
           }
         }
       
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot initialize both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -23261,7 +24182,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -23572,6 +24494,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot update both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
             );
           }
         }
@@ -24697,6 +25653,125 @@ get indexable(): (boolean | null) {
         }
       }
       
+    async #fetchService(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<DidService | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await DidService.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/did#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Group.getService},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get serviceId(): URL | null {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async getService(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<DidService | null> {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchService(v, options);
+          if (fetched == null) return null;
+          this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Group.getServices},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get serviceIds(): URL[] {
+        return this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async* getServices(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<DidService> {
+        const vs = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchService(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -25104,6 +26179,26 @@ get cat(): (boolean | null) {
       }
       
       compactItems = [];
+      for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"service\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -25412,6 +26507,21 @@ get cat(): (boolean | null) {
     }
     
     array = [];
+    for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://www.w3.org/ns/did#service\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -25464,6 +26574,11 @@ get cat(): (boolean | null) {
       if (
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+      if (
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service != null &&
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0
       ) return false;
       
     return super.isCompactable();
@@ -25892,6 +27007,28 @@ get cat(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+
+    let _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array = values[\\"https://www.w3.org/ns/did#service\\"];
+    
+    for (
+      const v of _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array == null
+        ? []
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array.length === 1 && \\"@list\\" in _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0]
+        ? _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0][\\"@list\\"]
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
+      v, options))
+    }
+    instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -26307,6 +27444,32 @@ get cat(): (boolean | null) {
           || !(\\"alias\\" in proxy)
           && _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.length > 0) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+      }
+      
+      const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length == 1) {
+        proxy.service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+      }
+      
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 1
+          || !(\\"service\\" in proxy)
+          && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
+        proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
       }
       
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
@@ -31822,6 +32985,7 @@ export class Organization extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -31853,7 +33017,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -32170,6 +33335,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
           }
         }
       
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot initialize both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -32213,7 +33412,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -32524,6 +33724,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot update both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
             );
           }
         }
@@ -33649,6 +34883,125 @@ get indexable(): (boolean | null) {
         }
       }
       
+    async #fetchService(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<DidService | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await DidService.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/did#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Organization.getService},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get serviceId(): URL | null {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async getService(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<DidService | null> {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchService(v, options);
+          if (fetched == null) return null;
+          this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Organization.getServices},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get serviceIds(): URL[] {
+        return this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async* getServices(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<DidService> {
+        const vs = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchService(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -34056,6 +35409,26 @@ get cat(): (boolean | null) {
       }
       
       compactItems = [];
+      for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"service\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -34364,6 +35737,21 @@ get cat(): (boolean | null) {
     }
     
     array = [];
+    for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://www.w3.org/ns/did#service\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -34416,6 +35804,11 @@ get cat(): (boolean | null) {
       if (
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+      if (
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service != null &&
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0
       ) return false;
       
     return super.isCompactable();
@@ -34844,6 +36237,28 @@ get cat(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+
+    let _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array = values[\\"https://www.w3.org/ns/did#service\\"];
+    
+    for (
+      const v of _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array == null
+        ? []
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array.length === 1 && \\"@list\\" in _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0]
+        ? _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0][\\"@list\\"]
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
+      v, options))
+    }
+    instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -35261,6 +36676,32 @@ get cat(): (boolean | null) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
       }
       
+      const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length == 1) {
+        proxy.service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+      }
+      
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 1
+          || !(\\"service\\" in proxy)
+          && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
+        proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+      }
+      
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
         // deno-lint-ignore no-explicit-any
         .map((v: any) => v instanceof URL
@@ -35605,6 +37046,7 @@ export class Person extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -35636,7 +37078,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -35953,6 +37396,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
           }
         }
       
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot initialize both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -35996,7 +37473,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -36307,6 +37785,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot update both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
             );
           }
         }
@@ -37432,6 +38944,125 @@ get indexable(): (boolean | null) {
         }
       }
       
+    async #fetchService(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<DidService | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await DidService.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/did#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Person.getService},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get serviceId(): URL | null {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async getService(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<DidService | null> {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchService(v, options);
+          if (fetched == null) return null;
+          this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Person.getServices},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get serviceIds(): URL[] {
+        return this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async* getServices(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<DidService> {
+        const vs = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchService(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -37839,6 +39470,26 @@ get cat(): (boolean | null) {
       }
       
       compactItems = [];
+      for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"service\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -38147,6 +39798,21 @@ get cat(): (boolean | null) {
     }
     
     array = [];
+    for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://www.w3.org/ns/did#service\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -38199,6 +39865,11 @@ get cat(): (boolean | null) {
       if (
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+      if (
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service != null &&
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0
       ) return false;
       
     return super.isCompactable();
@@ -38627,6 +40298,28 @@ get cat(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+
+    let _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array = values[\\"https://www.w3.org/ns/did#service\\"];
+    
+    for (
+      const v of _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array == null
+        ? []
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array.length === 1 && \\"@list\\" in _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0]
+        ? _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0][\\"@list\\"]
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
+      v, options))
+    }
+    instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -39042,6 +40735,32 @@ get cat(): (boolean | null) {
           || !(\\"alias\\" in proxy)
           && _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.length > 0) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+      }
+      
+      const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length == 1) {
+        proxy.service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+      }
+      
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 1
+          || !(\\"service\\" in proxy)
+          && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
+        proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
       }
       
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
@@ -43181,6 +44900,7 @@ export class Service extends Object {
 #_79S8K4f5J9MWUgCxziRyUe6PTHZ_memorial: (boolean)[] = [];
 #_2diCorzqPGQQqftp6e4SrCEwEnyk_indexable: (boolean)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
+#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -43212,7 +44932,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -43529,6 +45250,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
           }
         }
       
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot initialize both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -43572,7 +45327,8 @@ proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageStrin
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
-aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
+aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
+services?: (DidService | URL)[];cat?: boolean | null;}
 
     = {},
     options: {
@@ -43883,6 +45639,40 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
             throw new TypeError(
               \\"The aliases must be an array of type \\" +
               \\"Application | Group | Organization | Person | Service | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        if (\\"service\\" in values &&             values.service != null) {
+          if (values.service instanceof DidService || values.service instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = [values.service];
+          } else {
+            throw new TypeError(
+              \\"The service must be of type \\" +
+              \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      
+        if (\\"services\\" in values &&             values.services != null) {
+      
+          if (\\"service\\" in values &&
+              values.service != null) {
+            throw new TypeError(
+              \\"Cannot update both service and \\" +
+                \\"services at the same time.\\",
+            );
+          }
+        
+          if (Array.isArray(values.services) &&
+              values.services.every(v => v instanceof DidService || v instanceof URL)) {
+            // @ts-ignore: type is checked above.
+            clone.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = values.services;
+          } else {
+            throw new TypeError(
+              \\"The services must be an array of type \\" +
+              \\"DidService | URL\\" + \\".\\",
             );
           }
         }
@@ -45008,6 +46798,125 @@ get indexable(): (boolean | null) {
         }
       }
       
+    async #fetchService(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+      } = {}
+    ): Promise<DidService | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+      let fetchResult: RemoteDocument;
+      try {
+        fetchResult = await documentLoader(url.href);
+      } catch (error) {
+        if (options.suppressError) {
+          getLogger([\\"fedify\\", \\"vocab\\"]).error(
+            \\"Failed to fetch {url}: {error}\\",
+            { error, url: url.href }
+          );
+          return null;
+        }
+        throw error;
+      }
+      const { document } = fetchResult;
+    
+      try {
+        return await DidService.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/did#Service\\"].join(\\", \\"));
+    }
+    
+      /**
+       * Similar to
+       * {@link Service.getService},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+      get serviceId(): URL | null {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async getService(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): Promise<DidService | null> {
+        if (this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length < 1) return null;
+        const v = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchService(v, options);
+          if (fetched == null) return null;
+          this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0] = fetched;
+          return fetched;
+        }
+        return v;
+      }
+      
+      /**
+       * Similar to
+       * {@link Service.getServices},
+       * but returns their \`@id\`s instead of the objects themselves.
+       */
+      get serviceIds(): URL[] {
+        return this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.map((v) =>
+          v instanceof URL ? v : v.id!
+        ).filter(id => id !== null);
+      }
+      
+/** Means of communicating or interacting with the DID subject or associated
+ * entities via one or more service endpoints. Examples include discovery
+ * services, agent services, social networking services, file storage services,
+ * and verifiable credential repository services. 
+ * 
+ */
+
+      async* getServices(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+        } = {}
+      ): AsyncIterable<DidService> {
+        const vs = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+        for (let i = 0; i < vs.length; i++) {
+          const v = vs[i];
+          if (v instanceof URL) {
+            const fetched =
+              await this.#fetchService(
+                v, options);
+            if (fetched == null) continue;
+            vs[i] = fetched;
+            yield fetched;
+            continue;
+          }
+          yield v;
+        }
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -45415,6 +47324,26 @@ get cat(): (boolean | null) {
       }
       
       compactItems = [];
+      for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"service\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -45723,6 +47652,21 @@ get cat(): (boolean | null) {
     }
     
     array = [];
+    for (const v of this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://www.w3.org/ns/did#service\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -45775,6 +47719,11 @@ get cat(): (boolean | null) {
       if (
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername != null &&
         this.#_3isuDgRAKSntq9XdbjiNxjwyPZAf_preferredUsername.length > 0
+      ) return false;
+      
+      if (
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service != null &&
+        this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0
       ) return false;
       
     return super.isCompactable();
@@ -46203,6 +48152,28 @@ get cat(): (boolean | null) {
       
     }
     instance.#_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+    const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+
+    let _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array = values[\\"https://www.w3.org/ns/did#service\\"];
+    
+    for (
+      const v of _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array == null
+        ? []
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array.length === 1 && \\"@list\\" in _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0]
+        ? _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array[0][\\"@list\\"]
+        : _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        continue;
+      }
+      _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
+      v, options))
+    }
+    instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -46618,6 +48589,32 @@ get cat(): (boolean | null) {
           || !(\\"alias\\" in proxy)
           && _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.length > 0) {
         proxy.aliases = _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs;
+      }
+      
+      const _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = this.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length == 1) {
+        proxy.service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service[0];
+      }
+      
+      if (_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 1
+          || !(\\"service\\" in proxy)
+          && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
+        proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
       }
       
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat

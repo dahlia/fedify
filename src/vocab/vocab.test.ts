@@ -1014,7 +1014,8 @@ for (const typeUri in types) {
       {
         "@context": type.defaultContext,
         "id": "https://example.com/",
-        "type": type.compactName ?? type.name,
+        "type": type.compactName ??
+          (type.name === "DataIntegrityProof" ? type.name : type.uri),
       },
     );
 
