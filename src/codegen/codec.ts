@@ -2,6 +2,7 @@ import { generateField, getFieldName } from "./field.ts";
 import type { TypeSchema } from "./schema.ts";
 import {
   areAllScalarTypes,
+  emitOverride,
   getAllProperties,
   getDecoder,
   getDecoders,
@@ -26,7 +27,7 @@ export async function* generateEncoder(
                       when \`format\` is set to \`'expand'\`.
    * @returns The JSON-LD representation of this object.
    */
-  async toJsonLd(options: {
+  ${emitOverride(typeUri, types)} async toJsonLd(options: {
     format?: "compact" | "expand",
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
@@ -240,7 +241,7 @@ export async function* generateEncoder(
     return compacted;
   }
 
-  protected isCompactable(): boolean {
+  protected ${emitOverride(typeUri, types)} isCompactable(): boolean {
 `;
   for (const property of type.properties) {
     if (!property.range.every((r) => isCompactableType(r, types))) {
@@ -270,7 +271,7 @@ export async function* generateDecoder(
    * @returns The object of this type.
    * @throws {TypeError} If the given \`json\` is invalid.
    */
-  static async fromJsonLd(
+  static ${emitOverride(typeUri, types)} async fromJsonLd(
     json: unknown,
     options: {
       documentLoader?: DocumentLoader,
