@@ -1,5 +1,6 @@
 import { getFieldName } from "./field.ts";
 import type { TypeSchema } from "./schema.ts";
+import { emitOverride } from "./type.ts";
 
 export async function* generateInspector(
   typeUri: string,
@@ -7,7 +8,9 @@ export async function* generateInspector(
 ): AsyncIterable<string> {
   const type = types[typeUri];
   yield `
-  protected _getCustomInspectProxy(): Record<string, unknown> {
+  protected ${
+    emitOverride(typeUri, types)
+  } _getCustomInspectProxy(): Record<string, unknown> {
   `;
   if (type.extends == null) {
     yield `
@@ -70,7 +73,7 @@ export async function* generateInspector(
     return proxy;
   }
 
-  [Symbol.for("Deno.customInspect")](
+  ${emitOverride(typeUri, types)} [Symbol.for("Deno.customInspect")](
     inspect: typeof Deno.inspect,
     options: Deno.InspectOptions,
   ): string {
@@ -78,7 +81,7 @@ export async function* generateInspector(
     return ${JSON.stringify(type.name + " ")} + inspect(proxy, options);
   }
 
-  [Symbol.for("nodejs.util.inspect.custom")](
+  ${emitOverride(typeUri, types)} [Symbol.for("nodejs.util.inspect.custom")](
     _depth: number,
     options: unknown,
     inspect: (value: unknown, options: unknown) => string,

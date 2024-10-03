@@ -857,7 +857,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
       });
     } catch (error) {
       try {
-        this.onOutboxError?.(error, activity);
+        this.onOutboxError?.(error as Error, activity);
       } catch (error) {
         logger.error(
           "An unexpected error occurred in onError handler:\n{error}",
@@ -952,7 +952,7 @@ class FederationImpl<TContextData> implements Federation<TContextData> {
       await listener(context, activity);
     } catch (error) {
       try {
-        await this.inboxErrorHandler?.(context, error);
+        await this.inboxErrorHandler?.(context, error as Error);
       } catch (error) {
         logger.error(
           "An unexpected error occurred in inbox error handler:\n{error}",
@@ -2661,7 +2661,7 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     values: Record<string, string>;
   };
   readonly request: Request;
-  readonly url: URL;
+  override readonly url: URL;
 
   constructor(options: RequestContextOptions<TContextData>) {
     super(options);

@@ -4,6 +4,7 @@ import { generateFields } from "./field.ts";
 import { generateInspector } from "./inspector.ts";
 import { generateProperties } from "./property.ts";
 import type { TypeSchema } from "./schema.ts";
+import { emitOverride } from "./type.ts";
 
 /**
  * Sorts the given types topologically so that the base types come before the
@@ -66,7 +67,7 @@ async function* generateClass(
     /**
      * The type URI of {@link ${type.name}}: \`${typeUri}\`.
      */
-    static get typeId(): URL {
+    static ${emitOverride(typeUri, types)} get typeId(): URL {
       return new URL(${JSON.stringify(typeUri)});
     }
   `;

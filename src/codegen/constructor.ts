@@ -1,6 +1,11 @@
 import { getFieldName } from "./field.ts";
 import type { PropertySchema, TypeSchema } from "./schema.ts";
-import { areAllScalarTypes, getTypeGuards, getTypeNames } from "./type.ts";
+import {
+  areAllScalarTypes,
+  emitOverride,
+  getTypeGuards,
+  getTypeNames,
+} from "./type.ts";
 
 function generateParameterType(
   property: PropertySchema,
@@ -184,7 +189,7 @@ export async function* generateCloner(
    * @options The options to use for cloning.
    * @returns The cloned instance.
    */
-  clone(
+  ${emitOverride(typeUri, types)} clone(
     values:
   `;
   for await (const code of generateParametersType(typeUri, types)) yield code;

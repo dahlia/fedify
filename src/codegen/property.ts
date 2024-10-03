@@ -3,16 +3,34 @@ import { getFieldName } from "./field.ts";
 import type { PropertySchema, TypeSchema } from "./schema.ts";
 import { areAllScalarTypes, getTypeNames } from "./type.ts";
 
+function emitOverride(
+  typeUri: string,
+  types: Record<string, TypeSchema>,
+  property: PropertySchema,
+): string {
+  const type = types[typeUri];
+  let supertypeUri = type.extends;
+  while (supertypeUri != null) {
+    const st = types[supertypeUri];
+    if (st.properties.find((p) => p.singularName === property.singularName)) {
+      return "override";
+    }
+    supertypeUri = st.extends;
+  }
+  return "";
+}
+
 async function* generateProperty(
   type: TypeSchema,
   property: PropertySchema,
   types: Record<string, TypeSchema>,
 ): AsyncIterable<string> {
+  const override = emitOverride(type.uri, types, property);
   const doc = `\n/** ${property.description.replaceAll("\n", "\n * ")}\n */\n`;
   if (areAllScalarTypes(property.range, types)) {
     if (property.functional || property.singularAccessor) {
       yield doc;
-      yield `get ${property.singularName}(): (${
+      yield `${override} get ${property.singularName}(): (${
         getTypeNames(property.range, types)
       } | null) {
         if (this.${await getFieldName(property.uri)}.length < 1) return null;
@@ -84,7 +102,7 @@ async function* generateProperty(
        * {@link ${type.name}.get${toPascalCase(property.singularName)}},
        * but returns its \`@id\` URL instead of the object itself.
        */
-      get ${property.singularName}Id(): URL | null {
+      ${override} get ${property.singularName}Id(): URL | null {
         if (this.${await getFieldName(property.uri)}.length < 1) return null;
         const v = this.${await getFieldName(property.uri)}[0];
         if (v instanceof URL) return v;
@@ -93,7 +111,7 @@ async function* generateProperty(
       `;
       yield doc;
       yield `
-      async get${toPascalCase(property.singularName)}(
+      ${override} async get${toPascalCase(property.singularName)}(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
@@ -120,7 +138,7 @@ async function* generateProperty(
        * {@link ${type.name}.get${toPascalCase(property.pluralName)}},
        * but returns their \`@id\`s instead of the objects themselves.
        */
-      get ${property.singularName}Ids(): URL[] {
+      ${override} get ${property.singularName}Ids(): URL[] {
         return this.${await getFieldName(property.uri)}.map((v) =>
           v instanceof URL ? v : v.id!
         ).filter(id => id !== null);
@@ -128,7 +146,7 @@ async function* generateProperty(
       `;
       yield doc;
       yield `
-      async* get${toPascalCase(property.pluralName)}(
+      ${override} async* get${toPascalCase(property.pluralName)}(
         options: {
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
