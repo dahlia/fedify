@@ -64,7 +64,7 @@ export async function handleWebFinger<TContextData>(
     if (e instanceof TypeError) {
       return new Response("Invalid resource URL.", { status: 400 });
     }
-    throw new e();
+    throw e;
   }
   if (actorDispatcher == null) {
     logger.error("Actor dispatcher is not set.");

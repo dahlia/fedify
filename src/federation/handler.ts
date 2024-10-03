@@ -394,7 +394,7 @@ export async function handleInbox<TContextData>(
   } catch (error) {
     logger.error("Failed to parse JSON:\n{error}", { identifier, error });
     try {
-      await inboxErrorHandler?.(context, error);
+      await inboxErrorHandler?.(context, error as Error);
     } catch (error) {
       logger.error(
         "An unexpected error occurred in inbox error handler:\n{error}",
@@ -457,7 +457,7 @@ export async function handleInbox<TContextData>(
         error,
       });
       try {
-        await inboxErrorHandler?.(context, error);
+        await inboxErrorHandler?.(context, error as Error);
       } catch (error) {
         logger.error(
           "An unexpected error occurred in inbox error handler:\n{error}",
@@ -589,7 +589,7 @@ export async function handleInbox<TContextData>(
     await listener(inboxContextFactory(json), activity);
   } catch (error) {
     try {
-      await inboxErrorHandler?.(context, error);
+      await inboxErrorHandler?.(context, error as Error);
     } catch (error) {
       logger.error(
         "An unexpected error occurred in inbox error handler:\n{error}",

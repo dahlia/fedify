@@ -598,3 +598,11 @@ export function* getDecoders(
   }
   yield "undefined";
 }
+
+export function emitOverride(
+  typeUri: string,
+  types: Record<string, TypeSchema>,
+): string {
+  if (types[typeUri].extends == null) return "";
+  return "override";
+}
