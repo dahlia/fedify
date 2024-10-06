@@ -1,0 +1,123 @@
+{
+  "name": "@fedify/fedify",
+  "type": "module",
+  "version": "0.15.0",
+  "description": "An ActivityPub server framework",
+  "types": "./dist/mod.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/mod.d.ts",
+      "import": "./dist/mod.js"
+    },
+    "./federation": {
+      "types": "./dist/federation/mod.d.ts",
+      "import": "./dist/federation/mod.js"
+    },
+    "./nodeinfo": {
+      "types": "./dist/nodeinfo/mod.d.ts",
+      "import": "./dist/nodeinfo/mod.js"
+    },
+    "./runtime": {
+      "types": "./dist/runtime/mod.d.ts",
+      "import": "./dist/runtime/mod.js"
+    },
+    "./sig": {
+      "types": "./dist/sig/mod.d.ts",
+      "import": "./dist/sig/mod.js"
+    },
+    "./vocab": {
+      "types": "./dist/vocab/mod.d.ts",
+      "import": "./dist/vocab/mod.js"
+    },
+    "./webfinger": {
+      "types": "./dist/webfinger/mod.d.ts",
+      "import": "./dist/webfinger/mod.js"
+    },
+    "./x/hono": {
+      "types": "./dist/x/hono.d.ts",
+      "import": "./dist/x/hono.js"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "federation": [
+        "dist/federation/mod.d.ts"
+      ],
+      "nodeinfo": [
+        "dist/nodeinfo/mod.d.ts"
+      ],
+      "runtime": [
+        "dist/runtime/mod.d.ts"
+      ],
+      "sig": [
+        "dist/sig/mod.d.ts"
+      ],
+      "vocab": [
+        "dist/vocab/mod.d.ts"
+      ],
+      "webfinger": [
+        "dist/webfinger/mod.d.ts"
+      ],
+      "x/hono": [
+        "dist/x/hono.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "build": "swc . -d dist && tsc"
+  },
+  "dependencies": {
+    "@hongminhee/aitertools": "npm:aitertools@^0.6.0",
+    "@hugoalh/http-header-link": "^1.0.2",
+    "@logtape/logtape": "^0.5.0",
+    "@phensley/language-tag": "^1.8.2",
+    "@std/bytes": "npm:@jsr/std__bytes@^1.0.2",
+    "@std/encoding": "npm:@jsr/std__encoding@^1.0.3",
+    "@std/semver": "npm:@jsr/std__semver@^1.0.2",
+    "asn1js": "^3.0.5",
+    "json-canon": "^1.0.1",
+    "jsonld": "^8.3.2",
+    "multibase": "^4.0.6",
+    "multicodec": "^3.2.1",
+    "pkijs": "^3.1.0",
+    "uri-template-router": "^0.0.16",
+    "url-template": "^3.1.1"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.4.0",
+    "@types/node": "^20.16.2",
+    "fast-check": "^3.19.0",
+    "temporal-polyfill": "^0.2.5",
+    "typescript": "^5.5.2",
+    "urlpattern-polyfill": "^10.0.0"
+  },
+  "peerDependencies": {
+    "temporal-polyfill": "^0.2.5",
+    "urlpattern-polyfill": "^10.0.0"
+  },
+  "keywords": [
+    "ActivityPub",
+    "fediverse"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Hong Minhee",
+    "email": "hong@minhee.org",
+    "url": "https://hongminhee.org/"
+  },
+  "homepage": "https://fedify.dev/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dahlia/fedify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dahlia/fedify/issues"
+  },
+  "funding": [
+    "https://github.com/sponsors/dahlia"
+  ],
+  "files": [
+    "dist"
+  ],
+  "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1"
+}

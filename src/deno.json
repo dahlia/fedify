@@ -70,6 +70,7 @@
     "docs/",
     "examples/",
     "logo.svg",
+    "dist/",
     "npm/",
     "vocab/*.yaml",
     "!vocab/vocab.ts"
