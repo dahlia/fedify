@@ -1,12 +1,17 @@
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
-import type { LookupObjectOptions } from "../vocab/lookup.ts";
+import type {
+  LookupObjectOptions,
+  TraverseCollectionOptions,
+} from "../vocab/lookup.ts";
 import type {
   Activity,
+  Collection,
   CryptographicKey,
+  Link,
   Multikey,
   Object,
-} from "../vocab/mod.ts";
+} from "../vocab/vocab.ts";
 import type { SenderKeyPair } from "./send.ts";
 
 /**
@@ -240,6 +245,33 @@ export interface Context<TContextData> {
     identifier: string | URL,
     options?: LookupObjectOptions,
   ): Promise<Object | null>;
+
+  /**
+   * Traverses a collection, yielding each item in the collection.
+   * If the collection is paginated, it will fetch the next page
+   * automatically.
+   *
+   * @example
+   * ``` typescript
+   * const collection = await ctx.lookupObject(collectionUrl);
+   * if (collection instanceof Collection) {
+   *   for await (const item of ctx.traverseCollection(collection)) {
+   *     console.log(item.id?.href);
+   *   }
+   * }
+   * ```
+   *
+   * It's almost the same as the {@link traverseCollection} function, but it
+   * uses the context's document loader and context loader by default.
+   * @param collection The collection to traverse.
+   * @param options Options for traversing the collection.
+   * @returns An async iterable of each item in the collection.
+   * @since 1.1.0
+   */
+  traverseCollection(
+    collection: Collection,
+    options?: TraverseCollectionOptions,
+  ): AsyncIterable<Object | Link>;
 
   /**
    * Sends an activity to recipients' inboxes.

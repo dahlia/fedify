@@ -4,12 +4,12 @@ import {
   fetchDocumentLoader,
 } from "../runtime/docloader.ts";
 import { lookupWebFinger } from "../webfinger/lookup.ts";
-import { Object } from "./vocab.ts";
+import { type Collection, type Link, Object } from "./vocab.ts";
 
 const logger = getLogger(["fedify", "vocab", "lookup"]);
 
 /**
- * Options for the `lookupObject` function.
+ * Options for the {@link lookupObject} function.
  *
  * @since 0.2.0
  */
@@ -112,5 +112,60 @@ export async function lookupObject(
       return null;
     }
     throw error;
+  }
+}
+
+/**
+ * Options for the {@link traverseCollection} function.
+ * @since 1.1.0
+ */
+export interface TraverseCollectionOptions {
+  /**
+   * The document loader for loading remote JSON-LD documents.
+   */
+  documentLoader?: DocumentLoader;
+
+  /**
+   * The context loader for loading remote JSON-LD contexts.
+   */
+  contextLoader?: DocumentLoader;
+}
+
+/**
+ * Traverses a collection, yielding each item in the collection.
+ * If the collection is paginated, it will fetch the next page
+ * automatically.
+ *
+ * @example
+ * ``` typescript
+ * const collection = await lookupObject(collectionUrl);
+ * if (collection instanceof Collection) {
+ *   for await (const item of traverseCollection(collection)) {
+ *     console.log(item.id?.href);
+ *   }
+ * }
+ * ```
+ *
+ * @param collection The collection to traverse.
+ * @param options Options for traversing the collection.
+ * @returns An async iterable of each item in the collection.
+ * @since 1.1.0
+ */
+export async function* traverseCollection(
+  collection: Collection,
+  options: TraverseCollectionOptions = {},
+): AsyncIterable<Object | Link> {
+  if (collection.firstId == null) {
+    for await (const item of collection.getItems(options)) {
+      yield item;
+    }
+  } else {
+    let page = await collection.getFirst(options);
+    while (page != null) {
+      for await (const item of page.getItems(options)) {
+        yield item;
+      }
+      page = await page.getNext(options);
+    }
   }
 }

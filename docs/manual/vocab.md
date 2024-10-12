@@ -310,6 +310,13 @@ See the [*Looking up remote objects*
 section](./context.md#looking-up-remote-objects) in the *Context* docs.
 
 
+Traversing remote collections
+-----------------------------
+
+See the [*Traversing remote collections* 
+section](./context.md#traversing-remote-collections) in the *Context* docs.
+
+
 JSON-LD
 -------
 

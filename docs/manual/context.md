@@ -403,3 +403,29 @@ const note = await ctx.lookupObject(
 > See the [*Getting an authenticated
 > `DocumentLoader`*](#getting-an-authenticated-documentloader)
 > section for details.
+
+
+Traversing remote collections
+-----------------------------
+
+*This API is available since Fedify 1.1.0.*
+
+Sometimes you need to traverse a remote collection from the beginning
+to the end, such as an actor's outbox, an actor's followers collection,
+and so on.  The `Context.traverseCollection()` method plays a role in such
+cases.  The following shows an example of traversing an actor's outbox:
+
+~~~~ typescript
+import { type Context, isActor } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+const actor = await ctx.lookupObject("@hongminhee@fosstodon.org");
+if (isActor(actor)) {
+  const outbox = await actor.getOutbox();
+  if (outbox != null) {
+    for await (const activity of ctx.traverseCollection(outbox)) {
+      console.log(activity);
+    }
+  }
+}
+~~~~

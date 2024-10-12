@@ -13,12 +13,19 @@ import { hasSignature, signJsonLd } from "../sig/ld.ts";
 import { getKeyOwner } from "../sig/owner.ts";
 import { signObject } from "../sig/proof.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
-import { lookupObject, type LookupObjectOptions } from "../vocab/lookup.ts";
+import {
+  lookupObject,
+  type LookupObjectOptions,
+  traverseCollection,
+  type TraverseCollectionOptions,
+} from "../vocab/lookup.ts";
 import {
   Activity,
+  type Collection,
   CryptographicKey,
   type Hashtag,
   type Like,
+  type Link,
   Multikey,
   type Object,
 } from "../vocab/vocab.ts";
@@ -2456,6 +2463,16 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
     options: LookupObjectOptions = {},
   ): Promise<Object | null> {
     return lookupObject(identifier, {
+      documentLoader: options.documentLoader ?? this.documentLoader,
+      contextLoader: options.contextLoader ?? this.contextLoader,
+    });
+  }
+
+  traverseCollection(
+    collection: Collection,
+    options: TraverseCollectionOptions = {},
+  ): AsyncIterable<Object | Link> {
+    return traverseCollection(collection, {
       documentLoader: options.documentLoader ?? this.documentLoader,
       contextLoader: options.contextLoader ?? this.contextLoader,
     });

@@ -1,0 +1,13 @@
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://example.com/collection",
+  "type": "OrderedCollectionPage",
+  "partOf": "https://example.com/paged-collection",
+  "next": "https://example.com/paged/b",
+  "orderedItems": [
+    {
+      "type": "Note",
+      "content": "This is a simple note"
+    }
+  ]
+}

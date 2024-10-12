@@ -1,0 +1,19 @@
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://example.com/collection",
+  "type": "OrderedCollection",
+  "orderedItems": [
+    {
+      "type": "Note",
+      "content": "This is a simple note"
+    },
+    {
+      "type": "Note",
+      "content": "This is another simple note"
+    },
+    {
+      "type": "Note",
+      "content": "This is a third simple note"
+    }
+  ]
+}

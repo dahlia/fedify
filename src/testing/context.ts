@@ -4,7 +4,10 @@ import type {
   RequestContext,
 } from "../federation/context.ts";
 import { RouterError } from "../federation/router.ts";
-import { lookupObject as globalLookupObject } from "../vocab/lookup.ts";
+import {
+  lookupObject as globalLookupObject,
+  traverseCollection as globalTraverseCollection,
+} from "../vocab/lookup.ts";
 import { mockDocumentLoader } from "./docloader.ts";
 
 export function createContext<TContextData>(
@@ -27,6 +30,7 @@ export function createContext<TContextData>(
     getActorKeyPairs,
     getDocumentLoader,
     lookupObject,
+    traverseCollection,
     sendActivity,
   }: Partial<Context<TContextData>> & { url?: URL; data: TContextData },
 ): Context<TContextData> {
@@ -60,6 +64,14 @@ export function createContext<TContextData>(
     getActorKeyPairs: getActorKeyPairs ?? ((_handle) => Promise.resolve([])),
     lookupObject: lookupObject ?? ((uri, options = {}) => {
       return globalLookupObject(uri, {
+        documentLoader: options.documentLoader ?? documentLoader ??
+          mockDocumentLoader,
+        contextLoader: options.contextLoader ?? contextLoader ??
+          mockDocumentLoader,
+      });
+    }),
+    traverseCollection: traverseCollection ?? ((collection, options = {}) => {
+      return globalTraverseCollection(collection, {
         documentLoader: options.documentLoader ?? documentLoader ??
           mockDocumentLoader,
         contextLoader: options.contextLoader ?? contextLoader ??

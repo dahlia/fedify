@@ -1,0 +1,6 @@
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://example.com/collection",
+  "type": "OrderedCollection",
+  "first": "https://example.com/paged/a"
+}

@@ -1,9 +1,10 @@
+import { toArray } from "@hongminhee/aitertools";
 import { assertEquals, assertInstanceOf } from "@std/assert";
 import * as mf from "mock_fetch";
 import { mockDocumentLoader } from "../testing/docloader.ts";
 import { test } from "../testing/mod.ts";
-import { lookupObject } from "./lookup.ts";
-import { Object, Person } from "./vocab.ts";
+import { lookupObject, traverseCollection } from "./lookup.ts";
+import { Collection, Note, Object, Person } from "./vocab.ts";
 
 test("lookupObject()", async (t) => {
   mf.install();
@@ -96,6 +97,39 @@ test("lookupObject()", async (t) => {
   });
 
   mf.uninstall();
+});
+
+test("traverseCollection()", async () => {
+  const options = {
+    documentLoader: mockDocumentLoader,
+    contextLoader: mockDocumentLoader,
+  };
+  const collection = await lookupObject(
+    "https://example.com/collection",
+    options,
+  );
+  assertInstanceOf(collection, Collection);
+  assertEquals(
+    await toArray(traverseCollection(collection, options)),
+    [
+      new Note({ content: "This is a simple note" }),
+      new Note({ content: "This is another simple note" }),
+      new Note({ content: "This is a third simple note" }),
+    ],
+  );
+  const pagedCollection = await lookupObject(
+    "https://example.com/paged-collection",
+    options,
+  );
+  assertInstanceOf(pagedCollection, Collection);
+  assertEquals(
+    await toArray(traverseCollection(pagedCollection, options)),
+    [
+      new Note({ content: "This is a simple note" }),
+      new Note({ content: "This is another simple note" }),
+      new Note({ content: "This is a third simple note" }),
+    ],
+  );
 });
 
 // cSpell: ignore gildong

@@ -8,6 +8,12 @@ Version 1.1.0
 
 To be released.
 
+ -  Added utility functions for traversing remote collections. [[#150]]
+
+     -  Added `Context.traverseCollection()` method.
+     -  Added `traverseCollection()` function.
+     -  Added `TraverseCollectionOptions` interface.
+
  -  Added `EmojiReact` class to Activity Vocabulary API.  [[FEP-c0e0]]
 
  -  Added `DidService` class to Activity Vocabulary API.
@@ -53,6 +59,7 @@ To be released.
 [FEP-c0e0]: https://w3id.org/fep/c0e0
 [FEP-9091]: https://w3id.org/fep/9091
 [#146]: https://github.com/dahlia/fedify/issues/146
+[#150]: https://github.com/dahlia/fedify/issues/150
 
 
 Version 1.0.2
