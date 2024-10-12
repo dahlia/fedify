@@ -415,7 +415,7 @@ to the end, such as an actor's outbox, an actor's followers collection,
 and so on.  The `Context.traverseCollection()` method plays a role in such
 cases.  The following shows an example of traversing an actor's outbox:
 
-~~~~ typescript
+~~~~ typescript twoslash
 import { type Context, isActor } from "@fedify/fedify";
 const ctx = null as unknown as Context<void>;
 // ---cut-before---

@@ -12,8 +12,8 @@ importers:
         specifier: ^0.8.2
         version: 0.8.3
       '@fedify/fedify':
-        specifier: 1.0.2
-        version: 1.0.2(web-streams-polyfill@3.3.3)
+        specifier: 1.1.0-dev.432
+        version: 1.1.0-dev.432(web-streams-polyfill@3.3.3)
       '@fedify/postgres':
         specifier: 0.1.0-dev.2
         version: 0.1.0-dev.2(web-streams-polyfill@3.3.3)
@@ -375,6 +375,9 @@ packages:
 
   '@fedify/fedify@1.0.2':
     resolution: {integrity: sha512-OWVfahJRstzCOGSEDJ5CEppVHZyR9IfpFStj1WnedLE6rFoYZ94fZu7dQv4x0M1a1K3AfIiwvOAgcXldy21sWg==}
+
+  '@fedify/fedify@1.1.0-dev.432':
+    resolution: {integrity: sha512-SefxERpwvX5BPPon6bM2hTy64YuuVJIUuytUYN/U7fOiGLrOTQiMZoOUxi7PJnKDaf5tNwaMhvoWwp4n0ULt1w==}
 
   '@fedify/postgres@0.1.0-dev.2':
     resolution: {integrity: sha512-KeLhfRgprJF7EXVgzPBRQAJKHnX79IdoZgrWWqD78bAIx3IiRLMXc+LS7/UmQaD0PiNmFXK+cUzKUE00/HbyDg==}
@@ -1972,6 +1975,26 @@ snapshots:
   '@fastify/busboy@2.1.1': {}
 
   '@fedify/fedify@1.0.2(web-streams-polyfill@3.3.3)':
+    dependencies:
+      '@deno/shim-crypto': 0.3.1
+      '@deno/shim-deno': 0.18.2
+      '@hugoalh/http-header-link': 1.0.2
+      '@js-temporal/polyfill': 0.4.4
+      '@logtape/logtape': 0.6.2
+      '@phensley/language-tag': 1.9.0
+      asn1js: 3.0.5
+      json-canon: 1.0.1
+      jsonld: 8.3.2(web-streams-polyfill@3.3.3)
+      multibase: 4.0.6
+      multicodec: 3.2.1
+      pkijs: 3.2.4
+      uri-template-router: 0.0.16
+      url-template: 3.1.1
+      urlpattern-polyfill: 10.0.0
+    transitivePeerDependencies:
+      - web-streams-polyfill
+
+  '@fedify/fedify@1.1.0-dev.432(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-crypto': 0.3.1
       '@deno/shim-deno': 0.18.2

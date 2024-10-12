@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@deno/kv": "^0.8.2",
-    "@fedify/fedify": "1.0.2",
+    "@fedify/fedify": "1.1.0-dev.432",
     "@fedify/postgres": "0.1.0-dev.2",
     "@fedify/redis": "0.2.0-dev.10",
     "@hono/node-server": "^1.12.2",
