@@ -1,4 +1,5 @@
 import { getLogger } from "@logtape/logtape";
+import { delay } from "@std/async/delay";
 import {
   type DocumentLoader,
   fetchDocumentLoader,
@@ -129,6 +130,14 @@ export interface TraverseCollectionOptions {
    * The context loader for loading remote JSON-LD contexts.
    */
   contextLoader?: DocumentLoader;
+
+  /**
+   * The interval to wait between fetching pages.  Zero or negative
+   * values will disable the interval.  Disabled by default.
+   *
+   * @default `{ seconds: 0 }`
+   */
+  interval?: Temporal.Duration | Temporal.DurationLike;
 }
 
 /**
@@ -160,11 +169,14 @@ export async function* traverseCollection(
       yield item;
     }
   } else {
+    const interval = Temporal.Duration.from(options.interval ?? { seconds: 0 })
+      .total("millisecond");
     let page = await collection.getFirst(options);
     while (page != null) {
       for await (const item of page.getItems(options)) {
         yield item;
       }
+      if (interval > 0) await delay(interval);
       page = await page.getNext(options);
     }
   }

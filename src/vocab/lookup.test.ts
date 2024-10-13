@@ -130,6 +130,19 @@ test("traverseCollection()", async () => {
       new Note({ content: "This is a third simple note" }),
     ],
   );
+  assertEquals(
+    await toArray(
+      traverseCollection(pagedCollection, {
+        ...options,
+        interval: { milliseconds: 250 },
+      }),
+    ),
+    [
+      new Note({ content: "This is a simple note" }),
+      new Note({ content: "This is another simple note" }),
+      new Note({ content: "This is a third simple note" }),
+    ],
+  );
 });
 
 // cSpell: ignore gildong
