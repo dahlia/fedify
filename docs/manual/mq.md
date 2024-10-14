@@ -168,6 +168,51 @@ const federation = createFederation<void>({
 [`LISTEN`]: https://www.postgresql.org/docs/current/sql-listen.html
 [`NOTIFY`]: https://www.postgresql.org/docs/current/sql-notify.html
 
+### `AmqpMessageQueue`
+
+> [!NOTE]
+> The [`AmqpMessageQueue`] class is available in the [@fedify/amqp] package.
+
+> [!NOTE]
+>
+> Although it's theoretically possible to be used with any AMQP 0-9-1 broker,
+> [`AmqpMessageQueue`] is primarily designed for and tested with [RabbitMQ].
+
+[`AmqpMessageQueue`] is a message queue implementation that uses AMQP 0-9-1
+for message delivery.  The best-known AMQP broker is [RabbitMQ].  It provides
+scalability and high performance, making it suitable for production use across
+various runtimes.  It requires an AMQP broker setup and management.
+
+Best for
+:   Production use across various runtimes.
+
+Pros
+:   Persistent, reliable, scalable, supports multiple workers.
+
+Cons
+:   Requires AMQP broker setup and management.
+
+~~~~ typescript twoslash
+import type { KvStore } from "@fedify/fedify";
+// ---cut-before---
+import { createFederation } from "@fedify/fedify";
+import { AmqpMessageQueue } from "@fedify/amqp";
+import { connect } from "amqplib";
+
+const federation = createFederation({
+// ---cut-start---
+  kv: null as unknown as KvStore,
+// ---cut-end---
+  queue: new AmqpMessageQueue(await connect("amqp://localhost")),  // [!code highlight]
+  // ... other options
+});
+~~~~
+
+*[AMQP]: Advanced Message Queuing Protocol
+[`AmqpMessageQueue`]: https://jsr.io/@fedify/amqp/doc/mq/~/AmqpMessageQueue
+[@fedify/amqp]: https://github.com/dahlia/fedify-amqp
+[RabbitMQ]: https://www.rabbitmq.com/
+
 
 Implementing a custom `MessageQueue`
 ------------------------------------

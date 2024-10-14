@@ -1,6 +1,8 @@
 {
   "devDependencies": {
+    "@braintree/sanitize-url": "^7.1.0",
     "@deno/kv": "^0.8.2",
+    "@fedify/amqp": "0.1.0-dev.8",
     "@fedify/fedify": "1.0.2",
     "@fedify/postgres": "0.1.0-dev.2",
     "@fedify/redis": "0.2.0-dev.10",
@@ -9,9 +11,12 @@
     "@logtape/logtape": "^0.5.1",
     "@shikijs/vitepress-twoslash": "^1.17.6",
     "@teidesu/deno-types": "^1.46.3",
+    "@types/amqplib": "^0.10.5",
     "@types/better-sqlite3": "^7.6.11",
     "@types/bun": "^1.1.9",
+    "amqplib": "^0.10.4",
     "cli-progress": "^3.12.0",
+    "dayjs": "^1.11.13",
     "hono": "^4.6.1",
     "ioredis": "^5.4.1",
     "markdown-it-abbr": "^2.0.0",

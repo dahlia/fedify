@@ -8,9 +8,15 @@ importers:
 
   .:
     devDependencies:
+      '@braintree/sanitize-url':
+        specifier: ^7.1.0
+        version: 7.1.0
       '@deno/kv':
         specifier: ^0.8.2
         version: 0.8.3
+      '@fedify/amqp':
+        specifier: 0.1.0-dev.8
+        version: 0.1.0-dev.8(web-streams-polyfill@3.3.3)
       '@fedify/fedify':
         specifier: 1.0.2
         version: 1.0.2(web-streams-polyfill@3.3.3)
@@ -35,15 +41,24 @@ importers:
       '@teidesu/deno-types':
         specifier: ^1.46.3
         version: 1.46.3
+      '@types/amqplib':
+        specifier: ^0.10.5
+        version: 0.10.5
       '@types/better-sqlite3':
         specifier: ^7.6.11
         version: 7.6.11
       '@types/bun':
         specifier: ^1.1.9
         version: 1.1.10
+      amqplib:
+        specifier: ^0.10.4
+        version: 0.10.4
       cli-progress:
         specifier: ^3.12.0
         version: 3.12.0
+      dayjs:
+        specifier: ^1.11.13
+        version: 1.11.13
       hono:
         specifier: ^4.6.1
         version: 4.6.3
@@ -82,6 +97,10 @@ importers:
         version: 0.2.0
 
 packages:
+
+  '@acuminous/bitsyntax@0.1.2':
+    resolution: {integrity: sha512-29lUK80d1muEQqiUsSo+3A0yP6CdspgC95EnKBMi22Xlwt79i/En4Vr67+cXhU+cZjbti3TgGGC5wy1stIywVQ==}
+    engines: {node: '>=0.8'}
 
   '@algolia/autocomplete-core@1.9.3':
     resolution: {integrity: sha512-009HdfugtGCdC4JdXUbVJClA0q0zh24yyePn+KUGk3rP7j8FEe/m5Yo/z65gn6nP/cM39PxpzqKrL7A6fP6PPw==}
@@ -167,6 +186,9 @@ packages:
 
   '@braintree/sanitize-url@6.0.4':
     resolution: {integrity: sha512-s3jaWicZd0pkP0jf5ysyHUI/RE7MHos6qlToFcGWXVp+ykHOy77OUMrfbgJ9it2C5bow7OIQwYYaHjk9XlBQ2A==}
+
+  '@braintree/sanitize-url@7.1.0':
+    resolution: {integrity: sha512-o+UlMLt49RvtCASlOMW0AkHnabN9wR9rwCCherxO0yG4Npy34GkvrAqdXQvrhNs+jh+gkK8gB8Lf05qL/O7KWg==}
 
   '@deno/kv-darwin-arm64@0.8.3':
     resolution: {integrity: sha512-edrjFTXrgo0utTezVbt8IsHIj9OsWJ3RtFl0lEhIfoI/Z1FwHg9wp3+LFOGLuQ8wz5nmnBQIBM3qDeXP7F7eOQ==}
@@ -373,6 +395,9 @@ packages:
     resolution: {integrity: sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==}
     engines: {node: '>=14'}
 
+  '@fedify/amqp@0.1.0-dev.8':
+    resolution: {integrity: sha512-GFDb8GLuyXtiBV9RtuCmFimNrglYDfDroZn9+Z9akhmTDp5lYhyfPPFQawSOvnwhyV36bgPIyFGZbaYznekZng==}
+
   '@fedify/fedify@1.0.2':
     resolution: {integrity: sha512-OWVfahJRstzCOGSEDJ5CEppVHZyR9IfpFStj1WnedLE6rFoYZ94fZu7dQv4x0M1a1K3AfIiwvOAgcXldy21sWg==}
 
@@ -540,6 +565,9 @@ packages:
 
   '@teidesu/deno-types@1.46.3':
     resolution: {integrity: sha512-JHuzaoYCjsYqcMoewjdCbnHGqN91puqit00m3Q3FbTETqbnreBNHirLhNbCgqNomAYMRTvGuHC7/HIh9jmBM2A==}
+
+  '@types/amqplib@0.10.5':
+    resolution: {integrity: sha512-/cSykxROY7BWwDoi4Y4/jLAuZTshZxd8Ey1QYa/VaXriMotBDoou7V/twJiOSHzU6t1Kp1AHAUXGCgqq+6DNeg==}
 
   '@types/better-sqlite3@7.6.11':
     resolution: {integrity: sha512-i8KcD3PgGtGBLl3+mMYA8PdKkButvPyARxA7IQAd6qeslht13qxb1zzO8dRCtE7U3IoJS782zDBAeoKiM695kg==}
@@ -728,6 +756,10 @@ packages:
   algoliasearch@4.24.0:
     resolution: {integrity: sha512-bf0QV/9jVejssFBmz2HQLxUadxk574t4iwjCKp5E7NBzwKkrDEhKPISIIjAU/p6K5qDx3qoeh4+26zWN1jmw3g==}
 
+  amqplib@0.10.4:
+    resolution: {integrity: sha512-DMZ4eCEjAVdX1II2TfIUpJhfKAuoCeDIo/YyETbfAqehHTXxxs7WOOd+N1Xxr4cKhx12y23zk8/os98FxlZHrw==}
+    engines: {node: '>=10'}
+
   ansi-regex@5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
@@ -747,6 +779,9 @@ packages:
 
   brace-expansion@2.0.1:
     resolution: {integrity: sha512-XnAIvQ8eM+kC6aULx6wuQiwVsnzsi9d3WxzV3FpWTGA19F621kwdbsAcFKXgKUHZWsy+mY6iL1sHTxWEFCytDA==}
+
+  buffer-more-ints@1.0.0:
+    resolution: {integrity: sha512-EMetuGFz5SLsT0QTnXzINh4Ksr+oo4i+UGTXEshiGCQWnsgSs7ZhJ8fzlwQ+OzEMs0MpDAMr1hxnblp5a4vcHg==}
 
   bun-types@1.1.29:
     resolution: {integrity: sha512-En3/TzSPMPyl5UlUB1MHzHpcrZDakTm7mS203eLoX1fBoEa3PW+aSS8GAqVJ7Is/m34Z5ogL+ECniLY0uDaCPw==}
@@ -795,6 +830,9 @@ packages:
   copy-anything@3.0.5:
     resolution: {integrity: sha512-yCEafptTtb4bk7GLEQoM8KVJpxAfdBJYaXyzQEgQQQgYrZiDp8SJmGKlYza6CYjEDNstAdNdKA3UuoULlEbS6w==}
     engines: {node: '>=12.13'}
+
+  core-util-is@1.0.3:
+    resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
 
   cose-base@1.0.3:
     resolution: {integrity: sha512-s9whTXInMSgAp/NVXVNuVxVKzGH2qck3aQlVHxDCdAEPgtMKwc4Wq6/QKhgdEdgbLSi9rBTAcPoRa6JpiG4ksg==}
@@ -1079,6 +1117,9 @@ packages:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
+  inherits@2.0.4:
+    resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
+
   internmap@1.0.1:
     resolution: {integrity: sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw==}
 
@@ -1097,6 +1138,9 @@ packages:
   is-what@4.1.16:
     resolution: {integrity: sha512-ZhMwEosbFJkA0YhFnNDgTM4ZxDRsS6HqTo7qsZM08fehyRYIYa0yHu5R6mgo1n/8MgaPBXiPimPD77baVFYg+A==}
     engines: {node: '>=12.13'}
+
+  isarray@0.0.1:
+    resolution: {integrity: sha512-D2S+3GLxWH+uhrNEcoh/fnmYeP8E8/zHl644d/jdA0g2uyXvy3sb0qxotE+ne0LtccHknQzWwZEzhak7oJ0COQ==}
 
   isexe@3.1.1:
     resolution: {integrity: sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==}
@@ -1450,9 +1494,15 @@ packages:
     resolution: {integrity: sha512-pMpnA0qRdFp32b1sJl1wOJNxZLQ2cbQx+k6tjNtZ8CpvVhNqEPRgivZ2WOUev2YMajecdH7ctUPDvEe87nariQ==}
     engines: {node: '>=6.0.0'}
 
+  querystringify@2.2.0:
+    resolution: {integrity: sha512-FIqgj2EUvTa7R50u0rGsyTftzjYmv/a3hO345bZNrqabNqjtgiDMgmo4mkUjd+nzU5oF3dClKqFIPUKybUyqoQ==}
+
   rdf-canonize@3.4.0:
     resolution: {integrity: sha512-fUeWjrkOO0t1rg7B2fdyDTvngj+9RlUyL92vOdiB7c0FPguWVsniIMjEtHH+meLBO9rzkUlUzBVXgWrjI8P9LA==}
     engines: {node: '>=12'}
+
+  readable-stream@1.1.14:
+    resolution: {integrity: sha512-+MeVjFf4L44XUkhM1eYbD8fyEsxcV81pqMSR5gblfcLCHfZvbrqy4/qYHE+/R5HoBUT11WV5O08Cr1n3YXkWVQ==}
 
   redis-errors@1.2.0:
     resolution: {integrity: sha512-1qny3OExCf0UvUV/5wpYKf2YwPcOqXzkwKKSmKHiE6ZMQs5heeE/c8eXK+PNllPvmjgAbfnsbpkGZWy8cBpn9w==}
@@ -1464,6 +1514,9 @@ packages:
 
   regex@4.3.2:
     resolution: {integrity: sha512-kK/AA3A9K6q2js89+VMymcboLOlF5lZRCYJv3gzszXFHBr6kO6qLGzbm+UIugBEV8SMMKCTR59txoY6ctRHYVw==}
+
+  requires-port@1.0.0:
+    resolution: {integrity: sha512-KigOCHcocU3XODJxsu8i/j8T9tzT4adHiecwORRQ0ZZFcp7ahwXuRU1m+yuO90C5ZUyGeGfocHDI14M3L3yDAQ==}
 
   rfdc@1.4.1:
     resolution: {integrity: sha512-q1b3N5QkRUWUl7iyylaaj3kOpIT0N2i9MqIEQXP73GVsN9cw3fdx8X63cEmWhJGi2PPCF23Ijp7ktmd39rawIA==}
@@ -1482,6 +1535,9 @@ packages:
   sade@1.8.1:
     resolution: {integrity: sha512-xal3CZX1Xlo/k4ApwCFrHVACi9fBqJ7V+mwhBsuf/1IOKbBy098Fex+Wa/5QMubw09pSZ/u8EY8PWgevJsXp1A==}
     engines: {node: '>=6'}
+
+  safe-buffer@5.1.2:
+    resolution: {integrity: sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==}
 
   safer-buffer@2.1.2:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
@@ -1512,6 +1568,9 @@ packages:
   string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
     engines: {node: '>=8'}
+
+  string_decoder@0.10.31:
+    resolution: {integrity: sha512-ev2QzSzWPYmy9GuqfIVildA4OdcGLeFZQrq5ys6RtiuF+RQQiZWr8TZNyAcuVXyQRYfEO+MsoB/1BuQVhOJuoQ==}
 
   stringify-entities@4.0.4:
     resolution: {integrity: sha512-IwfBptatlO+QCJUo19AqvrPNqlVMpW9YEL2LIVY+Rpv2qsjCGxaDLNRgeGsQWJhfItebuJhsGSLjaBbNSQ+ieg==}
@@ -1598,6 +1657,9 @@ packages:
 
   uri-template-router@0.0.16:
     resolution: {integrity: sha512-kvIuR8BtfL/VXFCM5hA7kjfYBdxMKQMmjOOA2zPUR1Xy7K+aVF2cVWMDaQEa2O74WN7zMloyvvmYjNJ38fVUew==}
+
+  url-parse@1.5.10:
+    resolution: {integrity: sha512-WypcfiRhfeUP9vvF0j6rw0J3hrWrw6iZv3+22h6iRMJ/8z1Tj6XfLP4DsUix5MhMPnXpiHDoKyoZ/bdCkwBCiQ==}
 
   url-template@3.1.1:
     resolution: {integrity: sha512-4oszoaEKE/mQOtAmdMWqIRHmkxWkUZMnXFnjQ5i01CuRSK3uluxcH1MRVVVWmhlnzT1SCDfKxxficm2G37qzCA==}
@@ -1720,6 +1782,14 @@ packages:
 
 snapshots:
 
+  '@acuminous/bitsyntax@0.1.2':
+    dependencies:
+      buffer-more-ints: 1.0.0
+      debug: 4.3.7
+      safe-buffer: 5.1.2
+    transitivePeerDependencies:
+      - supports-color
+
   '@algolia/autocomplete-core@1.9.3(@algolia/client-search@4.24.0)(algoliasearch@4.24.0)(search-insights@2.17.2)':
     dependencies:
       '@algolia/autocomplete-plugin-algolia-insights': 1.9.3(@algolia/client-search@4.24.0)(algoliasearch@4.24.0)(search-insights@2.17.2)
@@ -1839,6 +1909,8 @@ snapshots:
       to-fast-properties: 2.0.0
 
   '@braintree/sanitize-url@6.0.4': {}
+
+  '@braintree/sanitize-url@7.1.0': {}
 
   '@deno/kv-darwin-arm64@0.8.3':
     optional: true
@@ -1970,6 +2042,14 @@ snapshots:
     optional: true
 
   '@fastify/busboy@2.1.1': {}
+
+  '@fedify/amqp@0.1.0-dev.8(web-streams-polyfill@3.3.3)':
+    dependencies:
+      '@fedify/fedify': 1.0.2(web-streams-polyfill@3.3.3)
+      amqplib: 0.10.4
+    transitivePeerDependencies:
+      - supports-color
+      - web-streams-polyfill
 
   '@fedify/fedify@1.0.2(web-streams-polyfill@3.3.3)':
     dependencies:
@@ -2167,6 +2247,10 @@ snapshots:
   '@shikijs/vscode-textmate@9.2.2': {}
 
   '@teidesu/deno-types@1.46.3': {}
+
+  '@types/amqplib@0.10.5':
+    dependencies:
+      '@types/node': 22.7.4
 
   '@types/better-sqlite3@7.6.11':
     dependencies:
@@ -2393,6 +2477,15 @@ snapshots:
       '@algolia/requester-node-http': 4.24.0
       '@algolia/transporter': 4.24.0
 
+  amqplib@0.10.4:
+    dependencies:
+      '@acuminous/bitsyntax': 0.1.2
+      buffer-more-ints: 1.0.0
+      readable-stream: 1.1.14
+      url-parse: 1.5.10
+    transitivePeerDependencies:
+      - supports-color
+
   ansi-regex@5.0.1: {}
 
   argparse@2.0.1: {}
@@ -2410,6 +2503,8 @@ snapshots:
   brace-expansion@2.0.1:
     dependencies:
       balanced-match: 1.0.2
+
+  buffer-more-ints@1.0.0: {}
 
   bun-types@1.1.29:
     dependencies:
@@ -2445,6 +2540,8 @@ snapshots:
   copy-anything@3.0.5:
     dependencies:
       is-what: 4.1.16
+
+  core-util-is@1.0.3: {}
 
   cose-base@1.0.3:
     dependencies:
@@ -2762,6 +2859,8 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
+  inherits@2.0.4: {}
+
   internmap@1.0.1: {}
 
   internmap@2.0.3: {}
@@ -2783,6 +2882,8 @@ snapshots:
   is-fullwidth-code-point@3.0.0: {}
 
   is-what@4.1.16: {}
+
+  isarray@0.0.1: {}
 
   isexe@3.1.1: {}
 
@@ -3369,9 +3470,18 @@ snapshots:
 
   pvutils@1.1.3: {}
 
+  querystringify@2.2.0: {}
+
   rdf-canonize@3.4.0:
     dependencies:
       setimmediate: 1.0.5
+
+  readable-stream@1.1.14:
+    dependencies:
+      core-util-is: 1.0.3
+      inherits: 2.0.4
+      isarray: 0.0.1
+      string_decoder: 0.10.31
 
   redis-errors@1.2.0: {}
 
@@ -3380,6 +3490,8 @@ snapshots:
       redis-errors: 1.2.0
 
   regex@4.3.2: {}
+
+  requires-port@1.0.0: {}
 
   rfdc@1.4.1: {}
 
@@ -3413,6 +3525,8 @@ snapshots:
     dependencies:
       mri: 1.2.0
 
+  safe-buffer@5.1.2: {}
+
   safer-buffer@2.1.2: {}
 
   search-insights@2.17.2: {}
@@ -3441,6 +3555,8 @@ snapshots:
       emoji-regex: 8.0.0
       is-fullwidth-code-point: 3.0.0
       strip-ansi: 6.0.1
+
+  string_decoder@0.10.31: {}
 
   stringify-entities@4.0.4:
     dependencies:
@@ -3530,6 +3646,11 @@ snapshots:
       unist-util-visit-parents: 6.0.1
 
   uri-template-router@0.0.16: {}
+
+  url-parse@1.5.10:
+    dependencies:
+      querystringify: 2.2.0
+      requires-port: 1.0.0
 
   url-template@3.1.1: {}
 
