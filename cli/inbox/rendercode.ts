@@ -39,6 +39,16 @@ export async function renderResponse(response: Response): Promise<string> {
   return code;
 }
 
+export async function renderRawActivity(request: Request): Promise<string> {
+  request = request.clone();
+  try {
+    const activity = await request.json();
+    return JSON.stringify(activity, null, 2);
+  } catch {
+    return "[Failed to decode body; it may not be JSON.]";
+  }
+}
+
 export async function renderActivity(
   activity: Activity,
   expand: boolean = false,

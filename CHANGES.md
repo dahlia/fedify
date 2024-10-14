@@ -56,6 +56,9 @@ To be released.
      -  `Service.clone()` method now accepts `service` option.
      -  `Service.clone()` method now accepts `services` option.
 
+ -  In the `fedify inbox` command's web interface, the *Raw Activity* tab is
+    added to show the raw JSON object of the received activity.
+
 [FEP-c0e0]: https://w3id.org/fep/c0e0
 [FEP-9091]: https://w3id.org/fep/9091
 [#146]: https://github.com/dahlia/fedify/issues/146

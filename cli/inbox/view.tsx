@@ -1,9 +1,14 @@
 import type { LogRecord } from "@logtape/logtape";
 import { getStatusText } from "@poppanator/http-constants";
 import type { FC, PropsWithChildren } from "hono/jsx";
-import { getHighlighter } from "shiki";
+import { getSingletonHighlighter } from "shiki";
 import type { ActivityEntry } from "./entry.ts";
-import { renderActivity, renderRequest, renderResponse } from "./rendercode.ts";
+import {
+  renderActivity,
+  renderRawActivity,
+  renderRequest,
+  renderResponse,
+} from "./rendercode.ts";
 
 interface LayoutProps {
   title?: string;
@@ -103,7 +108,7 @@ interface CodeBlockProps {
   code: string;
 }
 
-const highlighter = await getHighlighter({
+const highlighter = await getSingletonHighlighter({
   themes: ["github-light"],
   langs: ["http", "json"],
 });
@@ -166,7 +171,13 @@ const LogList: FC<LogListProps> = ({ logs }: LogListProps) => {
 
 interface ActivityEntryViewProps {
   entry: ActivityEntry;
-  tabPage: string;
+  tabPage:
+    | "request"
+    | "response"
+    | "raw-activity"
+    | "compact-activity"
+    | "expanded-activity"
+    | "logs";
 }
 
 const ActivityEntryView: FC<ActivityEntryViewProps> = async (
@@ -186,6 +197,12 @@ const ActivityEntryView: FC<ActivityEntryViewProps> = async (
           href="?tab=response"
           disabled={response == null}
           active={tabPage === "response"}
+        />
+        <Tab
+          label="Raw Activity"
+          href="?tab=raw-activity"
+          disabled={activity == null}
+          active={tabPage === "raw-activity"}
         />
         <Tab
           label="Compact Activity"
@@ -219,6 +236,14 @@ const ActivityEntryView: FC<ActivityEntryViewProps> = async (
           <CodeBlock
             code={await renderResponse(response)}
             language="http"
+          />
+        </div>
+      )}
+      {tabPage === "raw-activity" && (
+        <div class="tab-page">
+          <CodeBlock
+            code={await renderRawActivity(request)}
+            language="json"
           />
         </div>
       )}
