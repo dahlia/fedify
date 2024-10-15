@@ -1258,6 +1258,17 @@ store and display them on the home page.
 Restart the server and navigate to the home page in your web browser.  You
 should see the actor's followers in the bulleted list.
 
+> [!NOTE]
+> Although the above code handles the home page *before* the federation-related
+> requests, it is just an example.  In a real-world application, you should
+> integrate Fedify with a web framework like [Hono], where the order of
+> handling requests is reversed: the federation-related requests are handled
+> *before* other web-related requests.
+>
+> For more details, see the [*Integration* section](../manual/integration.md).
+
+[Hono]: https://hono.dev/
+
 
 Wrapping up
 -----------
