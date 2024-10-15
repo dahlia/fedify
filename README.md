@@ -8,6 +8,7 @@ Fedify: an ActivityPub server framework
 [![npm][npm badge]][npm]
 [![GitHub Actions][GitHub Actions badge]][GitHub Actions]
 [![Matrix][Matrix badge]][Matrix]
+[![Discord][Discord badge]][Discord]
 [![Follow @fedify@hollo.social][@fedify@hollo.social badge]][@fedify@hollo.social]
 
 > [!NOTE]
@@ -44,8 +45,8 @@ resources:
  -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
 
 If you have any questions, suggestions, or feedback, please feel free to
-join our [Matrix chat space][Matrix] or [GitHub Discussions].  Or tag
-[#Fedify] in the fediverse!
+join our [Matrix chat space][Matrix] or [Discord server][Discord] or
+[GitHub Discussions].  Or tag [#Fedify] in the fediverse!
 
 [^1]: You may already know some of the networks in the fediverse, such as
       [Mastodon], [Lemmy], [Pixelfed], [PeerTube], and so on.
@@ -58,6 +59,8 @@ join our [Matrix chat space][Matrix] or [GitHub Discussions].  Or tag
 [GitHub Actions badge]: https://github.com/dahlia/fedify/actions/workflows/build.yaml/badge.svg
 [Matrix]: https://matrix.to/#/#fedify:matrix.org
 [Matrix badge]: https://img.shields.io/matrix/fedify%3Amatrix.org?logo=matrix
+[Discord]: https://discord.gg/bhtwpzURwd
+[Discord badge]: https://img.shields.io/discord/1295652627505217647?logo=discord&cacheSeconds=60
 [@fedify@hollo.social badge]: https://fedi-badge.deno.dev/@fedify@hollo.social/followers.svg
 [@fedify@hollo.social]: https://hollo.social/@fedify
 [Fedify Demo]: https://dash.deno.com/playground/fedify-demo
