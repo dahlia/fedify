@@ -12,7 +12,8 @@
     ".vscode",
     "fedify-cli-*.tar.xz",
     "fedify-cli-*.tgz",
-    "fedify-cli-*.zip"
+    "fedify-cli-*.zip",
+    "npm"
   ],
   "unstable": [
     "fs",

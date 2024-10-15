@@ -169,15 +169,17 @@ const LogList: FC<LogListProps> = ({ logs }: LogListProps) => {
   );
 };
 
+type ActivityEntryTabPage =
+  | "request"
+  | "response"
+  | "raw-activity"
+  | "compact-activity"
+  | "expanded-activity"
+  | "logs";
+
 interface ActivityEntryViewProps {
   entry: ActivityEntry;
-  tabPage:
-    | "request"
-    | "response"
-    | "raw-activity"
-    | "compact-activity"
-    | "expanded-activity"
-    | "logs";
+  tabPage: ActivityEntryTabPage;
 }
 
 const ActivityEntryView: FC<ActivityEntryViewProps> = async (

@@ -379,6 +379,12 @@ app.get("/r/:idx{[0-9]+}", (c) => {
   const tab = c.req.query("tab") ?? "request";
   const activity = activities[idx];
   if (activity == null) return c.notFound();
+  if (
+    tab !== "request" && tab !== "response" && tab !== "raw-activity" &&
+    tab !== "compact-activity" && tab !== "expanded-activity" && tab !== "logs"
+  ) {
+    return c.notFound();
+  }
   return c.html(<ActivityEntryPage idx={idx} entry={activity} tabPage={tab} />);
 });
 
