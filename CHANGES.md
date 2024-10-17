@@ -8,6 +8,10 @@ Version 1.0.4
 
 To be released.
 
+ -  Fixed a bug where `Actor.aliasId` and `Actor.aliasIds` properties had been
+    represented as `as:alsoKnownAs` property instead of `alsoKnownAs` property
+    in compacted JSON-LD objects.
+
 
 Version 1.0.3
 -------------

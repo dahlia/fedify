@@ -522,6 +522,48 @@ test("Person.fromJsonLd()", async () => {
   );
 });
 
+test("Person.toJsonLd()", async () => {
+  const person = new Person({
+    aliases: [new URL("https://example.com/alias")],
+  });
+  assertEquals(await person.toJsonLd(), {
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/v1",
+      "https://w3id.org/security/data-integrity/v1",
+      "https://www.w3.org/ns/did/v1",
+      "https://w3id.org/security/multikey/v1",
+      {
+        PropertyValue: "schema:PropertyValue",
+        alsoKnownAs: {
+          "@id": "as:alsoKnownAs",
+          "@type": "@id",
+        },
+        discoverable: "toot:discoverable",
+        featured: {
+          "@id": "toot:featured",
+          "@type": "@id",
+        },
+        featuredTags: {
+          "@id": "toot:featuredTags",
+          "@type": "@id",
+        },
+        indexable: "toot:indexable",
+        isCat: "misskey:isCat",
+        manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
+        memorial: "toot:memorial",
+        misskey: "https://misskey-hub.net/ns#",
+        schema: "http://schema.org#",
+        suspended: "toot:suspended",
+        toot: "http://joinmastodon.org/ns#",
+        value: "schema:value",
+      },
+    ],
+    alsoKnownAs: "https://example.com/alias",
+    type: "Person",
+  });
+});
+
 test("Note.quoteUrl", async () => {
   const note = new Note({
     quoteUrl: new URL("https://example.com/object"),
