@@ -66,6 +66,7 @@
     ".zed/",
     "apidoc/",
     "cli/",
+    "codegen/schema.yaml",
     "docs/",
     "examples/",
     "logo.svg",

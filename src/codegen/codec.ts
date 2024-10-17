@@ -302,7 +302,10 @@ export async function* generateDecoder(
     }
   `;
   const subtypes = getSubtypes(typeUri, types, true);
-  yield 'if ("@type" in values) {\n';
+  yield `
+  if ("@type" in values &&
+      !values["@type"].every(t => t.startsWith("_:"))) {
+  `;
   for (const subtypeUri of subtypes) {
     yield `
     if (values["@type"].includes(${JSON.stringify(subtypeUri)})) {
