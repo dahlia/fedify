@@ -65,6 +65,15 @@ To be released.
 [#150]: https://github.com/dahlia/fedify/issues/150
 
 
+Version 1.0.3
+-------------
+
+Released on October 17, 2024.
+
+ -  Improved compatibility with some implementations (e.g., Nexkey) where
+    some `CryptographicKey` objects are incorrectly typed in JSON-LD objects.
+
+
 Version 1.0.2
 -------------
 

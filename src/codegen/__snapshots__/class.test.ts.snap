@@ -4814,8 +4814,10 @@ get urls(): ((URL | Link))[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"http://joinmastodon.org/ns#Emoji\\")) {
       return await Emoji.fromJsonLd(json, options);
     }
@@ -6684,8 +6686,10 @@ proofs?: (DataIntegrityProof | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"http://joinmastodon.org/ns#Emoji\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -7049,8 +7053,10 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"http://litepub.social/ns#ChatMessage\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -8613,8 +8619,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"http://litepub.social/ns#EmojiReact\\")) {
       return await EmojiReact.fromJsonLd(json, options);
     }
@@ -9305,8 +9313,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"http://litepub.social/ns#EmojiReact\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -9693,8 +9703,10 @@ name?: string | LanguageString | null;value?: string | LanguageString | null;}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"http://schema.org#PropertyValue\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -10127,8 +10139,10 @@ get endpoints(): (URL)[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://w3id.org/fep/9091#Export\\")) {
       return await Export.fromJsonLd(json, options);
     }
@@ -10398,8 +10412,10 @@ endpoints?: (URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://w3id.org/fep/9091#Export\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -10955,8 +10971,10 @@ cryptosuite?: \\"eddsa-jcs-2022\\" | null;verificationMethod?: Multikey | URL | 
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://w3id.org/security#DataIntegrityProof\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -11644,8 +11662,10 @@ owner?: Application | Group | Organization | Person | Service | URL | null;publi
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://w3id.org/security#Key\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -12254,8 +12274,10 @@ controller?: Application | Group | Organization | Person | Service | URL | null;
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://w3id.org/security#Multikey\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -12627,8 +12649,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
       return await TentativeAccept.fromJsonLd(json, options);
     }
@@ -12903,8 +12927,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Add\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -13174,8 +13200,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Announce\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -16121,8 +16149,10 @@ get preferredUsernames(): ((string | LanguageString))[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Application\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -17233,8 +17263,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Arrive\\")) {
       return await Arrive.fromJsonLd(json, options);
     }
@@ -17516,8 +17548,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Arrive\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -17876,8 +17910,10 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Article\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -18328,8 +18364,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
       return await Audio.fromJsonLd(json, options);
     }
@@ -18687,8 +18725,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Audio\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -18957,8 +18997,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
       return await Block.fromJsonLd(json, options);
     }
@@ -19233,8 +19275,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Block\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -20144,8 +20188,10 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#CollectionPage\\")) {
       return await CollectionPage.fromJsonLd(json, options);
     }
@@ -21053,8 +21099,10 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
       return await OrderedCollectionPage.fromJsonLd(json, options);
     }
@@ -21451,8 +21499,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Create\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -21721,8 +21771,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Delete\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -21989,8 +22041,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Dislike\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -22636,8 +22690,10 @@ proxyUrl?: URL | null;oauthAuthorizationEndpoint?: URL | null;oauthTokenEndpoint
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Endpoints\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -23129,8 +23185,10 @@ proofs?: (DataIntegrityProof | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Event\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -23400,8 +23458,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Flag\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -23672,8 +23732,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Follow\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -26619,8 +26681,10 @@ get preferredUsernames(): ((string | LanguageString))[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Group\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -28450,8 +28514,10 @@ get names(): ((string | LanguageString))[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Hashtag\\")) {
       return await Hashtag.fromJsonLd(json, options);
     }
@@ -29026,8 +29092,10 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Hashtag\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -29299,8 +29367,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Image\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -29570,8 +29640,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Invite\\")) {
       return await Invite.fromJsonLd(json, options);
     }
@@ -29844,8 +29916,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Invite\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -30114,8 +30188,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Join\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -30384,8 +30460,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Leave\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -30654,8 +30732,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Like\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -30922,8 +31002,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Listen\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -31156,8 +31238,10 @@ names?: ((string | LanguageString))[];language?: LanguageTag | null;height?: num
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Mention\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -31427,8 +31511,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Move\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -31789,8 +31875,10 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Note\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -32260,8 +32348,10 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -32812,8 +32902,10 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -35849,8 +35941,10 @@ get preferredUsernames(): ((string | LanguageString))[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Organization\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -36963,8 +37057,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Page\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -39910,8 +40006,10 @@ get preferredUsernames(): ((string | LanguageString))[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Person\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -41432,8 +41530,10 @@ proofs?: (DataIntegrityProof | URL)[];accuracy?: number | null;altitude?: number
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Place\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -42065,8 +42165,10 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Profile\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -42796,8 +42898,10 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Question\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -43275,8 +43379,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Read\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -43545,8 +43651,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
       return await TentativeReject.fromJsonLd(json, options);
     }
@@ -44409,8 +44517,10 @@ relationships?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Relationship\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -44817,8 +44927,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Remove\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -47764,8 +47876,10 @@ get preferredUsernames(): ((string | LanguageString))[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Service\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -49034,8 +49148,10 @@ get contents(): ((string | LanguageString))[] {
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Source\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -49399,8 +49515,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeAccept\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -49669,8 +49787,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#TentativeReject\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -50013,8 +50133,10 @@ proofs?: (DataIntegrityProof | URL)[];deleted?: Temporal.Instant | null;}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Tombstone\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -50320,8 +50442,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Travel\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -50595,8 +50719,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Undo\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -50868,8 +50994,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Update\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -51141,8 +51269,10 @@ proofs?: (DataIntegrityProof | URL)[];width?: number | null;height?: number | nu
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#Video\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
@@ -51410,8 +51540,10 @@ instruments?: (Object | URL)[];}
         // deno-lint-ignore no-explicit-any
         (expanded[0] ?? {}) as (Record<string, any[]> & { \\"@id\\"?: string });
     }
-  if (\\"@type\\" in values) {
-
+  
+  if (\\"@type\\" in values &&
+      !values[\\"@type\\"].every(t => t.startsWith(\\"_:\\"))) {
+  
     if (!values[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#View\\")) {
       throw new TypeError(\\"Invalid type: \\" + values[\\"@type\\"]);
     }
