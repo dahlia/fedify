@@ -11,7 +11,10 @@ defaultContext:
 - "https://w3id.org/security/data-integrity/v1"
 - "https://www.w3.org/ns/did/v1"
 - "https://w3id.org/security/multikey/v1"
-- manuallyApprovesFollowers: "as:manuallyApprovesFollowers"
+- alsoKnownAs:
+    "@id": "as:alsoKnownAs"
+    "@type": "@id"
+  manuallyApprovesFollowers: "as:manuallyApprovesFollowers"
   toot: "http://joinmastodon.org/ns#"
   featured:
     "@id": "toot:featured"

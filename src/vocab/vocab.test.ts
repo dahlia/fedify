@@ -520,6 +520,70 @@ test("Person.fromJsonLd()", async () => {
     publicKey?.ownerId,
     new URL("https://todon.eu/users/hongminhee"),
   );
+
+  const person2 = await Person.fromJsonLd({
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      {
+        alsoKnownAs: {
+          "@id": "as:alsoKnownAs",
+          "@type": "@id",
+        },
+      },
+    ],
+    "type": "Person",
+    // cSpell: disable
+    "alsoKnownAs": "at://did:plc:x7xdowahlhm5xulzqw4ehv6q",
+    // cSpell: enable
+  });
+  assertEquals(
+    person2.aliasId,
+    // cSpell: disable
+    new URL("at://did%3Aplc%3Ax7xdowahlhm5xulzqw4ehv6q"),
+    // cSpell: enable
+  );
+});
+
+test("Person.toJsonLd()", async () => {
+  const person = new Person({
+    aliases: [new URL("https://example.com/alias")],
+  });
+  assertEquals(await person.toJsonLd(), {
+    "@context": [
+      "https://www.w3.org/ns/activitystreams",
+      "https://w3id.org/security/v1",
+      "https://w3id.org/security/data-integrity/v1",
+      "https://www.w3.org/ns/did/v1",
+      "https://w3id.org/security/multikey/v1",
+      {
+        PropertyValue: "schema:PropertyValue",
+        alsoKnownAs: {
+          "@id": "as:alsoKnownAs",
+          "@type": "@id",
+        },
+        discoverable: "toot:discoverable",
+        featured: {
+          "@id": "toot:featured",
+          "@type": "@id",
+        },
+        featuredTags: {
+          "@id": "toot:featuredTags",
+          "@type": "@id",
+        },
+        indexable: "toot:indexable",
+        isCat: "misskey:isCat",
+        manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
+        memorial: "toot:memorial",
+        misskey: "https://misskey-hub.net/ns#",
+        schema: "http://schema.org#",
+        suspended: "toot:suspended",
+        toot: "http://joinmastodon.org/ns#",
+        value: "schema:value",
+      },
+    ],
+    alsoKnownAs: "https://example.com/alias",
+    type: "Person",
+  });
 });
 
 test("Note.quoteUrl", async () => {

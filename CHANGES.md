@@ -65,6 +65,19 @@ To be released.
 [#150]: https://github.com/dahlia/fedify/issues/150
 
 
+Version 1.0.4
+-------------
+
+Released on October 17, 2024.
+
+ -  Fixed a bug where `Actor.aliasId` and `Actor.aliasIds` properties had been
+    represented as `as:alsoKnownAs` property instead of `alsoKnownAs` property
+    in compacted JSON-LD objects.
+
+ -  Improved compatibility with Bridgy Fed for Bluesky where it puts
+    an invalid URI with the format `at://...` in the `alsoKnownAs` property.
+
+
 Version 1.0.3
 -------------
 

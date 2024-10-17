@@ -5058,7 +5058,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _49BipA5dq9eoH8LX8xdsVumveTca_attachment.push(new URL(v[\\"@id\\"]));
+        _49BipA5dq9eoH8LX8xdsVumveTca_attachment.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -5093,7 +5097,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py_attributedTo.push(new URL(v[\\"@id\\"]));
+        _42CGqJ94zgQ3ZBbfHwD8Hrr2L5Py_attributedTo.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -5130,7 +5138,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3ocC3VVi88cEd5sPWL8djkZsvTN6_audience.push(new URL(v[\\"@id\\"]));
+        _3ocC3VVi88cEd5sPWL8djkZsvTN6_audience.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3ocC3VVi88cEd5sPWL8djkZsvTN6_audience.push(await Object.fromJsonLd(
@@ -5176,7 +5188,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3mhZzGXSpQ431mBSz2kvych22v4e_context.push(new URL(v[\\"@id\\"]));
+        _3mhZzGXSpQ431mBSz2kvych22v4e_context.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -5248,7 +5264,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _86xFhmgBapoMvYqjbjRuDPayTrS_generator.push(new URL(v[\\"@id\\"]));
+        _86xFhmgBapoMvYqjbjRuDPayTrS_generator.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -5281,7 +5301,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _33CjRLy5ujtsUrwRSCrsggvGdKuR_icon.push(new URL(v[\\"@id\\"]));
+        _33CjRLy5ujtsUrwRSCrsggvGdKuR_icon.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _33CjRLy5ujtsUrwRSCrsggvGdKuR_icon.push(await Image.fromJsonLd(
@@ -5303,7 +5327,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3dXrUdkARxwyJLtJcYi1AJ92H41U_image.push(new URL(v[\\"@id\\"]));
+        _3dXrUdkARxwyJLtJcYi1AJ92H41U_image.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3dXrUdkARxwyJLtJcYi1AJ92H41U_image.push(await Image.fromJsonLd(
@@ -5325,7 +5353,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3fpbDrvZgf3Kq1a5V9aByFn8kx3s_inReplyTo.push(new URL(v[\\"@id\\"]));
+        _3fpbDrvZgf3Kq1a5V9aByFn8kx3s_inReplyTo.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -5358,7 +5390,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _31k5MUZJsnsPNg8dQQJieWaXTFnR_location.push(new URL(v[\\"@id\\"]));
+        _31k5MUZJsnsPNg8dQQJieWaXTFnR_location.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -5391,7 +5427,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _gCVTegXxWWCw6wWRxa1QF65zusg_preview.push(new URL(v[\\"@id\\"]));
+        _gCVTegXxWWCw6wWRxa1QF65zusg_preview.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -5439,7 +5479,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _7UpwM3JWcXhADcscukEehBorf6k_replies.push(new URL(v[\\"@id\\"]));
+        _7UpwM3JWcXhADcscukEehBorf6k_replies.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _7UpwM3JWcXhADcscukEehBorf6k_replies.push(await Collection.fromJsonLd(
@@ -5500,7 +5544,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _5chuqj6s95p5gg2sk1HntGfarRf_tag.push(new URL(v[\\"@id\\"]));
+        _5chuqj6s95p5gg2sk1HntGfarRf_tag.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -5574,7 +5622,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3hFbw7DTpHhq3cvVhkY8njhcsXbd_to.push(new URL(v[\\"@id\\"]));
+        _3hFbw7DTpHhq3cvVhkY8njhcsXbd_to.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3hFbw7DTpHhq3cvVhkY8njhcsXbd_to.push(await Object.fromJsonLd(
@@ -5596,7 +5648,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _aLZupjwL8XB7tzdLgCMXdjZ6qej_bto.push(new URL(v[\\"@id\\"]));
+        _aLZupjwL8XB7tzdLgCMXdjZ6qej_bto.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _aLZupjwL8XB7tzdLgCMXdjZ6qej_bto.push(await Object.fromJsonLd(
@@ -5618,7 +5674,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _42a1SvBs24QSLzKcfjCyNTjW5a1g_cc.push(new URL(v[\\"@id\\"]));
+        _42a1SvBs24QSLzKcfjCyNTjW5a1g_cc.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _42a1SvBs24QSLzKcfjCyNTjW5a1g_cc.push(await Object.fromJsonLd(
@@ -5640,7 +5700,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3qvegKUB8YLgTXRpEf8E6JZSkz2H_bcc.push(new URL(v[\\"@id\\"]));
+        _3qvegKUB8YLgTXRpEf8E6JZSkz2H_bcc.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3qvegKUB8YLgTXRpEf8E6JZSkz2H_bcc.push(await Object.fromJsonLd(
@@ -5723,7 +5787,11 @@ get urls(): ((URL | Link))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _42rPnotok1ivQ2RNCKNbeFJgx8b8_proof.push(new URL(v[\\"@id\\"]));
+        _42rPnotok1ivQ2RNCKNbeFJgx8b8_proof.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _42rPnotok1ivQ2RNCKNbeFJgx8b8_proof.push(await DataIntegrityProof.fromJsonLd(
@@ -8772,7 +8840,11 @@ instruments?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2DjTTboo3CNHU2a2JQqUSE2dbv9D_actor.push(new URL(v[\\"@id\\"]));
+        _2DjTTboo3CNHU2a2JQqUSE2dbv9D_actor.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -8809,7 +8881,11 @@ instruments?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2MH19yxjn1wnHsNfa5n4JBhJzxyc_object.push(new URL(v[\\"@id\\"]));
+        _2MH19yxjn1wnHsNfa5n4JBhJzxyc_object.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2MH19yxjn1wnHsNfa5n4JBhJzxyc_object.push(await Object.fromJsonLd(
@@ -8831,7 +8907,11 @@ instruments?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF_target.push(new URL(v[\\"@id\\"]));
+        _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF_target.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3JQCmF2Ww56Ag9EWRYoSZRDNCYtF_target.push(await Object.fromJsonLd(
@@ -8853,7 +8933,11 @@ instruments?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _u4QGFbRFcYmPEKGbPv1hpBR9r5G_result.push(new URL(v[\\"@id\\"]));
+        _u4QGFbRFcYmPEKGbPv1hpBR9r5G_result.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _u4QGFbRFcYmPEKGbPv1hpBR9r5G_result.push(await Object.fromJsonLd(
@@ -8875,7 +8959,11 @@ instruments?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _25zu2s3VxVujgEKqrDycjE284XQR_origin.push(new URL(v[\\"@id\\"]));
+        _25zu2s3VxVujgEKqrDycjE284XQR_origin.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _25zu2s3VxVujgEKqrDycjE284XQR_origin.push(await Object.fromJsonLd(
@@ -8897,7 +8985,11 @@ instruments?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3c5t2x7DYRo2shwTxpkd4kYSS5WQ_instrument.push(new URL(v[\\"@id\\"]));
+        _3c5t2x7DYRo2shwTxpkd4kYSS5WQ_instrument.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3c5t2x7DYRo2shwTxpkd4kYSS5WQ_instrument.push(await Object.fromJsonLd(
@@ -11014,7 +11106,11 @@ cryptosuite?: \\"eddsa-jcs-2022\\" | null;verificationMethod?: Multikey | URL | 
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2mHVKxqA7zncjveJrDEo3pWpMZqg_verificationMethod.push(new URL(v[\\"@id\\"]));
+        _2mHVKxqA7zncjveJrDEo3pWpMZqg_verificationMethod.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2mHVKxqA7zncjveJrDEo3pWpMZqg_verificationMethod.push(await Multikey.fromJsonLd(
@@ -11690,7 +11786,11 @@ owner?: Application | Group | Organization | Person | Service | URL | null;publi
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _5UJq9NDh3ZHgswFwwdVxQvJxdx2_owner.push(new URL(v[\\"@id\\"]));
+        _5UJq9NDh3ZHgswFwwdVxQvJxdx2_owner.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -12302,7 +12402,11 @@ controller?: Application | Group | Organization | Person | Service | URL | null;
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2yr3eUBTP6cNcyaxKzAXWjFsnGzN_controller.push(new URL(v[\\"@id\\"]));
+        _2yr3eUBTP6cNcyaxKzAXWjFsnGzN_controller.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -15746,7 +15850,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Application\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -16075,7 +16179,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -16206,7 +16310,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(new URL(v[\\"@id\\"]));
+        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(await CryptographicKey.fromJsonLd(
@@ -16228,7 +16336,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(new URL(v[\\"@id\\"]));
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(await Multikey.fromJsonLd(
@@ -16265,7 +16377,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(new URL(v[\\"@id\\"]));
+        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
@@ -16287,7 +16403,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(new URL(v[\\"@id\\"]));
+        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
@@ -16309,7 +16429,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(new URL(v[\\"@id\\"]));
+        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(await Collection.fromJsonLd(
@@ -16331,7 +16455,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(new URL(v[\\"@id\\"]));
+        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(await Collection.fromJsonLd(
@@ -16353,7 +16481,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(new URL(v[\\"@id\\"]));
+        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(await Collection.fromJsonLd(
@@ -16375,7 +16507,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(new URL(v[\\"@id\\"]));
+        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(await Collection.fromJsonLd(
@@ -16397,7 +16533,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(new URL(v[\\"@id\\"]));
+        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(await Collection.fromJsonLd(
@@ -16419,7 +16559,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(new URL(v[\\"@id\\"]));
+        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(await Collection.fromJsonLd(
@@ -16517,7 +16661,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(new URL(v[\\"@id\\"]));
+        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -16554,7 +16702,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
@@ -20248,7 +20400,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3UyUdxnyn6cDn53QKrh4MBiearma_current.push(new URL(v[\\"@id\\"]));
+        _3UyUdxnyn6cDn53QKrh4MBiearma_current.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3UyUdxnyn6cDn53QKrh4MBiearma_current.push(await CollectionPage.fromJsonLd(
@@ -20270,7 +20426,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _J52RqweMe6hhv7RnLJMC8BExTE5_first.push(new URL(v[\\"@id\\"]));
+        _J52RqweMe6hhv7RnLJMC8BExTE5_first.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _J52RqweMe6hhv7RnLJMC8BExTE5_first.push(await CollectionPage.fromJsonLd(
@@ -20292,7 +20452,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _gyJJnyEFnuNVi1HFZKfAn3Hfn26_last.push(new URL(v[\\"@id\\"]));
+        _gyJJnyEFnuNVi1HFZKfAn3Hfn26_last.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _gyJJnyEFnuNVi1HFZKfAn3Hfn26_last.push(await CollectionPage.fromJsonLd(
@@ -20314,7 +20478,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg_items.push(new URL(v[\\"@id\\"]));
+        _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg_items.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -21136,7 +21304,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2kWgBhQKjEauxx8C6qF3ZQamK4Le_partOf.push(new URL(v[\\"@id\\"]));
+        _2kWgBhQKjEauxx8C6qF3ZQamK4Le_partOf.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2kWgBhQKjEauxx8C6qF3ZQamK4Le_partOf.push(await Collection.fromJsonLd(
@@ -21158,7 +21330,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3BT4kQLcXhHx7TAWaNDKh8nFn9eY_next.push(new URL(v[\\"@id\\"]));
+        _3BT4kQLcXhHx7TAWaNDKh8nFn9eY_next.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3BT4kQLcXhHx7TAWaNDKh8nFn9eY_next.push(await CollectionPage.fromJsonLd(
@@ -21180,7 +21356,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3b8yG8tDNzQFFEnWhCc13G8eHooA_prev.push(new URL(v[\\"@id\\"]));
+        _3b8yG8tDNzQFFEnWhCc13G8eHooA_prev.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3b8yG8tDNzQFFEnWhCc13G8eHooA_prev.push(await CollectionPage.fromJsonLd(
@@ -26278,7 +26458,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Group\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -26607,7 +26787,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -26738,7 +26918,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(new URL(v[\\"@id\\"]));
+        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(await CryptographicKey.fromJsonLd(
@@ -26760,7 +26944,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(new URL(v[\\"@id\\"]));
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(await Multikey.fromJsonLd(
@@ -26797,7 +26985,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(new URL(v[\\"@id\\"]));
+        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
@@ -26819,7 +27011,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(new URL(v[\\"@id\\"]));
+        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
@@ -26841,7 +27037,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(new URL(v[\\"@id\\"]));
+        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(await Collection.fromJsonLd(
@@ -26863,7 +27063,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(new URL(v[\\"@id\\"]));
+        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(await Collection.fromJsonLd(
@@ -26885,7 +27089,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(new URL(v[\\"@id\\"]));
+        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(await Collection.fromJsonLd(
@@ -26907,7 +27115,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(new URL(v[\\"@id\\"]));
+        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(await Collection.fromJsonLd(
@@ -26929,7 +27141,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(new URL(v[\\"@id\\"]));
+        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(await Collection.fromJsonLd(
@@ -26951,7 +27167,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(new URL(v[\\"@id\\"]));
+        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(await Collection.fromJsonLd(
@@ -27049,7 +27269,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(new URL(v[\\"@id\\"]));
+        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -27086,7 +27310,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
@@ -28664,7 +28892,11 @@ get names(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _gCVTegXxWWCw6wWRxa1QF65zusg_preview.push(new URL(v[\\"@id\\"]));
+        _gCVTegXxWWCw6wWRxa1QF65zusg_preview.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -32381,7 +32613,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg_items.push(new URL(v[\\"@id\\"]));
+        _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg_items.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -32935,7 +33171,11 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg_items.push(new URL(v[\\"@id\\"]));
+        _2JPCKWTcfBmTCcW8Tv3TpRaLVaqg_items.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -35538,7 +35778,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Organization\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -35867,7 +36107,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -35998,7 +36238,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(new URL(v[\\"@id\\"]));
+        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(await CryptographicKey.fromJsonLd(
@@ -36020,7 +36264,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(new URL(v[\\"@id\\"]));
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(await Multikey.fromJsonLd(
@@ -36057,7 +36305,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(new URL(v[\\"@id\\"]));
+        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
@@ -36079,7 +36331,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(new URL(v[\\"@id\\"]));
+        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
@@ -36101,7 +36357,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(new URL(v[\\"@id\\"]));
+        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(await Collection.fromJsonLd(
@@ -36123,7 +36383,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(new URL(v[\\"@id\\"]));
+        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(await Collection.fromJsonLd(
@@ -36145,7 +36409,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(new URL(v[\\"@id\\"]));
+        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(await Collection.fromJsonLd(
@@ -36167,7 +36435,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(new URL(v[\\"@id\\"]));
+        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(await Collection.fromJsonLd(
@@ -36189,7 +36461,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(new URL(v[\\"@id\\"]));
+        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(await Collection.fromJsonLd(
@@ -36211,7 +36487,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(new URL(v[\\"@id\\"]));
+        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(await Collection.fromJsonLd(
@@ -36309,7 +36589,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(new URL(v[\\"@id\\"]));
+        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -36346,7 +36630,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
@@ -39603,7 +39891,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Person\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -39932,7 +40220,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -40063,7 +40351,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(new URL(v[\\"@id\\"]));
+        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(await CryptographicKey.fromJsonLd(
@@ -40085,7 +40377,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(new URL(v[\\"@id\\"]));
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(await Multikey.fromJsonLd(
@@ -40122,7 +40418,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(new URL(v[\\"@id\\"]));
+        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
@@ -40144,7 +40444,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(new URL(v[\\"@id\\"]));
+        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
@@ -40166,7 +40470,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(new URL(v[\\"@id\\"]));
+        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(await Collection.fromJsonLd(
@@ -40188,7 +40496,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(new URL(v[\\"@id\\"]));
+        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(await Collection.fromJsonLd(
@@ -40210,7 +40522,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(new URL(v[\\"@id\\"]));
+        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(await Collection.fromJsonLd(
@@ -40232,7 +40548,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(new URL(v[\\"@id\\"]));
+        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(await Collection.fromJsonLd(
@@ -40254,7 +40574,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(new URL(v[\\"@id\\"]));
+        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(await Collection.fromJsonLd(
@@ -40276,7 +40600,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(new URL(v[\\"@id\\"]));
+        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(await Collection.fromJsonLd(
@@ -40374,7 +40702,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(new URL(v[\\"@id\\"]));
+        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -40411,7 +40743,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
@@ -42198,7 +42534,11 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3CLQ1PLSXrhSQbTGGHuxNyaEFKM1_describes.push(new URL(v[\\"@id\\"]));
+        _3CLQ1PLSXrhSQbTGGHuxNyaEFKM1_describes.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3CLQ1PLSXrhSQbTGGHuxNyaEFKM1_describes.push(await Object.fromJsonLd(
@@ -42931,7 +43271,11 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2N5scKaVEcdYHFmfKYYacAwUhUgQ_oneOf.push(new URL(v[\\"@id\\"]));
+        _2N5scKaVEcdYHFmfKYYacAwUhUgQ_oneOf.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2N5scKaVEcdYHFmfKYYacAwUhUgQ_oneOf.push(await Object.fromJsonLd(
@@ -42953,7 +43297,11 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2mV6isMTPRKbWdLCjcpiEysq5dAY_anyOf.push(new URL(v[\\"@id\\"]));
+        _2mV6isMTPRKbWdLCjcpiEysq5dAY_anyOf.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2mV6isMTPRKbWdLCjcpiEysq5dAY_anyOf.push(await Object.fromJsonLd(
@@ -44550,7 +44898,11 @@ relationships?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2Zqdmi46ZnDQsECS6mzwhrv3rUKq_subject.push(new URL(v[\\"@id\\"]));
+        _2Zqdmi46ZnDQsECS6mzwhrv3rUKq_subject.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2Zqdmi46ZnDQsECS6mzwhrv3rUKq_subject.push(await Object.fromJsonLd(
@@ -44572,7 +44924,11 @@ relationships?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2MH19yxjn1wnHsNfa5n4JBhJzxyc_object.push(new URL(v[\\"@id\\"]));
+        _2MH19yxjn1wnHsNfa5n4JBhJzxyc_object.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2MH19yxjn1wnHsNfa5n4JBhJzxyc_object.push(await Object.fromJsonLd(
@@ -44594,7 +44950,11 @@ relationships?: (Object | URL)[];}
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4Lzz89F9qipAQSGkWyX9DGWiUojG_relationship.push(new URL(v[\\"@id\\"]));
+        _4Lzz89F9qipAQSGkWyX9DGWiUojG_relationship.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4Lzz89F9qipAQSGkWyX9DGWiUojG_relationship.push(await Object.fromJsonLd(
@@ -47473,7 +47833,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Service\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -47802,7 +48162,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -47933,7 +48293,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(new URL(v[\\"@id\\"]));
+        _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _axq166E2eZADq34V4MYUc8KMZdC_publicKey.push(await CryptographicKey.fromJsonLd(
@@ -47955,7 +48319,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(new URL(v[\\"@id\\"]));
+        _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod.push(await Multikey.fromJsonLd(
@@ -47992,7 +48360,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(new URL(v[\\"@id\\"]));
+        _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
@@ -48014,7 +48386,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(new URL(v[\\"@id\\"]));
+        _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
@@ -48036,7 +48412,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(new URL(v[\\"@id\\"]));
+        _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following.push(await Collection.fromJsonLd(
@@ -48058,7 +48438,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(new URL(v[\\"@id\\"]));
+        _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _BBCTgfphhsFzpVfKTykGSpBNwoA_followers.push(await Collection.fromJsonLd(
@@ -48080,7 +48464,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(new URL(v[\\"@id\\"]));
+        _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3bgkPwJanyTCoVFM9ovRcus8tKkU_liked.push(await Collection.fromJsonLd(
@@ -48102,7 +48490,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(new URL(v[\\"@id\\"]));
+        _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4N1vBJzXDf8NbBumeECQMFvKetja_featured.push(await Collection.fromJsonLd(
@@ -48124,7 +48516,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(new URL(v[\\"@id\\"]));
+        _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _2MxnRRLq9iPzx5CFq2NPrXdUDCac_featuredTags.push(await Collection.fromJsonLd(
@@ -48146,7 +48542,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(new URL(v[\\"@id\\"]));
+        _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _3sG2Hdwn9qzKGu9mpYkqakAMUkH9_streams.push(await Collection.fromJsonLd(
@@ -48244,7 +48644,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(new URL(v[\\"@id\\"]));
+        _3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       
@@ -48281,7 +48685,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
     
       if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
           && globalThis.Object.keys(v).length === 1) {
-        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(new URL(v[\\"@id\\"]));
+        _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
         continue;
       }
       _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.push(await DidService.fromJsonLd(
