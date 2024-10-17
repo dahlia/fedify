@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.0.4
 -------------
 
-To be released.
+Released on October 17, 2024.
 
  -  Fixed a bug where `Actor.aliasId` and `Actor.aliasIds` properties had been
     represented as `as:alsoKnownAs` property instead of `alsoKnownAs` property
