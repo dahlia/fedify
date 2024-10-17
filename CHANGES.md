@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.0.3
 -------------
 
-To be released.
+Released on October 17, 2024.
 
  -  Improved compatibility with some implementations (e.g., Nexkey) where
     some `CryptographicKey` objects are incorrectly typed in JSON-LD objects.
