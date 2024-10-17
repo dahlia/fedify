@@ -12,6 +12,9 @@ To be released.
     represented as `as:alsoKnownAs` property instead of `alsoKnownAs` property
     in compacted JSON-LD objects.
 
+ -  Improved compatibility with Bridgy Fed for Bluesky where it puts
+    an invalid URI with the format `at://...` in the `alsoKnownAs` property.
+
 
 Version 1.0.3
 -------------
