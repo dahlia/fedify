@@ -132,6 +132,12 @@ export interface TraverseCollectionOptions {
   contextLoader?: DocumentLoader;
 
   /**
+   * Whether to suppress errors when fetching pages.  If `true`,
+   * errors will be logged but not thrown.  Defaults to `false`.
+   */
+  suppressError?: boolean;
+
+  /**
    * The interval to wait between fetching pages.  Zero or negative
    * values will disable the interval.  Disabled by default.
    *
