@@ -148,7 +148,7 @@ test("verifyRequest()", async () => {
       {
         documentLoader: mockDocumentLoader,
         contextLoader: mockDocumentLoader,
-        currentTime: Temporal.Instant.from("2024-03-05T07:48:43.9999Z"),
+        currentTime: Temporal.Instant.from("2024-03-05T06:49:43.9999Z"),
       },
     ),
     null,
@@ -171,7 +171,7 @@ test("verifyRequest()", async () => {
       {
         documentLoader: mockDocumentLoader,
         contextLoader: mockDocumentLoader,
-        currentTime: Temporal.Instant.from("2024-03-05T07:50:44.0001Z"),
+        currentTime: Temporal.Instant.from("2024-03-05T08:49:44.0001Z"),
       },
     ),
     null,

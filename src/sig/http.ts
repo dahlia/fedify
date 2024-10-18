@@ -87,9 +87,9 @@ export interface VerifyRequestOptions {
    * twice the value of this option, with the current time as the center.
    * Or if it is `false`, no time check is performed.
    *
-   * A minute by default.
+   * An hour by default.
    */
-  timeWindow?: Temporal.DurationLike | false;
+  timeWindow?: Temporal.Duration | Temporal.DurationLike | false;
 
   /**
    * The current time.  If not specified, the current time is used.  This is
@@ -205,7 +205,8 @@ export async function verifyRequest(
   const date = Temporal.Instant.from(new Date(dateHeader).toISOString());
   const now = currentTime ?? Temporal.Now.instant();
   if (timeWindow !== false) {
-    const tw: Temporal.DurationLike = timeWindow ?? { minutes: 1 };
+    const tw: Temporal.Duration | Temporal.DurationLike = timeWindow ??
+      { hours: 1 };
     if (Temporal.Instant.compare(date, now.add(tw)) > 0) {
       logger.debug(
         "Failed to verify; Date is too far in the future.",

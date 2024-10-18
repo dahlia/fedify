@@ -75,11 +75,30 @@ To be released.
      -  `Service.clone()` method now accepts `service` option.
      -  `Service.clone()` method now accepts `services` option.
 
+ -  The default time window for verifying HTTP Signatures of incoming requests
+    is now an hour (was a minute).  This new default window is according to
+    the [ActivityPub and HTTP Signatures] document.
+
+     -  The default value of `VerifyRequestOptions.timeWindow` option became
+        `{ hours: 1 }` (was `{ minutes: 1 }`).
+
+     -  The default value of `CreateFederationOptions.signatureTimeWindow`
+        option became `{ hours: 1 }` (was `{ minutes: 1 }`).
+
+     -  The type of `VerifyRequestOptions.timeWindow` property became
+        `Temporal.Duration | Temporal.DurationLike | false`
+        (was `Temporal.DurationLike | false`).
+
+     -  The type of `CreateFederationOptions.signatureTimeWindow` property
+        became `Temporal.Duration | Temporal.DurationLike | false`
+        (was `Temporal.DurationLike | false`).
+
  -  In the `fedify inbox` command's web interface, the *Raw Activity* tab is
     added to show the raw JSON object of the received activity.
 
 [FEP-c0e0]: https://w3id.org/fep/c0e0
 [FEP-9091]: https://w3id.org/fep/9091
+[ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
 

@@ -356,7 +356,7 @@ export interface InboxHandlerParameters<TContextData> {
   inboxListeners?: InboxListenerSet<TContextData>;
   inboxErrorHandler?: InboxErrorHandler<TContextData>;
   onNotFound(request: Request): Response | Promise<Response>;
-  signatureTimeWindow: Temporal.DurationLike | false;
+  signatureTimeWindow: Temporal.Duration | Temporal.DurationLike | false;
   skipSignatureVerification: boolean;
 }
 

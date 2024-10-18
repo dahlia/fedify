@@ -167,13 +167,13 @@ export interface CreateFederationOptions {
   onOutboxError?: OutboxErrorHandler;
 
   /**
-   * The time window for verifying the signature of incoming requests.  If the
+   * The time window for verifying HTTP Signatures of incoming requests.  If the
    * request is older or newer than this window, it is rejected.  Or if it is
    * `false`, the request's timestamp is not checked at all.
    *
-   * By default, the window is a minute.
+   * By default, the window is an hour.
    */
-  signatureTimeWindow?: Temporal.DurationLike | false;
+  signatureTimeWindow?: Temporal.Duration | Temporal.DurationLike | false;
 
   /**
    * Whether to skip HTTP Signatures verification for incoming activities.
@@ -310,7 +310,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   contextLoader: DocumentLoader;
   authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   onOutboxError?: OutboxErrorHandler;
-  signatureTimeWindow: Temporal.DurationLike | false;
+  signatureTimeWindow: Temporal.Duration | Temporal.DurationLike | false;
   skipSignatureVerification: boolean;
   outboxRetryPolicy: RetryPolicy;
   inboxRetryPolicy: RetryPolicy;
@@ -365,7 +365,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
           ? (identity) => getAuthenticatedDocumentLoader(identity, true)
           : getAuthenticatedDocumentLoader);
     this.onOutboxError = options.onOutboxError;
-    this.signatureTimeWindow = options.signatureTimeWindow ?? { minutes: 1 };
+    this.signatureTimeWindow = options.signatureTimeWindow ?? { hours: 1 };
     this.skipSignatureVerification = options.skipSignatureVerification ?? false;
     this.outboxRetryPolicy = options.outboxRetryPolicy ??
       createExponentialBackoffPolicy();
