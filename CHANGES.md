@@ -19,19 +19,19 @@ To be released.
  -  Added `successor` property to the `Actor` types in the Activity
     Vocabulary API.
 
-     -  Added `Application.successor` property.
+     -  Added `Application.getSuccessor()` method.
      -  `new Application()` constructor now accepts `successor` option.
      -  `Application.clone()` method now accepts `successor` option.
-     -  Added `Group.successor` property.
+     -  Added `Group.getSuccessor()` method.
      -  `new Group()` constructor now accepts `successor` option.
      -  `Group.clone()` method now accepts `successor` option.
-     -  Added `Organization.successor` property.
+     -  Added `Organization.getSuccessor()` method.
      -  `new Organization()` constructor now accepts `successor` option.
      -  `Organization.clone()` method now accepts `successor` option.
-     -  Added `Person.successor` property.
+     -  Added `Person.getSuccessor()` method.
      -  `new Person()` constructor now accepts `successor` option.
      -  `Person.clone()` method now accepts `successor` option.
-     -  Added `Service.successor` property.
+     -  Added `Service.getSuccessor()` method.
      -  `new Service()` constructor now accepts `successor` option.
      -  `Service.clone()` method now accepts `successor` option.
 
