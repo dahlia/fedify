@@ -190,6 +190,10 @@ test("handleActor()", async () => {
           "@type": "@id",
         },
         manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
+        movedTo: {
+          "@id": "as:movedTo",
+          "@type": "@id",
+        },
         featured: {
           "@id": "toot:featured",
           "@type": "@id",
@@ -290,6 +294,10 @@ test("handleActor()", async () => {
           "@type": "@id",
         },
         manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
+        movedTo: {
+          "@id": "as:movedTo",
+          "@type": "@id",
+        },
         featured: {
           "@id": "toot:featured",
           "@type": "@id",

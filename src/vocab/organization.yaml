@@ -15,6 +15,9 @@ defaultContext:
     "@id": "as:alsoKnownAs"
     "@type": "@id"
   manuallyApprovesFollowers: "as:manuallyApprovesFollowers"
+  movedTo:
+    "@id": "as:movedTo"
+    "@type": "@id"
   toot: "http://joinmastodon.org/ns#"
   featured:
     "@id": "toot:featured"
@@ -247,6 +250,23 @@ properties:
   description: Whether the actor allows to be indexed.
   range:
   - "http://www.w3.org/2001/XMLSchema#boolean"
+
+- singularName: successor
+  functional: true
+  compactName: movedTo
+  uri: "https://www.w3.org/ns/activitystreams#movedTo"
+  description: >-
+    Signifies that an actor has been moved to a different ID.
+    Used in Mastodon-style data portability with the {@link Move} activity;
+    see [ActivityPub Data Portability/Move
+    Action](https://swicg.github.io/activitypub-data-portability/#move-action)
+    for more details. 
+  range:
+  - "https://www.w3.org/ns/activitystreams#Application"
+  - "https://www.w3.org/ns/activitystreams#Group"
+  - "https://www.w3.org/ns/activitystreams#Organization"
+  - "https://www.w3.org/ns/activitystreams#Person"
+  - "https://www.w3.org/ns/activitystreams#Service"
 
 - pluralName: aliases
   singularName: alias

@@ -561,6 +561,10 @@ test("Person.toJsonLd()", async () => {
           "@id": "as:alsoKnownAs",
           "@type": "@id",
         },
+        movedTo: {
+          "@id": "as:movedTo",
+          "@type": "@id",
+        },
         discoverable: "toot:discoverable",
         featured: {
           "@id": "toot:featured",

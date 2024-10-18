@@ -16,6 +16,25 @@ To be released.
 
  -  Added `EmojiReact` class to Activity Vocabulary API.  [[FEP-c0e0]]
 
+ -  Added `successor` property to the `Actor` types in the Activity
+    Vocabulary API.
+
+     -  Added `Application.successor` property.
+     -  `new Application()` constructor now accepts `successor` option.
+     -  `Application.clone()` method now accepts `successor` option.
+     -  Added `Group.successor` property.
+     -  `new Group()` constructor now accepts `successor` option.
+     -  `Group.clone()` method now accepts `successor` option.
+     -  Added `Organization.successor` property.
+     -  `new Organization()` constructor now accepts `successor` option.
+     -  `Organization.clone()` method now accepts `successor` option.
+     -  Added `Person.successor` property.
+     -  `new Person()` constructor now accepts `successor` option.
+     -  `Person.clone()` method now accepts `successor` option.
+     -  Added `Service.successor` property.
+     -  `new Service()` constructor now accepts `successor` option.
+     -  `Service.clone()` method now accepts `successor` option.
+
  -  Added `DidService` class to Activity Vocabulary API.
     [[FEP-9091], [#146]]
 
