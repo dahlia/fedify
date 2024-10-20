@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.1.0
 -------------
 
-To be released.
+Released on October 20, 2024.
 
  -  Added utility functions for traversing remote collections. [[#150]]
 
