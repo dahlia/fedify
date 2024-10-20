@@ -29,22 +29,28 @@ jobs:
       with:
         check_name: "Test Results (Linux)"
         files: src/.test-report.xml
+      continue-on-error: true
     - uses: EnricoMi/publish-unit-test-result-action/macos@v2
       if: runner.os == 'macOS' && always()
       with:
         check_name: "Test Results (macOS)"
         files: src/.test-report.xml
+      continue-on-error: true
     - uses: EnricoMi/publish-unit-test-result-action/windows@v2
       if: runner.os == 'Windows' && always()
       with:
         check_name: "Test Results (Windows)"
         files: src/.test-report.xml
+      continue-on-error: true
     - run: deno coverage --lcov .cov > .cov.lcov
       working-directory: ${{ github.workspace }}/src/
+      continue-on-error: true
     - uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         file: src/.cov.lcov
+      continue-on-error: true
+    - run: "true"
 
   test-dnt:
     strategy:
