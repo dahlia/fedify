@@ -41,6 +41,12 @@
  *
  * @module
  */
+
+// @ts-ignore: Property 'UrlPattern' does not exist
+if (!globalThis.URLPattern) {
+  await import("urlpattern-polyfill");
+}
+
 export * from "./federation/mod.ts";
 export * from "./nodeinfo/mod.ts";
 export * from "./runtime/mod.ts";
