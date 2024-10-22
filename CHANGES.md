@@ -8,6 +8,12 @@ Version 1.2.0
 
 To be released.
 
+ -  Re-exported Semantic Versioning-related types and functions:
+
+     -  Added `SemVer` type.
+     -  Added `formatSemVer()` function.
+     -  Added `parseSemVer()` function.
+
 
 Version 1.1.0
 -------------

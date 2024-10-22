@@ -60,6 +60,7 @@ export interface Software {
 
   /**
    * The version of this server software.
+   * @see {@link parseSemVer}
    */
   version: SemVer;
 
