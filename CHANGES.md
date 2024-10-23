@@ -8,6 +8,10 @@ Version 0.15.3
 
 To be released.
 
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <https://purl.archive.org/socialweb/webfinger>.
+
+
 Version 0.15.2
 --------------
 
