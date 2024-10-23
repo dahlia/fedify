@@ -18,8 +18,8 @@ importers:
         specifier: 0.1.0-dev.8
         version: 0.1.0-dev.8(web-streams-polyfill@3.3.3)
       '@fedify/fedify':
-        specifier: 1.1.0-dev.432
-        version: 1.1.0-dev.432(web-streams-polyfill@3.3.3)
+        specifier: 1.2.0-dev.452
+        version: 1.2.0-dev.452(web-streams-polyfill@3.3.3)
       '@fedify/postgres':
         specifier: 0.1.0-dev.2
         version: 0.1.0-dev.2(web-streams-polyfill@3.3.3)
@@ -401,8 +401,8 @@ packages:
   '@fedify/fedify@1.0.2':
     resolution: {integrity: sha512-OWVfahJRstzCOGSEDJ5CEppVHZyR9IfpFStj1WnedLE6rFoYZ94fZu7dQv4x0M1a1K3AfIiwvOAgcXldy21sWg==}
 
-  '@fedify/fedify@1.1.0-dev.432':
-    resolution: {integrity: sha512-SefxERpwvX5BPPon6bM2hTy64YuuVJIUuytUYN/U7fOiGLrOTQiMZoOUxi7PJnKDaf5tNwaMhvoWwp4n0ULt1w==}
+  '@fedify/fedify@1.2.0-dev.452':
+    resolution: {integrity: sha512-S7oJFVOcn5Z0r1RIQhI7XjbYqna6dziwSxBURXiYp+3OBrTYnn1wKsQ0CFslRRr8hSC5yOWvuER+wDvvvsZXdw==}
 
   '@fedify/postgres@0.1.0-dev.2':
     resolution: {integrity: sha512-KeLhfRgprJF7EXVgzPBRQAJKHnX79IdoZgrWWqD78bAIx3IiRLMXc+LS7/UmQaD0PiNmFXK+cUzKUE00/HbyDg==}
@@ -2074,7 +2074,7 @@ snapshots:
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  '@fedify/fedify@1.1.0-dev.432(web-streams-polyfill@3.3.3)':
+  '@fedify/fedify@1.2.0-dev.452(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-crypto': 0.3.1
       '@deno/shim-deno': 0.18.2
