@@ -8,11 +8,23 @@ Version 1.2.0
 
 To be released.
 
+ -  Added NodeInfo client functions.
+
+     -  Added `getNodeInfo()` function.
+     -  Added `GetNodeInfoOptions` interface.
+     -  Added `parseNodeInfo()` function.
+     -  Added `ParseNodeInfoOptions` interface.
+
  -  Re-exported Semantic Versioning-related types and functions:
 
      -  Added `SemVer` type.
      -  Added `formatSemVer()` function.
      -  Added `parseSemVer()` function.
+
+ -  Added more log messages using the [LogTape] library.  Currently the below
+    logger categories are used:
+
+     -  `["fedify", "nodeinfo", "client"]`
 
 
 Version 1.1.0

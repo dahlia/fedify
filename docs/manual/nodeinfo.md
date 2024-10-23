@@ -94,8 +94,10 @@ The `NodeInfo` interface is defined as follows:
 
 `software.version`
 :   *Required.*  The version of the server software.  This must be a valid
-    [`SemVer`] object.  For your information, a Semantic Versioning string
-    can be parsed into a [`SemVer`] object using [`parse()`] function.
+    `SemVer` object.  For your information, a Semantic Versioning string
+    can be parsed into a `SemVer` object using `parseSemVer()` function.
+    In the other way around, you can render a `SemVer` object into a Semantic
+    Versioning string using `formatSemVer()` function.
 
 `software.repository`
 :   The [`URL`] of the source code repository of the server software.
@@ -140,6 +142,41 @@ The `NodeInfo` interface is defined as follows:
     the server.  This `number` has to be an integer greater than or equal to
     zero.
 
-[`SemVer`]: https://jsr.io/@std/semver/doc/~/SemVer
-[`parse()`]: https://jsr.io/@std/semver/doc/~/parse
 [`URL`]: https://developer.mozilla.org/en-US/docs/Web/API/URL
+
+
+NodeInfo client
+---------------
+
+*This API is available since Fedify 1.2.0.*
+
+You may want to fetch NodeInfo objects from other servers.  Fedify provides
+a way to fetch NodeInfo objects with the `getNodeInfo()` function:
+
+~~~~ typescript twoslash
+import { type NodeInfo, getNodeInfo } from "@fedify/fedify";
+
+const nodeInfo: NodeInfo | null = await getNodeInfo("https://example.com/");
+if (nodeInfo != null) console.log(nodeInfo);
+~~~~
+
+The `getNodeInfo()` function returns a `NodeInfo` object if the server provides
+a NodeInfo endpoint and the response is valid.  Otherwise, it returns `null`.
+
+> [!TIP]
+> Sometimes, a server may provide a slightly invalid NodeInfo object.  In such
+> case, you can enforce parsing the object by passing `{ tryBestEffort: true }`
+> option as the second argument to `getNodeInfo()` function:
+>
+> ~~~~ typescript twoslash
+> import { type NodeInfo, getNodeInfo } from "@fedify/fedify";
+>
+> const nodeInfo: NodeInfo | null = await getNodeInfo("https://example.com/", {
+>   tryBestEffort: true,
+> });
+>
+> if (nodeInfo != null) console.log(nodeInfo);
+> ~~~~
+>
+> However, it does not guarantee that parsing will always succeed.  It just
+> tries to parse the object as much as possible.

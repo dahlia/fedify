@@ -70,7 +70,7 @@ features:
 - icon: ℹ️
   title: NodeInfo
   details: >-
-    <a href="https://nodeinfo.diaspora.software/">NodeInfo</a> server
+    <a href="https://nodeinfo.diaspora.software/">NodeInfo</a> server and client
   link: /manual/nodeinfo.md
 - icon: 🧩
   title: Integration

@@ -161,6 +161,14 @@ The `["fedify", "federation", "queue"]` category is used for logging messages
 related to the task queue.  When you are curious about the task queue, you can
 check the log messages in this category with the `"debug"` level.
 
+### `["fedify", "nodeinfo", "client"]`
+
+*This category is available since Fedify 1.2.0.*
+
+The `["fedify", "nodeinfo", "client"]` category is used for logging messages
+related to the NodeInfo client.  When you are curious about the NodeInfo client,
+you can check the log messages in this category with the `"error"` level.
+
 ### `["fedify", "runtime", "docloader"]`
 
 *This category is available since Fedify 0.8.0.*
