@@ -783,6 +783,17 @@ const preloadedContexts: Record<string, unknown> = {
       },
     },
   },
+
+  "https://purl.archive.org/socialweb/webfinger": {
+    "@context": {
+      "wf": "https://purl.archive.org/socialweb/webfinger#",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "webfinger": {
+        "@id": "wf:webfinger",
+        "@type": "xsd:string",
+      },
+    },
+  },
 };
 
 export default preloadedContexts;

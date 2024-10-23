@@ -27,6 +27,15 @@ To be released.
      -  `["fedify", "nodeinfo", "client"]`
 
 
+Version 1.1.1
+-------------
+
+Released on October 23, 2024.
+
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <https://purl.archive.org/socialweb/webfinger>.
+
+
 Version 1.1.0
 -------------
 
@@ -125,6 +134,15 @@ Released on October 20, 2024.
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
+
+
+Version 1.0.5
+-------------
+
+Released on October 23, 2024.
+
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <https://purl.archive.org/socialweb/webfinger>.
 
 
 Version 1.0.4
@@ -344,6 +362,15 @@ Released on September 26, 2024.
 [#106]: https://github.com/dahlia/fedify/issues/106
 [#135]: https://github.com/dahlia/fedify/issues/135
 [#137]: https://github.com/dahlia/fedify/issues/137
+
+
+Version 0.15.3
+--------------
+
+Released on October 23, 2024.
+
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <https://purl.archive.org/socialweb/webfinger>.
 
 
 Version 0.15.2
