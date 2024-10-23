@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.1.1
 -------------
 
-To be released.
+Released on October 23, 2024.
 
  -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
     context: <https://purl.archive.org/socialweb/webfinger>.
