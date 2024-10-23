@@ -58,6 +58,7 @@ lists the activity types that Fedify provides:
  -  [`Create`](https://jsr.io/@fedify/fedify/doc/vocab/~/Create)
  -  [`Delete`](https://jsr.io/@fedify/fedify/doc/vocab/~/Delete)
  -  [`Dislike`](https://jsr.io/@fedify/fedify/doc/vocab/~/Dislike)
+ -  [`EmojiReact`](https://jsr.io/@fedify/fedify/doc/vocab/~/EmojiReact)
  -  [`Flag`](https://jsr.io/@fedify/fedify/doc/vocab/~/Flag)
  -  [`Follow`](https://jsr.io/@fedify/fedify/doc/vocab/~/Follow)
  -  [`Ignore`](https://jsr.io/@fedify/fedify/doc/vocab/~/Ignore)
