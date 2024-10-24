@@ -33,6 +33,7 @@ defaultContext:
   PropertyValue: "schema:PropertyValue"
   value: "schema:value"
   misskey: "https://misskey-hub.net/ns#"
+  _misskey_followedMessage: "misskey:_misskey_followedMessage"
   isCat: "misskey:isCat"
 
 properties:
@@ -297,6 +298,15 @@ properties:
     and verifiable credential repository services. 
   range:
   - "https://www.w3.org/ns/did#Service"
+
+- singularName: followedMessage
+  functional: true
+  compactName: _misskey_followedMessage
+  uri: "https://misskey-hub.net/ns#_misskey_followedMessage"
+  description: |
+    This value is used for `Actor` type objects to show message on followed.
+  range:
+  - "http://www.w3.org/2001/XMLSchema#string"
 
 - singularName: cat
   functional: true

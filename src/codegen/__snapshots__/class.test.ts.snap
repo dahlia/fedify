@@ -13391,6 +13391,7 @@ export class Application extends Object {
 #_2ZNWDhuNdSXBwEmrB5kwffdKGzok_movedTo: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -13423,7 +13424,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -13786,6 +13787,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
           }
         }
       
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -13830,7 +13843,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 
     = {},
     options: {
@@ -14187,6 +14200,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
             throw new TypeError(
               \\"The services must be an array of type \\" +
               \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
             );
           }
         }
@@ -15541,6 +15566,14 @@ get preferredUsernames(): ((string | LanguageString))[] {
         }
       }
       
+/** This value is used for \`Actor\` type objects to show message on followed.
+ * 
+ */
+ get followedMessage(): (string | null) {
+        if (this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length < 1) return null;
+        return this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -16004,6 +16037,22 @@ get preferredUsernames(): ((string | LanguageString))[] {
       }
       
       compactItems = [];
+      for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"_misskey_followedMessage\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -16021,7 +16070,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Application\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -16342,6 +16391,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
     }
     
     array = [];
+    for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -16365,7 +16429,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -16940,6 +17004,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
       v, options))
     }
     instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+    const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
+
+    let _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array = values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"];
+    
+    for (
+      const v of _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array == null
+        ? []
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array.length === 1 && \\"@list\\" in _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0]
+        ? _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0][\\"@list\\"]
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array
+    ) {
+      if (v == null) continue;
+    _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.push(v[\\"@value\\"])
+    }
+    instance.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -17401,6 +17480,26 @@ get preferredUsernames(): ((string | LanguageString))[] {
           || !(\\"service\\" in proxy)
           && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
         proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+      }
+      
+      const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length == 1) {
+        proxy.followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
       }
       
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
@@ -24246,6 +24345,7 @@ export class Group extends Object {
 #_2ZNWDhuNdSXBwEmrB5kwffdKGzok_movedTo: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -24278,7 +24378,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -24641,6 +24741,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
           }
         }
       
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -24685,7 +24797,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 
     = {},
     options: {
@@ -25042,6 +25154,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
             throw new TypeError(
               \\"The services must be an array of type \\" +
               \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
             );
           }
         }
@@ -26396,6 +26520,14 @@ get preferredUsernames(): ((string | LanguageString))[] {
         }
       }
       
+/** This value is used for \`Actor\` type objects to show message on followed.
+ * 
+ */
+ get followedMessage(): (string | null) {
+        if (this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length < 1) return null;
+        return this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -26859,6 +26991,22 @@ get preferredUsernames(): ((string | LanguageString))[] {
       }
       
       compactItems = [];
+      for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"_misskey_followedMessage\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -26876,7 +27024,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Group\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -27197,6 +27345,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
     }
     
     array = [];
+    for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -27220,7 +27383,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -27795,6 +27958,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
       v, options))
     }
     instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+    const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
+
+    let _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array = values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"];
+    
+    for (
+      const v of _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array == null
+        ? []
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array.length === 1 && \\"@list\\" in _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0]
+        ? _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0][\\"@list\\"]
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array
+    ) {
+      if (v == null) continue;
+    _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.push(v[\\"@value\\"])
+    }
+    instance.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -28256,6 +28434,26 @@ get preferredUsernames(): ((string | LanguageString))[] {
           || !(\\"service\\" in proxy)
           && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
         proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+      }
+      
+      const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length == 1) {
+        proxy.followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
       }
       
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
@@ -33813,6 +34011,7 @@ export class Organization extends Object {
 #_2ZNWDhuNdSXBwEmrB5kwffdKGzok_movedTo: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -33845,7 +34044,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -34208,6 +34407,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
           }
         }
       
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -34252,7 +34463,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 
     = {},
     options: {
@@ -34609,6 +34820,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
             throw new TypeError(
               \\"The services must be an array of type \\" +
               \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
             );
           }
         }
@@ -35963,6 +36186,14 @@ get preferredUsernames(): ((string | LanguageString))[] {
         }
       }
       
+/** This value is used for \`Actor\` type objects to show message on followed.
+ * 
+ */
+ get followedMessage(): (string | null) {
+        if (this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length < 1) return null;
+        return this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -36426,6 +36657,22 @@ get preferredUsernames(): ((string | LanguageString))[] {
       }
       
       compactItems = [];
+      for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"_misskey_followedMessage\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -36443,7 +36690,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Organization\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -36764,6 +37011,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
     }
     
     array = [];
+    for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -36787,7 +37049,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -37362,6 +37624,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
       v, options))
     }
     instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+    const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
+
+    let _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array = values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"];
+    
+    for (
+      const v of _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array == null
+        ? []
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array.length === 1 && \\"@list\\" in _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0]
+        ? _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0][\\"@list\\"]
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array
+    ) {
+      if (v == null) continue;
+    _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.push(v[\\"@value\\"])
+    }
+    instance.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -37825,6 +38102,26 @@ get preferredUsernames(): ((string | LanguageString))[] {
         proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
       }
       
+      const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length == 1) {
+        proxy.followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
+      }
+      
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
         // deno-lint-ignore no-explicit-any
         .map((v: any) => v instanceof URL
@@ -38173,6 +38470,7 @@ export class Person extends Object {
 #_2ZNWDhuNdSXBwEmrB5kwffdKGzok_movedTo: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -38205,7 +38503,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -38568,6 +38866,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
           }
         }
       
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -38612,7 +38922,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 
     = {},
     options: {
@@ -38969,6 +39279,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
             throw new TypeError(
               \\"The services must be an array of type \\" +
               \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
             );
           }
         }
@@ -40323,6 +40645,14 @@ get preferredUsernames(): ((string | LanguageString))[] {
         }
       }
       
+/** This value is used for \`Actor\` type objects to show message on followed.
+ * 
+ */
+ get followedMessage(): (string | null) {
+        if (this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length < 1) return null;
+        return this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -40786,6 +41116,22 @@ get preferredUsernames(): ((string | LanguageString))[] {
       }
       
       compactItems = [];
+      for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"_misskey_followedMessage\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -40803,7 +41149,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Person\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -41124,6 +41470,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
     }
     
     array = [];
+    for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -41147,7 +41508,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -41722,6 +42083,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
       v, options))
     }
     instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+    const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
+
+    let _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array = values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"];
+    
+    for (
+      const v of _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array == null
+        ? []
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array.length === 1 && \\"@list\\" in _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0]
+        ? _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0][\\"@list\\"]
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array
+    ) {
+      if (v == null) continue;
+    _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.push(v[\\"@value\\"])
+    }
+    instance.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -42183,6 +42559,26 @@ get preferredUsernames(): ((string | LanguageString))[] {
           || !(\\"service\\" in proxy)
           && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
         proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+      }
+      
+      const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length == 1) {
+        proxy.followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
       }
       
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
@@ -46362,6 +46758,7 @@ export class Service extends Object {
 #_2ZNWDhuNdSXBwEmrB5kwffdKGzok_movedTo: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_3NV7TGNhuABbryNjNi4wib4DgNpY_alsoKnownAs: (Application | Group | Organization | Person | Service | URL)[] = [];
 #_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service: (DidService | URL)[] = [];
+#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
 #_2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
   /**
@@ -46394,7 +46791,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 ,
     {
       documentLoader,
@@ -46757,6 +47154,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
           }
         }
       
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"cat\\" in values &&             values.cat != null) {
           if (typeof values.cat === \\"boolean\\") {
             // @ts-ignore: type is checked above.
@@ -46801,7 +47210,7 @@ preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey 
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
 assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;successor?: Application | Group | Organization | Person | Service | URL | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];service?: DidService | URL | null;
-services?: (DidService | URL)[];cat?: boolean | null;}
+services?: (DidService | URL)[];followedMessage?: string | null;cat?: boolean | null;}
 
     = {},
     options: {
@@ -47158,6 +47567,18 @@ services?: (DidService | URL)[];cat?: boolean | null;}
             throw new TypeError(
               \\"The services must be an array of type \\" +
               \\"DidService | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
+        if (\\"followedMessage\\" in values &&             values.followedMessage != null) {
+          if (typeof values.followedMessage === \\"string\\") {
+            // @ts-ignore: type is checked above.
+            clone.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = [values.followedMessage];
+          } else {
+            throw new TypeError(
+              \\"The followedMessage must be of type \\" +
+              \\"string\\" + \\".\\",
             );
           }
         }
@@ -48512,6 +48933,14 @@ get preferredUsernames(): ((string | LanguageString))[] {
         }
       }
       
+/** This value is used for \`Actor\` type objects to show message on followed.
+ * 
+ */
+ get followedMessage(): (string | null) {
+        if (this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length < 1) return null;
+        return this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
+      }
+      
 /** Used on actors to indicate that they in some way identify as a cat,
  * expressed as a boolean value. If this property is set to \`true\`,
  * displaying the actor or their notes will have some special effects
@@ -48975,6 +49404,22 @@ get preferredUsernames(): ((string | LanguageString))[] {
       }
       
       compactItems = [];
+      for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+        const item = (
+      v
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"_misskey_followedMessage\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
         const item = (
       v
@@ -48992,7 +49437,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       
       result[\\"type\\"] = \\"Service\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
       return result;
     }
     
@@ -49313,6 +49758,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
     }
     
     array = [];
+    for (const v of this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage) {
+      const element = (
+    { \\"@value\\": v }
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat) {
       const element = (
     { \\"@value\\": v }
@@ -49336,7 +49796,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/v1\\",\\"https://w3id.org/security/data-integrity/v1\\",\\"https://www.w3.org/ns/did/v1\\",\\"https://w3id.org/security/multikey/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -49911,6 +50371,21 @@ get preferredUsernames(): ((string | LanguageString))[] {
       v, options))
     }
     instance.#_4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+    const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage: (string)[] = [];
+
+    let _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array = values[\\"https://misskey-hub.net/ns#_misskey_followedMessage\\"];
+    
+    for (
+      const v of _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array == null
+        ? []
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array.length === 1 && \\"@list\\" in _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0]
+        ? _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array[0][\\"@list\\"]
+        : _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage__array
+    ) {
+      if (v == null) continue;
+    _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.push(v[\\"@value\\"])
+    }
+    instance.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage;
     const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat: (boolean)[] = [];
 
     let _2xEU4QtkC53RAun67T81Egqt9vmL_isCat__array = values[\\"https://misskey-hub.net/ns#isCat\\"];
@@ -50372,6 +50847,26 @@ get preferredUsernames(): ((string | LanguageString))[] {
           || !(\\"service\\" in proxy)
           && _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service.length > 0) {
         proxy.services = _4Q6NrKH6bazBGtxwG8vyG77ir7Tg_service;
+      }
+      
+      const _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage = this.#_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage.length == 1) {
+        proxy.followedMessage = _QuxorEK1txp7jGjq8BRQfTPvUwp__misskey_followedMessage[0];
       }
       
       const _2xEU4QtkC53RAun67T81Egqt9vmL_isCat = this.#_2xEU4QtkC53RAun67T81Egqt9vmL_isCat
@@ -52573,7 +53068,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"schema\\":\\"http://schema.org#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"sensitive\\":\\"as:sensitive\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"quoteUrl\\":\\"as:quoteUrl\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
     const compacted = await jsonld.compact(
       values,
       docContext,

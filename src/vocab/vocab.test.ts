@@ -575,6 +575,7 @@ test("Person.toJsonLd()", async () => {
           "@type": "@id",
         },
         indexable: "toot:indexable",
+        _misskey_followedMessage: "misskey:_misskey_followedMessage",
         isCat: "misskey:isCat",
         manuallyApprovesFollowers: "as:manuallyApprovesFollowers",
         memorial: "toot:memorial",

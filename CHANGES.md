@@ -21,6 +21,24 @@ To be released.
      -  Added `formatSemVer()` function.
      -  Added `parseSemVer()` function.
 
+ -  Added `followedMessage` property to `Actor` type in Activity Vocabulary API.
+
+     -  Added `Application.followedMessage` property.
+     -  `new Application()` constructor now accepts `followedMessage` option.
+     -  `Application.clone()` method now accepts `followedMessage` option.
+     -  Added `Group.followedMessage` property.
+     -  `new Group()` constructor now accepts `followedMessage` option.
+     -  `Group.clone()` method now accepts `followedMessage` option.
+     -  Added `Organization.followedMessage` property.
+     -  `new Organization()` constructor now accepts `followedMessage` option.
+     -  `Organization.clone()` method now accepts `followedMessage` option.
+     -  Added `Person.followedMessage` property.
+     -  `new Person()` constructor now accepts `followedMessage` option.
+     -  `Person.clone()` method now accepts `followedMessage` option.
+     -  Added `Service.followedMessage` property.
+     -  `new Service()` constructor now accepts `followedMessage` option.
+     -  `Service.clone()` method now accepts `followedMessage` option.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 

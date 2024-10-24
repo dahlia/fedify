@@ -89,22 +89,23 @@ property.
 > [!NOTE]
 > Some of the properties in Activity Vocabulary have been renamed in Fedify:
 >
-> | Original name          | Accessor in Fedify                |
-> |------------------------|-----------------------------------|
-> | [`alsoKnownAs`]        | `Application.getAliases()`/`Group.getAliases()`/`Organization.getAliases()`/`Person.getAliases()`/`Service.getAliases()` |
-> | [`anyOf`]              | `Question.getInclusiveOptions()`  |
-> | [`attributedTo`]       | `Object.getAttributions()`        |
-> | [`hreflang`]           | `Link.language`                   |
-> | [`inReplyTo`]          | `Object.getReplyTargets()`        |
-> | [`isCat`]              | `Application.cat`/`Group.cat`/`Organization.cat`/`Person.cat`/`Service.cat` |
-> | [`movedTo`]            | `Application.successor`/`Group.successor`/`Organization.successor`/`Person.successor`/`Service.successor` |
-> | [`oneOf`]              | `Question.getExclusiveOptions()`  |
-> | [`orderedItems`]       | `OrderedCollection.getItems()`    |
-> | [`publicKeyMultibase`] | `Multikey.publicKey`              |
-> | [`publicKeyPem`]       | `CryptographicKey.publicKey`      |
-> | [`quoteUri`]           | `Article.quoteUrl`/`ChatMessage.quoteUrl`/`Note.quoteUrl`/`Question.quoteUrl` |
-> | [`votersCount`]        | `Question.voters`                 |
-> | [`_misskey_quote`]     | `Article.quoteUrl`/`ChatMessage.quoteUrl`/`Note.quoteUrl`/`Question.quoteUrl` |
+> | Original name                | Accessor in Fedify                |
+> |------------------------------|-----------------------------------|
+> | [`alsoKnownAs`]              | `Application.getAliases()`/`Group.getAliases()`/`Organization.getAliases()`/`Person.getAliases()`/`Service.getAliases()` |
+> | [`anyOf`]                    | `Question.getInclusiveOptions()`  |
+> | [`attributedTo`]             | `Object.getAttributions()`        |
+> | [`hreflang`]                 | `Link.language`                   |
+> | [`inReplyTo`]                | `Object.getReplyTargets()`        |
+> | [`isCat`]                    | `Application.cat`/`Group.cat`/`Organization.cat`/`Person.cat`/`Service.cat` |
+> | [`movedTo`]                  | `Application.successor`/`Group.successor`/`Organization.successor`/`Person.successor`/`Service.successor` |
+> | [`oneOf`]                    | `Question.getExclusiveOptions()`  |
+> | [`orderedItems`]             | `OrderedCollection.getItems()`    |
+> | [`publicKeyMultibase`]       | `Multikey.publicKey`              |
+> | [`publicKeyPem`]             | `CryptographicKey.publicKey`      |
+> | [`quoteUri`]                 | `Article.quoteUrl`/`ChatMessage.quoteUrl`/`Note.quoteUrl`/`Question.quoteUrl` |
+> | [`votersCount`]              | `Question.voters`                 |
+> | [`_misskey_followedMessage`] | `Application.followedMessage`/`Group.followedMessage`/`Organization.followedMessage`/`Person.followedMessage`/`Service.followedMessage` |
+> | [`_misskey_quote`]           | `Article.quoteUrl`/`ChatMessage.quoteUrl`/`Note.quoteUrl`/`Question.quoteUrl` |
 
 [`alsoKnownAs`]: https://www.w3.org/TR/did-core/#dfn-alsoknownas
 [`anyOf`]: https://www.w3.org/TR/activitystreams-vocabulary/#dfn-anyof
@@ -119,6 +120,7 @@ property.
 [`publicKeyPem`]: https://web.archive.org/web/20221218063101/https://web-payments.org/vocabs/security#publicKey
 [`quoteUri`]: https://github.com/fedibird/mastodon?tab=readme-ov-file#quotes
 [`votersCount`]: https://docs.joinmastodon.org/spec/activitypub/#poll-specific-properties
+[`_misskey_followedMessage`]: https://misskey-hub.net/ns#_misskey_followedmessage
 [`_misskey_quote`]: https://misskey-hub.net/ns#_misskey_quote
 
 
