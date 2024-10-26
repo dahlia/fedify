@@ -8,6 +8,11 @@ Version 0.15.4
 
 To be released.
 
+ -  Fixed default document loaders' incorrect handling of relative URIs in
+    `Link` headers with `rel=alternate`.  [[#155] by Emelia Smith]
+
+[#155]: https://github.com/dahlia/fedify/pull/155
+
 
 Version 0.15.3
 --------------
@@ -1567,4 +1572,4 @@ Version 0.1.0
 
 Initial release.  Released on March 8, 2024.
 
-<!-- cSpell: ignore Dogeon Fabien Wressell -->
+<!-- cSpell: ignore Dogeon Fabien Wressell Emelia -->
