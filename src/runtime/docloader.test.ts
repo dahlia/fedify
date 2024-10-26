@@ -83,6 +83,19 @@ test("fetchDocumentLoader()", async (t) => {
       },
     ));
 
+    mf.mock("GET@/link-obj-relative", (_req) =>
+      new Response(
+        "",
+        {
+          status: 200,
+          headers: {
+            "Content-Type": "text/html; charset=utf-8",
+            Link: '</object>; rel="alternate"; ' +
+              'type="application/activity+json"',
+          },
+        },
+      ));
+
   await t.step("Link header", async () => {
     assertEquals(await fetchDocumentLoader("https://example.com/link-ctx"), {
       contextUrl: "https://www.w3.org/ns/activitystreams",
@@ -95,6 +108,29 @@ test("fetchDocumentLoader()", async (t) => {
     });
 
     assertEquals(await fetchDocumentLoader("https://example.com/link-obj"), {
+      contextUrl: null,
+      documentUrl: "https://example.com/object",
+      document: {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/object",
+        name: "Fetched object",
+        type: "Object",
+      },
+    });
+  });
+
+  await t.step("Link header relative url", async () => {
+    assertEquals(await fetchDocumentLoader("https://example.com/link-ctx"), {
+      contextUrl: "https://www.w3.org/ns/activitystreams",
+      documentUrl: "https://example.com/link-ctx",
+      document: {
+        id: "https://example.com/link-ctx",
+        name: "Fetched object",
+        type: "Object",
+      },
+    });
+
+    assertEquals(await fetchDocumentLoader("https://example.com/link-obj-relative"), {
       contextUrl: null,
       documentUrl: "https://example.com/object",
       document: {

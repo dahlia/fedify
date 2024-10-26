@@ -133,18 +133,19 @@ async function getRemoteDocument(
     } else {
       const entries = link.getByRel("alternate");
       for (const [uri, params] of entries) {
+        const altUri = new URL(uri, docUrl)
         if (
           "type" in params &&
           (params.type === "application/activity+json" ||
             params.type === "application/ld+json" ||
             params.type.startsWith("application/ld+json;")) &&
-          new URL(uri).href !== docUrl.href
+          altUri.href !== docUrl.href
         ) {
           logger.debug(
             "Found alternate document: {alternateUrl} from {url}",
-            { alternateUrl: uri, url: documentUrl },
+            { alternateUrl: altUri, url: documentUrl },
           );
-          return await fetch(uri);
+          return await fetch(altUri.href);
         }
       }
     }
