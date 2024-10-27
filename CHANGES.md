@@ -10,6 +10,8 @@ To be released.
 
  -  Fixed default document loaders' incorrect handling of relative URIs in
     `Link` headers with `rel=alternate`.  [[#155] by Emelia Smith]
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <http://schema.org/>.
 
 [#155]: https://github.com/dahlia/fedify/pull/155
 
