@@ -109,7 +109,10 @@ export async function lookupObject(
     });
   } catch (error) {
     if (error instanceof TypeError) {
-      logger.debug("Failed to parse JSON-LD document:\n{error}", { error });
+      logger.debug(
+        "Failed to parse JSON-LD document: {error}\n{document}",
+        { error, document },
+      );
       return null;
     }
     throw error;
