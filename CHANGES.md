@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.0.6
 -------------
 
-To be released.
+Released on October 27, 2024.
 
  -  Fixed default document loaders' incorrect handling of relative URIs in
     `Link` headers with `rel=alternate`.  [[#155] by Emelia Smith]
