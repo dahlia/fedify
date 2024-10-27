@@ -1,5 +1,4 @@
 import { transformerTwoslash } from "@shikijs/vitepress-twoslash";
-import { Presets, SingleBar } from "cli-progress";
 import abbr from "markdown-it-abbr";
 import deflist from "markdown-it-deflist";
 import footnote from "markdown-it-footnote";
@@ -8,20 +7,10 @@ import process from "node:process";
 import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 
-const progress = new SingleBar({}, Presets.shades_classic);
-let started = false;
-
 const jsrRefPlugin = await jsrRef({
   package: "@fedify/fedify",
   version: "unstable",
   cachePath: ".jsr-cache.json",
-  progress: (complete: number, total: number) => {
-    if (started) progress.update(complete);
-    else {
-      started = true;
-      progress.start(total, complete);
-    }
-  },
 });
 
 let extraNav: { text: string; link: string }[] = [];
