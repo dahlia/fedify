@@ -8,6 +8,11 @@ Version 1.0.6
 
 To be released.
 
+ -  Fixed default document loaders' incorrect handling of relative URIs in
+    `Link` headers with `rel=alternate`.  [[#155] by Emelia Smith]
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <http://schema.org/>.
+
 
 Version 1.0.5
 -------------
@@ -235,6 +240,19 @@ Released on September 26, 2024.
 [#106]: https://github.com/dahlia/fedify/issues/106
 [#135]: https://github.com/dahlia/fedify/issues/135
 [#137]: https://github.com/dahlia/fedify/issues/137
+
+
+Version 0.15.4
+--------------
+
+Released on October 27, 2024.
+
+ -  Fixed default document loaders' incorrect handling of relative URIs in
+    `Link` headers with `rel=alternate`.  [[#155] by Emelia Smith]
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <http://schema.org/>.
+
+[#155]: https://github.com/dahlia/fedify/pull/155
 
 
 Version 0.15.3
@@ -1795,4 +1813,4 @@ Version 0.1.0
 
 Initial release.  Released on March 8, 2024.
 
-<!-- cSpell: ignore Dogeon Fabien Wressell -->
+<!-- cSpell: ignore Dogeon Fabien Wressell Emelia -->
