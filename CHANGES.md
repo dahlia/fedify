@@ -39,6 +39,11 @@ To be released.
      -  `new Service()` constructor now accepts `followedMessage` option.
      -  `Service.clone()` method now accepts `followedMessage` option.
 
+ -  Add options for an AMQP driver to `fedify init` command.
+
+     -  Added `amqp` value to the `-q`/`--message-queue` option of
+        the `fedify init` command.
+
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
 

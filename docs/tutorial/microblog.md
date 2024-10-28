@@ -182,6 +182,7 @@ Select *Node.js*, *npm*, *Hono*, *In-memory*, and *In-process* in order:
 ❯ In-process
   Redis
   PostgreSQL
+  AMQP (e.g., RabbitMQ)
   Deno KV
 ~~~~
 

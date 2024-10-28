@@ -97,7 +97,8 @@ project.  It will ask you a few questions to set up the project:
  -  Web framework: Bare-bones, [Fresh] (if Deno), [Hono], [Express] (unless
     Deno), or [Nitro] (unless Deno)
  -  Key-value store: In-memory, [Redis], [PostgreSQL], or [Deno KV] (if Deno)
- -  Message queue: In-memory, [Redis], [PostgreSQL], or [Deno KV] (if Deno)
+ -  Message queue: In-memory, [Redis], [PostgreSQL], [AMQP] (e.g., [RabbitMQ]),
+    or [Deno KV] (if Deno)
 
 Alternatively, you can specify the options in the command line to skip some of
 interactive prompts:
@@ -111,6 +112,8 @@ interactive prompts:
 [Nitro]: https://nitro.unjs.io/
 [Redis]: https://redis.io/
 [PostgreSQL]: https://www.postgresql.org/
+[AMQP]: https://www.amqp.org/
+[RabbitMQ]: https://www.rabbitmq.com/
 [Deno KV]: https://deno.com/kv
 
 ### `-r`/`--runtime`: JavaScript runtime
@@ -165,6 +168,7 @@ option.  The available options are:
 
  -  `redis`: [Redis]
  -  `postgres`: [PostgreSQL]
+ -  `amqp`: [AMQP] (e.g., [RabbitMQ])
  -  `denokv`: [Deno KV] (if Deno)
 
 If it's omitted, the in-process message queue (which is for development purpose)

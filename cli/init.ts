@@ -437,6 +437,7 @@ interface KvStoreDescription {
   label: string;
   runtimes?: Runtime[];
   dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
   imports?: Record<string, string | string[]>;
   object: string | Record<Runtime, string>;
   denoUnstable?: string[];
@@ -485,12 +486,13 @@ const kvStores: Record<KvStore, KvStoreDescription> = {
   },
 } as const;
 
-type MessageQueue = "redis" | "postgres" | "denokv";
+type MessageQueue = "redis" | "postgres" | "amqp" | "denokv";
 
 interface MessageQueueDescription {
   label: string;
   runtimes?: Runtime[];
   dependencies?: Record<string, string>;
+  devDependencies?: Record<string, string>;
   imports?: Record<string, string | string[]>;
   object: string | Record<Runtime, string>;
   denoUnstable?: string[];
@@ -531,6 +533,28 @@ const messageQueues: Record<MessageQueue, MessageQueueDescription> = {
     },
     env: {
       DATABASE_URL: "postgres://postgres@localhost:5432/postgres",
+    },
+  },
+  amqp: {
+    label: "AMQP (e.g., RabbitMQ)",
+    dependencies: {
+      "@fedify/amqp": "^0.1.0",
+      "npm:amqplib": "^0.10.4",
+    },
+    devDependencies: {
+      "npm:@types/amqplib": "^0.10.5",
+    },
+    imports: {
+      "@fedify/amqp": ["AmqpMessageQueue"],
+      amqplib: ["connect"],
+    },
+    object: {
+      deno: 'new AmqpMessageQueue(await connect(Deno.env.get("AMQP_URL")))',
+      node: "new AmqpMessageQueue(await connect(process.env.AMQP_URL))",
+      bun: "new AmqpMessageQueue(await connect(process.env.AMQP_URL))",
+    },
+    env: {
+      AMQP_URL: "amqp://localhost",
     },
   },
   denokv: {
@@ -1022,6 +1046,8 @@ await configure({
       const devDependencies: Record<string, string> = {
         "@biomejs/biome": "^1.8.3",
         ...initializer.devDependencies,
+        ...kvStoreDesc?.devDependencies,
+        ...mqDesc?.devDependencies,
       };
       await addDependencies(
         runtime,
