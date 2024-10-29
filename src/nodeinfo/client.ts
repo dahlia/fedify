@@ -18,7 +18,7 @@ const logger = getLogger(["fedify", "nodeinfo", "client"]);
  * Options for {@link getNodeInfo} function.
  * @since 1.2.0
  */
-export interface GetNodeInfoOptions extends ParseNodeInfoOptions {
+export interface GetNodeInfoOptions {
   /**
    * Whether to directly fetch the NodeInfo document from the given URL.
    * Otherwise, the NodeInfo document will be fetched from the `.well-known`
@@ -27,6 +27,18 @@ export interface GetNodeInfoOptions extends ParseNodeInfoOptions {
    * Turned off by default.
    */
   direct?: boolean;
+
+  /**
+   * How strictly to parse the NodeInfo document.
+   *
+   *  -  `"strict"`: Parse the NodeInfo document strictly.  If the document is
+   *     invalid, `undefined` is returned.  This is the default.
+   *  -  `"best-effort"`: Try to parse the NodeInfo document even if it is
+   *     invalid.
+   *  -  `"none"`: Do not parse the NodeInfo document.  The function will return
+   *     the raw JSON value.
+   */
+  parse?: "strict" | "best-effort" | "none";
 }
 
 /**
@@ -38,13 +50,35 @@ export interface GetNodeInfoOptions extends ParseNodeInfoOptions {
  *            the NodeInfo document will be fetched from the given URL.
  * @param options Options for fetching the NodeInfo document.
  * @returns The NodeInfo document if it could be fetched successfully.
- *          Otherwise, `null` is returned.
+ *          Otherwise, `undefined` is returned.
  * @since 1.2.0
  */
 export async function getNodeInfo(
   url: URL | string,
+  options?: GetNodeInfoOptions & { parse?: "strict" | "best-effort" },
+): Promise<NodeInfo | undefined>;
+
+/**
+ * Fetches a NodeInfo document from the given URL.
+ * @param url The base URL of the server.  If `options.direct` is turned off
+ *            (default), the NodeInfo document will be fetched from
+ *            the `.well-known` location of this URL (hence the only origin
+ *            of the URL is used).  If `options.direct` is turned on,
+ *            the NodeInfo document will be fetched from the given URL.
+ * @param options Options for fetching the NodeInfo document.
+ * @returns The NodeInfo document if it could be fetched successfully.
+ *          Otherwise, `undefined` is returned.
+ * @since 1.2.0
+ */
+export async function getNodeInfo(
+  url: URL | string,
+  options: GetNodeInfoOptions & { parse: "none" },
+): Promise<JsonValue | undefined>;
+
+export async function getNodeInfo(
+  url: URL | string,
   options: GetNodeInfoOptions = {},
-): Promise<NodeInfo | null> {
+): Promise<NodeInfo | JsonValue | undefined> {
   try {
     let nodeInfoUrl: URL | string = url;
     if (!options.direct) {
@@ -56,7 +90,7 @@ export async function getNodeInfo(
           status: wellKnownResponse.status,
           statusText: wellKnownResponse.statusText,
         });
-        return null;
+        return undefined;
       }
       const wellKnownRd = await wellKnownResponse.json() as ResourceDescriptor;
       const link = wellKnownRd?.links?.find((link) =>
@@ -72,7 +106,7 @@ export async function getNodeInfo(
           "Failed to find a NodeInfo document link from {url}: {resourceDescriptor}",
           { url: wellKnownUrl.href, resourceDescriptor: wellKnownRd },
         );
-        return null;
+        return undefined;
       }
       nodeInfoUrl = link.href;
     }
@@ -86,16 +120,19 @@ export async function getNodeInfo(
           statusText: response.statusText,
         },
       );
-      return null;
+      return undefined;
     }
     const data = await response.json();
-    return parseNodeInfo(data, options);
+    if (options.parse === "none") return data as JsonValue;
+    return parseNodeInfo(data, {
+      tryBestEffort: options.parse === "best-effort",
+    }) ?? undefined;
   } catch (error) {
     logger.error("Failed to fetch NodeInfo document from {url}: {error}", {
       url: url.toString(),
       error,
     });
-    return null;
+    return undefined;
   }
 }
 

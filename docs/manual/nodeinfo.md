@@ -163,9 +163,9 @@ You may want to fetch NodeInfo objects from other servers.  Fedify provides
 a way to fetch NodeInfo objects with the `getNodeInfo()` function:
 
 ~~~~ typescript twoslash
-import { type NodeInfo, getNodeInfo } from "@fedify/fedify";
+import { getNodeInfo } from "@fedify/fedify";
 
-const nodeInfo: NodeInfo | null = await getNodeInfo("https://example.com/");
+const nodeInfo = await getNodeInfo("https://example.com/");
 if (nodeInfo != null) console.log(nodeInfo);
 ~~~~
 
@@ -174,14 +174,14 @@ a NodeInfo endpoint and the response is valid.  Otherwise, it returns `null`.
 
 > [!TIP]
 > Sometimes, a server may provide a slightly invalid NodeInfo object.  In such
-> case, you can enforce parsing the object by passing `{ tryBestEffort: true }`
+> case, you can enforce parsing the object by passing `{ parse: "best-effort" }`
 > option as the second argument to `getNodeInfo()` function:
 >
 > ~~~~ typescript twoslash
-> import { type NodeInfo, getNodeInfo } from "@fedify/fedify";
+> import { getNodeInfo } from "@fedify/fedify";
 >
-> const nodeInfo: NodeInfo | null = await getNodeInfo("https://example.com/", {
->   tryBestEffort: true,
+> const nodeInfo = await getNodeInfo("https://example.com/", {
+>   parse: "best-effort",
 > });
 >
 > if (nodeInfo != null) console.log(nodeInfo);

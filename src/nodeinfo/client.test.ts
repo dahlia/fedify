@@ -35,14 +35,16 @@ test("getNodeInfo()", async (t) => {
     );
   });
 
+  const rawExpected = {
+    software: { name: "foo", version: "1.2.3" },
+    protocols: ["activitypub", "diaspora"],
+    usage: { users: {}, localPosts: 123, localComments: 456 },
+  };
+
   mf.mock("GET@/nodeinfo/2.1", (req) => {
     assertEquals(new URL(req.url).host, "example.com");
     return new Response(
-      JSON.stringify({
-        software: { name: "foo", version: "1.2.3" },
-        protocols: ["activitypub", "diaspora"],
-        usage: { users: {}, localPosts: 123, localComments: 456 },
-      }),
+      JSON.stringify(rawExpected),
     );
   });
 
@@ -63,6 +65,9 @@ test("getNodeInfo()", async (t) => {
   await t.step("indirect", async () => {
     const info = await getNodeInfo("https://example.com/");
     assertEquals(info, expected);
+
+    const raw = await getNodeInfo("https://example.com/", { parse: "none" });
+    assertEquals(raw, rawExpected);
   });
 
   await t.step("direct", async () => {
@@ -82,7 +87,7 @@ test("getNodeInfo()", async (t) => {
 
   await t.step("indirect: no links", async () => {
     const info = await getNodeInfo("https://example.com/");
-    assertEquals(info, null);
+    assertEquals(info, undefined);
   });
 
   mf.mock("GET@/.well-known/nodeinfo", (req) => {
@@ -92,7 +97,7 @@ test("getNodeInfo()", async (t) => {
 
   await t.step("indirect: 404", async () => {
     const info = await getNodeInfo("https://example.com/");
-    assertEquals(info, null);
+    assertEquals(info, undefined);
   });
 
   await t.step("direct: 404", async () => {
@@ -100,12 +105,12 @@ test("getNodeInfo()", async (t) => {
       "https://example.com/nodeinfo/2.0",
       { direct: true },
     );
-    assertEquals(info, null);
+    assertEquals(info, undefined);
     const info2 = await getNodeInfo(
       "https://example.com/404",
       { direct: true },
     );
-    assertEquals(info2, null);
+    assertEquals(info2, undefined);
   });
 
   mf.uninstall();
