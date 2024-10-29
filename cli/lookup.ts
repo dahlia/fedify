@@ -9,10 +9,10 @@ import {
   type ResourceDescriptor,
   respondWithObject,
 } from "@fedify/fedify";
-import { highlight } from "cli-highlight";
 import ora from "ora";
 import { getContextLoader, getDocumentLoader } from "./docloader.ts";
 import { spawnTemporaryServer, type TemporaryServer } from "./tempserver.ts";
+import { printJson } from "./utils.ts";
 
 export const command = new Command()
   .arguments("<url:string>")
@@ -114,8 +114,3 @@ export const command = new Command()
       await server?.close();
     }
   });
-
-function printJson(json: unknown): void {
-  const formatted = JSON.stringify(json, null, 2);
-  console.log(highlight(formatted, { language: "json" }));
-}

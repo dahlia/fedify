@@ -39,10 +39,12 @@ To be released.
      -  `new Service()` constructor now accepts `followedMessage` option.
      -  `Service.clone()` method now accepts `followedMessage` option.
 
- -  Add options for an AMQP driver to `fedify init` command.
+ -  Added options for an AMQP driver to `fedify init` command.
 
      -  Added `amqp` value to the `-q`/`--message-queue` option of
         the `fedify init` command.
+
+ -  Added `fedify node` subcommand.
 
  -  Added more log messages using the [LogTape] library.  Currently the below
     logger categories are used:
@@ -386,7 +388,7 @@ Released on September 26, 2024.
     it's terminated so that the peers can clean up data related to the temporary
     actor.  [[#135]]
 
- -  Add options for PostgreSQL drivers to `fedify init` command.
+ -  Added options for PostgreSQL drivers to `fedify init` command.
 
      -  Added `postgres` value to the `-k`/`--kv-store` option of the `fedify
         init` command.

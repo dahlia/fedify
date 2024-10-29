@@ -3,7 +3,7 @@
     "@braintree/sanitize-url": "^7.1.0",
     "@deno/kv": "^0.8.2",
     "@fedify/amqp": "0.1.0-dev.8",
-    "@fedify/fedify": "1.2.0-dev.452",
+    "@fedify/fedify": "1.2.0-dev.466",
     "@fedify/postgres": "0.1.0-dev.2",
     "@fedify/redis": "0.2.0-dev.10",
     "@hono/node-server": "^1.12.2",

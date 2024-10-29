@@ -762,6 +762,42 @@ about the security implications of exposing the server to the public internet.
 > be served via HTTP instead of HTTPS.
 
 
+`fedify node`: Visualizing an instance's NodeInfo
+-------------------------------------------------
+
+*This command is available since Fedify 1.2.0.*
+
+![The result of fedify lookup fosstodon.org. The NodeInfo document is
+visualized along with the favicon.](cli/fedify-node.png)
+
+The `fedify node` command fetches the given instance's [NodeInfo] document and
+visualizes it in [`neofetch`]-style.  The argument can be either a bare hostname
+or a full URL.
+
+> [!TIP]
+> Not all instances provide the NodeInfo document.  If the given instance does
+> not provide the NodeInfo document, the command will output an error message.
+
+[NodeInfo]: https://nodeinfo.diaspora.software/
+[`neofetch`]: https://github.com/dylanaraps/neofetch
+
+### `-b`/`--best-effort`: Parsing with best effort
+
+The `-b`/`--best-effort` option is used to parse the NodeInfo document with
+best effort.  If the NodeInfo document is not well-formed, the option will
+try to parse it as much as possible.
+
+### `--no-favicon`: Disabling favicon fetching
+
+The `--no-favicon` option is used to disable fetching the favicon of the
+instance.
+
+### `-m`/`--metadata`: Showing metadata
+
+The `-m`/`--metadata` option is used to show the extra metadata of the NodeInfo,
+i.e., the `metadata` field of the document.
+
+
 `fedify tunnel`: Exposing a local HTTP server to the public internet
 --------------------------------------------------------------------
 
@@ -844,4 +880,4 @@ To enable Zsh completions add the following line to your profile file
 source <(fedify completions zsh)
 ~~~~
 
-<!-- cSpell: ignore mentio fedidev Indieweb noreferre tchambers ostatus blurhash todon HaybFozj ayfj serveo psub -->
+<!-- cSpell: ignore mentio fedidev Indieweb noreferre tchambers ostatus blurhash todon HaybFozj ayfj serveo psub fosstodon neofetch -->
