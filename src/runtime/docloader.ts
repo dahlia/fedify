@@ -251,7 +251,10 @@ export async function fetchDocumentLoader(
     response.status >= 300 && response.status < 400 &&
     response.headers.has("Location")
   ) {
-    return fetchDocumentLoader(response.headers.get("Location")!);
+    return fetchDocumentLoader(
+      response.headers.get("Location")!,
+      allowPrivateAddress,
+    );
   }
   return getRemoteDocument(
     url,

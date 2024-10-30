@@ -217,8 +217,6 @@ test("fetchDocumentLoader()", async (t) => {
     );
   });
 
-  mf.uninstall();
-
   await t.step("preloaded contexts", async () => {
     for (const [url, document] of Object.entries(preloadedContexts)) {
       assertEquals(await fetchDocumentLoader(url), {
@@ -236,12 +234,69 @@ test("fetchDocumentLoader()", async (t) => {
     );
   });
 
-  await t.step("deny private network", async () => {
+  mf.mock(
+    "GET@/localhost-redirect",
+    (_req) => Response.redirect("https://localhost/object", 302),
+  );
+
+  mf.mock("GET@/localhost-link", (_req) =>
+    new Response(
+      `<html>
+        <head>
+          <meta charset=utf-8>
+          <link
+            rel=alternate
+            type='application/activity+json'
+            href="https://localhost/object">
+        </head>
+      </html>`,
+      {
+        status: 200,
+        headers: { "Content-Type": "text/html; charset=utf-8" },
+      },
+    ));
+
+  await t.step("allowPrivateAddress: false", async () => {
     await assertRejects(
-      () => fetchDocumentLoader("https://localhost"),
+      () => fetchDocumentLoader("https://localhost/object"),
+      UrlError,
+    );
+    await assertRejects(
+      () => fetchDocumentLoader("https://example.com/localhost-redirect"),
+      UrlError,
+    );
+    await assertRejects(
+      () => fetchDocumentLoader("https://example.com/localhost-link"),
       UrlError,
     );
   });
+
+  await t.step("allowPrivateAddress: true", async () => {
+    const expected = {
+      contextUrl: null,
+      documentUrl: "https://localhost/object",
+      document: {
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/object",
+        name: "Fetched object",
+        type: "Object",
+      },
+    };
+    assertEquals(
+      await fetchDocumentLoader("https://localhost/object", true),
+      expected,
+    );
+    assertEquals(
+      await fetchDocumentLoader("https://example.com/localhost-redirect", true),
+      expected,
+    );
+    assertEquals(
+      await fetchDocumentLoader("https://example.com/localhost-link", true),
+      expected,
+    );
+  });
+
+  mf.uninstall();
 });
 
 test("getAuthenticatedDocumentLoader()", async (t) => {
