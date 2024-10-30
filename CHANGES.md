@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.15.5
 --------------
 
-To be released.
+Released on October 30, 2024.
 
  -  Fixed a bug where `fetchDocumentLoader()` function had disallowed
     redirecting to a private network address when the second parameter,
