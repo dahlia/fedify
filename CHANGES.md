@@ -8,6 +8,10 @@ Version 0.15.5
 
 To be released.
 
+ -  Fixed a bug where `fetchDocumentLoader()` function had disallowed
+    redirecting to a private network address when the second parameter,
+    a `boolean` value to allow private network addresses, was `true`.
+
 
 Version 0.15.4
 --------------
