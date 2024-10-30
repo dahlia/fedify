@@ -558,6 +558,7 @@ export async function handleInbox<TContextData>(
     await queue.enqueue(
       {
         type: "inbox",
+        id: crypto.randomUUID(),
         baseUrl: request.url,
         activity: json,
         identifier,

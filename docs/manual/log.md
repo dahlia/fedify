@@ -45,15 +45,27 @@ bun add @logtape/logtape
 Then, you can [`configure()`] the logger in the entry point of your app:
 
 ~~~~ typescript twoslash
+// @noErrors: 2307
+import { type ContextLocalStorage } from "@logtape/logtape";
+class AsyncLocalStorage<T> implements ContextLocalStorage<T> {
+  getStore(): T | undefined {
+    return undefined;
+  }
+  run<R>(store: T, callback: () => R): R {
+    return callback();
+  }
+}
+// ---cut-before---
+import { AsyncLocalStorage } from "node:async_hooks";
 import { configure, getConsoleSink } from "@logtape/logtape";
 
 await configure({
   sinks: { console: getConsoleSink() },
-  filters: {},
   loggers: [
     { category: "your-app", sinks: ["console"], level: "debug" },
     { category: "fedify",   sinks: ["console"], level: "error" },
   ],
+  contextLocalStorage: new AsyncLocalStorage(),
 });
 ~~~~
 
@@ -89,9 +101,18 @@ The `configure()` function takes an object with three properties:
     level can be one of the following: `"debug"`, `"info"`, `"warning"`,
     `"error"`, or `"fatal"`.
 
+`contextLocalStorage` (recommended)
+:   *This property is available since LogTape 0.7.0.*
+
+    An instance of [`AsyncLocalStorage`] that is used to store
+    [implicit contexts] of the log messages.  This is useful when you want to
+    trace the log messages in a specific context.
+
 [JSR]: https://jsr.io/@logtape/logtape
 [npm]: https://www.npmjs.com/package/@logtape/logtape
 [`configure()`]: https://jsr.io/@logtape/logtape/doc/~/configure
+[`AsyncLocalStorage`]: https://nodejs.org/api/async_context.html#class-asynclocalstorage
+[implicit contexts]: https://logtape.org/manual/contexts#implicit-contexts
 
 
 Categories
@@ -281,3 +302,84 @@ log messages.  The deprecation warnings are logged with the `"warning"` level
 in each category where the deprecated API is used.  If you want to see all
 deprecation warnings, you can set the log level to `"warning"` for the
 [`"fedify"` category](#fedify).
+
+
+Tracing
+-------
+
+*This feature is available since Fedify 1.2.0.*
+
+> [!CAUTION]
+> Traceable log messages rely on [implicit contexts] which was introduced in
+> LogTape 0.7.0.  If you don't configure `contextLocalStorage` in
+> [`configure()`], you cannot trace log messages.
+
+The most of log messages made by Fedify can be traced by either below two
+properties:
+
+`requestId`
+:   If the log message is made in the context of an HTTP request,
+    the `requestId` property is included in it.  The `requestId` is a unique
+    identifier for the HTTP request, which is derived from one of the following
+    headers:
+    
+     -  [`X-Request-Id`]
+     -  `X-Correlation-Id`
+     -  [`Traceparent`]
+     -  Otherwise, the `requestId` is a unique string derived from
+        the current timestamp and the random number.
+
+`messageId`
+:   If the log message is made in the context of a background task,
+    the `messageId` property is included in it.  The `messageId` is a unique
+    identifier for the background task, which is a UUID. 
+
+When you want to trace log messages, first of all you need to use a sink that
+writes log messages as structured data.  For example, you can use
+a [file sink] with a [JSON Lines] formatter.  Oh, and don't forget to set
+`contextLocalStorage` in [`configure()`]!  To sum up, you can configure
+loggers like this:
+
+~~~~ typescript twoslash
+// @noErrors: 2307
+import { type ContextLocalStorage } from "@logtape/logtape";
+class AsyncLocalStorage<T> implements ContextLocalStorage<T> {
+  getStore(): T | undefined {
+    return undefined;
+  }
+  run<R>(store: T, callback: () => R): R {
+    return callback();
+  }
+}
+// ---cut-before---
+import { AsyncLocalStorage } from "node:async_hooks";
+import { type LogRecord, configure, getFileSink } from "@logtape/logtape";
+
+await configure({
+  sinks: {
+    file: getFileSink("fedify-logs.jsonld", {
+      formatter(record: LogRecord): string {
+        return JSON.stringify(record) + "\n";
+      }
+    })
+  },
+  loggers: [
+    { category: "fedify", sinks: ["file"], level: "info" },
+  ],
+  contextLocalStorage: new AsyncLocalStorage(),
+});
+~~~~
+
+If your loggers are configured like this, you can filter log messages by
+`requestId` or `messageId` in the log file.  For example, you can filter log
+messages by `requestId` using [`jq`]:
+
+~~~~ sh
+jq -r 'select(.properties.requestId == "your-request-id")' fedify-logs.jsonl
+~~~~
+
+[`X-Request-Id`]: https://http.dev/x-request-id
+[`Traceparent`]: https://www.w3.org/TR/trace-context/#traceparent-header
+[file sink]: https://logtape.org/manual/sinks#file-sink
+[JSON Lines]: https://jsonlines.org/
+[`jq`]: https://jqlang.github.io/jq/

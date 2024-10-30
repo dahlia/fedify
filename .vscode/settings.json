@@ -132,6 +132,7 @@
     "superproperty",
     "supertypes",
     "tempserver",
+    "traceparent",
     "ts-nocheck",
     "twoslash",
     "typeof",

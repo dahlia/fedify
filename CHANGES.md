@@ -39,6 +39,9 @@ To be released.
      -  `new Service()` constructor now accepts `followedMessage` option.
      -  `Service.clone()` method now accepts `followedMessage` option.
 
+ -  Log messages now can be traced using [LogTape]'s [implicit contexts].
+    [[#118]]
+
  -  Added options for an AMQP driver to `fedify init` command.
 
      -  Added `amqp` value to the `-q`/`--message-queue` option of
@@ -50,6 +53,9 @@ To be released.
     logger categories are used:
 
      -  `["fedify", "nodeinfo", "client"]`
+
+[implicit contexts]: https://logtape.org/manual/contexts#implicit-contexts
+[#118]: https://github.com/dahlia/fedify/issues/118
 
 
 Version 1.1.2

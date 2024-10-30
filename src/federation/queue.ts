@@ -7,6 +7,7 @@ export type Message = OutboxMessage | InboxMessage;
 
 export interface OutboxMessage {
   type: "outbox";
+  id: ReturnType<typeof crypto.randomUUID>;
   keys: SenderKeyJwkPair[];
   activity: unknown;
   activityId?: string;
@@ -18,6 +19,7 @@ export interface OutboxMessage {
 
 export interface InboxMessage {
   type: "inbox";
+  id: ReturnType<typeof crypto.randomUUID>;
   baseUrl: string;
   activity: unknown;
   started: string;

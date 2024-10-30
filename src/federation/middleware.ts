@@ -1,4 +1,4 @@
-import { getLogger } from "@logtape/logtape";
+import { getLogger, withContext } from "@logtape/logtape";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
@@ -388,12 +388,14 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
   }
 
-  async #listenQueue(ctxData: TContextData, message: Message): Promise<void> {
-    if (message.type === "outbox") {
-      await this.#listenOutboxMessage(ctxData, message);
-    } else if (message.type === "inbox") {
-      await this.#listenInboxMessage(ctxData, message);
-    }
+  #listenQueue(ctxData: TContextData, message: Message): Promise<void> {
+    return withContext({ messageId: message.id }, async () => {
+      if (message.type === "outbox") {
+        await this.#listenOutboxMessage(ctxData, message);
+      } else if (message.type === "inbox") {
+        await this.#listenInboxMessage(ctxData, message);
+      }
+    });
   }
 
   async #listenOutboxMessage(
@@ -1739,6 +1741,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     for (const inbox in inboxes) {
       const message: OutboxMessage = {
         type: "outbox",
+        id: crypto.randomUUID(),
         keys: keyJwkPairs,
         activity: jsonLd,
         activityId: activity.id?.href,
@@ -1757,24 +1760,27 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
   }
 
-  async fetch(
+  fetch(
     request: Request,
     options: FederationFetchOptions<TContextData>,
   ): Promise<Response> {
-    const response = await this.#fetch(request, options);
-    const logger = getLogger(["fedify", "federation", "http"]);
-    const url = new URL(request.url);
-    const logTpl = "{method} {path}: {status}";
-    const values = {
-      method: request.method,
-      path: `${url.pathname}${url.search}`,
-      url: request.url,
-      status: response.status,
-    };
-    if (response.status >= 500) logger.error(logTpl, values);
-    else if (response.status >= 400) logger.warn(logTpl, values);
-    else logger.info(logTpl, values);
-    return response;
+    const requestId = getRequestId(request);
+    return withContext({ requestId }, async () => {
+      const response = await this.#fetch(request, options);
+      const logger = getLogger(["fedify", "federation", "http"]);
+      const url = new URL(request.url);
+      const logTpl = "{method} {path}: {status}";
+      const values = {
+        method: request.method,
+        path: `${url.pathname}${url.search}`,
+        url: request.url,
+        status: response.status,
+      };
+      if (response.status >= 500) logger.error(logTpl, values);
+      else if (response.status >= 400) logger.warn(logTpl, values);
+      else logger.info(logTpl, values);
+      return response;
+    });
   }
 
   async #fetch(
@@ -2906,6 +2912,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
     for (const inbox in inboxes) {
       const message: OutboxMessage = {
         type: "outbox",
+        id: crypto.randomUUID(),
         keys: keyJwkPairs,
         activity: this.activity,
         activityId,
@@ -2958,4 +2965,32 @@ function unauthorized(_request: Request): Response {
       Vary: "Accept, Signature",
     },
   });
+}
+
+/**
+ * Generates or extracts a unique identifier for a request.
+ *
+ * This function first attempts to extract an existing request ID from standard
+ * tracing headers. If none exists, it generates a new one. The ID format is:
+ *
+ *  -  If from headers, uses the existing ID.
+ *  -  If generated, uses format `req_` followed by a base36 timestamp and
+ *     6 random chars.
+ *
+ * @param request The incoming HTTP request.
+ * @returns A string identifier unique to this request.
+ */
+function getRequestId(request: Request): string {
+  // First try to get existing trace ID from standard headers:
+  const traceId = request.headers.get("X-Request-Id") ||
+    request.headers.get("X-Correlation-Id") ||
+    request.headers.get("Traceparent")?.split("-")[1];
+  if (traceId != null) return traceId;
+  // Generate new ID if none exists:
+  // - Use timestamp for rough chronological ordering
+  // - Add random suffix for uniqueness within same millisecond
+  // - Prefix to distinguish from potential existing IDs
+  const timestamp = Date.now().toString(36);
+  const random = Math.random().toString(36).slice(2, 8);
+  return `req_${timestamp}${random}`;
 }

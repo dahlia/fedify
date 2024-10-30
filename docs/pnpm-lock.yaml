@@ -33,8 +33,8 @@ importers:
         specifier: ^0.4.4
         version: 0.4.4
       '@logtape/logtape':
-        specifier: ^0.5.1
-        version: 0.5.4
+        specifier: ^0.7.1
+        version: 0.7.1
       '@shikijs/vitepress-twoslash':
         specifier: ^1.17.6
         version: 1.21.0(typescript@5.6.2)
@@ -440,11 +440,11 @@ packages:
     resolution: {integrity: sha512-2X6bvghJ/JAoZO52lbgyAPFj8uCflhTo2g7nkFzEQdXd/D8rEeD4HtmTEpmtGCva260fcd66YNXBOYdnmHqSOg==}
     engines: {node: '>=12'}
 
-  '@logtape/logtape@0.5.4':
-    resolution: {integrity: sha512-1ombuiXi/yvtdBbSI/URU5w1LK+79LUJwUGX4DySfNwE3eSLSChtoIJAetPA/S6I49sQermAb0ZiT9AnX4kGYQ==}
-
   '@logtape/logtape@0.6.2':
     resolution: {integrity: sha512-oxlXxhRlypREAWjaVNAqlOyo5whMmdtwgtsPfhxhzlc364DWJjGjXGCPJ1owwf1nlX/C+Wcp4vumV+mLksReuA==}
+
+  '@logtape/logtape@0.7.1':
+    resolution: {integrity: sha512-gP2O2Pk68I5UtH2D3d+uZpZG3eo2JLUStXpa+fLoPa4dkRYJyX+o70pPl4/4KkY06xsc+33mpslUd3kIKDT2Gw==}
 
   '@mermaid-js/mermaid-mindmap@9.3.0':
     resolution: {integrity: sha512-IhtYSVBBRYviH1Ehu8gk69pMDF8DSRqXBRDMWrEfHoaMruHeaP2DXA3PBnuwsMaCdPQhlUUcy/7DBLAEIXvCAw==}
@@ -2116,9 +2116,9 @@ snapshots:
       jsbi: 4.3.0
       tslib: 2.7.0
 
-  '@logtape/logtape@0.5.4': {}
-
   '@logtape/logtape@0.6.2': {}
+
+  '@logtape/logtape@0.7.1': {}
 
   '@mermaid-js/mermaid-mindmap@9.3.0':
     dependencies:
