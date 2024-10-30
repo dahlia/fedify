@@ -8,6 +8,10 @@ Version 1.0.7
 
 To be released.
 
+ -  Fixed a bug where `fetchDocumentLoader()` function had disallowed
+    redirecting to a private network address when the second parameter,
+    a `boolean` value to allow private network addresses, was `true`.
+
 
 Version 1.0.6
 -------------
@@ -246,6 +250,16 @@ Released on September 26, 2024.
 [#106]: https://github.com/dahlia/fedify/issues/106
 [#135]: https://github.com/dahlia/fedify/issues/135
 [#137]: https://github.com/dahlia/fedify/issues/137
+
+
+Version 0.15.5
+--------------
+
+Released on October 30, 2024.
+
+ -  Fixed a bug where `fetchDocumentLoader()` function had disallowed
+    redirecting to a private network address when the second parameter,
+    a `boolean` value to allow private network addresses, was `true`.
 
 
 Version 0.15.4
