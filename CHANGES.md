@@ -58,6 +58,16 @@ To be released.
 [#118]: https://github.com/dahlia/fedify/issues/118
 
 
+Version 1.1.3
+-------------
+
+Released on October 31, 2024.
+
+ -  Fixed a bug where `fetchDocumentLoader()` function had disallowed
+    redirecting to a private network address when the second parameter,
+    a `boolean` value to allow private network addresses, was `true`.
+
+
 Version 1.1.2
 -------------
 
@@ -176,6 +186,16 @@ Released on October 20, 2024.
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
+
+
+Version 1.0.7
+-------------
+
+Released on October 31, 2024.
+
+ -  Fixed a bug where `fetchDocumentLoader()` function had disallowed
+    redirecting to a private network address when the second parameter,
+    a `boolean` value to allow private network addresses, was `true`.
 
 
 Version 1.0.6
@@ -415,6 +435,16 @@ Released on September 26, 2024.
 [#106]: https://github.com/dahlia/fedify/issues/106
 [#135]: https://github.com/dahlia/fedify/issues/135
 [#137]: https://github.com/dahlia/fedify/issues/137
+
+
+Version 0.15.5
+--------------
+
+Released on October 30, 2024.
+
+ -  Fixed a bug where `fetchDocumentLoader()` function had disallowed
+    redirecting to a private network address when the second parameter,
+    a `boolean` value to allow private network addresses, was `true`.
 
 
 Version 0.15.4
