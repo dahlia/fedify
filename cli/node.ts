@@ -4,6 +4,7 @@ import { formatSemVer, getNodeInfo } from "@fedify/fedify";
 import { createJimp } from "@jimp/core";
 import webp from "@jimp/wasm-webp";
 import { getLogger } from "@logtape/logtape";
+import { isICO, parseICO } from "icojs";
 import { defaultFormats, defaultPlugins, intToRGBA } from "jimp";
 import ora from "ora";
 import { printJson } from "./utils.ts";
@@ -70,10 +71,36 @@ export const command = new Command()
       spinner.text = "Fetching the favicon...";
       try {
         const faviconUrl = await getFaviconUrl(url);
-        const image = await Jimp.read(faviconUrl.href);
-        layout = getAsciiArt(image).split("\n").map((line) => ` ${line}  `);
-        defaultWidth = 41;
-      } catch {
+        const response = await fetch(faviconUrl);
+        if (response.ok) {
+          const contentType = response.headers.get("Content-Type");
+          let buffer: ArrayBuffer = await response.arrayBuffer();
+          if (
+            contentType === "image/vnd.microsoft.icon" ||
+            contentType === "image/x-icon" ||
+            isICO(buffer)
+          ) {
+            const images = await parseICO(buffer);
+            if (images.length < 1) {
+              throw new Error("No images found in the ICO file.");
+            }
+            buffer = images[0].buffer;
+          }
+          const image = await Jimp.read(buffer);
+          layout = getAsciiArt(image).split("\n").map((line) => ` ${line}  `);
+          defaultWidth = 41;
+        } else {
+          logger.error(
+            "Failed to fetch the favicon: {status} {statusText}",
+            { status: response.status, statusText: response.statusText },
+          );
+          layout = [""];
+        }
+      } catch (error) {
+        logger.error(
+          "Failed to fetch or render the favicon: {error}",
+          { error },
+        );
         layout = [""];
       }
     } else {

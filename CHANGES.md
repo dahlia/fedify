@@ -8,6 +8,9 @@ Version 1.2.1
 
 To be released.
 
+ -  Now `fedify node` command can render the node's favicon with
+    `image/vnd.microsoft.icon` or `image/x-icon` format.
+
 
 Version 1.2.0
 -------------

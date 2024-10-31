@@ -54,6 +54,7 @@
     "cli-highlight": "npm:cli-highlight@^2.1.11",
     "hono": "jsr:@hono/hono@^4.5.9",
     "hono/": "jsr:/@hono/hono@^4.5.9/",
+    "icojs": "npm:icojs@^0.19.4",
     "jimp": "npm:jimp@^1.6.0",
     "json-preserve-indent": "npm:json-preserve-indent@^1.1.3",
     "ora": "npm:ora@^8.0.1",

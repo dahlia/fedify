@@ -93,6 +93,7 @@
     "hono",
     "httpsig",
     "hugoalh",
+    "icojs",
     "instanceof",
     "interoperating",
     "jsonld",
@@ -143,6 +144,7 @@
     "urlpattern",
     "uuidv7",
     "vitepress",
-    "webfinger"
+    "webfinger",
+    "webp"
   ]
 }
