@@ -97,7 +97,7 @@ property.
 > | [`hreflang`]                 | `Link.language`                   |
 > | [`inReplyTo`]                | `Object.getReplyTargets()`        |
 > | [`isCat`]                    | `Application.cat`/`Group.cat`/`Organization.cat`/`Person.cat`/`Service.cat` |
-> | [`movedTo`]                  | `Application.successor`/`Group.successor`/`Organization.successor`/`Person.successor`/`Service.successor` |
+> | [`movedTo`]                  | `Application.getSuccessor()`/`Group.getSuccessor()`/`Organization.getSuccessor()`/`Person.getSuccessor()`/`Service.getSuccessor()` |
 > | [`oneOf`]                    | `Question.getExclusiveOptions()`  |
 > | [`orderedItems`]             | `OrderedCollection.getItems()`    |
 > | [`publicKeyMultibase`]       | `Multikey.publicKey`              |
