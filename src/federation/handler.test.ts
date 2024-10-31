@@ -1099,7 +1099,7 @@ test("handleInbox()", async () => {
     skipSignatureVerification: false,
   } as const;
   let response = await handleInbox(unsignedRequest, {
-    identifier: null,
+    recipient: null,
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1112,10 +1112,10 @@ test("handleInbox()", async () => {
 
   onNotFoundCalled = null;
   response = await handleInbox(unsignedRequest, {
-    identifier: "nobody",
+    recipient: "nobody",
     context: unsignedContext,
     inboxContextFactory(_activity) {
-      return createInboxContext(unsignedContext);
+      return createInboxContext({ ...unsignedContext, recipient: "nobody" });
     },
     ...inboxOptions,
   });
@@ -1124,7 +1124,7 @@ test("handleInbox()", async () => {
 
   onNotFoundCalled = null;
   response = await handleInbox(unsignedRequest, {
-    identifier: null,
+    recipient: null,
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1135,10 +1135,10 @@ test("handleInbox()", async () => {
   assertEquals(response.status, 401);
 
   response = await handleInbox(unsignedRequest, {
-    identifier: "someone",
+    recipient: "someone",
     context: unsignedContext,
     inboxContextFactory(_activity) {
-      return createInboxContext(unsignedContext);
+      return createInboxContext({ ...unsignedContext, recipient: "someone" });
     },
     ...inboxOptions,
   });
@@ -1158,7 +1158,7 @@ test("handleInbox()", async () => {
     documentLoader: mockDocumentLoader,
   });
   response = await handleInbox(signedRequest, {
-    identifier: null,
+    recipient: null,
     context: signedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1169,10 +1169,10 @@ test("handleInbox()", async () => {
   assertEquals(response.status, 202);
 
   response = await handleInbox(signedRequest, {
-    identifier: "someone",
+    recipient: "someone",
     context: signedContext,
     inboxContextFactory(_activity) {
-      return createInboxContext(unsignedContext);
+      return createInboxContext({ ...unsignedContext, recipient: "someone" });
     },
     ...inboxOptions,
   });
@@ -1180,7 +1180,7 @@ test("handleInbox()", async () => {
   assertEquals(response.status, 202);
 
   response = await handleInbox(unsignedRequest, {
-    identifier: null,
+    recipient: null,
     context: unsignedContext,
     inboxContextFactory(_activity) {
       return createInboxContext(unsignedContext);
@@ -1192,10 +1192,10 @@ test("handleInbox()", async () => {
   assertEquals(response.status, 202);
 
   response = await handleInbox(unsignedRequest, {
-    identifier: "someone",
+    recipient: "someone",
     context: unsignedContext,
     inboxContextFactory(_activity) {
-      return createInboxContext(unsignedContext);
+      return createInboxContext({ ...unsignedContext, recipient: "someone" });
     },
     ...inboxOptions,
     skipSignatureVerification: true,

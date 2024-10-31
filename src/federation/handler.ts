@@ -341,9 +341,10 @@ function filterCollectionItems<TItem extends Object | Link | Recipient | URL>(
 }
 
 export interface InboxHandlerParameters<TContextData> {
-  identifier: string | null;
+  recipient: string | null;
   context: RequestContext<TContextData>;
   inboxContextFactory(
+    recipient: string | null,
     activity: unknown,
   ): InboxContext<TContextData>;
   kv: KvStore;
@@ -363,7 +364,7 @@ export interface InboxHandlerParameters<TContextData> {
 export async function handleInbox<TContextData>(
   request: Request,
   {
-    identifier,
+    recipient,
     context,
     inboxContextFactory,
     kv,
@@ -379,12 +380,12 @@ export async function handleInbox<TContextData>(
 ): Promise<Response> {
   const logger = getLogger(["fedify", "federation", "inbox"]);
   if (actorDispatcher == null) {
-    logger.error("Actor dispatcher is not set.", { identifier });
+    logger.error("Actor dispatcher is not set.", { recipient });
     return await onNotFound(request);
-  } else if (identifier != null) {
-    const actor = await actorDispatcher(context, identifier);
+  } else if (recipient != null) {
+    const actor = await actorDispatcher(context, recipient);
     if (actor == null) {
-      logger.error("Actor {identifier} not found.", { identifier });
+      logger.error("Actor {recipient} not found.", { recipient });
       return await onNotFound(request);
     }
   }
@@ -392,13 +393,13 @@ export async function handleInbox<TContextData>(
   try {
     json = await request.clone().json();
   } catch (error) {
-    logger.error("Failed to parse JSON:\n{error}", { identifier, error });
+    logger.error("Failed to parse JSON:\n{error}", { recipient, error });
     try {
       await inboxErrorHandler?.(context, error as Error);
     } catch (error) {
       logger.error(
         "An unexpected error occurred in inbox error handler:\n{error}",
-        { error, activity: json },
+        { error, activity: json, recipient },
       );
     }
     return new Response("Invalid JSON.", {
@@ -437,12 +438,12 @@ export async function handleInbox<TContextData>(
   const jsonWithoutSig = detachSignature(json);
   let activity: Activity | null = null;
   if (ldSigVerified) {
-    logger.debug("Linked Data Signatures are verified.", { identifier, json });
+    logger.debug("Linked Data Signatures are verified.", { recipient, json });
     activity = await Activity.fromJsonLd(jsonWithoutSig, context);
   } else {
     logger.debug(
       "Linked Data Signatures are not verified.",
-      { identifier, json },
+      { recipient, json },
     );
     try {
       activity = await verifyObject(Activity, jsonWithoutSig, {
@@ -452,8 +453,8 @@ export async function handleInbox<TContextData>(
       });
     } catch (error) {
       logger.error("Failed to parse activity:\n{error}", {
-        identifier,
-        json,
+        recipient,
+        activity: json,
         error,
       });
       try {
@@ -461,7 +462,7 @@ export async function handleInbox<TContextData>(
       } catch (error) {
         logger.error(
           "An unexpected error occurred in inbox error handler:\n{error}",
-          { error, activity: json },
+          { error, activity: json, recipient },
         );
       }
       return new Response("Invalid activity.", {
@@ -472,12 +473,12 @@ export async function handleInbox<TContextData>(
     if (activity == null) {
       logger.debug(
         "Object Integrity Proofs are not verified.",
-        { identifier, json },
+        { recipient, activity: json },
       );
     } else {
       logger.debug(
         "Object Integrity Proofs are verified.",
-        { identifier, json },
+        { recipient, activity: json },
       );
     }
   }
@@ -493,7 +494,7 @@ export async function handleInbox<TContextData>(
       if (key == null) {
         logger.error(
           "Failed to verify the request's HTTP Signatures.",
-          { identifier },
+          { recipient },
         );
         const response = new Response(
           "Failed to verify the request signature.",
@@ -504,7 +505,7 @@ export async function handleInbox<TContextData>(
         );
         return response;
       } else {
-        logger.debug("HTTP Signatures are verified.", { identifier });
+        logger.debug("HTTP Signatures are verified.", { recipient });
       }
       httpSigKey = key;
     }
@@ -519,6 +520,7 @@ export async function handleInbox<TContextData>(
       logger.debug("Activity {activityId} has already been processed.", {
         activityId: activity.id?.href,
         activity: json,
+        recipient,
       });
       return new Response(
         `Activity <${activity.id}> has already been processed.`,
@@ -544,6 +546,7 @@ export async function handleInbox<TContextData>(
       "The signer ({keyId}) and the actor ({actorId}) do not match.",
       {
         activity: json,
+        recipient,
         keyId: httpSigKey.id?.href,
         actorId: activity.actorId.href,
       },
@@ -561,14 +564,14 @@ export async function handleInbox<TContextData>(
         id: crypto.randomUUID(),
         baseUrl: request.url,
         activity: json,
-        identifier,
+        identifier: recipient,
         attempt: 0,
         started: new Date().toISOString(),
       } satisfies InboxMessage,
     );
     logger.info(
       "Activity {activityId} is enqueued.",
-      { activityId: activity.id?.href, activity: json },
+      { activityId: activity.id?.href, activity: json, recipient },
     );
     return new Response("Activity is enqueued.", {
       status: 202,
@@ -579,7 +582,7 @@ export async function handleInbox<TContextData>(
   if (listener == null) {
     logger.error(
       "Unsupported activity type:\n{activity}",
-      { activity: json },
+      { activity: json, recipient },
     );
     return new Response("", {
       status: 202,
@@ -587,19 +590,29 @@ export async function handleInbox<TContextData>(
     });
   }
   try {
-    await listener(inboxContextFactory(json), activity);
+    await listener(inboxContextFactory(recipient, json), activity);
   } catch (error) {
     try {
       await inboxErrorHandler?.(context, error as Error);
     } catch (error) {
       logger.error(
         "An unexpected error occurred in inbox error handler:\n{error}",
-        { error, activityId: activity.id?.href, activity: json },
+        {
+          error,
+          activityId: activity.id?.href,
+          activity: json,
+          recipient,
+        },
       );
     }
     logger.error(
       "Failed to process the incoming activity {activityId}:\n{error}",
-      { error, activityId: activity.id?.href, activity: json },
+      {
+        error,
+        activityId: activity.id?.href,
+        activity: json,
+        recipient,
+      },
     );
     return new Response("Internal server error.", {
       status: 500,
@@ -611,7 +624,7 @@ export async function handleInbox<TContextData>(
   }
   logger.info(
     "Activity {activityId} has been processed.",
-    { activityId: activity.id?.href, activity: json },
+    { activityId: activity.id?.href, activity: json, recipient },
   );
   return new Response("", {
     status: 202,

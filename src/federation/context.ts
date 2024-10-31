@@ -385,6 +385,13 @@ export interface RequestContext<TContextData> extends Context<TContextData> {
  */
 export interface InboxContext<TContextData> extends Context<TContextData> {
   /**
+   * The identifier of the recipient of the inbox.  If the inbox is a shared
+   * inbox, it is `null`.
+   * @since 1.2.0
+   */
+  recipient: string | null;
+
+  /**
    * Forwards a received activity to the recipients' inboxes.  The forwarded
    * activity will be signed in HTTP Signatures by the forwarder, but its
    * payload will not be modified, i.e., Linked Data Signatures and Object

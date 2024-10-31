@@ -522,6 +522,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         logger.debug("Activity {activityId} has already been processed.", {
           activityId: activity.id?.href,
           activity: message.activity,
+          recipient: message.identifier,
         });
         return;
       }
@@ -530,12 +531,20 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     if (listener == null) {
       logger.error(
         "Unsupported activity type:\n{activity}",
-        { activity: message.activity, trial: message.attempt },
+        {
+          activityId: activity.id?.href,
+          activity: message.activity,
+          recipient: message.identifier,
+          trial: message.attempt,
+        },
       );
       return;
     }
     try {
-      await listener(context.toInboxContext(message.activity), activity);
+      await listener(
+        context.toInboxContext(message.identifier, message.activity),
+        activity,
+      );
     } catch (error) {
       try {
         await this.inboxErrorHandler?.(context, error as Error);
@@ -547,6 +556,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             trial: message.attempt,
             activityId: activity.id?.href,
             activity: message.activity,
+            recipient: message.identifier,
           },
         );
       }
@@ -565,6 +575,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             attempt: message.attempt,
             activityId: activity.id?.href,
             activity: message.activity,
+            recipient: message.identifier,
           },
         );
         this.queue?.enqueue(
@@ -582,7 +593,12 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         logger.error(
           "Failed to process the incoming activity {activityId} after " +
             "{trial} attempts; giving up:\n{error}",
-          { error, activityId: activity.id?.href, activity: message.activity },
+          {
+            error,
+            activityId: activity.id?.href,
+            activity: message.activity,
+            recipient: message.identifier,
+          },
         );
       }
       return;
@@ -594,7 +610,11 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     logger.info(
       "Activity {activityId} has been processed.",
-      { activityId: activity.id?.href, activity: message.activity },
+      {
+        activityId: activity.id?.href,
+        activity: message.activity,
+        recipient: message.identifier,
+      },
     );
   }
 
@@ -1895,7 +1915,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         }
         if (!this.manuallyStartQueue) this.#startQueue(contextData);
         return await handleInbox(request, {
-          identifier: route.values.identifier ?? route.values.handle ?? null,
+          recipient: route.values.identifier ?? route.values.handle ?? null,
           context,
           inboxContextFactory: context.toInboxContext.bind(context),
           kv: this.kv,
@@ -2016,8 +2036,11 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
       invokedFromActorKeyPairsDispatcher;
   }
 
-  toInboxContext(activity: unknown): InboxContextImpl<TContextData> {
-    return new InboxContextImpl(activity, {
+  toInboxContext(
+    recipient: string | null,
+    activity: unknown,
+  ): InboxContextImpl<TContextData> {
+    return new InboxContextImpl(recipient, activity, {
       url: this.url,
       federation: this.federation,
       data: this.data,
@@ -2734,10 +2757,16 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
 
 export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
   implements InboxContext<TContextData> {
+  readonly recipient: string | null;
   readonly activity: unknown;
 
-  constructor(activity: unknown, options: ContextOptions<TContextData>) {
+  constructor(
+    recipient: string | null,
+    activity: unknown,
+    options: ContextOptions<TContextData>,
+  ) {
     super(options);
+    this.recipient = recipient;
     this.activity = activity;
   }
 

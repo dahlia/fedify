@@ -105,10 +105,15 @@ export function createRequestContext<TContextData>(
 }
 
 export function createInboxContext<TContextData>(
-  args: Partial<InboxContext<TContextData>> & { url?: URL; data: TContextData },
+  args: Partial<InboxContext<TContextData>> & {
+    url?: URL;
+    data: TContextData;
+    recipient?: string | null;
+  },
 ): InboxContext<TContextData> {
   return {
     ...createContext(args),
+    recipient: args.recipient ?? null,
     forwardActivity: args.forwardActivity ?? ((_params) => {
       throw new Error("Not implemented");
     }),

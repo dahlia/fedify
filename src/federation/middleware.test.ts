@@ -1217,7 +1217,7 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
       "id": "https://example.com/activity",
       "actor": "https://example.com/person2",
     };
-    const ctx = new InboxContextImpl(activity, {
+    const ctx = new InboxContextImpl(null, activity, {
       data: undefined,
       federation,
       url: new URL("https://example.com/"),
@@ -1241,7 +1241,7 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
       "id": "https://example.com/activity",
       "actor": "https://example.com/person2",
     };
-    const ctx = new InboxContextImpl(activity, {
+    const ctx = new InboxContextImpl(null, activity, {
       data: undefined,
       federation,
       url: new URL("https://example.com/"),
@@ -1270,6 +1270,7 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
       { contextLoader: mockDocumentLoader, documentLoader: mockDocumentLoader },
     );
     const ctx = new InboxContextImpl(
+      null,
       await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
       {
         data: undefined,
@@ -1301,7 +1302,7 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
       rsaPublicKey3.id!,
       { contextLoader: mockDocumentLoader },
     );
-    const ctx = new InboxContextImpl(activity, {
+    const ctx = new InboxContextImpl(null, activity, {
       data: undefined,
       federation,
       url: new URL("https://example.com/"),

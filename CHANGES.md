@@ -8,6 +8,8 @@ Version 1.2.0
 
 To be released.
 
+ -  Added `InboxContext.recipient` property.
+
  -  Added NodeInfo client functions.
 
      -  Added `getNodeInfo()` function.
