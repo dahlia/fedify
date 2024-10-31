@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.2.0
 -------------
 
-To be released.
+Released on October 31, 2024.
 
  -  Added `InboxContext.recipient` property.
 
