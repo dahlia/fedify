@@ -9,6 +9,15 @@ Version 1.3.0
 To be released.
 
 
+Version 1.2.1
+-------------
+
+Released on October 31, 2024.
+
+ -  Now `fedify node` command can render the node's favicon with
+    `image/vnd.microsoft.icon` or `image/x-icon` format.
+
+
 Version 1.2.0
 -------------
 

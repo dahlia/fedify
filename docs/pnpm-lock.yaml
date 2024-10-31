@@ -18,8 +18,8 @@ importers:
         specifier: 0.1.0-dev.8
         version: 0.1.0-dev.8(web-streams-polyfill@3.3.3)
       '@fedify/fedify':
-        specifier: 1.2.0-dev.466
-        version: 1.2.0-dev.466(web-streams-polyfill@3.3.3)
+        specifier: 1.2.0
+        version: 1.2.0(web-streams-polyfill@3.3.3)
       '@fedify/postgres':
         specifier: 0.1.0-dev.2
         version: 0.1.0-dev.2(web-streams-polyfill@3.3.3)
@@ -72,8 +72,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       markdown-it-jsr-ref:
-        specifier: 0.4.0
-        version: 0.4.0
+        specifier: 0.4.1
+        version: 0.4.1
       mermaid:
         specifier: ^10.9.1
         version: 10.9.1
@@ -395,11 +395,8 @@ packages:
   '@fedify/amqp@0.1.0-dev.8':
     resolution: {integrity: sha512-GFDb8GLuyXtiBV9RtuCmFimNrglYDfDroZn9+Z9akhmTDp5lYhyfPPFQawSOvnwhyV36bgPIyFGZbaYznekZng==}
 
-  '@fedify/fedify@1.0.2':
-    resolution: {integrity: sha512-OWVfahJRstzCOGSEDJ5CEppVHZyR9IfpFStj1WnedLE6rFoYZ94fZu7dQv4x0M1a1K3AfIiwvOAgcXldy21sWg==}
-
-  '@fedify/fedify@1.2.0-dev.466':
-    resolution: {integrity: sha512-Zstp3Hk/1XkJQgl89v6f1MasZJ3Fbu4ATaYmGa8veVnkUKrY+9T5TZW6W5IJ7t20pj5h0MmxXMz0Q1nkMxiZlg==}
+  '@fedify/fedify@1.2.0':
+    resolution: {integrity: sha512-76wTodMo5OjXtb39qPa36VtEDzebFkix1tSYo/olaGLZ6oMo0ri8ZPevLvq4RzPvNo+omE1yYJTRdrmUnEmS0g==}
 
   '@fedify/postgres@0.1.0-dev.2':
     resolution: {integrity: sha512-KeLhfRgprJF7EXVgzPBRQAJKHnX79IdoZgrWWqD78bAIx3IiRLMXc+LS7/UmQaD0PiNmFXK+cUzKUE00/HbyDg==}
@@ -439,9 +436,6 @@ packages:
   '@js-temporal/polyfill@0.4.4':
     resolution: {integrity: sha512-2X6bvghJ/JAoZO52lbgyAPFj8uCflhTo2g7nkFzEQdXd/D8rEeD4HtmTEpmtGCva260fcd66YNXBOYdnmHqSOg==}
     engines: {node: '>=12'}
-
-  '@logtape/logtape@0.6.2':
-    resolution: {integrity: sha512-oxlXxhRlypREAWjaVNAqlOyo5whMmdtwgtsPfhxhzlc364DWJjGjXGCPJ1owwf1nlX/C+Wcp4vumV+mLksReuA==}
 
   '@logtape/logtape@0.7.1':
     resolution: {integrity: sha512-gP2O2Pk68I5UtH2D3d+uZpZG3eo2JLUStXpa+fLoPa4dkRYJyX+o70pPl4/4KkY06xsc+33mpslUd3kIKDT2Gw==}
@@ -1206,8 +1200,8 @@ packages:
   markdown-it-footnote@4.0.0:
     resolution: {integrity: sha512-WYJ7urf+khJYl3DqofQpYfEYkZKbmXmwxQV8c8mO/hGIhgZ1wOe7R4HLFNwqx7TjILbnC98fuyeSsin19JdFcQ==}
 
-  markdown-it-jsr-ref@0.4.0:
-    resolution: {integrity: sha512-JnMBe8kK2qx/9o9FY6W5pg9+em+sy6BeV7IDuKDZGa1yNzJCexWCkZEjqFB1cBsTbuXYEBVe2/H1sLs29yTfvg==}
+  markdown-it-jsr-ref@0.4.1:
+    resolution: {integrity: sha512-EuMR+I+4vvCZ3dP+78IAEeDfjf2ykcbbIJGt1smAoYL8JkjXKu41hQiy4uQ6VpMBSCEVdcvNJWKSj5WC7jEwhg==}
 
   markdown-it@14.1.0:
     resolution: {integrity: sha512-a54IwgWPaeBCAAsv13YgmALOF1elABB08FxO9i+r4VFk5Vl4pKokRPeX8u5TCgSsPi6ec1otfLjdOpVcgbpshg==}
@@ -2022,39 +2016,19 @@ snapshots:
 
   '@fedify/amqp@0.1.0-dev.8(web-streams-polyfill@3.3.3)':
     dependencies:
-      '@fedify/fedify': 1.0.2(web-streams-polyfill@3.3.3)
+      '@fedify/fedify': 1.2.0(web-streams-polyfill@3.3.3)
       amqplib: 0.10.4
     transitivePeerDependencies:
       - supports-color
       - web-streams-polyfill
 
-  '@fedify/fedify@1.0.2(web-streams-polyfill@3.3.3)':
+  '@fedify/fedify@1.2.0(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-crypto': 0.3.1
       '@deno/shim-deno': 0.18.2
       '@hugoalh/http-header-link': 1.0.2
       '@js-temporal/polyfill': 0.4.4
-      '@logtape/logtape': 0.6.2
-      '@phensley/language-tag': 1.9.0
-      asn1js: 3.0.5
-      json-canon: 1.0.1
-      jsonld: 8.3.2(web-streams-polyfill@3.3.3)
-      multibase: 4.0.6
-      multicodec: 3.2.1
-      pkijs: 3.2.4
-      uri-template-router: 0.0.16
-      url-template: 3.1.1
-      urlpattern-polyfill: 10.0.0
-    transitivePeerDependencies:
-      - web-streams-polyfill
-
-  '@fedify/fedify@1.2.0-dev.466(web-streams-polyfill@3.3.3)':
-    dependencies:
-      '@deno/shim-crypto': 0.3.1
-      '@deno/shim-deno': 0.18.2
-      '@hugoalh/http-header-link': 1.0.2
-      '@js-temporal/polyfill': 0.4.4
-      '@logtape/logtape': 0.6.2
+      '@logtape/logtape': 0.7.1
       '@phensley/language-tag': 1.9.0
       asn1js: 3.0.5
       json-canon: 1.0.1
@@ -2071,7 +2045,7 @@ snapshots:
   '@fedify/postgres@0.1.0-dev.2(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-deno': 0.18.2
-      '@fedify/fedify': 1.0.2(web-streams-polyfill@3.3.3)
+      '@fedify/fedify': 1.2.0(web-streams-polyfill@3.3.3)
       '@js-temporal/polyfill': 0.4.4
       postgres: 3.4.4
     transitivePeerDependencies:
@@ -2080,7 +2054,7 @@ snapshots:
   '@fedify/redis@0.2.0-dev.10(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-deno': 0.18.2
-      '@fedify/fedify': 1.0.2(web-streams-polyfill@3.3.3)
+      '@fedify/fedify': 1.2.0(web-streams-polyfill@3.3.3)
       '@js-temporal/polyfill': 0.4.4
       ioredis: 5.4.1
     transitivePeerDependencies:
@@ -2115,8 +2089,6 @@ snapshots:
     dependencies:
       jsbi: 4.3.0
       tslib: 2.7.0
-
-  '@logtape/logtape@0.6.2': {}
 
   '@logtape/logtape@0.7.1': {}
 
@@ -2938,7 +2910,7 @@ snapshots:
 
   markdown-it-footnote@4.0.0: {}
 
-  markdown-it-jsr-ref@0.4.0:
+  markdown-it-jsr-ref@0.4.1:
     dependencies:
       '@deno/shim-deno': 0.18.2
       markdown-it: 14.1.0
