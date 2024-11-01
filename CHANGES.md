@@ -8,6 +8,9 @@ Version 1.2.2
 
 To be released.
 
+ -  Handle connection errors (rather than HTTP errors) in
+    the `Context.sendActivity()` method.
+
  -  Support the `fedify` command on Windows on ARM64 via x64 emulation.
     [[#160]]
 
