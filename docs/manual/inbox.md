@@ -76,6 +76,106 @@ multiple inbox listeners for different activity types.
 [shared inbox]: https://www.w3.org/TR/activitypub/#shared-inbox-delivery
 
 
+Determining the recipient of an activity
+----------------------------------------
+
+### Looking at the `to`, `cc`, `bto`, and `bcc` fields
+
+When you receive an activity, you may want to determine the recipient of the
+activity.  The recipient is usually the actor who is mentioned in
+the `to`, `cc`, `bto`, or `bcc` field of the activity.  The following shows
+how to determine the recipient of a `Create` activity:
+
+~~~~ typescript twoslash
+import { Create, type InboxListenerSetters } from "@fedify/fedify";
+(0 as unknown as InboxListenerSetters<void>)
+// ---cut-before---
+.on(Create, async (ctx, create) => {
+  if (create.toId == null) return;
+  const to = ctx.parseUri(create.toId);
+  if (to?.type !== "actor") return;
+  const recipient = to.identifier;
+  // Do something with the recipient
+});
+~~~~
+
+The `to`, `cc`, `bto`, and `bcc` fields can contain multiple recipients,
+so you may need to iterate over them to determine the recipient of the activity:
+
+~~~~ typescript twoslash
+import { Create, type InboxListenerSetters } from "@fedify/fedify";
+(0 as unknown as InboxListenerSetters<void>)
+// ---cut-before---
+.on(Create, async (ctx, create) => {
+  for (const toId of create.toIds) {
+    const to = ctx.parseUri(toId);
+    if (to?.type !== "actor") continue;
+    const recipient = to.identifier;
+    // Do something with the recipient
+  }
+});
+~~~~
+
+Also, the `to`, `cc`, `bto`, and `bcc` fields can contain both actor and
+collection objects.  In such cases, you may need to recursively resolve the
+collection objects to determine the recipients of the activity:
+
+~~~~ typescript twoslash
+import { 
+  Collection,
+  Create,
+  type InboxListenerSetters,
+  isActor,
+} from "@fedify/fedify";
+(0 as unknown as InboxListenerSetters<void>)
+// ---cut-before---
+.on(Create, async (ctx, create) => {
+  for await (const to of create.getTos()) {
+    if (isActor(to)) {
+      // `to` is a recipient of the activity
+      // Do something with the recipient
+    } else if (to instanceof Collection) {
+      // `to` is a collection object
+      for await (const actor of to.getItems()) {
+        if (!isActor(actor)) continue;
+        // `actor` is a recipient of the activity
+        // Do something with the recipient
+      }
+    }
+  }
+});
+~~~~
+
+> [!TIP]
+> It might look strange, non-scalar accessor methods for `to`, `cc`, `bto`,
+> and `bcc` fields are named as `~Object.getTos()`, `~Object.getCcs()`,
+> `~Object.getBtos()`, and `~Object.getBccs()`, respectively.
+
+### Looking at the `InboxContext.recipient` property
+
+*This API is available since Fedify 1.2.0.*
+
+However, the `to`, `cc`, `bto`, and `bcc` fields are not always present in
+an activity.  In such cases, you can determine the recipient by looking at
+the `InboxContext.recipient` property.  The below example shows how to determine
+the recipient of a `Follow` activity:
+
+~~~~ typescript twoslash
+import { Follow, type InboxListenerSetters } from "@fedify/fedify";
+(0 as unknown as InboxListenerSetters<void>)
+// ---cut-before---
+.on(Follow, async (ctx, follow) => {
+  const recipient = ctx.recipient;
+  // Do something with the recipient
+});
+~~~~
+
+The `~InboxContext.recipient` property is set to the identifier of the actor
+who is the recipient of the activity.  If the invocation is not for a personal
+inbox, but for a shared inbox, the `~InboxContext.recipient` property is set to
+`null`.
+
+
 `Context.documentLoader` on an inbox listener
 ---------------------------------------------
 
