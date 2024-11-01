@@ -152,7 +152,20 @@ export async function sendActivity(
   } else {
     request = await signRequest(request, rsaKey.privateKey, rsaKey.keyId);
   }
-  const response = await fetch(request);
+  let response: Response;
+  try {
+    response = await fetch(request);
+  } catch (error) {
+    logger.error(
+      "Failed to send activity {activityId} to {inbox}:\n{error}",
+      {
+        activityId,
+        inbox: inbox.href,
+        error,
+      },
+    );
+    throw error;
+  }
   if (!response.ok) {
     let error;
     try {

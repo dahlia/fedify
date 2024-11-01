@@ -9,6 +9,20 @@ Version 1.3.0
 To be released.
 
 
+Version 1.2.2
+-------------
+
+Released on November 1, 2024.
+
+ -  Handle connection errors (rather than HTTP errors) in
+    the `Context.sendActivity()` method.
+
+ -  Support the `fedify` command on Windows on ARM64 via x64 emulation.
+    [[#160]]
+
+[#160]: https://github.com/dahlia/fedify/issues/160
+
+
 Version 1.2.1
 -------------
 

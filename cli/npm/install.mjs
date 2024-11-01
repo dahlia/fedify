@@ -12,6 +12,7 @@ import {
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
+import process from "node:process";
 import { Readable } from "node:stream";
 import { fileURLToPath } from "node:url";
 
@@ -25,6 +26,7 @@ const platforms = {
     x64: "linux-x86_64.tar.xz",
   },
   win32: {
+    arm64: "windows-x86_64.zip",
     x64: "windows-x86_64.zip",
   },
 };
