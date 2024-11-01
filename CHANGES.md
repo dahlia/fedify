@@ -8,6 +8,11 @@ Version 1.2.2
 
 To be released.
 
+ -  Support the `fedify` command on Windows on ARM64 via x64 emulation.
+    [[#160]]
+
+[#160]: https://github.com/dahlia/fedify/issues/160
+
 
 Version 1.2.1
 -------------
