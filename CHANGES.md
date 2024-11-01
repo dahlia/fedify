@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.2.2
 -------------
 
-To be released.
+Released on November 1, 2024.
 
  -  Handle connection errors (rather than HTTP errors) in
     the `Context.sendActivity()` method.
