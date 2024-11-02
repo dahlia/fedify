@@ -50,27 +50,9 @@ agree to this license, please do not open a pull request.
 
 [MIT License]: https://minhee.mit-license.org/2024/
 
-### Development environment
+### Building
 
-Fedify uses [Deno] as the main development environment, and is tested with Deno,
-[Node.js], and [Bun].  Therefore, you need to install Deno, Node.js, and Bun to
-contribute to Fedify.
-
-The recommended editor for Fedify is [Visual Studio Code] with
-the [Deno extension] installed.  Or you can use any editor that supports Deno;
-see the [*Set Up Your Environment* section][1] in the Deno manual.
-
-> [!NOTE]
->
-> Fedify heavily depends on code generation, so you need to run
-> `deno task codegen` before coding or testing.
-
-[Deno]: https://deno.com/
-[Node.js]: https://nodejs.org/
-[Bun]: https://bun.sh/
-[Visual Studio Code]: https://code.visualstudio.com/
-[Deno extension]: https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno
-[1]: https://docs.deno.com/runtime/manual/getting_started/setup_your_environment/
+To build the project, see the [*Build* section](#build).
 
 ### Coding conventions
 
@@ -78,9 +60,7 @@ Please run the following commands before opening a pull request:
 
 ~~~~ bash
 cd src/
-deno fmt
 deno task check
-deno task test-all
 ~~~~
 
 ### Docs
@@ -98,23 +78,13 @@ For Markdown, we have the following conventions:
  -  Wrap file paths in asterisks.
  -  Wrap code in backticks.
 
-In order to build the docs, as a prerequisite, you need to install [Node.js] and
-[pnpm] first. Then you can run the following commands:
-
-~~~~ bash
-cd docs/
-pnpm install
-pnpm dev
-~~~~
-
-Once the development server is running, you can open your browser and navigate
-to *http://localhost:5173/* to view the docs.
+In order to build the docs,
+see the [*Building the docs* section](#building-the-docs).
 
 [reference links]: https://spec.commonmark.org/0.31.2/#shortcut-reference-link
 [inline links]: https://spec.commonmark.org/0.31.2/#inline-link
 [setext headings]: https://spec.commonmark.org/0.31.2/#setext-headings
 [ATX headings]: https://spec.commonmark.org/0.31.2/#atx-headings
-[pnpm]: https://pnpm.io/
 
 ### Bug fix
 
@@ -159,3 +129,127 @@ A patch set should include the following:
     the pull request number, and your name (unless you want to be anonymous).
 
 Feature pull requests should target the *main* branch.
+
+
+Build
+-----
+
+### Directories
+
+The repository consists of the following directories:
+
+ -  *cli/*: The Fedify CLI.  The CLI is built with [Deno].
+ -  *docs/*: The Fedify docs.  The docs are built with [Node.js] and
+    [VitePress].
+ -  *examples/*: The example projects.  Some examples are built with Deno, and
+    some are built with Node.js.
+ -  *src/*: The Fedify library.  The library is built with Deno, and tested with
+    Deno, Node.js, and [Bun].
+     -  *codegen/*: The code generation scripts.
+
+[Deno]: https://deno.com/
+[VitePress]: https://vitepress.dev/
+[Node.js]: https://nodejs.org/
+[Bun]: https://bun.sh/
+
+### Development environment
+
+Fedify uses [Deno] as the main development environment.  Therefore, you need to
+install Deno to hack on Fedify.
+
+The recommended editor for Fedify is [Visual Studio Code] with
+the [Deno extension] installed.  Or you can use any editor that supports Deno;
+see the [*Set Up Your Environment* section][1] in the Deno manual.
+
+> [!CAUTION]
+>
+> Fedify heavily depends on code generation, so you need to run
+> `deno task codegen` before coding or testing.
+
+Assuming you have Deno and Visual Studio Code installed, you can open
+the repository in Visual Studio Code and get ready to hack on Fedify by running
+the following commands at the *root* of the repository:
+
+~~~~ bash
+pushd src
+deno task codegen
+popd
+code .
+~~~~
+
+Note that the `deno task codegen` command is required to run only once at
+very first time, or when you update the code generation scripts.   Otherwise,
+you can skip the command and just run:
+
+~~~~ bash
+code .
+~~~~
+
+Immediately after running the `code .` command, Visual Studio Code will open
+the repository, and you can start hacking on Fedify.  If you encounter the
+following message:
+
+> Do you want to install recommended 'Deno' extension from denoland for
+> this repository?
+
+Please click the *Install* button to install the Deno extension.
+
+[Visual Studio Code]: https://code.visualstudio.com/
+[Deno extension]: https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno
+[1]: https://docs.deno.com/runtime/manual/getting_started/setup_your_environment/
+
+### Running the Fedify CLI
+
+If you want to test your changes in the Fedify CLI, you can run `deno task run`
+command at the *cli/* directory.  For example, if you want to test
+the `fedify lookup` subcommand, you can run the following command:
+
+~~~~ bash
+pushd cli/
+deno task run lookup @fedify@hollo.social
+popd
+~~~~
+
+> [!TIP]
+>
+> Unlike the Fedify library, the Fedify CLI does not have to be tested with
+> Node.js and Bun; you can test the CLI with Deno only.
+
+#### Running the tests
+
+If you want to test your changes in the Fedify library, you can run
+`deno task test` command at the *src/* directory:
+
+~~~~ bash
+pushd src/
+deno task test
+popd
+~~~~
+
+If the tests pass, you should run `deno task test-all` command to test
+the library with Deno, Node.js, and [Bun]:
+
+~~~~ bash
+pushd src/
+deno task test-all
+popd
+~~~~
+
+Of course, Node.js and Bun should be installed on your system to run the tests
+with Node.js and Bun.
+
+### Building the docs
+
+If you want to change the Fedify docs, you would like to preview the changes
+in the browser.  To do that, you need to install Node.js and [pnpm] first.
+Then you can run the following commands at the *docs/* directory:
+
+~~~~ bash
+pnpm install
+pnpm dev
+~~~~
+
+Once the development server is running, you can open your browser and navigate
+to *http://localhost:5173/* to view the docs.
+
+[pnpm]: https://pnpm.io/
