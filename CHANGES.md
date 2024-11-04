@@ -8,6 +8,10 @@ Version 1.3.0
 
 To be released.
 
+ -  Fedify now makes HTTP requests with the proper `User-Agent` header.
+
+     -  Added `getUserAgent()` function.
+
 
 Version 1.2.2
 -------------

@@ -1,5 +1,7 @@
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
 import * as mf from "mock_fetch";
+import process from "node:process";
+import metadata from "../deno.json" with { type: "json" };
 import { MemoryKvStore } from "../federation/kv.ts";
 import { verifyRequest } from "../sig/http.ts";
 import { mockDocumentLoader } from "../testing/docloader.ts";
@@ -10,6 +12,7 @@ import {
   fetchDocumentLoader,
   FetchError,
   getAuthenticatedDocumentLoader,
+  getUserAgent,
   kvCache,
 } from "./docloader.ts";
 import { UrlError } from "./url.ts";
@@ -479,4 +482,63 @@ test("kvCache()", async (t) => {
       "The maximum cache duration is 30 days",
     );
   });
+});
+
+test("getUserAgent()", () => {
+  if ("Deno" in globalThis) {
+    assertEquals(
+      getUserAgent(),
+      `Fedify/${metadata.version} (Deno/${Deno.version.deno})`,
+    );
+    assertEquals(
+      getUserAgent("MyApp/1.0.0"),
+      `MyApp/1.0.0 (Fedify/${metadata.version}; Deno/${Deno.version.deno})`,
+    );
+    assertEquals(
+      getUserAgent(null, "https://example.com/"),
+      `Fedify/${metadata.version} (Deno/${Deno.version.deno}; +https://example.com/)`,
+    );
+    assertEquals(
+      getUserAgent("MyApp/1.0.0", new URL("https://example.com/")),
+      `MyApp/1.0.0 (Fedify/${metadata.version}; Deno/${Deno.version.deno}; +https://example.com/)`,
+    );
+  } else if ("Bun" in globalThis) {
+    assertEquals(
+      getUserAgent(),
+      // @ts-ignore: `Bun` is a global variable in Bun
+      `Fedify/${metadata.version} (Bun/${Bun.version})`,
+    );
+    assertEquals(
+      getUserAgent("MyApp/1.0.0"),
+      // @ts-ignore: `Bun` is a global variable in Bun
+      `MyApp/1.0.0 (Fedify/${metadata.version}; Bun/${Bun.version})`,
+    );
+    assertEquals(
+      getUserAgent(null, "https://example.com/"),
+      // @ts-ignore: `Bun` is a global variable in Bun
+      `Fedify/${metadata.version} (Bun/${Bun.version}; +https://example.com/)`,
+    );
+    assertEquals(
+      getUserAgent("MyApp/1.0.0", new URL("https://example.com/")),
+      // @ts-ignore: `Bun` is a global variable in Bun
+      `MyApp/1.0.0 (Fedify/${metadata.version}; Bun/${Bun.version}; +https://example.com/)`,
+    );
+  } else {
+    assertEquals(
+      getUserAgent(),
+      `Fedify/${metadata.version} (Node.js/${process.version})`,
+    );
+    assertEquals(
+      getUserAgent("MyApp/1.0.0"),
+      `MyApp/1.0.0 (Fedify/${metadata.version}; Node.js/${process.version})`,
+    );
+    assertEquals(
+      getUserAgent(null, "https://example.com/"),
+      `Fedify/${metadata.version} (Node.js/${process.version}; +https://example.com/)`,
+    );
+    assertEquals(
+      getUserAgent("MyApp/1.0.0", new URL("https://example.com/")),
+      `MyApp/1.0.0 (Fedify/${metadata.version}; Node.js/${process.version}; +https://example.com/)`,
+    );
+  }
 });

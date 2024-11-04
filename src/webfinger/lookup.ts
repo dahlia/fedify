@@ -1,4 +1,5 @@
 import { getLogger } from "@logtape/logtape";
+import { getUserAgent } from "../runtime/docloader.ts";
 import type { ResourceDescriptor } from "./jrd.ts";
 
 const logger = getLogger(["fedify", "webfinger", "lookup"]);
@@ -34,7 +35,10 @@ export async function lookupWebFinger(
     let response: Response;
     try {
       response = await fetch(url, {
-        headers: { Accept: "application/jrd+json" },
+        headers: {
+          Accept: "application/jrd+json",
+          "User-Agent": getUserAgent(),
+        },
         redirect: "manual",
       });
     } catch (error) {

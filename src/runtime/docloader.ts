@@ -1,5 +1,7 @@
 import { HTTPHeaderLink } from "@hugoalh/http-header-link";
 import { getLogger } from "@logtape/logtape";
+import process from "node:process";
+import metadata from "../deno.json" with { type: "json" };
 import type { KvKey, KvStore } from "../federation/kv.ts";
 import { signRequest } from "../sig/http.ts";
 import { validateCryptoKey } from "../sig/key.ts";
@@ -75,6 +77,7 @@ function createRequest(url: string): Request {
   return new Request(url, {
     headers: {
       Accept: "application/activity+json, application/ld+json",
+      "User-Agent": getUserAgent(),
     },
     redirect: "manual",
   });
@@ -393,4 +396,32 @@ export function kvCache(
     }
     return cache;
   };
+}
+
+/**
+ * Gets the user agent string for the given application and URL.
+ * @param app An optional application name and version, e.g., `"Hollo/1.0.0"`.
+ * @param url An optional URL to append to the user agent string.
+ *            Usually the URL of the ActivityPub instance.
+ * @returns The user agent string.
+ * @since 1.3.0
+ */
+export function getUserAgent(
+  app?: string | null,
+  url?: string | URL | null,
+): string {
+  const fedify = `Fedify/${metadata.version}`;
+  const runtime = "Deno" in globalThis
+    ? `Deno/${Deno.version.deno}`
+    : "Bun" in globalThis
+    // @ts-ignore: `Bun` is a global variable in Bun
+    ? `Bun/${Bun.version}`
+    : "process" in globalThis
+    ? `Node.js/${process.version}`
+    : null;
+  const userAgent = app == null ? [fedify] : [app, fedify];
+  if (runtime != null) userAgent.push(runtime);
+  if (url != null) userAgent.push(`+${url.toString()}`);
+  const first = userAgent.shift();
+  return `${first} (${userAgent.join("; ")})`;
 }

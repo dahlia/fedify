@@ -1,5 +1,6 @@
 import { getLogger } from "@logtape/logtape";
 import { parse, type SemVer } from "@std/semver";
+import { getUserAgent } from "../runtime/docloader.ts";
 import type { ResourceDescriptor } from "../webfinger/jrd.ts";
 import type {
   InboundService,
@@ -83,7 +84,12 @@ export async function getNodeInfo(
     let nodeInfoUrl: URL | string = url;
     if (!options.direct) {
       const wellKnownUrl = new URL("/.well-known/nodeinfo", url);
-      const wellKnownResponse = await fetch(wellKnownUrl);
+      const wellKnownResponse = await fetch(wellKnownUrl, {
+        headers: {
+          Accept: "application/json",
+          "User-Agent": getUserAgent(),
+        },
+      });
       if (!wellKnownResponse.ok) {
         logger.error("Failed to fetch {url}: {status} {statusText}", {
           url: wellKnownUrl.href,
@@ -110,7 +116,12 @@ export async function getNodeInfo(
       }
       nodeInfoUrl = link.href;
     }
-    const response = await fetch(nodeInfoUrl);
+    const response = await fetch(nodeInfoUrl, {
+      headers: {
+        Accept: "application/json",
+        "User-Agent": getUserAgent(),
+      },
+    });
     if (!response.ok) {
       logger.error(
         "Failed to fetch NodeInfo document from {url}: {status} {statusText}",
