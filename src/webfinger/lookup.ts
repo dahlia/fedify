@@ -1,17 +1,36 @@
 import { getLogger } from "@logtape/logtape";
-import { getUserAgent } from "../runtime/docloader.ts";
+import {
+  getUserAgent,
+  type GetUserAgentOptions,
+} from "../runtime/docloader.ts";
 import type { ResourceDescriptor } from "./jrd.ts";
 
 const logger = getLogger(["fedify", "webfinger", "lookup"]);
 
 /**
+ * Options for {@link lookupWebFinger}.
+ * @since 1.3.0
+ */
+export interface LookupWebFingerOptions {
+  /**
+   * The options for making `User-Agent` header.
+   * If a string is given, it is used as the `User-Agent` header value.
+   * If an object is given, it is passed to {@link getUserAgent} to generate
+   * the `User-Agent` header value.
+   */
+  userAgent?: GetUserAgentOptions | string;
+}
+
+/**
  * Looks up a WebFinger resource.
  * @param resource The resource URL to look up.
+ * @param options Extra options for looking up the resource.
  * @returns The resource descriptor, or `null` if not found.
  * @since 0.2.0
  */
 export async function lookupWebFinger(
   resource: URL | string,
+  options: LookupWebFingerOptions = {},
 ): Promise<ResourceDescriptor | null> {
   if (typeof resource === "string") resource = new URL(resource);
   let protocol = "https:";
@@ -37,7 +56,9 @@ export async function lookupWebFinger(
       response = await fetch(url, {
         headers: {
           Accept: "application/jrd+json",
-          "User-Agent": getUserAgent(),
+          "User-Agent": typeof options.userAgent === "string"
+            ? options.userAgent
+            : getUserAgent(options.userAgent),
         },
         redirect: "manual",
       });

@@ -43,7 +43,7 @@ export async function* generateEncoder(
     }
     options = {
       ...options,
-      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+      contextLoader: options.contextLoader ?? getDocumentLoader(),
     };
   `;
   if (isCompactableType(typeUri, types)) {
@@ -284,8 +284,8 @@ export async function* generateDecoder(
     else if (json === null) throw new TypeError("Invalid JSON-LD: null.");
     options = {
       ...options,
-      documentLoader: options.documentLoader ?? fetchDocumentLoader,
-      contextLoader: options.contextLoader ?? fetchDocumentLoader,
+      documentLoader: options.documentLoader ?? getDocumentLoader(),
+      contextLoader: options.contextLoader ?? getDocumentLoader(),
     };
     // deno-lint-ignore no-explicit-any
     let values: Record<string, any[]> & { "@id"?: string };

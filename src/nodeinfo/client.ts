@@ -1,6 +1,9 @@
 import { getLogger } from "@logtape/logtape";
 import { parse, type SemVer } from "@std/semver";
-import { getUserAgent } from "../runtime/docloader.ts";
+import {
+  getUserAgent,
+  type GetUserAgentOptions,
+} from "../runtime/docloader.ts";
 import type { ResourceDescriptor } from "../webfinger/jrd.ts";
 import type {
   InboundService,
@@ -40,6 +43,15 @@ export interface GetNodeInfoOptions {
    *     the raw JSON value.
    */
   parse?: "strict" | "best-effort" | "none";
+
+  /**
+   * The options for making `User-Agent` header.
+   * If a string is given, it is used as the `User-Agent` header value.
+   * If an object is given, it is passed to {@link getUserAgent} to generate
+   * the `User-Agent` header value.
+   * @since 1.3.0
+   */
+  userAgent?: GetUserAgentOptions | string;
 }
 
 /**
@@ -87,7 +99,9 @@ export async function getNodeInfo(
       const wellKnownResponse = await fetch(wellKnownUrl, {
         headers: {
           Accept: "application/json",
-          "User-Agent": getUserAgent(),
+          "User-Agent": typeof options.userAgent === "string"
+            ? options.userAgent
+            : getUserAgent(options.userAgent),
         },
       });
       if (!wellKnownResponse.ok) {
@@ -119,7 +133,9 @@ export async function getNodeInfo(
     const response = await fetch(nodeInfoUrl, {
       headers: {
         Accept: "application/json",
-        "User-Agent": getUserAgent(),
+        "User-Agent": typeof options.userAgent === "string"
+          ? options.userAgent
+          : getUserAgent(options.userAgent),
       },
     });
     if (!response.ok) {

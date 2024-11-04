@@ -1,7 +1,7 @@
 import { getLogger } from "@logtape/logtape";
 import {
   type DocumentLoader,
-  fetchDocumentLoader,
+  getDocumentLoader,
 } from "../runtime/docloader.ts";
 import { isActor } from "../vocab/actor.ts";
 import { CryptographicKey, type Multikey, Object } from "../vocab/vocab.ts";
@@ -212,7 +212,7 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
   logger.debug("Fetching key {keyId} to verify signature...", { keyId });
   let document: unknown;
   try {
-    const remoteDocument = await (documentLoader ?? fetchDocumentLoader)(keyId);
+    const remoteDocument = await (documentLoader ?? getDocumentLoader())(keyId);
     document = remoteDocument.document;
   } catch (_) {
     logger.debug("Failed to fetch key {keyId}.", { keyId });

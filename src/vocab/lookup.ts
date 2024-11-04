@@ -2,7 +2,8 @@ import { getLogger } from "@logtape/logtape";
 import { delay } from "@std/async/delay";
 import {
   type DocumentLoader,
-  fetchDocumentLoader,
+  getDocumentLoader,
+  type GetUserAgentOptions,
 } from "../runtime/docloader.ts";
 import { lookupWebFinger } from "../webfinger/lookup.ts";
 import { type Collection, type Link, Object } from "./vocab.ts";
@@ -25,6 +26,15 @@ export interface LookupObjectOptions {
    * @since 0.8.0
    */
   contextLoader?: DocumentLoader;
+
+  /**
+   * The options for making `User-Agent` header.
+   * If a string is given, it is used as the `User-Agent` header value.
+   * If an object is given, it is passed to {@link getUserAgent} to generate
+   * the `User-Agent` header value.
+   * @since 1.3.0
+   */
+  userAgent?: GetUserAgentOptions | string;
 }
 
 const handleRegexp =
@@ -66,7 +76,8 @@ export async function lookupObject(
   identifier: string | URL,
   options: LookupObjectOptions = {},
 ): Promise<Object | null> {
-  const documentLoader = options.documentLoader ?? fetchDocumentLoader;
+  const documentLoader = options.documentLoader ??
+    getDocumentLoader({ userAgent: options.userAgent });
   if (typeof identifier === "string") {
     const match = handleRegexp.exec(identifier);
     if (match) identifier = `acct:${match[1]}@${match[2]}`;
@@ -82,7 +93,9 @@ export async function lookupObject(
     }
   }
   if (document == null) {
-    const jrd = await lookupWebFinger(identifier);
+    const jrd = await lookupWebFinger(identifier, {
+      userAgent: options.userAgent,
+    });
     if (jrd?.links == null) return null;
     for (const l of jrd.links) {
       if (

@@ -1,4 +1,5 @@
 import { toASCII, toUnicode } from "node:punycode";
+import type { GetUserAgentOptions } from "../runtime/docloader.ts";
 import { lookupWebFinger } from "../webfinger/lookup.ts";
 import { Application, Group, Organization, Person, Service } from "./vocab.ts";
 
@@ -78,6 +79,21 @@ export function getActorClassByTypeName(
 }
 
 /**
+ * Options for {@link getActorHandle}.
+ * @since 1.3.0
+ */
+export interface GetActorHandleOptions extends NormalizeActorHandleOptions {
+  /**
+   * The options for making `User-Agent` header.
+   * If a string is given, it is used as the `User-Agent` header value.
+   * If an object is given, it is passed to {@link getUserAgent} to generate
+   * the `User-Agent` header value.
+   * @since 1.3.0
+   */
+  userAgent?: GetUserAgentOptions | string;
+}
+
+/**
  * Gets the actor handle, of the form `@username@domain`, from the given actor
  * or an actor URI.
  *
@@ -93,7 +109,7 @@ export function getActorClassByTypeName(
  * ```
  *
  * @param actor The actor or actor URI to get the handle from.
- * @param options The options for normalizing the actor handle.
+ * @param options The extra options for getting the actor handle.
  * @returns The actor handle.  It starts with `@` and is followed by the
  *          username and domain, separated by `@` by default (it can be
  *          customized with the options).
@@ -103,11 +119,13 @@ export function getActorClassByTypeName(
  */
 export async function getActorHandle(
   actor: Actor | URL,
-  options: NormalizeActorHandleOptions = {},
+  options: GetActorHandleOptions = {},
 ): Promise<`@${string}@${string}` | `${string}@${string}`> {
   const actorId = actor instanceof URL ? actor : actor.id;
   if (actorId != null) {
-    const result = await lookupWebFinger(actorId);
+    const result = await lookupWebFinger(actorId, {
+      userAgent: options.userAgent,
+    });
     if (result != null) {
       const aliases = [...(result.aliases ?? [])];
       if (result.subject != null) aliases.unshift(result.subject);
@@ -117,7 +135,11 @@ export async function getActorHandle(
           const hostname = new URL(`https://${match[2]}/`).hostname;
           if (
             hostname !== actorId.hostname &&
-            !await verifyCrossOriginActorHandle(actorId.href, alias)
+            !await verifyCrossOriginActorHandle(
+              actorId.href,
+              alias,
+              options.userAgent,
+            )
           ) {
             continue;
           }
@@ -143,8 +165,9 @@ export async function getActorHandle(
 async function verifyCrossOriginActorHandle(
   actorId: string,
   alias: string,
+  userAgent: GetUserAgentOptions | string | undefined,
 ): Promise<boolean> {
-  const response = await lookupWebFinger(alias);
+  const response = await lookupWebFinger(alias, { userAgent });
   if (response == null) return false;
   for (const alias of response.aliases ?? []) {
     if (new URL(alias).href === actorId) return true;

@@ -1,6 +1,6 @@
 import {
   type DocumentLoader,
-  fetchDocumentLoader,
+  getDocumentLoader,
 } from "../runtime/docloader.ts";
 import { type Actor, isActor } from "../vocab/actor.ts";
 import {
@@ -76,8 +76,8 @@ export async function getKeyOwner(
   keyId: URL | CryptographicKey,
   options: GetKeyOwnerOptions,
 ): Promise<Actor | null> {
-  const documentLoader = options.documentLoader ?? fetchDocumentLoader;
-  const contextLoader = options.contextLoader ?? fetchDocumentLoader;
+  const documentLoader = options.documentLoader ?? getDocumentLoader();
+  const contextLoader = options.contextLoader ?? getDocumentLoader();
   let object: ASObject | CryptographicKey;
   if (keyId instanceof CryptographicKey) {
     object = keyId;

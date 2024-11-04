@@ -9,9 +9,9 @@ import { rsaPrivateKey2 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
 import preloadedContexts from "./contexts.ts";
 import {
-  fetchDocumentLoader,
   FetchError,
   getAuthenticatedDocumentLoader,
+  getDocumentLoader,
   getUserAgent,
   kvCache,
 } from "./docloader.ts";
@@ -28,7 +28,9 @@ test("new FetchError()", () => {
   assertEquals(e2.message, "https://example.org/");
 });
 
-test("fetchDocumentLoader()", async (t) => {
+test("getDocumentLoader()", async (t) => {
+  const fetchDocumentLoader = getDocumentLoader();
+
   mf.install();
 
   mf.mock("GET@/object", (_req) =>
@@ -274,6 +276,8 @@ test("fetchDocumentLoader()", async (t) => {
     );
   });
 
+  const fetchDocumentLoader2 = getDocumentLoader({ allowPrivateAddress: true });
+
   await t.step("allowPrivateAddress: true", async () => {
     const expected = {
       contextUrl: null,
@@ -286,15 +290,15 @@ test("fetchDocumentLoader()", async (t) => {
       },
     };
     assertEquals(
-      await fetchDocumentLoader("https://localhost/object", true),
+      await fetchDocumentLoader2("https://localhost/object"),
       expected,
     );
     assertEquals(
-      await fetchDocumentLoader("https://example.com/localhost-redirect", true),
+      await fetchDocumentLoader2("https://example.com/localhost-redirect"),
       expected,
     );
     assertEquals(
-      await fetchDocumentLoader("https://example.com/localhost-link", true),
+      await fetchDocumentLoader2("https://example.com/localhost-link"),
       expected,
     );
   });
@@ -491,15 +495,18 @@ test("getUserAgent()", () => {
       `Fedify/${metadata.version} (Deno/${Deno.version.deno})`,
     );
     assertEquals(
-      getUserAgent("MyApp/1.0.0"),
+      getUserAgent({ software: "MyApp/1.0.0" }),
       `MyApp/1.0.0 (Fedify/${metadata.version}; Deno/${Deno.version.deno})`,
     );
     assertEquals(
-      getUserAgent(null, "https://example.com/"),
+      getUserAgent({ url: "https://example.com/" }),
       `Fedify/${metadata.version} (Deno/${Deno.version.deno}; +https://example.com/)`,
     );
     assertEquals(
-      getUserAgent("MyApp/1.0.0", new URL("https://example.com/")),
+      getUserAgent({
+        software: "MyApp/1.0.0",
+        url: new URL("https://example.com/"),
+      }),
       `MyApp/1.0.0 (Fedify/${metadata.version}; Deno/${Deno.version.deno}; +https://example.com/)`,
     );
   } else if ("Bun" in globalThis) {
@@ -509,17 +516,20 @@ test("getUserAgent()", () => {
       `Fedify/${metadata.version} (Bun/${Bun.version})`,
     );
     assertEquals(
-      getUserAgent("MyApp/1.0.0"),
+      getUserAgent({ software: "MyApp/1.0.0" }),
       // @ts-ignore: `Bun` is a global variable in Bun
       `MyApp/1.0.0 (Fedify/${metadata.version}; Bun/${Bun.version})`,
     );
     assertEquals(
-      getUserAgent(null, "https://example.com/"),
+      getUserAgent({ url: "https://example.com/" }),
       // @ts-ignore: `Bun` is a global variable in Bun
       `Fedify/${metadata.version} (Bun/${Bun.version}; +https://example.com/)`,
     );
     assertEquals(
-      getUserAgent("MyApp/1.0.0", new URL("https://example.com/")),
+      getUserAgent({
+        software: "MyApp/1.0.0",
+        url: new URL("https://example.com/"),
+      }),
       // @ts-ignore: `Bun` is a global variable in Bun
       `MyApp/1.0.0 (Fedify/${metadata.version}; Bun/${Bun.version}; +https://example.com/)`,
     );
@@ -529,15 +539,18 @@ test("getUserAgent()", () => {
       `Fedify/${metadata.version} (Node.js/${process.version})`,
     );
     assertEquals(
-      getUserAgent("MyApp/1.0.0"),
+      getUserAgent({ software: "MyApp/1.0.0" }),
       `MyApp/1.0.0 (Fedify/${metadata.version}; Node.js/${process.version})`,
     );
     assertEquals(
-      getUserAgent(null, "https://example.com/"),
+      getUserAgent({ url: "https://example.com/" }),
       `Fedify/${metadata.version} (Node.js/${process.version}; +https://example.com/)`,
     );
     assertEquals(
-      getUserAgent("MyApp/1.0.0", new URL("https://example.com/")),
+      getUserAgent({
+        software: "MyApp/1.0.0",
+        url: new URL("https://example.com/"),
+      }),
       `MyApp/1.0.0 (Fedify/${metadata.version}; Node.js/${process.version}; +https://example.com/)`,
     );
   }

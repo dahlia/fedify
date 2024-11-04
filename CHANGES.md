@@ -8,9 +8,29 @@ Version 1.3.0
 
 To be released.
 
- -  Fedify now makes HTTP requests with the proper `User-Agent` header.
+ -  Fedify now makes HTTP requests with the proper `User-Agent` header. [[#162]]
 
      -  Added `getUserAgent()` function.
+     -  Added `GetUserAgentOptions` interface.
+     -  Added `getDocumentLoader()` function.
+     -  Added `GetDocumentLoaderOptions` interface.
+     -  The type of `getAuthenticatedDocumentLoader()` function's second
+        parameter became `GetAuthenticatedDocumentLoaderOptions | undefined`
+        (was `boolean | undefined`).
+     -  Added `GetAuthenticatedDocumentLoaderOptions` interface.
+     -  Deprecated `fetchDocumentLoader()` function.
+     -  Added `LookupObjectOptions.userAgent` option.
+     -  Added the type of `getActorHandle()` function's second parameter became
+        `GetActorHandleOptions | undefined` (was `NormalizeActorHandleOptions |
+        undefined`).
+     -  Added `GetActorHandleOptions` interface.
+     -  Added the optional second parameter to `lookupWebFinger()` function.
+     -  Added `LookupWebFingerOptions` interface.
+     -  Added `GetNodeInfoOptions.userAgent` option.
+     -  Added `-u`/--user-agent` option to `fedify lookup` subcommand.
+     -  Added `-u`/--user-agent` option to `fedify node` subcommand.
+
+[#162]: https://github.com/dahlia/fedify/issues/162
 
 
 Version 1.2.2

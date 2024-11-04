@@ -73,11 +73,20 @@ export class FetchError extends Error {
   }
 }
 
-function createRequest(url: string): Request {
+interface CreateRequestOptions {
+  userAgent?: GetUserAgentOptions | string;
+}
+
+function createRequest(
+  url: string,
+  options: CreateRequestOptions = {},
+): Request {
   return new Request(url, {
     headers: {
       Accept: "application/activity+json, application/ld+json",
-      "User-Agent": getUserAgent(),
+      "User-Agent": typeof options.userAgent === "string"
+        ? options.userAgent
+        : getUserAgent(options.userAgent),
     },
     redirect: "manual",
   });
@@ -205,6 +214,95 @@ async function getRemoteDocument(
 }
 
 /**
+ * Options for {@link getDocumentLoader}.
+ * @since 1.3.0
+ */
+export interface GetDocumentLoaderOptions {
+  /**
+   * Whether to allow fetching private network addresses.
+   * Turned off by default.
+   */
+  allowPrivateAddress?: boolean;
+
+  /**
+   * Options for making `User-Agent` string.
+   * If a string is given, it is used as the `User-Agent` header value.
+   * If an object is given, it is passed to {@link getUserAgent} function.
+   */
+  userAgent?: GetUserAgentOptions | string;
+
+  /**
+   * Whether to preload the frequently used contexts.
+   */
+  skipPreloadedContexts?: boolean;
+}
+
+/**
+ * Creates a JSON-LD document loader that utilizes the browser's `fetch` API.
+ *
+ * The created loader preloads the below frequently used contexts by default
+ * (unless `options.ignorePreloadedContexts` is set to `true`):
+ *
+ * - <https://www.w3.org/ns/activitystreams>
+ * - <https://w3id.org/security/v1>
+ * - <https://w3id.org/security/data-integrity/v1>
+ * - <https://www.w3.org/ns/did/v1>
+ * - <https://w3id.org/security/multikey/v1>
+ * - <https://purl.archive.org/socialweb/webfinger>
+ * - <http://schema.org/>
+ * @param options Options for the document loader.
+ * @returns The document loader.
+ * @since 1.3.0
+ */
+export function getDocumentLoader(
+  { allowPrivateAddress, skipPreloadedContexts, userAgent }:
+    GetDocumentLoaderOptions = {},
+): DocumentLoader {
+  async function load(url: string): Promise<RemoteDocument> {
+    if (!skipPreloadedContexts && url in preloadedContexts) {
+      logger.debug("Using preloaded context: {url}.", { url });
+      return {
+        contextUrl: null,
+        document: preloadedContexts[url],
+        documentUrl: url,
+      };
+    }
+    if (!allowPrivateAddress) {
+      try {
+        await validatePublicUrl(url);
+      } catch (error) {
+        if (error instanceof UrlError) {
+          logger.error("Disallowed private URL: {url}", { url, error });
+        }
+        throw error;
+      }
+    }
+    const request = createRequest(url, { userAgent });
+    logRequest(request);
+    const response = await fetch(request, {
+      // Since Bun has a bug that ignores the `Request.redirect` option,
+      // to work around it we specify `redirect: "manual"` here too:
+      // https://github.com/oven-sh/bun/issues/10754
+      redirect: "manual",
+    });
+    // Follow redirects manually to get the final URL:
+    if (
+      response.status >= 300 && response.status < 400 &&
+      response.headers.has("Location")
+    ) {
+      return load(response.headers.get("Location")!);
+    }
+    return getRemoteDocument(url, response, load);
+  }
+  return load;
+}
+
+const _fetchDocumentLoader = getDocumentLoader();
+const _fetchDocumentLoader_allowPrivateAddress = getDocumentLoader({
+  allowPrivateAddress: true,
+});
+
+/**
  * A JSON-LD document loader that utilizes the browser's `fetch` API.
  *
  * This loader preloads the below frequently used contexts:
@@ -214,56 +312,44 @@ async function getRemoteDocument(
  * - <https://w3id.org/security/data-integrity/v1>
  * - <https://www.w3.org/ns/did/v1>
  * - <https://w3id.org/security/multikey/v1>
+ * - <https://purl.archive.org/socialweb/webfinger>
+ * - <http://schema.org/>
  * @param url The URL of the document to load.
  * @param allowPrivateAddress Whether to allow fetching private network
  *                            addresses.  Turned off by default.
  * @returns The remote document.
+ * @deprecated Use {@link getDocumentLoader} instead.
  */
-export async function fetchDocumentLoader(
+export function fetchDocumentLoader(
   url: string,
   allowPrivateAddress: boolean = false,
 ): Promise<RemoteDocument> {
-  if (url in preloadedContexts) {
-    logger.debug("Using preloaded context: {url}.", { url });
-    return {
-      contextUrl: null,
-      document: preloadedContexts[url],
-      documentUrl: url,
-    };
-  }
-  if (!allowPrivateAddress) {
-    try {
-      await validatePublicUrl(url);
-    } catch (error) {
-      if (error instanceof UrlError) {
-        logger.error("Disallowed private URL: {url}", { url, error });
-      }
-      throw error;
-    }
-  }
-  const request = createRequest(url);
-  logRequest(request);
-  const response = await fetch(request, {
-    // Since Bun has a bug that ignores the `Request.redirect` option,
-    // to work around it we specify `redirect: "manual"` here too:
-    // https://github.com/oven-sh/bun/issues/10754
-    redirect: "manual",
-  });
-  // Follow redirects manually to get the final URL:
-  if (
-    response.status >= 300 && response.status < 400 &&
-    response.headers.has("Location")
-  ) {
-    return fetchDocumentLoader(
-      response.headers.get("Location")!,
-      allowPrivateAddress,
-    );
-  }
-  return getRemoteDocument(
-    url,
-    response,
-    (url) => fetchDocumentLoader(url, allowPrivateAddress),
+  logger.warn(
+    "fetchDocumentLoader() function is deprecated.  " +
+      "Use getDocumentLoader() function instead.",
   );
+  return (allowPrivateAddress
+    ? _fetchDocumentLoader_allowPrivateAddress
+    : _fetchDocumentLoader)(url);
+}
+
+/**
+ * Options for {@link getAuthenticatedDocumentLoader}.
+ * @since 1.3.0
+ */
+export interface GetAuthenticatedDocumentLoaderOptions {
+  /**
+   * Whether to allow fetching private network addresses.
+   * Turned off by default.
+   */
+  allowPrivateAddress?: boolean;
+
+  /**
+   * Options for making `User-Agent` string.
+   * If a string is given, it is used as the `User-Agent` header value.
+   * If an object is given, it is passed to {@link getUserAgent} function.
+   */
+  userAgent?: GetUserAgentOptions | string;
 }
 
 /**
@@ -272,15 +358,15 @@ export async function fetchDocumentLoader(
  * the fetched documents.
  * @param identity The identity to get the document loader for.
  *                 The actor's key pair.
- * @param allowPrivateAddress Whether to allow fetching private network
- *                            addresses.  Turned off by default.
+ * @param options The options for the document loader.
  * @returns The authenticated document loader.
  * @throws {TypeError} If the key is invalid or unsupported.
  * @since 0.4.0
  */
 export function getAuthenticatedDocumentLoader(
   identity: { keyId: URL; privateKey: CryptoKey },
-  allowPrivateAddress: boolean = false,
+  { allowPrivateAddress, userAgent }: GetAuthenticatedDocumentLoaderOptions =
+    {},
 ): DocumentLoader {
   validateCryptoKey(identity.privateKey);
   async function load(url: string): Promise<RemoteDocument> {
@@ -294,7 +380,7 @@ export function getAuthenticatedDocumentLoader(
         throw error;
       }
     }
-    let request = createRequest(url);
+    let request = createRequest(url, { userAgent });
     request = await signRequest(request, identity.privateKey, identity.keyId);
     logRequest(request);
     const response = await fetch(request, {
@@ -399,16 +485,30 @@ export function kvCache(
 }
 
 /**
+ * Options for making `User-Agent` string.
+ * @see {@link getUserAgent}
+ * @since 1.3.0
+ */
+export interface GetUserAgentOptions {
+  /**
+   * An optional software name and version, e.g., `"Hollo/1.0.0"`.
+   */
+  software?: string | null;
+  /**
+   * An optional URL to append to the user agent string.
+   * Usually the URL of the ActivityPub instance.
+   */
+  url?: string | URL | null;
+}
+
+/**
  * Gets the user agent string for the given application and URL.
- * @param app An optional application name and version, e.g., `"Hollo/1.0.0"`.
- * @param url An optional URL to append to the user agent string.
- *            Usually the URL of the ActivityPub instance.
+ * @param options The options for making the user agent string.
  * @returns The user agent string.
  * @since 1.3.0
  */
 export function getUserAgent(
-  app?: string | null,
-  url?: string | URL | null,
+  { software, url }: GetUserAgentOptions = {},
 ): string {
   const fedify = `Fedify/${metadata.version}`;
   const runtime = "Deno" in globalThis
@@ -419,7 +519,7 @@ export function getUserAgent(
     : "process" in globalThis
     ? `Node.js/${process.version}`
     : null;
-  const userAgent = app == null ? [fedify] : [app, fedify];
+  const userAgent = software == null ? [fedify] : [software, fedify];
   if (runtime != null) userAgent.push(runtime);
   if (url != null) userAgent.push(`+${url.toString()}`);
   const first = userAgent.shift();

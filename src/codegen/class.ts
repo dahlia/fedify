@@ -99,7 +99,7 @@ export async function* generateClasses(
     from "@phensley/language-tag";\n`;
   yield `import { decode as decodeMultibase, encode as encodeMultibase }
     from "multibase";`;
-  yield `import { type DocumentLoader, fetchDocumentLoader, type RemoteDocument }
+  yield `import { type DocumentLoader, getDocumentLoader, type RemoteDocument }
     from "${runtimePath}/docloader.ts";\n`;
   yield `import {
     exportSpki,

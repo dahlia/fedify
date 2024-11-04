@@ -31,14 +31,19 @@ export const command = new Command()
   .option("-e, --expand", "Expand the fetched JSON-LD document.", {
     conflicts: ["raw", "compact"],
   })
+  .option("-u, --user-agent <string>", "The custom User-Agent header value.")
   .action(async (options, url: string) => {
     const spinner = ora({
       text: "Looking up the object...",
       discardStdin: false,
     }).start();
     let server: TemporaryServer | undefined = undefined;
-    const documentLoader = await getDocumentLoader();
-    const contextLoader = await getContextLoader();
+    const documentLoader = await getDocumentLoader({
+      userAgent: options.userAgent,
+    });
+    const contextLoader = await getContextLoader({
+      userAgent: options.userAgent,
+    });
     let authLoader: DocumentLoader | undefined = undefined;
     if (options.authorizedFetch) {
       spinner.text = "Generating a one-time key pair...";
@@ -87,7 +92,11 @@ export const command = new Command()
       spinner.text = "Looking up the object...";
       const object = await lookupObject(
         url,
-        { documentLoader: authLoader ?? documentLoader, contextLoader },
+        {
+          documentLoader: authLoader ?? documentLoader,
+          contextLoader,
+          userAgent: options.userAgent,
+        },
       );
       spinner.succeed();
       if (object == null) {

@@ -205,6 +205,47 @@ Turned off by default.
 
 [SSRF]: https://owasp.org/www-community/attacks/Server_Side_Request_Forgery
 
+### `userAgent`
+
+*This API is available since Fedify 1.3.0.*
+
+The options for making `User-Agent` header in the HTTP requests that Fedify
+makes.  By default, it contains the name and version of the Fedify library,
+and the name and version of the JavaScript runtime, e.g.:
+
+~~~~
+Fedify/1.3.0 (Deno/2.0.4)
+Fedify/1.3.0 (Node.js/v22.10.0)
+Fedify/1.3.0 (Bun/1.1.33)
+~~~~
+
+You can customize the `User-Agent` header by providing options like `software`
+and `url`.  For example, if you provide the following options:
+
+~~~~ ts
+{
+  software: "MyApp/1.0.0",
+  url: "https://myinstance.com/"
+}
+~~~~
+
+The `User-Agent` header will be like:
+
+~~~~
+MyApp/1.0.0 (Fedify/1.3.0; Deno/2.0.4; +https://myinstance.com/)
+~~~~
+
+Or, you can rather provide a custom `User-Agent` string directly instead of
+an object for options.
+
+> [!CAUTION]
+>
+> This settings do not affect the `User-Agent` header of the HTTP requests
+> that `lookupWebFinger()`, `lookupObject()`, and `getNodeInfo()` functions make,
+> since they do not depend on the `Federation` object.
+>
+> However, `Context.lookupObject()` method is affected by this settings.
+
 ### `outboxRetryPolicy`
 
 *This API is available since Fedify 0.12.0.*

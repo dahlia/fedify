@@ -639,6 +639,20 @@ Person {
 }
 ~~~~
 
+### `-u`/`--user-agent`: Custom `User-Agent` header
+
+*This option is available since Fedify 1.3.0.*
+
+By default, the `fedify lookup` command sends the `User-Agent` header with the
+value `Fedify/1.3.0 (Deno/2.0.4)` (version numbers may vary).  You can specify
+a custom `User-Agent` header by using the `-u`/`--user-agent` option.  For
+example, to send the `User-Agent` header with the value `MyApp/1.0`, run the
+below command:
+
+~~~~ sh
+fedify lookup --user-agent MyApp/1.0 @fedify@hollo.social
+~~~~
+
 
 `fedify inbox`: Ephemeral inbox server
 --------------------------------------
@@ -796,6 +810,20 @@ instance.
 
 The `-m`/`--metadata` option is used to show the extra metadata of the NodeInfo,
 i.e., the `metadata` field of the document.
+
+### `-u`/`--user-agent`: Custom `User-Agent` header
+
+*This option is available since Fedify 1.3.0.*
+
+By default, the `fedify node` command sends the `User-Agent` header with the
+value `Fedify/1.3.0 (Deno/2.0.4)` (version numbers may vary).  You can specify
+a custom `User-Agent` header by using the `-u`/`--user-agent` option.  For
+example, to send the `User-Agent` header with the value `MyApp/1.0`, run the
+below command:
+
+~~~~ sh
+fedify node --user-agent MyApp/1.0 mastodon.social
+~~~~
 
 
 `fedify tunnel`: Exposing a local HTTP server to the public internet

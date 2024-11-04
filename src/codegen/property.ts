@@ -58,9 +58,9 @@ async function* generateProperty(
       } = {}
     ): Promise<${getTypeNames(property.range, types)} | null> {
       const documentLoader =
-        options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
+        options.documentLoader ?? this._documentLoader ?? getDocumentLoader();
       const contextLoader =
-        options.contextLoader ?? this._contextLoader ?? fetchDocumentLoader;
+        options.contextLoader ?? this._contextLoader ?? getDocumentLoader();
       let fetchResult: RemoteDocument;
       try {
         fetchResult = await documentLoader(url.href);

@@ -1,19 +1,25 @@
 import {
   type DocumentLoader,
-  fetchDocumentLoader,
+  getDocumentLoader as getDefaultDocumentLoader,
   kvCache,
 } from "@fedify/fedify";
 import { DenoKvStore } from "@fedify/fedify/x/denokv";
 import { join } from "@std/path";
 import { getCacheDir } from "./cache.ts";
 
-let documentLoader: DocumentLoader | undefined = undefined;
+const documentLoaders: Record<string, DocumentLoader> = {};
 
-export async function getDocumentLoader(): Promise<DocumentLoader> {
-  if (documentLoader) return documentLoader;
+export interface DocumentLoaderOptions {
+  userAgent?: string;
+}
+
+export async function getDocumentLoader(
+  { userAgent }: DocumentLoaderOptions = {},
+): Promise<DocumentLoader> {
+  if (documentLoaders[userAgent ?? ""]) return documentLoaders[userAgent ?? ""];
   const path = join(await getCacheDir(), "kv");
   const kv = new DenoKvStore(await Deno.openKv(path));
-  return documentLoader = kvCache({
+  return documentLoaders[userAgent ?? ""] = kvCache({
     kv,
     rules: [
       [
@@ -50,12 +56,15 @@ export async function getDocumentLoader(): Promise<DocumentLoader> {
         Temporal.Duration.from({ seconds: 0 }),
       ],
     ],
-    loader(url) {
-      return fetchDocumentLoader(url, true);
-    },
+    loader: getDefaultDocumentLoader({
+      allowPrivateAddress: true,
+      userAgent,
+    }),
   });
 }
 
-export function getContextLoader(): Promise<DocumentLoader> {
-  return getDocumentLoader();
+export function getContextLoader(
+  options: DocumentLoaderOptions = {},
+): Promise<DocumentLoader> {
+  return getDocumentLoader(options);
 }

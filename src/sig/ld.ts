@@ -5,7 +5,7 @@ import { encodeHex } from "@std/encoding/hex";
 import jsonld from "jsonld";
 import {
   type DocumentLoader,
-  fetchDocumentLoader,
+  getDocumentLoader,
 } from "../runtime/docloader.ts";
 import { Activity, CryptographicKey, Object } from "../vocab/vocab.ts";
 import { fetchKey, type KeyCache, validateCryptoKey } from "./key.ts";
@@ -332,7 +332,7 @@ async function hashJsonLd(
 ): Promise<string> {
   const canon = await jsonld.canonize(jsonLd, {
     format: "application/n-quads",
-    documentLoader: contextLoader ?? fetchDocumentLoader,
+    documentLoader: contextLoader ?? getDocumentLoader(),
   });
   const encoder = new TextEncoder();
   const hash = await crypto.subtle.digest("SHA-256", encoder.encode(canon));

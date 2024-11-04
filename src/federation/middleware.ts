@@ -3,8 +3,9 @@ import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
   type DocumentLoader,
-  fetchDocumentLoader,
   getAuthenticatedDocumentLoader,
+  getDocumentLoader,
+  type GetUserAgentOptions,
   kvCache,
 } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
@@ -155,6 +156,14 @@ export interface CreateFederationOptions {
    * Turned off by default.
    */
   allowPrivateAddress?: boolean;
+
+  /**
+   * Options for making `User-Agent` strings for HTTP requests.
+   * If a string is provided, it is used as the `User-Agent` header.
+   * If an object is provided, it is passed to the {@link getUserAgent}
+   * function.
+   */
+  userAgent?: GetUserAgentOptions | string;
 
   /**
    * A callback that handles errors during outbox processing.  Note that this
@@ -309,6 +318,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   documentLoader: DocumentLoader;
   contextLoader: DocumentLoader;
   authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
+  userAgent?: GetUserAgentOptions | string;
   onOutboxError?: OutboxErrorHandler;
   signatureTimeWindow: Temporal.Duration | Temporal.DurationLike | false;
   skipSignatureVerification: boolean;
@@ -335,35 +345,39 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     this.router.add("/.well-known/nodeinfo", "nodeInfoJrd");
     this.objectCallbacks = {};
     this.objectTypeIds = {};
-    if (options.allowPrivateAddress) {
+    if (options.allowPrivateAddress || options.userAgent != null) {
       if (options.documentLoader != null) {
         throw new TypeError(
-          "Cannot set documentLoader with allowPrivateAddress turned on.",
+          "Cannot set documentLoader with allowPrivateAddress or " +
+            "userAgent options.",
         );
       } else if (options.contextLoader != null) {
         throw new TypeError(
-          "Cannot set contextLoader with allowPrivateAddress turned on.",
+          "Cannot set contextLoader with allowPrivateAddress or " +
+            "userAgent options.",
         );
       } else if (options.authenticatedDocumentLoaderFactory != null) {
         throw new TypeError(
           "Cannot set authenticatedDocumentLoaderFactory with " +
-            "allowPrivateAddress turned on.",
+            "allowPrivateAddress or userAgent options.",
         );
       }
     }
+    const { allowPrivateAddress, userAgent } = options;
     this.documentLoader = options.documentLoader ?? kvCache({
-      loader: options.allowPrivateAddress
-        ? (url) => fetchDocumentLoader(url, true)
-        : fetchDocumentLoader,
+      loader: getDocumentLoader({ allowPrivateAddress, userAgent }),
       kv: options.kv,
       prefix: this.kvPrefixes.remoteDocument,
     });
     this.contextLoader = options.contextLoader ?? this.documentLoader;
     this.authenticatedDocumentLoaderFactory =
       options.authenticatedDocumentLoaderFactory ??
-        (options.allowPrivateAddress
-          ? (identity) => getAuthenticatedDocumentLoader(identity, true)
-          : getAuthenticatedDocumentLoader);
+        ((identity) =>
+          getAuthenticatedDocumentLoader(identity, {
+            allowPrivateAddress,
+            userAgent,
+          }));
+    this.userAgent = userAgent;
     this.onOutboxError = options.onOutboxError;
     this.signatureTimeWindow = options.signatureTimeWindow ?? { hours: 1 };
     this.skipSignatureVerification = options.skipSignatureVerification ?? false;
@@ -2494,6 +2508,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
     return lookupObject(identifier, {
       documentLoader: options.documentLoader ?? this.documentLoader,
       contextLoader: options.contextLoader ?? this.contextLoader,
+      userAgent: options.userAgent ?? this.federation.userAgent,
     });
   }
 

@@ -1,6 +1,6 @@
 import { colors } from "@cliffy/ansi";
 import { Command } from "@cliffy/command";
-import { formatSemVer, getNodeInfo } from "@fedify/fedify";
+import { formatSemVer, getNodeInfo, getUserAgent } from "@fedify/fedify";
 import { createJimp } from "@jimp/core";
 import webp from "@jimp/wasm-webp";
 import { getLogger } from "@logtape/logtape";
@@ -34,6 +34,7 @@ export const command = new Command()
     "Print metadata fields of the NodeInfo document.",
     { conflicts: ["raw"] },
   )
+  .option("-u, --user-agent <string>", "The custom User-Agent header value.")
   .action(async (options, host: string) => {
     const spinner = ora({
       text: "Fetching a NodeInfo document...",
@@ -41,7 +42,10 @@ export const command = new Command()
     }).start();
     const url = new URL(URL.canParse(host) ? host : `https://${host}/`);
     if (options.raw) {
-      const nodeInfo = await getNodeInfo(url, { parse: "none" });
+      const nodeInfo = await getNodeInfo(url, {
+        parse: "none",
+        userAgent: options.userAgent,
+      });
       if (nodeInfo === undefined) {
         spinner.fail("No NodeInfo document found.");
         console.error("No NodeInfo document found.");
@@ -53,6 +57,7 @@ export const command = new Command()
     }
     const nodeInfo = await getNodeInfo(url, {
       parse: options.bestEffort ? "best-effort" : "strict",
+      userAgent: options.userAgent,
     });
     logger.debug("NodeInfo document: {nodeInfo}", { nodeInfo });
     if (nodeInfo == undefined) {
@@ -70,8 +75,14 @@ export const command = new Command()
     if (options.favicon) {
       spinner.text = "Fetching the favicon...";
       try {
-        const faviconUrl = await getFaviconUrl(url);
-        const response = await fetch(faviconUrl);
+        const faviconUrl = await getFaviconUrl(url, options.userAgent);
+        const response = await fetch(faviconUrl, {
+          headers: {
+            "User-Agent": options.userAgent == null
+              ? getUserAgent()
+              : options.userAgent,
+          },
+        });
         if (response.ok) {
           const contentType = response.headers.get("Content-Type");
           let buffer: ArrayBuffer = await response.arrayBuffer();
@@ -208,8 +219,15 @@ const LINK_REGEXP =
   /<link((?:\s+(?:[-a-z]+)=(?:"[^"]*"|'[^']*'|[^\s]+))*)\s*\/?>/ig;
 const LINK_ATTRS_REGEXP = /(?:\s+([-a-z]+)=("[^"]*"|'[^']*'|[^\s]+))/ig;
 
-async function getFaviconUrl(url: string | URL): Promise<URL> {
-  const response = await fetch(url);
+async function getFaviconUrl(
+  url: string | URL,
+  userAgent?: string,
+): Promise<URL> {
+  const response = await fetch(url, {
+    headers: {
+      "User-Agent": userAgent == null ? getUserAgent() : userAgent,
+    },
+  });
   const text = await response.text();
   for (const match of text.matchAll(LINK_REGEXP)) {
     const attrs: Record<string, string> = {};
