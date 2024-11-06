@@ -219,7 +219,8 @@ async function getFaviconUrl(url: string | URL): Promise<URL> {
         ? value.slice(1, -1)
         : value;
     }
-    if (attrs.rel !== "icon" && attrs.rel !== "apple-touch-icon") continue;
+    const rel = attrs.rel?.toLowerCase()?.trim()?.split(/\s+/) ?? [];
+    if (!rel.includes("icon") && !rel.includes("apple-touch-icon")) continue;
     if ("sizes" in attrs && attrs.sizes.match(/\d+x\d+/)) {
       const [w, h] = attrs.sizes.split("x").map((v) => Number.parseInt(v));
       if (w < 38 || h < 19) continue;

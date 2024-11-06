@@ -8,6 +8,9 @@ Version 1.2.3
 
 To be released.
 
+ -  The `fedify node` subcommand now can recognize multiple values of
+    the `rel` attribute in the `<link>` HTML elements.
+
 
 Version 1.2.2
 -------------
