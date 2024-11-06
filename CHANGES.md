@@ -33,6 +33,15 @@ To be released.
 [#162]: https://github.com/dahlia/fedify/issues/162
 
 
+Version 1.2.3
+-------------
+
+Released on November 6, 2024.
+
+ -  The `fedify node` subcommand now can recognize multiple values of
+    the `rel` attribute in the `<link>` HTML elements.
+
+
 Version 1.2.2
 -------------
 
