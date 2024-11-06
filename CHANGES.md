@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.2.3
 -------------
 
-To be released.
+Released on November 6, 2024.
 
  -  The `fedify node` subcommand now can recognize multiple values of
     the `rel` attribute in the `<link>` HTML elements.
