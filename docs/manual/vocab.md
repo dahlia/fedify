@@ -17,8 +17,37 @@ list all of them here.  Instead, we'll show a few examples of the objects that
 are available in the library: `Create`, `Note`, and `Person`.  For the full
 list of the objects, please refer to the [API reference].
 
-[API reference]: https://jsr.io/@fedify/fedify/doc/vocab/~
+> [!CAUTION]
+>
+> Some classes in the Activity Vocabulary have the same name as the built-in
+> JavaScript classes.  For example, the `Object` class in the Activity
+> Vocabulary is different from the built-in [`Object`] class.  Therefore, you
+> should be careful when importing the classes in the Activity Vocabulary so
+> that you don't unintentionally shadow the built-in JavaScript classes.
+>
+> Here's a list of the classes in the Activity Vocabulary that have the same
+> name as the built-in JavaScript classes:
+>
+>  -  `Image`
+>  -  `Object`
+>
+> In order to avoid the conflict, you can alias the classes in the Activity
+> Vocabulary when importing them.  For example, you can alias the `Object`
+> class as `ASObject` as follows:
+>
+> ~~~~ typescript twoslash
+> import { Object as ASObject } from "@fedify/fedify";
+> ~~~~
+>
+> Or, you can import the classes from the Activity Vocabulary with a prefix as
+> follows:
+>
+> ~~~~ typescript
+> import * as vocab from "@fedify/fedify/vocab";
+> ~~~~
 
+[API reference]: https://jsr.io/@fedify/fedify/doc/vocab/~
+[`Object`]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
 
 Instantiation
 -------------
