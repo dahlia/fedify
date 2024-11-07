@@ -4,6 +4,7 @@ import deflist from "markdown-it-deflist";
 import footnote from "markdown-it-footnote";
 import { jsrRef } from "markdown-it-jsr-ref";
 import process from "node:process";
+import { ModuleKind, ModuleResolutionKind } from "typescript";
 import { defineConfig } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
 
