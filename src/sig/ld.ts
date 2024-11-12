@@ -238,10 +238,28 @@ export async function verifySignature(
   delete sigOpts.type;
   delete sigOpts.id;
   delete sigOpts.signatureValue;
-  const sigOptsHash = await hashJsonLd(sigOpts, options.contextLoader);
+  let sigOptsHash: string;
+  try {
+    sigOptsHash = await hashJsonLd(sigOpts, options.contextLoader);
+  } catch (error) {
+    logger.warn(
+      "Failed to verify; failed to hash the signature options: {signatureOptions}\n{error}",
+      { signatureOptions: sigOpts, error },
+    );
+    return null;
+  }
   const document: { signature?: unknown } = { ...jsonLd };
   delete document.signature;
-  const docHash = await hashJsonLd(document, options.contextLoader);
+  let docHash: string;
+  try {
+    docHash = await hashJsonLd(document, options.contextLoader);
+  } catch (error) {
+    logger.warn(
+      "Failed to verify; failed to hash the document: {document}\n{error}",
+      { document, error },
+    );
+    return null;
+  }
   const encoder = new TextEncoder();
   const message = sigOptsHash + docHash;
   const messageBytes = encoder.encode(message);
