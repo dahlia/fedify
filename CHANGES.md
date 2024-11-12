@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.0.8
 -------------
 
-To be released.
+Released on November 12, 2024.
 
  -  Fixed a bug where default document loaders had thrown a `TypeError`
     with a message <q>Body is unusable: Body has already been read</q> or
