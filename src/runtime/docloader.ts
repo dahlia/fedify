@@ -162,6 +162,7 @@ async function getRemoteDocument(
       }
     }
   }
+  let document: unknown;
   if (
     !jsonLd &&
     (contentType === "text/html" || contentType?.startsWith("text/html;") ||
@@ -197,6 +198,9 @@ async function getRemoteDocument(
         return await fetch(new URL(attribs.href, docUrl).href);
       }
     }
+    document = JSON.parse(html);
+  } else {
+    document = await response.json();
   }
   logger.debug(
     "Fetched document: {status} {url} {headers}",
@@ -206,11 +210,7 @@ async function getRemoteDocument(
       headers: Object.fromEntries(response.headers.entries()),
     },
   );
-  return {
-    contextUrl,
-    document: await response.json(),
-    documentUrl,
-  };
+  return { contextUrl, document, documentUrl };
 }
 
 /**

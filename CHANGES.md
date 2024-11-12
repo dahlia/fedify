@@ -33,6 +33,22 @@ To be released.
 [#162]: https://github.com/dahlia/fedify/issues/162
 
 
+Version 1.2.4
+-------------
+
+Released on November 12, 2024.
+
+ -  Fixed a bug where default document loaders had thrown a `TypeError`
+    with a message <q>Body is unusable: Body has already been read</q> or
+    <q>Body already consumed</q> when the content type of the response was
+    an HTML document and there's no link to a JSON-LD document.
+
+ -  Fixed a bug where `verifySignature()` and `verifyJsonLd()` functions
+    sometimes had thrown a `jsonld.ValidationError` error.  Now such errors
+    are caught and logged as warnings, and the signature to verify is considered
+    as invalid.
+
+
 Version 1.2.3
 -------------
 
@@ -120,6 +136,22 @@ Released on October 31, 2024.
 
 [implicit contexts]: https://logtape.org/manual/contexts#implicit-contexts
 [#118]: https://github.com/dahlia/fedify/issues/118
+
+
+Version 1.1.4
+-------------
+
+Released on November 12, 2024.
+
+ -  Fixed a bug where default document loaders had thrown a `TypeError`
+    with a message <q>Body is unusable: Body has already been read</q> or
+    <q>Body already consumed</q> when the content type of the response was
+    an HTML document and there's no link to a JSON-LD document.
+
+ -  Fixed a bug where `verifySignature()` and `verifyJsonLd()` functions
+    sometimes had thrown a `jsonld.ValidationError` error.  Now such errors
+    are caught and logged as warnings, and the signature to verify is considered
+    as invalid.
 
 
 Version 1.1.3
@@ -250,6 +282,22 @@ Released on October 20, 2024.
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
+
+
+Version 1.0.8
+-------------
+
+Released on November 12, 2024.
+
+ -  Fixed a bug where default document loaders had thrown a `TypeError`
+    with a message <q>Body is unusable: Body has already been read</q> or
+    <q>Body already consumed</q> when the content type of the response was
+    an HTML document and there's no link to a JSON-LD document.
+
+ -  Fixed a bug where `verifySignature()` and `verifyJsonLd()` functions
+    sometimes had thrown a `jsonld.ValidationError` error.  Now such errors
+    are caught and logged as warnings, and the signature to verify is considered
+    as invalid.
 
 
 Version 1.0.7
@@ -499,6 +547,17 @@ Released on September 26, 2024.
 [#106]: https://github.com/dahlia/fedify/issues/106
 [#135]: https://github.com/dahlia/fedify/issues/135
 [#137]: https://github.com/dahlia/fedify/issues/137
+
+
+Version 0.15.6
+--------------
+
+Released on November 12, 2024.
+
+ -  Fixed a bug where default document loaders had thrown a `TypeError`
+    with a message <q>Body is unusable: Body has already been read</q> or
+    <q>Body already consumed</q> when the content type of the response was
+    an HTML document and there's no link to a JSON-LD document.
 
 
 Version 0.15.5
