@@ -8,6 +8,11 @@ Version 0.15.6
 
 To be released.
 
+ -  Fixed a bug where default document loaders had thrown a `TypeError`
+    with a message <q>Body is unusable: Body has already been read</q> or
+    <q>Body already consumed</q> when the content type of the response was
+    an HTML document and there's no link to a JSON-LD document.
+
 
 Version 0.15.5
 --------------

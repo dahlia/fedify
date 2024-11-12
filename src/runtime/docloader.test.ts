@@ -207,6 +207,33 @@ test("fetchDocumentLoader()", async (t) => {
     });
   });
 
+  mf.mock("GET@/wrong-content-type", (_req) =>
+    new Response(
+      JSON.stringify({
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/wrong-content-type",
+        name: "Fetched object",
+        type: "Object",
+      }),
+      { status: 200, headers: { "Content-Type": "text/html; charset=utf-8" } },
+    ));
+
+  await t.step("Wrong Content-Type", async () => {
+    assertEquals(
+      await fetchDocumentLoader("https://example.com/wrong-content-type"),
+      {
+        contextUrl: null,
+        documentUrl: "https://example.com/wrong-content-type",
+        document: {
+          "@context": "https://www.w3.org/ns/activitystreams",
+          id: "https://example.com/wrong-content-type",
+          name: "Fetched object",
+          type: "Object",
+        },
+      },
+    );
+  });
+
   mf.mock("GET@/404", (_req) => new Response("", { status: 404 }));
 
   await t.step("not ok", async () => {
