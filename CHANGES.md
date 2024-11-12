@@ -13,6 +13,11 @@ To be released.
     <q>Body already consumed</q> when the content type of the response was
     an HTML document and there's no link to a JSON-LD document.
 
+ -  Fixed a bug where `verifySignature()` and `verifyJsonLd()` functions
+    sometimes had thrown a `jsonld.ValidationError` error.  Now such errors
+    are caught and logged as warnings, and the signature to verify is considered
+    as invalid.
+
 
 Version 1.0.7
 -------------
