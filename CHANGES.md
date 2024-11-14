@@ -8,6 +8,21 @@ Version 0.15.7
 
 To be released.
 
+ -  Suppressed a `TypeError` with a message <q>unusable</q> due to Node.js's
+    mysterious behavior.  [[#159]]
+
+     -  The `verifyRequest()` function no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "sig", "http"]`
+        logger category and returns `null`.
+     -  The `Federation.fetch()` method no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "federation",
+        "inbox"]` logger category and responds with a `500 Internal Server
+        Error`.
+
+[#159]: https://github.com/dahlia/fedify/issues/159
+
 
 Version 0.15.6
 --------------
