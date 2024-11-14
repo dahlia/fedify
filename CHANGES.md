@@ -33,6 +33,25 @@ To be released.
 [#162]: https://github.com/dahlia/fedify/issues/162
 
 
+Version 1.2.5
+-------------
+
+Released on November 14, 2024.
+
+ -  Suppressed a `TypeError` with a message <q>unusable</q> due to Node.js's
+    mysterious behavior.  [[#159]]
+
+     -  The `verifyRequest()` function no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "sig", "http"]`
+        logger category and returns `null`.
+     -  The `Federation.fetch()` method no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "federation",
+        "inbox"]` logger category and responds with a `500 Internal Server
+        Error`.
+
+
 Version 1.2.4
 -------------
 
@@ -136,6 +155,25 @@ Released on October 31, 2024.
 
 [implicit contexts]: https://logtape.org/manual/contexts#implicit-contexts
 [#118]: https://github.com/dahlia/fedify/issues/118
+
+
+Version 1.1.5
+-------------
+
+Released on December 14, 2024.
+
+ -  Suppressed a `TypeError` with a message <q>unusable</q> due to Node.js's
+    mysterious behavior.  [[#159]]
+
+     -  The `verifyRequest()` function no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "sig", "http"]`
+        logger category and returns `null`.
+     -  The `Federation.fetch()` method no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "federation",
+        "inbox"]` logger category and responds with a `500 Internal Server
+        Error`.
 
 
 Version 1.1.4
@@ -282,6 +320,25 @@ Released on October 20, 2024.
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
+
+
+Version 1.0.9
+-------------
+
+Released on December 14, 2024.
+
+ -  Suppressed a `TypeError` with a message <q>unusable</q> due to Node.js's
+    mysterious behavior.  [[#159]]
+
+     -  The `verifyRequest()` function no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "sig", "http"]`
+        logger category and returns `null`.
+     -  The `Federation.fetch()` method no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "federation",
+        "inbox"]` logger category and responds with a `500 Internal Server
+        Error`.
 
 
 Version 1.0.8
@@ -547,6 +604,27 @@ Released on September 26, 2024.
 [#106]: https://github.com/dahlia/fedify/issues/106
 [#135]: https://github.com/dahlia/fedify/issues/135
 [#137]: https://github.com/dahlia/fedify/issues/137
+
+
+Version 0.15.7
+--------------
+
+Released on November 14, 2024.
+
+ -  Suppressed a `TypeError` with a message <q>unusable</q> due to Node.js's
+    mysterious behavior.  [[#159]]
+
+     -  The `verifyRequest()` function no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "sig", "http"]`
+        logger category and returns `null`.
+     -  The `Federation.fetch()` method no longer throws a `TypeError`
+        when a given `Request` object's body is already consumed or locked.
+        Instead, it logs an error message to the `["fedify", "federation",
+        "inbox"]` logger category and responds with a `500 Internal Server
+        Error`.
+
+[#159]: https://github.com/dahlia/fedify/issues/159
 
 
 Version 0.15.6
