@@ -123,6 +123,19 @@ export async function verifyRequest(
     VerifyRequestOptions = {},
 ): Promise<CryptographicKey | null> {
   const logger = getLogger(["fedify", "sig", "http"]);
+  if (request.bodyUsed) {
+    logger.error(
+      "Failed to verify; the request body is already consumed.",
+      { url: request.url },
+    );
+    return null;
+  } else if (request.body?.locked) {
+    logger.error(
+      "Failed to verify; the request body is locked.",
+      { url: request.url },
+    );
+    return null;
+  }
   const originalRequest = request;
   request = request.clone();
   const dateHeader = request.headers.get("Date");
