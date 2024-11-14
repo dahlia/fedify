@@ -1,6 +1,6 @@
 {
   "name": "@fedify/cli",
-  "version": "0.15.7",
+  "version": "0.15.8",
   "license": "MIT",
   "exports": "./mod.ts",
   "importMap": "import_map.g.json",
