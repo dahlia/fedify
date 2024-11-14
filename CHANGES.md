@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.2.5
 -------------
 
-To be released.
+Released on November 14, 2024.
 
  -  Suppressed a `TypeError` with a message <q>unusable</q> due to Node.js's
     mysterious behavior.  [[#159]]
