@@ -388,6 +388,19 @@ export async function handleInbox<TContextData>(
       return await onNotFound(request);
     }
   }
+  if (request.bodyUsed) {
+    logger.error("Request body has already been read.", { identifier });
+    return new Response("Internal server error.", {
+      status: 500,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  } else if (request.body?.locked) {
+    logger.error("Request body is locked.", { identifier });
+    return new Response("Internal server error.", {
+      status: 500,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  }
   let json: unknown;
   try {
     json = await request.clone().json();
