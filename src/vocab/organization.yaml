@@ -106,6 +106,7 @@ properties:
     and dropping any activities already seen.
   range:
   - "https://www.w3.org/ns/activitystreams#OrderedCollection"
+  - "https://www.w3.org/ns/activitystreams#OrderedCollectionPage"
 
 - singularName: outbox
   functional: true
@@ -124,6 +125,7 @@ properties:
     implementing and deploying the server.
   range:
   - "https://www.w3.org/ns/activitystreams#OrderedCollection"
+  - "https://www.w3.org/ns/activitystreams#OrderedCollectionPage"
 
 - singularName: following
   functional: true
