@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.15.8
 --------------
 
-To be released.
+Released on November 159, 2024.
 
  -  Fix a bug where `Actor`'s `inbox` and `outbox` properties had not been
     able to be set to an `OrderedCollectionPage` object, even though it is
