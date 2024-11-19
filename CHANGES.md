@@ -8,6 +8,57 @@ Version 1.2.6
 
 To be released.
 
+ -  Fix a bug where `Actor`'s `inbox` and `outbox` properties had not been
+    able to be set to an `OrderedCollectionPage` object, even though it is
+    a subtype of `OrderedCollection` according to Activity Vocabulary
+    specification.  [[#165]]
+
+     -  The type of `Application()` constructor's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The type of `Application.clone()` method's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The return type of `Application.getInbox()` and
+        `Application.getOutbox()` methods is now `OrderedCollection |
+        OrderedCollectionPage | null` (was `OrderedCollection | null`).
+     -  The type of `Group()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Group.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Group.getInbox()` and `Group.getOutbox()` methods
+        is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+     -  The type of `Organization()` constructor's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The type of `Organization.clone()` method's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The return type of `Organization.getInbox()` and
+        `Organization.getOutbox()` methods is now `OrderedCollection |
+        OrderedCollectionPage | null` (was `OrderedCollection | null`).
+     -  The type of `Person()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Person.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Person.getInbox()` and `Person.getOutbox()` methods
+        is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+     -  The type of `Service()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Service.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Service.getInbox()` and `Service.getOutbox()`
+        methods is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+
 
 Version 1.2.5
 -------------
@@ -131,6 +182,63 @@ Released on October 31, 2024.
 
 [implicit contexts]: https://logtape.org/manual/contexts#implicit-contexts
 [#118]: https://github.com/dahlia/fedify/issues/118
+
+
+Version 1.1.6
+-------------
+
+Released on November 19, 2024.
+
+ -  Fix a bug where `Actor`'s `inbox` and `outbox` properties had not been
+    able to be set to an `OrderedCollectionPage` object, even though it is
+    a subtype of `OrderedCollection` according to Activity Vocabulary
+    specification.  [[#165]]
+
+     -  The type of `Application()` constructor's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The type of `Application.clone()` method's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The return type of `Application.getInbox()` and
+        `Application.getOutbox()` methods is now `OrderedCollection |
+        OrderedCollectionPage | null` (was `OrderedCollection | null`).
+     -  The type of `Group()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Group.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Group.getInbox()` and `Group.getOutbox()` methods
+        is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+     -  The type of `Organization()` constructor's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The type of `Organization.clone()` method's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The return type of `Organization.getInbox()` and
+        `Organization.getOutbox()` methods is now `OrderedCollection |
+        OrderedCollectionPage | null` (was `OrderedCollection | null`).
+     -  The type of `Person()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Person.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Person.getInbox()` and `Person.getOutbox()` methods
+        is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+     -  The type of `Service()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Service.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Service.getInbox()` and `Service.getOutbox()`
+        methods is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
 
 
 Version 1.1.5
@@ -296,6 +404,63 @@ Released on October 20, 2024.
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
+
+
+Version 1.0.10
+--------------
+
+Released on December 19, 2024.
+
+ -  Fix a bug where `Actor`'s `inbox` and `outbox` properties had not been
+    able to be set to an `OrderedCollectionPage` object, even though it is
+    a subtype of `OrderedCollection` according to Activity Vocabulary
+    specification.  [[#165]]
+
+     -  The type of `Application()` constructor's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The type of `Application.clone()` method's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The return type of `Application.getInbox()` and
+        `Application.getOutbox()` methods is now `OrderedCollection |
+        OrderedCollectionPage | null` (was `OrderedCollection | null`).
+     -  The type of `Group()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Group.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Group.getInbox()` and `Group.getOutbox()` methods
+        is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+     -  The type of `Organization()` constructor's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The type of `Organization.clone()` method's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The return type of `Organization.getInbox()` and
+        `Organization.getOutbox()` methods is now `OrderedCollection |
+        OrderedCollectionPage | null` (was `OrderedCollection | null`).
+     -  The type of `Person()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Person.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Person.getInbox()` and `Person.getOutbox()` methods
+        is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+     -  The type of `Service()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Service.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Service.getInbox()` and `Service.getOutbox()`
+        methods is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
 
 
 Version 1.0.9
@@ -580,6 +745,65 @@ Released on September 26, 2024.
 [#106]: https://github.com/dahlia/fedify/issues/106
 [#135]: https://github.com/dahlia/fedify/issues/135
 [#137]: https://github.com/dahlia/fedify/issues/137
+
+
+Version 0.15.8
+--------------
+
+Released on November 159, 2024.
+
+ -  Fix a bug where `Actor`'s `inbox` and `outbox` properties had not been
+    able to be set to an `OrderedCollectionPage` object, even though it is
+    a subtype of `OrderedCollection` according to Activity Vocabulary
+    specification.  [[#165]]
+
+     -  The type of `Application()` constructor's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The type of `Application.clone()` method's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The return type of `Application.getInbox()` and
+        `Application.getOutbox()` methods is now `OrderedCollection |
+        OrderedCollectionPage | null` (was `OrderedCollection | null`).
+     -  The type of `Group()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Group.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Group.getInbox()` and `Group.getOutbox()` methods
+        is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+     -  The type of `Organization()` constructor's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The type of `Organization.clone()` method's `inbox` and `outbox` options
+        is now `OrderedCollection | OrderedCollectionPage | null | undefined`
+        (was `OrderedCollection | null | undefined`).
+     -  The return type of `Organization.getInbox()` and
+        `Organization.getOutbox()` methods is now `OrderedCollection |
+        OrderedCollectionPage | null` (was `OrderedCollection | null`).
+     -  The type of `Person()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Person.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Person.getInbox()` and `Person.getOutbox()` methods
+        is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+     -  The type of `Service()` constructor's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The type of `Service.clone()` method's `inbox` and `outbox` options is
+        now `OrderedCollection | OrderedCollectionPage | null | undefined` (was
+        `OrderedCollection | null | undefined`).
+     -  The return type of `Service.getInbox()` and `Service.getOutbox()`
+        methods is now `OrderedCollection | OrderedCollectionPage | null` (was
+        `OrderedCollection | null`).
+
+[#165]: https://github.com/dahlia/fedify/issues/165
 
 
 Version 0.15.7
