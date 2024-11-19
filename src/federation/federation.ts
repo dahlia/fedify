@@ -26,6 +26,13 @@ export interface FederationStartQueueOptions {
    * The signal to abort the task queue.
    */
   signal?: AbortSignal;
+
+  /**
+   * Starts the task worker only for the specified queue.  If unspecified,
+   * which is the default, the task worker starts for both the inbox and outbox.
+   * @since 1.3.0
+   */
+  queue?: "inbox" | "outbox";
 }
 
 /**

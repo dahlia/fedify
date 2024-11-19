@@ -116,6 +116,64 @@ Further details are explained in the [*Message queue* section](./mq.md).
 > will be sent immediately.  This can make delivery of activities unreliable
 > and can cause performance issues.
 
+> [!TIP]
+> Since Fedify 1.3.0, you can separately configure the message queue for
+> incoming and outgoing activities by providing an object with `inbox` and
+> `outbox` properties:
+>
+> ~~~~ typescript twoslash
+> // @noErrors: 2353
+> import {
+>   createFederation,
+>   type KvStore,
+>   MemoryKvStore,
+>   type MessageQueue,
+> } from "@fedify/fedify";
+> import { PostgresMessageQueue } from "@fedify/postgres";
+> import { RedisMessageQueue } from "@fedify/redis";
+> import postgres from "postgres";
+> import Redis from "ioredis";
+>
+> createFederation<void>({
+> kv: null as unknown as KvStore,
+> // ---cut-before---
+> queue: {
+>   inbox: new PostgresMessageQueue(
+>     postgres("postgresql://user:pass@localhost/db")
+>   ),
+>   outbox: new RedisMessageQueue(() => new Redis()),
+> }
+> // ---cut-after---
+> });
+> ~~~~
+>
+> Or, you can provide a message queue for only the `inbox` or `outbox` by
+> omitting the other:
+>
+> ~~~~ typescript twoslash
+> // @noErrors: 2353
+> import {
+>   createFederation,
+>   type KvStore,
+>   MemoryKvStore,
+>   type MessageQueue,
+> } from "@fedify/fedify";
+> import { PostgresMessageQueue } from "@fedify/postgres";
+> import postgres from "postgres";
+>
+> createFederation<void>({
+> kv: null as unknown as KvStore,
+> // ---cut-before---
+> queue: {
+>   inbox: new PostgresMessageQueue(
+>     postgres("postgresql://user:pass@localhost/db")
+>   ),
+>   // outbox is not provided; outgoing activities will not be queued.
+> }
+> // ---cut-after---
+> });
+> ~~~~
+
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
 [`PostgresMessageQueue`]: https://jsr.io/@fedify/postgres/doc/mq/~/PostgresMessageQueue
 [@fedify/amqp]: https://github.com/dahlia/fedify-amqp

@@ -405,3 +405,139 @@ server process responsive by offloading message processing to worker nodes.
 > [!NOTE]
 > To ensure that messages are enqueued only from the `NODE_TYPE=web` nodes,
 > you should not place the `NODE_TYPE=worker` nodes behind a load balancer.
+
+
+Using different message queues for different tasks
+--------------------------------------------------
+
+*This API is available since Fedify 1.3.0.*
+
+In some cases, you may want to use different message queues for different tasks,
+such as using a faster-but-less-persistent queue for outgoing activities and
+a slower-but-more-persistent queue for incoming activities.  To achieve this,
+you can pass `FederationQueueOptions` to the `CreateFederationOptions.queue`
+option.
+
+For example, the following code shows how to use a [`PostgresMessageQueue`] for
+the inbox and a [`RedisMessageQueue`] for the outbox:
+
+~~~~ typescript twoslash
+// @noErrors: 2353
+import {
+  createFederation,
+  type KvStore,
+  MemoryKvStore,
+  type MessageQueue,
+} from "@fedify/fedify";
+import { PostgresMessageQueue } from "@fedify/postgres";
+import { RedisMessageQueue } from "@fedify/redis";
+import postgres from "postgres";
+import Redis from "ioredis";
+
+// ---cut-before---
+const federation = createFederation<void>({
+// ---cut-start---
+  kv: null as unknown as KvStore,
+// ---cut-end---
+  queue: {
+    inbox: new PostgresMessageQueue(
+      postgres("postgresql://user:pass@localhost/db")
+    ),
+    outbox: new RedisMessageQueue(() => new Redis()),
+  },
+  // ... other options
+});
+~~~~
+
+Or, you can provide a message queue for only the `inbox` or `outbox` by omitting
+the other:
+
+~~~~ typescript twoslash
+// @noErrors: 2353
+import {
+  createFederation,
+  type KvStore,
+  MemoryKvStore,
+  type MessageQueue,
+} from "@fedify/fedify";
+import { PostgresMessageQueue } from "@fedify/postgres";
+import postgres from "postgres";
+
+// ---cut-before---
+const federation = createFederation<void>({
+// ---cut-start---
+  kv: null as unknown as KvStore,
+// ---cut-end---
+  queue: {
+    inbox: new PostgresMessageQueue(
+      postgres("postgresql://user:pass@localhost/db")
+    ),
+    // outbox is not provided; outgoing activities will not be queued
+  },
+  // ... other options
+});
+~~~~
+
+When you [manually start a task
+worker](#separating-message-processing-from-the-main-process), you can specify
+which queue to start (if `queue` is not provided in the options, it will start
+all queues).  The following example shows how to start only the `inbox` queue:
+
+::: code-group
+
+~~~~ typescript{11-17} twoslash [Deno]
+// @noErrors: 2353
+import type { KvStore } from "@fedify/fedify";
+import { createFederation } from "@fedify/fedify";
+import { RedisMessageQueue } from "@fedify/redis";
+import Redis from "ioredis";
+
+const federation = createFederation<void>({
+  queue: new RedisMessageQueue(() => new Redis()),
+  manuallyStartQueue: true,  // [!code highlight]
+  // ... other options
+  // ---cut-start---
+  kv: null as unknown as KvStore,
+  // ---cut-end---
+});
+
+// ---cut-before---
+if (Deno.env.get("NODE_TYPE") === "worker") {
+  const controller = new AbortController();
+  Deno.addSignalListener("SIGINT", () => controller.abort());
+  await federation.startQueue(undefined, {
+    signal: controller.signal,
+    queue: "inbox",  // [!code highlight]
+  });
+}
+~~~~
+
+~~~~ typescript{12-18} twoslash [Node.js/Bun]
+// @noErrors: 2353
+import type { KvStore } from "@fedify/fedify";
+import { createFederation } from "@fedify/fedify";
+import { RedisMessageQueue } from "@fedify/redis";
+import Redis from "ioredis";
+import process from "node:process";
+
+const federation = createFederation<void>({
+  queue: new RedisMessageQueue(() => new Redis()),
+  manuallyStartQueue: true,  // [!code highlight]
+  // ... other options
+  // ---cut-start---
+  kv: null as unknown as KvStore,
+  // ---cut-end---
+});
+
+// ---cut-before---
+if (process.env.NODE_TYPE === "worker") {
+  const controller = new AbortController();
+  process.on("SIGINT", () => controller.abort());
+  await federation.startQueue(undefined, {
+    signal: controller.signal,
+    queue: "inbox",  // [!code highlight]
+  });
+}
+~~~~
+
+:::

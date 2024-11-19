@@ -103,11 +103,16 @@ export interface CreateFederationOptions {
   kvPrefixes?: Partial<FederationKvPrefixes>;
 
   /**
-   * The message queue for sending activities to recipients' inboxes.
-   * If not provided, activities will not be queued and will be sent
-   * immediately.
+   * The message queue for sending and receiving activities.  If not provided,
+   * activities will not be queued and will be processed immediately.
+   *
+   * If a `MessageQueue` is provided, both the `inbox` and `outbox` queues
+   * will be set to the same queue.
+   *
+   * If a `FederationQueueOptions` object is provided, you can set the queues
+   * separately (since Fedify 1.3.0).
    */
-  queue?: MessageQueue;
+  queue?: FederationQueueOptions | MessageQueue;
 
   /**
    * Whether to start the task queue manually or automatically.
@@ -219,6 +224,24 @@ export interface CreateFederationOptions {
 }
 
 /**
+ * Configures the task queues for sending and receiving activities.
+ * @since 1.3.0
+ */
+export interface FederationQueueOptions {
+  /**
+   * The message queue for incoming activities.  If not provided, incoming
+   * activities will not be queued and will be processed immediately.
+   */
+  inbox?: MessageQueue;
+
+  /**
+   * The message queue for outgoing activities.  If not provided, outgoing
+   * activities will not be queued and will be sent immediately.
+   */
+  outbox?: MessageQueue;
+}
+
+/**
  * Prefixes for namespacing keys in the Deno KV store.
  */
 export interface FederationKvPrefixes {
@@ -257,8 +280,10 @@ export function createFederation<TContextData>(
 export class FederationImpl<TContextData> implements Federation<TContextData> {
   kv: KvStore;
   kvPrefixes: FederationKvPrefixes;
-  queue?: MessageQueue;
-  queueStarted: boolean;
+  inboxQueue?: MessageQueue;
+  outboxQueue?: MessageQueue;
+  inboxQueueStarted: boolean;
+  outboxQueueStarted: boolean;
   manuallyStartQueue: boolean;
   router: Router;
   nodeInfoDispatcher?: NodeInfoDispatcher<TContextData>;
@@ -335,8 +360,18 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       } satisfies FederationKvPrefixes),
       ...(options.kvPrefixes ?? {}),
     };
-    this.queue = options.queue;
-    this.queueStarted = false;
+    if (options.queue == null) {
+      this.inboxQueue = undefined;
+      this.outboxQueue = undefined;
+    } else if ("enqueue" in options.queue && "listen" in options.queue) {
+      this.inboxQueue = options.queue;
+      this.outboxQueue = options.queue;
+    } else {
+      this.inboxQueue = options.queue.inbox;
+      this.outboxQueue = options.queue.outbox;
+    }
+    this.inboxQueueStarted = false;
+    this.outboxQueueStarted = false;
     this.manuallyStartQueue = options.manuallyStartQueue ?? false;
     this.router = new Router({
       trailingSlashInsensitive: options.trailingSlashInsensitive,
@@ -390,16 +425,40 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   async #startQueue(
     ctxData: TContextData,
     signal?: AbortSignal,
+    queue?: keyof FederationQueueOptions,
   ): Promise<void> {
-    if (this.queue != null && !this.queueStarted) {
-      const logger = getLogger(["fedify", "federation", "queue"]);
-      logger.debug("Starting a task queue.");
-      this.queueStarted = true;
-      await this.queue?.listen(
-        (msg) => this.#listenQueue(ctxData, msg),
-        { signal },
+    if (this.inboxQueue == null && this.outboxQueue == null) return;
+    const logger = getLogger(["fedify", "federation", "queue"]);
+    const promises: Promise<void>[] = [];
+    if (
+      this.inboxQueue != null && (queue == null || queue === "inbox") &&
+      !this.inboxQueueStarted
+    ) {
+      logger.debug("Starting an inbox task worker.");
+      this.inboxQueueStarted = true;
+      promises.push(
+        this.inboxQueue.listen(
+          (msg) => this.#listenQueue(ctxData, msg),
+          { signal },
+        ),
       );
     }
+    if (
+      this.outboxQueue != null &&
+      this.outboxQueue !== this.inboxQueue &&
+      (queue == null || queue === "outbox") &&
+      !this.outboxQueueStarted
+    ) {
+      logger.debug("Starting an outbox task worker.");
+      this.outboxQueueStarted = true;
+      promises.push(
+        this.outboxQueue.listen(
+          (msg) => this.#listenQueue(ctxData, msg),
+          { signal },
+        ),
+      );
+    }
+    await Promise.all(promises);
   }
 
   #listenQueue(ctxData: TContextData, message: Message): Promise<void> {
@@ -475,7 +534,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             "#{attempt}); retry...:\n{error}",
           { ...logData, error },
         );
-        this.queue?.enqueue(
+        this.outboxQueue?.enqueue(
           {
             ...message,
             attempt: message.attempt + 1,
@@ -592,7 +651,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             recipient: message.identifier,
           },
         );
-        this.queue?.enqueue(
+        this.inboxQueue?.enqueue(
           {
             ...message,
             attempt: message.attempt + 1,
@@ -636,7 +695,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     contextData: TContextData,
     options: FederationStartQueueOptions = {},
   ): Promise<void> {
-    return this.#startQueue(contextData, options.signal);
+    return this.#startQueue(contextData, options.signal, options.queue);
   }
 
   createContext(baseUrl: URL, contextData: TContextData): Context<TContextData>;
@@ -1728,7 +1787,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         },
       );
     }
-    if (immediate || this.queue == null) {
+    if (immediate || this.outboxQueue == null) {
       if (immediate) {
         logger.debug(
           "Sending activity immediately without queue since immediate option " +
@@ -1790,7 +1849,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             ),
         },
       };
-      this.queue.enqueue(message);
+      this.outboxQueue.enqueue(message);
     }
   }
 
@@ -1934,7 +1993,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
           inboxContextFactory: context.toInboxContext.bind(context),
           kv: this.kv,
           kvPrefixes: this.kvPrefixes,
-          queue: this.queue,
+          queue: this.inboxQueue,
           actorDispatcher: this.actorCallbacks?.dispatcher,
           inboxListeners: this.inboxListeners,
           inboxErrorHandler: this.inboxErrorHandler,
@@ -2918,7 +2977,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
       activityId,
       activity: this.activity,
     });
-    if (options?.immediate || this.federation.queue == null) {
+    if (options?.immediate || this.federation.outboxQueue == null) {
       if (options?.immediate) {
         logger.debug(
           "Forwarding activity immediately without queue since immediate " +
@@ -2965,7 +3024,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
         attempt: 0,
         headers: {},
       };
-      this.federation.queue.enqueue(message);
+      this.federation.outboxQueue.enqueue(message);
     }
   }
 }

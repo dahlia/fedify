@@ -8,6 +8,15 @@ Version 1.3.0
 
 To be released.
 
+ -  `MessageQueue`s now can be differently configured for incoming and outgoing
+    activities.
+
+     -  Changed the type of `CreateFederationOptions.queue` option to
+        `FederationQueueOptions | MessageQueue | undefined` (was `MessageQueue |
+        undefined`).
+     -  Added `FederationQueueOptions` interface.
+     -  Added `FederationStartQueueOptions.queue` option.
+
  -  Fedify now makes HTTP requests with the proper `User-Agent` header. [[#162]]
 
      -  Added `getUserAgent()` function.
