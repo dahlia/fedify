@@ -33,6 +33,7 @@ import {
   Hashtag,
   Note,
   Object,
+  OrderedCollectionPage,
   Person,
   Place,
   Source,
@@ -734,6 +735,15 @@ test("Place.fromJsonLd()", async () => {
     radius: 15,
     units: "miles",
   });
+});
+
+test("Actor.getOutbox()", async () => {
+  const person = new Person({
+    outbox: new URL("https://example.com/orderedcollectionpage"),
+  });
+  const outbox = await person.getOutbox({ documentLoader: mockDocumentLoader });
+  assertInstanceOf(outbox, OrderedCollectionPage);
+  assertEquals(outbox.totalItems, 1);
 });
 
 function getAllProperties(

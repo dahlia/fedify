@@ -12485,8 +12485,8 @@ export class Application extends Object {
 #_axq166E2eZADq34V4MYUc8KMZdC_publicKey: (CryptographicKey | URL)[] = [];
 #_4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers: (boolean)[] = [];
-#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
-#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
+#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA_followers: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU_liked: (Collection | URL)[] = [];
@@ -12529,7 +12529,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
@@ -12656,25 +12656,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -12889,7 +12889,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
@@ -13014,25 +13014,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox;
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -13487,7 +13487,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -13516,8 +13516,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -13554,7 +13563,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.length < 1) return null;
         const v = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox[0];
         if (v instanceof URL) {
@@ -13574,7 +13583,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -13603,8 +13612,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -13638,7 +13656,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox.length < 1) return null;
         const v = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox[0];
         if (v instanceof URL) {
@@ -14455,7 +14473,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -14475,7 +14497,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -14833,7 +14859,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -14848,7 +14874,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -15242,7 +15268,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers.push(v[\\"@value\\"])
     }
     instance.#_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers;
-    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
+    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox__array = values[\\"http://www.w3.org/ns/ldp#inbox\\"];
     
@@ -15264,11 +15290,20 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(decoded);
+      
     }
     instance.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
-    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _41QwhqJouoLg3h8dRPKat21brynC_outbox__array = values[\\"https://www.w3.org/ns/activitystreams#outbox\\"];
     
@@ -15290,8 +15325,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(decoded);
+      
     }
     instance.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = _41QwhqJouoLg3h8dRPKat21brynC_outbox;
     const _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
@@ -22811,8 +22855,8 @@ export class Group extends Object {
 #_axq166E2eZADq34V4MYUc8KMZdC_publicKey: (CryptographicKey | URL)[] = [];
 #_4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers: (boolean)[] = [];
-#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
-#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
+#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA_followers: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU_liked: (Collection | URL)[] = [];
@@ -22855,7 +22899,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
@@ -22982,25 +23026,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -23215,7 +23259,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
@@ -23340,25 +23384,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox;
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -23813,7 +23857,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -23842,8 +23886,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -23880,7 +23933,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.length < 1) return null;
         const v = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox[0];
         if (v instanceof URL) {
@@ -23900,7 +23953,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -23929,8 +23982,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -23964,7 +24026,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox.length < 1) return null;
         const v = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox[0];
         if (v instanceof URL) {
@@ -24781,7 +24843,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -24801,7 +24867,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -25159,7 +25229,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -25174,7 +25244,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -25568,7 +25638,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers.push(v[\\"@value\\"])
     }
     instance.#_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers;
-    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
+    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox__array = values[\\"http://www.w3.org/ns/ldp#inbox\\"];
     
@@ -25590,11 +25660,20 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(decoded);
+      
     }
     instance.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
-    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _41QwhqJouoLg3h8dRPKat21brynC_outbox__array = values[\\"https://www.w3.org/ns/activitystreams#outbox\\"];
     
@@ -25616,8 +25695,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(decoded);
+      
     }
     instance.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = _41QwhqJouoLg3h8dRPKat21brynC_outbox;
     const _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
@@ -31849,8 +31937,8 @@ export class Organization extends Object {
 #_axq166E2eZADq34V4MYUc8KMZdC_publicKey: (CryptographicKey | URL)[] = [];
 #_4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers: (boolean)[] = [];
-#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
-#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
+#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA_followers: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU_liked: (Collection | URL)[] = [];
@@ -31893,7 +31981,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
@@ -32020,25 +32108,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -32253,7 +32341,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
@@ -32378,25 +32466,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox;
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -32851,7 +32939,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -32880,8 +32968,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -32918,7 +33015,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.length < 1) return null;
         const v = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox[0];
         if (v instanceof URL) {
@@ -32938,7 +33035,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -32967,8 +33064,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -33002,7 +33108,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox.length < 1) return null;
         const v = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox[0];
         if (v instanceof URL) {
@@ -33819,7 +33925,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -33839,7 +33949,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -34197,7 +34311,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -34212,7 +34326,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -34606,7 +34720,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers.push(v[\\"@value\\"])
     }
     instance.#_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers;
-    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
+    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox__array = values[\\"http://www.w3.org/ns/ldp#inbox\\"];
     
@@ -34628,11 +34742,20 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(decoded);
+      
     }
     instance.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
-    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _41QwhqJouoLg3h8dRPKat21brynC_outbox__array = values[\\"https://www.w3.org/ns/activitystreams#outbox\\"];
     
@@ -34654,8 +34777,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(decoded);
+      
     }
     instance.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = _41QwhqJouoLg3h8dRPKat21brynC_outbox;
     const _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
@@ -35680,8 +35812,8 @@ export class Person extends Object {
 #_axq166E2eZADq34V4MYUc8KMZdC_publicKey: (CryptographicKey | URL)[] = [];
 #_4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers: (boolean)[] = [];
-#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
-#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
+#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA_followers: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU_liked: (Collection | URL)[] = [];
@@ -35724,7 +35856,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
@@ -35851,25 +35983,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -36084,7 +36216,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
@@ -36209,25 +36341,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox;
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -36682,7 +36814,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -36711,8 +36843,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -36749,7 +36890,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.length < 1) return null;
         const v = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox[0];
         if (v instanceof URL) {
@@ -36769,7 +36910,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -36798,8 +36939,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -36833,7 +36983,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox.length < 1) return null;
         const v = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox[0];
         if (v instanceof URL) {
@@ -37650,7 +37800,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -37670,7 +37824,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -38028,7 +38186,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -38043,7 +38201,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -38437,7 +38595,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers.push(v[\\"@value\\"])
     }
     instance.#_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers;
-    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
+    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox__array = values[\\"http://www.w3.org/ns/ldp#inbox\\"];
     
@@ -38459,11 +38617,20 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(decoded);
+      
     }
     instance.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
-    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _41QwhqJouoLg3h8dRPKat21brynC_outbox__array = values[\\"https://www.w3.org/ns/activitystreams#outbox\\"];
     
@@ -38485,8 +38652,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(decoded);
+      
     }
     instance.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = _41QwhqJouoLg3h8dRPKat21brynC_outbox;
     const _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
@@ -43340,8 +43516,8 @@ export class Service extends Object {
 #_axq166E2eZADq34V4MYUc8KMZdC_publicKey: (CryptographicKey | URL)[] = [];
 #_4EHQFWZSz1k1d4LmPrQiMba2GbP3_assertionMethod: (Multikey | URL)[] = [];
 #_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers: (boolean)[] = [];
-#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
-#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
+#_41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 #_3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
 #_BBCTgfphhsFzpVfKTykGSpBNwoA_followers: (Collection | URL)[] = [];
 #_3bgkPwJanyTCoVFM9ovRcus8tKkU_liked: (Collection | URL)[] = [];
@@ -43384,7 +43560,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 ,
     {
@@ -43511,25 +43687,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -43744,7 +43920,7 @@ bccs?: (Object | URL)[];mediaType?: string | null;duration?: Temporal.Duration |
 proofs?: (DataIntegrityProof | URL)[];preferredUsername?: string | LanguageString | null;
 preferredUsernames?: ((string | LanguageString))[];publicKey?: CryptographicKey | URL | null;
 publicKeys?: (CryptographicKey | URL)[];assertionMethod?: Multikey | URL | null;
-assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | URL | null;outbox?: OrderedCollection | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
+assertionMethods?: (Multikey | URL)[];manuallyApprovesFollowers?: boolean | null;inbox?: OrderedCollection | OrderedCollectionPage | URL | null;outbox?: OrderedCollection | OrderedCollectionPage | URL | null;following?: Collection | URL | null;followers?: Collection | URL | null;liked?: Collection | URL | null;featured?: Collection | URL | null;featuredTags?: Collection | URL | null;streams?: (Collection | URL)[];endpoints?: Endpoints | null;discoverable?: boolean | null;suspended?: boolean | null;memorial?: boolean | null;indexable?: boolean | null;alias?: Application | Group | Organization | Person | Service | URL | null;
 aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: boolean | null;}
 
     = {},
@@ -43869,25 +44045,25 @@ aliases?: (Application | Group | Organization | Person | Service | URL)[];cat?: 
         }
       clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
         if (\\"inbox\\" in values &&             values.inbox != null) {
-          if (values.inbox instanceof OrderedCollection || values.inbox instanceof URL) {
+          if (values.inbox instanceof OrderedCollection || values.inbox instanceof OrderedCollectionPage || values.inbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = [values.inbox];
           } else {
             throw new TypeError(
               \\"The inbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
       clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox;
         if (\\"outbox\\" in values &&             values.outbox != null) {
-          if (values.outbox instanceof OrderedCollection || values.outbox instanceof URL) {
+          if (values.outbox instanceof OrderedCollection || values.outbox instanceof OrderedCollectionPage || values.outbox instanceof URL) {
             // @ts-ignore: type is checked above.
             clone.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = [values.outbox];
           } else {
             throw new TypeError(
               \\"The outbox must be of type \\" +
-              \\"OrderedCollection | URL\\" + \\".\\",
+              \\"OrderedCollection | OrderedCollectionPage | URL\\" + \\".\\",
             );
           }
         }
@@ -44342,7 +44518,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -44371,8 +44547,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -44409,7 +44594,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.length < 1) return null;
         const v = this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox[0];
         if (v instanceof URL) {
@@ -44429,7 +44614,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
       } = {}
-    ): Promise<OrderedCollection | null> {
+    ): Promise<OrderedCollection | OrderedCollectionPage | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? fetchDocumentLoader;
       const contextLoader =
@@ -44458,8 +44643,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         if (!(e instanceof TypeError)) throw e;
       }
       
+      try {
+        return await OrderedCollectionPage.fromJsonLd(
+          document,
+          { documentLoader, contextLoader },
+        );
+      } catch (e) {
+        if (!(e instanceof TypeError)) throw e;
+      }
+      
       throw new TypeError(\\"Expected an object of any type of: \\" +
-        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\"].join(\\", \\"));
+        [\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\",\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\"].join(\\", \\"));
     }
     
       /**
@@ -44493,7 +44687,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
         } = {}
-      ): Promise<OrderedCollection | null> {
+      ): Promise<OrderedCollection | OrderedCollectionPage | null> {
         if (this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox.length < 1) return null;
         const v = this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox[0];
         if (v instanceof URL) {
@@ -45310,7 +45504,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -45330,7 +45528,11 @@ get preferredUsernames(): ((string | LanguageString))[] {
       compactItems = [];
       for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
         const item = (
-      v instanceof URL ? v.href : await v.toJsonLd({
+      v instanceof URL ? v.href : v instanceof OrderedCollection ? await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         }) : await v.toJsonLd({
            ...(options),
            format: undefined,
            context: undefined,
@@ -45688,7 +45890,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -45703,7 +45905,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     array = [];
     for (const v of this.#_41QwhqJouoLg3h8dRPKat21brynC_outbox) {
       const element = (
-    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+    v instanceof URL ? { \\"@id\\": v.href } : v instanceof OrderedCollection ? await v.toJsonLd(options) : await v.toJsonLd(options)
       );
     array.push(element);;
     }
@@ -46097,7 +46299,7 @@ get preferredUsernames(): ((string | LanguageString))[] {
     _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers.push(v[\\"@value\\"])
     }
     instance.#_36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers = _36QNc9MxfkKf6h8sEUQSHnV9NZA_manuallyApprovesFollowers;
-    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | URL)[] = [];
+    const _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox__array = values[\\"http://www.w3.org/ns/ldp#inbox\\"];
     
@@ -46119,11 +46321,20 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox.push(decoded);
+      
     }
     instance.#_3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox = _3ghX3VfZXXbLvhCRH7QJqpzLrXjB_inbox;
-    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | URL)[] = [];
+    const _41QwhqJouoLg3h8dRPKat21brynC_outbox: (OrderedCollection | OrderedCollectionPage | URL)[] = [];
 
     let _41QwhqJouoLg3h8dRPKat21brynC_outbox__array = values[\\"https://www.w3.org/ns/activitystreams#outbox\\"];
     
@@ -46145,8 +46356,17 @@ get preferredUsernames(): ((string | LanguageString))[] {
         );
         continue;
       }
-      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(await OrderedCollection.fromJsonLd(
-      v, options))
+      
+      const decoded =
+      typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollection\\") ? await OrderedCollection.fromJsonLd(
+      v, options) : typeof v === \\"object\\" && \\"@type\\" in v
+      && Array.isArray(v[\\"@type\\"])&& v[\\"@type\\"].includes(\\"https://www.w3.org/ns/activitystreams#OrderedCollectionPage\\") ? await OrderedCollectionPage.fromJsonLd(
+      v, options) : undefined
+      ;
+      if (typeof decoded === \\"undefined\\") continue;
+      _41QwhqJouoLg3h8dRPKat21brynC_outbox.push(decoded);
+      
     }
     instance.#_41QwhqJouoLg3h8dRPKat21brynC_outbox = _41QwhqJouoLg3h8dRPKat21brynC_outbox;
     const _3yAv8jymNfNuJUDuBzJ1NQhdbAee_following: (Collection | URL)[] = [];
