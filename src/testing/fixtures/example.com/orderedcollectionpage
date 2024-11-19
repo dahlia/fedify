@@ -1,0 +1,24 @@
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "id": "https://example.com/orderedcollectionpage",
+  "type": "OrderedCollectionPage",
+  "partOf": "https://example.com/orderedcollectionpage",
+  "totalItems": 1,
+  "orderedItems": [
+    {
+      "id": "https://example.com/activities/1",
+      "type": "Create",
+      "published": "2024-11-19T15:24:56Z",
+      "actor": "https://example.com/users/1",
+      "to": "https://www.w3.org/ns/activitystreams#Public",
+      "object": {
+        "id": "https://example.com/notes/1",
+        "type": "Note",
+        "content": "This is a simple note",
+        "attributedTo": "https://example.com/users/1",
+        "to": "https://www.w3.org/ns/activitystreams#Public",
+        "published": "2024-11-19T15:24:56Z"
+      }
+    }
+  ]
+}
