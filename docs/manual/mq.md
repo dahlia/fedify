@@ -422,7 +422,6 @@ For example, the following code shows how to use a [`PostgresMessageQueue`] for
 the inbox and a [`RedisMessageQueue`] for the outbox:
 
 ~~~~ typescript twoslash
-// @noErrors: 2353
 import {
   createFederation,
   type KvStore,
@@ -453,7 +452,6 @@ Or, you can provide a message queue for only the `inbox` or `outbox` by omitting
 the other:
 
 ~~~~ typescript twoslash
-// @noErrors: 2353
 import {
   createFederation,
   type KvStore,
@@ -485,8 +483,7 @@ all queues).  The following example shows how to start only the `inbox` queue:
 
 ::: code-group
 
-~~~~ typescript{11-17} twoslash [Deno]
-// @noErrors: 2353
+~~~~ typescript twoslash [Deno]
 import type { KvStore } from "@fedify/fedify";
 import { createFederation } from "@fedify/fedify";
 import { RedisMessageQueue } from "@fedify/redis";
@@ -512,8 +509,7 @@ if (Deno.env.get("NODE_TYPE") === "worker") {
 }
 ~~~~
 
-~~~~ typescript{12-18} twoslash [Node.js/Bun]
-// @noErrors: 2353
+~~~~ typescript twoslash [Node.js/Bun]
 import type { KvStore } from "@fedify/fedify";
 import { createFederation } from "@fedify/fedify";
 import { RedisMessageQueue } from "@fedify/redis";

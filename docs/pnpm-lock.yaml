@@ -18,11 +18,11 @@ importers:
         specifier: 0.1.0-dev.8
         version: 0.1.0-dev.8(web-streams-polyfill@3.3.3)
       '@fedify/fedify':
-        specifier: 1.2.0
-        version: 1.2.0(web-streams-polyfill@3.3.3)
+        specifier: 1.3.0-dev.508
+        version: 1.3.0-dev.508(web-streams-polyfill@3.3.3)
       '@fedify/postgres':
-        specifier: 0.1.0-dev.2
-        version: 0.1.0-dev.2(web-streams-polyfill@3.3.3)
+        specifier: 0.2.2
+        version: 0.2.2(web-streams-polyfill@3.3.3)
       '@fedify/redis':
         specifier: 0.2.0-dev.10
         version: 0.2.0-dev.10(web-streams-polyfill@3.3.3)
@@ -78,8 +78,8 @@ importers:
         specifier: ^10.9.1
         version: 10.9.1
       postgres:
-        specifier: ^3.4.4
-        version: 3.4.4
+        specifier: ^3.4.5
+        version: 3.4.5
       stringify-entities:
         specifier: ^4.0.4
         version: 4.0.4
@@ -398,8 +398,11 @@ packages:
   '@fedify/fedify@1.2.0':
     resolution: {integrity: sha512-76wTodMo5OjXtb39qPa36VtEDzebFkix1tSYo/olaGLZ6oMo0ri8ZPevLvq4RzPvNo+omE1yYJTRdrmUnEmS0g==}
 
-  '@fedify/postgres@0.1.0-dev.2':
-    resolution: {integrity: sha512-KeLhfRgprJF7EXVgzPBRQAJKHnX79IdoZgrWWqD78bAIx3IiRLMXc+LS7/UmQaD0PiNmFXK+cUzKUE00/HbyDg==}
+  '@fedify/fedify@1.3.0-dev.508':
+    resolution: {integrity: sha512-r0hfWu1GfnK0+VYUgVF56uxP++RyrvzSbEeoPyfF4VU8btSNptseNrPlTAupQXp1hvrm6AMC++ozBX0enOpjgg==}
+
+  '@fedify/postgres@0.2.2':
+    resolution: {integrity: sha512-4Dm9QlTx8weQZBrSqYUGU/dfJpBqLA8CGTLiGmDhBjLVUTk1yrYHDQrl+ai37LEVhG7qOK0wM5mwhsMXyX18GQ==}
 
   '@fedify/redis@0.2.0-dev.10':
     resolution: {integrity: sha512-OMaqK0Hpvl+HpGMTCjszM/DmYrljRGJaA9wTN4pWEtDBhwxwbMsuOlq8AdqsiFx7yJCxmosPL4iwuLRC21FxRg==}
@@ -1452,8 +1455,8 @@ packages:
     resolution: {integrity: sha512-56rxCq7G/XfB4EkXq9Egn5GCqugWvDFjafDOThIdMBsI15iqPqR5r15TfSr1YPYeEI19YeaXMCbY6u88Y76GLQ==}
     engines: {node: ^10 || ^12 || >=14}
 
-  postgres@3.4.4:
-    resolution: {integrity: sha512-IbyN+9KslkqcXa8AO9fxpk97PA4pzewvpi2B3Dwy9u4zpV32QicaEdgmF3eSQUzdRk7ttDHQejNgAEr4XoeH4A==}
+  postgres@3.4.5:
+    resolution: {integrity: sha512-cDWgoah1Gez9rN3H4165peY9qfpEo+SA61oQv65O3cRUE1pOEoJWwddwcqKE8XZYjbblOJlYDlLV4h67HrEVDg==}
     engines: {node: '>=12'}
 
   preact@10.24.1:
@@ -2042,12 +2045,32 @@ snapshots:
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  '@fedify/postgres@0.1.0-dev.2(web-streams-polyfill@3.3.3)':
+  '@fedify/fedify@1.3.0-dev.508(web-streams-polyfill@3.3.3)':
+    dependencies:
+      '@deno/shim-crypto': 0.3.1
+      '@deno/shim-deno': 0.18.2
+      '@hugoalh/http-header-link': 1.0.2
+      '@js-temporal/polyfill': 0.4.4
+      '@logtape/logtape': 0.7.1
+      '@phensley/language-tag': 1.9.0
+      asn1js: 3.0.5
+      json-canon: 1.0.1
+      jsonld: 8.3.2(web-streams-polyfill@3.3.3)
+      multibase: 4.0.6
+      multicodec: 3.2.1
+      pkijs: 3.2.4
+      uri-template-router: 0.0.16
+      url-template: 3.1.1
+      urlpattern-polyfill: 10.0.0
+    transitivePeerDependencies:
+      - web-streams-polyfill
+
+  '@fedify/postgres@0.2.2(web-streams-polyfill@3.3.3)':
     dependencies:
       '@deno/shim-deno': 0.18.2
       '@fedify/fedify': 1.2.0(web-streams-polyfill@3.3.3)
       '@js-temporal/polyfill': 0.4.4
-      postgres: 3.4.4
+      postgres: 3.4.5
     transitivePeerDependencies:
       - web-streams-polyfill
 
@@ -3415,7 +3438,7 @@ snapshots:
       picocolors: 1.1.0
       source-map-js: 1.2.1
 
-  postgres@3.4.4: {}
+  postgres@3.4.5: {}
 
   preact@10.24.1: {}
 

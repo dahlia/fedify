@@ -122,7 +122,6 @@ Further details are explained in the [*Message queue* section](./mq.md).
 > `outbox` properties:
 >
 > ~~~~ typescript twoslash
-> // @noErrors: 2353
 > import {
 >   createFederation,
 >   type KvStore,
@@ -151,7 +150,6 @@ Further details are explained in the [*Message queue* section](./mq.md).
 > omitting the other:
 >
 > ~~~~ typescript twoslash
-> // @noErrors: 2353
 > import {
 >   createFederation,
 >   type KvStore,
