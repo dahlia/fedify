@@ -20,10 +20,15 @@ await configure({
   sinks: { console: getConsoleSink() },
   filters: {},
   loggers: [
-    { category: "fedify", level: "debug", sinks: ["console"], filters: [] },
+    {
+      category: "fedify",
+      lowestLevel: "debug",
+      sinks: ["console"],
+      filters: [],
+    },
     {
       category: ["logtape", "meta"],
-      level: "warning",
+      lowestLevel: "warning",
       sinks: ["console"],
       filters: [],
     },

@@ -20,17 +20,19 @@ await configure({
   loggers: [
     {
       category: "fedify",
-      level: (Deno.env.get("FEDIFY_LOG") as LogLevel | undefined) ?? "debug",
+      lowestLevel: (Deno.env.get("FEDIFY_LOG") as LogLevel | undefined) ??
+        "debug",
       sinks: ["console", "file"],
     },
     {
       category: "blog",
-      level: (Deno.env.get("BLOG_LOG") as LogLevel | undefined) ?? "debug",
+      lowestLevel: (Deno.env.get("BLOG_LOG") as LogLevel | undefined) ??
+        "debug",
       sinks: ["console", "file"],
     },
     {
       category: ["logtape", "meta"],
-      level: "warning",
+      lowestLevel: "warning",
       sinks: ["console", "file"],
     },
   ],

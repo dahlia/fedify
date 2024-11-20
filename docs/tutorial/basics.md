@@ -344,7 +344,7 @@ to the next step.
 >   sinks: { console: getConsoleSink() },
 >   filters: {},
 >   loggers: [
->     { category: "fedify",  sinks: ["console"], level: "info" },
+>     { category: "fedify",  sinks: ["console"], lowestLevel: "info" },
 >   ],
 > });
 > ~~~~

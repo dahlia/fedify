@@ -36,12 +36,12 @@ await configure({
   loggers: [
     {
       category: "fedify",
-      level: "debug",
+      lowestLevel: "debug",
       sinks: ["recording"],
     },
     {
       category: ["logtape", "meta"],
-      level: "warning",
+      lowestLevel: "warning",
       sinks: ["console"],
     },
   ],

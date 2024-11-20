@@ -30,6 +30,7 @@ app.get("/r/0", async (c) => {
         category: ["fedify", "federation", "collection"],
         level: "debug",
         message: ["Fetching followers collection..."],
+        rawMessage: "Fetching followers collection...",
         properties: {},
       },
       {
@@ -41,6 +42,7 @@ app.get("/r/0", async (c) => {
           "https://fedify.dev/r/123",
           ".",
         ],
+        rawMessage: "Successfully sent activity https://fedify.dev/r/123.",
         properties: {
           activityId: "https://fedify.dev/r/123",
         },
@@ -50,6 +52,7 @@ app.get("/r/0", async (c) => {
         category: ["fedify", "federation", "inbox"],
         level: "warning",
         message: ["Failed to parse activity."],
+        rawMessage: "Failed to parse activity.",
         properties: {
           json: await activity.toJsonLd(),
         },
@@ -59,6 +62,7 @@ app.get("/r/0", async (c) => {
         category: ["fedify", "federation", "inbox"],
         level: "error",
         message: ["Failed to parse activity."],
+        rawMessage: "Failed to parse activity.",
         properties: {
           json: await activity.toJsonLd(),
         },
@@ -68,6 +72,7 @@ app.get("/r/0", async (c) => {
         category: ["fedify", "federation", "collection"],
         level: "fatal",
         message: ["Something went wrong: ", { foo: 1, bar: 2 }],
+        rawMessage: 'Something went wrong: {"foo":1,"bar":2}',
         properties: {},
       },
     ],
@@ -76,6 +81,7 @@ app.get("/r/0", async (c) => {
     <ActivityEntryPage
       idx={idx}
       entry={entry}
+      // @ts-ignore:
       tabPage={c.req.query("tab") ?? "request"}
     />,
   );
@@ -93,6 +99,7 @@ app.get("/r/1", (c) => {
     <ActivityEntryPage
       idx={idx}
       entry={entry}
+      // @ts-ignore:
       tabPage={c.req.query("tab") ?? "request"}
     />,
   );
@@ -109,6 +116,7 @@ app.get("/r/2", (c) => {
     <ActivityEntryPage
       idx={idx}
       entry={entry}
+      // @ts-ignore:
       tabPage={c.req.query("tab") ?? "request"}
     />,
   );

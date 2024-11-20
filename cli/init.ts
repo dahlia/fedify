@@ -977,8 +977,10 @@ export default federation;
 `;
     const logging = `\
 import { configure, getConsoleSink } from "@logtape/logtape";
+import { AsyncLocalStorage } from "node:async_hooks";
 
 await configure({
+  contextLocalStorage: new AsyncLocalStorage(),
   sinks: {
     console: getConsoleSink(),
   },
@@ -986,9 +988,9 @@ await configure({
   loggers: [
     { category: ${
       JSON.stringify(projectName)
-    }, level: "debug", sinks: ["console"] },
-    { category: "fedify", level: "info", sinks: ["console"] },
-    { category: "logtape", level: "warning", sinks: ["console"] },
+    }, lowestLevel: "debug", sinks: ["console"] },
+    { category: "fedify", lowestLevel: "info", sinks: ["console"] },
+    { category: ["logtape", "meta"], lowestLevel: "warning", sinks: ["console"] },
   ],
 });
 `;
@@ -1031,7 +1033,7 @@ await configure({
     }
     const dependencies: Record<string, string> = {
       "@fedify/fedify": `^${await getLatestFedifyVersion(metadata.version)}`,
-      "@logtape/logtape": "^0.4.2",
+      "@logtape/logtape": "^0.8.0",
       ...initializer.dependencies,
       ...kvStoreDesc?.dependencies,
       ...mqDesc?.dependencies,

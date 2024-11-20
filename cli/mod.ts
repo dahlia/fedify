@@ -20,17 +20,17 @@ const command = new Command()
         loggers: [
           {
             category: "fedify",
-            level: "debug",
+            lowestLevel: "debug",
             sinks: ["console", "recording"],
           },
           {
             category: "localtunnel",
-            level: "debug",
+            lowestLevel: "debug",
             sinks: ["console"],
           },
           {
             category: ["logtape", "meta"],
-            level: "warning",
+            lowestLevel: "warning",
             sinks: ["console"],
           },
         ],

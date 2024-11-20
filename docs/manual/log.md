@@ -62,8 +62,8 @@ import { configure, getConsoleSink } from "@logtape/logtape";
 await configure({
   sinks: { console: getConsoleSink() },
   loggers: [
-    { category: "your-app", sinks: ["console"], level: "debug" },
-    { category: "fedify",   sinks: ["console"], level: "error" },
+    { category: "your-app", sinks: ["console"], lowestLevel: "debug" },
+    { category: "fedify",   sinks: ["console"], lowestLevel: "error" },
   ],
   contextLocalStorage: new AsyncLocalStorage(),
 });
@@ -96,10 +96,14 @@ The `configure()` function takes an object with three properties:
 :   The `filters` property is an array of string that specifies the filter
     names that the logger should use.
 
-`loggers.level` (optional)
-:   The `level` property is a string that specifies the log level.  The log
-    level can be one of the following: `"debug"`, `"info"`, `"warning"`,
+`loggers.lowestLevel` (optional)
+:   The `lowestLevel` property is a string that specifies the log level.
+    The log level can be one of the following: `"debug"`, `"info"`, `"warning"`,
     `"error"`, or `"fatal"`.
+
+    > [!NOTE]
+    > The `lowestLevel` property was introduced in LogTape 0.8.0.  Prior to
+    > LogTape 0.8.0, please use the `level` property instead of `lowestLevel`.
 
 `contextLocalStorage` (recommended)
 :   *This property is available since LogTape 0.7.0.*
@@ -364,7 +368,7 @@ await configure({
     })
   },
   loggers: [
-    { category: "fedify", sinks: ["file"], level: "info" },
+    { category: "fedify", sinks: ["file"], lowestLevel: "info" },
   ],
   contextLocalStorage: new AsyncLocalStorage(),
 });

@@ -51,7 +51,6 @@ export function test(
           {
             category: [],
             sinks: [Deno.env.get("LOG") === "always" ? "console" : "buffer"],
-            level: "debug",
           },
         ],
       });
