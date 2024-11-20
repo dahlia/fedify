@@ -1004,7 +1004,7 @@ test("ContextImpl.sendActivity()", async (t) => {
       contextLoader: mockDocumentLoader,
       keyCache: {
         async get(keyId: URL) {
-          const ctx = await federation.createContext(
+          const ctx = federation.createContext(
             new URL("https://example.com/"),
             undefined,
           );
@@ -1016,9 +1016,9 @@ test("ContextImpl.sendActivity()", async (t) => {
               } else return key.cryptographicKey;
             }
           }
-          return null;
+          return undefined;
         },
-        async set(_keyId: URL, _key: CryptographicKey | Multikey) {
+        async set(_keyId: URL, _key: CryptographicKey | Multikey | null) {
         },
       } satisfies KeyCache,
     };

@@ -133,7 +133,7 @@ export async function importJwk(
 
 /**
  * Options for {@link fetchKey}.
- * @since 0.10.0
+ * @since 1.3.0
  */
 export interface FetchKeyOptions {
   /**
@@ -155,13 +155,13 @@ export interface FetchKeyOptions {
 
 /**
  * The result of {@link fetchKey}.
- * @since 0.12.0
+ * @since 1.3.0
  */
 export interface FetchKeyResult<T extends CryptographicKey | Multikey> {
   /**
    * The fetched (or cached) key.
    */
-  readonly key: T & { publicKey: CryptoKey };
+  readonly key: T & { publicKey: CryptoKey } | null;
 
   /**
    * Whether the key is fetched from the cache.
@@ -180,7 +180,7 @@ export interface FetchKeyResult<T extends CryptographicKey | Multikey> {
  *            or {@link Multikey}.
  * @param options Options for fetching the key.  See {@link FetchKeyOptions}.
  * @returns The fetched key or `null` if the key is not found.
- * @since 0.10.0
+ * @since 1.3.0
  */
 export async function fetchKey<T extends CryptographicKey | Multikey>(
   keyId: URL | string,
@@ -195,7 +195,7 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
     ): Promise<T>;
   },
   { documentLoader, contextLoader, keyCache }: FetchKeyOptions = {},
-): Promise<FetchKeyResult<T> | null> {
+): Promise<FetchKeyResult<T>> {
   const logger = getLogger(["fedify", "sig", "key"]);
   const cacheKey = typeof keyId === "string" ? new URL(keyId) : keyId;
   keyId = typeof keyId === "string" ? keyId : keyId.href;
@@ -207,6 +207,12 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
         key: cachedKey as T & { publicKey: CryptoKey },
         cached: true,
       };
+    } else if (cachedKey === null) {
+      logger.debug(
+        "Entry {keyId} found in cache, but it is unavailable.",
+        { keyId },
+      );
+      return { key: null, cached: true };
     }
   }
   logger.debug("Fetching key {keyId} to verify signature...", { keyId });
@@ -216,7 +222,8 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
     document = remoteDocument.document;
   } catch (_) {
     logger.debug("Failed to fetch key {keyId}.", { keyId });
-    return null;
+    await keyCache?.set(cacheKey, null);
+    return { key: null, cached: false };
   }
   let object: Object | T;
   try {
@@ -237,7 +244,8 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
           "Failed to verify; key {keyId} returned an invalid object.",
           { keyId },
         );
-        return null;
+        await keyCache?.set(cacheKey, null);
+        return { key: null, cached: false };
       }
       throw e;
     }
@@ -261,21 +269,24 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
           "but has no key matching {keyId}.",
         { keyId, actorType: object.constructor.name },
       );
-      return null;
+      await keyCache?.set(cacheKey, null);
+      return { key: null, cached: false };
     }
   } else {
     logger.debug(
       "Failed to verify; key {keyId} returned an invalid object.",
       { keyId },
     );
-    return null;
+    await keyCache?.set(cacheKey, null);
+    return { key: null, cached: false };
   }
   if (key.publicKey == null) {
     logger.debug(
       "Failed to verify; key {keyId} has no publicKeyPem field.",
       { keyId },
     );
-    return null;
+    await keyCache?.set(cacheKey, null);
+    return { key: null, cached: false };
   }
   if (keyCache != null) {
     await keyCache.set(cacheKey, key);
@@ -295,13 +306,20 @@ export interface KeyCache {
   /**
    * Gets a key from the cache.
    * @param keyId The key ID.
+   * @returns The key if found, `null` if the key is not available (e.g.,
+   *          fetching the key was tried but failed), or `undefined`
+   *          if the cache is not available.
    */
-  get(keyId: URL): Promise<CryptographicKey | Multikey | null>;
+  get(keyId: URL): Promise<CryptographicKey | Multikey | null | undefined>;
 
   /**
    * Sets a key to the cache.
+   *
+   * Note that this caches unavailable keys (i.e., `null`) as well,
+   * and it is recommended to make unavailable keys expire after a short period.
    * @param keyId The key ID.
-   * @param key The key to cache.
+   * @param key The key to cache.  `null` means the key is not available
+   *            (e.g., fetching the key was tried but failed).
    */
-  set(keyId: URL, key: CryptographicKey | Multikey): Promise<void>;
+  set(keyId: URL, key: CryptographicKey | Multikey | null): Promise<void>;
 }

@@ -420,25 +420,35 @@ export async function handleInbox<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  const keyCache: KeyCache = {
+  const keyCache: KeyCache & { nullKeys: Set<string> } = {
+    nullKeys: new Set(),
     async get(keyId: URL) {
+      if (this.nullKeys.has(keyId.href)) return null;
       const serialized = await kv.get([
         ...kvPrefixes.publicKey,
         keyId.href,
       ]);
-      if (serialized == null) return null;
+      if (serialized == null) return undefined;
       let object: Object;
       try {
         object = await Object.fromJsonLd(serialized, context);
       } catch {
-        return null;
+        await kv.delete([...kvPrefixes.publicKey, keyId.href]);
+        return undefined;
       }
       if (object instanceof CryptographicKey || object instanceof Multikey) {
         return object;
       }
-      return null;
+      await kv.delete([...kvPrefixes.publicKey, keyId.href]);
+      return undefined;
     },
-    async set(keyId: URL, key: CryptographicKey | Multikey) {
+    async set(keyId: URL, key: CryptographicKey | Multikey | null) {
+      if (key == null) {
+        this.nullKeys.add(keyId.href);
+        await kv.delete([...kvPrefixes.publicKey, keyId.href]);
+        return;
+      }
+      this.nullKeys.delete(keyId.href);
       const serialized = await key.toJsonLd(context);
       await kv.set([...kvPrefixes.publicKey, keyId.href], serialized);
     },

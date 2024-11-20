@@ -219,13 +219,12 @@ export async function verifySignature(
     );
     return null;
   }
-  const keyResult = await fetchKey(
+  const { key, cached } = await fetchKey(
     new URL(sig.creator),
     CryptographicKey,
     options,
   );
-  if (keyResult == null) return null;
-  const { key, cached } = keyResult;
+  if (key == null) return null;
   const sigOpts: {
     "@context": string;
     type?: string;
@@ -277,13 +276,18 @@ export async function verifySignature(
         "Retrying with the freshly fetched key...",
       { keyId: sig.creator, ...sig },
     );
-    const keyResult = await fetchKey(
+    const { key } = await fetchKey(
       new URL(sig.creator),
       CryptographicKey,
-      { ...options, keyCache: undefined },
+      {
+        ...options,
+        keyCache: {
+          get: () => Promise.resolve(undefined),
+          set: async (keyId, key) => await options.keyCache?.set(keyId, key),
+        },
+      },
     );
-    if (keyResult == null) return null;
-    const { key } = keyResult;
+    if (key == null) return null;
     const verified = await crypto.subtle.verify(
       "RSASSA-PKCS1-v1_5",
       key.publicKey,

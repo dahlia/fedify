@@ -1177,7 +1177,7 @@ test("handleInbox()", async () => {
     ...inboxOptions,
   });
   assertEquals(onNotFoundCalled, null);
-  assertEquals(response.status, 202);
+  assertEquals([response.status, await response.text()], [202, ""]);
 
   response = await handleInbox(unsignedRequest, {
     recipient: null,

@@ -39,6 +39,19 @@ To be released.
      -  Added `-u`/--user-agent` option to `fedify lookup` subcommand.
      -  Added `-u`/--user-agent` option to `fedify node` subcommand.
 
+ -  Fedify now caches unavailable keys of remote actors as well to avoid
+    trying fetching the same unavailable key multiple times.
+
+     -  The return type of the `KeyCache.get()` method became
+        `Promise<CryptographicKey | MultiKey | null | undefined>` (was
+        `Promise<CryptographicKey | MultiKey | null>`).
+     -  The type of the `KeyCache.set()` method's second parameter became
+        `CryptographicKey | MultiKey | null` (was `CryptographicKey | MultiKey`).
+     -  Added `fetchKey()` function.
+     -  Added `FetchKeyOptions` interface.
+     -  Added `FetchKeyResult` interface.
+
+
 [#162]: https://github.com/dahlia/fedify/issues/162
 
 
@@ -1794,8 +1807,6 @@ is now distributed under the [MIT License] to encourage wider adoption.
      -  Added `VerifyObjectOptions` interface.
      -  Added `verifyProof()` function.
      -  Added `VerifyProofOptions` interface.
-     -  Added `fetchKey()` function.
-     -  Added `FetchKeyOptions` interface.
      -  Added `SenderKeyPair` interface.
      -  The type of `Federation.sendActivity()` method's first parameter became
         `SenderKeyPair[]` (was `{ keyId: URL; privateKey: CryptoKey }`).

@@ -10,6 +10,9 @@ export {
 } from "./http.ts";
 export {
   exportJwk,
+  fetchKey,
+  type FetchKeyOptions,
+  type FetchKeyResult,
   generateCryptoKeyPair,
   importJwk,
   type KeyCache,

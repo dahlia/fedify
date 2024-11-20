@@ -210,14 +210,14 @@ export async function verifyProof(
     );
     return null;
   }
-  if (fetchedKey == null) {
+  const publicKey = fetchedKey.key;
+  if (publicKey == null) {
     logger.debug(
       "Failed to get the key (verificationMethod) for the proof:\n{proof}",
       { proof, keyId: proof.verificationMethodId.href },
     );
     return null;
   }
-  const publicKey = fetchedKey.key;
   if (publicKey.publicKey.algorithm.name !== "Ed25519") {
     if (fetchedKey.cached) {
       logger.debug(
@@ -256,7 +256,7 @@ export async function verifyProof(
       return await verifyProof(jsonLd, proof, {
         ...options,
         keyCache: {
-          get: () => Promise.resolve(null),
+          get: () => Promise.resolve(undefined),
           set: async (keyId, key) => await options.keyCache?.set(keyId, key),
         },
       });

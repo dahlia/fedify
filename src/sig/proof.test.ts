@@ -269,13 +269,13 @@ test("signObject()", async () => {
 });
 
 test("verifyProof()", async () => {
-  const cache: Record<string, CryptographicKey | Multikey> = {};
+  const cache: Record<string, CryptographicKey | Multikey | null> = {};
   const options: VerifyProofOptions = {
     documentLoader: mockDocumentLoader,
     contextLoader: mockDocumentLoader,
     keyCache: {
       get(keyId) {
-        return Promise.resolve(cache[keyId.href] ?? null);
+        return Promise.resolve(cache[keyId.href]);
       },
       set(keyId, key) {
         cache[keyId.href] = key;

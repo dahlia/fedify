@@ -27,7 +27,7 @@ export const rsaPublicKey1 = new CryptographicKey({
     true,
     ["verify"],
   ),
-});
+}) as CryptographicKey & { publicKey: CryptoKey };
 
 export const rsaPrivateKey2 = await crypto.subtle.importKey(
   "jwk",
@@ -95,7 +95,7 @@ export const rsaPublicKey2 = new CryptographicKey({
     true,
     ["verify"],
   ),
-});
+}) as CryptographicKey & { publicKey: CryptoKey };
 
 export const rsaPrivateKey3 = await crypto.subtle.importKey(
   "jwk",
@@ -180,8 +180,8 @@ export const rsaPublicKey3 = new CryptographicKey({
         "jKlH89kGwuJ7HhR8CuVdm0l-jYozVt6GsDy0hHYyn79NCCAEzP7ZbhBMR0T5Vrkl-TI" +
         "GXoJH9WFiz4VxO-NnglF6dNQjDS5IzYLoFRXIK1f3cmQiEB4FZmL70l9HLrgwR-Xys8" +
         "3xia79OqFDRezM",
-      // cSpell: enable
       e: "AQAB",
+      // cSpell: enable
       key_ops: ["verify"],
       ext: true,
     },
@@ -189,13 +189,13 @@ export const rsaPublicKey3 = new CryptographicKey({
     true,
     ["verify"],
   ),
-});
+}) as CryptographicKey & { publicKey: CryptoKey };
 
 export const rsaMultikey4 = new Multikey({
   id: new URL("https://example.com/person2#key3"),
   controller: new URL("https://example.com/person2"),
   publicKey: rsaPublicKey3.publicKey,
-});
+}) as Multikey & { publicKey: CryptoKey };
 
 export const ed25519PrivateKey = await crypto.subtle.importKey(
   "jwk",
@@ -232,10 +232,10 @@ export const ed25519PublicKey = new CryptographicKey({
     true,
     ["verify"],
   ),
-});
+}) as CryptographicKey & { publicKey: CryptoKey };
 
 export const ed25519Multikey = new Multikey({
   id: new URL("https://example.com/person2#key4"),
   controller: new URL("https://example.com/person2"),
   publicKey: ed25519PublicKey.publicKey,
-});
+}) as Multikey & { publicKey: CryptoKey };

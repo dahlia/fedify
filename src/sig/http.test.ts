@@ -57,14 +57,14 @@ test("verifyRequest()", async () => {
         '+M6DrfkfQuUBw=="', // cSpell: enable
     },
   });
-  const cache: Record<string, CryptographicKey | Multikey> = {};
+  const cache: Record<string, CryptographicKey | Multikey | null> = {};
   const options: VerifyRequestOptions = {
     contextLoader: mockDocumentLoader,
     documentLoader: mockDocumentLoader,
     currentTime: Temporal.Instant.from("2024-03-05T07:49:44Z"),
     keyCache: {
       get(keyId) {
-        return Promise.resolve(cache[keyId.href] ?? null);
+        return Promise.resolve(cache[keyId.href]);
       },
       set(keyId, key) {
         cache[keyId.href] = key;

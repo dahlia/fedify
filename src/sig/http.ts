@@ -259,13 +259,12 @@ export async function verifyRequest(
     return null;
   }
   const { keyId, headers, signature } = sigValues;
-  const keyResult = await fetchKey(new URL(keyId), CryptographicKey, {
+  const { key, cached } = await fetchKey(new URL(keyId), CryptographicKey, {
     documentLoader,
     contextLoader,
     keyCache,
   });
-  if (keyResult == null) return null;
-  const { key, cached } = keyResult;
+  if (key == null) return null;
   const headerNames = headers.split(/\s+/g);
   if (
     !headerNames.includes("(request-target)") || !headerNames.includes("date")
@@ -316,7 +315,7 @@ export async function verifyRequest(
           timeWindow,
           currentTime,
           keyCache: {
-            get: () => Promise.resolve(null),
+            get: () => Promise.resolve(undefined),
             set: async (keyId, key) => await keyCache?.set(keyId, key),
           },
         },
