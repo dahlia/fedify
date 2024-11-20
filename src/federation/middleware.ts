@@ -1,4 +1,19 @@
 import { getLogger, withContext } from "@logtape/logtape";
+import {
+  type Span,
+  SpanKind,
+  SpanStatusCode,
+  trace,
+  type TracerProvider,
+} from "@opentelemetry/api";
+import {
+  ATTR_HTTP_REQUEST_HEADER,
+  ATTR_HTTP_REQUEST_METHOD,
+  ATTR_HTTP_RESPONSE_HEADER,
+  ATTR_HTTP_RESPONSE_STATUS_CODE,
+  ATTR_URL_FULL,
+} from "@opentelemetry/semantic-conventions";
+import metadata from "../deno.json" with { type: "json" };
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
@@ -221,6 +236,13 @@ export interface CreateFederationOptions {
    * @since 0.12.0
    */
   trailingSlashInsensitive?: boolean;
+
+  /**
+   * The OpenTelemetry tracer provider for tracing operations.  If not provided,
+   * the default global tracer provider is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -349,6 +371,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   skipSignatureVerification: boolean;
   outboxRetryPolicy: RetryPolicy;
   inboxRetryPolicy: RetryPolicy;
+  tracerProvider: TracerProvider;
 
   constructor(options: CreateFederationOptions) {
     this.kv = options.kv;
@@ -420,6 +443,11 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       createExponentialBackoffPolicy();
     this.inboxRetryPolicy = options.inboxRetryPolicy ??
       createExponentialBackoffPolicy();
+    this.tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  }
+
+  #getTracer() {
+    return this.tracerProvider.getTracer(metadata.name, metadata.version);
   }
 
   async #startQueue(
@@ -1859,20 +1887,65 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   ): Promise<Response> {
     const requestId = getRequestId(request);
     return withContext({ requestId }, async () => {
-      const response = await this.#fetch(request, options);
-      const logger = getLogger(["fedify", "federation", "http"]);
-      const url = new URL(request.url);
-      const logTpl = "{method} {path}: {status}";
-      const values = {
-        method: request.method,
-        path: `${url.pathname}${url.search}`,
-        url: request.url,
-        status: response.status,
-      };
-      if (response.status >= 500) logger.error(logTpl, values);
-      else if (response.status >= 400) logger.warn(logTpl, values);
-      else logger.info(logTpl, values);
-      return response;
+      const tracer = this.#getTracer();
+      return await tracer.startActiveSpan(
+        request.method,
+        {
+          kind: SpanKind.SERVER,
+          attributes: {
+            [ATTR_HTTP_REQUEST_METHOD]: request.method,
+            [ATTR_URL_FULL]: request.url,
+          },
+        },
+        async (span) => {
+          const logger = getLogger(["fedify", "federation", "http"]);
+          if (span.isRecording()) {
+            for (const [k, v] of request.headers) {
+              span.setAttribute(ATTR_HTTP_REQUEST_HEADER(k), [v]);
+            }
+          }
+          let response: Response;
+          try {
+            response = await this.#fetch(request, { ...options, span });
+          } catch (error) {
+            span.setStatus({
+              code: SpanStatusCode.ERROR,
+              message: `${error}`,
+            });
+            span.end();
+            logger.error(
+              "An error occurred while serving request {method} {url}: {error}",
+              { method: request.method, url: request.url, error },
+            );
+            throw error;
+          }
+          if (span.isRecording()) {
+            span.setAttribute(ATTR_HTTP_RESPONSE_STATUS_CODE, response.status);
+            for (const [k, v] of response.headers) {
+              span.setAttribute(ATTR_HTTP_RESPONSE_HEADER(k), [v]);
+            }
+            span.setStatus({
+              code: response.status >= 500
+                ? SpanStatusCode.ERROR
+                : SpanStatusCode.UNSET,
+              message: response.statusText,
+            });
+          }
+          span.end();
+          const url = new URL(request.url);
+          const logTpl = "{method} {path}: {status}";
+          const values = {
+            method: request.method,
+            path: `${url.pathname}${url.search}`,
+            url: request.url,
+            status: response.status,
+          };
+          if (response.status >= 500) logger.error(logTpl, values);
+          else if (response.status >= 400) logger.warn(logTpl, values);
+          else logger.info(logTpl, values);
+          return response;
+        },
+      );
     });
   }
 
@@ -1883,17 +1956,16 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       onNotAcceptable,
       onUnauthorized,
       contextData,
-    }: FederationFetchOptions<TContextData>,
+      span,
+    }: FederationFetchOptions<TContextData> & { span: Span },
   ): Promise<Response> {
     onNotFound ??= notFound;
     onNotAcceptable ??= notAcceptable;
     onUnauthorized ??= unauthorized;
     const url = new URL(request.url);
     const route = this.router.route(url.pathname);
-    if (route == null) {
-      const response = onNotFound(request);
-      return response instanceof Promise ? await response : response;
-    }
+    if (route == null) return await onNotFound(request);
+    span.updateName(`${request.method} ${route.template}`);
     let context = this.#createContext(request, contextData);
     const routeName = route.name.replace(/:.*$/, "");
     switch (routeName) {

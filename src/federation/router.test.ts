@@ -31,11 +31,13 @@ test("Router.route()", () => {
   let router = setUp();
   assertEquals(router.route("/users/alice"), {
     name: "user",
+    template: "/users/{name}",
     values: { name: "alice" },
   });
   assertEquals(router.route("/users/bob/"), null);
   assertEquals(router.route("/users/alice/posts/123"), {
     name: "post",
+    template: "/users/{name}/posts/{postId}",
     values: { name: "alice", postId: "123" },
   });
   assertEquals(router.route("/users/bob/posts/456/"), null);
@@ -43,18 +45,22 @@ test("Router.route()", () => {
   router = setUp({ trailingSlashInsensitive: true });
   assertEquals(router.route("/users/alice"), {
     name: "user",
+    template: "/users/{name}",
     values: { name: "alice" },
   });
   assertEquals(router.route("/users/bob/"), {
     name: "user",
+    template: "/users/{name}",
     values: { name: "bob" },
   });
   assertEquals(router.route("/users/alice/posts/123"), {
     name: "post",
+    template: "/users/{name}/posts/{postId}/",
     values: { name: "alice", postId: "123" },
   });
   assertEquals(router.route("/users/bob/posts/456/"), {
     name: "post",
+    template: "/users/{name}/posts/{postId}/",
     values: { name: "bob", postId: "456" },
   });
 });

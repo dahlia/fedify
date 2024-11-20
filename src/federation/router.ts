@@ -14,12 +14,34 @@ export interface RouterOptions {
 }
 
 /**
+ * The result of {@link Router.route} method.
+ * @since 1.3.0
+ */
+export interface RouterRouteResult {
+  /**
+   * The matched route name.
+   */
+  name: string;
+
+  /**
+   * The URL template of the matched route.
+   */
+  template: string;
+
+  /**
+   * The values extracted from the URL.
+   */
+  values: Record<string, string>;
+}
+
+/**
  * URL router and constructor based on URI Template
  * ([RFC 6570](https://tools.ietf.org/html/rfc6570)).
  */
 export class Router {
   #router: InnerRouter;
   #templates: Record<string, Template>;
+  #templateStrings: Record<string, string>;
   #trailingSlashInsensitive: boolean;
 
   /**
@@ -29,6 +51,7 @@ export class Router {
   constructor(options: RouterOptions = {}) {
     this.#router = new InnerRouter();
     this.#templates = {};
+    this.#templateStrings = {};
     this.#trailingSlashInsensitive = options.trailingSlashInsensitive ?? false;
   }
 
@@ -53,6 +76,7 @@ export class Router {
     }
     const rule = this.#router.addTemplate(template, {}, name);
     this.#templates[name] = parseTemplate(template);
+    this.#templateStrings[name] = template;
     return new Set(rule.variables.map((v: { varname: string }) => v.varname));
   }
 
@@ -62,7 +86,7 @@ export class Router {
    * @returns The name of the path and its values, if any match.  Otherwise,
    *          `null`.
    */
-  route(url: string): { name: string; values: Record<string, string> } | null {
+  route(url: string): RouterRouteResult | null {
     let match = this.#router.resolveURI(url);
     if (match == null) {
       if (!this.#trailingSlashInsensitive) return null;
@@ -72,6 +96,7 @@ export class Router {
     }
     return {
       name: match.matchValue,
+      template: this.#templateStrings[match.matchValue],
       values: match.params,
     };
   }
