@@ -73,7 +73,10 @@ export async function lookupWebFinger(
       response.status >= 300 && response.status < 400 &&
       response.headers.has("Location")
     ) {
-      url = new URL(response.headers.get("Location")!);
+      url = new URL(
+        response.headers.get("Location")!,
+        response.url == null || response.url === "" ? url : response.url,
+      );
       continue;
     }
     if (!response.ok) {
