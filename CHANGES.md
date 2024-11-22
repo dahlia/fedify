@@ -8,6 +8,9 @@ Version 1.1.7
 
 To be released.
 
+ -  Fixed a bug where `lookupWebFinger()` function had thrown a `TypeError`
+    when the *.well-known/webfinger* redirects to a relative URI.  [[#166]]
+
 
 Version 1.1.6
 -------------
@@ -229,6 +232,15 @@ Released on October 20, 2024.
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
+
+
+Version 1.0.11
+--------------
+
+Released on December 22, 2024.
+
+ -  Fixed a bug where `lookupWebFinger()` function had thrown a `TypeError`
+    when the *.well-known/webfinger* redirects to a relative URI.  [[#166]]
 
 
 Version 1.0.10
@@ -572,10 +584,21 @@ Released on September 26, 2024.
 [#137]: https://github.com/dahlia/fedify/issues/137
 
 
+Version 0.15.9
+--------------
+
+Released on November 22, 2024.
+
+ -  Fixed a bug where `lookupWebFinger()` function had thrown a `TypeError`
+    when the *.well-known/webfinger* redirects to a relative URI.  [[#166]]
+
+[#166]: https://github.com/dahlia/fedify/issues/166
+
+
 Version 0.15.8
 --------------
 
-Released on November 159, 2024.
+Released on November 19, 2024.
 
  -  Fix a bug where `Actor`'s `inbox` and `outbox` properties had not been
     able to be set to an `OrderedCollectionPage` object, even though it is
