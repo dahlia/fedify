@@ -310,17 +310,7 @@ Released on October 31, 2024.
 Version 1.1.8
 -------------
 
-Released on November 23, 2024.
-
- -  Fixed `ShikiError` on the `fedify inbox` command rendering web interface.
-    [[#178], [#185] by Heesun Jung]
- -  Fixed text overflow of the `fedify inbox` command's web log view.
-    [[#180], [#188] by Lim Kyunghee]
-
-[#178]: https://github.com/dahlia/fedify/issues/178
-[#180]: https://github.com/dahlia/fedify/issues/180
-[#185]: https://github.com/dahlia/fedify/pull/185
-[#188]: https://github.com/dahlia/fedify/pull/188
+To be released.
 
 
 Version 1.1.7
