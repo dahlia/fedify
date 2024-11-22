@@ -8,6 +8,11 @@ Version 0.15.9
 
 To be released.
 
+ -  Fixed a bug where `lookupWebFinger()` function had thrown a `TypeError`
+    when the *.well-known/webfinger* redirects to a relative URI.  [[#166]]
+
+[#166]: https://github.com/dahlia/fedify/issues/166
+
 
 Version 0.15.8
 --------------
