@@ -90,18 +90,12 @@ To be released.
 
 
 [SvelteKit]: https://kit.svelte.dev/
-[#51]:  https://github.com/dahlia/fedify/issues/51
- -  Let the `fedify lookup` command take multiple arguments.
-    [[#173], [#186] by PGD]
-
-
 [#162]: https://github.com/dahlia/fedify/issues/162
 [#170]: https://github.com/dahlia/fedify/issues/170
 [#171]: https://github.com/dahlia/fedify/issues/171
 [#173]: https://github.com/dahlia/fedify/issues/173
 [#183]: https://github.com/dahlia/fedify/pull/183
 [#186]: https://github.com/dahlia/fedify/pull/186
-[#187]: https://github.com/dahlia/fedify/pull/187
 
 
 Version 1.2.8
@@ -119,8 +113,6 @@ Released on November 23, 2024.
 [#177]: https://github.com/dahlia/fedify/issues/177
 [#181]: https://github.com/dahlia/fedify/pull/181
 
-[#173]: https://github.com/dahlia/fedify/issues/173
-[#186]: https://github.com/dahlia/fedify/pull/186
 
 Version 1.2.7
 -------------
