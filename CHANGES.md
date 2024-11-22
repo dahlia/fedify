@@ -111,6 +111,12 @@ Released on November 23, 2024.
 [#181]: https://github.com/dahlia/fedify/pull/181
 
 
+Version 1.2.8
+-------------
+
+To be released.
+
+
 Version 1.2.7
 -------------
 
