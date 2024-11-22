@@ -6,7 +6,7 @@ Fedify changelog
 Version 0.15.9
 --------------
 
-To be released.
+Released on November 22, 2024.
 
  -  Fixed a bug where `lookupWebFinger()` function had thrown a `TypeError`
     when the *.well-known/webfinger* redirects to a relative URI.  [[#166]]
@@ -17,7 +17,7 @@ To be released.
 Version 0.15.8
 --------------
 
-Released on November 159, 2024.
+Released on November 19, 2024.
 
  -  Fix a bug where `Actor`'s `inbox` and `outbox` properties had not been
     able to be set to an `OrderedCollectionPage` object, even though it is
