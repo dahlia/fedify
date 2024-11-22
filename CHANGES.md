@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.1.7
 -------------
 
-To be released.
+Released on November 22, 2024.
 
  -  Fixed a bug where `lookupWebFinger()` function had thrown a `TypeError`
     when the *.well-known/webfinger* redirects to a relative URI.  [[#166]]
