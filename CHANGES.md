@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.2.8
 -------------
 
-To be released.
+Released on November 23, 2024.
 
  -  Fixed warnings from the `fedify inbox` command.
     [[#177], [#181] by WinterHana]
