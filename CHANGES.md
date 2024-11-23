@@ -8,6 +8,12 @@ Version 1.1.8
 
 To be released.
 
+ -  Fixed `ShikiError` on the `fedify inbox` command rendering web interface.
+    [[#178], [#185] by Heesun Jung]
+
+[#178]: https://github.com/dahlia/fedify/issues/178
+[#185]: https://github.com/dahlia/fedify/pull/185
+
 
 Version 1.1.7
 -------------
