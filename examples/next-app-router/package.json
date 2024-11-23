@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@fedify/fedify": "^1.2.6",
+    "@fedify/fedify": "^1.2.7",
     "@logtape/logtape": "^0.8.0",
     "next": "15.0.0-canary.136",
     "react": "19.0.0-rc-7771d3a7-20240827",

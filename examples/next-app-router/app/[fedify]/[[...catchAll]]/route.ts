@@ -88,7 +88,7 @@ federation
         object: follow,
       }),
     );
-    relationStore.set(follower.id.href, follow.actorId.href);
+    relationStore.set(follower.id.href, follow.objectId.href);
   })
   .on(Undo, async (context, undo) => {
     const activity = await undo.getObject(context);
