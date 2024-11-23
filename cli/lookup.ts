@@ -32,6 +32,11 @@ export const command = new Command()
     conflicts: ["raw", "compact"],
   })
   .option("-u, --user-agent <string>", "The custom User-Agent header value.")
+  .option(
+    "-s, --separator <separator:string>",
+    "Speicfy the separator between adjacent output object.",
+    { default: "~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~" },
+  )
   .action(async (options, ...urls: string[]) => {
     const spinner = ora({
       text: "Looking up the object...",
@@ -133,7 +138,7 @@ export const command = new Command()
           console.log(object);
         }
         if (i < urls.length - 1) {
-          console.log("===================");
+          console.error(options.separator);
         }
       } catch (_) {
         spinnerForEachLookup.fail();
