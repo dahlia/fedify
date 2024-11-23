@@ -58,6 +58,11 @@ await build({
     funding: [
       "https://github.com/sponsors/dahlia",
     ],
+    engines: {
+      "deno": ">=1.41.0",
+      "node": ">=20.0.0",
+      "bun": ">=1.1.0",
+    },
   },
   outDir: "./npm",
   entryPoints,
