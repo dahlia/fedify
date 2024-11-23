@@ -8,6 +8,12 @@ Version 1.2.8
 
 To be released.
 
+ -  Fixed warnings from the `fedify inbox` command.
+    [[#177], [#181] by WinterHana]
+
+[#177]: https://github.com/dahlia/fedify/issues/177
+[#181]: https://github.com/dahlia/fedify/pull/181
+
 
 Version 1.2.7
 -------------
