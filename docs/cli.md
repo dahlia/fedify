@@ -280,6 +280,31 @@ Or you can look up an actor by `acct:` URL:
 fedify lookup acct:fedify-example@fedify-blog.deno.dev
 ~~~~
 
+### Looking up multiple objects at once
+
+You can also look up multiple objects at once by specifying multiple URLs or
+handles.  For example, the below command looks up multiple objects:
+
+~~~~ sh
+fedify lookup @hongminhee@fosstodon.org @fedify@hollo.social
+~~~~
+
+The output will be like the below:
+
+~~~~
+Person {
+  ...
+}
+----
+Person {
+  ...
+}
+~~~~
+
+As you can see, the outputs are separated by `----` by default.  You can change
+the separator by using the [`-s`/`--separator`](#s-separator-output-separator)
+option.
+
 ### `-c`/`--compact`: Compact JSON-LD
 
 > [!NOTE]
@@ -652,6 +677,20 @@ below command:
 ~~~~ sh
 fedify lookup --user-agent MyApp/1.0 @fedify@hollo.social
 ~~~~
+
+### `-s`/`--separator`: Output separator
+
+*This option is available since Fedify 1.3.0.*
+
+You can specify the separator between the outputs when looking up multiple
+objects at once by using the `-s`/`--separator` option.  For example, to use
+the separator `====` between the outputs, run the below command:
+
+~~~~ sh
+fedify lookup -s ==== @fedify@hollo.social @hongminhee@fosstodon.org
+~~~~
+
+It does not affect the output when looking up a single object.
 
 
 `fedify inbox`: Ephemeral inbox server
