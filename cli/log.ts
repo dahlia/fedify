@@ -4,6 +4,7 @@ import {
   type LogRecord,
   type Sink,
 } from "@logtape/logtape";
+import { AsyncLocalStorage } from "node:async_hooks";
 
 export interface RecordingSink extends Sink {
   startRecording(): void;
@@ -45,5 +46,6 @@ await configure({
       sinks: ["console"],
     },
   ],
+  contextLocalStorage: new AsyncLocalStorage(),
   reset: true,
 });
