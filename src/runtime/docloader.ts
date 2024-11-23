@@ -236,6 +236,9 @@ export interface GetDocumentLoaderOptions {
    */
   skipPreloadedContexts?: boolean;
 
+  /**
+   * An optional abort signal to cancel the request.
+   */
   signal?: AbortSignal | null;
 }
 
