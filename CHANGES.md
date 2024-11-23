@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.1.8
 -------------
 
-To be released.
+Released on November 23, 2024.
 
  -  Fixed `ShikiError` on the `fedify inbox` command rendering web interface.
     [[#178], [#185] by Heesun Jung]
