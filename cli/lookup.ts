@@ -1,3 +1,4 @@
+import { colors } from "@cliffy/ansi";
 import { Command } from "@cliffy/command";
 import {
   Application,
@@ -6,6 +7,7 @@ import {
   generateCryptoKeyPair,
   getAuthenticatedDocumentLoader,
   lookupObject,
+  type Object,
   type ResourceDescriptor,
   respondWithObject,
 } from "@fedify/fedify";
@@ -33,9 +35,9 @@ export const command = new Command()
   })
   .option("-u, --user-agent <string>", "The custom User-Agent header value.")
   .option(
-    "-s, --separator <separator:string>",
-    "Speicfy the separator between adjacent output object.",
-    { default: "~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~=~" },
+    "-s, --separator <string>",
+    "Specify the separator between adjacent output objects.",
+    { default: "----" },
   )
   .action(async (options, ...urls: string[]) => {
     const spinner = ora({
@@ -93,57 +95,69 @@ export const command = new Command()
         privateKey: key.privateKey,
       });
     }
-    spinner.text = "Initializing succeeded";
-    spinner.succeed();
+    spinner.text = urls.length > 1
+      ? "Looking up objects..."
+      : "Looking up an object...";
 
-    let success = true;
-    for (let i = 0; i < urls.length; i++) {
-      const url = urls[i];
-      const spinnerForEachLookup = ora({
-        text: "Looking up an object...",
-        discardStdin: false,
-      }).start();
-      try {
-        const object = await lookupObject(
+    const promises: Promise<Object | null>[] = [];
+    for (const url of urls) {
+      promises.push(
+        lookupObject(
           url,
           {
             documentLoader: authLoader ?? documentLoader,
             contextLoader,
             userAgent: options.userAgent,
           },
-        );
+        ),
+      );
+    }
 
+    const objects = await Promise.all(promises);
+    let success = true;
+    let i = 0;
+    for (const object of objects) {
+      const url = urls[i];
+      if (i > 0) console.log(options.separator);
+      i++;
+      try {
         if (object == null) {
-          console.error("Failed to fetch the object.");
+          spinner.fail(`Failed to fetch object: ${colors.red(url)}.`);
           if (authLoader == null) {
             console.error(
               "It may be a private object.  Try with -a/--authorized-fetch.",
             );
           }
-          spinnerForEachLookup.text = `Failed to lookup: ${url}`;
-          spinnerForEachLookup.fail();
           success = false;
-          continue;
-        }
-        spinnerForEachLookup.succeed();
-        if (options.raw) {
-          printJson(await object.toJsonLd({ contextLoader }));
-        } else if (options.compact) {
-          printJson(
-            await object.toJsonLd({ format: "compact", contextLoader }),
-          );
-        } else if (options.expand) {
-          printJson(await object.toJsonLd({ format: "expand", contextLoader }));
         } else {
-          console.log(object);
-        }
-        if (i < urls.length - 1) {
-          console.error(options.separator);
+          spinner.succeed(`Fetched object: ${colors.green(url)}.`);
+          if (options.raw) {
+            printJson(await object.toJsonLd({ contextLoader }));
+          } else if (options.compact) {
+            printJson(
+              await object.toJsonLd({ format: "compact", contextLoader }),
+            );
+          } else if (options.expand) {
+            printJson(
+              await object.toJsonLd({ format: "expand", contextLoader }),
+            );
+          } else {
+            console.log(object);
+          }
+          if (i < urls.length - 1) {
+            console.log(options.separator);
+          }
         }
       } catch (_) {
-        spinnerForEachLookup.fail();
         success = false;
       }
+    }
+    if (success) {
+      spinner.succeed(
+        urls.length > 1
+          ? "Successfully fetched all objects."
+          : "Successfully fetched the object.",
+      );
     }
     await server?.close();
     if (!success) {

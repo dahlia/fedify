@@ -2556,4 +2556,4 @@ Version 0.1.0
 
 Initial release.  Released on March 8, 2024.
 
-<!-- cSpell: ignore Dogeon Fabien Wressell Emelia -->
+<!-- cSpell: ignore Dogeon Fabien Wressell Emelia Hana Heesun Kyunghee -->
