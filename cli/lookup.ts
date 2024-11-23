@@ -15,7 +15,7 @@ import { spawnTemporaryServer, type TemporaryServer } from "./tempserver.ts";
 import { printJson } from "./utils.ts";
 
 export const command = new Command()
-  .arguments("<url:string>")
+  .arguments("<...urls:string>")
   .description(
     "Lookup an Activity Streams object by URL or the actor handle.  " +
       "The argument can be either a URL or an actor handle " +
@@ -32,7 +32,7 @@ export const command = new Command()
     conflicts: ["raw", "compact"],
   })
   .option("-u, --user-agent <string>", "The custom User-Agent header value.")
-  .action(async (options, url: string) => {
+  .action(async (options, ...urls: string[]) => {
     const spinner = ora({
       text: "Looking up the object...",
       discardStdin: false,
@@ -88,38 +88,54 @@ export const command = new Command()
         privateKey: key.privateKey,
       });
     }
-    try {
-      spinner.text = "Looking up the object...";
-      const object = await lookupObject(
-        url,
-        {
-          documentLoader: authLoader ?? documentLoader,
-          contextLoader,
-          userAgent: options.userAgent,
-        },
-      );
-      spinner.succeed();
-      if (object == null) {
-        console.error("Failed to fetch the object.");
-        if (authLoader == null) {
-          console.error(
-            "It may be a private object.  Try with -a/--authorized-fetch.",
-          );
+    spinner.text = "Initializing succeeded";
+    spinner.succeed();
+
+    for (let i = 0; i < urls.length; i++) {
+      const url = urls[i];
+      const spinnerForEachLookup = ora({
+        text: "Looking up an object...",
+        discardStdin: false,
+      }).start();
+      try {
+        const object = await lookupObject(
+          url,
+          {
+            documentLoader: authLoader ?? documentLoader,
+            contextLoader,
+            userAgent: options.userAgent,
+          },
+        );
+
+        if (object == null) {
+          console.error("Failed to fetch the object.");
+          if (authLoader == null) {
+            console.error(
+              "It may be a private object.  Try with -a/--authorized-fetch.",
+            );
+          }
+          spinnerForEachLookup.text = `Failed to lookup: ${url}`;
+          spinnerForEachLookup.fail();
+          continue;
         }
-        Deno.exit(1);
+        spinnerForEachLookup.succeed();
+        if (options.raw) {
+          printJson(await object.toJsonLd({ contextLoader }));
+        } else if (options.compact) {
+          printJson(
+            await object.toJsonLd({ format: "compact", contextLoader }),
+          );
+        } else if (options.expand) {
+          printJson(await object.toJsonLd({ format: "expand", contextLoader }));
+        } else {
+          console.log(object);
+        }
+        if (i < urls.length - 1) {
+          console.log("===================");
+        }
+      } catch (_) {
+        spinnerForEachLookup.fail();
       }
-      if (options.raw) {
-        printJson(await object.toJsonLd({ contextLoader }));
-      } else if (options.compact) {
-        printJson(await object.toJsonLd({ format: "compact", contextLoader }));
-      } else if (options.expand) {
-        printJson(await object.toJsonLd({ format: "expand", contextLoader }));
-      } else {
-        console.log(object);
-      }
-    } catch (_) {
-      spinner.fail();
-    } finally {
-      await server?.close();
     }
+    await server?.close();
   });
