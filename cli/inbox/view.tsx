@@ -139,14 +139,18 @@ const Log: FC<LogProps> = (
   return (
     <li class={"list-group-item " + listClass}>
       <div class="d-flex w-100 justify-content-between">
-        <p class="mb-1" style="white-space: pre;">
+        <p class="mb-1" style="white-space: pre-wrap; word-break: break-word;">
           {message.map((m, i) =>
             i % 2 == 0
               ? m
               : <code>{typeof m === "string" ? m : Deno.inspect(m)}</code>
           )}
         </p>
-        <time class="text-body-secondary" datetime={time.toString()}>
+        <time
+          class="text-body-secondary"
+          datetime={time.toString()}
+          style="flex-shrink: 0;"
+        >
           <small>{time.toLocaleString()}</small>
         </time>
       </div>
