@@ -47,7 +47,6 @@ export const fedifyHook = <TContextData>(
   ) => TContextData | Promise<TContextData>,
 ) => {
   return async ({ event, resolve }: HookParams) => {
-    console.log("fetch", event.request.url);
     return await federation.fetch(event.request, {
       contextData: await createContextData(event),
       ...integrateFetchOptions({ event, resolve }),
@@ -63,7 +62,6 @@ const integrateFetchOptions = (
   // provided by the SvelteKit framework to continue the request handling
   // by the SvelteKit:
   async onNotFound(): Promise<Response> {
-    console.log("onNotFound", event.request.url);
     return await resolve(event);
   },
 
@@ -75,7 +73,6 @@ const integrateFetchOptions = (
   // This kind of trick enables the Fedify and SvelteKit to share the same routes
   // and they do content negotiation depending on `Accept` header:
   async onNotAcceptable(): Promise<Response> {
-    console.log("onNotAcceptable", event.request.url);
     const res = await resolve(event);
     if (res.status !== 404) return res;
     return new Response("Not acceptable", {
