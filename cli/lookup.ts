@@ -91,6 +91,7 @@ export const command = new Command()
     spinner.text = "Initializing succeeded";
     spinner.succeed();
 
+    let success = true;
     for (let i = 0; i < urls.length; i++) {
       const url = urls[i];
       const spinnerForEachLookup = ora({
@@ -116,6 +117,7 @@ export const command = new Command()
           }
           spinnerForEachLookup.text = `Failed to lookup: ${url}`;
           spinnerForEachLookup.fail();
+          success = false;
           continue;
         }
         spinnerForEachLookup.succeed();
@@ -135,7 +137,11 @@ export const command = new Command()
         }
       } catch (_) {
         spinnerForEachLookup.fail();
+        success = false;
       }
     }
     await server?.close();
+    if (!success) {
+      Deno.exit(1);
+    }
   });

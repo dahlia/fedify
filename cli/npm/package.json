@@ -49,5 +49,8 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dahlia/fedify.git"
+  },
+  "dependencies": {
+    "@fedify/cli": "file:"
   }
 }
