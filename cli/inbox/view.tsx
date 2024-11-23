@@ -108,10 +108,10 @@ interface CodeBlockProps {
   code: string;
 }
 
-const highlighter = await getSingletonHighlighter({
-  themes: ["github-light"],
-  langs: ["http", "json"],
-});
+const highlighter = await getSingletonHighlighter();
+await highlighter.loadTheme("github-light");
+await highlighter.loadLanguage("http");
+await highlighter.loadLanguage("json");
 
 const CodeBlock: FC<CodeBlockProps> = ({ language, code }: CodeBlockProps) => {
   const result = highlighter.codeToHtml(code, {
