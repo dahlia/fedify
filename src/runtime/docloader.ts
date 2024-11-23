@@ -235,6 +235,8 @@ export interface GetDocumentLoaderOptions {
    * Whether to preload the frequently used contexts.
    */
   skipPreloadedContexts?: boolean;
+
+  signal?: AbortController | null;
 }
 
 /**
@@ -255,7 +257,7 @@ export interface GetDocumentLoaderOptions {
  * @since 1.3.0
  */
 export function getDocumentLoader(
-  { allowPrivateAddress, skipPreloadedContexts, userAgent }:
+  { allowPrivateAddress, skipPreloadedContexts, userAgent, signal }:
     GetDocumentLoaderOptions = {},
 ): DocumentLoader {
   async function load(url: string): Promise<RemoteDocument> {
@@ -284,6 +286,7 @@ export function getDocumentLoader(
       // to work around it we specify `redirect: "manual"` here too:
       // https://github.com/oven-sh/bun/issues/10754
       redirect: "manual",
+      signal,
     });
     // Follow redirects manually to get the final URL:
     if (

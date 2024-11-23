@@ -32,6 +32,7 @@ export interface LookupWebFingerOptions {
    * is used.
    */
   tracerProvider?: TracerProvider;
+  signal?: AbortController | null;
 }
 
 /**
@@ -107,6 +108,7 @@ async function lookupWebFingerInternal(
     let response: Response;
     try {
       response = await fetch(url, {
+        signal: options?.signal,
         headers: {
           Accept: "application/jrd+json",
           "User-Agent": typeof options.userAgent === "string"

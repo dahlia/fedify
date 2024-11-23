@@ -101,6 +101,7 @@ export interface GetActorHandleOptions extends NormalizeActorHandleOptions {
    * @since 1.3.0
    */
   tracerProvider?: TracerProvider;
+  signal?: AbortController | null;
 }
 
 /**
@@ -169,6 +170,7 @@ async function getActorHandleInternal(
     const result = await lookupWebFinger(actorId, {
       userAgent: options.userAgent,
       tracerProvider: options.tracerProvider,
+      signal: options.signal,
     });
     if (result != null) {
       const aliases = [...(result.aliases ?? [])];

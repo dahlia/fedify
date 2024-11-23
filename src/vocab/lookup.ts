@@ -45,6 +45,7 @@ export interface LookupObjectOptions {
    * @since 1.3.0
    */
   tracerProvider?: TracerProvider;
+  signal?: AbortController | null;
 }
 
 const handleRegexp =
@@ -147,6 +148,7 @@ async function lookupObjectInternal(
     const jrd = await lookupWebFinger(identifier, {
       userAgent: options.userAgent,
       tracerProvider: options.tracerProvider,
+      signal: options.signal,
     });
     if (jrd?.links == null) return null;
     for (const l of jrd.links) {
