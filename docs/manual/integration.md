@@ -191,6 +191,32 @@ export const handler = integrateHandler(
 [Fresh]: https://fresh.deno.dev/
 
 
+SvelteKit
+---------
+
+*This API is available since Fedify 1.3.0.*
+
+[SvelteKit] is a framework for building web applications with [Svelte].  Fedify
+has the `@fedify/fedify/x/sveltekit` module that provides a hook handler to
+integrate Fedify with SvelteKit.  Put the following code in your
+*hooks.server.ts* file:
+
+~~~~ typescript
+import { createFederation } from "@fedify/fedify";
+import { fedifyHook } from "@fedify/fedify/x/sveltekit";
+
+const federation = createFederation<string>({
+  // Omitted for brevity; see the related section for details.
+});
+
+// This is the entry point to the Fedify hook from the SvelteKit framework:
+export const handle = fedifyHook(federation, (req) => "context data");
+~~~~
+
+[SvelteKit]: https://kit.svelte.dev/
+[Svelte]: https://svelte.dev/
+
+
 Custom middleware
 -----------------
 
