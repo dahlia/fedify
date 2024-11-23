@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@fedify/express": "^0.2.0",
-    "@fedify/fedify": "^1.0.2",
+    "@fedify/fedify": "^1.2.7",
     "@logtape/logtape": "^0.8.0",
     "express": "^4.21.0"
   }
