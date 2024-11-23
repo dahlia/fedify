@@ -34,8 +34,7 @@ export interface LookupWebFingerOptions {
   tracerProvider?: TracerProvider;
 
   /**
-   * An AbortSignal to cancel the request.
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal
+   * An optional abort signal to cancel the request.
    */
   signal?: AbortSignal | null;
 }

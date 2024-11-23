@@ -45,6 +45,11 @@ export interface LookupObjectOptions {
    * @since 1.3.0
    */
   tracerProvider?: TracerProvider;
+
+  /**
+   * An optional abort signal to cancel the request.
+   * @since 1.3.0
+   */
   signal?: AbortSignal | null;
 }
 
