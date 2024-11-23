@@ -45,7 +45,7 @@ export interface LookupObjectOptions {
    * @since 1.3.0
    */
   tracerProvider?: TracerProvider;
-  signal?: AbortController | null;
+  signal?: AbortSignal | null;
 }
 
 const handleRegexp =

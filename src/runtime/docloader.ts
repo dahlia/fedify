@@ -236,7 +236,7 @@ export interface GetDocumentLoaderOptions {
    */
   skipPreloadedContexts?: boolean;
 
-  signal?: AbortController | null;
+  signal?: AbortSignal | null;
 }
 
 /**

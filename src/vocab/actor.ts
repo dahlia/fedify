@@ -101,7 +101,12 @@ export interface GetActorHandleOptions extends NormalizeActorHandleOptions {
    * @since 1.3.0
    */
   tracerProvider?: TracerProvider;
-  signal?: AbortController | null;
+
+  /**
+   * An optional abort signal to cancel the request.
+   * @since 1.3.0
+   */
+  signal?: AbortSignal | null;
 }
 
 /**
@@ -167,11 +172,20 @@ async function getActorHandleInternal(
 ): Promise<`@${string}@${string}` | `${string}@${string}`> {
   const actorId = actor instanceof URL ? actor : actor.id;
   if (actorId != null) {
-    const result = await lookupWebFinger(actorId, {
-      userAgent: options.userAgent,
-      tracerProvider: options.tracerProvider,
-      signal: options.signal,
-    });
+    let result;
+    try {
+      result = await lookupWebFinger(actorId, {
+        userAgent: options.userAgent,
+        tracerProvider: options.tracerProvider,
+        signal: options.signal,
+      });
+    } catch (error) {
+      if ((error as Error).name === "AbortError") {
+        throw new Error("Actor handle lookup was aborted", { cause: error });
+      }
+
+      throw error;
+    }
     if (result != null) {
       const aliases = [...(result.aliases ?? [])];
       if (result.subject != null) aliases.unshift(result.subject);
@@ -186,6 +200,7 @@ async function getActorHandleInternal(
               alias,
               options.userAgent,
               options.tracerProvider,
+              options.signal,
             )
           ) {
             continue;
@@ -214,8 +229,13 @@ async function verifyCrossOriginActorHandle(
   alias: string,
   userAgent: GetUserAgentOptions | string | undefined,
   tracerProvider: TracerProvider | undefined,
+  signal?: AbortSignal | null,
 ): Promise<boolean> {
-  const response = await lookupWebFinger(alias, { userAgent, tracerProvider });
+  const response = await lookupWebFinger(alias, {
+    userAgent,
+    tracerProvider,
+    signal,
+  });
   if (response == null) return false;
   for (const alias of response.aliases ?? []) {
     if (new URL(alias).href === actorId) return true;

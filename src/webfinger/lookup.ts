@@ -32,7 +32,12 @@ export interface LookupWebFingerOptions {
    * is used.
    */
   tracerProvider?: TracerProvider;
-  signal?: AbortController | null;
+
+  /**
+   * An AbortSignal to cancel the request.
+   * @see https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal
+   */
+  signal?: AbortSignal | null;
 }
 
 /**
