@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "strict": true,
+    "allowJs": true,
+    "allowUnusedLabels": false,
+    "useUnknownInCatchVariables": false,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "lib": [
+      "ES2022",
+      "DOM",
+      "DOM.Iterable"
+    ],
+    "types": [
+      "temporal-polyfill/global",
+      "node"
+    ]
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "codegen",
+    "testing",
+    "x/denokv.*",
+    "dnt.ts",
+    "**/*.test.ts",
+    "**/*.bench.ts"
+  ]
+}

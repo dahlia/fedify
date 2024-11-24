@@ -5,3 +5,5 @@
 apidoc/
 coverage/
 npm/
+node_modules/
+dist/
