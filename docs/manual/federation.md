@@ -340,6 +340,18 @@ same path.
 
 Turned off by default.
 
+### `tracerProvider`
+
+*This API is available since Fedify 1.3.0.*
+
+The OpenTelemetry tracer provider that the `Federation` object uses to
+instrument various parts of Fedify for tracing.  If omitted, it is configured
+to use the default tracer provider (i.e., [`trace.getTracerProvider()`]).
+
+For more information, see the [*OpenTelemetry* section](./opentelemetry.md).
+
+[`trace.getTracerProvider()`]: https://open-telemetry.github.io/opentelemetry-js/classes/_opentelemetry_api.TraceAPI.html#getTracerProvider
+
 
 The `~Federation.fetch()` API
 -----------------------------
