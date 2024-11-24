@@ -119,8 +119,8 @@ The above commands will create a *deno.json* (in case of Deno) or *package.json*
 
 > [!NOTE]
 > The [`"unstable"`] field in the *deno.json* file is required because Fedify
-> uses [`Temporal`] API, which is an unstable feature in Deno as of
-> July 2024.  By adding `"temporal"` to the `"unstable"` field, you can use the
+> uses [`Temporal`] API, which is an unstable feature in Deno as of November
+> 2024.  By adding `"temporal"` to the `"unstable"` field, you can use the
 > Fedify framework without any issues.
 
 > [!NOTE]

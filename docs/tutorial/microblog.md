@@ -1443,7 +1443,7 @@ tutorial.) Since the primary key is on `(user_id, type)`, there can be a maximum
 of two key pairs for one user.
 
 > [!TIP]
-> We can't go into detail in this tutorial, but as of September 2024,
+> We can't go into detail in this tutorial, but as of November 2024,
 > the ActivityPub network is in the process of transitioning from
 > the RSA-PKCS#1-v1.5 type to the Ed25519 type. Some software only
 > accepts the RSA-PKCS#1-v1.5 type, while some software accepts

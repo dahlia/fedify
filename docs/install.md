@@ -73,7 +73,7 @@ Fedify is available on [JSR] for [Deno] and on [npm] for [Bun] and [Node.js].
 ### Deno
 
 [Deno] is the primary runtime for Fedify.  As a prerequisite, you need to have
-Deno 1.41.0 or later installed on your system.  Then you can install Fedify
+Deno 2.0.0 or later installed on your system.  Then you can install Fedify
 via the following command:
 
 ~~~~ sh
@@ -81,7 +81,7 @@ deno add jsr:@fedify/fedify
 ~~~~
 
 Since Fedify requires [`Temporal`] API, which is an unstable feature in Deno as
-of July 2024, you need to add the `"temporal"` to the `"unstable"` field of
+of November 2024, you need to add the `"temporal"` to the `"unstable"` field of
 the *deno.json* file:
 
 ~~~~ json{5}

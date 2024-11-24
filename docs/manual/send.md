@@ -410,7 +410,7 @@ Linked Data Signatures
 *This API is available since Fedify 1.0.0.*
 
 [Linked Data Signatures] is a more advanced and widely used, but *obsolete*,
-mechanism for signing portable ActivityPub activities.  As of September 2024,
+mechanism for signing portable ActivityPub activities.  As of November 2024,
 major ActivityPub implementations, such as Mastodon, et al., still rely on
 Linked Data Signatures for signing portable activities, despite they declare
 that Linked Data Signatures is outdated.
