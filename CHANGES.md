@@ -113,7 +113,6 @@ Released on November 23, 2024.
 [#177]: https://github.com/dahlia/fedify/issues/177
 [#181]: https://github.com/dahlia/fedify/pull/181
 
->>>>>>> 73399be (add changed to CHANGES.md)
 
 Version 1.2.7
 -------------
