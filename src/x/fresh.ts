@@ -25,8 +25,9 @@ interface FreshContext {
  *
  * @example _middleware.ts
  * ``` typescript
+ * import { integrateFetchOptions } from "@fedify/fedify/x/fresh";
  * import { FreshContext } from "$fresh/server.ts";
- * import { federation } from "federation.ts"; // Import the `Federation` object
+ * import { federation } from "./federation.ts"; // Import the `Federation` object
  *
  * export async function handler(request: Request, context: FreshContext) {
  *   return await federation.fetch(request, {
@@ -77,7 +78,8 @@ export function integrateFetchOptions(
  *
  * @example _middleware.ts
  * ``` typescript
- * import { federation } from "federation.ts"; // Import the `Federation` object
+ * import { integrateHandler } from "@fedify/fedify/x/fresh";
+ * import { federation } from "./federation.ts"; // Import the `Federation` object
  *
  * export const handler = integrateHandler(federation, () => undefined);
  * ```

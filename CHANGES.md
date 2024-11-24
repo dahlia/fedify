@@ -36,8 +36,8 @@ To be released.
      -  Added the optional second parameter to `lookupWebFinger()` function.
      -  Added `LookupWebFingerOptions` interface.
      -  Added `GetNodeInfoOptions.userAgent` option.
-     -  Added `-u`/--user-agent` option to `fedify lookup` subcommand.
-     -  Added `-u`/--user-agent` option to `fedify node` subcommand.
+     -  Added `-u`/`--user-agent` option to `fedify lookup` subcommand.
+     -  Added `-u`/`--user-agent` option to `fedify node` subcommand.
 
  -  Fedify now caches unavailable keys of remote actors as well to avoid
     trying fetching the same unavailable key multiple times.
