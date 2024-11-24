@@ -1,4 +1,6 @@
 import { getLogger } from "@logtape/logtape";
+import type { Span, Tracer } from "@opentelemetry/api";
+import { SpanKind, SpanStatusCode } from "@opentelemetry/api";
 import { toASCII } from "node:punycode";
 import type {
   ActorDispatcher,
@@ -34,6 +36,16 @@ export interface WebFingerHandlerParameters<TContextData> {
    * The function to call when the actor is not found.
    */
   onNotFound(request: Request): Response | Promise<Response>;
+
+  /**
+   * The OpenTelemetry tracer.
+   */
+  tracer?: Tracer;
+
+  /**
+   * The span for the request.
+   */
+  span?: Span;
 }
 
 /**
@@ -45,11 +57,42 @@ export interface WebFingerHandlerParameters<TContextData> {
  */
 export async function handleWebFinger<TContextData>(
   request: Request,
+  options: WebFingerHandlerParameters<TContextData>,
+): Promise<Response> {
+  if (options.tracer == null) {
+    return await handleWebFingerInternal(request, options);
+  }
+  return await options.tracer.startActiveSpan(
+    "WebFinger",
+    { kind: SpanKind.SERVER },
+    async (span) => {
+      try {
+        const response = await handleWebFingerInternal(request, options);
+        span.setStatus({
+          code: response.ok ? SpanStatusCode.UNSET : SpanStatusCode.ERROR,
+        });
+        return response;
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function handleWebFingerInternal<TContextData>(
+  request: Request,
   {
     context,
     actorDispatcher,
     actorHandleMapper,
     onNotFound,
+    span,
   }: WebFingerHandlerParameters<TContextData>,
 ): Promise<Response> {
   if (actorDispatcher == null) return await onNotFound(request);
@@ -57,6 +100,7 @@ export async function handleWebFinger<TContextData>(
   if (resource == null) {
     return new Response("Missing resource parameter.", { status: 400 });
   }
+  span?.setAttribute("webfinger.resource", resource);
   let resourceUrl: URL;
   try {
     resourceUrl = new URL(resource);

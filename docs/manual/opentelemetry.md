@@ -118,6 +118,7 @@ spans:
 | Operation            | Description                       |
 |----------------------|-----------------------------------|
 | `Federation.fetch()` | Serves the incoming HTTP request. |
+| `handleWebFinger()`  | Handles the WebFinger request.    |
 
 More operations will be instrumented in the future releases.
 

@@ -4,6 +4,7 @@ import {
   SpanKind,
   SpanStatusCode,
   trace,
+  Tracer,
   type TracerProvider,
 } from "@opentelemetry/api";
 import {
@@ -1906,7 +1907,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
           }
           let response: Response;
           try {
-            response = await this.#fetch(request, { ...options, span });
+            response = await this.#fetch(request, { ...options, span, tracer });
           } catch (error) {
             span.setStatus({
               code: SpanStatusCode.ERROR,
@@ -1957,7 +1958,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       onUnauthorized,
       contextData,
       span,
-    }: FederationFetchOptions<TContextData> & { span: Span },
+      tracer,
+    }: FederationFetchOptions<TContextData> & { span: Span; tracer: Tracer },
   ): Promise<Response> {
     onNotFound ??= notFound;
     onNotAcceptable ??= notAcceptable;
@@ -1975,6 +1977,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
           actorDispatcher: this.actorCallbacks?.dispatcher,
           actorHandleMapper: this.actorCallbacks?.handleMapper,
           onNotFound,
+          tracer,
         });
       case "nodeInfoJrd":
         return await handleNodeInfoJrd(request, context);

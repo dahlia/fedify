@@ -57,7 +57,7 @@ To be released.
         null` (was `{ name: string; values: Record<string, string> } | null`).
      -  Added `RouterRouteResult` interface.
 
- -  Fedify now supports OpenTelemetry for tracing.
+ -  Fedify now supports OpenTelemetry for tracing.  [[#170]]
 
      -  Added `CreateFederationOptions.tracerProvider` option.
 
@@ -75,6 +75,7 @@ To be released.
 
 [SvelteKit]: https://kit.svelte.dev/
 [#162]: https://github.com/dahlia/fedify/issues/162
+[#170]: https://github.com/dahlia/fedify/issues/170
 [#171]: https://github.com/dahlia/fedify/issues/171
 [#173]: https://github.com/dahlia/fedify/issues/173
 [#183]: https://github.com/dahlia/fedify/pull/183
