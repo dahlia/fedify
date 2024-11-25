@@ -114,6 +114,12 @@ export async function createSignature(
  * @since 1.0.0
  */
 export interface SignJsonLdOptions extends CreateSignatureOptions {
+  /**
+   * The OpenTelemetry tracer provider for tracing the signing process.
+   * If omitted, the global tracer provider is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -135,8 +141,40 @@ export async function signJsonLd(
   keyId: URL,
   options: SignJsonLdOptions,
 ): Promise<{ signature: Signature }> {
-  const signature = await createSignature(jsonLd, privateKey, keyId, options);
-  return attachSignature(jsonLd, signature);
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  return await tracer.startActiveSpan(
+    "ld_signatures.sign",
+    {
+      attributes: { "ld_signatures.key_id": keyId.href },
+    },
+    async (span) => {
+      try {
+        const signature = await createSignature(
+          jsonLd,
+          privateKey,
+          keyId,
+          options,
+        );
+        if (span.isRecording()) {
+          span.setAttribute("ld_signatures.type", signature.type);
+          span.setAttribute(
+            "ld_signatures.signature",
+            encodeHex(decodeBase64(signature.signatureValue)),
+          );
+        }
+        return attachSignature(jsonLd, signature);
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
 }
 
 interface SignedJsonLd {

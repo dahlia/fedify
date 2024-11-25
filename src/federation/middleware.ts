@@ -1802,6 +1802,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     } else {
       jsonLd = await signJsonLd(jsonLd, rsaKey.privateKey, rsaKey.keyId, {
         contextLoader: this.contextLoader,
+        tracerProvider: this.tracerProvider,
       });
     }
     if (!proofCreated) {
