@@ -1,4 +1,5 @@
 import { getLogger } from "@logtape/logtape";
+import type { TracerProvider } from "@opentelemetry/api";
 import { accepts } from "@std/http/negotiation";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
@@ -359,6 +360,7 @@ export interface InboxHandlerParameters<TContextData> {
   onNotFound(request: Request): Response | Promise<Response>;
   signatureTimeWindow: Temporal.Duration | Temporal.DurationLike | false;
   skipSignatureVerification: boolean;
+  tracerProvider?: TracerProvider;
 }
 
 export async function handleInbox<TContextData>(
@@ -376,6 +378,7 @@ export async function handleInbox<TContextData>(
     onNotFound,
     signatureTimeWindow,
     skipSignatureVerification,
+    tracerProvider,
   }: InboxHandlerParameters<TContextData>,
 ): Promise<Response> {
   const logger = getLogger(["fedify", "federation", "inbox"]);
@@ -513,6 +516,7 @@ export async function handleInbox<TContextData>(
         documentLoader: context.documentLoader,
         timeWindow: signatureTimeWindow,
         keyCache,
+        tracerProvider,
       });
       if (key == null) {
         logger.error(

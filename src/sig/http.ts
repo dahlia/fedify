@@ -1,6 +1,14 @@
 import { getLogger } from "@logtape/logtape";
+import { type Span, trace, type TracerProvider } from "@opentelemetry/api";
+import {
+  ATTR_HTTP_REQUEST_HEADER,
+  ATTR_HTTP_REQUEST_METHOD,
+  ATTR_URL_FULL,
+} from "@opentelemetry/semantic-conventions";
 import { equals } from "@std/bytes";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
+import { encodeHex } from "@std/encoding/hex";
+import metadata from "../deno.json" with { type: "json" };
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { CryptographicKey } from "../vocab/vocab.ts";
 import { fetchKey, type KeyCache, validateCryptoKey } from "./key.ts";
@@ -102,6 +110,13 @@ export interface VerifyRequestOptions {
    * @since 0.12.0
    */
   keyCache?: KeyCache;
+
+  /**
+   * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
+   * is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -119,8 +134,39 @@ export interface VerifyRequestOptions {
  */
 export async function verifyRequest(
   request: Request,
-  { documentLoader, contextLoader, timeWindow, currentTime, keyCache }:
-    VerifyRequestOptions = {},
+  options: VerifyRequestOptions = {},
+): Promise<CryptographicKey | null> {
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(
+    metadata.name,
+    metadata.version,
+  );
+  return await tracer.startActiveSpan("VerifyRequest", async (span) => {
+    if (span.isRecording()) {
+      span.setAttribute(ATTR_HTTP_REQUEST_METHOD, request.method);
+      span.setAttribute(ATTR_URL_FULL, request.url);
+      for (const [name, value] of request.headers) {
+        span.setAttribute(ATTR_HTTP_REQUEST_HEADER(name), value);
+      }
+    }
+    try {
+      return await verifyRequestInternal(request, span, options);
+    } finally {
+      span.end();
+    }
+  });
+}
+
+async function verifyRequestInternal(
+  request: Request,
+  span: Span,
+  {
+    documentLoader,
+    contextLoader,
+    timeWindow,
+    currentTime,
+    keyCache,
+  }: VerifyRequestOptions = {},
 ): Promise<CryptographicKey | null> {
   const logger = getLogger(["fedify", "sig", "http"]);
   if (request.bodyUsed) {
@@ -184,6 +230,9 @@ export async function verifyRequest(
           error,
         });
         return null;
+      }
+      if (span.isRecording()) {
+        span.setAttribute(`httpsignatures.digest.${algo}`, encodeHex(digest));
       }
       const expectedDigest = await crypto.subtle.digest(
         supportedHashAlgorithms[algo],
@@ -259,6 +308,11 @@ export async function verifyRequest(
     return null;
   }
   const { keyId, headers, signature } = sigValues;
+  span?.setAttribute("httpsignatures.key_id", keyId);
+  span?.setAttribute("httpsignatures.signature", signature);
+  if ("algorithm" in sigValues) {
+    span?.setAttribute("httpsignatures.algorithm", sigValues.algorithm);
+  }
   const { key, cached } = await fetchKey(new URL(keyId), CryptographicKey, {
     documentLoader,
     contextLoader,

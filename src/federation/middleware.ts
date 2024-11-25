@@ -2075,6 +2075,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
           onNotFound,
           signatureTimeWindow: this.signatureTimeWindow,
           skipSignatureVerification: this.skipSignatureVerification,
+          tracerProvider: this.tracerProvider,
         });
       case "following":
         return await handleCollection(request, {
@@ -2892,6 +2893,7 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     return this.#signedKey = await verifyRequest(this.request, {
       ...this,
       timeWindow: this.federation.signatureTimeWindow,
+      tracerProvider: this.federation.tracerProvider,
     });
   }
 
