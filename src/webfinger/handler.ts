@@ -63,7 +63,7 @@ export async function handleWebFinger<TContextData>(
     return await handleWebFingerInternal(request, options);
   }
   return await options.tracer.startActiveSpan(
-    "WebFinger",
+    "webfinger.handle",
     { kind: SpanKind.SERVER },
     async (span) => {
       try {

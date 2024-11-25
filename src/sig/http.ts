@@ -141,20 +141,23 @@ export async function verifyRequest(
     metadata.name,
     metadata.version,
   );
-  return await tracer.startActiveSpan("VerifyRequest", async (span) => {
-    if (span.isRecording()) {
-      span.setAttribute(ATTR_HTTP_REQUEST_METHOD, request.method);
-      span.setAttribute(ATTR_URL_FULL, request.url);
-      for (const [name, value] of request.headers) {
-        span.setAttribute(ATTR_HTTP_REQUEST_HEADER(name), value);
+  return await tracer.startActiveSpan(
+    "http_signatures.verify",
+    async (span) => {
+      if (span.isRecording()) {
+        span.setAttribute(ATTR_HTTP_REQUEST_METHOD, request.method);
+        span.setAttribute(ATTR_URL_FULL, request.url);
+        for (const [name, value] of request.headers) {
+          span.setAttribute(ATTR_HTTP_REQUEST_HEADER(name), value);
+        }
       }
-    }
-    try {
-      return await verifyRequestInternal(request, span, options);
-    } finally {
-      span.end();
-    }
-  });
+      try {
+        return await verifyRequestInternal(request, span, options);
+      } finally {
+        span.end();
+      }
+    },
+  );
 }
 
 async function verifyRequestInternal(

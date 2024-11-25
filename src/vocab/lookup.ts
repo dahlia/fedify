@@ -92,7 +92,7 @@ export async function lookupObject(
     metadata.version,
   );
   return await tracer.startActiveSpan(
-    "LookupObject",
+    "activitypub.lookup_object",
     async (span) => {
       try {
         const result = await lookupObjectInternal(identifier, options);

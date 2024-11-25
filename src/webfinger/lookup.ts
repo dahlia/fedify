@@ -51,7 +51,7 @@ export async function lookupWebFinger(
     metadata.version,
   );
   return await tracer.startActiveSpan(
-    "WebFinger",
+    "webfinger.lookup",
     {
       kind: SpanKind.CLIENT,
       attributes: {

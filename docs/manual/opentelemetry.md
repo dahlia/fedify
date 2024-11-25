@@ -117,14 +117,14 @@ Instrumented spans
 Fedify automatically instruments the following operations with OpenTelemetry
 spans:
 
-| Operation            | [Span kind] | Description                           |
-|----------------------|-------------|---------------------------------------|
-| `Federation.fetch()` | Server      | Serves the incoming HTTP request.     |
-| `lookupObject()`     | Client      | Looks up the Activity Streams object. |
-| `getActorHandle()`   | Client      | Resolves the actor handle.            |
-| `lookupWebFinger()`  | Client      | Looks up the WebFinger resource.      |
-| `handleWebFinger()`  | Server      | Handles the WebFinger request.        |
-| `verifyRequest()`    | Internal    | Verifies the HTTP request signature.  |
+| Span name                      | [Span kind] | Description                           |
+|--------------------------------|-------------|---------------------------------------|
+| `{method} {template}`          | Server      | Serves the incoming HTTP request.     |
+| `activitypub.lookup_object`    | Client      | Looks up the Activity Streams object. |
+| `activitypub.get_actor_handle` | Client      | Resolves the actor handle.            |
+| `webfinger.lookup`             | Client      | Looks up the WebFinger resource.      |
+| `webfinger.handle`             | Server      | Handles the WebFinger request.        |
+| `http_signatures.verify`       | Internal    | Verifies the HTTP request signature.  |
 
 More operations will be instrumented in the future releases.
 

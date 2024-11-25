@@ -136,25 +136,28 @@ export async function getActorHandle(
     metadata.name,
     metadata.version,
   );
-  return await tracer.startActiveSpan("GetActorHandle", async (span) => {
-    if (isActor(actor)) {
-      if (actor.id != null) {
-        span.setAttribute("activitypub.actor.id", actor.id.href);
+  return await tracer.startActiveSpan(
+    "activitypub.get_actor_handle",
+    async (span) => {
+      if (isActor(actor)) {
+        if (actor.id != null) {
+          span.setAttribute("activitypub.actor.id", actor.id.href);
+        }
+        span.setAttribute("activitypub.actor.type", getTypeId(actor).href);
       }
-      span.setAttribute("activitypub.actor.type", getTypeId(actor).href);
-    }
-    try {
-      return await getActorHandleInternal(actor, options);
-    } catch (error) {
-      span.setStatus({
-        code: SpanStatusCode.ERROR,
-        message: String(error),
-      });
-      throw error;
-    } finally {
-      span.end();
-    }
-  });
+      try {
+        return await getActorHandleInternal(actor, options);
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
 }
 
 async function getActorHandleInternal(
