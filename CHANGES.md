@@ -64,6 +64,7 @@ To be released.
      -  Added `CreateFederationOptions.tracerProvider` option.
      -  Added `LookupWebFingerOptions.tracerProvider` option.
      -  Added `LookupObjectOptions.tracerProvider` option.
+     -  Added `GetActorHandleOptions.tracerProvider` option.
 
  -  Added `@fedify/fedify/x/sveltekit` module for integrating with [SvelteKit]
     hook.  [[#171], [#183] by Jiyu Park]

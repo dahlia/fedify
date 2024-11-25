@@ -119,6 +119,7 @@ spans:
 |----------------------|-----------|---------------------------------------|
 | `Federation.fetch()` | Server    | Serves the incoming HTTP request.     |
 | `lookupObject()`     | Client    | Looks up the Activity Streams object. |
+| `getActorHandle()`   | Client    | Resolves the actor handle.            |
 | `lookupWebFinger()`  | Client    | Looks up the WebFinger resource.      |
 | `handleWebFinger()`  | Server    | Handles the WebFinger request.        |
 

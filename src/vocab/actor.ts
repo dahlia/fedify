@@ -1,6 +1,9 @@
+import { SpanStatusCode, type TracerProvider } from "@opentelemetry/api";
 import { toASCII, toUnicode } from "node:punycode";
+import metadata from "../deno.json" with { type: "json" };
 import type { GetUserAgentOptions } from "../runtime/docloader.ts";
 import { lookupWebFinger } from "../webfinger/lookup.ts";
+import { getTypeId } from "./type.ts";
 import { Application, Group, Organization, Person, Service } from "./vocab.ts";
 
 /**
@@ -91,6 +94,12 @@ export interface GetActorHandleOptions extends NormalizeActorHandleOptions {
    * @since 1.3.0
    */
   userAgent?: GetUserAgentOptions | string;
+
+  /**
+   * The OpenTelemetry tracer provider.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -121,10 +130,43 @@ export async function getActorHandle(
   actor: Actor | URL,
   options: GetActorHandleOptions = {},
 ): Promise<`@${string}@${string}` | `${string}@${string}`> {
+  if (options.tracerProvider == null) {
+    return await getActorHandleInternal(actor, options);
+  }
+  const tracer = options.tracerProvider.getTracer(
+    metadata.name,
+    metadata.version,
+  );
+  return await tracer.startActiveSpan("GetActorHandle", async (span) => {
+    if (isActor(actor)) {
+      if (actor.id != null) {
+        span.setAttribute("activitypub.actor.id", actor.id.href);
+      }
+      span.setAttribute("activitypub.actor.type", getTypeId(actor).href);
+    }
+    try {
+      return await getActorHandleInternal(actor, options);
+    } catch (error) {
+      span.setStatus({
+        code: SpanStatusCode.ERROR,
+        message: String(error),
+      });
+      throw error;
+    } finally {
+      span.end();
+    }
+  });
+}
+
+async function getActorHandleInternal(
+  actor: Actor | URL,
+  options: GetActorHandleOptions = {},
+): Promise<`@${string}@${string}` | `${string}@${string}`> {
   const actorId = actor instanceof URL ? actor : actor.id;
   if (actorId != null) {
     const result = await lookupWebFinger(actorId, {
       userAgent: options.userAgent,
+      tracerProvider: options.tracerProvider,
     });
     if (result != null) {
       const aliases = [...(result.aliases ?? [])];
@@ -139,6 +181,7 @@ export async function getActorHandle(
               actorId.href,
               alias,
               options.userAgent,
+              options.tracerProvider,
             )
           ) {
             continue;
@@ -166,8 +209,9 @@ async function verifyCrossOriginActorHandle(
   actorId: string,
   alias: string,
   userAgent: GetUserAgentOptions | string | undefined,
+  tracerProvider: TracerProvider | undefined,
 ): Promise<boolean> {
-  const response = await lookupWebFinger(alias, { userAgent });
+  const response = await lookupWebFinger(alias, { userAgent, tracerProvider });
   if (response == null) return false;
   for (const alias of response.aliases ?? []) {
     if (new URL(alias).href === actorId) return true;
