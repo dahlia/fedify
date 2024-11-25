@@ -71,7 +71,9 @@ Explicit [`TracerProvider`] configuration
 
 The `createFederation()` function accepts the
 [`tracerProvider`](./federation.md#tracerprovider) option to explicitly
-configure the [`TracerProvider`] for the OpenTelemetry SDK.
+configure the [`TracerProvider`] for the OpenTelemetry SDK.  Note that if it's
+omitted, Fedify will use the global default [`TracerProvider`] provided by
+the OpenTelemetry SDK.
 
 For example, if you want to use [Sentry] as the trace exporter, you can set up
 the Sentry SDK and pass the [`TracerProvider`] provided by the Sentry SDK to the

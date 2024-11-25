@@ -1,5 +1,5 @@
 import { getLogger } from "@logtape/logtape";
-import { SpanStatusCode, type TracerProvider } from "@opentelemetry/api";
+import { SpanStatusCode, trace, type TracerProvider } from "@opentelemetry/api";
 import { delay } from "@std/async/delay";
 import metadata from "../deno.json" with { type: "json" };
 import {
@@ -40,7 +40,8 @@ export interface LookupObjectOptions {
   userAgent?: GetUserAgentOptions | string;
 
   /**
-   * The OpenTelemetry tracer provider.
+   * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
+   * is used.
    * @since 1.3.0
    */
   tracerProvider?: TracerProvider;
@@ -85,10 +86,8 @@ export async function lookupObject(
   identifier: string | URL,
   options: LookupObjectOptions = {},
 ): Promise<Object | null> {
-  if (options.tracerProvider == null) {
-    return await lookupObjectInternal(identifier, options);
-  }
-  const tracer = options.tracerProvider.getTracer(
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(
     metadata.name,
     metadata.version,
   );

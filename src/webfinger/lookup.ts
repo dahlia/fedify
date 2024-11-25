@@ -2,6 +2,7 @@ import { getLogger } from "@logtape/logtape";
 import {
   SpanKind,
   SpanStatusCode,
+  trace,
   type TracerProvider,
 } from "@opentelemetry/api";
 import metadata from "../deno.json" with { type: "json" };
@@ -27,7 +28,8 @@ export interface LookupWebFingerOptions {
   userAgent?: GetUserAgentOptions | string;
 
   /**
-   * The OpenTelemetry tracer provider.
+   * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
+   * is used.
    */
   tracerProvider?: TracerProvider;
 }
@@ -43,10 +45,8 @@ export async function lookupWebFinger(
   resource: URL | string,
   options: LookupWebFingerOptions = {},
 ): Promise<ResourceDescriptor | null> {
-  if (options.tracerProvider == null) {
-    return await lookupWebFingerInternal(resource, options);
-  }
-  const tracer = options.tracerProvider.getTracer(
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(
     metadata.name,
     metadata.version,
   );

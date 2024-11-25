@@ -1,4 +1,4 @@
-import { SpanStatusCode, type TracerProvider } from "@opentelemetry/api";
+import { SpanStatusCode, trace, type TracerProvider } from "@opentelemetry/api";
 import { toASCII, toUnicode } from "node:punycode";
 import metadata from "../deno.json" with { type: "json" };
 import type { GetUserAgentOptions } from "../runtime/docloader.ts";
@@ -96,7 +96,8 @@ export interface GetActorHandleOptions extends NormalizeActorHandleOptions {
   userAgent?: GetUserAgentOptions | string;
 
   /**
-   * The OpenTelemetry tracer provider.
+   * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
+   * is used.
    * @since 1.3.0
    */
   tracerProvider?: TracerProvider;
@@ -130,10 +131,8 @@ export async function getActorHandle(
   actor: Actor | URL,
   options: GetActorHandleOptions = {},
 ): Promise<`@${string}@${string}` | `${string}@${string}`> {
-  if (options.tracerProvider == null) {
-    return await getActorHandleInternal(actor, options);
-  }
-  const tracer = options.tracerProvider.getTracer(
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(
     metadata.name,
     metadata.version,
   );
