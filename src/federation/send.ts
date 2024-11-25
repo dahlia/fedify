@@ -1,5 +1,5 @@
 import { getLogger } from "@logtape/logtape";
-import { TracerProvider } from "@opentelemetry/api";
+import type { TracerProvider } from "@opentelemetry/api";
 import { signRequest } from "../sig/http.ts";
 import type { Recipient } from "../vocab/actor.ts";
 

@@ -70,6 +70,7 @@ To be released.
      -  Added the optional fourth parameter to `signRequest()` function.
      -  Added `VerifyProofOptions.tracerProvider` option.
      -  Added `VerifyObjectOptions.tracerProvider` option.
+     -  Added `SignObjectOptions.tracerProvider` option.
 
  -  Added `@fedify/fedify/x/sveltekit` module for integrating with [SvelteKit]
     hook.  [[#171], [#183] by Jiyu Park]

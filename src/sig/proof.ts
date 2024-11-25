@@ -1,15 +1,11 @@
 import { getLogger } from "@logtape/logtape";
-import {
-  type Span,
-  SpanStatusCode,
-  trace,
-  type TracerProvider,
-} from "@opentelemetry/api";
+import { SpanStatusCode, trace, type TracerProvider } from "@opentelemetry/api";
 import { encodeHex } from "@std/encoding/hex";
 // @ts-ignore: json-canon is not typed
 import serialize from "json-canon";
 import metadata from "../deno.json" with { type: "json" };
 import type { DocumentLoader } from "../runtime/docloader.ts";
+import { getTypeId } from "../vocab/type.ts";
 import {
   Activity,
   DataIntegrityProof,
@@ -115,6 +111,13 @@ export interface SignObjectOptions extends CreateProofOptions {
    * The document loader for loading remote JSON-LD documents.
    */
   documentLoader?: DocumentLoader;
+
+  /**
+   * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
+   * is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -133,12 +136,52 @@ export async function signObject<T extends Object>(
   keyId: URL,
   options: SignObjectOptions = {},
 ): Promise<T> {
-  const existingProofs: DataIntegrityProof[] = [];
-  for await (const proof of object.getProofs(options)) {
-    existingProofs.push(proof);
-  }
-  const proof = await createProof(object, privateKey, keyId, options);
-  return object.clone({ proofs: [...existingProofs, proof] }) as T;
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  return await tracer.startActiveSpan(
+    "object_integrity_proofs.sign",
+    {
+      attributes: { "activitypub.object.type": getTypeId(object).href },
+    },
+    async (span) => {
+      try {
+        if (object.id != null) {
+          span.setAttribute("activitypub.object.id", object.id.href);
+        }
+        const existingProofs: DataIntegrityProof[] = [];
+        for await (const proof of object.getProofs(options)) {
+          existingProofs.push(proof);
+        }
+        const proof = await createProof(object, privateKey, keyId, options);
+        if (span.isRecording()) {
+          if (proof.cryptosuite != null) {
+            span.setAttribute(
+              "object_integrity_proofs.cryptosuite",
+              proof.cryptosuite,
+            );
+          }
+          if (proof.verificationMethodId != null) {
+            span.setAttribute(
+              "object_integrity_proofs.key_id",
+              proof.verificationMethodId.href,
+            );
+          }
+          if (proof.proofValue != null) {
+            span.setAttribute(
+              "object_integrity_proofs.signature",
+              encodeHex(proof.proofValue),
+            );
+          }
+        }
+        return object.clone({ proofs: [...existingProofs, proof] }) as T;
+      } catch (error) {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: String(error) });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
 }
 
 /**

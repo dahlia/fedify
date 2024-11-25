@@ -124,6 +124,7 @@ spans:
 | `activitypub.lookup_object`      | Client      | Looks up the Activity Streams object. |
 | `http_signatures.sign`           | Internal    | Signs the HTTP request.               |
 | `http_signatures.verify`         | Internal    | Verifies the HTTP request signature.  |
+| `object_integrity_proofs.sign`   | Internal    | Makes the object integrity proof.     |
 | `object_integrity_proofs.verify` | Internal    | Verifies the object integrity proof.  |
 | `webfinger.handle`               | Server      | Handles the WebFinger request.        |
 | `webfinger.lookup`               | Client      | Looks up the WebFinger resource.      |

@@ -1776,6 +1776,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       if (privateKey.algorithm.name === "Ed25519") {
         activity = await signObject(activity, privateKey, keyId, {
           contextLoader: this.contextLoader,
+          tracerProvider: this.tracerProvider,
         });
         proofCreated = true;
       }
