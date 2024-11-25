@@ -1,9 +1,21 @@
 import { getLogger } from "@logtape/logtape";
-import { Activity, Multikey } from "../vocab/vocab.ts";
+import {
+  type Span,
+  SpanStatusCode,
+  trace,
+  type TracerProvider,
+} from "@opentelemetry/api";
+import { encodeHex } from "@std/encoding/hex";
 // @ts-ignore: json-canon is not typed
 import serialize from "json-canon";
+import metadata from "../deno.json" with { type: "json" };
 import type { DocumentLoader } from "../runtime/docloader.ts";
-import { DataIntegrityProof, type Object } from "../vocab/vocab.ts";
+import {
+  Activity,
+  DataIntegrityProof,
+  Multikey,
+  type Object,
+} from "../vocab/vocab.ts";
 import {
   fetchKey,
   type FetchKeyResult,
@@ -149,6 +161,13 @@ export interface VerifyProofOptions {
    * @since 0.12.0
    */
   keyCache?: KeyCache;
+
+  /**
+   * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
+   * is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -165,6 +184,53 @@ export async function verifyProof(
   jsonLd: unknown,
   proof: DataIntegrityProof,
   options: VerifyProofOptions = {},
+): Promise<Multikey | null> {
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  return await tracer.startActiveSpan(
+    "object_integrity_proofs.verify",
+    async (span) => {
+      if (span.isRecording()) {
+        if (proof.cryptosuite != null) {
+          span.setAttribute(
+            "object_integrity_proofs.cryptosuite",
+            proof.cryptosuite,
+          );
+        }
+        if (proof.verificationMethodId != null) {
+          span.setAttribute(
+            "object_integrity_proofs.key_id",
+            proof.verificationMethodId.href,
+          );
+        }
+        if (proof.proofValue != null) {
+          span.setAttribute(
+            "object_integrity_proofs.signature",
+            encodeHex(proof.proofValue),
+          );
+        }
+      }
+      try {
+        const key = await verifyProofInternal(jsonLd, proof, options);
+        if (key == null) span.setStatus({ code: SpanStatusCode.ERROR });
+        return key;
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function verifyProofInternal(
+  jsonLd: unknown,
+  proof: DataIntegrityProof,
+  options: VerifyProofOptions,
 ): Promise<Multikey | null> {
   if (
     typeof jsonLd !== "object" ||

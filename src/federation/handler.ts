@@ -476,6 +476,7 @@ export async function handleInbox<TContextData>(
         contextLoader: context.contextLoader,
         documentLoader: context.documentLoader,
         keyCache,
+        tracerProvider,
       });
     } catch (error) {
       logger.error("Failed to parse activity:\n{error}", {
