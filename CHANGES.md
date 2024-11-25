@@ -57,6 +57,8 @@ To be released.
         null` (was `{ name: string; values: Record<string, string> } | null`).
      -  Added `RouterRouteResult` interface.
 
+ -  Added `getTypeId()` function.
+
  -  Fedify now supports OpenTelemetry for tracing.  [[#170]]
 
      -  Added `CreateFederationOptions.tracerProvider` option.

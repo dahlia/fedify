@@ -7,7 +7,7 @@
  * [`Note` type](https://www.w3.org/TR/activitystreams-vocabulary/#dfn-note)
  * in the Activity Vocabulary.
  *
- * There are two ways to instnatiate an object of a class in this module.
+ * There are two ways to instantiate an object of a class in this module.
  * The first way is to use the constructor of the class.  For example:
  *
  * ``` typescript
@@ -52,4 +52,5 @@
 export * from "./actor.ts";
 export * from "./constants.ts";
 export * from "./lookup.ts";
+export * from "./type.ts";
 export * from "./vocab.ts";
