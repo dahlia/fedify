@@ -1,12 +1,15 @@
 import { getLogger } from "@logtape/logtape";
+import { SpanStatusCode, trace, type TracerProvider } from "@opentelemetry/api";
 import { decodeBase64, encodeBase64 } from "@std/encoding/base64";
 import { encodeHex } from "@std/encoding/hex";
 // @ts-ignore TS7016
 import jsonld from "jsonld";
+import metadata from "../deno.json" with { type: "json" };
 import {
   type DocumentLoader,
   getDocumentLoader,
 } from "../runtime/docloader.ts";
+import { getTypeId } from "../vocab/type.ts";
 import { Activity, CryptographicKey, Object } from "../vocab/vocab.ts";
 import { fetchKey, type KeyCache, validateCryptoKey } from "./key.ts";
 
@@ -310,6 +313,12 @@ export async function verifySignature(
  * Options for verifying JSON-LD documents.
  */
 export interface VerifyJsonLdOptions extends VerifySignatureOptions {
+  /**
+   * The OpenTelemetry tracer provider for tracing the verification process.
+   * If omitted, the global tracer provider is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -325,27 +334,80 @@ export async function verifyJsonLd(
   jsonLd: unknown,
   options: VerifyJsonLdOptions = {},
 ): Promise<boolean> {
-  const object = await Object.fromJsonLd(jsonLd, options);
-  const attributions = new Set(object.attributionIds.map((uri) => uri.href));
-  if (object instanceof Activity) {
-    for (const uri of object.actorIds) attributions.add(uri.href);
-  }
-  const key = await verifySignature(jsonLd, options);
-  if (key == null) return false;
-  if (key.ownerId == null) {
-    logger.debug("Key {keyId} has no owner.", { keyId: key.id?.href });
-    return false;
-  }
-  attributions.delete(key.ownerId.href);
-  if (attributions.size > 0) {
-    logger.debug(
-      "Some attributions are not authenticated by the Linked Data Signatures" +
-        ": {attributions}.",
-      { attributions: [...attributions] },
-    );
-    return false;
-  }
-  return true;
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  return await tracer.startActiveSpan(
+    "ld_signatures.verify",
+    async (span) => {
+      try {
+        const object = await Object.fromJsonLd(jsonLd, options);
+        if (object.id != null) {
+          span.setAttribute("activitypub.object.id", object.id.href);
+        }
+        span.setAttribute("activitypub.object.type", getTypeId(object).href);
+        if (
+          typeof jsonLd === "object" && jsonLd != null &&
+          "signature" in jsonLd && typeof jsonLd.signature === "object" &&
+          jsonLd.signature != null
+        ) {
+          if (
+            "creator" in jsonLd.signature &&
+            typeof jsonLd.signature.creator === "string"
+          ) {
+            span.setAttribute(
+              "ld_signatures.key_id",
+              jsonLd.signature.creator,
+            );
+          }
+          if (
+            "signatureValue" in jsonLd.signature &&
+            typeof jsonLd.signature.signatureValue === "string"
+          ) {
+            span.setAttribute(
+              "ld_signatures.signature",
+              jsonLd.signature.signatureValue,
+            );
+          }
+          if (
+            "type" in jsonLd.signature &&
+            typeof jsonLd.signature.type === "string"
+          ) {
+            span.setAttribute("ld_signatures.type", jsonLd.signature.type);
+          }
+        }
+        const attributions = new Set(
+          object.attributionIds.map((uri) => uri.href),
+        );
+        if (object instanceof Activity) {
+          for (const uri of object.actorIds) attributions.add(uri.href);
+        }
+        const key = await verifySignature(jsonLd, options);
+        if (key == null) return false;
+        if (key.ownerId == null) {
+          logger.debug("Key {keyId} has no owner.", { keyId: key.id?.href });
+          return false;
+        }
+        attributions.delete(key.ownerId.href);
+        if (attributions.size > 0) {
+          logger.debug(
+            "Some attributions are not authenticated by the Linked Data " +
+              "Signatures: {attributions}.",
+            { attributions: [...attributions] },
+          );
+          return false;
+        }
+        return true;
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
 }
 
 async function hashJsonLd(

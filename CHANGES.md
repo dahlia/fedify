@@ -71,6 +71,7 @@ To be released.
      -  Added `VerifyProofOptions.tracerProvider` option.
      -  Added `VerifyObjectOptions.tracerProvider` option.
      -  Added `SignObjectOptions.tracerProvider` option.
+     -  Added `VerifyJsonLdOptions.tracerProvider` option.
 
  -  Added `@fedify/fedify/x/sveltekit` module for integrating with [SvelteKit]
     hook.  [[#171], [#183] by Jiyu Park]

@@ -124,6 +124,7 @@ spans:
 | `activitypub.lookup_object`      | Client      | Looks up the Activity Streams object. |
 | `http_signatures.sign`           | Internal    | Signs the HTTP request.               |
 | `http_signatures.verify`         | Internal    | Verifies the HTTP request signature.  |
+| `ld_signatures.verify`           | Internal    | Verifies the Linked Data signature.   |
 | `object_integrity_proofs.sign`   | Internal    | Makes the object integrity proof.     |
 | `object_integrity_proofs.verify` | Internal    | Verifies the object integrity proof.  |
 | `webfinger.handle`               | Server      | Handles the WebFinger request.        |
@@ -160,6 +161,9 @@ for ActivityPub:
 | `http_signatures.algorithm`           | string   | The algorithm of the HTTP request signature.                                             | `"rsa-sha256"`                                                       |
 | `http_signatures.key_id`              | string   | The public key ID of the HTTP request signature.                                         | `"https://example.com/actor/1#main-key"`                             |
 | `http_signatures.digest.{algorithm}`  | string   | The digest of the HTTP request body in hexadecimal.  The `{algorithm}` is the digest algorithm (e.g., `sha`, `sha-256`). | `"d41d8cd98f00b204e9800998ecf8427e"` |
+| `ld_signatures.key_id`                | string   | The public key ID of the Linked Data signature.                                          | `"https://example.com/actor/1#main-key"`                             |
+| `ld_signatures.signature`             | string   | The signature of the Linked Data in hexadecimal.                                         | `"73a74c990beabe6e59cc68f9c6db7811b59cbb22fd12dcffb3565b651540efe9"` |
+| `ld_signatures.type`                  | string   | The algorithm of the Linked Data signature.                                              | `"RsaSignature2017"`                                                 |
 | `object_integrity_proofs.cryptosuite` | string   | The cryptographic suite of the object integrity proof.                                   | `"eddsa-jcs-2022"`                                                   |
 | `object_integrity_proofs.key_id`      | string   | The public key ID of the object integrity proof.                                         | `"https://example.com/actor/1#main-key"`                             |
 | `object_integrity_proofs.signature`   | string   | The integrity proof of the object in hexadecimal.                                        | `"73a74c990beabe6e59cc68f9c6db7811b59cbb22fd12dcffb3565b651540efe9"` |

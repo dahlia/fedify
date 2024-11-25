@@ -460,6 +460,7 @@ export async function handleInbox<TContextData>(
     contextLoader: context.contextLoader,
     documentLoader: context.documentLoader,
     keyCache,
+    tracerProvider,
   });
   const jsonWithoutSig = detachSignature(json);
   let activity: Activity | null = null;
