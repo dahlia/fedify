@@ -186,6 +186,7 @@ async function getActorHandleInternal(
 
       throw error;
     }
+
     if (result != null) {
       const aliases = [...(result.aliases ?? [])];
       if (result.subject != null) aliases.unshift(result.subject);
