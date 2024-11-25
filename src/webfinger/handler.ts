@@ -110,6 +110,10 @@ async function handleWebFingerInternal<TContextData>(
     }
     throw e;
   }
+  span?.setAttribute(
+    "webfinger.resource.scheme",
+    resourceUrl.protocol.replace(/:$/, ""),
+  );
   if (actorDispatcher == null) {
     logger.error("Actor dispatcher is not set.");
     return await onNotFound(request);

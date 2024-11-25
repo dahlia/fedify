@@ -1,5 +1,11 @@
 import { getLogger } from "@logtape/logtape";
 import {
+  SpanKind,
+  SpanStatusCode,
+  type TracerProvider,
+} from "@opentelemetry/api";
+import metadata from "../deno.json" with { type: "json" };
+import {
   getUserAgent,
   type GetUserAgentOptions,
 } from "../runtime/docloader.ts";
@@ -19,6 +25,12 @@ export interface LookupWebFingerOptions {
    * the `User-Agent` header value.
    */
   userAgent?: GetUserAgentOptions | string;
+
+  /**
+   * The OpenTelemetry tracer provider.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -29,6 +41,48 @@ export interface LookupWebFingerOptions {
  * @since 0.2.0
  */
 export async function lookupWebFinger(
+  resource: URL | string,
+  options: LookupWebFingerOptions = {},
+): Promise<ResourceDescriptor | null> {
+  if (options.tracerProvider == null) {
+    return await lookupWebFingerInternal(resource, options);
+  }
+  const tracer = options.tracerProvider.getTracer(
+    metadata.name,
+    metadata.version,
+  );
+  return await tracer.startActiveSpan(
+    "WebFinger",
+    {
+      kind: SpanKind.CLIENT,
+      attributes: {
+        "webfinger.resource": resource.toString(),
+        "webfinger.resource.scheme": typeof resource === "string"
+          ? resource.replace(/:.*$/, "")
+          : resource.protocol.replace(/:$/, ""),
+      },
+    },
+    async (span) => {
+      try {
+        const result = await lookupWebFingerInternal(resource, options);
+        span.setStatus({
+          code: result === null ? SpanStatusCode.ERROR : SpanStatusCode.OK,
+        });
+        return result;
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function lookupWebFingerInternal(
   resource: URL | string,
   options: LookupWebFingerOptions = {},
 ): Promise<ResourceDescriptor | null> {

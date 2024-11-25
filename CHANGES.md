@@ -62,6 +62,7 @@ To be released.
  -  Fedify now supports OpenTelemetry for tracing.  [[#170]]
 
      -  Added `CreateFederationOptions.tracerProvider` option.
+     -  Added `LookupWebFingerOptions.tracerProvider` option.
 
  -  Added `@fedify/fedify/x/sveltekit` module for integrating with [SvelteKit]
     hook.  [[#171], [#183] by Jiyu Park]

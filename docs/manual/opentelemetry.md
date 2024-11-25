@@ -115,10 +115,11 @@ Instrumented spans
 Fedify automatically instruments the following operations with OpenTelemetry
 spans:
 
-| Operation            | Description                       |
-|----------------------|-----------------------------------|
-| `Federation.fetch()` | Serves the incoming HTTP request. |
-| `handleWebFinger()`  | Handles the WebFinger request.    |
+| Operation            | Span type | Description                       |
+|----------------------|-----------|-----------------------------------|
+| `Federation.fetch()` | Server    | Serves the incoming HTTP request. |
+| `lookupWebFinger()`  | Client    | Looks up the WebFinger resource.  |
+| `handleWebFinger()`  | Server    | Handles the WebFinger request.    |
 
 More operations will be instrumented in the future releases.
 
@@ -146,5 +147,6 @@ for ActivityPub:
 | `activitypub.inboxes`            | int      | The number of inboxes the activity is sent to.                                  | `12`                                               |
 | `activitypub.shared_inbox`       | boolean  | Whether the activity is sent to the shared inbox.                               | `true`                                             |
 | `webfinger.resource`             | string   | The queried resource URI.                                                       | `"acct:fedify@hollo.social"`                       |
+| `webfinger.resource.scheme`      | string   | The scheme of the queried resource URI.                                         | `"acct"`                                           |
 
 [OpenTelemetry Semantic Conventions]: https://opentelemetry.io/docs/specs/semconv/
