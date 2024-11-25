@@ -131,18 +131,20 @@ for ActivityPub as of November 2024.  However, Fedify provides a set of semantic
 attributes for ActivityPub.  The following table shows the semantic attributes
 for ActivityPub:
 
-| Attribute                           | Type     | Description                                                                     | Example                                            |
-|-------------------------------------|----------|---------------------------------------------------------------------------------|----------------------------------------------------|
-| `activitypub.activity.id`           | string   | The URI of the activity object.                                                 | `"https://example.com/activity/1"`                 |
-| `activitypub.activity.type`         | string[] | The qualified URI(s) of the activity type(s).                                   | `["https://www.w3.org/ns/activitystreams#Create"]` |
-| `activitypub.activity.to`           | string[] | The URI(s) of the recipient collections/actors of the activity.                 | `["https://example.com/1/followers/2"]`            |
-| `activitypub.activity.cc`           | string[] | The URI(s) of the carbon-copied recipient collections/actors of the activity.   | `["https://www.w3.org/ns/activitystreams#Public"]` |
-| `activitypub.activity.resend_count` | int      | The ordinal number of activity resending attempt (if and only if it's retried). | `3`                                                |
-| `activitypub.actor.id`              | string   | The URI of the actor object.                                                    | `"https://example.com/actor/1"`                    |
-| `activitypub.actor.type`            | string[] | The qualified URI(s) of the actor type(s).                                      | `["https://www.w3.org/ns/activitystreams#Person"]` |
-| `activitypub.object.id`             | string   | The URI of the object or the object enclosed by the activity.                   | `"https://example.com/object/1"`                   |
-| `activitypub.object.type`           | string[] | The qualified URI(s) of the object type(s).                                     | `["https://www.w3.org/ns/activitystreams#Note"]`   |
-| `activitypub.object.in_reply_to`    | string[] | The URI(s) of the original object to which the object reply.                    | `["https://example.com/object/1"]`                 |
-| `webfinger.resource`                | string   | The queried resource URI.                                                       | `"acct:fedify@hollo.social"`                       |
+| Attribute                        | Type     | Description                                                                     | Example                                            |
+|----------------------------------|----------|---------------------------------------------------------------------------------|----------------------------------------------------|
+| `activitypub.activity.id`        | string   | The URI of the activity object.                                                 | `"https://example.com/activity/1"`                 |
+| `activitypub.activity.type`      | string[] | The qualified URI(s) of the activity type(s).                                   | `["https://www.w3.org/ns/activitystreams#Create"]` |
+| `activitypub.activity.to`        | string[] | The URI(s) of the recipient collections/actors of the activity.                 | `["https://example.com/1/followers/2"]`            |
+| `activitypub.activity.cc`        | string[] | The URI(s) of the carbon-copied recipient collections/actors of the activity.   | `["https://www.w3.org/ns/activitystreams#Public"]` |
+| `activitypub.activity.retries`   | int      | The ordinal number of activity resending attempt (if and only if it's retried). | `3`                                                |
+| `activitypub.actor.id`           | string   | The URI of the actor object.                                                    | `"https://example.com/actor/1"`                    |
+| `activitypub.actor.type`         | string[] | The qualified URI(s) of the actor type(s).                                      | `["https://www.w3.org/ns/activitystreams#Person"]` |
+| `activitypub.object.id`          | string   | The URI of the object or the object enclosed by the activity.                   | `"https://example.com/object/1"`                   |
+| `activitypub.object.type`        | string[] | The qualified URI(s) of the object type(s).                                     | `["https://www.w3.org/ns/activitystreams#Note"]`   |
+| `activitypub.object.in_reply_to` | string[] | The URI(s) of the original object to which the object reply.                    | `["https://example.com/object/1"]`                 |
+| `activitypub.inboxes`            | int      | The number of inboxes the activity is sent to.                                  | `12`                                               |
+| `activitypub.shared_inbox`       | boolean  | Whether the activity is sent to the shared inbox.                               | `true`                                             |
+| `webfinger.resource`             | string   | The queried resource URI.                                                       | `"acct:fedify@hollo.social"`                       |
 
 [OpenTelemetry Semantic Conventions]: https://opentelemetry.io/docs/specs/semconv/
