@@ -1,5 +1,10 @@
 import { getLogger } from "@logtape/logtape";
-import { type Span, trace, type TracerProvider } from "@opentelemetry/api";
+import {
+  type Span,
+  SpanStatusCode,
+  trace,
+  type TracerProvider,
+} from "@opentelemetry/api";
 import {
   ATTR_HTTP_REQUEST_HEADER,
   ATTR_HTTP_REQUEST_METHOD,
@@ -14,6 +19,18 @@ import { CryptographicKey } from "../vocab/vocab.ts";
 import { fetchKey, type KeyCache, validateCryptoKey } from "./key.ts";
 
 /**
+ * Options for {@link signRequest}.
+ * @since 1.3.0
+ */
+export interface SignRequestOptions {
+  /**
+   * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
+   * is used.
+   */
+  tracerProvider?: TracerProvider;
+}
+
+/**
  * Signs a request using the given private key.
  * @param request The request to sign.
  * @param privateKey The private key to use for signing.
@@ -26,6 +43,50 @@ export async function signRequest(
   request: Request,
   privateKey: CryptoKey,
   keyId: URL,
+  options: SignRequestOptions = {},
+): Promise<Request> {
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(
+    metadata.name,
+    metadata.version,
+  );
+  return await tracer.startActiveSpan(
+    "http_signatures.sign",
+    async (span) => {
+      try {
+        const signed = await signRequestInternal(
+          request,
+          privateKey,
+          keyId,
+          span,
+        );
+        if (span.isRecording()) {
+          span.setAttribute(ATTR_HTTP_REQUEST_METHOD, signed.method);
+          span.setAttribute(ATTR_URL_FULL, signed.url);
+          for (const [name, value] of signed.headers) {
+            span.setAttribute(ATTR_HTTP_REQUEST_HEADER(name), value);
+          }
+          span.setAttribute("http_signatures.key_id", keyId.href);
+        }
+        return signed;
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function signRequestInternal(
+  request: Request,
+  privateKey: CryptoKey,
+  keyId: URL,
+  span: Span,
 ): Promise<Request> {
   validateCryptoKey(privateKey, "private");
   if (privateKey.algorithm.name !== "RSASSA-PKCS1-v1_5") {
@@ -43,6 +104,9 @@ export async function signRequest(
   if (!headers.has("Digest") && body != null) {
     const digest = await crypto.subtle.digest("SHA-256", body);
     headers.set("Digest", `SHA-256=${encodeBase64(digest)}`);
+    if (span.isRecording()) {
+      span.setAttribute("http_signatures.digest.sha-256", encodeHex(digest));
+    }
   }
   if (!headers.has("Date")) {
     headers.set("Date", new Date().toUTCString());
@@ -64,6 +128,10 @@ export async function signRequest(
     headerNames.join(" ")
   }",signature="${encodeBase64(signature)}"`;
   headers.set("Signature", sigHeader);
+  if (span.isRecording()) {
+    span.setAttribute("http_signatures.algorithm", "rsa-sha256");
+    span.setAttribute("http_signatures.signature", encodeHex(signature));
+  }
   return new Request(request, {
     headers,
     body,
@@ -152,7 +220,15 @@ export async function verifyRequest(
         }
       }
       try {
-        return await verifyRequestInternal(request, span, options);
+        const key = await verifyRequestInternal(request, span, options);
+        if (key == null) span.setStatus({ code: SpanStatusCode.ERROR });
+        return key;
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
       } finally {
         span.end();
       }
@@ -235,7 +311,7 @@ async function verifyRequestInternal(
         return null;
       }
       if (span.isRecording()) {
-        span.setAttribute(`httpsignatures.digest.${algo}`, encodeHex(digest));
+        span.setAttribute(`http_signatures.digest.${algo}`, encodeHex(digest));
       }
       const expectedDigest = await crypto.subtle.digest(
         supportedHashAlgorithms[algo],
@@ -311,10 +387,10 @@ async function verifyRequestInternal(
     return null;
   }
   const { keyId, headers, signature } = sigValues;
-  span?.setAttribute("httpsignatures.key_id", keyId);
-  span?.setAttribute("httpsignatures.signature", signature);
+  span?.setAttribute("http_signatures.key_id", keyId);
+  span?.setAttribute("http_signatures.signature", signature);
   if ("algorithm" in sigValues) {
-    span?.setAttribute("httpsignatures.algorithm", sigValues.algorithm);
+    span?.setAttribute("http_signatures.algorithm", sigValues.algorithm);
   }
   const { key, cached } = await fetchKey(new URL(keyId), CryptographicKey, {
     documentLoader,

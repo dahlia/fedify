@@ -1,4 +1,5 @@
 import { getLogger } from "@logtape/logtape";
+import { TracerProvider } from "@opentelemetry/api";
 import { signRequest } from "../sig/http.ts";
 import type { Recipient } from "../vocab/actor.ts";
 
@@ -102,6 +103,13 @@ export interface SendActivityParameters {
    * Additional headers to include in the request.
    */
   headers?: Headers;
+
+  /**
+   * The tracer provider for tracing the request.
+   * If omitted, the global tracer provider is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -118,6 +126,7 @@ export async function sendActivity(
     keys,
     inbox,
     headers,
+    tracerProvider,
   }: SendActivityParameters,
 ): Promise<void> {
   const logger = getLogger(["fedify", "federation", "outbox"]);
@@ -150,7 +159,12 @@ export async function sendActivity(
       },
     );
   } else {
-    request = await signRequest(request, rsaKey.privateKey, rsaKey.keyId);
+    request = await signRequest(
+      request,
+      rsaKey.privateKey,
+      rsaKey.keyId,
+      { tracerProvider },
+    );
   }
   let response: Response;
   try {

@@ -535,6 +535,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         activityId: message.activityId,
         inbox: new URL(message.inbox),
         headers: new Headers(message.headers),
+        tracerProvider: this.tracerProvider,
       });
     } catch (error) {
       const activity = await Activity.fromJsonLd(message.activity, {
@@ -1844,6 +1845,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
                   inboxes[inbox],
                 ),
             }),
+            tracerProvider: this.tracerProvider,
           }),
         );
       }
@@ -3075,6 +3077,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
             activity: this.activity,
             activityId: activityId,
             inbox: new URL(inbox),
+            tracerProvider: this.federation.tracerProvider,
           }),
         );
       }

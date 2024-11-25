@@ -66,6 +66,8 @@ To be released.
      -  Added `LookupObjectOptions.tracerProvider` option.
      -  Added `GetActorHandleOptions.tracerProvider` option.
      -  Added `VerifyRequestOptions.tracerProvider` option.
+     -  Added `SignRequestOptions` interface.
+     -  Added the optional fourth parameter to `signRequest()` function.
 
  -  Added `@fedify/fedify/x/sveltekit` module for integrating with [SvelteKit]
     hook.  [[#171], [#183] by Jiyu Park]
