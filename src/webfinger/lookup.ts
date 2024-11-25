@@ -28,7 +28,6 @@ export interface LookupWebFingerOptions {
 
   /**
    * The OpenTelemetry tracer provider.
-   * @since 1.3.0
    */
   tracerProvider?: TracerProvider;
 }

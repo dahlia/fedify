@@ -4,7 +4,7 @@ import {
   SpanKind,
   SpanStatusCode,
   trace,
-  Tracer,
+  type Tracer,
   type TracerProvider,
 } from "@opentelemetry/api";
 import {
@@ -2643,6 +2643,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
       documentLoader: options.documentLoader ?? this.documentLoader,
       contextLoader: options.contextLoader ?? this.contextLoader,
       userAgent: options.userAgent ?? this.federation.userAgent,
+      tracerProvider: options.tracerProvider ?? this.federation.tracerProvider,
     });
   }
 

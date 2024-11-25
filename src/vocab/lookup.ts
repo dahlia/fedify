@@ -1,11 +1,14 @@
 import { getLogger } from "@logtape/logtape";
+import { SpanStatusCode, type TracerProvider } from "@opentelemetry/api";
 import { delay } from "@std/async/delay";
+import metadata from "../deno.json" with { type: "json" };
 import {
   type DocumentLoader,
   getDocumentLoader,
   type GetUserAgentOptions,
 } from "../runtime/docloader.ts";
 import { lookupWebFinger } from "../webfinger/lookup.ts";
+import { getTypeId } from "./type.ts";
 import { type Collection, type Link, Object } from "./vocab.ts";
 
 const logger = getLogger(["fedify", "vocab", "lookup"]);
@@ -35,6 +38,12 @@ export interface LookupObjectOptions {
    * @since 1.3.0
    */
   userAgent?: GetUserAgentOptions | string;
+
+  /**
+   * The OpenTelemetry tracer provider.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 const handleRegexp =
@@ -76,6 +85,49 @@ export async function lookupObject(
   identifier: string | URL,
   options: LookupObjectOptions = {},
 ): Promise<Object | null> {
+  if (options.tracerProvider == null) {
+    return await lookupObjectInternal(identifier, options);
+  }
+  const tracer = options.tracerProvider.getTracer(
+    metadata.name,
+    metadata.version,
+  );
+  return await tracer.startActiveSpan(
+    "LookupObject",
+    async (span) => {
+      try {
+        const result = await lookupObjectInternal(identifier, options);
+        if (result == null) span.setStatus({ code: SpanStatusCode.ERROR });
+        else {
+          if (result.id != null) {
+            span.setAttribute("activitypub.object.id", result.id.href);
+          }
+          span.setAttribute("activitypub.object.type", getTypeId(result).href);
+          if (result.replyTargetIds.length > 0) {
+            span.setAttribute(
+              "activitypub.object.in_reply_to",
+              result.replyTargetIds.map((id) => id.href),
+            );
+          }
+        }
+        return result;
+      } catch (error) {
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: String(error),
+        });
+        throw error;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function lookupObjectInternal(
+  identifier: string | URL,
+  options: LookupObjectOptions = {},
+): Promise<Object | null> {
   const documentLoader = options.documentLoader ??
     getDocumentLoader({ userAgent: options.userAgent });
   if (typeof identifier === "string") {
@@ -95,6 +147,7 @@ export async function lookupObject(
   if (document == null) {
     const jrd = await lookupWebFinger(identifier, {
       userAgent: options.userAgent,
+      tracerProvider: options.tracerProvider,
     });
     if (jrd?.links == null) return null;
     for (const l of jrd.links) {

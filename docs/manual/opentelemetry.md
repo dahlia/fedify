@@ -115,11 +115,12 @@ Instrumented spans
 Fedify automatically instruments the following operations with OpenTelemetry
 spans:
 
-| Operation            | Span type | Description                       |
-|----------------------|-----------|-----------------------------------|
-| `Federation.fetch()` | Server    | Serves the incoming HTTP request. |
-| `lookupWebFinger()`  | Client    | Looks up the WebFinger resource.  |
-| `handleWebFinger()`  | Server    | Handles the WebFinger request.    |
+| Operation            | Span type | Description                           |
+|----------------------|-----------|---------------------------------------|
+| `Federation.fetch()` | Server    | Serves the incoming HTTP request.     |
+| `lookupObject()`     | Client    | Looks up the Activity Streams object. |
+| `lookupWebFinger()`  | Client    | Looks up the WebFinger resource.      |
+| `handleWebFinger()`  | Server    | Handles the WebFinger request.        |
 
 More operations will be instrumented in the future releases.
 
