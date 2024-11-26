@@ -157,6 +157,14 @@ The repository consists of the following directories:
 Fedify uses [Deno] as the main development environment.  Therefore, you need to
 install Deno to hack on Fedify.
 
+> [!TIP]
+> If you use [mise-en-place], a dev tools/env vars manager and a task runner,
+> you can easily install Deno, [Node.js], and [Bun] with a single command:
+>
+> ~~~~ bash
+> mise install
+> ~~~~
+
 The recommended editor for Fedify is [Visual Studio Code] with
 the [Deno extension] installed.  Or you can use any editor that supports Deno;
 see the [*Set Up Your Environment* section][1] in the Deno manual.
@@ -194,6 +202,7 @@ following message:
 
 Please click the *Install* button to install the Deno extension.
 
+[mise-en-place]: https://mise.jdx.dev/
 [Visual Studio Code]: https://code.visualstudio.com/
 [Deno extension]: https://marketplace.visualstudio.com/items?itemName=denoland.vscode-deno
 [1]: https://docs.deno.com/runtime/manual/getting_started/setup_your_environment/
@@ -237,6 +246,14 @@ popd
 
 Of course, Node.js and Bun should be installed on your system to run the tests
 with Node.js and Bun.
+
+> [!TIP]
+> If you use [mise-en-place], a dev tools/env vars manager and a task runner,
+> you can easily install Deno, [Node.js], and [Bun] with a single command:
+>
+> ~~~~ bash
+> mise install
+> ~~~~
 
 ### Building the docs
 

@@ -1,0 +1,4 @@
+[tools]
+bun = "latest"
+deno = "2"
+node = "20"
