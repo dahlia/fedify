@@ -1,4 +1,4 @@
-import { TracerProvider } from "@opentelemetry/api";
+import type { TracerProvider } from "@opentelemetry/api";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
 import type {

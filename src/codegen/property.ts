@@ -1,4 +1,5 @@
 import { toPascalCase } from "@std/text/to-pascal-case";
+import metadata from "../deno.json" with { type: "json" };
 import { getFieldName } from "./field.ts";
 import type { PropertySchema, TypeSchema } from "./schema.ts";
 import { areAllScalarTypes, getTypeNames } from "./type.ts";
@@ -64,38 +65,61 @@ async function* generateProperty(
         options.contextLoader ?? this._contextLoader ?? getDocumentLoader();
       const tracerProvider = options.tracerProvider ??
         this._tracerProvider ?? trace.getTracerProvider();
-      let fetchResult: RemoteDocument;
-      try {
-        fetchResult = await documentLoader(url.href);
-      } catch (error) {
-        if (options.suppressError) {
-          getLogger(["fedify", "vocab"]).error(
-            "Failed to fetch {url}: {error}",
-            { error, url: url.href }
-          );
-          return null;
+      const tracer = tracerProvider.getTracer(
+        ${JSON.stringify(metadata.name)},
+        ${JSON.stringify(metadata.version)},
+      );
+      return await tracer.startActiveSpan("activitypub.lookup_object", async (span) => {
+        let fetchResult: RemoteDocument;
+        try {
+          fetchResult = await documentLoader(url.href);
+        } catch (error) {
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: String(error),
+          });
+          span.end();
+          if (options.suppressError) {
+            getLogger(["fedify", "vocab"]).error(
+              "Failed to fetch {url}: {error}",
+              { error, url: url.href }
+            );
+            return null;
+          }
+          throw error;
         }
-        throw error;
-      }
-      const { document } = fetchResult;
+        const { document } = fetchResult;
     `;
     for (const range of property.range) {
       if (!(range in types)) continue;
       const rangeType = types[range];
       yield `
-      try {
-        return await ${rangeType.name}.fromJsonLd(
-          document,
-          { documentLoader, contextLoader, tracerProvider },
-        );
-      } catch (e) {
-        if (!(e instanceof TypeError)) throw e;
-      }
+        try {
+          const obj = await ${rangeType.name}.fromJsonLd(
+            document,
+            { documentLoader, contextLoader, tracerProvider },
+          );
+          span.setAttribute("activitypub.object.id", (obj.id ?? url).href);
+          span.setAttribute(
+            "activitypub.object.type",
+            (obj.constructor as typeof ${rangeType.name}).typeId.href
+          );
+          span.end();
+          return obj;
+        } catch (e) {
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: String(e),
+          });
+          span.end();
+          if (!(e instanceof TypeError)) throw e;
+        }
       `;
     }
     yield `
-      throw new TypeError("Expected an object of any type of: " +
-        ${JSON.stringify(property.range)}.join(", "));
+        throw new TypeError("Expected an object of any type of: " +
+          ${JSON.stringify(property.range)}.join(", "));
+      });
     }
     `;
     if (property.functional || property.singularAccessor) {

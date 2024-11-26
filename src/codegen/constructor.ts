@@ -107,7 +107,7 @@ export async function* generateConstructor(
     }
     `;
   } else {
-    yield "super(values, { documentLoader, contextLoader });";
+    yield "super(values, { documentLoader, contextLoader, tracerProvider });";
   }
   for (const property of type.properties) {
     const fieldName = await getFieldName(property.uri);
