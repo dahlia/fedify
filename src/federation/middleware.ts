@@ -1062,8 +1062,27 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     };
     this.actorCallbacks = callbacks;
     const setters: ActorCallbackSetters<TContextData> = {
-      setKeyPairsDispatcher(dispatcher: ActorKeyPairsDispatcher<TContextData>) {
-        callbacks.keyPairsDispatcher = dispatcher;
+      setKeyPairsDispatcher: (
+        dispatcher: ActorKeyPairsDispatcher<TContextData>,
+      ) => {
+        callbacks.keyPairsDispatcher = (ctx, identifier) =>
+          this.#getTracer().startActiveSpan(
+            "activitypub.dispatch_actor_key_pairs",
+            { kind: SpanKind.SERVER },
+            async (span) => {
+              try {
+                return await dispatcher(ctx, identifier);
+              } catch (e) {
+                span.setStatus({
+                  code: SpanStatusCode.ERROR,
+                  message: String(e),
+                });
+                throw e;
+              } finally {
+                span.end();
+              }
+            },
+          );
         return setters;
       },
       mapHandle(mapper: ActorHandleMapper<TContextData>) {
