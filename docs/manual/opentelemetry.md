@@ -120,6 +120,7 @@ spans:
 | Span name                        | [Span kind] | Description                           |
 |----------------------------------|-------------|---------------------------------------|
 | `{method} {template}`            | Server      | Serves the incoming HTTP request.     |
+| `activitypub.dispatch_actor`     | Server      | Dispatches the ActivityPub actor.     |
 | `activitypub.get_actor_handle`   | Client      | Resolves the actor handle.            |
 | `activitypub.lookup_object`      | Client      | Looks up the Activity Streams object. |
 | `activitypub.parse_object`       | Internal    | Parses the Activity Streams object.   |

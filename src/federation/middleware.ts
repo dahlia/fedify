@@ -36,6 +36,7 @@ import {
   traverseCollection,
   type TraverseCollectionOptions,
 } from "../vocab/lookup.ts";
+import { getTypeId } from "../vocab/type.ts";
 import {
   Activity,
   type Collection,
@@ -840,7 +841,36 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     const callbacks: ActorCallbacks<TContextData> = {
       dispatcher: async (context, identifier) => {
-        const actor = await dispatcher(context, identifier);
+        const actor = await this.#getTracer().startActiveSpan(
+          "activitypub.dispatch_actor",
+          { kind: SpanKind.SERVER },
+          async (span) => {
+            try {
+              const actor = await dispatcher(context, identifier);
+              span.setAttribute(
+                "activitypub.actor.id",
+                (actor?.id ?? context.getActorUri(identifier)).href,
+              );
+              if (actor == null) {
+                span.setStatus({ code: SpanStatusCode.ERROR });
+              } else {
+                span.setAttribute(
+                  "activitypub.actor.type",
+                  getTypeId(actor).href,
+                );
+              }
+              return actor;
+            } catch (error) {
+              span.setStatus({
+                code: SpanStatusCode.ERROR,
+                message: String(error),
+              });
+              throw error;
+            } finally {
+              span.end();
+            }
+          },
+        );
         if (actor == null) return null;
         const logger = getLogger(["fedify", "federation", "actor"]);
         if (actor.id == null) {
