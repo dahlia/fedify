@@ -50,6 +50,7 @@ async function* generateClass(
     yield `
     readonly #documentLoader?: DocumentLoader;
     readonly #contextLoader?: DocumentLoader;
+    readonly #tracerProvider?: TracerProvider;
     readonly id: URL | null;
 
     protected get _documentLoader(): DocumentLoader | undefined {
@@ -58,6 +59,10 @@ async function* generateClass(
 
     protected get _contextLoader(): DocumentLoader | undefined {
       return this.#contextLoader;
+    }
+
+    protected get _tracerProvider(): TracerProvider | undefined {
+        return this.#tracerProvider;
     }
     `;
   }
@@ -95,6 +100,8 @@ export async function* generateClasses(
   yield "// @ts-ignore TS7016\n";
   yield 'import jsonld from "jsonld";\n';
   yield 'import { getLogger } from "@logtape/logtape";\n';
+  yield `import { type Span, SpanStatusCode, type TracerProvider, trace }
+    from "@opentelemetry/api";\n`;
   yield `import { LanguageTag, parseLanguageTag }
     from "@phensley/language-tag";\n`;
   yield `import { decode as decodeMultibase, encode as encodeMultibase }

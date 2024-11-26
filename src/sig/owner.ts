@@ -1,3 +1,4 @@
+import { trace, type TracerProvider } from "@opentelemetry/api";
 import {
   type DocumentLoader,
   getDocumentLoader,
@@ -12,6 +13,7 @@ export { exportJwk, generateCryptoKeyPair, importJwk } from "./key.ts";
 
 /**
  * Options for {@link doesActorOwnKey}.
+ * @since 0.8.0
  */
 export interface DoesActorOwnKeyOptions {
   /**
@@ -23,6 +25,13 @@ export interface DoesActorOwnKeyOptions {
    * The context loader to use for JSON-LD context retrieval.
    */
   contextLoader?: DocumentLoader;
+
+  /**
+   * The OpenTelemetry tracer provider to use for tracing.  If omitted,
+   * the global tracer provider is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -50,6 +59,7 @@ export async function doesActorOwnKey(
 
 /**
  * Options for {@link getKeyOwner}.
+ * @since 0.8.0
  */
 export interface GetKeyOwnerOptions {
   /**
@@ -61,6 +71,13 @@ export interface GetKeyOwnerOptions {
    * The context loader to use for JSON-LD context retrieval.
    */
   contextLoader?: DocumentLoader;
+
+  /**
+   * The OpenTelemetry tracer provider to use for tracing.  If omitted,
+   * the global tracer provider is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -71,11 +88,13 @@ export interface GetKeyOwnerOptions {
  * @param options Options for getting the key owner.
  * @returns The actor that owns the key, or `null` if the key has no known
  *          owner.
+ * @since 0.7.0
  */
 export async function getKeyOwner(
   keyId: URL | CryptographicKey,
   options: GetKeyOwnerOptions,
 ): Promise<Actor | null> {
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
   const documentLoader = options.documentLoader ?? getDocumentLoader();
   const contextLoader = options.contextLoader ?? getDocumentLoader();
   let object: ASObject | CryptographicKey;
@@ -95,6 +114,7 @@ export async function getKeyOwner(
       object = await ASObject.fromJsonLd(keyDoc, {
         documentLoader,
         contextLoader,
+        tracerProvider,
       });
     } catch (e) {
       if (!(e instanceof TypeError)) throw e;
@@ -102,6 +122,7 @@ export async function getKeyOwner(
         object = await CryptographicKey.fromJsonLd(keyDoc, {
           documentLoader,
           contextLoader,
+          tracerProvider,
         });
       } catch (e) {
         if (e instanceof TypeError) return null;
@@ -112,7 +133,11 @@ export async function getKeyOwner(
   let owner: Actor | null = null;
   if (object instanceof CryptographicKey) {
     if (object.ownerId == null) return null;
-    owner = await object.getOwner({ documentLoader, contextLoader });
+    owner = await object.getOwner({
+      documentLoader,
+      contextLoader,
+      tracerProvider,
+    });
   } else if (isActor(object)) {
     owner = object;
   } else {

@@ -1,3 +1,4 @@
+import metadata from "../deno.json" with { type: "json" };
 import { generateField, getFieldName } from "./field.ts";
 import type { TypeSchema } from "./schema.ts";
 import {
@@ -268,6 +269,11 @@ export async function* generateDecoder(
   /**
    * Converts a JSON-LD structure to an object of this type.
    * @param json The JSON-LD structure to convert.
+   * @param options The options to use.
+   *                - \`documentLoader\`: The loader for remote JSON-LD documents.
+   *                - \`contextLoader\`: The loader for remote JSON-LD contexts.
+   *                - \`tracerProvider\`: The OpenTelemetry tracer provider to use.
+   *                  If omitted, the global tracer provider is used.
    * @returns The object of this type.
    * @throws {TypeError} If the given \`json\` is invalid.
    */
@@ -276,6 +282,44 @@ export async function* generateDecoder(
     options: {
       documentLoader?: DocumentLoader,
       contextLoader?: DocumentLoader,
+      tracerProvider?: TracerProvider,
+    } = {},
+  ): Promise<${type.name}> {
+    const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+    const tracer = tracerProvider.getTracer(
+      ${JSON.stringify(metadata.name)},
+      ${JSON.stringify(metadata.version)},
+    );
+    return await tracer.startActiveSpan(
+      "activitypub.parse_object",
+      async (span) => {
+        try {
+          const object = await this.__fromJsonLd__${type.name}__(
+            json, span, options);
+          if (object.id != null) {
+            span.setAttribute("activitypub.object.id", object.id.href);
+          }
+          return object;
+        } catch (error) {
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: String(error),
+          });
+          throw error;
+        } finally {
+          span.end();
+        }
+      },
+    );
+  }
+
+  protected static async __fromJsonLd__${type.name}__(
+    json: unknown,
+    span: Span,
+    options: {
+      documentLoader?: DocumentLoader,
+      contextLoader?: DocumentLoader,
+      tracerProvider?: TracerProvider,
     } = {},
   ): Promise<${type.name}> {
     if (typeof json === "undefined") {
@@ -286,6 +330,7 @@ export async function* generateDecoder(
       ...options,
       documentLoader: options.documentLoader ?? getDocumentLoader(),
       contextLoader: options.contextLoader ?? getDocumentLoader(),
+      tracerProvider: options.tracerProvider ?? trace.getTracerProvider(),
     };
     // deno-lint-ignore no-explicit-any
     let values: Record<string, any[]> & { "@id"?: string };
@@ -303,6 +348,9 @@ export async function* generateDecoder(
   `;
   const subtypes = getSubtypes(typeUri, types, true);
   yield `
+  if ("@type" in values) {
+    span.setAttribute("activitypub.object.type", values["@type"]);
+  }
   if ("@type" in values &&
       !values["@type"].every(t => t.startsWith("_:"))) {
   `;

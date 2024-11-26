@@ -55,12 +55,15 @@ async function* generateProperty(
         documentLoader?: DocumentLoader,
         contextLoader?: DocumentLoader,
         suppressError?: boolean,
+        tracerProvider?: TracerProvider,
       } = {}
     ): Promise<${getTypeNames(property.range, types)} | null> {
       const documentLoader =
         options.documentLoader ?? this._documentLoader ?? getDocumentLoader();
       const contextLoader =
         options.contextLoader ?? this._contextLoader ?? getDocumentLoader();
+      const tracerProvider = options.tracerProvider ??
+        this._tracerProvider ?? trace.getTracerProvider();
       let fetchResult: RemoteDocument;
       try {
         fetchResult = await documentLoader(url.href);
@@ -83,7 +86,7 @@ async function* generateProperty(
       try {
         return await ${rangeType.name}.fromJsonLd(
           document,
-          { documentLoader, contextLoader },
+          { documentLoader, contextLoader, tracerProvider },
         );
       } catch (e) {
         if (!(e instanceof TypeError)) throw e;
@@ -116,6 +119,7 @@ async function* generateProperty(
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
+          tracerProvider?: TracerProvider,
         } = {}
       ): Promise<${getTypeNames(property.range, types)} | null> {
         if (this.${await getFieldName(property.uri)}.length < 1) return null;
@@ -151,6 +155,7 @@ async function* generateProperty(
           documentLoader?: DocumentLoader,
           contextLoader?: DocumentLoader,
           suppressError?: boolean,
+          tracerProvider?: TracerProvider,
         } = {}
       ): AsyncIterable<${getTypeNames(property.range, types)}> {
         const vs = this.${await getFieldName(property.uri)};

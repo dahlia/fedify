@@ -1,3 +1,4 @@
+import { trace } from "@opentelemetry/api";
 import type {
   Context,
   InboxContext,
@@ -16,6 +17,7 @@ export function createContext<TContextData>(
     data,
     documentLoader,
     contextLoader,
+    tracerProvider,
     getNodeInfoUri,
     getActorUri,
     getObjectUri,
@@ -45,6 +47,7 @@ export function createContext<TContextData>(
     hostname: url.hostname,
     documentLoader: documentLoader ?? mockDocumentLoader,
     contextLoader: contextLoader ?? mockDocumentLoader,
+    tracerProvider: tracerProvider ?? trace.getTracerProvider(),
     getNodeInfoUri: getNodeInfoUri ?? throwRouteError,
     getActorUri: getActorUri ?? throwRouteError,
     getObjectUri: getObjectUri ?? throwRouteError,

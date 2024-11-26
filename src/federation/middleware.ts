@@ -543,6 +543,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         documentLoader: rsaKeyPair == null
           ? this.documentLoader
           : this.authenticatedDocumentLoaderFactory(rsaKeyPair),
+        tracerProvider: this.tracerProvider,
       });
       try {
         this.onOutboxError?.(error as Error, activity);
@@ -2219,6 +2220,10 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
     return this.federation.contextLoader;
   }
 
+  get tracerProvider(): TracerProvider {
+    return this.federation.tracerProvider;
+  }
+
   getNodeInfoUri(): URL {
     const path = this.federation.router.build("nodeInfo", {});
     if (path == null) {
@@ -2648,7 +2653,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
       documentLoader: options.documentLoader ?? this.documentLoader,
       contextLoader: options.contextLoader ?? this.contextLoader,
       userAgent: options.userAgent ?? this.federation.userAgent,
-      tracerProvider: options.tracerProvider ?? this.federation.tracerProvider,
+      tracerProvider: options.tracerProvider ?? this.tracerProvider,
     });
   }
 
@@ -2897,7 +2902,7 @@ class RequestContextImpl<TContextData> extends ContextImpl<TContextData>
     return this.#signedKey = await verifyRequest(this.request, {
       ...this,
       timeWindow: this.federation.signatureTimeWindow,
-      tracerProvider: this.federation.tracerProvider,
+      tracerProvider: this.tracerProvider,
     });
   }
 
@@ -3079,7 +3084,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
             activity: this.activity,
             activityId: activityId,
             inbox: new URL(inbox),
-            tracerProvider: this.federation.tracerProvider,
+            tracerProvider: this.tracerProvider,
           }),
         );
       }

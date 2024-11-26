@@ -87,9 +87,11 @@ export async function* generateConstructor(
     {
       documentLoader,
       contextLoader,
+      tracerProvider,
     }: {
       documentLoader?: DocumentLoader,
       contextLoader?: DocumentLoader,
+      tracerProvider?: TracerProvider,
     } = {},
   ) {
   `;
@@ -97,6 +99,7 @@ export async function* generateConstructor(
     yield `
     this.#documentLoader = documentLoader;
     this.#contextLoader = contextLoader;
+    this.#tracerProvider = tracerProvider;
     if (values.id == null || values.id instanceof URL) {
       this.id = values.id ?? null;
     } else {

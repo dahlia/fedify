@@ -171,6 +171,7 @@ async function lookupObjectInternal(
     return await Object.fromJsonLd(document, {
       documentLoader,
       contextLoader: options.contextLoader,
+      tracerProvider: options.tracerProvider,
     });
   } catch (error) {
     if (error instanceof TypeError) {

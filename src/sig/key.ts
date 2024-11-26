@@ -1,4 +1,5 @@
 import { getLogger } from "@logtape/logtape";
+import type { TracerProvider } from "@opentelemetry/api";
 import {
   type DocumentLoader,
   getDocumentLoader,
@@ -151,6 +152,13 @@ export interface FetchKeyOptions {
    * @since 0.12.0
    */
   keyCache?: KeyCache;
+
+  /**
+   * The OpenTelemetry tracer provider to use for tracing.  If omitted,
+   * the global tracer provider is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -191,10 +199,12 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
       options: {
         documentLoader?: DocumentLoader;
         contextLoader?: DocumentLoader;
+        tracerProvider?: TracerProvider;
       },
     ): Promise<T>;
   },
-  { documentLoader, contextLoader, keyCache }: FetchKeyOptions = {},
+  { documentLoader, contextLoader, keyCache, tracerProvider }: FetchKeyOptions =
+    {},
 ): Promise<FetchKeyResult<T>> {
   const logger = getLogger(["fedify", "sig", "key"]);
   const cacheKey = typeof keyId === "string" ? new URL(keyId) : keyId;
@@ -230,6 +240,7 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
     object = await Object.fromJsonLd(document, {
       documentLoader,
       contextLoader,
+      tracerProvider,
     });
   } catch (e) {
     if (!(e instanceof TypeError)) throw e;
@@ -237,6 +248,7 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
       object = await cls.fromJsonLd(document, {
         documentLoader,
         contextLoader,
+        tracerProvider,
       });
     } catch (e) {
       if (e instanceof TypeError) {
@@ -255,8 +267,12 @@ export async function fetchKey<T extends CryptographicKey | Multikey>(
   else if (isActor(object)) {
     // @ts-ignore: cls is either CryptographicKey or Multikey
     const keys = cls === CryptographicKey
-      ? object.getPublicKeys({ documentLoader, contextLoader })
-      : object.getAssertionMethods({ documentLoader, contextLoader });
+      ? object.getPublicKeys({ documentLoader, contextLoader, tracerProvider })
+      : object.getAssertionMethods({
+        documentLoader,
+        contextLoader,
+        tracerProvider,
+      });
     for await (const k of keys) {
       if (k.id?.href === keyId) {
         key = k as T;

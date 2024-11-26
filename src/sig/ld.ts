@@ -234,6 +234,13 @@ export interface VerifySignatureOptions {
    * The key cache to use for caching public keys.
    */
   keyCache?: KeyCache;
+
+  /**
+   * The OpenTelemetry tracer provider for tracing the verification process.
+   * If omitted, the global tracer provider is used.
+   * @since 1.3.0
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**
@@ -351,12 +358,6 @@ export async function verifySignature(
  * Options for verifying JSON-LD documents.
  */
 export interface VerifyJsonLdOptions extends VerifySignatureOptions {
-  /**
-   * The OpenTelemetry tracer provider for tracing the verification process.
-   * If omitted, the global tracer provider is used.
-   * @since 1.3.0
-   */
-  tracerProvider?: TracerProvider;
 }
 
 /**

@@ -1,6 +1,7 @@
 import { assertEquals } from "@std/assert";
 import { dirname, join } from "@std/path";
 import { assertSnapshot } from "@std/testing/snapshot";
+import metadata from "../deno.json" with { type: "json" };
 import { test } from "../testing/mod.ts";
 import { generateClasses, sortTopologically } from "./class.ts";
 import { loadSchemaFiles } from "./schema.ts";
@@ -72,5 +73,9 @@ test("generateClasses()", async (t) => {
   for await (const code of generateClasses(types, runtimePath)) {
     entireCode += code;
   }
+  entireCode = entireCode.replaceAll(
+    JSON.stringify(metadata.version),
+    '"0.0.0"',
+  );
   await assertSnapshot(t, entireCode);
 });

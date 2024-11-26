@@ -245,6 +245,7 @@ async function verifyRequestInternal(
     timeWindow,
     currentTime,
     keyCache,
+    tracerProvider,
   }: VerifyRequestOptions = {},
 ): Promise<CryptographicKey | null> {
   const logger = getLogger(["fedify", "sig", "http"]);
@@ -396,6 +397,7 @@ async function verifyRequestInternal(
     documentLoader,
     contextLoader,
     keyCache,
+    tracerProvider,
   });
   if (key == null) return null;
   const headerNames = headers.split(/\s+/g);

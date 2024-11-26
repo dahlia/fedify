@@ -61,6 +61,7 @@ To be released.
 
  -  Fedify now supports OpenTelemetry for tracing.  [[#170]]
 
+     -  Added `Context.tracerProvider` property.
      -  Added `CreateFederationOptions.tracerProvider` option.
      -  Added `LookupWebFingerOptions.tracerProvider` option.
      -  Added `LookupObjectOptions.tracerProvider` option.
@@ -71,8 +72,17 @@ To be released.
      -  Added `VerifyProofOptions.tracerProvider` option.
      -  Added `VerifyObjectOptions.tracerProvider` option.
      -  Added `SignObjectOptions.tracerProvider` option.
+     -  Added `VerifySignatureOptions.tracerProvider` option.
      -  Added `VerifyJsonLdOptions.tracerProvider` option.
      -  Added `SignJsonLdOptions.tracerProvider` option.
+     -  Added `DoesActorOwnKeyOptions.tracerProvider` option.
+     -  Added `GetKeyOwnerOptions.tracerProvider` option.
+
+     -  Added `tracerProvider` option to the following Activity Vocabulary APIs:
+
+         -  The second parameters of constructors.
+         -  The second parameters of `fromJsonLd()` static methods.
+         -  The second parameters of `get*()` methods.
 
  -  Added `@fedify/fedify/x/sveltekit` module for integrating with [SvelteKit]
     hook.  [[#171], [#183] by Jiyu Park]

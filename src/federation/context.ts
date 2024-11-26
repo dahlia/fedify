@@ -1,3 +1,4 @@
+import { TracerProvider } from "@opentelemetry/api";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
 import type {
@@ -44,6 +45,12 @@ export interface Context<TContextData> {
    * The user-defined data associated with the context.
    */
   readonly data: TContextData;
+
+  /**
+   * The OpenTelemetry tracer provider.
+   * @since 1.3.0
+   */
+  readonly tracerProvider: TracerProvider;
 
   /**
    * The document loader for loading remote JSON-LD documents.
