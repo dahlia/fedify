@@ -5,6 +5,7 @@
  */
 export {
   signRequest,
+  type SignRequestOptions,
   verifyRequest,
   type VerifyRequestOptions,
 } from "./http.ts";
