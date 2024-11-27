@@ -843,7 +843,10 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       dispatcher: async (context, identifier) => {
         const actor = await this.#getTracer().startActiveSpan(
           "activitypub.dispatch_actor",
-          { kind: SpanKind.SERVER },
+          {
+            kind: SpanKind.SERVER,
+            attributes: { "fedify.actor.identifier": identifier },
+          },
           async (span) => {
             try {
               const actor = await dispatcher(context, identifier);
@@ -1068,7 +1071,13 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         callbacks.keyPairsDispatcher = (ctx, identifier) =>
           this.#getTracer().startActiveSpan(
             "activitypub.dispatch_actor_key_pairs",
-            { kind: SpanKind.SERVER },
+            {
+              kind: SpanKind.SERVER,
+              attributes: {
+                "activitypub.actor.id": ctx.getActorUri(identifier).href,
+                "fedify.actor.identifier": identifier,
+              },
+            },
             async (span) => {
               try {
                 return await dispatcher(ctx, identifier);
