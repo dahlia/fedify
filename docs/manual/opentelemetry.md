@@ -122,6 +122,7 @@ spans:
 | `{method} {template}`                  | Server      | Serves the incoming HTTP request.           |
 | `activitypub.dispatch_actor`           | Server      | Dispatches the ActivityPub actor.           |
 | `activitypub.dispatch_actor_key_pairs` | Server      | Dispatches the ActivityPub actor key pairs. |
+| `activitypub.dispatch_object`          | Server      | Dispatches the Activity Streams object.     |
 | `activitypub.get_actor_handle`         | Client      | Resolves the actor handle.                  |
 | `activitypub.lookup_object`            | Client      | Looks up the Activity Streams object.       |
 | `activitypub.parse_object`             | Internal    | Parses the Activity Streams object.         |
@@ -162,6 +163,8 @@ for ActivityPub:
 | `activitypub.inboxes`                 | int      | The number of inboxes the activity is sent to.                                           | `12`                                                                 |
 | `activitypub.shared_inbox`            | boolean  | Whether the activity is sent to the shared inbox.                                        | `true`                                                               |
 | `fedify.actor.identifier`             | string   | The identifier of the actor.                                                             | `"1"`                                                                |
+| `fedify.object.type`                  | string   | The URI of the object type.                                                              | `"https://www.w3.org/ns/activitystreams#Note"`                       |
+| `fedify.object.values.{parameter}`    | string[] | The argument values of the object dispatcher.                                            | `["1", "2"]`                                                         |
 | `http_signatures.signature`           | string   | The signature of the HTTP request in hexadecimal.                                        | `"73a74c990beabe6e59cc68f9c6db7811b59cbb22fd12dcffb3565b651540efe9"` |
 | `http_signatures.algorithm`           | string   | The algorithm of the HTTP request signature.                                             | `"rsa-sha256"`                                                       |
 | `http_signatures.key_id`              | string   | The public key ID of the HTTP request signature.                                         | `"https://example.com/actor/1#main-key"`                             |

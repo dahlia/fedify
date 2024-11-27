@@ -1163,7 +1163,50 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       );
     }
     const callbacks: ObjectCallbacks<TContextData, TParam> = {
-      dispatcher,
+      dispatcher: (ctx, values) => {
+        const tracer = this.#getTracer();
+        return tracer.startActiveSpan(
+          "activitypub.dispatch_object",
+          {
+            kind: SpanKind.SERVER,
+            attributes: {
+              "fedify.object.type": cls.typeId.href,
+              ...globalThis.Object.fromEntries(
+                globalThis.Object.entries(values).map(([k, v]) => [
+                  `fedify.object.values.${k}`,
+                  v,
+                ]),
+              ),
+            },
+          },
+          async (span) => {
+            try {
+              const object = await dispatcher(ctx, values);
+              span.setAttribute(
+                "activitypub.object.id",
+                (object?.id ?? ctx.getObjectUri(cls, values)).href,
+              );
+              if (object == null) {
+                span.setStatus({ code: SpanStatusCode.ERROR });
+              } else {
+                span.setAttribute(
+                  "activitypub.object.type",
+                  getTypeId(object).href,
+                );
+              }
+              return object;
+            } catch (e) {
+              span.setStatus({
+                code: SpanStatusCode.ERROR,
+                message: String(e),
+              });
+              throw e;
+            } finally {
+              span.end();
+            }
+          },
+        );
+      },
       parameters: variables as unknown as Set<TParam>,
     };
     this.objectCallbacks[cls.typeId.href] = callbacks;
