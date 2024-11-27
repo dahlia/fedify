@@ -1,5 +1,11 @@
 import { getLogger } from "@logtape/logtape";
-import type { TracerProvider } from "@opentelemetry/api";
+import {
+  SpanKind,
+  SpanStatusCode,
+  trace,
+  type TracerProvider,
+} from "@opentelemetry/api";
+import metadata from "../deno.json" with { type: "json" };
 import { signRequest } from "../sig/http.ts";
 import type { Recipient } from "../vocab/actor.ts";
 
@@ -37,12 +43,20 @@ export interface ExtractInboxesParameters {
  */
 export function extractInboxes(
   { recipients, preferSharedInbox, excludeBaseUris }: ExtractInboxesParameters,
-): Record<string, Set<string>> {
-  const inboxes: Record<string, Set<string>> = {};
+): Record<string, { actorIds: Set<string>; sharedInbox: boolean }> {
+  const inboxes: Record<
+    string,
+    { actorIds: Set<string>; sharedInbox: boolean }
+  > = {};
   for (const recipient of recipients) {
-    const inbox = preferSharedInbox
-      ? recipient.endpoints?.sharedInbox ?? recipient.inboxId
-      : recipient.inboxId;
+    let inbox: URL | null;
+    let sharedInbox = false;
+    if (preferSharedInbox && recipient.endpoints?.sharedInbox != null) {
+      inbox = recipient.endpoints.sharedInbox;
+      sharedInbox = true;
+    } else {
+      inbox = recipient.inboxId;
+    }
     if (inbox != null && recipient.id != null) {
       if (
         excludeBaseUris != null &&
@@ -50,8 +64,8 @@ export function extractInboxes(
       ) {
         continue;
       }
-      inboxes[inbox.href] ??= new Set();
-      inboxes[inbox.href].add(recipient.id.href);
+      inboxes[inbox.href] ??= { actorIds: new Set(), sharedInbox };
+      inboxes[inbox.href].actorIds.add(recipient.id.href);
     }
   }
   return inboxes;
@@ -89,6 +103,12 @@ export interface SendActivityParameters {
   activityId?: string | null;
 
   /**
+   * The qualified URI of the activity type.
+   * @since 1.3.0
+   */
+  activityType?: string;
+
+  /**
    * The key pairs of the sender to sign the request.  It must not be empty.
    * @since 0.10.0
    */
@@ -98,6 +118,12 @@ export interface SendActivityParameters {
    * The inbox URL to send the activity to.
    */
   inbox: URL;
+
+  /**
+   * Whether the inbox is a shared inbox.
+   * @since 1.3.0
+   */
+  sharedInbox?: boolean;
 
   /**
    * Additional headers to include in the request.
@@ -119,7 +145,39 @@ export interface SendActivityParameters {
  *                   See also {@link SendActivityParameters}.
  * @throws {Error} If the activity fails to send.
  */
-export async function sendActivity(
+export function sendActivity(
+  options: SendActivityParameters,
+): Promise<void> {
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  return tracer.startActiveSpan(
+    "activitypub.send_activity",
+    {
+      kind: SpanKind.CLIENT,
+      attributes: {
+        "activitypub.shared_inbox": options.sharedInbox ?? false,
+      },
+    },
+    async (span) => {
+      if (options.activityId != null) {
+        span.setAttribute("activitypub.activity.id", options.activityId);
+      }
+      if (options.activityType != null) {
+        span.setAttribute("activitypub.activity.type", options.activityType);
+      }
+      try {
+        await sendActivityInternal({ ...options, tracerProvider });
+      } catch (e) {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: String(e) });
+        throw e;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function sendActivityInternal(
   {
     activity,
     activityId,

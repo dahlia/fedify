@@ -534,7 +534,9 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         keys,
         activity: message.activity,
         activityId: message.activityId,
+        activityType: message.activityType,
         inbox: new URL(message.inbox),
+        sharedInbox: message.sharedInbox,
         headers: new Headers(message.headers),
         tracerProvider: this.tracerProvider,
       });
@@ -647,7 +649,12 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     try {
       await listener(
-        context.toInboxContext(message.identifier, message.activity),
+        context.toInboxContext(
+          message.identifier,
+          message.activity,
+          activity.id?.href,
+          getTypeId(activity).href,
+        ),
         activity,
       );
     } catch (error) {
@@ -1941,12 +1948,14 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
             keys,
             activity: jsonLd,
             activityId: activity.id?.href,
+            activityType: getTypeId(activity).href,
             inbox: new URL(inbox),
+            sharedInbox: inboxes[inbox].sharedInbox,
             headers: collectionSync == null ? undefined : new Headers({
               "Collection-Synchronization":
                 await buildCollectionSynchronizationHeader(
                   collectionSync,
-                  inboxes[inbox],
+                  inboxes[inbox].actorIds,
                 ),
             }),
             tracerProvider: this.tracerProvider,
@@ -1973,14 +1982,16 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         keys: keyJwkPairs,
         activity: jsonLd,
         activityId: activity.id?.href,
+        activityType: getTypeId(activity).href,
         inbox,
+        sharedInbox: inboxes[inbox].sharedInbox,
         started: new Date().toISOString(),
         attempt: 0,
         headers: collectionSync == null ? {} : {
           "Collection-Synchronization":
             await buildCollectionSynchronizationHeader(
               collectionSync,
-              inboxes[inbox],
+              inboxes[inbox].actorIds,
             ),
         },
       };
@@ -2301,8 +2312,10 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
   toInboxContext(
     recipient: string | null,
     activity: unknown,
+    activityId: string | undefined,
+    activityType: string,
   ): InboxContextImpl<TContextData> {
-    return new InboxContextImpl(recipient, activity, {
+    return new InboxContextImpl(recipient, activity, activityId, activityType, {
       url: this.url,
       federation: this.federation,
       data: this.data,
@@ -3028,15 +3041,21 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
   implements InboxContext<TContextData> {
   readonly recipient: string | null;
   readonly activity: unknown;
+  readonly activityId?: string;
+  readonly activityType: string;
 
   constructor(
     recipient: string | null,
     activity: unknown,
+    activityId: string | undefined,
+    activityType: string,
     options: ContextOptions<TContextData>,
   ) {
     super(options);
     this.recipient = recipient;
     this.activity = activity;
+    this.activityId = activityId;
+    this.activityType = activityType;
   }
 
   forwardActivity(
@@ -3119,12 +3138,10 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
     } else {
       keys = [forwarder];
     }
-    let activityId: string | undefined = undefined;
     if (!hasSignature(this.activity)) {
       let hasProof: boolean;
       try {
         const activity = await Activity.fromJsonLd(this.activity, this);
-        activityId = activity.id?.href;
         hasProof = await activity.getProof() != null;
       } catch {
         hasProof = false;
@@ -3137,17 +3154,6 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
             "them due to the lack of a signature/proof.",
         );
       }
-    }
-    if (
-      activityId == null && typeof this.activity === "object" &&
-      this.activity != null
-    ) {
-      activityId =
-        "@id" in this.activity && typeof this.activity["@id"] === "string"
-          ? this.activity["@id"]
-          : "id" in this.activity && typeof this.activity.id === "string"
-          ? this.activity.id
-          : undefined;
     }
     if (recipients === "followers") {
       if (identifier == null) {
@@ -3169,7 +3175,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
     });
     logger.debug("Forwarding activity {activityId} to inboxes:\n{inboxes}", {
       inboxes: globalThis.Object.keys(inboxes),
-      activityId,
+      activityId: this.activityId,
       activity: this.activity,
     });
     if (options?.immediate || this.federation.outboxQueue == null) {
@@ -3190,8 +3196,10 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
           sendActivity({
             keys,
             activity: this.activity,
-            activityId: activityId,
+            activityId: this.activityId,
+            activityType: this.activityType,
             inbox: new URL(inbox),
+            sharedInbox: inboxes[inbox].sharedInbox,
             tracerProvider: this.tracerProvider,
           }),
         );
@@ -3201,7 +3209,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
     }
     logger.debug(
       "Enqueuing activity {activityId} to forward later.",
-      { activityId, activity: this.activity },
+      { activityId: this.activityId, activity: this.activity },
     );
     const keyJwkPairs: SenderKeyJwkPair[] = [];
     for (const { keyId, privateKey } of keys) {
@@ -3214,8 +3222,10 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
         id: crypto.randomUUID(),
         keys: keyJwkPairs,
         activity: this.activity,
-        activityId,
+        activityId: this.activityId,
+        activityType: this.activityType,
         inbox,
+        sharedInbox: inboxes[inbox].sharedInbox,
         started: new Date().toISOString(),
         attempt: 0,
         headers: {},

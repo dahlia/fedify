@@ -10,6 +10,7 @@ import { detachSignature, verifyJsonLd } from "../sig/ld.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { verifyObject } from "../sig/proof.ts";
 import type { Recipient } from "../vocab/actor.ts";
+import { getTypeId } from "../vocab/type.ts";
 import {
   Activity,
   CryptographicKey,
@@ -411,6 +412,8 @@ export interface InboxHandlerParameters<TContextData> {
   inboxContextFactory(
     recipient: string | null,
     activity: unknown,
+    activityId: string | undefined,
+    activityType: string,
   ): InboxContext<TContextData>;
   kv: KvStore;
   kvPrefixes: {
@@ -683,7 +686,15 @@ export async function handleInbox<TContextData>(
     });
   }
   try {
-    await listener(inboxContextFactory(recipient, json), activity);
+    await listener(
+      inboxContextFactory(
+        recipient,
+        json,
+        activity.id?.href,
+        getTypeId(activity).href,
+      ),
+      activity,
+    );
   } catch (error) {
     try {
       await inboxErrorHandler?.(context, error as Error);

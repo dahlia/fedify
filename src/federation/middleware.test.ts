@@ -29,6 +29,7 @@ import {
 } from "../testing/keys.ts";
 import { test } from "../testing/mod.ts";
 import { lookupObject } from "../vocab/lookup.ts";
+import { getTypeId } from "../vocab/type.ts";
 import {
   Activity,
   Create,
@@ -1217,12 +1218,18 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
       "id": "https://example.com/activity",
       "actor": "https://example.com/person2",
     };
-    const ctx = new InboxContextImpl(null, activity, {
-      data: undefined,
-      federation,
-      url: new URL("https://example.com/"),
-      documentLoader: fetchDocumentLoader,
-    });
+    const ctx = new InboxContextImpl(
+      null,
+      activity,
+      "https://example.com/activity",
+      "https://www.w3.org/ns/activitystreams#Create",
+      {
+        data: undefined,
+        federation,
+        url: new URL("https://example.com/"),
+        documentLoader: fetchDocumentLoader,
+      },
+    );
     await ctx.forwardActivity(
       [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
       {
@@ -1241,12 +1248,18 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
       "id": "https://example.com/activity",
       "actor": "https://example.com/person2",
     };
-    const ctx = new InboxContextImpl(null, activity, {
-      data: undefined,
-      federation,
-      url: new URL("https://example.com/"),
-      documentLoader: fetchDocumentLoader,
-    });
+    const ctx = new InboxContextImpl(
+      null,
+      activity,
+      "https://example.com/activity",
+      "https://www.w3.org/ns/activitystreams#Create",
+      {
+        data: undefined,
+        federation,
+        url: new URL("https://example.com/"),
+        documentLoader: fetchDocumentLoader,
+      },
+    );
     await assertRejects(() =>
       ctx.forwardActivity(
         [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
@@ -1272,6 +1285,8 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
     const ctx = new InboxContextImpl(
       null,
       await activity.toJsonLd({ contextLoader: mockDocumentLoader }),
+      activity.id?.href,
+      getTypeId(activity).href,
       {
         data: undefined,
         federation,
@@ -1302,12 +1317,18 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
       rsaPublicKey3.id!,
       { contextLoader: mockDocumentLoader },
     );
-    const ctx = new InboxContextImpl(null, activity, {
-      data: undefined,
-      federation,
-      url: new URL("https://example.com/"),
-      documentLoader: fetchDocumentLoader,
-    });
+    const ctx = new InboxContextImpl(
+      null,
+      activity,
+      "https://example.com/activity",
+      "https://www.w3.org/ns/activitystreams#Create",
+      {
+        data: undefined,
+        federation,
+        url: new URL("https://example.com/"),
+        documentLoader: fetchDocumentLoader,
+      },
+    );
     await ctx.forwardActivity(
       [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
       {

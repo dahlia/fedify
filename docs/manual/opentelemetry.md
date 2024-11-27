@@ -128,6 +128,7 @@ spans:
 | `activitypub.get_actor_handle`                      | Client      | Resolves the actor handle.                  |
 | `activitypub.lookup_object`                         | Client      | Looks up the Activity Streams object.       |
 | `activitypub.parse_object`                          | Internal    | Parses the Activity Streams object.         |
+| `activitypub.send_activity`                         | Client      | Sends the ActivityPub activity.             |
 | `http_signatures.sign`                              | Internal    | Signs the HTTP request.                     |
 | `http_signatures.verify`                            | Internal    | Verifies the HTTP request signature.        |
 | `ld_signatures.sign`                                | Internal    | Makes the Linked Data signature.            |

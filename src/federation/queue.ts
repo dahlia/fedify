@@ -11,7 +11,9 @@ export interface OutboxMessage {
   keys: SenderKeyJwkPair[];
   activity: unknown;
   activityId?: string;
+  activityType: string;
   inbox: string;
+  sharedInbox: boolean;
   started: string;
   attempt: number;
   headers: Record<string, string>;

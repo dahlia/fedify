@@ -59,24 +59,43 @@ test("extractInboxes()", () => {
   assertEquals(
     inboxes,
     {
-      "https://example.com/alice/inbox": new Set(["https://example.com/alice"]),
-      "https://example.com/app/inbox": new Set(["https://example.com/app"]),
-      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
-      "https://example.net/service/inbox": new Set([
-        "https://example.net/service",
-      ]),
+      "https://example.com/alice/inbox": {
+        actorIds: new Set(["https://example.com/alice"]),
+        sharedInbox: false,
+      },
+      "https://example.com/app/inbox": {
+        actorIds: new Set(["https://example.com/app"]),
+        sharedInbox: false,
+      },
+      "https://example.org/group/inbox": {
+        actorIds: new Set(["https://example.org/group"]),
+        sharedInbox: false,
+      },
+      "https://example.net/service/inbox": {
+        actorIds: new Set(["https://example.net/service"]),
+        sharedInbox: false,
+      },
     },
   );
   inboxes = extractInboxes({ recipients, preferSharedInbox: true });
   assertEquals(
     inboxes,
     {
-      "https://example.com/inbox": new Set([
-        "https://example.com/alice",
-        "https://example.com/app",
-      ]),
-      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
-      "https://example.net/inbox": new Set(["https://example.net/service"]),
+      "https://example.com/inbox": {
+        actorIds: new Set([
+          "https://example.com/alice",
+          "https://example.com/app",
+        ]),
+        sharedInbox: true,
+      },
+      "https://example.org/group/inbox": {
+        actorIds: new Set(["https://example.org/group"]),
+        sharedInbox: false,
+      },
+      "https://example.net/inbox": {
+        actorIds: new Set(["https://example.net/service"]),
+        sharedInbox: true,
+      },
     },
   );
   inboxes = extractInboxes({
@@ -86,12 +105,22 @@ test("extractInboxes()", () => {
   assertEquals(
     inboxes,
     {
-      "https://example.com/alice/inbox": new Set(["https://example.com/alice"]),
-      "https://example.com/app/inbox": new Set(["https://example.com/app"]),
-      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
-      "https://example.net/service/inbox": new Set([
-        "https://example.net/service",
-      ]),
+      "https://example.com/alice/inbox": {
+        actorIds: new Set(["https://example.com/alice"]),
+        sharedInbox: false,
+      },
+      "https://example.com/app/inbox": {
+        actorIds: new Set(["https://example.com/app"]),
+        sharedInbox: false,
+      },
+      "https://example.org/group/inbox": {
+        actorIds: new Set(["https://example.org/group"]),
+        sharedInbox: false,
+      },
+      "https://example.net/service/inbox": {
+        actorIds: new Set(["https://example.net/service"]),
+        sharedInbox: false,
+      },
     },
   );
   inboxes = extractInboxes({
@@ -101,10 +130,14 @@ test("extractInboxes()", () => {
   assertEquals(
     inboxes,
     {
-      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
-      "https://example.net/service/inbox": new Set([
-        "https://example.net/service",
-      ]),
+      "https://example.org/group/inbox": {
+        actorIds: new Set(["https://example.org/group"]),
+        sharedInbox: false,
+      },
+      "https://example.net/service/inbox": {
+        actorIds: new Set(["https://example.net/service"]),
+        sharedInbox: false,
+      },
     },
   );
   inboxes = extractInboxes({
@@ -115,8 +148,14 @@ test("extractInboxes()", () => {
   assertEquals(
     inboxes,
     {
-      "https://example.org/group/inbox": new Set(["https://example.org/group"]),
-      "https://example.net/inbox": new Set(["https://example.net/service"]),
+      "https://example.org/group/inbox": {
+        actorIds: new Set(["https://example.org/group"]),
+        sharedInbox: false,
+      },
+      "https://example.net/inbox": {
+        actorIds: new Set(["https://example.net/service"]),
+        sharedInbox: true,
+      },
     },
   );
 });
