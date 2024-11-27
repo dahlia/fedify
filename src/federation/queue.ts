@@ -17,6 +17,7 @@ export interface OutboxMessage {
   started: string;
   attempt: number;
   headers: Record<string, string>;
+  traceContext: Record<string, string>;
 }
 
 export interface InboxMessage {

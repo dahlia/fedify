@@ -127,6 +127,9 @@ spans:
 | `activitypub.dispatch_object`                       | Server      | Dispatches the Activity Streams object.     |
 | `activitypub.get_actor_handle`                      | Client      | Resolves the actor handle.                  |
 | `activitypub.lookup_object`                         | Client      | Looks up the Activity Streams object.       |
+| `activitypub.outbox`                                | Client      | Sends the ActivityPub activity.             |
+| `activitypub.outbox`                                | Consumer    | Dequeues the ActivityPub activity to send.  |
+| `activitypub.outbox`                                | Producer    | Enqueues the ActivityPub activity to send.  |
 | `activitypub.parse_object`                          | Internal    | Parses the Activity Streams object.         |
 | `activitypub.send_activity`                         | Client      | Sends the ActivityPub activity.             |
 | `http_signatures.sign`                              | Internal    | Signs the HTTP request.                     |
@@ -157,6 +160,8 @@ for ActivityPub:
 | `activitypub.activity.type`           | string[] | The qualified URI(s) of the activity type(s).                                            | `["https://www.w3.org/ns/activitystreams#Create"]`                   |
 | `activitypub.activity.to`             | string[] | The URI(s) of the recipient collections/actors of the activity.                          | `["https://example.com/1/followers/2"]`                              |
 | `activitypub.activity.cc`             | string[] | The URI(s) of the carbon-copied recipient collections/actors of the activity.            | `["https://www.w3.org/ns/activitystreams#Public"]`                   |
+| `activitypub.activity.bto`            | string[] | The URI(s) of the blind recipient collections/actors of the activity.                    | `["https://example.com/1/followers/2"]`                              |
+| `activitypub.activity.bcc`            | string[] | The URI(s) of the blind carbon-copied recipient collections/actors of the activity.      | `["https://www.w3.org/ns/activitystreams#Public"]`                   |
 | `activitypub.activity.retries`        | int      | The ordinal number of activity resending attempt (if and only if it's retried).          | `3`                                                                  |
 | `activitypub.actor.id`                | string   | The URI of the actor object.                                                             | `"https://example.com/actor/1"`                                      |
 | `activitypub.actor.type`              | string[] | The qualified URI(s) of the actor type(s).                                               | `["https://www.w3.org/ns/activitystreams#Person"]`                   |
