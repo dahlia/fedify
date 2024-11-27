@@ -17,6 +17,7 @@ export {
   createFederation,
   type CreateFederationOptions,
   type FederationKvPrefixes,
+  type FederationQueueOptions,
 } from "./middleware.ts";
 export * from "./mq.ts";
 export * from "./retry.ts";
