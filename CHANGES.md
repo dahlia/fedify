@@ -59,6 +59,9 @@ To be released.
 
  -  Added `getTypeId()` function.
 
+ -  `Context.sendActivity()` and `InboxContext.forwardActivity()` methods now
+    reject when they fail to enqueue the task.  [[#192]]
+
  -  Fedify now supports OpenTelemetry for tracing.  [[#170]]
 
      -  Added `Context.tracerProvider` property.
@@ -103,6 +106,7 @@ To be released.
 [#173]: https://github.com/dahlia/fedify/issues/173
 [#183]: https://github.com/dahlia/fedify/pull/183
 [#186]: https://github.com/dahlia/fedify/pull/186
+[#192]: https://github.com/dahlia/fedify/issues/192
 
 
 Version 1.2.8
