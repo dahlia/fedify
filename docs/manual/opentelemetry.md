@@ -117,23 +117,25 @@ Instrumented spans
 Fedify automatically instruments the following operations with OpenTelemetry
 spans:
 
-| Span name                              | [Span kind] | Description                                 |
-|----------------------------------------|-------------|---------------------------------------------|
-| `{method} {template}`                  | Server      | Serves the incoming HTTP request.           |
-| `activitypub.dispatch_actor`           | Server      | Dispatches the ActivityPub actor.           |
-| `activitypub.dispatch_actor_key_pairs` | Server      | Dispatches the ActivityPub actor key pairs. |
-| `activitypub.dispatch_object`          | Server      | Dispatches the Activity Streams object.     |
-| `activitypub.get_actor_handle`         | Client      | Resolves the actor handle.                  |
-| `activitypub.lookup_object`            | Client      | Looks up the Activity Streams object.       |
-| `activitypub.parse_object`             | Internal    | Parses the Activity Streams object.         |
-| `http_signatures.sign`                 | Internal    | Signs the HTTP request.                     |
-| `http_signatures.verify`               | Internal    | Verifies the HTTP request signature.        |
-| `ld_signatures.sign`                   | Internal    | Makes the Linked Data signature.            |
-| `ld_signatures.verify`                 | Internal    | Verifies the Linked Data signature.         |
-| `object_integrity_proofs.sign`         | Internal    | Makes the object integrity proof.           |
-| `object_integrity_proofs.verify`       | Internal    | Verifies the object integrity proof.        |
-| `webfinger.handle`                     | Server      | Handles the WebFinger request.              |
-| `webfinger.lookup`                     | Client      | Looks up the WebFinger resource.            |
+| Span name                                           | [Span kind] | Description                                 |
+|-----------------------------------------------------|-------------|---------------------------------------------|
+| `{method} {template}`                               | Server      | Serves the incoming HTTP request.           |
+| `activitypub.dispatch_actor`                        | Server      | Dispatches the ActivityPub actor.           |
+| `activitypub.dispatch_actor_key_pairs`              | Server      | Dispatches the ActivityPub actor key pairs. |
+| `activitypub.dispatch_collection {collection}`      | Server      | Dispatches the ActivityPub collection.      |
+| `activitypub.dispatch_collection_page {collection}` | Server      | Dispatches the ActivityPub collection page. |
+| `activitypub.dispatch_object`                       | Server      | Dispatches the Activity Streams object.     |
+| `activitypub.get_actor_handle`                      | Client      | Resolves the actor handle.                  |
+| `activitypub.lookup_object`                         | Client      | Looks up the Activity Streams object.       |
+| `activitypub.parse_object`                          | Internal    | Parses the Activity Streams object.         |
+| `http_signatures.sign`                              | Internal    | Signs the HTTP request.                     |
+| `http_signatures.verify`                            | Internal    | Verifies the HTTP request signature.        |
+| `ld_signatures.sign`                                | Internal    | Makes the Linked Data signature.            |
+| `ld_signatures.verify`                              | Internal    | Verifies the Linked Data signature.         |
+| `object_integrity_proofs.sign`                      | Internal    | Makes the object integrity proof.           |
+| `object_integrity_proofs.verify`                    | Internal    | Verifies the object integrity proof.        |
+| `webfinger.handle`                                  | Server      | Handles the WebFinger request.              |
+| `webfinger.lookup`                                  | Client      | Looks up the WebFinger resource.            |
 
 More operations will be instrumented in the future releases.
 
@@ -157,6 +159,9 @@ for ActivityPub:
 | `activitypub.activity.retries`        | int      | The ordinal number of activity resending attempt (if and only if it's retried).          | `3`                                                                  |
 | `activitypub.actor.id`                | string   | The URI of the actor object.                                                             | `"https://example.com/actor/1"`                                      |
 | `activitypub.actor.type`              | string[] | The qualified URI(s) of the actor type(s).                                               | `["https://www.w3.org/ns/activitystreams#Person"]`                   |
+| `activitypub.collection.id`           | string   | The URI of the collection object.                                                        | `"https://example.com/collection/1"`                                 |
+| `activitypub.collection.type`         | string[] | The qualified URI(s) of the collection type(s).                                          | `["https://www.w3.org/ns/activitystreams#OrderedCollection"]`        |
+| `activitypub.collection.total_items`  | int      | The total number of items in the collection.                                             | `42`                                                                 |
 | `activitypub.object.id`               | string   | The URI of the object or the object enclosed by the activity.                            | `"https://example.com/object/1"`                                     |
 | `activitypub.object.type`             | string[] | The qualified URI(s) of the object type(s).                                              | `["https://www.w3.org/ns/activitystreams#Note"]`                     |
 | `activitypub.object.in_reply_to`      | string[] | The URI(s) of the original object to which the object reply.                             | `["https://example.com/object/1"]`                                   |
@@ -165,6 +170,8 @@ for ActivityPub:
 | `fedify.actor.identifier`             | string   | The identifier of the actor.                                                             | `"1"`                                                                |
 | `fedify.object.type`                  | string   | The URI of the object type.                                                              | `"https://www.w3.org/ns/activitystreams#Note"`                       |
 | `fedify.object.values.{parameter}`    | string[] | The argument values of the object dispatcher.                                            | `["1", "2"]`                                                         |
+| `fedify.collection.cursor`            | string   | The cursor of the collection.                                                            | `"eyJpZCI6IjEiLCJ0eXBlIjoiT3JkZXJlZENvbGxlY3Rpb24ifQ=="`             |
+| `fedify.collection.items`             | number   | The number of items in the collection page.  It can be less than the total items.        | `10`                                                                 |
 | `http_signatures.signature`           | string   | The signature of the HTTP request in hexadecimal.                                        | `"73a74c990beabe6e59cc68f9c6db7811b59cbb22fd12dcffb3565b651540efe9"` |
 | `http_signatures.algorithm`           | string   | The algorithm of the HTTP request signature.                                             | `"rsa-sha256"`                                                       |
 | `http_signatures.key_id`              | string   | The public key ID of the HTTP request signature.                                         | `"https://example.com/actor/1#main-key"`                             |

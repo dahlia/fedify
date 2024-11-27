@@ -1,6 +1,8 @@
 import { getLogger } from "@logtape/logtape";
-import type { TracerProvider } from "@opentelemetry/api";
+import type { Span, TracerProvider } from "@opentelemetry/api";
+import { SpanKind, SpanStatusCode, trace } from "@opentelemetry/api";
 import { accepts } from "@std/http/negotiation";
+import metadata from "../deno.json" with { type: "json" };
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
 import type { KeyCache } from "../sig/key.ts";
@@ -8,6 +10,7 @@ import { detachSignature, verifyJsonLd } from "../sig/ld.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { verifyObject } from "../sig/proof.ts";
 import type { Recipient } from "../vocab/actor.ts";
+import { getTypeId } from "../vocab/type.ts";
 import {
   Activity,
   CryptographicKey,
@@ -188,18 +191,52 @@ export interface CollectionHandlerParameters<
     TContextData,
     TFilter
   >;
+  tracerProvider?: TracerProvider;
   onUnauthorized(request: Request): Response | Promise<Response>;
   onNotFound(request: Request): Response | Promise<Response>;
   onNotAcceptable(request: Request): Response | Promise<Response>;
 }
 
-export async function handleCollection<
+export function handleCollection<
   TItem extends URL | Object | Link | Recipient,
   TContext extends RequestContext<TContextData>,
   TContextData,
   TFilter,
 >(
   request: Request,
+  params: CollectionHandlerParameters<TItem, TContext, TContextData, TFilter>,
+): Promise<Response> {
+  const name = params.name.trim().replace(/\s+/g, "_");
+  const tracerProvider = params.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  const url = new URL(request.url);
+  const cursor = url.searchParams.get("cursor");
+  return tracer.startActiveSpan(
+    cursor == null
+      ? `activitypub.dispatch_collection ${name}`
+      : `activitypub.dispatch_collection_page ${name}`,
+    { kind: SpanKind.SERVER },
+    async (span) => {
+      try {
+        return await handleCollectionInternal(request, cursor, params, span);
+      } catch (e) {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: String(e) });
+        throw e;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function handleCollectionInternal<
+  TItem extends URL | Object | Link | Recipient,
+  TContext extends RequestContext<TContextData>,
+  TContextData,
+  TFilter,
+>(
+  request: Request,
+  cursor: string | null,
   {
     name,
     identifier,
@@ -212,10 +249,9 @@ export async function handleCollection<
     onNotFound,
     onNotAcceptable,
   }: CollectionHandlerParameters<TItem, TContext, TContextData, TFilter>,
+  span: Span,
 ): Promise<Response> {
   if (collectionCallbacks == null) return await onNotFound(request);
-  const url = new URL(request.url);
-  const cursor = url.searchParams.get("cursor");
   let collection: OrderedCollection | OrderedCollectionPage;
   const baseUri = uriGetter(identifier);
   if (cursor == null) {
@@ -224,6 +260,12 @@ export async function handleCollection<
       identifier,
     );
     const totalItems = await collectionCallbacks.counter?.(context, identifier);
+    if (totalItems != null) {
+      span.setAttribute(
+        "activitypub.collection.total_items",
+        Number(totalItems),
+      );
+    }
     if (firstCursor == null) {
       const page = await collectionCallbacks.dispatcher(
         context,
@@ -231,8 +273,12 @@ export async function handleCollection<
         null,
         filter,
       );
-      if (page == null) return await onNotFound(request);
+      if (page == null) {
+        span.setStatus({ code: SpanStatusCode.ERROR });
+        return await onNotFound(request);
+      }
       const { items } = page;
+      span.setAttribute("fedify.collection.items", items.length);
       collection = new OrderedCollection({
         id: baseUri,
         totalItems: totalItems == null ? null : Number(totalItems),
@@ -258,6 +304,7 @@ export async function handleCollection<
       });
     }
   } else {
+    span.setAttribute("fedify.collection.cursor", cursor);
     const uri = new URL(baseUri);
     uri.searchParams.set("cursor", cursor);
     const page = await collectionCallbacks.dispatcher(
@@ -266,8 +313,12 @@ export async function handleCollection<
       cursor,
       filter,
     );
-    if (page == null) return await onNotFound(request);
+    if (page == null) {
+      span.setStatus({ code: SpanStatusCode.ERROR });
+      return await onNotFound(request);
+    }
     const { items, prevCursor, nextCursor } = page;
+    span.setAttribute("fedify.collection.items", items.length);
     let prev = null;
     if (prevCursor != null) {
       prev = new URL(context.url);
@@ -303,6 +354,10 @@ export async function handleCollection<
       return await onUnauthorized(request);
     }
   }
+  if (collection.id != null) {
+    span.setAttribute("activitypub.collection.id", collection.id.href);
+  }
+  span.setAttribute("activitypub.collection.type", getTypeId(collection).href);
   const jsonLd = await collection.toJsonLd(context);
   return new Response(JSON.stringify(jsonLd), {
     headers: {
