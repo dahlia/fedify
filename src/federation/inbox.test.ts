@@ -21,7 +21,15 @@ test("InboxListenerSet", () => {
   const listenOffer = () => {};
   listeners.add(Offer, listenOffer);
   assertEquals(listeners.dispatch(activity), null);
+  assertEquals(
+    listeners.dispatchWithClass(offer),
+    { class: Offer, listener: listenOffer },
+  );
   assertEquals(listeners.dispatch(offer), listenOffer);
+  assertEquals(
+    listeners.dispatchWithClass(invite),
+    { class: Offer, listener: listenOffer },
+  );
   assertEquals(listeners.dispatch(invite), listenOffer);
   assertEquals(listeners.dispatch(create), null);
   assertEquals(listeners.dispatch(update), null);
@@ -30,17 +38,49 @@ test("InboxListenerSet", () => {
   listeners.add(Create, listenCreate);
   assertEquals(listeners.dispatch(activity), null);
   assertEquals(listeners.dispatch(offer), listenOffer);
+  assertEquals(
+    listeners.dispatchWithClass(offer),
+    { class: Offer, listener: listenOffer },
+  );
   assertEquals(listeners.dispatch(invite), listenOffer);
+  assertEquals(
+    listeners.dispatchWithClass(invite),
+    { class: Offer, listener: listenOffer },
+  );
   assertEquals(listeners.dispatch(create), listenCreate);
+  assertEquals(
+    listeners.dispatchWithClass(create),
+    { class: Create, listener: listenCreate },
+  );
   assertEquals(listeners.dispatch(update), null);
 
   const listenActivity = () => {};
   listeners.add(Activity, listenActivity);
   assertEquals(listeners.dispatch(activity), listenActivity);
+  assertEquals(
+    listeners.dispatchWithClass(activity),
+    { class: Activity, listener: listenActivity },
+  );
   assertEquals(listeners.dispatch(offer), listenOffer);
+  assertEquals(
+    listeners.dispatchWithClass(offer),
+    { class: Offer, listener: listenOffer },
+  );
   assertEquals(listeners.dispatch(invite), listenOffer);
+  assertEquals(
+    listeners.dispatchWithClass(invite),
+    { class: Offer, listener: listenOffer },
+  );
   assertEquals(listeners.dispatch(create), listenCreate);
+  assertEquals(
+    listeners.dispatchWithClass(create),
+    { class: Create, listener: listenCreate },
+  );
   assertEquals(listeners.dispatch(update), listenActivity);
+  assertEquals(
+    listeners.dispatchWithClass(update),
+    { class: Activity, listener: listenActivity },
+  );
 
   assertThrows(
     () => listeners.add(Activity, listenActivity),

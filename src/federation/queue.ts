@@ -28,4 +28,5 @@ export interface InboxMessage {
   started: string;
   attempt: number;
   identifier: string | null;
+  traceContext: Record<string, string>;
 }

@@ -117,29 +117,33 @@ Instrumented spans
 Fedify automatically instruments the following operations with OpenTelemetry
 spans:
 
-| Span name                                           | [Span kind] | Description                                 |
-|-----------------------------------------------------|-------------|---------------------------------------------|
-| `{method} {template}`                               | Server      | Serves the incoming HTTP request.           |
-| `activitypub.dispatch_actor`                        | Server      | Dispatches the ActivityPub actor.           |
-| `activitypub.dispatch_actor_key_pairs`              | Server      | Dispatches the ActivityPub actor key pairs. |
-| `activitypub.dispatch_collection {collection}`      | Server      | Dispatches the ActivityPub collection.      |
-| `activitypub.dispatch_collection_page {collection}` | Server      | Dispatches the ActivityPub collection page. |
-| `activitypub.dispatch_object`                       | Server      | Dispatches the Activity Streams object.     |
-| `activitypub.get_actor_handle`                      | Client      | Resolves the actor handle.                  |
-| `activitypub.lookup_object`                         | Client      | Looks up the Activity Streams object.       |
-| `activitypub.outbox`                                | Client      | Sends the ActivityPub activity.             |
-| `activitypub.outbox`                                | Consumer    | Dequeues the ActivityPub activity to send.  |
-| `activitypub.outbox`                                | Producer    | Enqueues the ActivityPub activity to send.  |
-| `activitypub.parse_object`                          | Internal    | Parses the Activity Streams object.         |
-| `activitypub.send_activity`                         | Client      | Sends the ActivityPub activity.             |
-| `http_signatures.sign`                              | Internal    | Signs the HTTP request.                     |
-| `http_signatures.verify`                            | Internal    | Verifies the HTTP request signature.        |
-| `ld_signatures.sign`                                | Internal    | Makes the Linked Data signature.            |
-| `ld_signatures.verify`                              | Internal    | Verifies the Linked Data signature.         |
-| `object_integrity_proofs.sign`                      | Internal    | Makes the object integrity proof.           |
-| `object_integrity_proofs.verify`                    | Internal    | Verifies the object integrity proof.        |
-| `webfinger.handle`                                  | Server      | Handles the WebFinger request.              |
-| `webfinger.lookup`                                  | Client      | Looks up the WebFinger resource.            |
+| Span name                                           | [Span kind] | Description                                   |
+|-----------------------------------------------------|-------------|-----------------------------------------------|
+| `{method} {template}`                               | Server      | Serves the incoming HTTP request.             |
+| `activitypub.dispatch_actor`                        | Server      | Dispatches the ActivityPub actor.             |
+| `activitypub.dispatch_actor_key_pairs`              | Server      | Dispatches the ActivityPub actor key pairs.   |
+| `activitypub.dispatch_collection {collection}`      | Server      | Dispatches the ActivityPub collection.        |
+| `activitypub.dispatch_collection_page {collection}` | Server      | Dispatches the ActivityPub collection page.   |
+| `activitypub.dispatch_inbox_listener {type}`        | Internal    | Dispatches the ActivityPub inbox listener.    |
+| `activitypub.dispatch_object`                       | Server      | Dispatches the Activity Streams object.       |
+| `activitypub.get_actor_handle`                      | Client      | Resolves the actor handle.                    |
+| `activitypub.inbox`                                 | Consumer    | Dequeues the ActivityPub activity to receive. |
+| `activitypub.inbox`                                 | Producer    | Enqueues the ActivityPub activity to receive. |
+| `activitypub.inbox`                                 | Server      | Receives the ActivityPub activity.            |
+| `activitypub.lookup_object`                         | Client      | Looks up the Activity Streams object.         |
+| `activitypub.outbox`                                | Client      | Sends the ActivityPub activity.               |
+| `activitypub.outbox`                                | Consumer    | Dequeues the ActivityPub activity to send.    |
+| `activitypub.outbox`                                | Producer    | Enqueues the ActivityPub activity to send.    |
+| `activitypub.parse_object`                          | Internal    | Parses the Activity Streams object.           |
+| `activitypub.send_activity`                         | Client      | Sends the ActivityPub activity.               |
+| `http_signatures.sign`                              | Internal    | Signs the HTTP request.                       |
+| `http_signatures.verify`                            | Internal    | Verifies the HTTP request signature.          |
+| `ld_signatures.sign`                                | Internal    | Makes the Linked Data signature.              |
+| `ld_signatures.verify`                              | Internal    | Verifies the Linked Data signature.           |
+| `object_integrity_proofs.sign`                      | Internal    | Makes the object integrity proof.             |
+| `object_integrity_proofs.verify`                    | Internal    | Verifies the object integrity proof.          |
+| `webfinger.handle`                                  | Server      | Handles the WebFinger request.                |
+| `webfinger.lookup`                                  | Client      | Looks up the WebFinger resource.              |
 
 More operations will be instrumented in the future releases.
 
@@ -174,6 +178,7 @@ for ActivityPub:
 | `activitypub.inboxes`                 | int      | The number of inboxes the activity is sent to.                                           | `12`                                                                 |
 | `activitypub.shared_inbox`            | boolean  | Whether the activity is sent to the shared inbox.                                        | `true`                                                               |
 | `fedify.actor.identifier`             | string   | The identifier of the actor.                                                             | `"1"`                                                                |
+| `fedify.inbox.recipient`              | string   | The identifier of the inbox recipient.                                                   | `"1"`                                                                |
 | `fedify.object.type`                  | string   | The URI of the object type.                                                              | `"https://www.w3.org/ns/activitystreams#Note"`                       |
 | `fedify.object.values.{parameter}`    | string[] | The argument values of the object dispatcher.                                            | `["1", "2"]`                                                         |
 | `fedify.collection.cursor`            | string   | The cursor of the collection.                                                            | `"eyJpZCI6IjEiLCJ0eXBlIjoiT3JkZXJlZENvbGxlY3Rpb24ifQ=="`             |

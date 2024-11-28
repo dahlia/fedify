@@ -1,6 +1,12 @@
 import { getLogger } from "@logtape/logtape";
-import type { TracerProvider } from "@opentelemetry/api";
-import { SpanKind, SpanStatusCode, trace } from "@opentelemetry/api";
+import type { Span, TracerProvider } from "@opentelemetry/api";
+import {
+  context,
+  propagation,
+  SpanKind,
+  SpanStatusCode,
+  trace,
+} from "@opentelemetry/api";
 import { accepts } from "@std/http/negotiation";
 import metadata from "../deno.json" with { type: "json" };
 import type { DocumentLoader } from "../runtime/docloader.ts";
@@ -432,9 +438,37 @@ export interface InboxHandlerParameters<TContextData> {
 
 export async function handleInbox<TContextData>(
   request: Request,
+  options: InboxHandlerParameters<TContextData>,
+): Promise<Response> {
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  return await tracer.startActiveSpan(
+    "activitypub.inbox",
+    {
+      kind: options.queue == null ? SpanKind.SERVER : SpanKind.PRODUCER,
+      attributes: { "activitypub.shared_inbox": options.recipient == null },
+    },
+    async (span) => {
+      if (options.recipient != null) {
+        span.setAttribute("fedify.inbox.recipient", options.recipient);
+      }
+      try {
+        return await handleInboxInternal(request, options, span);
+      } catch (e) {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: String(e) });
+        throw e;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function handleInboxInternal<TContextData>(
+  request: Request,
   {
     recipient,
-    context,
+    context: ctx,
     inboxContextFactory,
     kv,
     kvPrefixes,
@@ -447,26 +481,43 @@ export async function handleInbox<TContextData>(
     skipSignatureVerification,
     tracerProvider,
   }: InboxHandlerParameters<TContextData>,
+  span: Span,
 ): Promise<Response> {
   const logger = getLogger(["fedify", "federation", "inbox"]);
   if (actorDispatcher == null) {
     logger.error("Actor dispatcher is not set.", { recipient });
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: "Actor dispatcher is not set.",
+    });
     return await onNotFound(request);
   } else if (recipient != null) {
-    const actor = await actorDispatcher(context, recipient);
+    const actor = await actorDispatcher(ctx, recipient);
     if (actor == null) {
       logger.error("Actor {recipient} not found.", { recipient });
+      span.setStatus({
+        code: SpanStatusCode.ERROR,
+        message: `Actor ${recipient} not found.`,
+      });
       return await onNotFound(request);
     }
   }
   if (request.bodyUsed) {
     logger.error("Request body has already been read.", { recipient });
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: "Request body has already been read.",
+    });
     return new Response("Internal server error.", {
       status: 500,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   } else if (request.body?.locked) {
     logger.error("Request body is locked.", { recipient });
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: "Request body is locked.",
+    });
     return new Response("Internal server error.", {
       status: 500,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -478,13 +529,17 @@ export async function handleInbox<TContextData>(
   } catch (error) {
     logger.error("Failed to parse JSON:\n{error}", { recipient, error });
     try {
-      await inboxErrorHandler?.(context, error as Error);
+      await inboxErrorHandler?.(ctx, error as Error);
     } catch (error) {
       logger.error(
         "An unexpected error occurred in inbox error handler:\n{error}",
         { error, activity: json, recipient },
       );
     }
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: `Failed to parse JSON:\n${error}`,
+    });
     return new Response("Invalid JSON.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -501,7 +556,7 @@ export async function handleInbox<TContextData>(
       if (serialized == null) return undefined;
       let object: Object;
       try {
-        object = await Object.fromJsonLd(serialized, context);
+        object = await Object.fromJsonLd(serialized, ctx);
       } catch {
         await kv.delete([...kvPrefixes.publicKey, keyId.href]);
         return undefined;
@@ -519,13 +574,13 @@ export async function handleInbox<TContextData>(
         return;
       }
       this.nullKeys.delete(keyId.href);
-      const serialized = await key.toJsonLd(context);
+      const serialized = await key.toJsonLd(ctx);
       await kv.set([...kvPrefixes.publicKey, keyId.href], serialized);
     },
   };
   const ldSigVerified = await verifyJsonLd(json, {
-    contextLoader: context.contextLoader,
-    documentLoader: context.documentLoader,
+    contextLoader: ctx.contextLoader,
+    documentLoader: ctx.documentLoader,
     keyCache,
     tracerProvider,
   });
@@ -533,7 +588,7 @@ export async function handleInbox<TContextData>(
   let activity: Activity | null = null;
   if (ldSigVerified) {
     logger.debug("Linked Data Signatures are verified.", { recipient, json });
-    activity = await Activity.fromJsonLd(jsonWithoutSig, context);
+    activity = await Activity.fromJsonLd(jsonWithoutSig, ctx);
   } else {
     logger.debug(
       "Linked Data Signatures are not verified.",
@@ -541,8 +596,8 @@ export async function handleInbox<TContextData>(
     );
     try {
       activity = await verifyObject(Activity, jsonWithoutSig, {
-        contextLoader: context.contextLoader,
-        documentLoader: context.documentLoader,
+        contextLoader: ctx.contextLoader,
+        documentLoader: ctx.documentLoader,
         keyCache,
         tracerProvider,
       });
@@ -553,13 +608,17 @@ export async function handleInbox<TContextData>(
         error,
       });
       try {
-        await inboxErrorHandler?.(context, error as Error);
+        await inboxErrorHandler?.(ctx, error as Error);
       } catch (error) {
         logger.error(
           "An unexpected error occurred in inbox error handler:\n{error}",
           { error, activity: json, recipient },
         );
       }
+      span.setStatus({
+        code: SpanStatusCode.ERROR,
+        message: `Failed to parse activity:\n${error}`,
+      });
       return new Response("Invalid activity.", {
         status: 400,
         headers: { "Content-Type": "text/plain; charset=utf-8" },
@@ -581,8 +640,8 @@ export async function handleInbox<TContextData>(
   if (activity == null) {
     if (!skipSignatureVerification) {
       const key = await verifyRequest(request, {
-        contextLoader: context.contextLoader,
-        documentLoader: context.documentLoader,
+        contextLoader: ctx.contextLoader,
+        documentLoader: ctx.documentLoader,
         timeWindow: signatureTimeWindow,
         keyCache,
         tracerProvider,
@@ -592,6 +651,10 @@ export async function handleInbox<TContextData>(
           "Failed to verify the request's HTTP Signatures.",
           { recipient },
         );
+        span.setStatus({
+          code: SpanStatusCode.ERROR,
+          message: `Failed to verify the request's HTTP Signatures.`,
+        });
         const response = new Response(
           "Failed to verify the request signature.",
           {
@@ -605,8 +668,12 @@ export async function handleInbox<TContextData>(
       }
       httpSigKey = key;
     }
-    activity = await Activity.fromJsonLd(jsonWithoutSig, context);
+    activity = await Activity.fromJsonLd(jsonWithoutSig, ctx);
   }
+  if (activity.id != null) {
+    span.setAttribute("activitypub.activity.id", activity.id.href);
+  }
+  span.setAttribute("activitypub.activity.type", getTypeId(activity).href);
   const cacheKey = activity.id == null
     ? null
     : [...kvPrefixes.activityIdempotence, activity.id.href] satisfies KvKey;
@@ -617,6 +684,10 @@ export async function handleInbox<TContextData>(
         activityId: activity.id?.href,
         activity: json,
         recipient,
+      });
+      span.setStatus({
+        code: SpanStatusCode.UNSET,
+        message: `Activity ${activity.id?.href} has already been processed.`,
       });
       return new Response(
         `Activity <${activity.id}> has already been processed.`,
@@ -629,14 +700,15 @@ export async function handleInbox<TContextData>(
   }
   if (activity.actorId == null) {
     logger.error("Missing actor.", { activity: json });
-    const response = new Response("Missing actor.", {
+    span.setStatus({ code: SpanStatusCode.ERROR, message: "Missing actor." });
+    return new Response("Missing actor.", {
       status: 400,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
-    return response;
   }
+  span.setAttribute("activitypub.actor.id", activity.actorId.href);
   if (
-    httpSigKey != null && !await doesActorOwnKey(activity, httpSigKey, context)
+    httpSigKey != null && !await doesActorOwnKey(activity, httpSigKey, ctx)
   ) {
     logger.error(
       "The signer ({keyId}) and the actor ({actorId}) do not match.",
@@ -647,24 +719,44 @@ export async function handleInbox<TContextData>(
         actorId: activity.actorId.href,
       },
     );
-    const response = new Response("The signer and the actor do not match.", {
+    span.setStatus({
+      code: SpanStatusCode.ERROR,
+      message: `The signer (${httpSigKey.id?.href}) and ` +
+        `the actor (${activity.actorId.href}) do not match.`,
+    });
+    return new Response("The signer and the actor do not match.", {
       status: 401,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
-    return response;
   }
   if (queue != null) {
-    await queue.enqueue(
-      {
-        type: "inbox",
-        id: crypto.randomUUID(),
-        baseUrl: request.url,
-        activity: json,
-        identifier: recipient,
-        attempt: 0,
-        started: new Date().toISOString(),
-      } satisfies InboxMessage,
-    );
+    const carrier: Record<string, string> = {};
+    propagation.inject(context.active(), carrier);
+    try {
+      await queue.enqueue(
+        {
+          type: "inbox",
+          id: crypto.randomUUID(),
+          baseUrl: request.url,
+          activity: json,
+          identifier: recipient,
+          attempt: 0,
+          started: new Date().toISOString(),
+          traceContext: carrier,
+        } satisfies InboxMessage,
+      );
+    } catch (error) {
+      logger.error(
+        "Failed to enqueue the incoming activity {activityId}:\n{error}",
+        { error, activityId: activity.id?.href, activity: json, recipient },
+      );
+      span.setStatus({
+        code: SpanStatusCode.ERROR,
+        message:
+          `Failed to enqueue the incoming activity ${activity.id?.href}.`,
+      });
+      throw error;
+    }
     logger.info(
       "Activity {activityId} is enqueued.",
       { activityId: activity.id?.href, activity: json, recipient },
@@ -674,66 +766,88 @@ export async function handleInbox<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  const listener = inboxListeners?.dispatch(activity);
-  if (listener == null) {
-    logger.error(
-      "Unsupported activity type:\n{activity}",
-      { activity: json, recipient },
-    );
-    return new Response("", {
-      status: 202,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
-  }
-  try {
-    await listener(
-      inboxContextFactory(
-        recipient,
-        json,
-        activity.id?.href,
-        getTypeId(activity).href,
-      ),
-      activity,
-    );
-  } catch (error) {
-    try {
-      await inboxErrorHandler?.(context, error as Error);
-    } catch (error) {
-      logger.error(
-        "An unexpected error occurred in inbox error handler:\n{error}",
-        {
-          error,
-          activityId: activity.id?.href,
-          activity: json,
-          recipient,
-        },
+  tracerProvider = tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  const response = await tracer.startActiveSpan(
+    "activitypub.dispatch_inbox_listener",
+    { kind: SpanKind.INTERNAL },
+    async (span) => {
+      const dispatched = inboxListeners?.dispatchWithClass(activity!);
+      if (dispatched == null) {
+        logger.error(
+          "Unsupported activity type:\n{activity}",
+          { activity: json, recipient },
+        );
+        span.setStatus({
+          code: SpanStatusCode.UNSET,
+          message: `Unsupported activity type: ${getTypeId(activity!).href}`,
+        });
+        span.end();
+        return new Response("", {
+          status: 202,
+          headers: { "Content-Type": "text/plain; charset=utf-8" },
+        });
+      }
+      const { class: cls, listener } = dispatched;
+      span.updateName(`activitypub.dispatch_inbox_listener ${cls.name}`);
+      try {
+        await listener(
+          inboxContextFactory(
+            recipient,
+            json,
+            activity?.id?.href,
+            getTypeId(activity!).href,
+          ),
+          activity!,
+        );
+      } catch (error) {
+        try {
+          await inboxErrorHandler?.(ctx, error as Error);
+        } catch (error) {
+          logger.error(
+            "An unexpected error occurred in inbox error handler:\n{error}",
+            {
+              error,
+              activityId: activity!.id?.href,
+              activity: json,
+              recipient,
+            },
+          );
+        }
+        logger.error(
+          "Failed to process the incoming activity {activityId}:\n{error}",
+          {
+            error,
+            activityId: activity!.id?.href,
+            activity: json,
+            recipient,
+          },
+        );
+        span.setStatus({ code: SpanStatusCode.ERROR, message: String(error) });
+        span.end();
+        return new Response("Internal server error.", {
+          status: 500,
+          headers: { "Content-Type": "text/plain; charset=utf-8" },
+        });
+      }
+      if (cacheKey != null) {
+        await kv.set(cacheKey, true, {
+          ttl: Temporal.Duration.from({ days: 1 }),
+        });
+      }
+      logger.info(
+        "Activity {activityId} has been processed.",
+        { activityId: activity!.id?.href, activity: json, recipient },
       );
-    }
-    logger.error(
-      "Failed to process the incoming activity {activityId}:\n{error}",
-      {
-        error,
-        activityId: activity.id?.href,
-        activity: json,
-        recipient,
-      },
-    );
-    return new Response("Internal server error.", {
-      status: 500,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
-  }
-  if (cacheKey != null) {
-    await kv.set(cacheKey, true, { ttl: Temporal.Duration.from({ days: 1 }) });
-  }
-  logger.info(
-    "Activity {activityId} has been processed.",
-    { activityId: activity.id?.href, activity: json, recipient },
+      span.end();
+      return new Response("", {
+        status: 202,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      });
+    },
   );
-  return new Response("", {
-    status: 202,
-    headers: { "Content-Type": "text/plain; charset=utf-8" },
-  });
+  if (response.status >= 500) span.setStatus({ code: SpanStatusCode.ERROR });
+  return response;
 }
 
 /**

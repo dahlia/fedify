@@ -25,9 +25,13 @@ export class InboxListenerSet<TContextData> {
     );
   }
 
-  dispatch<TActivity extends Activity>(
+  dispatchWithClass<TActivity extends Activity>(
     activity: TActivity,
-  ): InboxListener<TContextData, TActivity> | null {
+  ): {
+    // deno-lint-ignore no-explicit-any
+    class: new (...args: any[]) => Activity;
+    listener: InboxListener<TContextData, TActivity>;
+  } | null {
     // deno-lint-ignore no-explicit-any
     let cls: new (...args: any[]) => Activity = activity
       // deno-lint-ignore no-explicit-any
@@ -42,6 +46,12 @@ export class InboxListenerSet<TContextData> {
       cls = globalThis.Object.getPrototypeOf(cls);
     }
     const listener = inboxListeners.get(cls)!;
-    return listener;
+    return { class: cls, listener };
+  }
+
+  dispatch<TActivity extends Activity>(
+    activity: TActivity,
+  ): InboxListener<TContextData, TActivity> | null {
+    return this.dispatchWithClass(activity)?.listener ?? null;
   }
 }

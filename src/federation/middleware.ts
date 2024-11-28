@@ -495,17 +495,20 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
 
   #listenQueue(ctxData: TContextData, message: Message): Promise<void> {
     const tracer = this.#getTracer();
+    const extractedContext = propagation.extract(
+      context.active(),
+      message.traceContext,
+    );
     return withContext({ messageId: message.id }, async () => {
       if (message.type === "outbox") {
-        const extractedContext = propagation.extract(
-          context.active(),
-          message.traceContext,
-        );
         await tracer.startActiveSpan(
           "activitypub.outbox",
           {
             kind: SpanKind.CONSUMER,
-            attributes: { "activitypub.activity.type": message.activityType },
+            attributes: {
+              "activitypub.activity.type": message.activityType,
+              "activitypub.activity.retries": message.attempt,
+            },
           },
           extractedContext,
           async (span) => {
@@ -513,7 +516,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
               span.setAttribute("activitypub.activity.id", message.activityId);
             }
             try {
-              await this.#listenOutboxMessage(ctxData, message);
+              await this.#listenOutboxMessage(ctxData, message, span);
             } catch (e) {
               span.setStatus({
                 code: SpanStatusCode.ERROR,
@@ -526,7 +529,29 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
           },
         );
       } else if (message.type === "inbox") {
-        await this.#listenInboxMessage(ctxData, message);
+        await tracer.startActiveSpan(
+          "activitypub.inbox",
+          {
+            kind: SpanKind.CONSUMER,
+            attributes: {
+              "activitypub.shared_inbox": message.identifier == null,
+            },
+          },
+          extractedContext,
+          async (span) => {
+            try {
+              await this.#listenInboxMessage(ctxData, message, span);
+            } catch (e) {
+              span.setStatus({
+                code: SpanStatusCode.ERROR,
+                message: String(e),
+              });
+              throw e;
+            } finally {
+              span.end();
+            }
+          },
+        );
       }
     });
   }
@@ -534,6 +559,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   async #listenOutboxMessage(
     _: TContextData,
     message: OutboxMessage,
+    span: Span,
   ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "outbox"]);
     const logData = {
@@ -571,6 +597,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         tracerProvider: this.tracerProvider,
       });
     } catch (error) {
+      span.setStatus({ code: SpanStatusCode.ERROR, message: String(error) });
       const activity = await Activity.fromJsonLd(message.activity, {
         contextLoader: this.contextLoader,
         documentLoader: rsaKeyPair == null
@@ -627,6 +654,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   async #listenInboxMessage(
     ctxData: TContextData,
     message: InboxMessage,
+    span: Span,
   ): Promise<void> {
     const logger = getLogger(["fedify", "federation", "inbox"]);
     const baseUrl = new URL(message.baseUrl);
@@ -649,6 +677,10 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       }
     }
     const activity = await Activity.fromJsonLd(message.activity, context);
+    span.setAttribute("activitypub.activity.type", getTypeId(activity).href);
+    if (activity.id != null) {
+      span.setAttribute("activitypub.activity.id", activity.id.href);
+    }
     const cacheKey = activity.id == null ? null : [
       ...this.kvPrefixes.activityIdempotence,
       activity.id.href,
@@ -664,98 +696,117 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         return;
       }
     }
-    const listener = this.inboxListeners?.dispatch(activity);
-    if (listener == null) {
-      logger.error(
-        "Unsupported activity type:\n{activity}",
-        {
-          activityId: activity.id?.href,
-          activity: message.activity,
-          recipient: message.identifier,
-          trial: message.attempt,
-        },
-      );
-      return;
-    }
-    try {
-      await listener(
-        context.toInboxContext(
-          message.identifier,
-          message.activity,
-          activity.id?.href,
-          getTypeId(activity).href,
-        ),
-        activity,
-      );
-    } catch (error) {
-      try {
-        await this.inboxErrorHandler?.(context, error as Error);
-      } catch (error) {
-        logger.error(
-          "An unexpected error occurred in inbox error handler:\n{error}",
+    await this.#getTracer().startActiveSpan(
+      "activitypub.dispatch_inbox_listener",
+      { kind: SpanKind.INTERNAL },
+      async (span) => {
+        const dispatched = this.inboxListeners?.dispatchWithClass(activity);
+        if (dispatched == null) {
+          logger.error(
+            "Unsupported activity type:\n{activity}",
+            {
+              activityId: activity.id?.href,
+              activity: message.activity,
+              recipient: message.identifier,
+              trial: message.attempt,
+            },
+          );
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: `Unsupported activity type: ${getTypeId(activity).href}`,
+          });
+          span.end();
+          return;
+        }
+        const { class: cls, listener } = dispatched;
+        span.updateName(`activitypub.dispatch_inbox_listener ${cls.name}`);
+        try {
+          await listener(
+            context.toInboxContext(
+              message.identifier,
+              message.activity,
+              activity.id?.href,
+              getTypeId(activity).href,
+            ),
+            activity,
+          );
+        } catch (error) {
+          try {
+            await this.inboxErrorHandler?.(context, error as Error);
+          } catch (error) {
+            logger.error(
+              "An unexpected error occurred in inbox error handler:\n{error}",
+              {
+                error,
+                trial: message.attempt,
+                activityId: activity.id?.href,
+                activity: message.activity,
+                recipient: message.identifier,
+              },
+            );
+          }
+          const delay = this.inboxRetryPolicy({
+            elapsedTime: Temporal.Instant.from(message.started).until(
+              Temporal.Now.instant(),
+            ),
+            attempts: message.attempt,
+          });
+          if (delay != null) {
+            logger.error(
+              "Failed to process the incoming activity {activityId} (attempt " +
+                "#{attempt}); retry...:\n{error}",
+              {
+                error,
+                attempt: message.attempt,
+                activityId: activity.id?.href,
+                activity: message.activity,
+                recipient: message.identifier,
+              },
+            );
+            await this.inboxQueue?.enqueue(
+              {
+                ...message,
+                attempt: message.attempt + 1,
+              } satisfies InboxMessage,
+              {
+                delay: Temporal.Duration.compare(delay, { seconds: 0 }) < 0
+                  ? Temporal.Duration.from({ seconds: 0 })
+                  : delay,
+              },
+            );
+          } else {
+            logger.error(
+              "Failed to process the incoming activity {activityId} after " +
+                "{trial} attempts; giving up:\n{error}",
+              {
+                error,
+                activityId: activity.id?.href,
+                activity: message.activity,
+                recipient: message.identifier,
+              },
+            );
+          }
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: String(error),
+          });
+          span.end();
+          return;
+        }
+        if (cacheKey != null) {
+          await this.kv.set(cacheKey, true, {
+            ttl: Temporal.Duration.from({ days: 1 }),
+          });
+        }
+        logger.info(
+          "Activity {activityId} has been processed.",
           {
-            error,
-            trial: message.attempt,
             activityId: activity.id?.href,
             activity: message.activity,
             recipient: message.identifier,
           },
         );
-      }
-      const delay = this.inboxRetryPolicy({
-        elapsedTime: Temporal.Instant.from(message.started).until(
-          Temporal.Now.instant(),
-        ),
-        attempts: message.attempt,
-      });
-      if (delay != null) {
-        logger.error(
-          "Failed to process the incoming activity {activityId} (attempt " +
-            "#{attempt}); retry...:\n{error}",
-          {
-            error,
-            attempt: message.attempt,
-            activityId: activity.id?.href,
-            activity: message.activity,
-            recipient: message.identifier,
-          },
-        );
-        await this.inboxQueue?.enqueue(
-          {
-            ...message,
-            attempt: message.attempt + 1,
-          } satisfies InboxMessage,
-          {
-            delay: Temporal.Duration.compare(delay, { seconds: 0 }) < 0
-              ? Temporal.Duration.from({ seconds: 0 })
-              : delay,
-          },
-        );
-      } else {
-        logger.error(
-          "Failed to process the incoming activity {activityId} after " +
-            "{trial} attempts; giving up:\n{error}",
-          {
-            error,
-            activityId: activity.id?.href,
-            activity: message.activity,
-            recipient: message.identifier,
-          },
-        );
-      }
-      return;
-    }
-    if (cacheKey != null) {
-      await this.kv.set(cacheKey, true, {
-        ttl: Temporal.Duration.from({ days: 1 }),
-      });
-    }
-    logger.info(
-      "Activity {activityId} has been processed.",
-      {
-        activityId: activity.id?.href,
-        activity: message.activity,
-        recipient: message.identifier,
+        span.end();
       },
     );
   }
