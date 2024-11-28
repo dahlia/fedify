@@ -1,5 +1,11 @@
 import { getLogger } from "@logtape/logtape";
-import type { TracerProvider } from "@opentelemetry/api";
+import {
+  SpanKind,
+  SpanStatusCode,
+  trace,
+  type TracerProvider,
+} from "@opentelemetry/api";
+import metadata from "../deno.json" with { type: "json" };
 import {
   type DocumentLoader,
   getDocumentLoader,
@@ -190,7 +196,54 @@ export interface FetchKeyResult<T extends CryptographicKey | Multikey> {
  * @returns The fetched key or `null` if the key is not found.
  * @since 1.3.0
  */
-export async function fetchKey<T extends CryptographicKey | Multikey>(
+export function fetchKey<T extends CryptographicKey | Multikey>(
+  keyId: URL | string,
+  // deno-lint-ignore no-explicit-any
+  cls: (new (...args: any[]) => T) & {
+    fromJsonLd(
+      jsonLd: unknown,
+      options: {
+        documentLoader?: DocumentLoader;
+        contextLoader?: DocumentLoader;
+        tracerProvider?: TracerProvider;
+      },
+    ): Promise<T>;
+  },
+  options: FetchKeyOptions = {},
+): Promise<FetchKeyResult<T>> {
+  const tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
+  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+  keyId = typeof keyId === "string" ? new URL(keyId) : keyId;
+  return tracer.startActiveSpan(
+    "activitypub.fetch_key",
+    {
+      kind: SpanKind.CLIENT,
+      attributes: {
+        "http.method": "GET",
+        "url.full": keyId.href,
+        "url.scheme": keyId.protocol.replace(/:$/, ""),
+        "url.domain": keyId.hostname,
+        "url.path": keyId.pathname,
+        "url.query": keyId.search.replace(/^\?/, ""),
+        "url.fragment": keyId.hash.replace(/^#/, ""),
+      },
+    },
+    async (span) => {
+      try {
+        const result = await fetchKeyInternal(keyId, cls, options);
+        span.setAttribute("activitypub.actor.key.cached", result.cached);
+        return result;
+      } catch (e) {
+        span.setStatus({ code: SpanStatusCode.ERROR, message: String(e) });
+        throw e;
+      } finally {
+        span.end();
+      }
+    },
+  );
+}
+
+async function fetchKeyInternal<T extends CryptographicKey | Multikey>(
   keyId: URL | string,
   // deno-lint-ignore no-explicit-any
   cls: (new (...args: any[]) => T) & {

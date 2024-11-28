@@ -126,6 +126,7 @@ spans:
 | `activitypub.dispatch_collection_page {collection}` | Server      | Dispatches the ActivityPub collection page.   |
 | `activitypub.dispatch_inbox_listener {type}`        | Internal    | Dispatches the ActivityPub inbox listener.    |
 | `activitypub.dispatch_object`                       | Server      | Dispatches the Activity Streams object.       |
+| `activitypub.fetch_key`                             | Client      | Fetches the public keys for the actor.        |
 | `activitypub.get_actor_handle`                      | Client      | Resolves the actor handle.                    |
 | `activitypub.inbox`                                 | Consumer    | Dequeues the ActivityPub activity to receive. |
 | `activitypub.inbox`                                 | Producer    | Enqueues the ActivityPub activity to receive. |
@@ -168,6 +169,7 @@ for ActivityPub:
 | `activitypub.activity.bcc`            | string[] | The URI(s) of the blind carbon-copied recipient collections/actors of the activity.      | `["https://www.w3.org/ns/activitystreams#Public"]`                   |
 | `activitypub.activity.retries`        | int      | The ordinal number of activity resending attempt (if and only if it's retried).          | `3`                                                                  |
 | `activitypub.actor.id`                | string   | The URI of the actor object.                                                             | `"https://example.com/actor/1"`                                      |
+| `activitypub.actor.key.cached`        | boolean  | Whether the actor's public keys are cached.                                              | `true`                                                               |
 | `activitypub.actor.type`              | string[] | The qualified URI(s) of the actor type(s).                                               | `["https://www.w3.org/ns/activitystreams#Person"]`                   |
 | `activitypub.collection.id`           | string   | The URI of the collection object.                                                        | `"https://example.com/collection/1"`                                 |
 | `activitypub.collection.type`         | string[] | The qualified URI(s) of the collection type(s).                                          | `["https://www.w3.org/ns/activitystreams#OrderedCollection"]`        |

@@ -389,7 +389,6 @@ async function verifyRequestInternal(
   }
   const { keyId, headers, signature } = sigValues;
   span?.setAttribute("http_signatures.key_id", keyId);
-  span?.setAttribute("http_signatures.signature", signature);
   if ("algorithm" in sigValues) {
     span?.setAttribute("http_signatures.algorithm", sigValues.algorithm);
   }
@@ -428,6 +427,7 @@ async function verifyRequestInternal(
       : request.headers.get(name))
   ).join("\n");
   const sig = decodeBase64(signature);
+  span?.setAttribute("http_signatures.signature", encodeHex(sig));
   // TODO: support other than RSASSA-PKCS1-v1_5:
   const verified = await crypto.subtle.verify(
     "RSASSA-PKCS1-v1_5",
