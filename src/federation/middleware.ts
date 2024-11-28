@@ -2035,7 +2035,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     const results = await Promise.allSettled(promises);
     const errors = results
       .filter((r) => r.status === "rejected")
-      .map((r) => r.reason);
+      .map((r) => (r as PromiseRejectedResult).reason);
     if (errors.length > 0) {
       logger.error(
         "Failed to enqueue activity {activityId} to send later: {errors}",
@@ -3384,7 +3384,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
     const results = await Promise.allSettled(promises);
     const errors: unknown[] = results
       .filter((r) => r.status === "rejected")
-      .map((r) => r.reason);
+      .map((r) => (r as PromiseRejectedResult).reason);
     if (errors.length > 0) {
       logger.error(
         "Failed to enqueue activity {activityId} to forward later:\n{errors}",

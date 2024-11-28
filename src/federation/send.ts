@@ -60,7 +60,7 @@ export function extractInboxes(
     if (inbox != null && recipient.id != null) {
       if (
         excludeBaseUris != null &&
-        excludeBaseUris.some((u) => u.origin == inbox.origin)
+        excludeBaseUris.some((u) => u.origin === inbox?.origin)
       ) {
         continue;
       }
