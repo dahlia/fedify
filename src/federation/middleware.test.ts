@@ -1,5 +1,8 @@
+import { Invite } from "@fedify/fedify";
 import {
+  assert,
   assertEquals,
+  assertFalse,
   assertInstanceOf,
   assertRejects,
   assertStrictEquals,
@@ -32,11 +35,13 @@ import { lookupObject } from "../vocab/lookup.ts";
 import { getTypeId } from "../vocab/type.ts";
 import {
   Activity,
+  Announce,
   Create,
   type CryptographicKey,
   Multikey,
   Note,
   Object,
+  Offer,
   Person,
 } from "../vocab/vocab.ts";
 import type { Context } from "./context.ts";
@@ -1174,6 +1179,159 @@ test("ContextImpl.sendActivity()", async (t) => {
       )
     );
   });
+});
+
+test("ContextImpl.routeActivity()", async () => {
+  const federation = new FederationImpl({
+    kv: new MemoryKvStore(),
+  });
+
+  const activities: [string | null, Activity][] = [];
+  federation
+    .setInboxListeners("/u/{identifier}/i", "/i")
+    .on(Offer, (ctx, offer) => {
+      activities.push([ctx.recipient, offer]);
+    });
+
+  const ctx = new ContextImpl({
+    url: new URL("https://example.com/"),
+    federation,
+    data: undefined,
+    documentLoader: mockDocumentLoader,
+  });
+
+  // Unsigned & non-dereferenceable activity
+  assertFalse(
+    await ctx.routeActivity(
+      null,
+      new Offer({
+        actor: new URL("https://example.com/person"),
+      }),
+    ),
+  );
+  assertEquals(activities, []);
+
+  // Signed activity without recipient (shared inbox)
+  const signedOffer = await signObject(
+    new Offer({
+      actor: new URL("https://example.com/person2"),
+    }),
+    ed25519PrivateKey,
+    ed25519Multikey.id!,
+  );
+  assert(await ctx.routeActivity(null, signedOffer));
+  assertEquals(activities, [[null, signedOffer]]);
+
+  // Signed activity with recipient (personal inbox)
+  const signedInvite = await signObject(
+    new Invite({
+      actor: new URL("https://example.com/person2"),
+    }),
+    ed25519PrivateKey,
+    ed25519Multikey.id!,
+  );
+  assert(await ctx.routeActivity("id", signedInvite));
+  assertEquals(activities, [[null, signedOffer], ["id", signedInvite]]);
+
+  // Unsigned activity dereferenced to 404
+  assertFalse(
+    await ctx.routeActivity(
+      null,
+      new Create({
+        id: new URL("https://example.com/not-found"),
+        actor: new URL("https://example.com/person"),
+      }),
+    ),
+  );
+  assertEquals(activities, [[null, signedOffer], ["id", signedInvite]]);
+
+  // Unsigned activity dereferenced to 200, but not an Activity
+  assertFalse(
+    await ctx.routeActivity(
+      null,
+      new Create({
+        id: new URL("https://example.com/person"),
+        actor: new URL("https://example.com/person"),
+      }),
+    ),
+  );
+  assertEquals(activities, [[null, signedOffer], ["id", signedInvite]]);
+
+  // Unsigned activity dereferenced to 200, but has a different id
+  assertFalse(
+    await ctx.routeActivity(
+      null,
+      new Announce({
+        id: new URL("https://example.com/announce#diffrent-id"),
+        actor: new URL("https://example.com/person"),
+      }),
+    ),
+  );
+  assertEquals(activities, [[null, signedOffer], ["id", signedInvite]]);
+
+  // Unsigned activity dereferenced to 200, but has no actor
+  assertFalse(
+    await ctx.routeActivity(
+      null,
+      new Announce({
+        id: new URL("https://example.com/announce"),
+        // Although the actor is set here, the fetched document has no actor.
+        // See also src/testing/fixtures/example.com/announce
+        actor: new URL("https://example.com/person"),
+      }),
+    ),
+  );
+  assertEquals(activities, [[null, signedOffer], ["id", signedInvite]]);
+
+  // Unsigned activity dereferenced to 200, but actor is cross-origin
+  assertFalse(
+    await ctx.routeActivity(
+      null,
+      new Create({
+        id: new URL("https://example.com/cross-origin-actor"),
+        actor: new URL("https://cross-origin.com/actor"),
+      }),
+    ),
+  );
+  assertEquals(activities, [[null, signedOffer], ["id", signedInvite]]);
+
+  // Unsigned activity dereferenced to 200, but no inbox listener corresponds
+  assert(
+    await ctx.routeActivity(
+      null,
+      new Create({
+        id: new URL("https://example.com/create"),
+        actor: new URL("https://example.com/person"),
+      }),
+    ),
+  );
+  assertEquals(activities, [[null, signedOffer], ["id", signedInvite]]);
+
+  // Unsigned activity dereferenced to 200
+  assert(
+    await ctx.routeActivity(
+      null,
+      new Invite({
+        id: new URL("https://example.com/invite"),
+        actor: new URL("https://example.com/person"),
+      }),
+    ),
+  );
+  assertEquals(
+    activities,
+    [
+      [null, signedOffer],
+      ["id", signedInvite],
+      [
+        null,
+        new Invite({
+          id: new URL("https://example.com/invite"),
+          actor: new URL("https://example.com/person"),
+          object: new URL("https://example.com/object"),
+        }),
+      ],
+    ],
+  );
 });
 
 test("InboxContextImpl.forwardActivity()", async (t) => {

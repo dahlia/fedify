@@ -1,12 +1,6 @@
 import { getLogger } from "@logtape/logtape";
 import type { Span, TracerProvider } from "@opentelemetry/api";
-import {
-  context,
-  propagation,
-  SpanKind,
-  SpanStatusCode,
-  trace,
-} from "@opentelemetry/api";
+import { SpanKind, SpanStatusCode, trace } from "@opentelemetry/api";
 import { accepts } from "@std/http/negotiation";
 import metadata from "../deno.json" with { type: "json" };
 import type { DocumentLoader } from "../runtime/docloader.ts";
@@ -35,11 +29,10 @@ import type {
   ObjectDispatcher,
 } from "./callback.ts";
 import type { Context, InboxContext, RequestContext } from "./context.ts";
-import type { InboxListenerSet } from "./inbox.ts";
+import { type InboxListenerSet, routeActivity } from "./inbox.ts";
 import { KvKeyCache } from "./keycache.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
-import type { InboxMessage } from "./queue.ts";
 
 export function acceptsJsonLd(request: Request): boolean {
   const types = accepts(request);
@@ -641,39 +634,20 @@ async function handleInboxInternal<TContextData>(
     span.setAttribute("activitypub.activity.id", activity.id.href);
   }
   span.setAttribute("activitypub.activity.type", getTypeId(activity).href);
-  const cacheKey = activity.id == null
-    ? null
-    : [...kvPrefixes.activityIdempotence, activity.id.href] satisfies KvKey;
-  if (cacheKey != null) {
-    const cached = await kv.get(cacheKey);
-    if (cached === true) {
-      logger.debug("Activity {activityId} has already been processed.", {
-        activityId: activity.id?.href,
-        activity: json,
-        recipient,
-      });
-      span.setStatus({
-        code: SpanStatusCode.UNSET,
-        message: `Activity ${activity.id?.href} has already been processed.`,
-      });
-      return new Response(
-        `Activity <${activity.id}> has already been processed.`,
-        {
-          status: 202,
-          headers: { "Content-Type": "text/plain; charset=utf-8" },
-        },
-      );
-    }
-  }
-  if (activity.actorId == null) {
-    logger.error("Missing actor.", { activity: json });
-    span.setStatus({ code: SpanStatusCode.ERROR, message: "Missing actor." });
-    return new Response("Missing actor.", {
-      status: 400,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
-    });
-  }
-  span.setAttribute("activitypub.actor.id", activity.actorId.href);
+  const routeResult = await routeActivity({
+    context: ctx,
+    json,
+    activity,
+    recipient,
+    inboxListeners,
+    inboxContextFactory,
+    inboxErrorHandler,
+    kv,
+    kvPrefixes,
+    queue,
+    span,
+    tracerProvider,
+  });
   if (
     httpSigKey != null && !await doesActorOwnKey(activity, httpSigKey, ctx)
   ) {
@@ -683,138 +657,53 @@ async function handleInboxInternal<TContextData>(
         activity: json,
         recipient,
         keyId: httpSigKey.id?.href,
-        actorId: activity.actorId.href,
+        actorId: activity.actorId?.href,
       },
     );
     span.setStatus({
       code: SpanStatusCode.ERROR,
       message: `The signer (${httpSigKey.id?.href}) and ` +
-        `the actor (${activity.actorId.href}) do not match.`,
+        `the actor (${activity.actorId?.href}) do not match.`,
     });
     return new Response("The signer and the actor do not match.", {
       status: 401,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  if (queue != null) {
-    const carrier: Record<string, string> = {};
-    propagation.inject(context.active(), carrier);
-    try {
-      await queue.enqueue(
-        {
-          type: "inbox",
-          id: crypto.randomUUID(),
-          baseUrl: request.url,
-          activity: json,
-          identifier: recipient,
-          attempt: 0,
-          started: new Date().toISOString(),
-          traceContext: carrier,
-        } satisfies InboxMessage,
-      );
-    } catch (error) {
-      logger.error(
-        "Failed to enqueue the incoming activity {activityId}:\n{error}",
-        { error, activityId: activity.id?.href, activity: json, recipient },
-      );
-      span.setStatus({
-        code: SpanStatusCode.ERROR,
-        message:
-          `Failed to enqueue the incoming activity ${activity.id?.href}.`,
-      });
-      throw error;
-    }
-    logger.info(
-      "Activity {activityId} is enqueued.",
-      { activityId: activity.id?.href, activity: json, recipient },
+  if (routeResult === "alreadyProcessed") {
+    return new Response(
+      `Activity <${activity.id}> has already been processed.`,
+      {
+        status: 202,
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      },
     );
+  } else if (routeResult === "missingActor") {
+    return new Response("Missing actor.", {
+      status: 400,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  } else if (routeResult === "enqueued") {
     return new Response("Activity is enqueued.", {
       status: 202,
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
+  } else if (routeResult === "unsupportedActivity") {
+    return new Response("", {
+      status: 202,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  } else if (routeResult === "error") {
+    return new Response("Internal server error.", {
+      status: 500,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
+  } else {
+    return new Response("", {
+      status: 202,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    });
   }
-  tracerProvider = tracerProvider ?? trace.getTracerProvider();
-  const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
-  const response = await tracer.startActiveSpan(
-    "activitypub.dispatch_inbox_listener",
-    { kind: SpanKind.INTERNAL },
-    async (span) => {
-      const dispatched = inboxListeners?.dispatchWithClass(activity!);
-      if (dispatched == null) {
-        logger.error(
-          "Unsupported activity type:\n{activity}",
-          { activity: json, recipient },
-        );
-        span.setStatus({
-          code: SpanStatusCode.UNSET,
-          message: `Unsupported activity type: ${getTypeId(activity!).href}`,
-        });
-        span.end();
-        return new Response("", {
-          status: 202,
-          headers: { "Content-Type": "text/plain; charset=utf-8" },
-        });
-      }
-      const { class: cls, listener } = dispatched;
-      span.updateName(`activitypub.dispatch_inbox_listener ${cls.name}`);
-      try {
-        await listener(
-          inboxContextFactory(
-            recipient,
-            json,
-            activity?.id?.href,
-            getTypeId(activity!).href,
-          ),
-          activity!,
-        );
-      } catch (error) {
-        try {
-          await inboxErrorHandler?.(ctx, error as Error);
-        } catch (error) {
-          logger.error(
-            "An unexpected error occurred in inbox error handler:\n{error}",
-            {
-              error,
-              activityId: activity!.id?.href,
-              activity: json,
-              recipient,
-            },
-          );
-        }
-        logger.error(
-          "Failed to process the incoming activity {activityId}:\n{error}",
-          {
-            error,
-            activityId: activity!.id?.href,
-            activity: json,
-            recipient,
-          },
-        );
-        span.setStatus({ code: SpanStatusCode.ERROR, message: String(error) });
-        span.end();
-        return new Response("Internal server error.", {
-          status: 500,
-          headers: { "Content-Type": "text/plain; charset=utf-8" },
-        });
-      }
-      if (cacheKey != null) {
-        await kv.set(cacheKey, true, {
-          ttl: Temporal.Duration.from({ days: 1 }),
-        });
-      }
-      logger.info(
-        "Activity {activityId} has been processed.",
-        { activityId: activity!.id?.href, activity: json, recipient },
-      );
-      span.end();
-      return new Response("", {
-        status: 202,
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
-      });
-    },
-  );
-  if (response.status >= 500) span.setStatus({ code: SpanStatusCode.ERROR });
-  return response;
 }
 
 /**

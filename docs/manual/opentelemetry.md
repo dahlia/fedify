@@ -129,6 +129,7 @@ spans:
 | `activitypub.fetch_key`                             | Client      | Fetches the public keys for the actor.        |
 | `activitypub.get_actor_handle`                      | Client      | Resolves the actor handle.                    |
 | `activitypub.inbox`                                 | Consumer    | Dequeues the ActivityPub activity to receive. |
+| `activitypub.inbox`                                 | Internal    | Manually routes the ActivityPub activity.     |
 | `activitypub.inbox`                                 | Producer    | Enqueues the ActivityPub activity to receive. |
 | `activitypub.inbox`                                 | Server      | Receives the ActivityPub activity.            |
 | `activitypub.lookup_object`                         | Client      | Looks up the Activity Streams object.         |

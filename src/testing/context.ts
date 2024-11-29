@@ -34,6 +34,7 @@ export function createContext<TContextData>(
     lookupObject,
     traverseCollection,
     sendActivity,
+    routeActivity,
   }: Partial<Context<TContextData>> & { url?: URL; data: TContextData },
 ): Context<TContextData> {
   function throwRouteError(): URL {
@@ -82,6 +83,9 @@ export function createContext<TContextData>(
       });
     }),
     sendActivity: sendActivity ?? ((_params) => {
+      throw new Error("Not implemented");
+    }),
+    routeActivity: routeActivity ?? ((_params) => {
       throw new Error("Not implemented");
     }),
   };

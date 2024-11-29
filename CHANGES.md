@@ -62,6 +62,12 @@ To be released.
  -  `Context.sendActivity()` and `InboxContext.forwardActivity()` methods now
     reject when they fail to enqueue the task.  [[#192]]
 
+ -  Fedify now allows you to manually route an `Activity` to the corresponding
+    inbox listener.  [[#193]]
+
+     -  Added `Context.routeActivity()` method.
+     -  Added `RouteActivityOptions` interface.
+
  -  `Object.toJsonLd()` without any `format` option now returns its original
     JSON-LD object even if it not created from `Object.fromJsonLd()` but it is
     returned from another `Object`'s `get*()` method.
@@ -111,6 +117,7 @@ To be released.
 [#183]: https://github.com/dahlia/fedify/pull/183
 [#186]: https://github.com/dahlia/fedify/pull/186
 [#192]: https://github.com/dahlia/fedify/issues/192
+[#193]: https://github.com/dahlia/fedify/issues/193
 
 
 Version 1.2.8

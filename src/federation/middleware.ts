@@ -1,3 +1,4 @@
+import { verifyObject } from "@fedify/fedify";
 import { getLogger, withContext } from "@logtape/logtape";
 import {
   context,
@@ -74,6 +75,7 @@ import type {
   InboxContext,
   ParseUriResult,
   RequestContext,
+  RouteActivityOptions,
   SendActivityOptions,
 } from "./context.ts";
 import type {
@@ -92,7 +94,8 @@ import {
   handleInbox,
   handleObject,
 } from "./handler.ts";
-import { InboxListenerSet } from "./inbox.ts";
+import { InboxListenerSet, routeActivity } from "./inbox.ts";
+import { KvKeyCache } from "./keycache.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
 import type {
@@ -3075,6 +3078,179 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
       for (const recipient of result.items) yield recipient;
       cursor = result.nextCursor ?? null;
     }
+  }
+
+  routeActivity(
+    recipient: string | null,
+    activity: Activity,
+    options: RouteActivityOptions = {},
+  ): Promise<boolean> {
+    const tracerProvider = this.tracerProvider ?? this.tracerProvider;
+    const tracer = tracerProvider.getTracer(metadata.name, metadata.version);
+    return tracer.startActiveSpan(
+      "activitypub.inbox",
+      {
+        kind: this.federation.inboxQueue == null || options.immediate
+          ? SpanKind.INTERNAL
+          : SpanKind.PRODUCER,
+        attributes: {
+          "activitypub.activity.type": getTypeId(activity).href,
+        },
+      },
+      async (span) => {
+        if (activity.id != null) {
+          span.setAttribute("activitypub.activity.id", activity.id.href);
+        }
+        if (activity.toIds.length > 0) {
+          span.setAttribute(
+            "activitypub.activity.to",
+            activity.toIds.map((to) => to.href),
+          );
+        }
+        if (activity.ccIds.length > 0) {
+          span.setAttribute(
+            "activitypub.activity.cc",
+            activity.ccIds.map((cc) => cc.href),
+          );
+        }
+        if (activity.btoIds.length > 0) {
+          span.setAttribute(
+            "activitypub.activity.bto",
+            activity.btoIds.map((bto) => bto.href),
+          );
+        }
+        if (activity.bccIds.length > 0) {
+          span.setAttribute(
+            "activitypub.activity.bcc",
+            activity.bccIds.map((bcc) => bcc.href),
+          );
+        }
+        try {
+          const ok = await this.routeActivityInternal(
+            recipient,
+            activity,
+            options,
+            span,
+          );
+          if (ok) {
+            span.setAttribute("activitypub.shared_inbox", recipient == null);
+            if (recipient != null) {
+              span.setAttribute("fedify.inbox.recipient", recipient);
+            }
+          } else {
+            span.setStatus({ code: SpanStatusCode.ERROR });
+          }
+          return ok;
+        } catch (e) {
+          span.setStatus({ code: SpanStatusCode.ERROR, message: String(e) });
+          throw e;
+        } finally {
+          span.end();
+        }
+      },
+    );
+  }
+
+  protected async routeActivityInternal(
+    recipient: string | null,
+    activity: Activity,
+    options: RouteActivityOptions = {},
+    span: Span,
+  ): Promise<boolean> {
+    const logger = getLogger(["fedify", "federation", "inbox"]);
+    const contextLoader = options.contextLoader ?? this.contextLoader;
+    const json = await activity.toJsonLd({ contextLoader });
+    const keyCache = new KvKeyCache(
+      this.federation.kv,
+      this.federation.kvPrefixes.publicKey,
+      this,
+    );
+    const verified = await verifyObject(
+      Activity,
+      json,
+      {
+        contextLoader,
+        documentLoader: options.documentLoader ?? this.documentLoader,
+        tracerProvider: options.tracerProvider ?? this.tracerProvider,
+        keyCache,
+      },
+    );
+    if (verified == null) {
+      logger.debug(
+        "Object Integrity Proofs are not verified.",
+        { recipient, activity: json },
+      );
+      if (activity.id == null) {
+        logger.debug(
+          "Activity is missing an ID; unable to fetch.",
+          { recipient, activity: json },
+        );
+        return false;
+      }
+      const fetched = await this.lookupObject(activity.id, options);
+      if (fetched == null) {
+        logger.debug(
+          "Failed to fetch the remote activity object {activityId}.",
+          { recipient, activity: json, activityId: activity.id.href },
+        );
+        return false;
+      } else if (!(fetched instanceof Activity)) {
+        logger.debug(
+          "Fetched object is not an Activity.",
+          { recipient, activity: await fetched.toJsonLd({ contextLoader }) },
+        );
+        return false;
+      } else if (fetched.id?.href !== activity.id.href) {
+        logger.debug(
+          "Fetched activity object has a different ID; failed to verify.",
+          { recipient, activity: await fetched.toJsonLd({ contextLoader }) },
+        );
+        return false;
+      } else if (fetched.actorIds.length < 1) {
+        logger.debug(
+          "Fetched activity object is missing an actor; unable to verify.",
+          { recipient, activity: await fetched.toJsonLd({ contextLoader }) },
+        );
+        return false;
+      }
+      const activityId = fetched.id;
+      if (
+        !fetched.actorIds.every((actor) => actor.origin === activityId.origin)
+      ) {
+        logger.debug(
+          "Fetched activity object has actors from different origins; " +
+            "unable to verify.",
+          { recipient, activity: await fetched.toJsonLd({ contextLoader }) },
+        );
+        return false;
+      }
+      logger.debug(
+        "Successfully fetched the remote activity object {activityId}; " +
+          "ignore the original activity and use the fetched one, which is trustworthy.",
+      );
+      activity = fetched;
+    } else {
+      logger.debug(
+        "Object Integrity Proofs are verified.",
+        { recipient, activity: json },
+      );
+    }
+    const routeResult = await routeActivity({
+      context: this,
+      json,
+      activity,
+      recipient,
+      inboxListeners: this.federation.inboxListeners,
+      inboxContextFactory: this.toInboxContext.bind(this),
+      inboxErrorHandler: this.federation.inboxErrorHandler,
+      kv: this.federation.kv,
+      kvPrefixes: this.federation.kvPrefixes,
+      queue: this.federation.inboxQueue,
+      span,
+      tracerProvider: options.tracerProvider ?? this.tracerProvider,
+    });
+    return routeResult === "alreadyProcessed" || routeResult === "enqueued" ||
+      routeResult === "unsupportedActivity" || routeResult === "success";
   }
 }
 

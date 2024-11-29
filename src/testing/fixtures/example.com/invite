@@ -1,0 +1,7 @@
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "type": "Invite",
+  "id": "https://example.com/invite",
+  "actor": "https://example.com/person",
+  "object": "https://example.com/object"
+}

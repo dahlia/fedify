@@ -315,6 +315,32 @@ export interface Context<TContextData> {
     activity: Activity,
     options?: SendActivityOptions,
   ): Promise<void>;
+
+  /**
+   * Manually routes an activity to the appropriate inbox listener.
+   *
+   * It is useful for routing an activity that is not received from the network,
+   * or for routing an activity that is enclosed in another activity.
+   *
+   * Note that the activity will be verified if it has Object Integrity Proofs
+   * or is equivalent to the actual remote object.  If the activity is not
+   * verified, it will be rejected.
+   * @param recipient The recipient of the activity.  If it is `null`,
+   *                  the activity will be routed to the shared inbox.
+   *                  Otherwise, the activity will be routed to the personal
+   *                  inbox of the recipient with the given identifier.
+   * @param activity The activity to route.  It must have a proof or
+   *                 a dereferenceable `id` to verify the activity.
+   * @param options Options for routing the activity.
+   * @returns `true` if the activity is successfully verified and routed.
+   *          Otherwise, `false`.
+   * @since 1.3.0
+   */
+  routeActivity(
+    recipient: string | null,
+    activity: Activity,
+    options?: RouteActivityOptions,
+  ): Promise<boolean>;
 }
 
 /**
@@ -577,6 +603,36 @@ export interface ForwardActivityOptions extends SendActivityOptions {
    * if it is not signed.
    */
   skipIfUnsigned: boolean;
+}
+
+/**
+ * Options for {@link Context.routeActivity} method.
+ * @since 1.3.0
+ */
+export interface RouteActivityOptions {
+  /**
+   * Whether to skip enqueuing the activity and invoke the listener immediately.
+   * If no inbox queue is available, this option is ignored and the activity
+   * will be always invoked immediately.
+   * @default false
+   */
+  immediate?: boolean;
+
+  /**
+   * The document loader for loading remote JSON-LD documents.
+   */
+  documentLoader?: DocumentLoader;
+
+  /**
+   * The context loader for loading remote JSON-LD contexts.
+   */
+  contextLoader?: DocumentLoader;
+
+  /**
+   * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
+   * is used.
+   */
+  tracerProvider?: TracerProvider;
 }
 
 /**

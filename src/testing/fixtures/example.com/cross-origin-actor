@@ -1,0 +1,6 @@
+{
+  "@context": "https://www.w3.org/ns/activitystreams",
+  "type": "Create",
+  "id": "https://example.com/cross-origin-actor",
+  "actor": "https://cross-origin.com/actor"
+}

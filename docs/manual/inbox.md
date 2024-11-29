@@ -483,3 +483,69 @@ const ctx = null as unknown as Context<void>;
 // ---cut-before---
 ctx.getInboxUri()
 ~~~~
+
+
+Manual routing
+--------------
+
+*This API is available since Fedify 1.3.0.*
+
+If you want to manually route an activity to the appropriate inbox listener
+with no actual HTTP request, you can use the `Context.routeActivity()` method.
+The method takes an identifier of the recipient (or `null` for the shared inbox)
+and an `Activity` object to route.  The point of this method is that it verifies
+if the `Activity` object is made by the its actor, and unless it is, the method
+silently ignores the activity.
+
+The following code shows how to route an `Activity` object enclosed in
+top-level `Announce` object to the corresponding inbox listener:
+
+~~~~ typescript twoslash
+import { Activity, Announce, type Federation } from "@fedify/fedify";
+
+const federation = null as unknown as Federation<void>;
+
+federation
+  .setInboxListeners("/users/{identifier}/inbox", "/inbox")
+// ---cut-before---
+  .on(Announce, async (ctx, announce) => {
+    // Get an object enclosed in the `Announce` object:
+    const object = await announce.getObject();
+    if (object instanceof Activity) {
+      // Route the activity to the appropriate inbox listener (shared inbox):
+      await ctx.routeActivity(ctx.recipient, object);
+    }
+  })
+~~~~
+
+As another example, the following code shows how to invoke the corresponding
+inbox listeners for a remote actor's activities:
+
+~~~~ typescript twoslash
+import { Activity, type Context, isActor } from "@fedify/fedify";
+
+async function main(context: Context<void>) {
+// ---cut-before---
+const actor = await context.lookupObject("@hongminhee@fosstodon.org");
+if (!isActor(actor)) return;
+const collection = await actor.getOutbox();
+if (collection == null) return;
+for await (const item of context.traverseCollection(collection)) {
+  if (item instanceof Activity) {
+    await context.routeActivity(null, item);
+  }
+}
+// ---cut-after---
+}
+~~~~
+
+> [!TIP]
+> The `Context.routeActivity()` method trusts the `Activity` object only if
+> one of the following conditions is met:
+>
+>  -  The `Activity` has its Object Integrity Proofs and the proofs are signed
+>     by its actor.
+>
+>  -  The `Activity` is dereferenceable by its `~Object.id` and
+>     the dereferenced object has an actor that belongs to the same origin
+>     as the `Activity` object.
