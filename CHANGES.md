@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.3.0
 -------------
 
-To be released.
+Released on November 30, 2024.
 
  -  `MessageQueue`s now can be differently configured for incoming and outgoing
     activities.
