@@ -76,7 +76,9 @@ For Markdown, we have the following conventions:
  -  Two new lines before opening an H1/H2 heading.
  -  One space before and two spaces after a bullet.
  -  Wrap file paths in asterisks.
- -  Wrap code in backticks.
+ -  Wrap inline code in backticks.
+ -  Wrap code blocks in quadruple tildes (`~~~~`), and specify the language with
+    a single space after the opening tildes (e.g., `~~~~ bash`).
 
 In order to build the docs,
 see the [*Building the docs* section](#building-the-docs).
@@ -159,9 +161,10 @@ install Deno to hack on Fedify.
 
 > [!TIP]
 > If you use [mise-en-place], a dev tools/env vars manager and a task runner,
-> you can easily install Deno, [Node.js], and [Bun] with a single command:
+> you can easily install Deno, [Node.js], and [Bun] with following commands:
 >
 > ~~~~ bash
+> mise trust
 > mise install
 > ~~~~
 
@@ -258,15 +261,13 @@ with Node.js and Bun.
 ### Building the docs
 
 If you want to change the Fedify docs, you would like to preview the changes
-in the browser.  To do that, you need to install Node.js and [pnpm] first.
+in the browser.  To do that, you need to install [Bun] first.
 Then you can run the following commands at the *docs/* directory:
 
 ~~~~ bash
-pnpm install
-pnpm dev
+bun install
+bun dev
 ~~~~
 
 Once the development server is running, you can open your browser and navigate
 to *http://localhost:5173/* to view the docs.
-
-[pnpm]: https://pnpm.io/
