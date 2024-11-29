@@ -11,7 +11,6 @@ import { accepts } from "@std/http/negotiation";
 import metadata from "../deno.json" with { type: "json" };
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import { verifyRequest } from "../sig/http.ts";
-import type { KeyCache } from "../sig/key.ts";
 import { detachSignature, verifyJsonLd } from "../sig/ld.ts";
 import { doesActorOwnKey } from "../sig/owner.ts";
 import { verifyObject } from "../sig/proof.ts";
@@ -19,9 +18,8 @@ import type { Recipient } from "../vocab/actor.ts";
 import { getTypeId } from "../vocab/type.ts";
 import {
   Activity,
-  CryptographicKey,
+  type CryptographicKey,
   Link,
-  Multikey,
   Object,
   OrderedCollection,
   OrderedCollectionPage,
@@ -38,6 +36,7 @@ import type {
 } from "./callback.ts";
 import type { Context, InboxContext, RequestContext } from "./context.ts";
 import type { InboxListenerSet } from "./inbox.ts";
+import { KvKeyCache } from "./keycache.ts";
 import type { KvKey, KvStore } from "./kv.ts";
 import type { MessageQueue } from "./mq.ts";
 import type { InboxMessage } from "./queue.ts";
@@ -545,39 +544,7 @@ async function handleInboxInternal<TContextData>(
       headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
-  const keyCache: KeyCache & { nullKeys: Set<string> } = {
-    nullKeys: new Set(),
-    async get(keyId: URL) {
-      if (this.nullKeys.has(keyId.href)) return null;
-      const serialized = await kv.get([
-        ...kvPrefixes.publicKey,
-        keyId.href,
-      ]);
-      if (serialized == null) return undefined;
-      let object: Object;
-      try {
-        object = await Object.fromJsonLd(serialized, ctx);
-      } catch {
-        await kv.delete([...kvPrefixes.publicKey, keyId.href]);
-        return undefined;
-      }
-      if (object instanceof CryptographicKey || object instanceof Multikey) {
-        return object;
-      }
-      await kv.delete([...kvPrefixes.publicKey, keyId.href]);
-      return undefined;
-    },
-    async set(keyId: URL, key: CryptographicKey | Multikey | null) {
-      if (key == null) {
-        this.nullKeys.add(keyId.href);
-        await kv.delete([...kvPrefixes.publicKey, keyId.href]);
-        return;
-      }
-      this.nullKeys.delete(keyId.href);
-      const serialized = await key.toJsonLd(ctx);
-      await kv.set([...kvPrefixes.publicKey, keyId.href], serialized);
-    },
-  };
+  const keyCache = new KvKeyCache(kv, kvPrefixes.publicKey, ctx);
   const ldSigVerified = await verifyJsonLd(json, {
     contextLoader: ctx.contextLoader,
     documentLoader: ctx.documentLoader,
