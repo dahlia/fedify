@@ -82,7 +82,7 @@
     "cache": "deno task codegen && deno cache mod.ts",
     "check": "deno task codegen && deno fmt --check && deno lint && deno check */*.ts",
     "codegen": "deno run --allow-read --allow-write --check codegen/main.ts vocab/ ../runtime/ > vocab/vocab.ts && deno fmt vocab/vocab.ts && deno cache vocab/vocab.ts && deno check vocab/vocab.ts",
-    "test-without-codegen": "deno test --check --doc --allow-read --allow-write --allow-env --unstable-kv --trace-leaks",
+    "test-without-codegen": "deno test --check --doc --allow-read --allow-write --allow-env --unstable-kv --trace-leaks --parallel",
     "test": "deno task codegen && deno task test-without-codegen",
     "coverage": "rm -rf coverage/ && deno task test --coverage && deno coverage --html coverage",
     "bench": "deno task codegen && deno bench --allow-read --allow-write --allow-net --allow-env --allow-run --unstable-kv",
