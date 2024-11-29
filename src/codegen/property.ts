@@ -89,38 +89,64 @@ async function* generateProperty(
           throw error;
         }
         const { document } = fetchResult;
-    `;
-    for (const range of property.range) {
-      if (!(range in types)) continue;
-      const rangeType = types[range];
-      yield `
         try {
-          const obj = await ${rangeType.name}.fromJsonLd(
+          const obj = await this.#${property.singularName}_fromJsonLd(
             document,
-            { documentLoader, contextLoader, tracerProvider },
+            { documentLoader, contextLoader, tracerProvider }
           );
           span.setAttribute("activitypub.object.id", (obj.id ?? url).href);
           span.setAttribute(
             "activitypub.object.type",
-            (obj.constructor as typeof ${rangeType.name}).typeId.href
+            // @ts-ignore: obj.constructor always has a typeId.
+            obj.constructor.typeId.href
           );
-          span.end();
           return obj;
         } catch (e) {
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
           });
+          throw e;
+        } finally {
           span.end();
+        }
+      });
+    }
+
+    async #${property.singularName}_fromJsonLd(
+      jsonLd: unknown,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        tracerProvider?: TracerProvider,
+      }
+    ): Promise<${getTypeNames(property.range, types)}> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? getDocumentLoader();
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? getDocumentLoader();
+      const tracerProvider = options.tracerProvider ??
+        this._tracerProvider ?? trace.getTracerProvider();
+    `;
+    for (const range of property.range) {
+      if (!(range in types)) continue;
+      const rangeType = types[range];
+      yield `
+        try {
+          return await ${rangeType.name}.fromJsonLd(
+            jsonLd,
+            { documentLoader, contextLoader, tracerProvider },
+          );
+        } catch (e) {
           if (!(e instanceof TypeError)) throw e;
         }
       `;
     }
     yield `
-        throw new TypeError("Expected an object of any type of: " +
-          ${JSON.stringify(property.range)}.join(", "));
-      });
+      throw new TypeError("Expected an object of any type of: " +
+        ${JSON.stringify(property.range)}.join(", "));
     }
+
     `;
     if (property.functional || property.singularAccessor) {
       yield `
@@ -155,6 +181,25 @@ async function* generateProperty(
           this.${await getFieldName(property.uri)}[0] = fetched;
           return fetched;
         }
+      `;
+      if (property.compactName != null) {
+        yield `
+        if (
+          this._cachedJsonLd != null &&
+          typeof this._cachedJsonLd === "object" &&
+          "@context" in this._cachedJsonLd &&
+          ${JSON.stringify(property.compactName)} in this._cachedJsonLd
+        ) {
+          const prop = this._cachedJsonLd[
+            ${JSON.stringify(property.compactName)}];
+          const obj = Array.isArray(prop) ? prop[0] : prop;
+          if (obj != null && typeof obj === "object" && "@context" in obj) {
+            return await this.#${property.singularName}_fromJsonLd(obj, options);
+          }
+        }
+        `;
+      }
+      yield `
         return v;
       }
       `;
@@ -194,6 +239,26 @@ async function* generateProperty(
             yield fetched;
             continue;
           }
+      `;
+      if (property.compactName != null) {
+        yield `
+          if (
+            this._cachedJsonLd != null &&
+            typeof this._cachedJsonLd === "object" &&
+            "@context" in this._cachedJsonLd &&
+            ${JSON.stringify(property.compactName)} in this._cachedJsonLd
+          ) {
+            const prop = this._cachedJsonLd[
+              ${JSON.stringify(property.compactName)}];
+            const obj = Array.isArray(prop) ? prop[i] : prop;
+            if (obj != null && typeof obj === "object" && "@context" in obj) {
+              yield await this.#${property.singularName}_fromJsonLd(obj, options);
+              continue;
+            }
+          }
+        `;
+      }
+      yield `
           yield v;
         }
       }

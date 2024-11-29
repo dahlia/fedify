@@ -62,6 +62,10 @@ To be released.
  -  `Context.sendActivity()` and `InboxContext.forwardActivity()` methods now
     reject when they fail to enqueue the task.  [[#192]]
 
+ -  `Object.toJsonLd()` without any `format` option now returns its original
+    JSON-LD object even if it not created from `Object.fromJsonLd()` but it is
+    returned from another `Object`'s `get*()` method.
+
  -  Fedify now supports OpenTelemetry for tracing.  [[#170]]
 
      -  Added `Context.tracerProvider` property.

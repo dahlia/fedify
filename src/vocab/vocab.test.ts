@@ -382,6 +382,23 @@ test("Activity.getObject()", async () => {
     object: new URL("https://example.com/not-found"),
   });
   assertEquals(await activity2.getObject({ suppressError: true }), null);
+
+  const activity3 = await Activity.fromJsonLd({
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "Create",
+    object: {
+      "@context": "https://www.w3.org/ns/activitystreams",
+      type: "Note",
+      content: "Hello world",
+    },
+  });
+  const object3 = await activity3.getObject();
+  assertInstanceOf(object3, Note);
+  assertEquals(await object3.toJsonLd(), {
+    "@context": "https://www.w3.org/ns/activitystreams",
+    type: "Note",
+    content: "Hello world",
+  });
 });
 
 test("Activity.getObjects()", async () => {

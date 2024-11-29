@@ -33,8 +33,8 @@ export async function* generateEncoder(
     contextLoader?: DocumentLoader,
     context?: string | Record<string, string> | (string | Record<string, string>)[],
   } = {}): Promise<unknown> {
-    if (options.format == null && this.#cachedJsonLd != null) {
-      return this.#cachedJsonLd;
+    if (options.format == null && this._cachedJsonLd != null) {
+      return this._cachedJsonLd;
     }
     if (options.format !== "compact" && options.context != null) {
       throw new TypeError(
@@ -451,7 +451,7 @@ export async function* generateDecoder(
   yield `
     if (!("_fromSubclass" in options) || !options._fromSubclass) {
       try {
-        instance.#cachedJsonLd = structuredClone(json);
+        instance._cachedJsonLd = structuredClone(json);
       } catch {
         getLogger(["fedify", "vocab"]).warn(
           "Failed to cache JSON-LD: {json}",
