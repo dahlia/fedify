@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.1.9
 -------------
 
-To be released.
+Released on December 11, 2024.
 
  -  Fixed idempotence check in inbox listeners to ensure activities for
     different origins are processed correctly.
@@ -97,7 +97,7 @@ Released on November 19, 2024.
 Version 1.1.5
 -------------
 
-Released on December 14, 2024.
+Released on November 14, 2024.
 
  -  Suppressed a `TypeError` with a message <q>unusable</q> due to Node.js's
     mysterious behavior.  [[#159]]
