@@ -514,6 +514,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     const activity = await Activity.fromJsonLd(message.activity, context);
     const cacheKey = activity.id == null ? null : [
       ...this.kvPrefixes.activityIdempotence,
+      context.origin,
       activity.id.href,
     ] satisfies KvKey;
     if (cacheKey != null) {

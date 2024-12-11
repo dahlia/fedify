@@ -665,10 +665,11 @@ test("Federation.setInboxListeners()", async (t) => {
     assertEquals(response.status, 401);
 
     // Personal inbox + HTTP Signatures (RSA)
+    const activityPayload = await activity().toJsonLd(options);
     let request = new Request("https://example.com/users/john/inbox", {
       method: "POST",
       headers: { "Content-Type": "application/activity+json" },
-      body: JSON.stringify(await activity().toJsonLd(options)),
+      body: JSON.stringify(activityPayload),
     });
     request = await signRequest(
       request,
@@ -685,6 +686,37 @@ test("Federation.setInboxListeners()", async (t) => {
     await inbox[0][0].documentLoader("https://example.com/person");
     assertEquals(authenticatedRequests, [
       ["https://example.com/person", "https://example.com/users/john#main-key"],
+    ]);
+
+    // Idempotence check
+    response = await federation.fetch(request, { contextData: undefined });
+    assertEquals(inbox.length, 1);
+
+    // Idempotence check with different origin (host)
+    inbox.shift();
+    request = new Request("https://another.host/users/john/inbox", {
+      method: "POST",
+      headers: { "Content-Type": "application/activity+json" },
+      body: JSON.stringify(activityPayload),
+    });
+    request = await signRequest(
+      request,
+      rsaPrivateKey3,
+      new URL("https://example.com/person2#key3"),
+    );
+    response = await federation.fetch(request, { contextData: undefined });
+    assertEquals(inbox.length, 1);
+    assertEquals(inbox[0][1].actorId, new URL("https://example.com/person2"));
+    assertEquals(response.status, 202);
+
+    while (authenticatedRequests.length > 0) authenticatedRequests.shift();
+    assertEquals(authenticatedRequests, []);
+    await inbox[0][0].documentLoader("https://example.com/person");
+    assertEquals(authenticatedRequests, [
+      [
+        "https://example.com/person",
+        "https://another.host/users/john#main-key",
+      ],
     ]);
 
     // Shared inbox + HTTP Signatures (RSA)
