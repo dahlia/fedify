@@ -686,6 +686,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     const cacheKey = activity.id == null ? null : [
       ...this.kvPrefixes.activityIdempotence,
+      context.origin,
       activity.id.href,
     ] satisfies KvKey;
     if (cacheKey != null) {

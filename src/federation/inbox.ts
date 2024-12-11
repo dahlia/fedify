@@ -119,6 +119,7 @@ export async function routeActivity<TContextData>(
   const logger = getLogger(["fedify", "federation", "inbox"]);
   const cacheKey = activity.id == null ? null : [
     ...kvPrefixes.activityIdempotence,
+    ctx.origin,
     activity.id.href,
   ] satisfies KvKey;
   if (cacheKey != null) {
