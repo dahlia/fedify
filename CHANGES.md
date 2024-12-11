@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.0.12
 --------------
 
-To be released.
+Released on December 11, 2024.
 
  -  Fixed idempotence check in inbox listeners to ensure activities for
     different origins are processed correctly.
@@ -15,7 +15,7 @@ To be released.
 Version 1.0.11
 --------------
 
-Released on December 22, 2024.
+Released on November 22, 2024.
 
  -  Fixed a bug where `lookupWebFinger()` function had thrown a `TypeError`
     when the *.well-known/webfinger* redirects to a relative URI.  [[#166]]
@@ -24,7 +24,7 @@ Released on December 22, 2024.
 Version 1.0.10
 --------------
 
-Released on December 19, 2024.
+Released on November 19, 2024.
 
  -  Fix a bug where `Actor`'s `inbox` and `outbox` properties had not been
     able to be set to an `OrderedCollectionPage` object, even though it is
@@ -81,7 +81,7 @@ Released on December 19, 2024.
 Version 1.0.9
 -------------
 
-Released on December 14, 2024.
+Released on November 14, 2024.
 
  -  Suppressed a `TypeError` with a message <q>unusable</q> due to Node.js's
     mysterious behavior.  [[#159]]
