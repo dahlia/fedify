@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.3.1
 -------------
 
-To be released.
+Released on December 11, 2024.
 
  -  Fixed idempotence check in inbox listeners to ensure activities for
     different origins are processed correctly.
