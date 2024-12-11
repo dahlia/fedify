@@ -8,6 +8,9 @@ Version 1.0.12
 
 To be released.
 
+ -  Fixed idempotence check in inbox listeners to ensure activities for
+    different origins are processed correctly.
+
 
 Version 1.0.11
 --------------

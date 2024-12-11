@@ -523,9 +523,11 @@ export async function handleInbox<TContextData>(
     }
     activity = await Activity.fromJsonLd(jsonWithoutSig, context);
   }
-  const cacheKey = activity.id == null
-    ? null
-    : [...kvPrefixes.activityIdempotence, activity.id.href] satisfies KvKey;
+  const cacheKey = activity.id == null ? null : [
+    ...kvPrefixes.activityIdempotence,
+    context.origin,
+    activity.id.href,
+  ] satisfies KvKey;
   if (cacheKey != null) {
     const cached = await kv.get(cacheKey);
     if (cached === true) {
