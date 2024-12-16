@@ -1925,6 +1925,17 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     for (const { privateKey } of keys) {
       validateCryptoKey(privateKey, "private");
     }
+    if (activity.id == null) {
+      const id = new URL(`urn:uuid:${crypto.randomUUID()}`);
+      activity = activity.clone({ id });
+      logger.warn(
+        "As the activity to send does not have an id, a new id {id} has " +
+          "been generated for it.  However, it is recommended to explicitly " +
+          "set the id for the activity.",
+        { id: id.href },
+      );
+    }
+    span?.setAttribute("activitypub.activity.id", activity.id!.href);
     if (activity.actorId == null) {
       logger.error(
         "Activity {activityId} to send does not have an actor.",
@@ -1933,11 +1944,6 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       throw new TypeError(
         "The activity to send must have at least one actor property.",
       );
-    }
-    if (activity.id == null) {
-      const id = new URL(`urn:uuid:${crypto.randomUUID()}`);
-      activity = activity.clone({ id });
-      span?.setAttribute("activitypub.activity.id", id.href);
     }
     const inboxes = extractInboxes({
       recipients: Array.isArray(recipients) ? recipients : [recipients],
