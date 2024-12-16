@@ -1653,6 +1653,13 @@ proofs?: (DataIntegrityProof | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -1820,6 +1827,13 @@ proofs?: (DataIntegrityProof | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -2058,6 +2072,13 @@ proofs?: (DataIntegrityProof | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -2281,6 +2302,13 @@ get contents(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -2473,6 +2501,13 @@ get names(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -2629,6 +2664,13 @@ get names(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -2831,6 +2873,13 @@ get names(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -3033,6 +3082,13 @@ get names(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -3242,6 +3298,13 @@ get names(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -3451,6 +3514,13 @@ get names(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -3665,6 +3735,13 @@ get names(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -3837,6 +3914,13 @@ get summaries(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -4018,6 +4102,13 @@ get urls(): ((URL | Link))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -4218,6 +4309,13 @@ get urls(): ((URL | Link))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -4418,6 +4516,13 @@ get urls(): ((URL | Link))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -4618,6 +4723,13 @@ get urls(): ((URL | Link))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -4858,6 +4970,13 @@ get urls(): ((URL | Link))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -9316,6 +9435,13 @@ instruments?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -9554,6 +9680,13 @@ instruments?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -9756,6 +9889,13 @@ instruments?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -9964,6 +10104,13 @@ instruments?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -10166,6 +10313,13 @@ instruments?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -10370,6 +10524,13 @@ instruments?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -13153,6 +13314,13 @@ cryptosuite?: \\"eddsa-jcs-2022\\" | null;verificationMethod?: Multikey | URL | 
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -13944,6 +14112,13 @@ owner?: Application | Group | Organization | Person | Service | URL | null;publi
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -14684,6 +14859,13 @@ controller?: Application | Group | Organization | Person | Service | URL | null;
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -17129,6 +17311,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -17325,6 +17514,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -17542,6 +17738,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -17706,6 +17909,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -17867,6 +18077,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -18014,6 +18231,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -18164,6 +18388,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -18312,6 +18543,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -18458,6 +18696,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -18604,6 +18849,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -18796,6 +19048,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -18974,6 +19233,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -19214,6 +19480,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -24322,6 +24595,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -24466,6 +24746,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -24610,6 +24897,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -24754,6 +25048,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -25734,6 +26035,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -25878,6 +26186,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -26020,6 +26335,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -30388,6 +30710,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -30584,6 +30913,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -30801,6 +31137,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -30965,6 +31308,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -31126,6 +31476,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -31273,6 +31630,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -31423,6 +31787,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -31571,6 +31942,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -31717,6 +32095,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -31863,6 +32248,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -32055,6 +32447,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -32233,6 +32632,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -32473,6 +32879,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -35216,6 +35629,13 @@ get names(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -39907,6 +40327,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -40539,6 +40966,13 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -41993,6 +42427,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -42189,6 +42630,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -42406,6 +42854,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -42570,6 +43025,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -42731,6 +43193,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -42878,6 +43347,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -43028,6 +43504,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -43176,6 +43659,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -43322,6 +43812,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -43468,6 +43965,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -43660,6 +44164,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -43838,6 +44349,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -44078,6 +44596,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -47545,6 +48070,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -47741,6 +48273,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -47958,6 +48497,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -48122,6 +48668,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -48283,6 +48836,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -48430,6 +48990,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -48580,6 +49147,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -48728,6 +49302,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -48874,6 +49455,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -49020,6 +49608,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -49212,6 +49807,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -49390,6 +49992,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -49630,6 +50239,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -52953,6 +53569,13 @@ proofs?: (DataIntegrityProof | URL)[];describes?: Object | URL | null;}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -53654,6 +54277,13 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -53803,6 +54433,13 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -55413,6 +56050,13 @@ relationships?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -55559,6 +56203,13 @@ relationships?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -55757,6 +56408,13 @@ relationships?: (Object | URL)[];}
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -57658,6 +58316,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -57854,6 +58519,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -58071,6 +58743,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -58235,6 +58914,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -58396,6 +59082,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -58543,6 +59236,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -58693,6 +59393,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -58841,6 +59548,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -58987,6 +59701,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -59133,6 +59854,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -59325,6 +60053,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -59503,6 +60238,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),
@@ -59743,6 +60485,13 @@ get preferredUsernames(): ((string | LanguageString))[] {
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),

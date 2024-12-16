@@ -305,6 +305,47 @@ As you can see, the outputs are separated by `----` by default.  You can change
 the separator by using the [`-s`/`--separator`](#s-separator-output-separator)
 option.
 
+> [!NOTE]
+> The `fedify lookup` command cannot take multiple argument if
+> [`-t`/`--traverse`](#t-traverse-traverse-the-collection) option is turned
+> on.
+
+### `-t`/`--traverse`: Traverse the collection
+
+*This option is available since Fedify 0.14.0.*
+
+The `-t`/`--traverse` option is used to traverse the collection when looking up
+a collection object.  For example, the below command looks up a collection
+object:
+
+~~~~ sh
+fedify lookup --traverse https://fosstodon.org/users/hongminhee/outbox
+~~~~
+
+The difference between with and without the `-t`/`--traverse` option is that
+the former will output the objects in the collection, while the latter will
+output the collection object itself.
+
+This option only works with a single argument, and it has to be a collection.
+
+### `-S`/`--suppress-errors`: Suppress partial errors during traversal
+
+*This option is available since Fedify 0.14.0.*
+
+The `-S`/`--suppress-errors` option is used to suppress partial errors during
+traversal.  For example, the below command looks up a collection object with
+the `-t`/`--traverse` option:
+
+~~~~ sh
+fedify lookup --traverse --suppress-errors https://fosstodon.org/users/hongminhee/outbox
+~~~~
+
+The difference between with and without the `-S`/`--suppress-errors` option is
+that the former will suppress the partial errors during traversal, while the
+latter will stop the traversal when an error occurs.
+
+This option depends on the `-t`/`--traverse` option.
+
 ### `-c`/`--compact`: Compact JSON-LD
 
 > [!NOTE]
@@ -691,6 +732,10 @@ fedify lookup -s ==== @fedify@hollo.social @hongminhee@fosstodon.org
 ~~~~
 
 It does not affect the output when looking up a single object.
+
+> [!TIP]
+> The separator is also used when looking up a collection object with the
+> [`-t`/`--traverse`](#t-traverse-traverse-the-collection) option.
 
 
 `fedify inbox`: Ephemeral inbox server

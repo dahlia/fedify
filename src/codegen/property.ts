@@ -102,6 +102,13 @@ async function* generateProperty(
           );
           return obj;
         } catch (e) {
+          if (options.suppressError) {
+            getLogger(["fedify", "vocab"]).error(
+              "Failed to parse {url}: {error}",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
           span.setStatus({
             code: SpanStatusCode.ERROR,
             message: String(e),

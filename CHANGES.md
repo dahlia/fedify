@@ -8,6 +8,17 @@ Version 1.4.0
 
 To be released.
 
+ -  The `suppressError` option of Activity Vocabulary APIs,
+    `traverseCollection()` function, and `Context.traverseCollection()` method
+    now suppresses errors occurred JSON-LD processing.
+
+ -  Added `-t`/`--traverse` option to the `fedify lookup` subcommand.  [[#195]]
+
+ -  Added `-S`/`--suppress-errors` option to the `fedify lookup` subcommand.
+    [[#195]]
+
+[#195]: https://github.com/dahlia/fedify/issues/195
+
 
 Version 1.3.1
 -------------
