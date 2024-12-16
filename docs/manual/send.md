@@ -44,6 +44,7 @@ async function sendFollow(
     { identifier: senderId },
     recipient,
     new Follow({
+      id: new URL(`https://example.com/${senderId}/follows/${recipient.id}`),
       actor: ctx.getActorUri(senderId),
       object: recipient.id,
     }),
@@ -60,7 +61,7 @@ async function sendFollow(
 Specifying a sender
 -------------------
 
-The first argument of the `~Context.sendActivity()` method is the sender
+The first argument of the `Context.sendActivity()` method is the sender
 of the activity.  It can be three types of values:
 
 ### `{ identifier: string }`
@@ -128,6 +129,79 @@ await ctx.sendActivity(
 
 However, you probably don't want to use this option directly; instead,
 you should use above two options to specify the sender.
+
+
+Specifying an activity
+----------------------
+
+The third argument of the `Context.sendActivity()` method is the activity
+to send.  It can be an instance of any subclass of the `Activity` class, such
+as `Follow`, `Create`, `Like`, and so on.
+
+Every activity must have the `actor` property, which corresponds to the sender
+of the activity.  [You can get the actor's URI by calling
+the `Context.getActorUri()` method.](./actor.md#constructing-actor-uris)
+
+Every activity should have the `id` property, which is a unique IRI for the
+activity.  If you don't specify the `id` property, Fedify automatically
+generates a unique IRI for the activity—but it is recommended to specify
+the `id` property explicitly.
+
+> [!TIP]
+> The activity's `id` does not have to be necessarily dereferenceable—it's
+> totally fine to use a URL with a fragment identifier, such as
+> `https://example.com/123#follow`.
+
+The most of cases, an activity should have the `to` property, which corresponds
+to the recipient of the activity.  If it's a public activity, you can set
+the `to` property to the `PUBLIC_COLLECTION` constant, which represents
+the public addressing.  There's also the `cc` property, which corresponds to
+the secondary recipients of the activity.  Those two properties can be multiple,
+and you can set them to `Actor` objects, `Collection` objects, or `URL` objects.
+
+> [!TIP]
+> If you want to mimic the behavior of Mastodon's post privacy settings,
+> here's a table that shows how to set the `to` and `cc` properties:
+>
+> | Privacy setting  | `to` property               | `cc` property               |
+> |------------------|-----------------------------|-----------------------------|
+> | Public           | `PUBLIC_COLLECTION`         | `Context.getFollowersUri()` |
+> | Quiet public[^1] | `Context.getFollowersUri()` | `PUBLIC_COLLECTION`         |
+> | Followers-only   | `Context.getFollowersUri()` | Mentioned actors            |
+> | Direct message   | Mentioned actors            |                             |
+
+To wrap up, the following is an example of sending a `Create` activity:
+
+~~~~ typescript twoslash
+import {
+  type Context, Create, Note, type Actor, PUBLIC_COLLECTION,
+} from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+const senderId: string = "";
+const noteId: string = "";
+const content: string = "";
+const recipients: Actor[] = [];
+// ---cut-before---
+await ctx.sendActivity(
+  { identifier: senderId },
+  recipients,
+  new Create({
+    id: new URL(`#create`, ctx.getObjectUri(Note, { id: noteId })),
+    actor: ctx.getActorUri(senderId),
+    object: new Note({
+      id: ctx.getObjectUri(Note, { id: noteId }),
+      attribution: ctx.getActorUri(senderId),
+      to: PUBLIC_COLLECTION,
+      cc: ctx.getFollowersUri(senderId),
+      content,
+    }),
+  }),
+);
+~~~~
+
+[^1]: Previously known as <q>Unlisted</q> in Mastodon—renamed to <q>Quiet
+      public</q> in Mastodon 4.3.0.  It's a public post that doesn't appear
+      in the public timeline and the hashtag pages.
 
 
 Enqueuing an outgoing activity
