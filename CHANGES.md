@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.1.10
 --------------
 
-To be released.
+Released on December 18, 2024.
 
  -  Fixed the default document loader to handle the `Link` header with
     incorrect syntax.  [[#196]]
