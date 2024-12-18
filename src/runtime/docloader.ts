@@ -133,7 +133,16 @@ async function getRemoteDocument(
   const linkHeader = response.headers.get("Link");
   let contextUrl: string | null = null;
   if (linkHeader != null) {
-    const link = new HTTPHeaderLink(linkHeader);
+    let link: HTTPHeaderLink;
+    try {
+      link = new HTTPHeaderLink(linkHeader);
+    } catch (e) {
+      if (e instanceof SyntaxError) {
+        link = new HTTPHeaderLink();
+      } else {
+        throw e;
+      }
+    }
     if (jsonLd) {
       const entries = link.getByRel("http://www.w3.org/ns/json-ld#context");
       for (const [uri, params] of entries) {

@@ -101,6 +101,24 @@ test("getDocumentLoader()", async (t) => {
       },
     ));
 
+  mf.mock("GET@/obj-w-wrong-link", (_req) =>
+    new Response(
+      JSON.stringify({
+        "@context": "https://www.w3.org/ns/activitystreams",
+        id: "https://example.com/obj-w-wrong-link",
+        name: "Fetched object",
+        type: "Object",
+      }),
+      {
+        status: 200,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+          Link: '<https://example.com/object>; rel="alternate"; ' +
+            'type="application/ld+json; profile="https://www.w3.org/ns/activitystreams""',
+        },
+      },
+    ));
+
   await t.step("Link header", async () => {
     assertEquals(await fetchDocumentLoader("https://example.com/link-ctx"), {
       contextUrl: "https://www.w3.org/ns/activitystreams",
@@ -143,6 +161,22 @@ test("getDocumentLoader()", async (t) => {
         document: {
           "@context": "https://www.w3.org/ns/activitystreams",
           id: "https://example.com/object",
+          name: "Fetched object",
+          type: "Object",
+        },
+      },
+    );
+  });
+
+  await t.step("wrong Link header syntax", async () => {
+    assertEquals(
+      await fetchDocumentLoader("https://example.com/obj-w-wrong-link"),
+      {
+        contextUrl: null,
+        documentUrl: "https://example.com/obj-w-wrong-link",
+        document: {
+          "@context": "https://www.w3.org/ns/activitystreams",
+          id: "https://example.com/obj-w-wrong-link",
           name: "Fetched object",
           type: "Object",
         },
