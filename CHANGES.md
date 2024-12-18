@@ -8,6 +8,9 @@ Version 1.1.10
 
 To be released.
 
+ -  Fixed the default document loader to handle the `Link` header with
+    incorrect syntax.  [[#196]]
+
 
 Version 1.1.9
 -------------
@@ -263,6 +266,17 @@ Released on October 20, 2024.
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
+
+
+Version 1.0.13
+--------------
+
+Released on December 18, 2024.
+
+ -  Fixed the default document loader to handle the `Link` header with
+    incorrect syntax.  [[#196]]
+
+[#196]: https://github.com/dahlia/fedify/issues/196
 
 
 Version 1.0.12
