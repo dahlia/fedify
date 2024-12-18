@@ -8,6 +8,11 @@ Version 1.0.13
 
 To be released.
 
+ -  Fixed the default document loader to handle the `Link` header with
+    incorrect syntax.  [[#196]]
+
+[#196]: https://github.com/dahlia/fedify/issues/196
+
 
 Version 1.0.12
 --------------
