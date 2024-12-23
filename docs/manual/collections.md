@@ -826,9 +826,9 @@ interface GetFollowersByUserIdOptions {
    */
   cursor?: string | null;
   /**
-   * The number of items per page.
+   * The number of items per page. If `null`, the entire collection is returned.
    */
-  limit: number;
+  limit?: number | null;
 }
 /**
  * A hypothetical function that returns the actors that are following an actor.
@@ -839,7 +839,7 @@ interface GetFollowersByUserIdOptions {
  */
 async function getFollowersByUserId(
   userId: string,
-  options: GetFollowersByUserIdOptions,
+  options: GetFollowersByUserIdOptions = {},
 ): Promise<ResultSet> {
     return { users: [], nextCursor: null, last: true };
 }
@@ -873,6 +873,132 @@ federation
 >
 > Every `Actor` object is also a `Recipient` object, so you can use the `Actor`
 > object as the `Recipient` object.
+
+### One-shot followers collection for gathering recipients
+
+When you invoke `Context.sendActivity()` method with setting the `recipients`
+parameter to `"followers"`, Fedify automatically gathers the recipients from
+the followers collection.  In this case, the followers collection dispatcher
+is not called by remote servers, but it's called in the same process.
+Therefore, you don't have much merit to paginate the followers collection,
+but instead you would want to gather all the followers at once.
+
+Under the hood, the `Context.sendActivity()` method tries to gather the
+recipients by calling the followers collection dispatcher with the `cursor`
+parameter set to `null`.  However, if the followers collection dispatcher
+returns `null`, the method treats it as a signal that the followers collection
+is always paginated, and it gather the recipients by paginating the followers
+collection with multiple invocation of the followers collection dispatcher.
+If the followers collection dispatcher returns an object that contains
+the entire followers collection, the method gathers the recipients at once.
+
+Therefore, if you use `"followers"` as the `recipients` parameter of
+the `Context.sendActivity()` method, you should return the entire followers
+collection when the `cursor` parameter is `null`:
+
+~~~~ typescript{5-17} twoslash
+import type { Federation, Recipient } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+/**
+ * A hypothetical type that represents an actor in the database.
+ */
+interface User {
+  /**
+   * The URI of the actor.
+   */
+  uri: string;
+  /**
+   * The inbox URI of the actor.
+   */
+  inboxUri: string;
+}
+/**
+ * A hypothetical type that represents the result set of the actors that
+ * are following an actor.
+ */
+interface ResultSet {
+  /**
+   * The actors that are following the actor.
+   */
+  users: User[];
+  /**
+   * The next cursor that represents the position of the next page.
+   */
+  nextCursor: string | null;
+  /**
+   * Whether the current page is the last page.
+   */
+  last: boolean;
+}
+/**
+ * A hypothetical type that represents the options for
+ * the `getFollowersByUserId` function.
+ */
+interface GetFollowersByUserIdOptions {
+  /**
+   * The cursor that represents the position of the current page.
+   */
+  cursor?: string | null;
+  /**
+   * The number of items per page. If `null`, the entire collection is returned.
+   */
+  limit?: number | null;
+}
+/**
+ * A hypothetical function that returns the actors that are following an actor.
+ * @param userId The actor's identifier.
+ * @param options The options for the query.
+ * @returns The actors that are following the actor, the next cursor, and
+ *          whether the current page is the last page.
+ */
+async function getFollowersByUserId(
+  userId: string,
+  options: GetFollowersByUserIdOptions = {},
+): Promise<ResultSet> {
+    return { users: [], nextCursor: null, last: true };
+}
+// ---cut-before---
+federation
+  .setFollowersDispatcher(
+    "/users/{identifier}/followers",
+    async (ctx, identifier, cursor) => {
+      // If a whole collection is requested, returns the entire collection
+      // instead of paginating it, as we prefer one-shot gathering:
+      if (cursor == null) {
+        // Work with the database to find the actors that are following the actor
+        // (the below `getFollowersByUserId` is a hypothetical function):
+        const { users } = await getFollowersByUserId(identifier);
+        return {
+          items: users.map(actor => ({
+            id: new URL(actor.uri),
+            inboxId: new URL(actor.inboxUri),
+          })),
+        };
+      }
+      const { users, nextCursor, last } = await getFollowersByUserId(
+        identifier,
+        cursor === "" ? { limit: 10 } : { cursor, limit: 10 }
+      );
+      // Turn the users into `Recipient` objects:
+      const items: Recipient[] = users.map(actor => ({
+        id: new URL(actor.uri),
+        inboxId: new URL(actor.inboxUri),
+      }));
+      return { items, nextCursor: last ? null : nextCursor };
+    }
+  )
+  // The first cursor is an empty string:
+  .setFirstCursor(async (ctx, identifier) => "");
+~~~~
+
+> [!CAUTION]
+> The common pitfall is that the followers collection dispatcher returns
+> the first page of the followers collection when the `cursor` parameter is
+> `null`.  If the followers collection dispatcher returns only the first page
+> when the `cursor` parameter is `null`, the `Context.sendActivity()` method
+> will treat it as the entire followers collection, and it will not gather
+> the rest of the followers collection.  Therefore, it will send the activity
+> only to the followers in the first page.  Watch out for this pitfall.
 
 ### Filtering by server
 

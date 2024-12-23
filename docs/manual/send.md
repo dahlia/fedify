@@ -388,6 +388,15 @@ the digest of the followers collection in the payload.
 > the `PUBLIC_COLLECTION`, the activity is visible to everyone regardless of
 > the recipients parameter.
 
+> [!TIP]
+> Does the `Context.sendActivity()` method takes quite a long time to complete
+> even if you configured the [`queue`](./federation.md#queue)?  It might be
+> because the followers collection is large and the method under the hood
+> invokes your [followers collection dispatcher](./collections.md#followers)
+> multiple times to paginate the collection.  To improve the performance,
+> you should implement the [one-short followers collection for gathering
+> recipients](./collections.md#one-shot-followers-collection-for-gathering-recipients).
+
 [FEP-8fcf]: https://w3id.org/fep/8fcf
 
 
