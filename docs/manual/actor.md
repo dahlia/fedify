@@ -498,3 +498,96 @@ property set to <http://webfinger.net/rel/profile-page>.
 The `icon` property is an `Image` object that represents the actor's
 icon (i.e., avatar).  It is used as the `links` property of the WebFinger
 response, with the `rel` property set to <http://webfinger.net/rel/avatar>.
+
+
+Actor aliases
+-------------
+
+*This API is available since Fedify 1.4.0.*
+
+Sometimes, you may want to give different URLs to the actor URI and its web
+profile URL.  It can be easily configured by setting the `url` property of
+the `Actor` object returned by the actor dispatcher.  However, if someone
+queries the WebFinger for a profile URL, the WebFinger response will not
+contain the corresponding actor URI.
+
+To solve this problem, you can set the aliases of the actor by
+the `~ActorCallbackSetters.mapAlias()` method.  It takes a callback function
+that takes a `Context` object and a queried URL through WebFinger, and returns
+the corresponding actor's internal identifier or username, or `null` if there
+is no corresponding actor:
+
+~~~~ typescript{15-25} twoslash
+// @noErrors: 2339 2345 2391 7006
+import { type Federation } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+interface User { uuid: string; }
+/**
+ * It's a hypothetical function that finds a user by the UUID.
+ * @param uuid The UUID of the user.
+ * @returns The user object.
+ */
+function findUserByUuid(uuid: string): User;
+/**
+ * It's a hypothetical function that finds a user by the username.
+ * @param username The username of the user.
+ * @returns The user object.
+ */
+function findUserByUsername(username: string): User;
+// ---cut-before---
+federation
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+    // Since we map a WebFinger username to the corresponding user's UUID below,
+    // the `identifier` parameter is the user's UUID, not the WebFinger
+    // username:
+    const user = await findUserByUuid(identifier);
+    // Omitted for brevity; see the previous example for details.
+  })
+  .mapHandle(async (ctx, username) => {
+    // Work with the database to find the user's UUID by the WebFinger username.
+    const user = await findUserByUsername(username);
+    if (user == null) return null;  // Return null if the actor is not found.
+    return user.uuid;
+  })
+  .mapAlias((ctx, resource: URL) => {
+    // Parse the URL and return the corresponding actor's username if
+    // the URL is the profile URL of the actor:
+    if (resource.protocol !== "https:") return null;
+    if (resource.hostname !== "example.com") return null;
+    const m = /^\/@(\w+)$/.exec(resource.pathname);
+    if (m == null) return null;
+    // Note that it is okay even if the returned username is non-existent.
+    // It's dealt with by the `mapHandle()` above:
+    return { username: m[1] };
+  });
+~~~~
+
+By registering the alias mapper, Fedify can respond to WebFinger requests
+for the actor's profile URL with the corresponding actor URI.
+
+> [!TIP]
+> You also can return the actor's internal identifier instead of the username
+> in the `~ActorCallbackSetters.mapAlias()` method:
+>
+> ~~~~ typescript twoslash
+> // @noErrors: 2339 2345 2391 7006
+> import { type Federation } from "@fedify/fedify";
+> const federation = null as unknown as Federation<void>;
+> federation.setActorDispatcher(
+>   "/users/{identifier}", async (ctx, identifier) => {}
+> )
+> // ---cut-before---
+> .mapAlias((ctx, resource: URL) => {
+>   // Parse the URL and return the corresponding actor's username if
+>   // the URL is the profile URL of the actor:
+>   if (resource.protocol !== "https:") return null;
+>   if (resource.hostname !== "example.com") return null;
+>   const userId = resource.searchParams.get("userId");
+>   if (userId == null) return null;
+>   return { identifier: userId };  // [!code highlight]
+> });
+> ~~~~
+
+> [!TIP]
+> The callback function of the `~ActorCallbackSetters.mapAlias()` method
+> can be an async function.

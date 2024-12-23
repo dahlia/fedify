@@ -1,6 +1,7 @@
 import type { Actor, Recipient } from "../vocab/actor.ts";
 import type { Activity, Hashtag, Object } from "../vocab/vocab.ts";
 import type {
+  ActorAliasMapper,
   ActorDispatcher,
   ActorHandleMapper,
   ActorKeyPairsDispatcher,
@@ -510,10 +511,27 @@ export interface ActorCallbackSetters<TContextData> {
    * is assumed to be the same as the WebFinger username, which makes your
    * actors have the immutable handles.  If you want to let your actors change
    * their fediverse handles, you should set this dispatcher.
+   * @param mapper A callback that maps a WebFinger username to
+   *               the corresponding actor's identifier.
+   * @returns The setters object so that settings can be chained.
    * @since 0.15.0
    */
   mapHandle(
     mapper: ActorHandleMapper<TContextData>,
+  ): ActorCallbackSetters<TContextData>;
+
+  /**
+   * Sets the callback function that maps a WebFinger query to the corresponding
+   * actor's identifier or username.  If it's omitted, the WebFinger handler
+   * only supports the actor URIs and `acct:` URIs.  If you want to support
+   * other queries, you should set this dispatcher.
+   * @param mapper A callback that maps a WebFinger query to the corresponding
+   *               actor's identifier or username.
+   * @returns The setters object so that settings can be chained.
+   * @since 1.4.0
+   */
+  mapAlias(
+    mapper: ActorAliasMapper<TContextData>,
   ): ActorCallbackSetters<TContextData>;
 
   /**

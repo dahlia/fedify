@@ -1,5 +1,6 @@
 import { assertEquals } from "@std/assert";
 import type {
+  ActorAliasMapper,
   ActorDispatcher,
   ActorHandleMapper,
 } from "../federation/callback.ts";
@@ -26,6 +27,7 @@ test("handleWebFinger()", async () => {
     parseUri(uri) {
       if (uri == null) return null;
       if (uri.protocol === "acct:") return null;
+      if (!uri.pathname.startsWith("/users/")) return null;
       const paths = uri.pathname.split("/");
       const identifier = paths[paths.length - 1];
       return {
@@ -37,20 +39,24 @@ test("handleWebFinger()", async () => {
       };
     },
   });
-  const actorDispatcher: ActorDispatcher<void> = (ctx, handle) => {
-    if (handle !== "someone" && handle !== "someone2") return null;
+  const actorDispatcher: ActorDispatcher<void> = (ctx, identifier) => {
+    if (identifier !== "someone" && identifier !== "someone2") return null;
     return new Person({
-      id: ctx.getActorUri(handle),
-      name: handle === "someone" ? "Someone" : "Someone 2",
-      preferredUsername: handle === "someone" ? null : handle,
+      id: ctx.getActorUri(identifier),
+      name: identifier === "someone" ? "Someone" : "Someone 2",
+      preferredUsername: identifier === "someone"
+        ? null
+        : identifier === "someone2"
+        ? "bar"
+        : null,
       icon: new Image({
         url: new URL("https://example.com/icon.jpg"),
         mediaType: "image/jpeg",
       }),
       urls: [
-        new URL("https://example.com/@" + handle),
+        new URL("https://example.com/@" + identifier),
         new Link({
-          href: new URL("https://example.org/@" + handle),
+          href: new URL("https://example.org/@" + identifier),
           rel: "alternate",
           mediaType: "text/html",
         }),
@@ -156,7 +162,7 @@ test("handleWebFinger()", async () => {
   const expected2 = {
     subject: "https://example.com/users/someone2",
     aliases: [
-      "acct:someone2@example.com",
+      "acct:bar@example.com",
     ],
     links: [
       {
@@ -272,6 +278,66 @@ test("handleWebFinger()", async () => {
     context,
     actorDispatcher,
     actorHandleMapper,
+    onNotFound,
+  });
+  assertEquals(response.status, 404);
+
+  const actorAliasMapper: ActorAliasMapper<void> = (_ctx, resource) => {
+    if (resource.protocol !== "https:") return null;
+    if (resource.host !== "example.com") return null;
+    const m = /^\/@(\w+)$/.exec(resource.pathname);
+    if (m == null) return null;
+    return { username: m[1] };
+  };
+
+  url.searchParams.set("resource", "https://example.com/@someone");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    actorAliasMapper,
+    onNotFound,
+  });
+  assertEquals(response.status, 200);
+  assertEquals(await response.json(), {
+    ...expected,
+    aliases: ["https://example.com/users/someone"],
+    subject: "https://example.com/@someone",
+  });
+
+  url.searchParams.set("resource", "https://example.com/@bar");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    actorHandleMapper,
+    actorAliasMapper,
+    onNotFound,
+  });
+  assertEquals(response.status, 200);
+  assertEquals(await response.json(), {
+    ...expected2,
+    aliases: ["acct:bar@example.com", "https://example.com/users/someone2"],
+    subject: "https://example.com/@bar",
+  });
+
+  url.searchParams.set("resource", "https://example.com/@no-one");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    actorAliasMapper,
+    onNotFound,
+  });
+  assertEquals(response.status, 404);
+
+  url.searchParams.set("resource", "https://example.com/@no-one");
+  request = new Request(url);
+  response = await handleWebFinger(request, {
+    context,
+    actorDispatcher,
+    actorHandleMapper,
+    actorAliasMapper,
     onNotFound,
   });
   assertEquals(response.status, 404);

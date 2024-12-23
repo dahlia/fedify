@@ -57,6 +57,25 @@ export type ActorHandleMapper<TContextData> = (
 ) => string | null | Promise<string | null>;
 
 /**
+ * A callback that maps a WebFinger query to the corresponding actor's
+ * internal identifier or username, or `null` if the query is not found.
+ * @typeParam TContextData The context data to pass to the {@link Context}.
+ * @param context The request context.
+ * @param resource The URL that was queried through WebFinger.
+ * @returns The actor's internal identifier or username, or `null` if the query
+ *          is not found.
+ * @since 1.4.0
+ */
+export type ActorAliasMapper<TContextData> = (
+  context: RequestContext<TContextData>,
+  resource: URL,
+) =>
+  | { identifier: string }
+  | { username: string }
+  | null
+  | Promise<{ identifier: string } | { username: string } | null>;
+
+/**
  * A callback that dispatches an object.
  *
  * @typeParam TContextData The context data to pass to the {@link Context}.

@@ -52,6 +52,7 @@ import {
 } from "../vocab/vocab.ts";
 import { handleWebFinger } from "../webfinger/handler.ts";
 import type {
+  ActorAliasMapper,
   ActorDispatcher,
   ActorHandleMapper,
   ActorKeyPairsDispatcher,
@@ -1190,6 +1191,10 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
         callbacks.handleMapper = mapper;
         return setters;
       },
+      mapAlias(mapper: ActorAliasMapper<TContextData>) {
+        callbacks.aliasMapper = mapper;
+        return setters;
+      },
       authorize(predicate: AuthorizePredicate<TContextData>) {
         callbacks.authorizePredicate = predicate;
         return setters;
@@ -2206,6 +2211,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
           context,
           actorDispatcher: this.actorCallbacks?.dispatcher,
           actorHandleMapper: this.actorCallbacks?.handleMapper,
+          actorAliasMapper: this.actorCallbacks?.aliasMapper,
           onNotFound,
           tracer,
         });
@@ -3639,6 +3645,7 @@ interface ActorCallbacks<TContextData> {
   dispatcher?: ActorDispatcher<TContextData>;
   keyPairsDispatcher?: ActorKeyPairsDispatcher<TContextData>;
   handleMapper?: ActorHandleMapper<TContextData>;
+  aliasMapper?: ActorAliasMapper<TContextData>;
   authorizePredicate?: AuthorizePredicate<TContextData>;
 }
 

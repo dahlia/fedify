@@ -12,11 +12,17 @@ To be released.
     `traverseCollection()` function, and `Context.traverseCollection()` method
     now suppresses errors occurred JSON-LD processing.
 
+ -  WebFinger responses are now customizable.  [[#3]]
+
+     -  Added `ActorCallbackSetters.mapAlias()` method.
+     -  Added `ActorAliasMapper` type.
+
  -  Added `-t`/`--traverse` option to the `fedify lookup` subcommand.  [[#195]]
 
  -  Added `-S`/`--suppress-errors` option to the `fedify lookup` subcommand.
     [[#195]]
 
+[#3]: https://github.com/dahlia/fedify/issues/3
 [#195]: https://github.com/dahlia/fedify/issues/195
 
 

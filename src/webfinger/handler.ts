@@ -3,6 +3,7 @@ import type { Span, Tracer } from "@opentelemetry/api";
 import { SpanKind, SpanStatusCode } from "@opentelemetry/api";
 import { toASCII } from "node:punycode";
 import type {
+  ActorAliasMapper,
   ActorDispatcher,
   ActorHandleMapper,
 } from "../federation/callback.ts";
@@ -28,9 +29,15 @@ export interface WebFingerHandlerParameters<TContextData> {
 
   /**
    * The callback for mapping a WebFinger username to the corresponding actor's
-   * internal handle, or `null` if the username is not found.
+   * internal identifier, or `null` if the username is not found.
    */
   actorHandleMapper?: ActorHandleMapper<TContextData>;
+
+  /**
+   * The callback for mapping a WebFinger query to the corresponding actor's
+   * internal identifier or username, or `null` if the query is not found.
+   */
+  actorAliasMapper?: ActorAliasMapper<TContextData>;
 
   /**
    * The function to call when the actor is not found.
@@ -91,6 +98,7 @@ async function handleWebFingerInternal<TContextData>(
     context,
     actorDispatcher,
     actorHandleMapper,
+    actorAliasMapper,
     onNotFound,
     span,
   }: WebFingerHandlerParameters<TContextData>,
@@ -118,31 +126,50 @@ async function handleWebFingerInternal<TContextData>(
     logger.error("Actor dispatcher is not set.");
     return await onNotFound(request);
   }
-  let identifier: string | null;
-  const uriParsed = context.parseUri(resourceUrl);
-  if (uriParsed?.type != "actor") {
-    const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
-    if (match == null || toASCII(match[2].toLowerCase()) != context.url.host) {
-      return await onNotFound(request);
-    }
-    const username = match[1];
+
+  async function mapUsernameToIdentifier(
+    username: string,
+  ): Promise<string | null> {
     if (actorHandleMapper == null) {
       logger.error(
         "No actor handle mapper is set; use the WebFinger username {username}" +
           " as the actor's internal identifier.",
         { username },
       );
-      identifier = username;
-    } else {
-      identifier = await actorHandleMapper(context, username);
-      if (identifier == null) {
-        logger.error("Actor {username} not found.", { username });
-        return await onNotFound(request);
-      }
+      return username;
     }
-    resourceUrl = new URL(`acct:${username}@${context.url.host}`);
+    const identifier = await actorHandleMapper(context, username);
+    if (identifier == null) {
+      logger.error("Actor {username} not found.", { username });
+      return null;
+    }
+    return identifier;
+  }
+
+  let identifier: string | null = null;
+  const uriParsed = context.parseUri(resourceUrl);
+  if (uriParsed?.type != "actor") {
+    const match = /^acct:([^@]+)@([^@]+)$/.exec(resource);
+    if (match == null) {
+      const result = await actorAliasMapper?.(context, resourceUrl);
+      if (result == null) return await onNotFound(request);
+      if ("identifier" in result) identifier = result.identifier;
+      else {
+        identifier = await mapUsernameToIdentifier(
+          result.username,
+        );
+      }
+    } else if (toASCII(match[2].toLowerCase()) != context.url.host) {
+      return await onNotFound(request);
+    } else {
+      identifier = await mapUsernameToIdentifier(match[1]);
+      resourceUrl = new URL(`acct:${match[1]}@${context.url.host}`);
+    }
   } else {
     identifier = uriParsed.identifier;
+  }
+  if (identifier == null) {
+    return await onNotFound(request);
   }
   const actor = await actorDispatcher(context, identifier);
   if (actor == null) {
@@ -179,13 +206,16 @@ async function handleWebFingerInternal<TContextData>(
     if (image.mediaType != null) link.type = image.mediaType;
     links.push(link);
   }
+  const aliases: string[] = [];
+  if (resourceUrl.protocol != "acct:" && actor.preferredUsername != null) {
+    aliases.push(`acct:${actor.preferredUsername}@${context.url.host}`);
+  }
+  if (resourceUrl.href !== context.getActorUri(identifier).href) {
+    aliases.push(context.getActorUri(identifier).href);
+  }
   const jrd: ResourceDescriptor = {
     subject: resourceUrl.href,
-    aliases: resourceUrl.href === context.getActorUri(identifier).href
-      ? (actor.preferredUsername == null
-        ? []
-        : [`acct:${actor.preferredUsername}@${context.url.host}`])
-      : [context.getActorUri(identifier).href],
+    aliases,
     links,
   };
   return new Response(JSON.stringify(jrd), {
