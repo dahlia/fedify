@@ -491,6 +491,67 @@ The `url` property usually refers to the actor's profile page.  It is
 used as the `links` property of the WebFinger response, with the `rel`
 property set to <http://webfinger.net/rel/profile-page>.
 
+> [!TIP]
+> You probably want to implement [actor aliases](#actor-aliases) if you want
+> to give different URLs to the actor URI and its web profile URL.
+
+If you want to provide links with other `rel` than
+<http://webfinger.net/rel/profile-page>, you can put `Link` objects in the
+`url` property:
+
+~~~~ typescript{8-16} twoslash
+import { type Federation, Person, Link } from "@fedify/fedify";
+const federation = null as unknown as Federation<void>;
+// ---cut-before---
+federation
+  .setActorDispatcher("/users/{identifier}", async (ctx, identifier) => {
+    return new Person({
+      id: ctx.getActorUri(identifier),
+      preferredUsername: identifier,
+      urls: [
+        new URL(`/@${identifier}`, ctx.origin),
+        new Link({
+          rel: "alternate",
+          href: new URL(`/@${identifier}/atom.xml`, ctx.origin),
+          mediaType: "application/atom+xml",
+        }),
+        new Link({
+          rel: "http://openid.net/specs/connect/1.0/issuer",
+          href: new URL("/openid", ctx.origin),
+        }),
+      ],
+      // Omitted for brevity; see the previous example for details.
+    });
+  });
+~~~~
+
+With the above example, the WebFinger response will contain the following
+`links` property:
+
+~~~~ json
+{
+  "subject": "acct:johndoe@example.com",
+  "aliases": [
+    "https://example.com/users/john_doe"
+  ],
+  "links": [
+    {
+      "rel": "http://webfinger.net/rel/profile-page",
+      "href": "https://example.com/@john_doe"
+    },
+    {
+      "rel": "alternate",
+      "href": "https://example.com/@john_doe/atom.xml",
+      "type": "application/atom+xml"
+    },
+    {
+      "rel": "http://openid.net/specs/connect/1.0/issuer",
+      "href": "https://example.com/openid"
+    }
+  ]
+}
+~~~~
+
 ### `icon`
 
 *This API is available since Fedify 1.0.0.*
@@ -518,7 +579,7 @@ the corresponding actor's internal identifier or username, or `null` if there
 is no corresponding actor:
 
 ~~~~ typescript{15-25} twoslash
-// @noErrors: 2339 2345 2391 7006
+// @noErrors: 2345 2391
 import { type Federation } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 interface User { uuid: string; }
@@ -570,7 +631,7 @@ for the actor's profile URL with the corresponding actor URI.
 > in the `~ActorCallbackSetters.mapAlias()` method:
 >
 > ~~~~ typescript twoslash
-> // @noErrors: 2339 2345 2391 7006
+> // @noErrors: 2345 7006
 > import { type Federation } from "@fedify/fedify";
 > const federation = null as unknown as Federation<void>;
 > federation.setActorDispatcher(
