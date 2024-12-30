@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.3.3
 -------------
 
-To be released.
+Released on December 30, 2024.
 
  -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
     context: <https://gotosocial.org/ns>.
