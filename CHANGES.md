@@ -8,6 +8,9 @@ Version 1.3.3
 
 To be released.
 
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <https://gotosocial.org/ns>.
+
 
 Version 1.3.2
 -------------
