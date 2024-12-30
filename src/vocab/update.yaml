@@ -47,4 +47,7 @@ defaultContext:
   _misskey_quote: "misskey:_misskey_quote"
   _misskey_followedMessage: "misskey:_misskey_followedMessage"
   isCat: "misskey:isCat"
+  emojiReactions:
+    "@id": "fedibird:emojiReactions"
+    "@type": "@id"
 properties: []

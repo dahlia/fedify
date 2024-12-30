@@ -14,9 +14,19 @@ defaultContext:
 - "https://www.w3.org/ns/activitystreams"
 - "https://w3id.org/security/data-integrity/v1"
 - toot: "http://joinmastodon.org/ns#"
+  misskey: "https://misskey-hub.net/ns#"
+  fedibird: "http://fedibird.com/ns#"
+  ChatMessage: "http://litepub.social/ns#ChatMessage"
   sensitive: "as:sensitive"
+  votersCount: "toot:votersCount"
   Emoji: "toot:Emoji"
   Hashtag: "as:Hashtag"
+  quoteUrl: "as:quoteUrl"
+  _misskey_quote: "misskey:_misskey_quote"
+  quoteUri: "fedibird:quoteUri"
+  emojiReactions:
+    "@id": "fedibird:emojiReactions"
+    "@type": "@id"
 
 properties:
 - singularName: totalItems

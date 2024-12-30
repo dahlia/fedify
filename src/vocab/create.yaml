@@ -20,4 +20,7 @@ defaultContext:
   quoteUrl: "as:quoteUrl"
   _misskey_quote: "misskey:_misskey_quote"
   quoteUri: "fedibird:quoteUri"
+  emojiReactions:
+    "@id": "fedibird:emojiReactions"
+    "@type": "@id"
 properties: []

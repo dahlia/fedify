@@ -226,7 +226,14 @@ test("Object.toJsonLd()", async () => {
     "@context": [
       "https://www.w3.org/ns/activitystreams",
       "https://w3id.org/security/data-integrity/v1",
-      { sensitive: "as:sensitive" },
+      {
+        fedibird: "http://fedibird.com/ns#",
+        sensitive: "as:sensitive",
+        emojiReactions: {
+          "@id": "fedibird:emojiReactions",
+          "@type": "@id",
+        },
+      },
     ],
     type: "Object",
     name: "Test",
@@ -260,6 +267,10 @@ test("Note.toJsonLd()", async () => {
         quoteUrl: "as:quoteUrl",
         sensitive: "as:sensitive",
         toot: "http://joinmastodon.org/ns#",
+        emojiReactions: {
+          "@id": "fedibird:emojiReactions",
+          "@type": "@id",
+        },
       },
     ],
     tag: {
@@ -627,6 +638,10 @@ test("Note.quoteUrl", async () => {
         quoteUrl: "as:quoteUrl",
         sensitive: "as:sensitive",
         toot: "http://joinmastodon.org/ns#",
+        emojiReactions: {
+          "@id": "fedibird:emojiReactions",
+          "@type": "@id",
+        },
       },
     ],
     _misskey_quote: "https://example.com/object",

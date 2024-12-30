@@ -78,6 +78,7 @@ export class Object {
 #_gCVTegXxWWCw6wWRxa1QF65zusg_preview: (Link | Object | URL)[] = [];
 #_5e258TDXtuhaFRPZiGoDfEpjdMr_published: (Temporal.Instant)[] = [];
 #_7UpwM3JWcXhADcscukEehBorf6k_replies: (Collection | URL)[] = [];
+#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions: (Collection | URL)[] = [];
 #_2w3Jmue4up8iVDUA51WZqomEF438_startTime: (Temporal.Instant)[] = [];
 #_4LqirZspQbFWWQEbFcXAxm7tTDN1_summary: ((string | LanguageString))[] = [];
 #_5chuqj6s95p5gg2sk1HntGfarRf_tag: (Object | Link | URL)[] = [];
@@ -111,7 +112,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -524,6 +525,18 @@ proofs?: (DataIntegrityProof | URL)[];}
           }
         }
       
+        if (\\"emojiReactions\\" in values &&             values.emojiReactions != null) {
+          if (values.emojiReactions instanceof Collection || values.emojiReactions instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions = [values.emojiReactions];
+          } else {
+            throw new TypeError(
+              \\"The emojiReactions must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"startTime\\" in values &&             values.startTime != null) {
           if (values.startTime instanceof Temporal.Instant) {
             // @ts-ignore: type is checked above.
@@ -868,7 +881,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -1269,6 +1282,18 @@ proofs?: (DataIntegrityProof | URL)[];}
           } else {
             throw new TypeError(
               \\"The replies must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions = this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions;
+        if (\\"emojiReactions\\" in values &&             values.emojiReactions != null) {
+          if (values.emojiReactions instanceof Collection || values.emojiReactions instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions = [values.emojiReactions];
+          } else {
+            throw new TypeError(
+              \\"The emojiReactions must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -3834,6 +3859,157 @@ get names(): ((string | LanguageString))[] {
         return v;
       }
       
+    async #fetchEmojiReactions(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+        tracerProvider?: TracerProvider,
+      } = {}
+    ): Promise<Collection | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? getDocumentLoader();
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? getDocumentLoader();
+      const tracerProvider = options.tracerProvider ??
+        this._tracerProvider ?? trace.getTracerProvider();
+      const tracer = tracerProvider.getTracer(
+        \\"@fedify/fedify\\",
+        \\"0.0.0\\",
+      );
+      return await tracer.startActiveSpan(\\"activitypub.lookup_object\\", async (span) => {
+        let fetchResult: RemoteDocument;
+        try {
+          fetchResult = await documentLoader(url.href);
+        } catch (error) {
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: String(error),
+          });
+          span.end();
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to fetch {url}: {error}\\",
+              { error, url: url.href }
+            );
+            return null;
+          }
+          throw error;
+        }
+        const { document } = fetchResult;
+        try {
+          const obj = await this.#emojiReactions_fromJsonLd(
+            document,
+            { documentLoader, contextLoader, tracerProvider }
+          );
+          span.setAttribute(\\"activitypub.object.id\\", (obj.id ?? url).href);
+          span.setAttribute(
+            \\"activitypub.object.type\\",
+            // @ts-ignore: obj.constructor always has a typeId.
+            obj.constructor.typeId.href
+          );
+          return obj;
+        } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: String(e),
+          });
+          throw e;
+        } finally {
+          span.end();
+        }
+      });
+    }
+
+    async #emojiReactions_fromJsonLd(
+      jsonLd: unknown,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        tracerProvider?: TracerProvider,
+      }
+    ): Promise<Collection> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? getDocumentLoader();
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? getDocumentLoader();
+      const tracerProvider = options.tracerProvider ??
+        this._tracerProvider ?? trace.getTracerProvider();
+    
+        try {
+          return await Collection.fromJsonLd(
+            jsonLd,
+            { documentLoader, contextLoader, tracerProvider },
+          );
+        } catch (e) {
+          if (!(e instanceof TypeError)) throw e;
+        }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
+    }
+
+    
+      /**
+       * Similar to
+       * {@link Object.getEmojiReactions},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+       get emojiReactionsId(): URL | null {
+        if (this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions.length < 1) return null;
+        const v = this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Identifies a {@link Collection} containing objects considered to be
+ * emoji reactions to this object.
+ * 
+ */
+
+       async getEmojiReactions(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+          tracerProvider?: TracerProvider,
+        } = {}
+      ): Promise<Collection | null> {
+        if (this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions.length < 1) return null;
+        const v = this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchEmojiReactions(v, options);
+          if (fetched == null) return null;
+          this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions[0] = fetched;
+          return fetched;
+        }
+      
+        if (
+          this._cachedJsonLd != null &&
+          typeof this._cachedJsonLd === \\"object\\" &&
+          \\"@context\\" in this._cachedJsonLd &&
+          \\"emojiReactions\\" in this._cachedJsonLd
+        ) {
+          const prop = this._cachedJsonLd[
+            \\"emojiReactions\\"];
+          const obj = Array.isArray(prop) ? prop[0] : prop;
+          if (obj != null && typeof obj === \\"object\\" && \\"@context\\" in obj) {
+            return await this.#emojiReactions_fromJsonLd(obj, options);
+          }
+        }
+        
+        return v;
+      }
+      
 /** The date and time describing the actual or expected starting time of
  * the object.  When used with an {@link Activity} object, for instance,
  * the \`startTime\` property specifies the moment the activity began or
@@ -5492,6 +5668,26 @@ get urls(): ((URL | Link))[] {
       }
       
       compactItems = [];
+      for (const v of this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"emojiReactions\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_2w3Jmue4up8iVDUA51WZqomEF438_startTime) {
         const item = (
       v.toString()
@@ -5756,7 +5952,7 @@ get urls(): ((URL | Link))[] {
       
       result[\\"type\\"] = \\"Object\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"sensitive\\":\\"as:sensitive\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
       return result;
     }
     
@@ -6001,6 +6197,21 @@ get urls(): ((URL | Link))[] {
     }
     
     array = [];
+    for (const v of this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"http://fedibird.com/ns#emojiReactions\\"] = propValue;
+    
+    }
+    
+    array = [];
     for (const v of this.#_2w3Jmue4up8iVDUA51WZqomEF438_startTime) {
       const element = (
     {
@@ -6231,7 +6442,7 @@ get urls(): ((URL | Link))[] {
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"sensitive\\":\\"as:sensitive\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -7038,6 +7249,32 @@ get urls(): ((URL | Link))[] {
       v, options))
     }
     instance.#_7UpwM3JWcXhADcscukEehBorf6k_replies = _7UpwM3JWcXhADcscukEehBorf6k_replies;
+    const _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions: (Collection | URL)[] = [];
+
+    let _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions__array = values[\\"http://fedibird.com/ns#emojiReactions\\"];
+    
+    for (
+      const v of _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions__array == null
+        ? []
+        : _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions__array.length === 1 && \\"@list\\" in _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions__array[0]
+        ? _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions__array[0][\\"@list\\"]
+        : _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
+        continue;
+      }
+      _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions.push(await Collection.fromJsonLd(
+      v, options))
+    }
+    instance.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions = _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions;
     const _2w3Jmue4up8iVDUA51WZqomEF438_startTime: (Temporal.Instant)[] = [];
 
     let _2w3Jmue4up8iVDUA51WZqomEF438_startTime__array = values[\\"https://www.w3.org/ns/activitystreams#startTime\\"];
@@ -7737,6 +7974,26 @@ get urls(): ((URL | Link))[] {
         proxy.replies = _7UpwM3JWcXhADcscukEehBorf6k_replies[0];
       }
       
+      const _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions = this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions.length == 1) {
+        proxy.emojiReactions = _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions[0];
+      }
+      
       const _2w3Jmue4up8iVDUA51WZqomEF438_startTime = this.#_2w3Jmue4up8iVDUA51WZqomEF438_startTime
         // deno-lint-ignore no-explicit-any
         .map((v: any) => v instanceof URL
@@ -8112,7 +8369,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -8152,7 +8409,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -8441,7 +8698,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -8493,7 +8750,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -8609,7 +8866,7 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
       
       result[\\"type\\"] = \\"ChatMessage\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"Emoji\\":\\"toot:Emoji\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"Emoji\\":\\"toot:Emoji\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
       return result;
     }
     
@@ -8654,7 +8911,7 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"Emoji\\":\\"toot:Emoji\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"Emoji\\":\\"toot:Emoji\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -8904,7 +9161,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -9154,7 +9411,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -11464,7 +11721,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -11510,7 +11767,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -15434,7 +15691,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -15480,7 +15737,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -15760,7 +16017,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -15806,7 +16063,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16081,7 +16338,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16127,7 +16384,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16203,7 +16460,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -16421,7 +16678,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16842,7 +17099,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -21722,7 +21979,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -21768,7 +22025,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22055,7 +22312,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22101,7 +22358,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22374,7 +22631,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22426,7 +22683,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22542,7 +22799,7 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
       
       result[\\"type\\"] = \\"Article\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
       return result;
     }
     
@@ -22587,7 +22844,7 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -22828,7 +23085,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22892,7 +23149,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23371,7 +23628,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23411,7 +23668,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23696,7 +23953,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23742,7 +23999,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -24022,7 +24279,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -24068,7 +24325,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -24350,7 +24607,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -24452,7 +24709,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -25302,7 +25559,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       
       result[\\"type\\"] = \\"Collection\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
       return result;
     }
     
@@ -25406,7 +25663,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -25852,7 +26109,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -25928,7 +26185,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -26535,7 +26792,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       
       result[\\"type\\"] = \\"CollectionPage\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
       return result;
     }
     
@@ -26606,7 +26863,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -26944,7 +27201,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -26990,7 +27247,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27066,7 +27323,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -27264,7 +27521,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27310,7 +27567,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27582,7 +27839,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27628,7 +27885,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -28832,7 +29089,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -28872,7 +29129,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29158,7 +29415,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29204,7 +29461,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29480,7 +29737,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29526,7 +29783,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29820,7 +30077,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -30241,7 +30498,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -36879,7 +37136,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -36919,7 +37176,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37205,7 +37462,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37251,7 +37508,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37529,7 +37786,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37575,7 +37832,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37849,7 +38106,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37895,7 +38152,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38169,7 +38426,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38215,7 +38472,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38489,7 +38746,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38535,7 +38792,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38807,7 +39064,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38853,7 +39110,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39412,7 +39669,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39458,7 +39715,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39733,7 +39990,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39785,7 +40042,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39901,7 +40158,7 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
       
       result[\\"type\\"] = \\"Note\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
       return result;
     }
     
@@ -39946,7 +40203,7 @@ proofs?: (DataIntegrityProof | URL)[];quoteUrl?: URL | null;}
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -40188,7 +40445,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -40242,7 +40499,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -40502,7 +40759,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       
       result[\\"type\\"] = \\"OrderedCollection\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
       return result;
     }
     
@@ -40543,7 +40800,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -40803,7 +41060,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -40869,7 +41126,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -41166,7 +41423,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       
       result[\\"type\\"] = \\"OrderedCollectionPage\\";
       if (this.id != null) result[\\"id\\"] = this.id.href;
-      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      result[\\"@context\\"] = [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
       return result;
     }
     
@@ -41225,7 +41482,7 @@ proofs?: (DataIntegrityProof | URL)[];totalItems?: number | null;current?: Colle
       );
     }
     const docContext = options.context ??
-      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\"}];
+      [\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -41537,7 +41794,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -41958,7 +42215,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -46835,7 +47092,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -46875,7 +47132,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -47180,7 +47437,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -47601,7 +47858,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -52487,7 +52744,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -52599,7 +52856,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -53434,7 +53691,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -53486,7 +53743,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -54026,7 +54283,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -54136,7 +54393,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -54708,7 +54965,7 @@ instruments?: (Object | URL)[];exclusiveOptions?: (Object | URL)[];inclusiveOpti
       );
     }
     const docContext = options.context ??
-      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"sensitive\\":\\"as:sensitive\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"quoteUrl\\":\\"as:quoteUrl\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -55123,7 +55380,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55169,7 +55426,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55443,7 +55700,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55489,7 +55746,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55775,7 +56032,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55897,7 +56154,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -57086,7 +57343,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -57132,7 +57389,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -57426,7 +57683,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -57847,7 +58104,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63315,7 +63572,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63361,7 +63618,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63635,7 +63892,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63681,7 +63938,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63957,7 +64214,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64009,7 +64266,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64386,7 +64643,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64432,7 +64689,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64711,7 +64968,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64757,7 +65014,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65034,7 +65291,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65080,7 +65337,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65156,7 +65413,7 @@ instruments?: (Object | URL)[];}
       );
     }
     const docContext = options.context ??
-      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"sensitive\\":\\"as:sensitive\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"quoteUrl\\":\\"as:quoteUrl\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\"}];
+      [\\"https://w3id.org/identity/v1\\",\\"https://www.w3.org/ns/activitystreams\\",\\"https://w3id.org/security/data-integrity/v1\\",{\\"alsoKnownAs\\":{\\"@id\\":\\"as:alsoKnownAs\\",\\"@type\\":\\"@id\\"},\\"manuallyApprovesFollowers\\":\\"as:manuallyApprovesFollowers\\",\\"sensitive\\":\\"as:sensitive\\",\\"movedTo\\":{\\"@id\\":\\"as:movedTo\\",\\"@type\\":\\"@id\\"},\\"quoteUrl\\":\\"as:quoteUrl\\",\\"toot\\":\\"http://joinmastodon.org/ns#\\",\\"featured\\":{\\"@id\\":\\"toot:featured\\",\\"@type\\":\\"@id\\"},\\"featuredTags\\":{\\"@id\\":\\"toot:featuredTags\\",\\"@type\\":\\"@id\\"},\\"discoverable\\":\\"toot:discoverable\\",\\"suspended\\":\\"toot:suspended\\",\\"memorial\\":\\"toot:memorial\\",\\"indexable\\":\\"toot:indexable\\",\\"votersCount\\":\\"toot:votersCount\\",\\"Emoji\\":\\"toot:Emoji\\",\\"Hashtag\\":\\"as:Hashtag\\",\\"schema\\":\\"http://schema.org#\\",\\"PropertyValue\\":\\"schema:PropertyValue\\",\\"value\\":\\"schema:value\\",\\"ChatMessage\\":\\"http://litepub.social/ns#ChatMessage\\",\\"fedibird\\":\\"http://fedibird.com/ns#\\",\\"quoteUri\\":\\"fedibird:quoteUri\\",\\"misskey\\":\\"https://misskey-hub.net/ns#\\",\\"_misskey_quote\\":\\"misskey:_misskey_quote\\",\\"_misskey_followedMessage\\":\\"misskey:_misskey_followedMessage\\",\\"isCat\\":\\"misskey:isCat\\",\\"emojiReactions\\":{\\"@id\\":\\"fedibird:emojiReactions\\",\\"@type\\":\\"@id\\"}}];
     const compacted = await jsonld.compact(
       values,
       docContext,
@@ -65352,7 +65609,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65392,7 +65649,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65676,7 +65933,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65722,7 +65979,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;

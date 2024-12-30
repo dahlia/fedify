@@ -12,7 +12,11 @@ description: |
 defaultContext:
 - "https://www.w3.org/ns/activitystreams"
 - "https://w3id.org/security/data-integrity/v1"
-- sensitive: "as:sensitive"
+- fedibird: "http://fedibird.com/ns#"
+  sensitive: "as:sensitive"
+  emojiReactions:
+    "@id": "fedibird:emojiReactions"
+    "@type": "@id"
 
 properties:
 - pluralName: attachments
@@ -195,6 +199,16 @@ properties:
   description: |
     Identifies a {@link Collection} containing objects considered to be
     responses to this object.
+  range:
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
+- singularName: emojiReactions
+  functional: true
+  compactName: emojiReactions
+  uri: "http://fedibird.com/ns#emojiReactions"
+  description: |
+    Identifies a {@link Collection} containing objects considered to be
+    emoji reactions to this object.
   range:
   - "https://www.w3.org/ns/activitystreams#Collection"
 

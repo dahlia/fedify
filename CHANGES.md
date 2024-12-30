@@ -17,6 +17,14 @@ To be released.
      -  Added `ActorCallbackSetters.mapAlias()` method.
      -  Added `ActorAliasMapper` type.
 
+ -  Added `emojiReactions` property to `Object` class in Activity Vocabulary
+    API.
+
+     -  Added `Object.emojiReactionsId` property
+     -  Added `Object.getEmojiReactions()` method.
+     -  `new Object()` constructor now accepts `emojiReactions` option.
+     -  `Object.clone()` method now accepts `emojiReactions` option.
+
  -  Added `-t`/`--traverse` option to the `fedify lookup` subcommand.  [[#195]]
 
  -  Added `-S`/`--suppress-errors` option to the `fedify lookup` subcommand.
