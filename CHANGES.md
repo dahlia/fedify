@@ -34,6 +34,15 @@ To be released.
 [#195]: https://github.com/dahlia/fedify/issues/195
 
 
+Version 1.3.3
+-------------
+
+Released on December 30, 2024.
+
+ -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
+    context: <https://gotosocial.org/ns>.
+
+
 Version 1.3.2
 -------------
 

@@ -4163,6 +4163,39 @@ const preloadedContexts: Record<string, unknown> = {
       "yield": { "@id": "schema:yield" },
     },
   },
+  "https://gotosocial.org/ns": {
+    "@context": {
+      "gts": "https://gotosocial.org/ns#",
+      "interactionPolicy": {
+        "@id": "gts:interactionPolicy",
+        "@type": "@id",
+      },
+      "canLike": {
+        "@id": "gts:canLike",
+        "@type": "@id",
+      },
+      "canReply": {
+        "@id": "gts:canReply",
+        "@type": "@id",
+      },
+      "canAnnounce": {
+        "@id": "gts:canAnnounce",
+        "@type": "@id",
+      },
+      "always": {
+        "@id": "gts:always",
+        "@type": "@id",
+      },
+      "approvalRequired": {
+        "@id": "gts:approvalRequired",
+        "@type": "@id",
+      },
+      "approvedBy": {
+        "@id": "gts:approvedBy",
+        "@type": "@id",
+      },
+    },
+  },
 };
 
 export default preloadedContexts;
