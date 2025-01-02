@@ -17,6 +17,13 @@ To be released.
      -  Added `ActorCallbackSetters.mapAlias()` method.
      -  Added `ActorAliasMapper` type.
 
+ -  Added `shares` property to `Object` class in Activity Vocabulary API.
+
+     -  Added `Object.sharesId` property.
+     -  Added `Object.getShares()` method.
+     -  `new Object()` constructor now accepts `shares` option.
+     -  `Object.clone()` method now accepts `shares` option.
+
  -  Added `emojiReactions` property to `Object` class in Activity Vocabulary
     API.
 

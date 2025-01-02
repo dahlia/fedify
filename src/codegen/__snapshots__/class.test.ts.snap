@@ -78,6 +78,7 @@ export class Object {
 #_gCVTegXxWWCw6wWRxa1QF65zusg_preview: (Link | Object | URL)[] = [];
 #_5e258TDXtuhaFRPZiGoDfEpjdMr_published: (Temporal.Instant)[] = [];
 #_7UpwM3JWcXhADcscukEehBorf6k_replies: (Collection | URL)[] = [];
+#_3kAfck9PcEYt2L7xug5y99YPbANs_shares: (Collection | URL)[] = [];
 #_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions: (Collection | URL)[] = [];
 #_2w3Jmue4up8iVDUA51WZqomEF438_startTime: (Temporal.Instant)[] = [];
 #_4LqirZspQbFWWQEbFcXAxm7tTDN1_summary: ((string | LanguageString))[] = [];
@@ -112,7 +113,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -525,6 +526,18 @@ proofs?: (DataIntegrityProof | URL)[];}
           }
         }
       
+        if (\\"shares\\" in values &&             values.shares != null) {
+          if (values.shares instanceof Collection || values.shares instanceof URL) {
+            // @ts-ignore: type is checked above.
+            this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares = [values.shares];
+          } else {
+            throw new TypeError(
+              \\"The shares must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      
         if (\\"emojiReactions\\" in values &&             values.emojiReactions != null) {
           if (values.emojiReactions instanceof Collection || values.emojiReactions instanceof URL) {
             // @ts-ignore: type is checked above.
@@ -881,7 +894,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -1282,6 +1295,18 @@ proofs?: (DataIntegrityProof | URL)[];}
           } else {
             throw new TypeError(
               \\"The replies must be of type \\" +
+              \\"Collection | URL\\" + \\".\\",
+            );
+          }
+        }
+      clone.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares = this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares;
+        if (\\"shares\\" in values &&             values.shares != null) {
+          if (values.shares instanceof Collection || values.shares instanceof URL) {
+            // @ts-ignore: type is checked above.
+            clone.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares = [values.shares];
+          } else {
+            throw new TypeError(
+              \\"The shares must be of type \\" +
               \\"Collection | URL\\" + \\".\\",
             );
           }
@@ -3859,6 +3884,163 @@ get names(): ((string | LanguageString))[] {
         return v;
       }
       
+    async #fetchShares(
+      url: URL,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        suppressError?: boolean,
+        tracerProvider?: TracerProvider,
+      } = {}
+    ): Promise<Collection | null> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? getDocumentLoader();
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? getDocumentLoader();
+      const tracerProvider = options.tracerProvider ??
+        this._tracerProvider ?? trace.getTracerProvider();
+      const tracer = tracerProvider.getTracer(
+        \\"@fedify/fedify\\",
+        \\"0.0.0\\",
+      );
+      return await tracer.startActiveSpan(\\"activitypub.lookup_object\\", async (span) => {
+        let fetchResult: RemoteDocument;
+        try {
+          fetchResult = await documentLoader(url.href);
+        } catch (error) {
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: String(error),
+          });
+          span.end();
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to fetch {url}: {error}\\",
+              { error, url: url.href }
+            );
+            return null;
+          }
+          throw error;
+        }
+        const { document } = fetchResult;
+        try {
+          const obj = await this.#shares_fromJsonLd(
+            document,
+            { documentLoader, contextLoader, tracerProvider }
+          );
+          span.setAttribute(\\"activitypub.object.id\\", (obj.id ?? url).href);
+          span.setAttribute(
+            \\"activitypub.object.type\\",
+            // @ts-ignore: obj.constructor always has a typeId.
+            obj.constructor.typeId.href
+          );
+          return obj;
+        } catch (e) {
+          if (options.suppressError) {
+            getLogger([\\"fedify\\", \\"vocab\\"]).error(
+              \\"Failed to parse {url}: {error}\\",
+              { error: e, url: url.href }
+            );
+            return null;
+          }
+          span.setStatus({
+            code: SpanStatusCode.ERROR,
+            message: String(e),
+          });
+          throw e;
+        } finally {
+          span.end();
+        }
+      });
+    }
+
+    async #shares_fromJsonLd(
+      jsonLd: unknown,
+      options: {
+        documentLoader?: DocumentLoader,
+        contextLoader?: DocumentLoader,
+        tracerProvider?: TracerProvider,
+      }
+    ): Promise<Collection> {
+      const documentLoader =
+        options.documentLoader ?? this._documentLoader ?? getDocumentLoader();
+      const contextLoader =
+        options.contextLoader ?? this._contextLoader ?? getDocumentLoader();
+      const tracerProvider = options.tracerProvider ??
+        this._tracerProvider ?? trace.getTracerProvider();
+    
+        try {
+          return await Collection.fromJsonLd(
+            jsonLd,
+            { documentLoader, contextLoader, tracerProvider },
+          );
+        } catch (e) {
+          if (!(e instanceof TypeError)) throw e;
+        }
+      
+      throw new TypeError(\\"Expected an object of any type of: \\" +
+        [\\"https://www.w3.org/ns/activitystreams#Collection\\"].join(\\", \\"));
+    }
+
+    
+      /**
+       * Similar to
+       * {@link Object.getShares},
+       * but returns its \`@id\` URL instead of the object itself.
+       */
+       get sharesId(): URL | null {
+        if (this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares.length < 1) return null;
+        const v = this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares[0];
+        if (v instanceof URL) return v;
+        return v.id;
+      }
+      
+/** Every object *may* have a \`shares\` collection. This is a list of all
+ * {@link Announce} activities with this object as the \`object\`\` property,
+ * added as a [side effect]. The \`shares\` collection *must* be either
+ * an {@link OrderedCollection} or a {@link Collection} and *may* be filtered
+ * on privileges of an authenticated user or as appropriate
+ * when no authentication is given. 
+ * 
+ * [side effect]: https://www.w3.org/TR/activitypub/#announce-activity-inbox
+ * 
+ */
+
+       async getShares(
+        options: {
+          documentLoader?: DocumentLoader,
+          contextLoader?: DocumentLoader,
+          suppressError?: boolean,
+          tracerProvider?: TracerProvider,
+        } = {}
+      ): Promise<Collection | null> {
+        if (this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares.length < 1) return null;
+        const v = this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares[0];
+        if (v instanceof URL) {
+          const fetched =
+            await this.#fetchShares(v, options);
+          if (fetched == null) return null;
+          this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares[0] = fetched;
+          return fetched;
+        }
+      
+        if (
+          this._cachedJsonLd != null &&
+          typeof this._cachedJsonLd === \\"object\\" &&
+          \\"@context\\" in this._cachedJsonLd &&
+          \\"shares\\" in this._cachedJsonLd
+        ) {
+          const prop = this._cachedJsonLd[
+            \\"shares\\"];
+          const obj = Array.isArray(prop) ? prop[0] : prop;
+          if (obj != null && typeof obj === \\"object\\" && \\"@context\\" in obj) {
+            return await this.#shares_fromJsonLd(obj, options);
+          }
+        }
+        
+        return v;
+      }
+      
     async #fetchEmojiReactions(
       url: URL,
       options: {
@@ -5668,6 +5850,26 @@ get urls(): ((URL | Link))[] {
       }
       
       compactItems = [];
+      for (const v of this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares) {
+        const item = (
+      v instanceof URL ? v.href : await v.toJsonLd({
+           ...(options),
+           format: undefined,
+           context: undefined,
+         })
+        );
+        compactItems.push(item);
+      }
+      if (compactItems.length > 0) {
+      
+        result[\\"shares\\"]
+          = compactItems.length > 1
+          ? compactItems
+          : compactItems[0];
+        
+      }
+      
+      compactItems = [];
       for (const v of this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions) {
         const item = (
       v instanceof URL ? v.href : await v.toJsonLd({
@@ -6193,6 +6395,21 @@ get urls(): ((URL | Link))[] {
     array
       );
       values[\\"https://www.w3.org/ns/activitystreams#replies\\"] = propValue;
+    
+    }
+    
+    array = [];
+    for (const v of this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares) {
+      const element = (
+    v instanceof URL ? { \\"@id\\": v.href } : await v.toJsonLd(options)
+      );
+    array.push(element);;
+    }
+    if (array.length > 0) {
+      const propValue = (
+    array
+      );
+      values[\\"https://www.w3.org/ns/activitystreams#shares\\"] = propValue;
     
     }
     
@@ -7249,6 +7466,32 @@ get urls(): ((URL | Link))[] {
       v, options))
     }
     instance.#_7UpwM3JWcXhADcscukEehBorf6k_replies = _7UpwM3JWcXhADcscukEehBorf6k_replies;
+    const _3kAfck9PcEYt2L7xug5y99YPbANs_shares: (Collection | URL)[] = [];
+
+    let _3kAfck9PcEYt2L7xug5y99YPbANs_shares__array = values[\\"https://www.w3.org/ns/activitystreams#shares\\"];
+    
+    for (
+      const v of _3kAfck9PcEYt2L7xug5y99YPbANs_shares__array == null
+        ? []
+        : _3kAfck9PcEYt2L7xug5y99YPbANs_shares__array.length === 1 && \\"@list\\" in _3kAfck9PcEYt2L7xug5y99YPbANs_shares__array[0]
+        ? _3kAfck9PcEYt2L7xug5y99YPbANs_shares__array[0][\\"@list\\"]
+        : _3kAfck9PcEYt2L7xug5y99YPbANs_shares__array
+    ) {
+      if (v == null) continue;
+    
+      if (typeof v === \\"object\\" && \\"@id\\" in v && !(\\"@type\\" in v)
+          && globalThis.Object.keys(v).length === 1) {
+        _3kAfck9PcEYt2L7xug5y99YPbANs_shares.push(
+          !URL.canParse(v[\\"@id\\"]) && v[\\"@id\\"].startsWith(\\"at://\\")
+            ? new URL(\\"at://\\" + encodeURIComponent(v[\\"@id\\"].substring(5)))
+            : new URL(v[\\"@id\\"])
+        );
+        continue;
+      }
+      _3kAfck9PcEYt2L7xug5y99YPbANs_shares.push(await Collection.fromJsonLd(
+      v, options))
+    }
+    instance.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares = _3kAfck9PcEYt2L7xug5y99YPbANs_shares;
     const _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions: (Collection | URL)[] = [];
 
     let _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions__array = values[\\"http://fedibird.com/ns#emojiReactions\\"];
@@ -7974,6 +8217,26 @@ get urls(): ((URL | Link))[] {
         proxy.replies = _7UpwM3JWcXhADcscukEehBorf6k_replies[0];
       }
       
+      const _3kAfck9PcEYt2L7xug5y99YPbANs_shares = this.#_3kAfck9PcEYt2L7xug5y99YPbANs_shares
+        // deno-lint-ignore no-explicit-any
+        .map((v: any) => v instanceof URL
+          ? {
+              [Symbol.for(\\"Deno.customInspect\\")]: (
+                inspect: typeof Deno.inspect,
+                options: Deno.InspectOptions,
+              ): string => \\"URL \\" + inspect(v.href, options),
+              [Symbol.for(\\"nodejs.util.inspect.custom\\")]: (
+                _depth: number,
+                options: unknown,
+                inspect: (value: unknown, options: unknown) => string,
+              ): string => \\"URL \\" + inspect(v.href, options),
+            }
+          : v);
+    
+      if (_3kAfck9PcEYt2L7xug5y99YPbANs_shares.length == 1) {
+        proxy.shares = _3kAfck9PcEYt2L7xug5y99YPbANs_shares[0];
+      }
+      
       const _kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions = this.#_kMatyyNAuxoTD8GQMBfA5ogThMR_emojiReactions
         // deno-lint-ignore no-explicit-any
         .map((v: any) => v instanceof URL
@@ -8369,7 +8632,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -8409,7 +8672,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -8698,7 +8961,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -8750,7 +9013,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -9161,7 +9424,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -9411,7 +9674,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -11721,7 +11984,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -11767,7 +12030,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -15691,7 +15954,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -15737,7 +16000,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16017,7 +16280,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16063,7 +16326,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16338,7 +16601,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16384,7 +16647,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -16678,7 +16941,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -17099,7 +17362,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -21979,7 +22242,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22025,7 +22288,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22312,7 +22575,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22358,7 +22621,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22631,7 +22894,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -22683,7 +22946,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23085,7 +23348,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23149,7 +23412,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23628,7 +23891,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23668,7 +23931,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23953,7 +24216,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -23999,7 +24262,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -24279,7 +24542,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -24325,7 +24588,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -24607,7 +24870,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -24709,7 +24972,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -26109,7 +26372,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -26185,7 +26448,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27201,7 +27464,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27247,7 +27510,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27521,7 +27784,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27567,7 +27830,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27839,7 +28102,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -27885,7 +28148,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29089,7 +29352,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29129,7 +29392,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29415,7 +29678,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29461,7 +29724,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29737,7 +30000,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -29783,7 +30046,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -30077,7 +30340,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -30498,7 +30761,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37136,7 +37399,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37176,7 +37439,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37462,7 +37725,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37508,7 +37771,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37786,7 +38049,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -37832,7 +38095,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38106,7 +38369,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38152,7 +38415,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38426,7 +38689,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38472,7 +38735,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38746,7 +39009,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -38792,7 +39055,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39064,7 +39327,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39110,7 +39373,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39669,7 +39932,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39715,7 +39978,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -39990,7 +40253,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -40042,7 +40305,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -40445,7 +40708,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -40499,7 +40762,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -41060,7 +41323,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -41126,7 +41389,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -41794,7 +42057,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -42215,7 +42478,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -47092,7 +47355,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -47132,7 +47395,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -47437,7 +47700,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -47858,7 +48121,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -52744,7 +53007,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -52856,7 +53119,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -53691,7 +53954,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -53743,7 +54006,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -54283,7 +54546,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -54393,7 +54656,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55380,7 +55643,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55426,7 +55689,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55700,7 +55963,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -55746,7 +56009,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -56032,7 +56295,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -56154,7 +56417,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -57343,7 +57606,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -57389,7 +57652,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -57683,7 +57946,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -58104,7 +58367,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63572,7 +63835,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63618,7 +63881,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63892,7 +64155,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -63938,7 +64201,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64214,7 +64477,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64266,7 +64529,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64643,7 +64906,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64689,7 +64952,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -64968,7 +65231,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65014,7 +65277,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65291,7 +65554,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65337,7 +65600,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65609,7 +65872,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65649,7 +65912,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65933,7 +66196,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
@@ -65979,7 +66242,7 @@ icons?: (Image | URL)[];image?: Image | URL | null;
 images?: (Image | URL)[];replyTarget?: Object | Link | URL | null;
 replyTargets?: (Object | Link | URL)[];location?: Object | Link | URL | null;
 locations?: (Object | Link | URL)[];preview?: Link | Object | URL | null;
-previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
+previews?: (Link | Object | URL)[];published?: Temporal.Instant | null;replies?: Collection | URL | null;shares?: Collection | URL | null;emojiReactions?: Collection | URL | null;startTime?: Temporal.Instant | null;summary?: string | LanguageString | null;
 summaries?: ((string | LanguageString))[];tags?: (Object | Link | URL)[];updated?: Temporal.Instant | null;url?: URL | Link | null;
 urls?: ((URL | Link))[];to?: Object | URL | null;
 tos?: (Object | URL)[];bto?: Object | URL | null;
