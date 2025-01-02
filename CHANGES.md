@@ -24,6 +24,13 @@ To be released.
      -  `new Object()` constructor now accepts `shares` option.
      -  `Object.clone()` method now accepts `shares` option.
 
+ -  Added `likes` property to `Object` class in Activity Vocabulary API.
+
+     -  Added `Object.likesId` property.
+     -  Added `Object.getLikes()` method.
+     -  `new Object()` constructor now accepts `likes` option.
+     -  `Object.clone()` method now accepts `likes` option.
+
  -  Added `emojiReactions` property to `Object` class in Activity Vocabulary
     API.
 

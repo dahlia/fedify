@@ -218,6 +218,22 @@ properties:
   range:
   - "https://www.w3.org/ns/activitystreams#Collection"
 
+- singularName: likes
+  functional: true
+  compactName: likes
+  uri: "https://www.w3.org/ns/activitystreams#likes"
+  description: |
+    Every object *may* have a `likes` collection. This is a list of all
+    {@link Like} activities with this object as the `object` property,
+    added as a [side effect]. The `likes` collection *must* be either
+    an {@link OrderedCollection} or a {@link Collection} and *may* be filtered
+    on privileges of an authenticated user or as appropriate
+    when no authentication is given.
+
+    [side effect]: https://www.w3.org/TR/activitypub/#announce-activity-inbox
+  range:
+  - "https://www.w3.org/ns/activitystreams#Collection"
+
 - singularName: emojiReactions
   functional: true
   compactName: emojiReactions
