@@ -64,6 +64,18 @@ export async function lookupWebFinger(
         response.headers.get("Location")!,
         response.url == null || response.url === "" ? url : response.url,
       );
+      if (redirectedUrl.protocol !== url.protocol) {
+        logger.error(
+          "Redirected to a different protocol ({protocol} to " +
+            "{redirectedProtocol}) while fetching WebFinger resource " +
+            "descriptor.",
+          {
+            protocol: url.protocol,
+            redirectedProtocol: redirectedUrl.protocol,
+          },
+        );
+        return null;
+      }
       url = redirectedUrl;
       continue;
     }

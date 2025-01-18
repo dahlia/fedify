@@ -109,6 +109,19 @@ test("lookupWebFinger()", async (t) => {
     assertEquals(result, null);
   });
 
+  mf.mock(
+    "GET@/.well-known/webfinger",
+    (_) =>
+      new Response("", {
+        status: 302,
+        headers: { Location: "ftp://example.com/" },
+      }),
+  );
+
+  await t.step("redirection to different protocol", async () => {
+    assertEquals(await lookupWebFinger("acct:johndoe@example.com"), null);
+  });
+
   mf.uninstall();
 });
 
