@@ -1,4 +1,5 @@
 import { getLogger } from "@logtape/logtape";
+import { validatePublicUrl } from "../runtime/url.ts";
 import type { ResourceDescriptor } from "./jrd.ts";
 
 const logger = getLogger(["fedify", "webfinger", "lookup"]);
@@ -35,6 +36,7 @@ export async function lookupWebFinger(
       { url: url.href },
     );
     let response: Response;
+    await validatePublicUrl(url.href);
     try {
       response = await fetch(url, {
         headers: { Accept: "application/jrd+json" },
