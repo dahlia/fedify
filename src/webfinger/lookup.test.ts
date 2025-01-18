@@ -1,4 +1,5 @@
 import { assertEquals } from "@std/assert";
+import { deadline } from "@std/async/deadline";
 import * as mf from "mock_fetch";
 import { test } from "../testing/mod.ts";
 import type { ResourceDescriptor } from "./jrd.ts";
@@ -89,6 +90,23 @@ test("lookupWebFinger()", async (t) => {
 
   await t.step("redirection", async () => {
     assertEquals(await lookupWebFinger("acct:johndoe@example.com"), expected);
+  });
+
+  mf.mock(
+    "GET@/.well-known/webfinger",
+    (_) =>
+      new Response("", {
+        status: 302,
+        headers: { Location: "/.well-known/webfinger" },
+      }),
+  );
+
+  await t.step("infinite redirection", async () => {
+    const result = await deadline(
+      lookupWebFinger("acct:johndoe@example.com"),
+      2000,
+    );
+    assertEquals(result, null);
   });
 
   mf.uninstall();

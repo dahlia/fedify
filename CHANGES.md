@@ -8,6 +8,10 @@ Version 1.0.14
 
 To be released.
 
+ -  Fixed a security vulnerability where the `lookupWebFinger()` function had
+    followed the infinite number of redirects, which could lead to a denial of
+    service attack.  Now it follows up to 5 redirects.
+
 
 Version 1.0.13
 --------------

@@ -3,6 +3,8 @@ import type { ResourceDescriptor } from "./jrd.ts";
 
 const logger = getLogger(["fedify", "webfinger", "lookup"]);
 
+const MAX_REDIRECTION = 5; // TODO: Make this configurable.
+
 /**
  * Looks up a WebFinger resource.
  * @param resource The resource URL to look up.
@@ -26,6 +28,7 @@ export async function lookupWebFinger(
   }
   let url = new URL(`${protocol}//${server}/.well-known/webfinger`);
   url.searchParams.set("resource", resource.href);
+  let redirected = 0;
   while (true) {
     logger.debug(
       "Fetching WebFinger resource descriptor from {url}...",
@@ -48,10 +51,20 @@ export async function lookupWebFinger(
       response.status >= 300 && response.status < 400 &&
       response.headers.has("Location")
     ) {
-      url = new URL(
+      redirected++;
+      if (redirected >= MAX_REDIRECTION) {
+        logger.error(
+          "Too many redirections ({redirections}) while fetching WebFinger " +
+            "resource descriptor.",
+          { redirections: redirected },
+        );
+        return null;
+      }
+      const redirectedUrl = new URL(
         response.headers.get("Location")!,
         response.url == null || response.url === "" ? url : response.url,
       );
+      url = redirectedUrl;
       continue;
     }
     if (!response.ok) {
