@@ -1,5 +1,7 @@
-import { assertEquals } from "@std/assert";
+import { assertEquals, assertRejects } from "@std/assert";
+import { deadline } from "@std/async/deadline";
 import * as mf from "mock_fetch";
+import { UrlError } from "../runtime/url.ts";
 import { test } from "../testing/mod.ts";
 import type { ResourceDescriptor } from "./jrd.ts";
 import { lookupWebFinger } from "./lookup.ts";
@@ -89,6 +91,52 @@ test("lookupWebFinger()", async (t) => {
 
   await t.step("redirection", async () => {
     assertEquals(await lookupWebFinger("acct:johndoe@example.com"), expected);
+  });
+
+  mf.mock(
+    "GET@/.well-known/webfinger",
+    (_) =>
+      new Response("", {
+        status: 302,
+        headers: { Location: "/.well-known/webfinger" },
+      }),
+  );
+
+  await t.step("infinite redirection", async () => {
+    const result = await deadline(
+      lookupWebFinger("acct:johndoe@example.com"),
+      2000,
+    );
+    assertEquals(result, null);
+  });
+
+  mf.mock(
+    "GET@/.well-known/webfinger",
+    (_) =>
+      new Response("", {
+        status: 302,
+        headers: { Location: "ftp://example.com/" },
+      }),
+  );
+
+  await t.step("redirection to different protocol", async () => {
+    assertEquals(await lookupWebFinger("acct:johndoe@example.com"), null);
+  });
+
+  mf.mock(
+    "GET@/.well-known/webfinger",
+    (_) =>
+      new Response("", {
+        status: 302,
+        headers: { Location: "https://localhost/" },
+      }),
+  );
+
+  await t.step("redirection to private address", async () => {
+    await assertRejects(
+      () => lookupWebFinger("acct:johndoe@example.com"),
+      UrlError,
+    );
   });
 
   mf.uninstall();
