@@ -6,9 +6,10 @@ Fedify changelog
 Version 1.0.14
 --------------
 
-To be released.
+Released on January 21, 2025.
 
  -  Fixed several security vulnerabilities of the `lookupWebFinger()` function.
+    [[CVE-2025-23221]]
 
      -  Fixed a security vulnerability where the `lookupWebFinger()` function
         had followed the infinite number of redirects, which could lead to
@@ -23,6 +24,8 @@ To be released.
         had followed the redirects to the private network addresses, which
         could lead to a SSRF attack.  Now it follows only the public network
         addresses.
+
+[CVE-2025-23221]: https://github.com/dahlia/fedify/security/advisories/GHSA-c59p-wq67-24wx
 
 
 Version 1.0.13
