@@ -1,7 +1,10 @@
 import { getLogger } from "@logtape/logtape";
+import { validatePublicUrl } from "../runtime/url.ts";
 import type { ResourceDescriptor } from "./jrd.ts";
 
 const logger = getLogger(["fedify", "webfinger", "lookup"]);
+
+const MAX_REDIRECTION = 5; // TODO: Make this configurable.
 
 /**
  * Looks up a WebFinger resource.
@@ -26,12 +29,14 @@ export async function lookupWebFinger(
   }
   let url = new URL(`${protocol}//${server}/.well-known/webfinger`);
   url.searchParams.set("resource", resource.href);
+  let redirected = 0;
   while (true) {
     logger.debug(
       "Fetching WebFinger resource descriptor from {url}...",
       { url: url.href },
     );
     let response: Response;
+    await validatePublicUrl(url.href);
     try {
       response = await fetch(url, {
         headers: { Accept: "application/jrd+json" },
@@ -48,10 +53,32 @@ export async function lookupWebFinger(
       response.status >= 300 && response.status < 400 &&
       response.headers.has("Location")
     ) {
-      url = new URL(
+      redirected++;
+      if (redirected >= MAX_REDIRECTION) {
+        logger.error(
+          "Too many redirections ({redirections}) while fetching WebFinger " +
+            "resource descriptor.",
+          { redirections: redirected },
+        );
+        return null;
+      }
+      const redirectedUrl = new URL(
         response.headers.get("Location")!,
         response.url == null || response.url === "" ? url : response.url,
       );
+      if (redirectedUrl.protocol !== url.protocol) {
+        logger.error(
+          "Redirected to a different protocol ({protocol} to " +
+            "{redirectedProtocol}) while fetching WebFinger resource " +
+            "descriptor.",
+          {
+            protocol: url.protocol,
+            redirectedProtocol: redirectedUrl.protocol,
+          },
+        );
+        return null;
+      }
+      url = redirectedUrl;
       continue;
     }
     if (!response.ok) {

@@ -1,3 +1,4 @@
+import type { LookupAddress } from "node:dns";
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
 
@@ -38,7 +39,12 @@ export async function validatePublicUrl(url: string): Promise<void> {
   }
   // To prevent SSRF via DNS rebinding, we need to resolve all IP addresses
   // and ensure that they are all public:
-  const addresses = await lookup(hostname, { all: true });
+  let addresses: LookupAddress[];
+  try {
+    addresses = await lookup(hostname, { all: true });
+  } catch {
+    addresses = [];
+  }
   for (const { address, family } of addresses) {
     if (
       family === 4 && !isValidPublicIPv4Address(address) ||
