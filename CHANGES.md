@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.3.4
 -------------
 
-To be released.
+Released on January 21, 2025.
 
  -  Fixed several security vulnerabilities of the `lookupWebFinger()` function.
     [[CVE-2025-23221]]
