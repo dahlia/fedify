@@ -8,6 +8,23 @@ Version 1.2.11
 
 To be released.
 
+ -  Fixed several security vulnerabilities of the `lookupWebFinger()` function.
+    [[CVE-2025-23221]]
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the infinite number of redirects, which could lead to
+        a denial of service attack.  Now it follows up to 5 redirects.
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the redirects to other than the HTTP/HTTPS schemes, which
+        could lead to a security breach.  Now it follows only the same scheme
+        as the original request.
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the redirects to the private network addresses, which
+        could lead to a SSRF attack.  Now it follows only the public network
+        addresses.
+
 
 Version 1.2.10
 --------------
@@ -231,6 +248,29 @@ Released on October 31, 2024.
 
 [implicit contexts]: https://logtape.org/manual/contexts#implicit-contexts
 [#118]: https://github.com/dahlia/fedify/issues/118
+
+
+Version 1.1.11
+--------------
+
+Released on January 21, 2025.
+
+ -  Fixed several security vulnerabilities of the `lookupWebFinger()` function.
+    [[CVE-2025-23221]]
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the infinite number of redirects, which could lead to
+        a denial of service attack.  Now it follows up to 5 redirects.
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the redirects to other than the HTTP/HTTPS schemes, which
+        could lead to a security breach.  Now it follows only the same scheme
+        as the original request.
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the redirects to the private network addresses, which
+        could lead to a SSRF attack.  Now it follows only the public network
+        addresses.
 
 
 Version 1.1.10
@@ -496,6 +536,31 @@ Released on October 20, 2024.
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
 [#146]: https://github.com/dahlia/fedify/issues/146
 [#150]: https://github.com/dahlia/fedify/issues/150
+
+
+Version 1.0.14
+--------------
+
+Released on January 21, 2025.
+
+ -  Fixed several security vulnerabilities of the `lookupWebFinger()` function.
+    [[CVE-2025-23221]]
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the infinite number of redirects, which could lead to
+        a denial of service attack.  Now it follows up to 5 redirects.
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the redirects to other than the HTTP/HTTPS schemes, which
+        could lead to a security breach.  Now it follows only the same scheme
+        as the original request.
+
+     -  Fixed a security vulnerability where the `lookupWebFinger()` function
+        had followed the redirects to the private network addresses, which
+        could lead to a SSRF attack.  Now it follows only the public network
+        addresses.
+
+[CVE-2025-23221]: https://github.com/dahlia/fedify/security/advisories/GHSA-c59p-wq67-24wx
 
 
 Version 1.0.13
