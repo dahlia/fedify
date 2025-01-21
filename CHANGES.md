@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.3.5
 -------------
 
-To be released.
+Released on January 21, 2025.
 
  -  Fixed a bug where `CreateFederationOptions.allowPrivateAddress` option had
     been ignored by the `Context.lookupObject()` method when it had taken
