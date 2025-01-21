@@ -3,6 +3,12 @@
 Fedify changelog
 ================
 
+Version 1.3.6
+-------------
+
+To be released.
+
+
 Version 1.3.5
 -------------
 
