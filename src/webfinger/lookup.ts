@@ -10,7 +10,7 @@ import {
   getUserAgent,
   type GetUserAgentOptions,
 } from "../runtime/docloader.ts";
-import { validatePublicUrl } from "../runtime/url.ts";
+import { UrlError, validatePublicUrl } from "../runtime/url.ts";
 import type { ResourceDescriptor } from "./jrd.ts";
 
 const logger = getLogger(["fedify", "webfinger", "lookup"]);
@@ -109,7 +109,20 @@ async function lookupWebFingerInternal(
       { url: url.href },
     );
     let response: Response;
-    await validatePublicUrl(url.href);
+    if (!("allowPrivateAddress" in options) || !options.allowPrivateAddress) {
+      try {
+        await validatePublicUrl(url.href);
+      } catch (e) {
+        if (e instanceof UrlError) {
+          logger.error(
+            "Invalid URL for WebFinger resource descriptor: {error}",
+            { error: e },
+          );
+          return null;
+        }
+        throw e;
+      }
+    }
     try {
       response = await fetch(url, {
         headers: {

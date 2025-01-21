@@ -1016,6 +1016,62 @@ test("FederationImpl.sendActivity()", async (t) => {
   mf.uninstall();
 });
 
+test("ContextImpl.lookupObject()", async (t) => {
+  // Note that this test only checks if allowPrivateAddress option affects
+  // the ContextImpl.lookupObject() method.  Other aspects of the method are
+  // tested in the lookupObject() tests.
+
+  mf.install();
+  mf.mock("GET@/.well-known/webfinger", () =>
+    new Response(
+      JSON.stringify({
+        subject: "acct:test@localhost",
+        links: [
+          {
+            rel: "self",
+            type: "application/activity+json",
+            href: "https://localhost/actor",
+          },
+        ],
+      }),
+      { headers: { "Content-Type": "application/jrd+json" } },
+    ));
+  mf.mock("GET@/actor", () =>
+    new Response(
+      JSON.stringify({
+        "@context": "https://www.w3.org/ns/activitystreams",
+        "type": "Person",
+        "id": "https://localhost/actor",
+        "preferredUsername": "test",
+      }),
+      { headers: { "Content-Type": "application/activity+json" } },
+    ));
+
+  await t.step("allowPrivateAddress: true", async () => {
+    const federation = createFederation<void>({
+      kv: new MemoryKvStore(),
+      allowPrivateAddress: true,
+    });
+    const ctx = federation.createContext(new URL("https://example.com/"));
+    const result = await ctx.lookupObject("@test@localhost");
+    assertInstanceOf(result, Person);
+    assertEquals(result.id, new URL("https://localhost/actor"));
+    assertEquals(result.preferredUsername, "test");
+  });
+
+  await t.step("allowPrivateAddress: false", async () => {
+    const federation = createFederation<void>({
+      kv: new MemoryKvStore(),
+      allowPrivateAddress: false,
+    });
+    const ctx = federation.createContext(new URL("https://example.com/"));
+    const result = await ctx.lookupObject("@test@localhost");
+    assertEquals(result, null);
+  });
+
+  mf.uninstall();
+});
+
 test("ContextImpl.sendActivity()", async (t) => {
   mf.install();
 
