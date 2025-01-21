@@ -182,6 +182,7 @@ export interface CreateFederationOptions {
    * Mostly useful for testing purposes.  *Do not use in production.*
    *
    * Turned off by default.
+   * @since 0.15.0
    */
   allowPrivateAddress?: boolean;
 
@@ -190,6 +191,7 @@ export interface CreateFederationOptions {
    * If a string is provided, it is used as the `User-Agent` header.
    * If an object is provided, it is passed to the {@link getUserAgent}
    * function.
+   * @since 1.3.0
    */
   userAgent?: GetUserAgentOptions | string;
 

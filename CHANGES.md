@@ -39,6 +39,8 @@ To be released.
      -  `new Object()` constructor now accepts `emojiReactions` option.
      -  `Object.clone()` method now accepts `emojiReactions` option.
 
+ -  Added `allowPrivateAddress` option to `LookupWebFingerOptions` interface.
+
  -  Added `-t`/`--traverse` option to the `fedify lookup` subcommand.  [[#195]]
 
  -  Added `-S`/`--suppress-errors` option to the `fedify lookup` subcommand.

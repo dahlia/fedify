@@ -147,9 +147,8 @@ async function lookupObjectInternal(
     const jrd = await lookupWebFinger(identifier, {
       userAgent: options.userAgent,
       tracerProvider: options.tracerProvider,
-      // @ts-ignore: `allowPrivateAddress` is not in the type definition.
       allowPrivateAddress: "allowPrivateAddress" in options &&
-        options.allowPrivateAddress,
+        options.allowPrivateAddress === true,
     });
     if (jrd?.links == null) return null;
     for (const l of jrd.links) {

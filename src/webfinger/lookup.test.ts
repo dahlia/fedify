@@ -75,6 +75,40 @@ test("lookupWebFinger()", async (t) => {
     assertEquals(await lookupWebFinger("acct:johndoe@example.com"), null);
   });
 
+  mf.mock("GET@/.well-known/webfinger", (_req) => {
+    return new Response(
+      JSON.stringify({
+        subject: "acct:test@localhost",
+        links: [
+          {
+            rel: "self",
+            type: "application/activity+json",
+            href: "https://localhost/actor",
+          },
+        ],
+      }),
+    );
+  });
+
+  await t.step("private address", async () => {
+    assertEquals(await lookupWebFinger("acct:test@localhost"), null);
+    assertEquals(
+      await lookupWebFinger("acct:test@localhost", {
+        allowPrivateAddress: true,
+      }),
+      {
+        subject: "acct:test@localhost",
+        links: [
+          {
+            rel: "self",
+            type: "application/activity+json",
+            href: "https://localhost/actor",
+          },
+        ],
+      },
+    );
+  });
+
   mf.mock(
     "GET@/.well-known/webfinger",
     (_) =>

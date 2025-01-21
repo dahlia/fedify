@@ -31,6 +31,16 @@ export interface LookupWebFingerOptions {
   userAgent?: GetUserAgentOptions | string;
 
   /**
+   * Whether to allow private IP addresses in the URL.
+   *
+   * Mostly useful for testing purposes.  *Do not use this in production.*
+   *
+   * Turned off by default.
+   * @since 1.4.0
+   */
+  allowPrivateAddress?: boolean;
+
+  /**
    * The OpenTelemetry tracer provider.  If omitted, the global tracer provider
    * is used.
    */
@@ -109,7 +119,7 @@ async function lookupWebFingerInternal(
       { url: url.href },
     );
     let response: Response;
-    if (!("allowPrivateAddress" in options) || !options.allowPrivateAddress) {
+    if (options.allowPrivateAddress !== true) {
       try {
         await validatePublicUrl(url.href);
       } catch (e) {
