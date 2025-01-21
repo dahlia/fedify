@@ -372,6 +372,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   documentLoader: DocumentLoader;
   contextLoader: DocumentLoader;
   authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
+  allowPrivateAddress: boolean;
   userAgent?: GetUserAgentOptions | string;
   onOutboxError?: OutboxErrorHandler;
   signatureTimeWindow: Temporal.Duration | Temporal.DurationLike | false;
@@ -429,6 +430,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       }
     }
     const { allowPrivateAddress, userAgent } = options;
+    this.allowPrivateAddress = allowPrivateAddress ?? false;
     this.documentLoader = options.documentLoader ?? kvCache({
       loader: getDocumentLoader({ allowPrivateAddress, userAgent }),
       kv: options.kv,
@@ -2882,6 +2884,8 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
       contextLoader: options.contextLoader ?? this.contextLoader,
       userAgent: options.userAgent ?? this.federation.userAgent,
       tracerProvider: options.tracerProvider ?? this.tracerProvider,
+      // @ts-ignore: `allowPrivateAddress` is not in the type definition.
+      allowPrivateAddress: this.federation.allowPrivateAddress,
     });
   }
 

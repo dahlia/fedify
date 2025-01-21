@@ -8,6 +8,14 @@ Version 1.3.5
 
 To be released.
 
+ -  Fixed a bug where `CreateFederationOptions.allowPrivateAddress` option had
+    been ignored by the `Context.lookupObject()` method when it had taken
+    a fediverse handle.
+
+ -  The `lookupWebFinger()` function became to silently return `null` when
+    it fails to fetch the WebFinger document due to accessing a private network
+    address, instead of throwing a `UrlError`.
+
 
 Version 1.3.4
 -------------

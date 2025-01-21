@@ -1,7 +1,6 @@
-import { assertEquals, assertRejects } from "@std/assert";
+import { assertEquals } from "@std/assert";
 import { deadline } from "@std/async/deadline";
 import * as mf from "mock_fetch";
-import { UrlError } from "../runtime/url.ts";
 import { test } from "../testing/mod.ts";
 import type { ResourceDescriptor } from "./jrd.ts";
 import { lookupWebFinger } from "./lookup.ts";
@@ -133,10 +132,7 @@ test("lookupWebFinger()", async (t) => {
   );
 
   await t.step("redirection to private address", async () => {
-    await assertRejects(
-      () => lookupWebFinger("acct:johndoe@example.com"),
-      UrlError,
-    );
+    assertEquals(await lookupWebFinger("acct:johndoe@example.com"), null);
   });
 
   mf.uninstall();
