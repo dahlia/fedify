@@ -291,7 +291,7 @@ federation.setNodeInfoDispatcher("/nodeinfo/2.1", (_ctx) => {
     software: {
       name: "fedify-cli",
       version: parse(metadata.version),
-      repository: new URL("https://github.com/dahlia/fedify"),
+      repository: new URL("https://github.com/fedify-dev/fedify"),
     },
     protocols: ["activitypub"],
     usage: {

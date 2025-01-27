@@ -93,7 +93,7 @@ app.use(integrateFederation(federation, (req) => "context data goes here"));  //
 ~~~~
 
 [Express]: https://expressjs.com/
-[@fedify/express]: https://github.com/dahlia/fedify-express
+[@fedify/express]: https://github.com/fedify-dev/express
 
 
 Hono
@@ -160,7 +160,7 @@ app.use(router);
 [Vinxi]: https://vinxi.vercel.app/
 [SolidStart]: https://start.solidjs.com/
 [TanStack Start]: https://tanstack.com/start
-[@fedify/h3]: https://github.com/dahlia/fedify-h3
+[@fedify/h3]: https://github.com/fedify-dev/h3
 
 
 Fresh

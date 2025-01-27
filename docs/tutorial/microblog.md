@@ -29,7 +29,7 @@ our [Matrix chat space] or [Discord server] or [GitHub Discussions].
 [Fedify]: https://fedify.dev/
 [Matrix chat space]: https://matrix.to/#/#fedify:matrix.org
 [Discord server]: https://discord.gg/bhtwpzURwd
-[GitHub Discussions]: https://github.com/dahlia/fedify/discussions
+[GitHub Discussions]: https://github.com/fedify-dev/fedify/discussions
 
 
 Target audience
@@ -84,7 +84,7 @@ features—it would be good practice!
 The complete source code is available in the [GitHub repository],
 with commits separated according to each implementation step for your reference.
 
-[GitHub repository]: https://github.com/dahlia/microblog
+[GitHub repository]: https://github.com/fedify-dev/microblog
 
 
 Setting up the development environment

@@ -171,7 +171,7 @@ sends the activity to the recipient's inbox.  If the delivery fails, it throws
 an error and does not retry the delivery.
 
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
-[`@fedify/redis`]: https://github.com/dahlia/fedify-redis
+[`@fedify/redis`]: https://github.com/fedify-dev/redis
 
 
 Immediately sending an activity

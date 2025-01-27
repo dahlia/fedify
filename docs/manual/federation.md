@@ -58,9 +58,9 @@ for production use.
 
 Further details are explained in the [*Key–value store* section](./kv.md).
 
-[@fedify/redis]: https://github.com/dahlia/fedify-redis
+[@fedify/redis]: https://github.com/fedify-dev/redis
 [`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore
-[@fedify/postgres]: https://github.com/dahlia/fedify-postgres
+[@fedify/postgres]: https://github.com/fedify-dev/postgres
 [`PostgresKvStore`]: https://jsr.io/@fedify/postgres/doc/kv/~/PostgresKvStore
 
 ### `kvPrefixes`
@@ -174,7 +174,7 @@ Further details are explained in the [*Message queue* section](./mq.md).
 
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
 [`PostgresMessageQueue`]: https://jsr.io/@fedify/postgres/doc/mq/~/PostgresMessageQueue
-[@fedify/amqp]: https://github.com/dahlia/fedify-amqp
+[@fedify/amqp]: https://github.com/fedify-dev/amqp
 [`AmqpMessageQueue`]: https://jsr.io/@fedify/amqp/doc/mq/~/AmqpMessageQueue
 
 ### `manuallyStartQueue`

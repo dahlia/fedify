@@ -1,5 +1,5 @@
 // Preloaded context documents
-// https://github.com/dahlia/fedify/issues/74
+// https://github.com/fedify-dev/fedify/issues/74
 // cSpell: disable
 
 const preloadedContexts: Record<string, unknown> = {

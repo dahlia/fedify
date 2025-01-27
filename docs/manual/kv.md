@@ -104,7 +104,7 @@ const federation = createFederation<void>({
 });
 ~~~~
 
-[@fedify/redis]: https://github.com/dahlia/fedify-redis
+[@fedify/redis]: https://github.com/fedify-dev/redis
 [`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore
 
 ### [`PostgresKvStore`]
@@ -140,7 +140,7 @@ const federation = createFederation<void>({
 ~~~~
 
 [`PostgresKvStore`]: https://jsr.io/@fedify/postgres/doc/kv/~/PostgresKvStore
-[@fedify/postgres]: https://github.com/dahlia/fedify-postgres
+[@fedify/postgres]: https://github.com/fedify-dev/postgres
 
 
 Implementing a custom `KvStore`

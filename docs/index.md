@@ -27,7 +27,7 @@ hero:
     link: /tutorial/basics.md
   - theme: alt
     text: GitHub
-    link: https://github.com/dahlia/fedify
+    link: https://github.com/fedify-dev/fedify
 
 features:
 - icon: 🕸️

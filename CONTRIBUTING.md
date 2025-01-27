@@ -22,7 +22,7 @@ the following information:
  -  The expected behavior.
  -  The actual behavior.
 
-[GitHub issue tracker]: https://github.com/dahlia/fedify/issues
+[GitHub issue tracker]: https://github.com/fedify-dev/fedify/issues
 
 
 Feature requests

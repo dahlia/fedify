@@ -42,7 +42,7 @@ resources:
     [Learning the basics](https://fedify.dev/tutorial/basics) &
     [Creating a microblog](https://fedify.dev/tutorial/microblog)
  -  [API reference][JSR]
- -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
+ -  [Examples](https://github.com/fedify-dev/fedify/tree/main/examples)
 
 If you have any questions, suggestions, or feedback, please feel free to
 join our [Matrix chat space][Matrix] or [Discord server][Discord] or
@@ -55,8 +55,8 @@ join our [Matrix chat space][Matrix] or [Discord server][Discord] or
 [JSR badge]: https://jsr.io/badges/@fedify/fedify
 [npm]: https://www.npmjs.com/package/@fedify/fedify
 [npm badge]: https://img.shields.io/npm/v/@fedify/fedify?logo=npm
-[GitHub Actions]: https://github.com/dahlia/fedify/actions/workflows/build.yaml
-[GitHub Actions badge]: https://github.com/dahlia/fedify/actions/workflows/build.yaml/badge.svg
+[GitHub Actions]: https://github.com/fedify-dev/fedify/actions/workflows/build.yaml
+[GitHub Actions badge]: https://github.com/fedify-dev/fedify/actions/workflows/build.yaml/badge.svg
 [Matrix]: https://matrix.to/#/#fedify:matrix.org
 [Matrix badge]: https://img.shields.io/matrix/fedify%3Amatrix.org?logo=matrix
 [Discord]: https://discord.gg/bhtwpzURwd
@@ -72,7 +72,7 @@ join our [Matrix chat space][Matrix] or [Discord server][Discord] or
 [FEP-8b32]: https://w3id.org/fep/8b32
 [Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
 [NodeInfo]: https://nodeinfo.diaspora.software/
-[GitHub Discussions]: https://github.com/dahlia/fedify/discussions
+[GitHub Discussions]: https://github.com/fedify-dev/fedify/discussions
 [#Fedify]: https://mastodon.social/tags/fedify
 [Mastodon]: https://joinmastodon.org/
 [Lemmy]: https://join-lemmy.org/
