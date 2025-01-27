@@ -7,7 +7,7 @@ Running the Example
  1. Clone the repository:
 
     ~~~~ sh
-    git clone https://github.com/dahlia/fedify.git
+    git clone https://github.com/fedify-dev/fedify.git
     cd fedify/examples/next-app-router
     ~~~~
 

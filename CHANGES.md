@@ -46,8 +46,8 @@ To be released.
  -  Added `-S`/`--suppress-errors` option to the `fedify lookup` subcommand.
     [[#195]]
 
-[#3]: https://github.com/dahlia/fedify/issues/3
-[#195]: https://github.com/dahlia/fedify/issues/195
+[#3]: https://github.com/fedify-dev/fedify/issues/3
+[#195]: https://github.com/fedify-dev/fedify/issues/195
 
 
 Version 1.3.5
@@ -221,14 +221,14 @@ Released on November 30, 2024.
 
 
 [SvelteKit]: https://kit.svelte.dev/
-[#162]: https://github.com/dahlia/fedify/issues/162
-[#170]: https://github.com/dahlia/fedify/issues/170
-[#171]: https://github.com/dahlia/fedify/issues/171
-[#173]: https://github.com/dahlia/fedify/issues/173
-[#183]: https://github.com/dahlia/fedify/pull/183
-[#186]: https://github.com/dahlia/fedify/pull/186
-[#192]: https://github.com/dahlia/fedify/issues/192
-[#193]: https://github.com/dahlia/fedify/issues/193
+[#162]: https://github.com/fedify-dev/fedify/issues/162
+[#170]: https://github.com/fedify-dev/fedify/issues/170
+[#171]: https://github.com/fedify-dev/fedify/issues/171
+[#173]: https://github.com/fedify-dev/fedify/issues/173
+[#183]: https://github.com/fedify-dev/fedify/pull/183
+[#186]: https://github.com/fedify-dev/fedify/pull/186
+[#192]: https://github.com/fedify-dev/fedify/issues/192
+[#193]: https://github.com/fedify-dev/fedify/issues/193
 
 
 Version 1.2.11
@@ -284,8 +284,8 @@ Released on November 23, 2024.
  -  Fixed text overflow of the `fedify inbox` command's web log view.
     [[#180], [#188] by Lim Kyunghee]
 
-[#177]: https://github.com/dahlia/fedify/issues/177
-[#181]: https://github.com/dahlia/fedify/pull/181
+[#177]: https://github.com/fedify-dev/fedify/issues/177
+[#181]: https://github.com/fedify-dev/fedify/pull/181
 
 
 Version 1.2.7
@@ -409,7 +409,7 @@ Released on November 1, 2024.
  -  Support the `fedify` command on Windows on ARM64 via x64 emulation.
     [[#160]]
 
-[#160]: https://github.com/dahlia/fedify/issues/160
+[#160]: https://github.com/fedify-dev/fedify/issues/160
 
 
 Version 1.2.1
@@ -475,7 +475,7 @@ Released on October 31, 2024.
      -  `["fedify", "nodeinfo", "client"]`
 
 [implicit contexts]: https://logtape.org/manual/contexts#implicit-contexts
-[#118]: https://github.com/dahlia/fedify/issues/118
+[#118]: https://github.com/fedify-dev/fedify/issues/118
 
 
 Version 1.1.11
@@ -529,10 +529,10 @@ Released on November 23, 2024.
  -  Fixed text overflow of the `fedify inbox` command's web log view.
     [[#180], [#188] by Lim Kyunghee]
 
-[#178]: https://github.com/dahlia/fedify/issues/178
-[#180]: https://github.com/dahlia/fedify/issues/180
-[#185]: https://github.com/dahlia/fedify/pull/185
-[#188]: https://github.com/dahlia/fedify/pull/188
+[#178]: https://github.com/fedify-dev/fedify/issues/178
+[#180]: https://github.com/fedify-dev/fedify/issues/180
+[#185]: https://github.com/fedify-dev/fedify/pull/185
+[#188]: https://github.com/fedify-dev/fedify/pull/188
 
 
 Version 1.1.7
@@ -762,8 +762,8 @@ Released on October 20, 2024.
 [FEP-c0e0]: https://w3id.org/fep/c0e0
 [FEP-9091]: https://w3id.org/fep/9091
 [ActivityPub and HTTP Signatures]: https://swicg.github.io/activitypub-http-signature/
-[#146]: https://github.com/dahlia/fedify/issues/146
-[#150]: https://github.com/dahlia/fedify/issues/150
+[#146]: https://github.com/fedify-dev/fedify/issues/146
+[#150]: https://github.com/fedify-dev/fedify/issues/150
 
 
 Version 1.0.14
@@ -788,7 +788,7 @@ Released on January 21, 2025.
         could lead to a SSRF attack.  Now it follows only the public network
         addresses.
 
-[CVE-2025-23221]: https://github.com/dahlia/fedify/security/advisories/GHSA-c59p-wq67-24wx
+[CVE-2025-23221]: https://github.com/fedify-dev/fedify/security/advisories/GHSA-c59p-wq67-24wx
 
 
 Version 1.0.13
@@ -799,7 +799,7 @@ Released on December 18, 2024.
  -  Fixed the default document loader to handle the `Link` header with
     incorrect syntax.  [[#196]]
 
-[#196]: https://github.com/dahlia/fedify/issues/196
+[#196]: https://github.com/fedify-dev/fedify/issues/196
 
 
 Version 1.0.12
@@ -1156,9 +1156,9 @@ Released on September 26, 2024.
      -  `["fedify", "sig", "ld"]`
 
 [Linked Data Signatures]: https://web.archive.org/web/20170923124140/https://w3c-dvcg.github.io/ld-signatures/
-[#106]: https://github.com/dahlia/fedify/issues/106
-[#135]: https://github.com/dahlia/fedify/issues/135
-[#137]: https://github.com/dahlia/fedify/issues/137
+[#106]: https://github.com/fedify-dev/fedify/issues/106
+[#135]: https://github.com/fedify-dev/fedify/issues/135
+[#137]: https://github.com/fedify-dev/fedify/issues/137
 
 
 Version 0.15.9
@@ -1169,7 +1169,7 @@ Released on November 22, 2024.
  -  Fixed a bug where `lookupWebFinger()` function had thrown a `TypeError`
     when the *.well-known/webfinger* redirects to a relative URI.  [[#166]]
 
-[#166]: https://github.com/dahlia/fedify/issues/166
+[#166]: https://github.com/fedify-dev/fedify/issues/166
 
 
 Version 0.15.8
@@ -1228,7 +1228,7 @@ Released on November 19, 2024.
         methods is now `OrderedCollection | OrderedCollectionPage | null` (was
         `OrderedCollection | null`).
 
-[#165]: https://github.com/dahlia/fedify/issues/165
+[#165]: https://github.com/fedify-dev/fedify/issues/165
 
 
 Version 0.15.7
@@ -1249,7 +1249,7 @@ Released on November 14, 2024.
         "inbox"]` logger category and responds with a `500 Internal Server
         Error`.
 
-[#159]: https://github.com/dahlia/fedify/issues/159
+[#159]: https://github.com/fedify-dev/fedify/issues/159
 
 
 Version 0.15.6
@@ -1283,7 +1283,7 @@ Released on October 27, 2024.
  -  The `fetchDocumentLoader()` function now preloads the following JSON-LD
     context: <http://schema.org/>.
 
-[#155]: https://github.com/dahlia/fedify/pull/155
+[#155]: https://github.com/fedify-dev/fedify/pull/155
 
 
 Version 0.15.3
@@ -1312,7 +1312,7 @@ Released on September 15, 2024.
  -  Fixed a bug where even if the `ActorCallbackSetters.mapHandle()` method was
     called, a WebFinger username was used as an actor's handle.  [[#136]]
 
-[#136]: https://github.com/dahlia/fedify/pull/136
+[#136]: https://github.com/fedify-dev/fedify/pull/136
 
 
 Version 0.15.0
@@ -1517,8 +1517,8 @@ Released on August 27, 2024.
     Bun, and fills the *deno.json* file with the default `compilerOptions` on
     Deno.
 
-[#114]: https://github.com/dahlia/fedify/issues/114
-[#115]: https://github.com/dahlia/fedify/issues/115
+[#114]: https://github.com/fedify-dev/fedify/issues/114
+[#115]: https://github.com/fedify-dev/fedify/issues/115
 
 
 Version 0.13.5
@@ -1539,7 +1539,7 @@ Released on September 1, 2024.
  -  Fixed `fedify inbox` command where it had ignored `-a`/`--accept-follow`
     options when no `-f`/`--follow` option was provided.  [[#132]]
 
-[#132]: https://github.com/dahlia/fedify/issues/132
+[#132]: https://github.com/fedify-dev/fedify/issues/132
 
 
 Version 0.13.3
@@ -1551,7 +1551,7 @@ Released on August 30, 2024.
     been verified by their inbox.  [[#125]]
 
 [Threads]: https://www.threads.net/
-[#125]: https://github.com/dahlia/fedify/issues/125
+[#125]: https://github.com/fedify-dev/fedify/issues/125
 
 
 Version 0.13.2
@@ -1562,7 +1562,7 @@ Released on August 29, 2024.
  -  Fixed `fedify inbox` command that had not been able to parse activities
     even if they are valid JSON-LD.  [[#126]]
 
-[#126]: https://github.com/dahlia/fedify/issues/126
+[#126]: https://github.com/fedify-dev/fedify/issues/126
 
 
 Version 0.13.1
@@ -1643,8 +1643,8 @@ Released on August 7, 2024.
 
      -  `["fedify", "webfinger", "server"]`
 
-[#69]: https://github.com/dahlia/fedify/issues/69
-[#110]: https://github.com/dahlia/fedify/issues/110
+[#69]: https://github.com/fedify-dev/fedify/issues/69
+[#110]: https://github.com/fedify-dev/fedify/issues/110
 [Express]: https://expressjs.com/
 [Nitro]: https://nitro.unjs.io/
 
@@ -1815,16 +1815,16 @@ Released on July 24, 2024.
      -  `["fedify", "federation", "queue"]`
 
 [@fedify/cli]: https://www.npmjs.com/package/@fedify/cli
-[#6]: https://github.com/dahlia/fedify/issues/6
-[#53]: https://github.com/dahlia/fedify/issues/53
-[#66]: https://github.com/dahlia/fedify/issues/66
-[#70]: https://github.com/dahlia/fedify/issues/70
-[#81]: https://github.com/dahlia/fedify/issues/81
-[#85]: https://github.com/dahlia/fedify/issues/85
-[#92]: https://github.com/dahlia/fedify/pull/92
-[#104]: https://github.com/dahlia/fedify/issues/104
-[#105]: https://github.com/dahlia/fedify/issues/105
-[#107]: https://github.com/dahlia/fedify/issues/107
+[#6]: https://github.com/fedify-dev/fedify/issues/6
+[#53]: https://github.com/fedify-dev/fedify/issues/53
+[#66]: https://github.com/fedify-dev/fedify/issues/66
+[#70]: https://github.com/fedify-dev/fedify/issues/70
+[#81]: https://github.com/fedify-dev/fedify/issues/81
+[#85]: https://github.com/fedify-dev/fedify/issues/85
+[#92]: https://github.com/fedify-dev/fedify/pull/92
+[#104]: https://github.com/fedify-dev/fedify/issues/104
+[#105]: https://github.com/fedify-dev/fedify/issues/105
+[#107]: https://github.com/fedify-dev/fedify/issues/107
 
 
 Version 0.11.3
@@ -1836,7 +1836,7 @@ Released on July 15, 2024.
     `Federation.setInboxListeners()` had caused a `RouterError` to be
     thrown even if the paths match.  [[#101] by Fabien O'Carroll]
 
-[#101]: https://github.com/dahlia/fedify/pull/101
+[#101]: https://github.com/fedify-dev/fedify/pull/101
 
 
 Version 0.11.2
@@ -2044,12 +2044,12 @@ Released on June 29, 2024.
     for Object Integrity Proofs.  [[FEP-8b32], [#54]]
 
 [eddsa-jcs-2022]: https://codeberg.org/fediverse/fep/pulls/338
-[#71]: https://github.com/dahlia/fedify/issues/71
-[#74]: https://github.com/dahlia/fedify/issues/74
-[#76]: https://github.com/dahlia/fedify/pull/76
-[#78]: https://github.com/dahlia/fedify/issues/78
-[#79]: https://github.com/dahlia/fedify/issues/79
-[#80]: https://github.com/dahlia/fedify/pull/80
+[#71]: https://github.com/fedify-dev/fedify/issues/71
+[#74]: https://github.com/fedify-dev/fedify/issues/74
+[#76]: https://github.com/fedify-dev/fedify/pull/76
+[#78]: https://github.com/fedify-dev/fedify/issues/78
+[#79]: https://github.com/fedify-dev/fedify/issues/79
+[#80]: https://github.com/fedify-dev/fedify/pull/80
 
 
 Version 0.10.2
@@ -2230,10 +2230,10 @@ is now distributed under the [MIT License] to encourage wider adoption.
      -  `["fedify", "vocab", "lookup"]`
      -  `["fedify", "webfinger", "lookup"]`
 
-[#54]: https://github.com/dahlia/fedify/issues/54
-[#55]: https://github.com/dahlia/fedify/issues/55
-[#65]: https://github.com/dahlia/fedify/issues/65
-[#68]: https://github.com/dahlia/fedify/pull/68
+[#54]: https://github.com/fedify-dev/fedify/issues/54
+[#55]: https://github.com/fedify-dev/fedify/issues/55
+[#65]: https://github.com/fedify-dev/fedify/issues/65
+[#68]: https://github.com/fedify-dev/fedify/pull/68
 [AGPL 3.0]: https://www.gnu.org/licenses/agpl-3.0.en.html
 [MIT License]: https://minhee.mit-license.org/
 [FEP-521a]: https://w3id.org/fep/521a
@@ -2270,7 +2270,7 @@ Released on July 5, 2024.
         loader that throws an error when the given URL is not an HTTP or HTTPS
         URL or refers to a private network address.
 
-[CVE-2024-39687]: https://github.com/dahlia/fedify/security/advisories/GHSA-p9cg-vqcc-grcx
+[CVE-2024-39687]: https://github.com/fedify-dev/fedify/security/advisories/GHSA-p9cg-vqcc-grcx
 
 
 Version 0.9.1
@@ -2347,8 +2347,8 @@ Released on June 2, 2024.
      -  `["fedify", "sig", "key"]`
      -  `["fedify", "sig", "owner"]`
 
-[#48]: https://github.com/dahlia/fedify/issues/48
-[#52]: https://github.com/dahlia/fedify/issues/52
+[#48]: https://github.com/fedify-dev/fedify/issues/48
+[#52]: https://github.com/fedify-dev/fedify/issues/52
 
 
 Version 0.8.0
@@ -2444,9 +2444,9 @@ Released on May 6, 2024.
     "application/ld+json; profile=\"https://www.w3.org/ns/activitystreams\""`.
 
 [@fedify/cli]: https://jsr.io/@fedify/cli
-[releases]: https://github.com/dahlia/fedify/releases
+[releases]: https://github.com/fedify-dev/fedify/releases
 [FEP-8fcf]: https://w3id.org/fep/8fcf
-[#47]: https://github.com/dahlia/fedify/issues/47
+[#47]: https://github.com/fedify-dev/fedify/issues/47
 
 
 Version 0.7.0
@@ -2498,7 +2498,7 @@ Released on April 23, 2024.
 [public addressing]: https://www.w3.org/TR/activitypub/#public-addressing
 [authorized fetch]: https://swicg.github.io/activitypub-http-signature/#authorized-fetch
 [LogTape]: https://github.com/dahlia/logtape
-[#33]: https://github.com/dahlia/fedify/issues/33
+[#33]: https://github.com/fedify-dev/fedify/issues/33
 
 
 Version 0.6.1
@@ -2550,8 +2550,8 @@ Released on April 9, 2024.
      -  Added `OutboxErrorHandler` type.
 
 [Hono]: https://hono.dev/
-[#25]: https://github.com/dahlia/fedify/issues/25
-[#27]: https://github.com/dahlia/fedify/issues/27
+[#25]: https://github.com/fedify-dev/fedify/issues/25
+[#27]: https://github.com/fedify-dev/fedify/issues/27
 
 
 Version 0.5.2
@@ -2562,7 +2562,7 @@ Released on April 17, 2024.
  -  Fixed a bug of `new Federation()` constructor that if it is once called
     the process will never exit.  [[#39]]
 
-[#39]: https://github.com/dahlia/fedify/issues/39
+[#39]: https://github.com/fedify-dev/fedify/issues/39
 
 
 Version 0.5.1
@@ -2576,7 +2576,7 @@ Released on April 5, 2024.
     had responded with `406 Not Acceptable` instead of `404 Not Found` when
     the resource does not exist in the web browser.  [[#34]]
 
-[#34]: https://github.com/dahlia/fedify/issues/34
+[#34]: https://github.com/fedify-dev/fedify/issues/34
 
 
 Version 0.5.0
@@ -2643,8 +2643,8 @@ Released on April 2, 2024.
     properties were not properly displayed in Mastodon.
 
 [@fedify/fedify]: https://www.npmjs.com/package/@fedify/fedify
-[#24]: https://github.com/dahlia/fedify/discussions/24
-[#29]: https://github.com/dahlia/fedify/issues/29
+[#24]: https://github.com/fedify-dev/fedify/discussions/24
+[#29]: https://github.com/fedify-dev/fedify/issues/29
 
 
 Version 0.4.0
@@ -2761,7 +2761,7 @@ Released on March 26, 2024.
     now omit `type` property.
 
 [Fresh]: https://fresh.deno.dev/
-[#12]: https://github.com/dahlia/fedify/issues/12
+[#12]: https://github.com/fedify-dev/fedify/issues/12
 
 
 Version 0.3.0
@@ -2797,7 +2797,7 @@ Released on March 15, 2024.
  -  Now `onNotFound`/`onNotAcceptable` options are optional for
     `Federation.handle()` method.  [[#9]]
 
-[#9]: https://github.com/dahlia/fedify/issues/9
+[#9]: https://github.com/fedify-dev/fedify/issues/9
 
 
 Version 0.2.0
@@ -2834,7 +2834,7 @@ Released on March 10, 2024.
 
 [NodeInfo]: https://nodeinfo.diaspora.software/
 [WebFinger]: https://datatracker.ietf.org/doc/html/rfc7033
-[#1]: https://github.com/dahlia/fedify/issues/1
+[#1]: https://github.com/fedify-dev/fedify/issues/1
 
 
 Version 0.1.0

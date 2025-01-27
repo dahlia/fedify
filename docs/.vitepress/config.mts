@@ -101,7 +101,7 @@ export default withMermaid(defineConfig({
       MANUAL,
       {
         text: "Examples",
-        link: "https://github.com/dahlia/fedify/tree/main/examples",
+        link: "https://github.com/fedify-dev/fedify/tree/main/examples",
       },
       { text: "Security policy", link: "/security.md" },
       { text: "Contribute", link: "/contribute.md" },
@@ -145,7 +145,7 @@ export default withMermaid(defineConfig({
       },
       {
         icon: "github",
-        link: "https://github.com/dahlia/fedify",
+        link: "https://github.com/fedify-dev/fedify",
         ariaLabel: "GitHub",
       },
     ],
@@ -155,7 +155,7 @@ export default withMermaid(defineConfig({
     },
 
     editLink: {
-      pattern: "https://github.com/dahlia/fedify/edit/main/docs/:path",
+      pattern: "https://github.com/fedify-dev/fedify/edit/main/docs/:path",
     },
 
     outline: "deep",

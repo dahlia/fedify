@@ -352,7 +352,7 @@ the `createFederation()` function.
 > the shared message queue.
 
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
-[`@fedify/redis`]: https://github.com/dahlia/fedify-redis
+[`@fedify/redis`]: https://github.com/fedify-dev/redis
 
 
 Error handling

@@ -35,7 +35,7 @@
   ],
   "homepage": "https://fedify.dev/cli",
   "bugs": {
-    "url": "https://github.com/dahlia/fedify/issues"
+    "url": "https://github.com/fedify-dev/fedify/issues"
   },
   "license": "MIT",
   "author": {
@@ -48,6 +48,6 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dahlia/fedify.git"
+    "url": "git+https://github.com/fedify-dev/fedify.git"
   }
 }

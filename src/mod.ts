@@ -25,10 +25,10 @@
  * If you want to know more about the project, please take a look at the
  * following resources:
  *
- * - [GitHub](https://github.com/dahlia/fedify)
+ * - [GitHub](https://github.com/fedify-dev/fedify)
  * - Tutorials: [Learning the basics](https://fedify.dev/tutorial/basics)
  *   & [Creating a microblog](https://fedify.dev/tutorial/microblog)
- * - [Examples](https://github.com/dahlia/fedify/tree/main/examples)
+ * - [Examples](https://github.com/fedify-dev/fedify/tree/main/examples)
  *
  * [ActivityPub]: https://www.w3.org/TR/activitypub/
  * [fediverse]: https://en.wikipedia.org/wiki/Fediverse

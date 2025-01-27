@@ -81,7 +81,7 @@ function getDownloadUrl(version) {
   }
   const filename = `fedify-cli-${version}-${suffix}`;
   const url =
-    `https://github.com/dahlia/fedify/releases/download/${version}/${filename}`;
+    `https://github.com/fedify-dev/fedify/releases/download/${version}/${filename}`;
   return url;
 }
 

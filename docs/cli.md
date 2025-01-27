@@ -71,7 +71,7 @@ deno install `
 You can download the pre-built executables from the [releases] page.  Download
 the appropriate executable for your platform and put it in your `PATH`.
 
-[releases]: https://github.com/dahlia/fedify/releases
+[releases]: https://github.com/fedify-dev/fedify/releases
 
 
 `fedify init`: Initializing a Fedify project

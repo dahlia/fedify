@@ -15,8 +15,8 @@ federated server apps.  Although it is primarily designed for developers who use
 [JSR badge]: https://jsr.io/badges/@fedify/cli
 [npm]: https://www.npmjs.com/package/@fedify/cli
 [npm badge]: https://img.shields.io/npm/v/@fedify/cli?logo=npm
-[GitHub Releases]: https://github.com/dahlia/fedify/releases
-[GitHub Releases badge]: https://img.shields.io/github/v/release/dahlia/fedify?sort=semver&logo=github
+[GitHub Releases]: https://github.com/fedify-dev/fedify/releases
+[GitHub Releases badge]: https://img.shields.io/github/v/release/fedify-dev/fedify?sort=semver&logo=github
 [Fedify]: https://fedify.dev/
 
 
@@ -73,4 +73,4 @@ deno install `
 You can download the pre-built executables from the [releases] page.  Download
 the appropriate executable for your platform and put it in your `PATH`.
 
-[releases]: https://github.com/dahlia/fedify/releases
+[releases]: https://github.com/fedify-dev/fedify/releases

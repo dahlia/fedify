@@ -50,10 +50,10 @@ await build({
     homepage: "https://fedify.dev/",
     repository: {
       type: "git",
-      url: "git+https://github.com/dahlia/fedify.git",
+      url: "git+https://github.com/fedify-dev/fedify.git",
     },
     bugs: {
-      url: "https://github.com/dahlia/fedify/issues",
+      url: "https://github.com/fedify-dev/fedify/issues",
     },
     funding: [
       "https://github.com/sponsors/dahlia",

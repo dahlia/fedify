@@ -324,7 +324,7 @@ federation.setNodeInfoDispatcher("/nodeinfo/2.1", async (_ctx) => {
       name: "fedify-example-blog",
       version: parse(denoJson.version),
       repository: new URL(
-        "https://github.com/dahlia/fedify/tree/main/examples/blog",
+        "https://github.com/fedify-dev/fedify/tree/main/examples/blog",
       ),
     },
     protocols: ["activitypub"],

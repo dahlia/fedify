@@ -353,9 +353,9 @@ to the next step.
 > });
 > ~~~~
 
-[@fedify/redis]: https://github.com/dahlia/fedify-redis
+[@fedify/redis]: https://github.com/fedify-dev/redis
 [`RedisKvStore`]: https://jsr.io/@fedify/redis/doc/kv/~/RedisKvStore
-[@fedify/postgres]: https://github.com/dahlia/fedify-postgres
+[@fedify/postgres]: https://github.com/fedify-dev/postgres
 [`PostgresKvStore`]: https://jsr.io/@fedify/postgres/doc/kv/~/PostgresKvStore
 [LogTape]: https://logtape.org/
 [`configure()`]: https://jsr.io/@logtape/logtape/doc/~/configure
@@ -1307,7 +1307,7 @@ the [GitHub Discussions].
 [API reference]: https://jsr.io/@fedify/fedify
 [Fedify community]: https://matrix.to/#/#fedify:matrix.org
 [Discord server]: https://discord.gg/bhtwpzURwd
-[GitHub Discussions]: https://github.com/dahlia/fedify/discussions
+[GitHub Discussions]: https://github.com/fedify-dev/fedify/discussions
 
 
 Exercises

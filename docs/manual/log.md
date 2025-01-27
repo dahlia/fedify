@@ -295,7 +295,7 @@ For more information about sinks, see the [*Sinks* section] in the LogTape docs.
 [rotating file sink]: https://logtape.org/manual/sinks#rotating-file-sink
 [OpenTelemetry sink]: https://logtape.org/manual/sinks#opentelemetry-sink
 [`Sink`]: https://jsr.io/@logtape/logtape/doc/~/Sink
-[*Sinks* section]: https://github.com/dahlia/logtape?tab=readme-ov-file#sinks
+[*Sinks* section]: https://logtape.org/manual/sinks
 
 
 Deprecation warnings

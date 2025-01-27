@@ -24,11 +24,11 @@ Currently, Fedify provides the following features out of the box:
 If you want to know more about the project, please take a look at the following
 resources:
 
- -  [GitHub](https://github.com/dahlia/fedify)
+ -  [GitHub](https://github.com/fedify-dev/fedify)
  -  Tutorials: [Learning the basics](./tutorial/basics.md) &
     [Creating a microblog](./tutorial/microblog.md)
  -  [API reference](https://jsr.io/@fedify/fedify)
- -  [Examples](https://github.com/dahlia/fedify/tree/main/examples)
+ -  [Examples](https://github.com/fedify-dev/fedify/tree/main/examples)
 
 If you have any questions, suggestions, or feedback, please feel free to
 join our [Matrix chat space] or [Discord server] or [GitHub Discussions].
@@ -47,7 +47,7 @@ join our [Matrix chat space] or [Discord server] or [GitHub Discussions].
 [NodeInfo]: https://nodeinfo.diaspora.software/
 [Matrix chat space]: https://matrix.to/#/#fedify:matrix.org
 [Discord server]: https://discord.gg/bhtwpzURwd
-[GitHub Discussions]: https://github.com/dahlia/fedify/discussions
+[GitHub Discussions]: https://github.com/fedify-dev/fedify/discussions
 [Mastodon]: https://joinmastodon.org/
 [Lemmy]: https://join-lemmy.org/
 [Pixelfed]: https://pixelfed.org/

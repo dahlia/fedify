@@ -122,7 +122,7 @@ const federation = createFederation<void>({
 ~~~~
 
 [`RedisMessageQueue`]: https://jsr.io/@fedify/redis/doc/mq/~/RedisMessageQueue
-[@fedify/redis]: https://github.com/dahlia/fedify-redis
+[@fedify/redis]: https://github.com/fedify-dev/redis
 
 ### [`PostgresMessageQueue`]
 
@@ -164,7 +164,7 @@ const federation = createFederation<void>({
 ~~~~
 
 [`PostgresMessageQueue`]: https://jsr.io/@fedify/postgres/doc/mq/~/PostgresMessageQueue
-[@fedify/postgres]: https://github.com/dahlia/fedify-postgres
+[@fedify/postgres]: https://github.com/fedify-dev/postgres
 [`LISTEN`]: https://www.postgresql.org/docs/current/sql-listen.html
 [`NOTIFY`]: https://www.postgresql.org/docs/current/sql-notify.html
 
@@ -210,7 +210,7 @@ const federation = createFederation({
 
 *[AMQP]: Advanced Message Queuing Protocol
 [`AmqpMessageQueue`]: https://jsr.io/@fedify/amqp/doc/mq/~/AmqpMessageQueue
-[@fedify/amqp]: https://github.com/dahlia/fedify-amqp
+[@fedify/amqp]: https://github.com/fedify-dev/amqp
 [RabbitMQ]: https://www.rabbitmq.com/
 
 
@@ -275,7 +275,7 @@ custom `MessageQueue`:
     if your backend doesn't provide persistence.
  -  *Multiple workers*: Guarantee a queue can be consumed by multiple workers.
  -  *Message acknowledgment*: Implement message acknowledgment to ensure
-    messages are processed only once.  
+    messages are processed only once.
 
 However, you don't need to implement retry logic yourself, as Fedify handles
 retrying failed messages automatically.
