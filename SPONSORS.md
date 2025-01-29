@@ -18,7 +18,7 @@ Supporters
 Backers
 -------
 
-yamanoku, okin
+yamanoku, okin, box464
 
 <!-- /DO NOT EDIT -->
 <!-- cSpell: enable -->
