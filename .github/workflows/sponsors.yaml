@@ -1,0 +1,52 @@
+name: sponsors
+on:
+  schedule:
+  #        ┌───────────── minute (0 - 59)
+  #        │ ┌───────────── hour (0 - 23)
+  #        │ │ ┌───────────── day of the month (1 - 31)
+  #        │ │ │ ┌───────────── month (1 - 12 or JAN-DEC)
+  #        │ │ │ │ ┌───────────── day of the week (0 - 6 or SUN-SAT)
+  #        │ │ │ │ │
+  #        │ │ │ │ │
+  #        │ │ │ │ │
+  - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update-sponsors:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        persist-credentials: true
+        fetch-depth: 0
+    - uses: denoland/setup-deno@v1
+      with:
+        deno-version: v2.x
+    - run: |
+        set -e
+        deno run \
+          --allow-net=opencollective.com \
+          --allow-read=README.md,SPONSORS.md \
+          --allow-write=README.md,SPONSORS.md \
+          scripts/sponsors.ts \
+          README.md \
+          SPONSORS.md
+        cat SPONSORS.md
+        if ! git diff-index --quiet HEAD --; then
+          git add README.md SPONSORS.md
+          git config user.name "${GITHUB_ACTOR}"
+          git config user.email \
+            "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
+          git commit -m "Update sponsors"
+        fi
+    - uses: ad-m/github-push-action@master
+      with:
+        ssh: true
+        branch: main
+
+# cSpell: ignore opencollective

@@ -77,3 +77,18 @@ features:
   details: Integration with various web frameworks
   link: /manual/integration.md
 ---
+
+<style>
+#sponsors { text-align: center; }
+</style>
+
+<section id="sponsors">
+
+<h2>Meet our sponsors</h2>
+
+Support Fedify's development and join these amazing individuals and
+organizations.
+
+[See all sponsors &rarr;](/sponsors.md)
+
+</section>

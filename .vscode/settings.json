@@ -4,7 +4,8 @@
     "cli",
     "src",
     "examples/blog",
-    "examples/hono-sample"
+    "examples/hono-sample",
+    "scripts"
   ],
   "deno.unstable": true,
   "editor.detectIndentation": false,

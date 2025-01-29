@@ -105,6 +105,7 @@ export default withMermaid(defineConfig({
       },
       { text: "Security policy", link: "/security.md" },
       { text: "Contribute", link: "/contribute.md" },
+      { text: "Sponsors", link: "/sponsors.md" },
       { text: "Changelog", link: "/changelog.md" },
     ],
 
