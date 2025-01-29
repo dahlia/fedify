@@ -42,7 +42,7 @@ jobs:
           git config user.name "${GITHUB_ACTOR}"
           git config user.email \
             "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
-          git commit -m "Update sponsors"
+          git commit -m "Update sponsors" || true
         fi
     - uses: ad-m/github-push-action@master
       with:
