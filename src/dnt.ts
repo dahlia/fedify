@@ -56,6 +56,7 @@ await build({
       url: "https://github.com/fedify-dev/fedify/issues",
     },
     funding: [
+      "https://opencollective.com/fedify",
       "https://github.com/sponsors/dahlia",
     ],
     engines: {
