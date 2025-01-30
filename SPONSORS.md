@@ -18,7 +18,7 @@ Supporters
 Backers
 -------
 
-yamanoku, okin, box464
+yamanoku, okin, Andy Piper, box464
 
 <!-- /DO NOT EDIT -->
 <!-- cSpell: enable -->
