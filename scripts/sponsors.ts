@@ -33,35 +33,35 @@ function compareTotalAmountDonated(a: Member, b: Member): number {
 
 function getBackers(members: MemberList): MemberList {
   return members.filter((member) =>
-    member.role === "BACKER" && member.isActive &&
+    member.role === "BACKER" &&
     member.tier?.toLowerCase() === "backer"
   ).toSorted(compareTotalAmountDonated);
 }
 
 function getSupporters(members: MemberList): MemberList {
   return members.filter((member) =>
-    member.role === "BACKER" && member.isActive &&
+    member.role === "BACKER" &&
     member.tier?.toLowerCase() === "supporter"
   ).toSorted(compareTotalAmountDonated);
 }
 
 function getSponsors(members: MemberList): MemberList {
   return members.filter((member) =>
-    member.role === "BACKER" && member.isActive &&
+    member.role === "BACKER" &&
     member.tier?.toLowerCase() === "sponsor"
   ).toSorted(compareTotalAmountDonated);
 }
 
 function getCorporateSponsors(members: MemberList): MemberList {
   return members.filter((member) =>
-    member.role === "BACKER" && member.isActive &&
+    member.role === "BACKER" &&
     member.tier?.toLowerCase() === "corporate sponsor"
   ).toSorted(compareTotalAmountDonated);
 }
 
 function getCustomDonations(members: MemberList): MemberList {
   return members.filter((member) =>
-    member.role === "BACKER" && member.isActive &&
+    member.role === "BACKER" &&
     member.tier === "custom donation"
   ).toSorted(compareTotalAmountDonated);
 }

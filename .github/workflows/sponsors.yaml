@@ -27,6 +27,7 @@ jobs:
     - uses: denoland/setup-deno@v1
       with:
         deno-version: v2.x
+    - uses: qoomon/actions--setup-git@v1
     - run: |
         set -e
         deno run \
@@ -39,9 +40,6 @@ jobs:
         cat SPONSORS.md
         if ! git diff-index --quiet HEAD --; then
           git add README.md SPONSORS.md
-          git config user.name "${GITHUB_ACTOR}"
-          git config user.email \
-            "${GITHUB_ACTOR_ID}+${GITHUB_ACTOR}@users.noreply.github.com"
           git commit -m "Update sponsors" || true
         fi
     - uses: ad-m/github-push-action@master
@@ -49,4 +47,4 @@ jobs:
         ssh: true
         branch: main
 
-# cSpell: ignore opencollective
+# cSpell: ignore qoomon opencollective
