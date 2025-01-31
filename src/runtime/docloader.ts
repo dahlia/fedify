@@ -1,3 +1,4 @@
+import { isDeno, isNode } from "@david/which-runtime";
 import { HTTPHeaderLink } from "@hugoalh/http-header-link";
 import { getLogger } from "@logtape/logtape";
 import process from "node:process";
@@ -520,12 +521,10 @@ export function getUserAgent(
   { software, url }: GetUserAgentOptions = {},
 ): string {
   const fedify = `Fedify/${metadata.version}`;
-  const runtime = "Deno" in globalThis
-    ? `Deno/${Deno.version.deno}`
-    : "Bun" in globalThis
+  const runtime = isDeno ? `Deno/${Deno.version.deno}` : "Bun" in globalThis
     // @ts-ignore: `Bun` is a global variable in Bun
     ? `Bun/${Bun.version}`
-    : "process" in globalThis
+    : isNode
     ? `Node.js/${process.version}`
     : null;
   const userAgent = software == null ? [fedify] : [software, fedify];

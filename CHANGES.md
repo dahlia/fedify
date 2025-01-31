@@ -50,6 +50,17 @@ To be released.
 [#195]: https://github.com/fedify-dev/fedify/issues/195
 
 
+Version 1.3.6
+-------------
+
+Released on January 31, 2025.
+
+ -  Fixed a bug where `getUserAgent()` function had returned a `User-Agent`
+    string with a wrong JavaScript runtime name on Node.js.  [[#203]]
+
+[#203]: https://github.com/fedify-dev/fedify/issues/203
+
+
 Version 1.3.5
 -------------
 
