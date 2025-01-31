@@ -22,6 +22,7 @@ The key features of the `Context` object are as follows:
  -  [Enqueuing an outgoing activity](#enqueuing-an-outgoing-activity)
  -  [Getting a `DocumentLoader`](#getting-a-documentloader)
  -  [Looking up remote objects](#looking-up-remote-objects)
+ -  [NodeInfo client](./nodeinfo.md#nodeinfo-client)
 
 
 Where to get a `Context` object

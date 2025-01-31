@@ -17,6 +17,8 @@ To be released.
      -  Added `ActorCallbackSetters.mapAlias()` method.
      -  Added `ActorAliasMapper` type.
 
+ -  Added `Context.getNodeInfo()` method.  [[#203]]
+
  -  Added `shares` property to `Object` class in Activity Vocabulary API.
 
      -  Added `Object.sharesId` property.

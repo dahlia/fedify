@@ -33,6 +33,7 @@ export function createContext<TContextData>(
     getDocumentLoader,
     lookupObject,
     traverseCollection,
+    lookupNodeInfo,
     sendActivity,
     routeActivity,
   }: Partial<Context<TContextData>> & { url?: URL; data: TContextData },
@@ -81,6 +82,9 @@ export function createContext<TContextData>(
         contextLoader: options.contextLoader ?? contextLoader ??
           mockDocumentLoader,
       });
+    }),
+    lookupNodeInfo: lookupNodeInfo ?? ((_params) => {
+      throw new Error("Not implemented");
     }),
     sendActivity: sendActivity ?? ((_params) => {
       throw new Error("Not implemented");

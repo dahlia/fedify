@@ -157,30 +157,33 @@ The `NodeInfo` interface is defined as follows:
 NodeInfo client
 ---------------
 
-*This API is available since Fedify 1.2.0.*
+*This API is available since Fedify 1.4.0.*
 
 You may want to fetch NodeInfo objects from other servers.  Fedify provides
-a way to fetch NodeInfo objects with the `getNodeInfo()` function:
+a way to fetch NodeInfo objects with the `Context.lookupNodeInfo()` method:
 
 ~~~~ typescript twoslash
-import { getNodeInfo } from "@fedify/fedify";
-
-const nodeInfo = await getNodeInfo("https://example.com/");
+import { type Context } from "@fedify/fedify";
+const ctx = null as unknown as Context<void>;
+// ---cut-before---
+const nodeInfo = await ctx.lookupNodeInfo("https://example.com/");
 if (nodeInfo != null) console.log(nodeInfo);
 ~~~~
 
-The `getNodeInfo()` function returns a `NodeInfo` object if the server provides
-a NodeInfo endpoint and the response is valid.  Otherwise, it returns `null`.
+The `Context.lookupNodeInfo()` method returns a `NodeInfo` object if the server
+provides a NodeInfo endpoint and the response is valid.  Otherwise, it returns
+`undefined`.
 
 > [!TIP]
 > Sometimes, a server may provide a slightly invalid NodeInfo object.  In such
 > case, you can enforce parsing the object by passing `{ parse: "best-effort" }`
-> option as the second argument to `getNodeInfo()` function:
+> option as the second argument to `Context.lookupNodeInfo()` method:
 >
 > ~~~~ typescript twoslash
-> import { getNodeInfo } from "@fedify/fedify";
->
-> const nodeInfo = await getNodeInfo("https://example.com/", {
+> import { type Context } from "@fedify/fedify";
+> const ctx = null as unknown as Context<void>;
+> // ---cut-before---
+> const nodeInfo = await ctx.lookupNodeInfo("https://example.com/", {
 >   parse: "best-effort",
 > });
 >

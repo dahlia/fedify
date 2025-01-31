@@ -402,6 +402,57 @@ test("Federation.createContext()", async (t) => {
     assertEquals(ctx.parseUri(null), null);
   });
 
+  mf.mock("GET@/.well-known/nodeinfo", (req) => {
+    assertEquals(new URL(req.url).host, "example.com");
+    assertEquals(req.headers.get("User-Agent"), "CustomUserAgent/1.2.3");
+    return new Response(
+      JSON.stringify({
+        links: [
+          {
+            rel: "http://nodeinfo.diaspora.software/ns/schema/2.1",
+            href: "https://example.com/nodeinfo/2.1",
+          },
+        ],
+      }),
+    );
+  });
+
+  mf.mock("GET@/nodeinfo/2.1", (req) => {
+    assertEquals(new URL(req.url).host, "example.com");
+    assertEquals(req.headers.get("User-Agent"), "CustomUserAgent/1.2.3");
+    return new Response(JSON.stringify({
+      software: { name: "foo", version: "1.2.3" },
+      protocols: ["activitypub", "diaspora"],
+      usage: { users: {}, localPosts: 123, localComments: 456 },
+    }));
+  });
+
+  await t.step("Context.lookupNodeInfo()", async () => {
+    const federation = createFederation<number>({
+      kv,
+      userAgent: "CustomUserAgent/1.2.3",
+    });
+    const ctx = federation.createContext(new URL("https://example.com/"), 123);
+    const nodeInfo = await ctx.lookupNodeInfo("https://example.com/");
+    assertEquals(nodeInfo, {
+      software: {
+        name: "foo",
+        version: { major: 1, minor: 2, patch: 3, build: [], prerelease: [] },
+      },
+      protocols: ["activitypub", "diaspora"],
+      usage: { users: {}, localPosts: 123, localComments: 456 },
+    });
+
+    const rawNodeInfo = await ctx.lookupNodeInfo("https://example.com/", {
+      parse: "none",
+    });
+    assertEquals(rawNodeInfo, {
+      software: { name: "foo", version: "1.2.3" },
+      protocols: ["activitypub", "diaspora"],
+      usage: { users: {}, localPosts: 123, localComments: 456 },
+    });
+  });
+
   await t.step("RequestContext", async () => {
     const federation = createFederation<number>({
       kv,

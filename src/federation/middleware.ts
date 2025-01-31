@@ -18,7 +18,9 @@ import {
   ATTR_URL_FULL,
 } from "@opentelemetry/semantic-conventions";
 import metadata from "../deno.json" with { type: "json" };
+import { getNodeInfo, type GetNodeInfoOptions } from "../nodeinfo/client.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
+import type { JsonValue, NodeInfo } from "../nodeinfo/types.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
   type DocumentLoader,
@@ -2894,6 +2896,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
     options: LookupObjectOptions = {},
   ): Promise<Object | null> {
     return lookupObject(identifier, {
+      ...options,
       documentLoader: options.documentLoader ?? this.documentLoader,
       contextLoader: options.contextLoader ?? this.contextLoader,
       userAgent: options.userAgent ?? this.federation.userAgent,
@@ -2908,9 +2911,37 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
     options: TraverseCollectionOptions = {},
   ): AsyncIterable<Object | Link> {
     return traverseCollection(collection, {
+      ...options,
       documentLoader: options.documentLoader ?? this.documentLoader,
       contextLoader: options.contextLoader ?? this.contextLoader,
     });
+  }
+
+  lookupNodeInfo(
+    url: URL | string,
+    options?: GetNodeInfoOptions & { parse?: "strict" | "best-effort" },
+  ): Promise<NodeInfo | undefined>;
+
+  lookupNodeInfo(
+    url: URL | string,
+    options?: GetNodeInfoOptions & { parse: "none" },
+  ): Promise<JsonValue | undefined>;
+
+  lookupNodeInfo(
+    url: URL | string,
+    options: GetNodeInfoOptions = {},
+  ): Promise<NodeInfo | JsonValue | undefined> {
+    return options.parse === "none"
+      ? getNodeInfo(url, {
+        parse: "none",
+        direct: options.direct,
+        userAgent: options?.userAgent ?? this.federation.userAgent,
+      })
+      : getNodeInfo(url, {
+        parse: options.parse,
+        direct: options.direct,
+        userAgent: options?.userAgent ?? this.federation.userAgent,
+      });
   }
 
   sendActivity(

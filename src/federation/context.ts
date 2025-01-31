@@ -1,4 +1,6 @@
 import type { TracerProvider } from "@opentelemetry/api";
+import type { GetNodeInfoOptions } from "../nodeinfo/client.ts";
+import type { JsonValue, NodeInfo } from "../nodeinfo/types.ts";
 import type { DocumentLoader } from "../runtime/docloader.ts";
 import type { Actor, Recipient } from "../vocab/actor.ts";
 import type {
@@ -279,6 +281,40 @@ export interface Context<TContextData> {
     collection: Collection,
     options?: TraverseCollectionOptions,
   ): AsyncIterable<Object | Link>;
+
+  /**
+   * Fetches the NodeInfo document from the given URL.
+   * @param url The base URL of the server.  If `options.direct` is turned off
+   *            (default), the NodeInfo document will be fetched from
+   *            the `.well-known` location of this URL (hence the only origin
+   *            of the URL is used).  If `options.direct` is turned on,
+   *            the NodeInfo document will be fetched from the given URL.
+   * @param options Options for fetching the NodeInfo document.
+   * @returns The NodeInfo document if it could be fetched successfully.
+   *          Otherwise, `undefined` is returned.
+   * @since 1.4.0
+   */
+  lookupNodeInfo(
+    url: URL | string,
+    options?: GetNodeInfoOptions & { parse?: "strict" | "best-effort" },
+  ): Promise<NodeInfo | undefined>;
+
+  /**
+   * Fetches the NodeInfo document from the given URL.
+   * @param url The base URL of the server.  If `options.direct` is turned off
+   *            (default), the NodeInfo document will be fetched from
+   *            the `.well-known` location of this URL (hence the only origin
+   *            of the URL is used).  If `options.direct` is turned on,
+   *            the NodeInfo document will be fetched from the given URL.
+   * @param options Options for fetching the NodeInfo document.
+   * @returns The NodeInfo document if it could be fetched successfully.
+   *          Otherwise, `undefined` is returned.
+   * @since 1.4.0
+   */
+  lookupNodeInfo(
+    url: URL | string,
+    options?: GetNodeInfoOptions & { parse: "none" },
+  ): Promise<JsonValue | undefined>;
 
   /**
    * Sends an activity to recipients' inboxes.
