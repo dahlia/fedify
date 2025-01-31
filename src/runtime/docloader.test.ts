@@ -1,3 +1,4 @@
+import { isDeno } from "@david/which-runtime";
 import { assertEquals, assertRejects, assertThrows } from "@std/assert";
 import * as mf from "mock_fetch";
 import process from "node:process";
@@ -550,7 +551,7 @@ test("kvCache()", async (t) => {
 });
 
 test("getUserAgent()", () => {
-  if ("Deno" in globalThis) {
+  if (isDeno) {
     assertEquals(
       getUserAgent(),
       `Fedify/${metadata.version} (Deno/${Deno.version.deno})`,

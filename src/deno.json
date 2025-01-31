@@ -17,7 +17,7 @@
   },
   "imports": {
     "@cfworker/json-schema": "npm:@cfworker/json-schema@^2.0.1",
-    "@david/which-runtime": "jsr:@david/which-runtime@^0.2.0",
+    "@david/which-runtime": "jsr:@david/which-runtime@^0.2.1",
     "@deno/dnt": "jsr:@deno/dnt@0.41.2",
     "@fedify/fedify": "./mod.ts",
     "@fedify/fedify/federation": "./federation/mod.ts",
