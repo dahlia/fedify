@@ -234,7 +234,7 @@ Fedify framework.  The `Federation` object is the main object that handles
 ActivityPub activities and actors.  Let's modify the server script to use the
 `Federation` object:
 
-~~~~ typescript twoslash
+~~~~ typescript twoslash [server.ts]
 import { createFederation, MemoryKvStore } from "@fedify/fedify";
 
 const federation = createFederation<void>({
@@ -341,7 +341,7 @@ to the next step.
 > Then, you can set up loggers by calling [`configure()`] function at the
 > top of the *server.ts* file:
 >
-> ~~~~ typescript twoslash
+> ~~~~ typescript twoslash [server.ts]
 > import { configure, getConsoleSink } from "@logtape/logtape";
 >
 > await configure({
@@ -723,7 +723,7 @@ activity is represented as a class in the Fedify framework.  The `Follow` class
 represents the `Follow` activity.  We will use the `Follow` class to handle
 incoming follow requests:
 
-~~~~ typescript twoslash
+~~~~ typescript twoslash [server.ts]
 import {
   createFederation,
   Follow,  // [!code highlight]
@@ -734,7 +734,7 @@ import {
 
 Then, we register an inbox listener for the `Follow` activity:
 
-~~~~ typescript{3-11} twoslash
+~~~~ typescript{3-11} twoslash [server.ts]
 import { type Federation, Follow } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
@@ -760,7 +760,7 @@ In order to test the inbox listener, the actor *me* needs to point out its inbox
 URI in the actor object.  Let's modify the actor dispatcher to include the inbox
 URI:
 
-~~~~ typescript twoslash
+~~~~ typescript twoslash [server.ts]
 import { type Federation, Person } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
@@ -813,7 +813,7 @@ To send an activity, first, we need to generate a key pair for the actor *me*
 so that the server can sign the activity with the private key.  Fortunately,
 Fedify provides helper functions to generate and export/import keys:
 
-~~~~ typescript{3-5} twoslash
+~~~~ typescript{3-5} twoslash [server.ts]
 import {
   createFederation,
   exportJwk,
@@ -1076,7 +1076,7 @@ the follow request and indicates that the follow request is accepted.
 
 Let's import the `Accept` class from the Fedify framework:
 
-~~~~ typescript twoslash
+~~~~ typescript twoslash [server.ts]
 import {
   createFederation,
   exportJwk,
@@ -1091,7 +1091,7 @@ import {
 Then, we modify the inbox listener to send an `Accept` activity back to the
 follower when we receive a follow request:
 
-~~~~ typescript{10-17} twoslash
+~~~~ typescript{10-17} twoslash [server.ts]
 import { Accept, type Federation, Follow } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 // ---cut-before---
@@ -1132,7 +1132,7 @@ The server should list the actor's followers on the home page.  To do this,
 we need to store the followers in the key-value store.  We will store each
 `Follow` activity's ID as the key and the follower's actor ID as the value:
 
-~~~~ typescript{16-17} twoslash
+~~~~ typescript{16-17} twoslash [server.ts]
 import { Accept, type Federation, Follow } from "@fedify/fedify";
 const federation = null as unknown as Federation<void>;
 const kv = await Deno.openKv();
