@@ -8,6 +8,9 @@ Version 1.3.7
 
 To be released.
 
+ -  Updated [LogTape] to version 0.8.1, which fixes a bug where `lowestLevel`
+    option had incorrectly behaved.
+
 
 Version 1.3.6
 -------------
