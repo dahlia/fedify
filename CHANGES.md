@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.3.7
 -------------
 
-To be released.
+Released on February 1, 2025.
 
  -  Updated [LogTape] to version 0.8.1, which fixes a bug where `lowestLevel`
     option had incorrectly behaved.
