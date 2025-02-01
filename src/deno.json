@@ -32,7 +32,7 @@
     "@fedify/fedify/x/sveltekit": "./x/sveltekit.ts",
     "@hongminhee/aitertools": "jsr:@hongminhee/aitertools@^0.6.0",
     "@hugoalh/http-header-link": "jsr:@hugoalh/http-header-link@^1.0.2",
-    "@logtape/logtape": "jsr:@logtape/logtape@^0.8.0",
+    "@logtape/logtape": "jsr:@logtape/logtape@^0.8.1",
     "@opentelemetry/api": "npm:@opentelemetry/api@^1.9.0",
     "@opentelemetry/semantic-conventions": "npm:@opentelemetry/semantic-conventions@^1.27.0",
     "@phensley/language-tag": "npm:@phensley/language-tag@^1.9.0",
