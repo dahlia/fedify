@@ -102,7 +102,7 @@ yamanoku, okin, Andy Piper, box464, Evan Prodromou
 
 ### One-time donations
 
-Rameez
+Markus P, Rameez
 
 <!-- /DO NOT EDIT -->
 <!-- cSpell: enable -->
