@@ -98,7 +98,7 @@ financial contributors:[^2]
 
 ### Backers
 
-yamanoku, okin, Andy Piper, box464, Evan Prodromou
+yamanoku, okin, Andy Piper, box464, Evan Prodromou, Rafael Goulart
 
 ### One-time donations
 
