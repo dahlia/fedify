@@ -8,6 +8,20 @@ Version 1.4.0
 
 To be released.
 
+ -  Document loader and context loader are now configurable with a factory
+    function for more flexibility.
+
+     -  Deprecated `CreateFederationOptions.documentLoader` option.
+        Use `CreateFederationOptions.documentLoaderFactory` option instead.
+     -  Deprecated `CreateFederationOptions.contextLoader` option.
+        Use `CreateFederationOptions.contextLoaderFactory` option instead.
+     -  Added `DocumentLoaderFactory` type.
+     -  Added `DocumentLoaderFactoryOptions` interface.
+     -  Added the second parameter with `DocumentLoaderFactoryOptions` type
+        to `AuthenticatedDocumentLoaderFactory` type.
+     -  `GetAuthenticatedDocumentLoaderOptions` interface became to extend
+        `DocumentLoaderFactoryOptions` interface.
+
  -  The `suppressError` option of Activity Vocabulary APIs,
     `traverseCollection()` function, and `Context.traverseCollection()` method
     now suppresses errors occurred JSON-LD processing.

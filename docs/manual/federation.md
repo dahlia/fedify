@@ -200,14 +200,17 @@ By default, the queue starts automatically.
 > and the worker process (e.g., a Redis-backed message queue) as
 > the [`queue`](#queue) option.
 
-### `documentLoader`
+### `documentLoaderFactory`
 
-A JSON-LD document loader function that the `Federation` object uses to
-load remote JSON-LD documents.  The function takes a URL and returns a
-promise that resolves to a `RemoteDocument`.
+*This API is available since Fedify 1.4.0.*
+
+A factory function that creates a JSON-LD `DocumentLoader` that the `Federation`
+object uses to load remote JSON-LD documents.  The factory function takes
+a `DocumentLoaderFactoryOptions` object and returns a `DocumentLoader`
+function.
 
 Usually, you don't need to set this property because the default document
-loader function is sufficient for most cases.  The default document loader
+loader is sufficient for most cases.  The default document loader
 caches the loaded documents in the key-value store.
 
 See the
@@ -230,14 +233,14 @@ store.
 See the [*Getting an authenticated `DocumentLoader`*
 section](./context.md#getting-an-authenticated-documentloader) for details.
 
-### `contextLoader`
+### `contextLoaderFactory`
 
-*This API is available since Fedify 0.8.0.*
+*This API is available since Fedify 1.4.0.*
 
-A JSON-LD context loader function that the `Federation` object uses to
-load remote JSON-LD contexts.  The type of the function is the same as the
-`documentLoader` function, but their purposes are different (see also
-[*Document loader vs. context loader*
+A factory function to get a JSON-LD context loader that the `Federation`
+object uses to load remote JSON-LD contexts.  The type of the factory is
+the same as the `documentLoaderFactory`, but their purposes are different
+(see also [*Document loader vs. context loader*
 section](./context.md#document-loader-vs-context-loader)).
 
 ### `allowPrivateAddress`
@@ -249,11 +252,6 @@ section](./context.md#document-loader-vs-context-loader)).
 > private network addresses is a security feature to prevent [SSRF] attacks.
 
 Whether to allow fetching private network addresses in the document loader.
-
-If turned on, [`documentLoader`](#documentloader),
-[`contextLoader`](#contextloader),
-and [`authenticatedDocumentLoaderFactory`](#authenticateddocumentloaderfactory)
-cannot be configured.
 
 Mostly useful for testing purposes.
 

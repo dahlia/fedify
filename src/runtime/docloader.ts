@@ -40,16 +40,50 @@ export interface RemoteDocument {
 export type DocumentLoader = (url: string) => Promise<RemoteDocument>;
 
 /**
+ * A factory function that creates a {@link DocumentLoader} with options.
+ * @param options The options for the document loader.
+ * @returns The document loader.
+ * @since 1.4.0
+ */
+export type DocumentLoaderFactory = (
+  options?: DocumentLoaderFactoryOptions,
+) => DocumentLoader;
+
+/**
+ * Options for {@link DocumentLoaderFactory}.
+ * @see {@link DocumentLoaderFactory}
+ * @see {@link AuthenticatedDocumentLoaderFactory}
+ * @since 1.4.0
+ */
+export interface DocumentLoaderFactoryOptions {
+  /**
+   * Whether to allow fetching private network addresses.
+   * Turned off by default.
+   * @default `false``
+   */
+  allowPrivateAddress?: boolean;
+
+  /**
+   * Options for making `User-Agent` string.
+   * If a string is given, it is used as the `User-Agent` header value.
+   * If an object is given, it is passed to {@link getUserAgent} function.
+   */
+  userAgent?: GetUserAgentOptions | string;
+}
+
+/**
  * A factory function that creates an authenticated {@link DocumentLoader} for
  * a given identity.  This is used for fetching documents that require
  * authentication.
  * @param identity The identity to create the document loader for.
  *                 The actor's key pair.
+ * @param options The options for the document loader.
  * @returns The authenticated document loader.
  * @since 0.4.0
  */
 export type AuthenticatedDocumentLoaderFactory = (
   identity: { keyId: URL; privateKey: CryptoKey },
+  options?: DocumentLoaderFactoryOptions,
 ) => DocumentLoader;
 
 /**
@@ -227,20 +261,7 @@ async function getRemoteDocument(
  * Options for {@link getDocumentLoader}.
  * @since 1.3.0
  */
-export interface GetDocumentLoaderOptions {
-  /**
-   * Whether to allow fetching private network addresses.
-   * Turned off by default.
-   */
-  allowPrivateAddress?: boolean;
-
-  /**
-   * Options for making `User-Agent` string.
-   * If a string is given, it is used as the `User-Agent` header value.
-   * If an object is given, it is passed to {@link getUserAgent} function.
-   */
-  userAgent?: GetUserAgentOptions | string;
-
+export interface GetDocumentLoaderOptions extends DocumentLoaderFactoryOptions {
   /**
    * Whether to preload the frequently used contexts.
    */
@@ -345,21 +366,11 @@ export function fetchDocumentLoader(
 
 /**
  * Options for {@link getAuthenticatedDocumentLoader}.
+ * @see {@link getAuthenticatedDocumentLoader}
  * @since 1.3.0
  */
-export interface GetAuthenticatedDocumentLoaderOptions {
-  /**
-   * Whether to allow fetching private network addresses.
-   * Turned off by default.
-   */
-  allowPrivateAddress?: boolean;
-
-  /**
-   * Options for making `User-Agent` string.
-   * If a string is given, it is used as the `User-Agent` header value.
-   * If an object is given, it is passed to {@link getUserAgent} function.
-   */
-  userAgent?: GetUserAgentOptions | string;
+export interface GetAuthenticatedDocumentLoaderOptions
+  extends DocumentLoaderFactoryOptions {
 }
 
 /**

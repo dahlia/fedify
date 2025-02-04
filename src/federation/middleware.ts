@@ -24,6 +24,8 @@ import type { JsonValue, NodeInfo } from "../nodeinfo/types.ts";
 import {
   type AuthenticatedDocumentLoaderFactory,
   type DocumentLoader,
+  type DocumentLoaderFactory,
+  type DocumentLoaderFactoryOptions,
   getAuthenticatedDocumentLoader,
   getDocumentLoader,
   type GetUserAgentOptions,
@@ -155,14 +157,29 @@ export interface CreateFederationOptions {
   manuallyStartQueue?: boolean;
 
   /**
+   * A custom JSON-LD document loader factory.  By default, this uses
+   * the built-in cache-backed loader that fetches remote documents over
+   * HTTP(S).
+   */
+  documentLoaderFactory?: DocumentLoaderFactory;
+
+  /**
+   * A custom JSON-LD context loader factory.  By default, this uses the same
+   * loader as the document loader.
+   */
+  contextLoaderFactory?: DocumentLoaderFactory;
+
+  /**
    * A custom JSON-LD document loader.  By default, this uses the built-in
    * cache-backed loader that fetches remote documents over HTTP(S).
+   * @deprecated Use {@link documentLoaderFactory} instead.
    */
   documentLoader?: DocumentLoader;
 
   /**
    * A custom JSON-LD context loader.  By default, this uses the same loader
    * as the document loader.
+   * @deprecated Use {@link contextLoaderFactory} instead.
    */
   contextLoader?: DocumentLoader;
 
@@ -374,8 +391,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   inboxListeners?: InboxListenerSet<TContextData>;
   inboxErrorHandler?: InboxErrorHandler<TContextData>;
   sharedInboxKeyDispatcher?: SharedInboxKeyDispatcher<TContextData>;
-  documentLoader: DocumentLoader;
-  contextLoader: DocumentLoader;
+  documentLoaderFactory: DocumentLoaderFactory;
+  contextLoaderFactory: DocumentLoaderFactory;
   authenticatedDocumentLoaderFactory: AuthenticatedDocumentLoaderFactory;
   allowPrivateAddress: boolean;
   userAgent?: GetUserAgentOptions | string;
@@ -387,6 +404,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   tracerProvider: TracerProvider;
 
   constructor(options: CreateFederationOptions) {
+    const logger = getLogger(["fedify", "federation"]);
     this.kv = options.kv;
     this.kvPrefixes = {
       ...({
@@ -436,12 +454,48 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     const { allowPrivateAddress, userAgent } = options;
     this.allowPrivateAddress = allowPrivateAddress ?? false;
-    this.documentLoader = options.documentLoader ?? kvCache({
-      loader: getDocumentLoader({ allowPrivateAddress, userAgent }),
-      kv: options.kv,
-      prefix: this.kvPrefixes.remoteDocument,
-    });
-    this.contextLoader = options.contextLoader ?? this.documentLoader;
+    if (options.documentLoader != null) {
+      if (options.documentLoaderFactory != null) {
+        throw new TypeError(
+          "Cannot set both documentLoader and documentLoaderFactory options " +
+            "at a time; use documentLoaderFactory only.",
+        );
+      }
+      this.documentLoaderFactory = () => options.documentLoader!;
+      logger.warn(
+        "The documentLoader option is deprecated; use documentLoaderFactory " +
+          "option instead.",
+      );
+    } else {
+      this.documentLoaderFactory = options.documentLoaderFactory ??
+        ((opts) => {
+          return kvCache({
+            loader: getDocumentLoader({
+              allowPrivateAddress: opts?.allowPrivateAddress ??
+                allowPrivateAddress,
+              userAgent: opts?.userAgent ?? userAgent,
+            }),
+            kv: options.kv,
+            prefix: this.kvPrefixes.remoteDocument,
+          });
+        });
+    }
+    if (options.contextLoader != null) {
+      if (options.contextLoaderFactory != null) {
+        throw new TypeError(
+          "Cannot set both contextLoader and contextLoaderFactory options " +
+            "at a time; use contextLoaderFactory only.",
+        );
+      }
+      this.contextLoaderFactory = () => options.contextLoader!;
+      logger.warn(
+        "The contextLoader option is deprecated; use contextLoaderFactory " +
+          "option instead.",
+      );
+    } else {
+      this.contextLoaderFactory = options.contextLoaderFactory ??
+        this.documentLoaderFactory;
+    }
     this.authenticatedDocumentLoaderFactory =
       options.authenticatedDocumentLoaderFactory ??
         ((identity) =>
@@ -608,11 +662,12 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       });
     } catch (error) {
       span.setStatus({ code: SpanStatusCode.ERROR, message: String(error) });
+      const loaderOptions = this.#getLoaderOptions(message.baseUrl);
       const activity = await Activity.fromJsonLd(message.activity, {
-        contextLoader: this.contextLoader,
+        contextLoader: this.contextLoaderFactory(loaderOptions),
         documentLoader: rsaKeyPair == null
-          ? this.documentLoader
-          : this.authenticatedDocumentLoaderFactory(rsaKeyPair),
+          ? this.documentLoaderFactory(loaderOptions)
+          : this.authenticatedDocumentLoaderFactory(rsaKeyPair, loaderOptions),
         tracerProvider: this.tracerProvider,
       });
       try {
@@ -885,11 +940,14 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       url.hash = "";
       url.search = "";
     }
+    const loaderOptions = this.#getLoaderOptions(url.origin);
     const ctxOptions: ContextOptions<TContextData> = {
       url,
       federation: this,
       data: contextData,
-      documentLoader: opts.documentLoader ?? this.documentLoader,
+      documentLoader: opts.documentLoader ??
+        this.documentLoaderFactory(loaderOptions),
+      contextLoader: this.contextLoaderFactory(loaderOptions),
     };
     if (request == null) return new ContextImpl(ctxOptions);
     return new RequestContextImpl({
@@ -898,6 +956,19 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       invokedFromActorDispatcher: opts.invokedFromActorDispatcher,
       invokedFromObjectDispatcher: opts.invokedFromObjectDispatcher,
     });
+  }
+
+  #getLoaderOptions(origin: URL | string): DocumentLoaderFactoryOptions {
+    origin = typeof origin === "string"
+      ? new URL(origin).origin
+      : origin.origin;
+    return {
+      allowPrivateAddress: this.allowPrivateAddress,
+      userAgent: typeof this.userAgent === "string" ? this.userAgent : {
+        url: origin,
+        ...this.userAgent,
+      },
+    };
   }
 
   setNodeInfoDispatcher(
@@ -1929,6 +2000,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       excludeBaseUris,
       collectionSync,
       contextData,
+      origin,
     } = options;
     if (keys.length < 1) {
       throw new TypeError("The sender's keys must not be empty.");
@@ -1976,6 +2048,9 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     } else if (keys.length < 1) {
       throw new TypeError("The keys must not be empty.");
     }
+    const contextLoader = this.contextLoaderFactory(
+      this.#getLoaderOptions(origin),
+    );
     const activityId = activity.id.href;
     let proofCreated = false;
     let rsaKey: { keyId: URL; privateKey: CryptoKey } | null = null;
@@ -1987,7 +2062,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       }
       if (privateKey.algorithm.name === "Ed25519") {
         activity = await signObject(activity, privateKey, keyId, {
-          contextLoader: this.contextLoader,
+          contextLoader,
           tracerProvider: this.tracerProvider,
         });
         proofCreated = true;
@@ -1995,7 +2070,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     }
     let jsonLd = await activity.toJsonLd({
       format: "compact",
-      contextLoader: this.contextLoader,
+      contextLoader,
     });
     if (rsaKey == null) {
       logger.warn(
@@ -2013,7 +2088,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       );
     } else {
       jsonLd = await signJsonLd(jsonLd, rsaKey.privateKey, rsaKey.keyId, {
-        contextLoader: this.contextLoader,
+        contextLoader,
         tracerProvider: this.tracerProvider,
       });
     }
@@ -2085,6 +2160,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       const message: OutboxMessage = {
         type: "outbox",
         id: crypto.randomUUID(),
+        baseUrl: origin,
         keys: keyJwkPairs,
         activity: jsonLd,
         activityId: activity.id?.href,
@@ -2407,6 +2483,7 @@ interface ContextOptions<TContextData> {
   federation: FederationImpl<TContextData>;
   data: TContextData;
   documentLoader: DocumentLoader;
+  contextLoader: DocumentLoader;
   invokedFromActorKeyPairsDispatcher?: { identifier: string };
 }
 
@@ -2415,6 +2492,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
   readonly federation: FederationImpl<TContextData>;
   readonly data: TContextData;
   readonly documentLoader: DocumentLoader;
+  readonly contextLoader: DocumentLoader;
   readonly invokedFromActorKeyPairsDispatcher?: { identifier: string };
 
   constructor(
@@ -2423,6 +2501,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
       federation,
       data,
       documentLoader,
+      contextLoader,
       invokedFromActorKeyPairsDispatcher,
     }: ContextOptions<TContextData>,
   ) {
@@ -2430,6 +2509,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
     this.federation = federation;
     this.data = data;
     this.documentLoader = documentLoader;
+    this.contextLoader = contextLoader;
     this.invokedFromActorKeyPairsDispatcher =
       invokedFromActorKeyPairsDispatcher;
   }
@@ -2445,6 +2525,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
       federation: this.federation,
       data: this.data,
       documentLoader: this.documentLoader,
+      contextLoader: this.contextLoader,
       invokedFromActorKeyPairsDispatcher:
         this.invokedFromActorKeyPairsDispatcher,
     });
@@ -2460,10 +2541,6 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
 
   get origin(): string {
     return this.url.origin;
-  }
-
-  get contextLoader(): DocumentLoader {
-    return this.federation.contextLoader;
   }
 
   get tracerProvider(): TracerProvider {
@@ -3058,6 +3135,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
     }
     const opts: SendActivityInternalOptions<TContextData> = {
       contextData: this.data,
+      origin: this.origin,
       ...options,
     };
     let expandedRecipients: Recipient[];
@@ -3645,6 +3723,7 @@ export class InboxContextImpl<TContextData> extends ContextImpl<TContextData>
       const message: OutboxMessage = {
         type: "outbox",
         id: crypto.randomUUID(),
+        baseUrl: this.origin,
         keys: keyJwkPairs,
         activity: this.activity,
         activityId: this.activityId,
@@ -3696,6 +3775,7 @@ interface SendActivityInternalOptions<TContextData>
   extends SendActivityOptions {
   collectionSync?: string;
   contextData: TContextData;
+  origin: string;
 }
 
 function notFound(_request: Request): Response {

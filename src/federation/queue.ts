@@ -8,6 +8,7 @@ export type Message = OutboxMessage | InboxMessage;
 export interface OutboxMessage {
   type: "outbox";
   id: ReturnType<typeof crypto.randomUUID>;
+  baseUrl: string;
   keys: SenderKeyJwkPair[];
   activity: unknown;
   activityId?: string;

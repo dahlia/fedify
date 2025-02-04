@@ -993,7 +993,7 @@ test("FederationImpl.sendActivity()", async (t) => {
       [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
       recipient,
       activity,
-      { contextData: undefined },
+      { contextData: undefined, origin: "https://example.com" },
     );
     assertEquals(verified, ["http"]);
     assertInstanceOf(request, Request);
@@ -1011,7 +1011,7 @@ test("FederationImpl.sendActivity()", async (t) => {
       activity.clone({
         actor: new URL("https://example.com/person2"),
       }),
-      { contextData: undefined },
+      { contextData: undefined, origin: "https://example.com" },
     );
     assertEquals(verified, ["ld", "http"]);
     assertInstanceOf(request, Request);
@@ -1031,7 +1031,7 @@ test("FederationImpl.sendActivity()", async (t) => {
       activity.clone({
         actor: new URL("https://example.com/person2"),
       }),
-      { contextData: undefined },
+      { contextData: undefined, origin: "https://example.com" },
     );
     assertEquals(verified, ["proof"]);
     assertInstanceOf(request, Request);
@@ -1052,7 +1052,7 @@ test("FederationImpl.sendActivity()", async (t) => {
       activity.clone({
         actor: new URL("https://example.com/person2"),
       }),
-      { contextData: undefined },
+      { contextData: undefined, origin: "https://example.com" },
     );
     assertEquals(verified, ["ld", "proof", "http"]);
     assertInstanceOf(request, Request);
@@ -1222,6 +1222,7 @@ test("ContextImpl.sendActivity()", async (t) => {
       federation,
       url: new URL("https://example.com/"),
       documentLoader: fetchDocumentLoader,
+      contextLoader: fetchDocumentLoader,
     });
     await ctx.sendActivity(
       [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
@@ -1337,6 +1338,7 @@ test("ContextImpl.routeActivity()", async () => {
     federation,
     data: undefined,
     documentLoader: mockDocumentLoader,
+    contextLoader: fetchDocumentLoader,
   });
 
   // Unsigned & non-dereferenceable activity
@@ -1525,6 +1527,7 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
         federation,
         url: new URL("https://example.com/"),
         documentLoader: fetchDocumentLoader,
+        contextLoader: fetchDocumentLoader,
       },
     );
     await ctx.forwardActivity(
@@ -1555,6 +1558,7 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
         federation,
         url: new URL("https://example.com/"),
         documentLoader: fetchDocumentLoader,
+        contextLoader: fetchDocumentLoader,
       },
     );
     await assertRejects(() =>
@@ -1589,6 +1593,7 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
         federation,
         url: new URL("https://example.com/"),
         documentLoader: fetchDocumentLoader,
+        contextLoader: fetchDocumentLoader,
       },
     );
     await ctx.forwardActivity(
@@ -1624,6 +1629,7 @@ test("InboxContextImpl.forwardActivity()", async (t) => {
         federation,
         url: new URL("https://example.com/"),
         documentLoader: fetchDocumentLoader,
+        contextLoader: fetchDocumentLoader,
       },
     );
     await ctx.forwardActivity(
