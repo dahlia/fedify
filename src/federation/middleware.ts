@@ -160,12 +160,14 @@ export interface CreateFederationOptions {
    * A custom JSON-LD document loader factory.  By default, this uses
    * the built-in cache-backed loader that fetches remote documents over
    * HTTP(S).
+   * @since 1.4.0
    */
   documentLoaderFactory?: DocumentLoaderFactory;
 
   /**
    * A custom JSON-LD context loader factory.  By default, this uses the same
    * loader as the document loader.
+   * @since 1.4.0
    */
   contextLoaderFactory?: DocumentLoaderFactory;
 
