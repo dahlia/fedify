@@ -41,6 +41,7 @@
  *
  * @module
  */
+export * from "./compat/mod.ts";
 export * from "./federation/mod.ts";
 export * from "./nodeinfo/mod.ts";
 export * from "./runtime/mod.ts";

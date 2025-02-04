@@ -138,6 +138,13 @@ Fedify uses the following logger categories:
 
 The `"fedify"` category is used for everything related to the Fedify library.
 
+### `["fedify", "compat", "transformers"]`
+
+*This category is available since Fedify 1.4.0.*
+
+The `["fedify", "compat", "transformers"]` category is used for logging
+`ActivityTransformer`-related messages.
+
 ### `["fedify", "federation"]`
 
 The `["fedify", "federation"]` category is used for logging federation-related

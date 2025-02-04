@@ -328,6 +328,18 @@ the retry policy by providing a custom function that satisfies the `RetryPolicy`
 type.  Or you can adjust the parameters of the built-in
 `createExponentialBackoffRetryPolicy()` function.
 
+### `activityTransformers`
+
+*This API is available since Fedify 1.4.0.*
+
+Activity transformers are a way to adjust activities before sending them to
+the recipients.  It is useful for modifying the activity to fit the recipient's
+ActivityPub implementation (which may have some quirks) or for adding some
+additional information to the activity.
+
+See the [*Activity transformers* section](./send.md#activity-transformers)
+for details.
+
 ### `trailingSlashInsensitive`
 
 *This API is available since Fedify 0.12.0.*

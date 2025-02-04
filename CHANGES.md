@@ -22,6 +22,17 @@ To be released.
      -  `GetAuthenticatedDocumentLoaderOptions` interface became to extend
         `DocumentLoaderFactoryOptions` interface.
 
+ -  Introduced `ActivityTransformer`s for adjusting outgoing activities
+    before sending them so that some ActivityPub implementations with quirks
+    are satisfied.
+
+     -  Added `@fedify/fedify/compat` module.
+     -  Added `ActivityTransformer` type.
+     -  Added `autoIdAssigner()` function.
+     -  Added `actorDehydrator()` function.
+     -  Added `defaultActivityTransformers` constant.
+     -  Added `CreateFederationOptions.activityTransformers` option.
+
  -  The `suppressError` option of Activity Vocabulary APIs,
     `traverseCollection()` function, and `Context.traverseCollection()` method
     now suppresses errors occurred JSON-LD processing.
@@ -56,6 +67,11 @@ To be released.
      -  `Object.clone()` method now accepts `emojiReactions` option.
 
  -  Added `allowPrivateAddress` option to `LookupWebFingerOptions` interface.
+
+ -  Added more log messages using the [LogTape] library.  Currently the below
+    logger categories are used:
+
+     -  `["fedify", "compat", "transformers"]`
 
  -  Added `-t`/`--traverse` option to the `fedify lookup` subcommand.  [[#195]]
 

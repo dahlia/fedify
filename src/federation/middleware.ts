@@ -17,6 +17,8 @@ import {
   ATTR_HTTP_RESPONSE_STATUS_CODE,
   ATTR_URL_FULL,
 } from "@opentelemetry/semantic-conventions";
+import { defaultActivityTransformers } from "../compat/transformers.ts";
+import type { ActivityTransformer } from "../compat/types.ts";
 import metadata from "../deno.json" with { type: "json" };
 import { getNodeInfo, type GetNodeInfoOptions } from "../nodeinfo/client.ts";
 import { handleNodeInfo, handleNodeInfoJrd } from "../nodeinfo/handler.ts";
@@ -261,6 +263,16 @@ export interface CreateFederationOptions {
   inboxRetryPolicy?: RetryPolicy;
 
   /**
+   * Activity transformers that are applied to outgoing activities.  It is
+   * useful for adjusting outgoing activities to satisfy some ActivityPub
+   * implementations.
+   *
+   * By default, {@link defaultActivityTransformers} are applied.
+   * @since 1.4.0
+   */
+  activityTransformers?: readonly ActivityTransformer[];
+
+  /**
    * Whether the router should be insensitive to trailing slashes in the URL
    * paths.  For example, if this option is `true`, `/foo` and `/foo/` are
    * treated as the same path.  Turned off by default.
@@ -403,6 +415,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   skipSignatureVerification: boolean;
   outboxRetryPolicy: RetryPolicy;
   inboxRetryPolicy: RetryPolicy;
+  activityTransformers: readonly ActivityTransformer[];
   tracerProvider: TracerProvider;
 
   constructor(options: CreateFederationOptions) {
@@ -513,6 +526,8 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       createExponentialBackoffPolicy();
     this.inboxRetryPolicy = options.inboxRetryPolicy ??
       createExponentialBackoffPolicy();
+    this.activityTransformers = options.activityTransformers ??
+      defaultActivityTransformers;
     this.tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
   }
 
@@ -2010,17 +2025,10 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     for (const { privateKey } of keys) {
       validateCryptoKey(privateKey, "private");
     }
-    if (activity.id == null) {
-      const id = new URL(`urn:uuid:${crypto.randomUUID()}`);
-      activity = activity.clone({ id });
-      logger.warn(
-        "As the activity to send does not have an id, a new id {id} has " +
-          "been generated for it.  However, it is recommended to explicitly " +
-          "set the id for the activity.",
-        { id: id.href },
-      );
+    for (const activityTransformer of this.activityTransformers) {
+      activity = activityTransformer(activity);
     }
-    span?.setAttribute("activitypub.activity.id", activity.id!.href);
+    span?.setAttribute("activitypub.activity.id", activity?.id?.href ?? "");
     if (activity.actorId == null) {
       logger.error(
         "Activity {activityId} to send does not have an actor.",

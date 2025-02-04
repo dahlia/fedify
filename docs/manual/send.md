@@ -143,9 +143,9 @@ of the activity.  [You can get the actor's URI by calling
 the `Context.getActorUri()` method.](./actor.md#constructing-actor-uris)
 
 Every activity should have the `id` property, which is a unique IRI for the
-activity.  If you don't specify the `id` property, Fedify automatically
-generates a unique IRI for the activity—but it is recommended to specify
-the `id` property explicitly.
+activity.  If you don't specify the `id` property, [Fedify automatically
+generates a unique IRI for the activity by default](#autoidassigner)—but it is
+recommended to specify the `id` property explicitly.
 
 > [!TIP]
 > The activity's `id` does not have to be necessarily dereferenceable—it's
@@ -567,3 +567,80 @@ equal to the number of Ed25519 key pairs.
 
 [FEP-8b32]: https://w3id.org/fep/8b32
 [several other cases]: https://socialhub.activitypub.rocks/t/fep-8b32-object-integrity-proofs/2725/79?u=hongminhee
+
+
+Activity transformers
+---------------------
+
+*This API is available since Fedify 1.4.0.*
+
+Activity transformers are a way to adjust activities before sending them to
+the recipients.  It is useful for modifying the activity to fit the recipient's
+ActivityPub implementation (which may have some quirks) or for adding some
+additional information to the activity.
+
+The activity transformers are applied before they are signed with the sender's
+private key and sent to the recipients.
+
+It can be configured by setting
+the [`activityTransformers`](./federation.md#activitytransformers) option.
+By default, the following activity transformers are enabled:
+
+### `autoIdAssigner()`
+
+This activity transformer automatically assigns a unique IRI to the activity
+if the `id` property is not set.  It is useful for ensuring that
+the activity has a unique IRI, which is required by the ActivityPub
+specification.
+
+The generated IRI is a URN UUID like:
+
+~~~~
+urn:uuid:12345678-1234-5678-1234-567812345678
+~~~~
+
+### `actorDehydrator()`
+
+This activity transformer <q>dehydrates</q> the `actor` property of the activity
+so that it only contains the actor's URI (rather than the full actor object
+inlined).  It is useful for satisfying some ActivityPub implementations like
+[Threads] that have quirks, which fail to parse the activity if the `actor`
+property contains the full actor object inlined.
+
+For example, the following activity:
+
+~~~~ typescript{3-7} twoslash
+import { Follow, Person } from "@fedify/fedify";
+// ---cut-before---
+new Follow({
+  id: new URL("http://example.com/activities/1"),
+  actor: new Person({
+    id: new URL("http://example.com/actors/1"),
+    name: "Alice",
+    preferredUsername: "alice",
+  }),
+  object: new Person({
+    id: new URL("http://example.com/actors/2"),
+    name: "Bob",
+    preferredUsername: "bob",
+  }),
+});
+~~~~
+
+is transformed into:
+
+~~~~ typescript twoslash
+import { Follow, Person } from "@fedify/fedify";
+// ---cut-before---
+new Follow({
+  id: new URL("http://example.com/activities/1"),
+  actor: new URL("http://example.com/actors/1"),  // [!code highlight]
+  object: new Person({
+    id: new URL("http://example.com/actors/2"),
+    name: "Bob",
+    preferredUsername: "bob",
+  }),
+});
+~~~~
+
+[Threads]: https://www.threads.net/
