@@ -24,7 +24,7 @@ yamanoku, okin, Andy Piper, box464, Evan Prodromou, Rafael Goulart
 One-time donations
 ------------------
 
-Markus P, Nils Bergmann, Rameez
+Markus P, Rameez
 
 <!-- /DO NOT EDIT -->
 <!-- cSpell: enable -->
