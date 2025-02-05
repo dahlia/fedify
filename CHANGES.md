@@ -6,7 +6,7 @@ Fedify changelog
 Version 1.4.0
 -------------
 
-To be released.
+Released on February 5, 2025.
 
  -  Document loader and context loader are now configurable with a factory
     function for more flexibility.
