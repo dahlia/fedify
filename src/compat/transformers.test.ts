@@ -1,5 +1,6 @@
+import { assert } from "@std/assert/assert";
 import { assertEquals } from "@std/assert/assert-equals";
-import { assertNotEquals } from "@std/assert/assert-not-equals";
+import { assertInstanceOf } from "@std/assert/assert-instance-of";
 import { MemoryKvStore } from "../federation/kv.ts";
 import { FederationImpl } from "../federation/middleware.ts";
 import { test } from "../testing/mod.ts";
@@ -21,11 +22,20 @@ test("autoIdAssigner", async () => {
     }),
   });
   const result = autoIdAssigner(activity, context);
-  assertNotEquals(result.id, null);
+  const { id } = result;
+  assertInstanceOf(id, URL);
+  assertEquals(id.origin, "http://example.com");
+  assertEquals(id.pathname, "/");
+  assertEquals(id.search, "");
+  assert(
+    id.hash.match(
+      /^#Follow\/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/,
+    ),
+  );
   assertEquals(
     await result.toJsonLd(),
     await new Follow({
-      id: result.id,
+      id,
       actor: new URL("http://example.com/actors/1"),
       object: new Person({
         id: new URL("http://example.com/actors/2"),

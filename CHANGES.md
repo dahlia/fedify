@@ -23,6 +23,10 @@ To be released.
         `DocumentLoaderFactoryOptions` interface.
      -  Added a type parameter `TContextData` to `CreateFederationOptions`
         interface.
+     -  Fedify now assigns a random-generated *http:*/*https:* URI to
+        activities if these do not have explicit `id` properties.  This behavior
+        can be disabled by excluding `autoIdAssigner()` from
+        the `CreateFederationOptions.activityTransformers` option.
 
  -  Introduced `ActivityTransformer`s for adjusting outgoing activities
     before sending them so that some ActivityPub implementations with quirks

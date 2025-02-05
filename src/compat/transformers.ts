@@ -10,11 +10,13 @@ const logger = getLogger(["fedify", "compat", "transformers"]);
  * does not already have one.  This is useful for ensuring that activities
  * have an ID before they are sent to other servers.
  *
- * The generated ID is a URN UUID like:
+ * The generated ID is an origin URI with a fragment which contains an activity
+ * type name with a random UUID:
  *
  * ```
- * urn:uuid:12345678-1234-5678-1234-567812345678
+ * https://example.com/#Follow/12345678-1234-5678-1234-567812345678
  * ```
+ *
  * @typeParam TContextData The type of the context data.
  * @param activity The activity to assign an ID to.
  * @param context The context of the activity.
@@ -23,10 +25,13 @@ const logger = getLogger(["fedify", "compat", "transformers"]);
  */
 export function autoIdAssigner<TContextData>(
   activity: Activity,
-  _context: Context<TContextData>,
+  context: Context<TContextData>,
 ): Activity {
   if (activity.id != null) return activity;
-  const id = new URL(`urn:uuid:${crypto.randomUUID()}`);
+  const id = new URL(
+    `/#${activity.constructor.name}/${crypto.randomUUID()}`,
+    context.origin,
+  );
   logger.warn(
     "As the activity to send does not have an id, a new id {id} has " +
       "been generated for it.  However, it is recommended to explicitly " +
