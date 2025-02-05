@@ -21,6 +21,8 @@ To be released.
         to `AuthenticatedDocumentLoaderFactory` type.
      -  `GetAuthenticatedDocumentLoaderOptions` interface became to extend
         `DocumentLoaderFactoryOptions` interface.
+     -  Added a type parameter `TContextData` to `CreateFederationOptions`
+        interface.
 
  -  Introduced `ActivityTransformer`s for adjusting outgoing activities
     before sending them so that some ActivityPub implementations with quirks

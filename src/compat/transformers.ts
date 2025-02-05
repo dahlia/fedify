@@ -1,4 +1,5 @@
 import { getLogger } from "@logtape/logtape";
+import type { Context } from "../federation/context.ts";
 import type { Activity } from "../vocab/vocab.ts";
 import type { ActivityTransformer } from "./types.ts";
 
@@ -14,11 +15,16 @@ const logger = getLogger(["fedify", "compat", "transformers"]);
  * ```
  * urn:uuid:12345678-1234-5678-1234-567812345678
  * ```
+ * @typeParam TContextData The type of the context data.
  * @param activity The activity to assign an ID to.
+ * @param context The context of the activity.
  * @return The activity with an ID assigned.
  * @since 1.4.0
  */
-export function autoIdAssigner(activity: Activity): Activity {
+export function autoIdAssigner<TContextData>(
+  activity: Activity,
+  _context: Context<TContextData>,
+): Activity {
   if (activity.id != null) return activity;
   const id = new URL(`urn:uuid:${crypto.randomUUID()}`);
   logger.warn(
@@ -69,11 +75,16 @@ export function autoIdAssigner(activity: Activity): Activity {
  *
  * As some ActivityPub implementations like Threads fail to deal with inlined
  * actor objects, this transformer can be used to work around this issue.
+ * @typeParam TContextData The type of the context data.
  * @param activity The activity to dehydrate the actor property of.
+ * @param context The context of the activity.
  * @returns The dehydrated activity.
  * @since 1.4.0
  */
-export function actorDehydrator(activity: Activity): Activity {
+export function actorDehydrator<TContextData>(
+  activity: Activity,
+  _context: Context<TContextData>,
+): Activity {
   if (activity.actorIds.length < 1) return activity;
   return activity.clone({
     actors: activity.actorIds,
@@ -81,11 +92,17 @@ export function actorDehydrator(activity: Activity): Activity {
 }
 
 /**
- * The default activity transformers that are applied to all outgoing
+ * Gets the default activity transformers that are applied to all outgoing
  * activities.
+ * @typeParam TContextData The type of the context data.
+ * @returns The default activity transformers.
  * @since 1.4.0
  */
-export const defaultActivityTransformers: readonly ActivityTransformer[] = [
-  autoIdAssigner,
-  actorDehydrator,
-];
+export function getDefaultActivityTransformers<
+  TContextData,
+>(): readonly ActivityTransformer<TContextData>[] {
+  return [
+    autoIdAssigner,
+    actorDehydrator,
+  ];
+}

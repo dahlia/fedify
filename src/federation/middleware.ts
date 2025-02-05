@@ -17,7 +17,7 @@ import {
   ATTR_HTTP_RESPONSE_STATUS_CODE,
   ATTR_URL_FULL,
 } from "@opentelemetry/semantic-conventions";
-import { defaultActivityTransformers } from "../compat/transformers.ts";
+import { getDefaultActivityTransformers } from "../compat/transformers.ts";
 import type { ActivityTransformer } from "../compat/types.ts";
 import metadata from "../deno.json" with { type: "json" };
 import { getNodeInfo, type GetNodeInfoOptions } from "../nodeinfo/client.ts";
@@ -117,9 +117,10 @@ import { extractInboxes, sendActivity, type SenderKeyPair } from "./send.ts";
 
 /**
  * Options for {@link createFederation} function.
+ * @typeParam TContextData The type of the context data.
  * @since 0.10.0
  */
-export interface CreateFederationOptions {
+export interface CreateFederationOptions<TContextData> {
   /**
    * The key-value store used for caching, outbox queues, and inbox idempotence.
    */
@@ -270,7 +271,7 @@ export interface CreateFederationOptions {
    * By default, {@link defaultActivityTransformers} are applied.
    * @since 1.4.0
    */
-  activityTransformers?: readonly ActivityTransformer[];
+  activityTransformers?: readonly ActivityTransformer<TContextData>[];
 
   /**
    * Whether the router should be insensitive to trailing slashes in the URL
@@ -337,7 +338,7 @@ export interface FederationKvPrefixes {
  * @since 0.10.0
  */
 export function createFederation<TContextData>(
-  options: CreateFederationOptions,
+  options: CreateFederationOptions<TContextData>,
 ): Federation<TContextData> {
   return new FederationImpl<TContextData>(options);
 }
@@ -415,10 +416,10 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
   skipSignatureVerification: boolean;
   outboxRetryPolicy: RetryPolicy;
   inboxRetryPolicy: RetryPolicy;
-  activityTransformers: readonly ActivityTransformer[];
+  activityTransformers: readonly ActivityTransformer<TContextData>[];
   tracerProvider: TracerProvider;
 
-  constructor(options: CreateFederationOptions) {
+  constructor(options: CreateFederationOptions<TContextData>) {
     const logger = getLogger(["fedify", "federation"]);
     this.kv = options.kv;
     this.kvPrefixes = {
@@ -527,7 +528,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
     this.inboxRetryPolicy = options.inboxRetryPolicy ??
       createExponentialBackoffPolicy();
     this.activityTransformers = options.activityTransformers ??
-      defaultActivityTransformers;
+      getDefaultActivityTransformers<TContextData>();
     this.tracerProvider = options.tracerProvider ?? trace.getTracerProvider();
   }
 
@@ -2016,8 +2017,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       immediate,
       excludeBaseUris,
       collectionSync,
-      contextData,
-      origin,
+      context: ctx,
     } = options;
     if (keys.length < 1) {
       throw new TypeError("The sender's keys must not be empty.");
@@ -2026,7 +2026,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       validateCryptoKey(privateKey, "private");
     }
     for (const activityTransformer of this.activityTransformers) {
-      activity = activityTransformer(activity);
+      activity = activityTransformer(activity, ctx);
     }
     span?.setAttribute("activitypub.activity.id", activity?.id?.href ?? "");
     if (activity.actorId == null) {
@@ -2059,7 +2059,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       throw new TypeError("The keys must not be empty.");
     }
     const contextLoader = this.contextLoaderFactory(
-      this.#getLoaderOptions(origin),
+      this.#getLoaderOptions(ctx.origin),
     );
     const activityId = activity.id.href;
     let proofCreated = false;
@@ -2162,7 +2162,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       const privateKeyJwk = await exportJwk(privateKey);
       keyJwkPairs.push({ keyId: keyId.href, privateKey: privateKeyJwk });
     }
-    if (!this.manuallyStartQueue) this.#startQueue(contextData);
+    if (!this.manuallyStartQueue) this.#startQueue(ctx.data);
     const carrier: Record<string, string> = {};
     propagation.inject(context.active(), carrier);
     const promises: Promise<void>[] = [];
@@ -2170,7 +2170,7 @@ export class FederationImpl<TContextData> implements Federation<TContextData> {
       const message: OutboxMessage = {
         type: "outbox",
         id: crypto.randomUUID(),
-        baseUrl: origin,
+        baseUrl: ctx.origin,
         keys: keyJwkPairs,
         activity: jsonLd,
         activityId: activity.id?.href,
@@ -3144,8 +3144,7 @@ export class ContextImpl<TContextData> implements Context<TContextData> {
       keys = [sender];
     }
     const opts: SendActivityInternalOptions<TContextData> = {
-      contextData: this.data,
-      origin: this.origin,
+      context: this,
       ...options,
     };
     let expandedRecipients: Recipient[];
@@ -3784,8 +3783,7 @@ interface ObjectCallbacks<TContextData, TParam extends string> {
 interface SendActivityInternalOptions<TContextData>
   extends SendActivityOptions {
   collectionSync?: string;
-  contextData: TContextData;
-  origin: string;
+  context: Context<TContextData>;
 }
 
 function notFound(_request: Request): Response {

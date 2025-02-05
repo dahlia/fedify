@@ -980,6 +980,7 @@ test("FederationImpl.sendActivity()", async (t) => {
     kv,
     contextLoader: mockDocumentLoader,
   });
+  const context = federation.createContext(new URL("https://example.com/"));
 
   await t.step("success", async () => {
     const activity = new Create({
@@ -993,7 +994,7 @@ test("FederationImpl.sendActivity()", async (t) => {
       [{ privateKey: rsaPrivateKey2, keyId: rsaPublicKey2.id! }],
       recipient,
       activity,
-      { contextData: undefined, origin: "https://example.com" },
+      { context },
     );
     assertEquals(verified, ["http"]);
     assertInstanceOf(request, Request);
@@ -1011,7 +1012,7 @@ test("FederationImpl.sendActivity()", async (t) => {
       activity.clone({
         actor: new URL("https://example.com/person2"),
       }),
-      { contextData: undefined, origin: "https://example.com" },
+      { context },
     );
     assertEquals(verified, ["ld", "http"]);
     assertInstanceOf(request, Request);
@@ -1031,7 +1032,7 @@ test("FederationImpl.sendActivity()", async (t) => {
       activity.clone({
         actor: new URL("https://example.com/person2"),
       }),
-      { contextData: undefined, origin: "https://example.com" },
+      { context },
     );
     assertEquals(verified, ["proof"]);
     assertInstanceOf(request, Request);
@@ -1052,7 +1053,7 @@ test("FederationImpl.sendActivity()", async (t) => {
       activity.clone({
         actor: new URL("https://example.com/person2"),
       }),
-      { contextData: undefined, origin: "https://example.com" },
+      { context },
     );
     assertEquals(verified, ["ld", "proof", "http"]);
     assertInstanceOf(request, Request);
