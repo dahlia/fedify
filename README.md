@@ -96,6 +96,7 @@ financial contributors:[^2]
 
 - [Daniel Supernault](https://pixelfed.org/)
 - [tkgka](https://opencollective.com/guest-1b915c65)
+- [Blaine](https://opencollective.com/blaine)
 
 ### Backers
 
